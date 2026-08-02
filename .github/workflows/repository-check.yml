@@ -1,0 +1,32 @@
+name: Repository Check
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  repository-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reject tracked files larger than 50 MiB
+        shell: python
+        run: |
+          from pathlib import Path
+          limit = 50 * 1024 * 1024
+          large = [
+              (path.stat().st_size, path)
+              for path in Path(".").rglob("*")
+              if path.is_file() and ".git" not in path.parts and path.stat().st_size > limit
+          ]
+          if large:
+              for size, path in sorted(large, reverse=True):
+                  print(f"{size / 1024 / 1024:.1f} MiB  {path}")
+              raise SystemExit("Large files must not be committed to the normal Git repository.")
+
+      - name: Compile Python sources
+        run: python -m compileall -q src tools apps tests scripts

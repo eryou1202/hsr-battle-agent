@@ -1,0 +1,184 @@
+# ============================================================
+# HSR Battle Agent - Git ignore rules
+# 代码、配置、Schema、文档和小型测试样例应提交；
+# 原始游戏数据、解包结果、运行 Trace、训练集、模型产物不提交。
+# ============================================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Node / frontend
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+coverage/
+storybook-static/
+
+# IDE / editor
+.vscode/
+.idea/
+*.code-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Environment variables, credentials and local overrides
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+id_rsa
+id_rsa.*
+credentials.json
+secrets.*
+!secrets.example.*
+
+# Logs, caches and temporary files
+*.log
+logs/
+cache/
+.cache/
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Game clients, private-server binaries and unpacker temporary outputs
+clients/
+private_server/
+game_install/
+tools/unpacker/output/
+tools/unpacker/work/
+tools/unpacker/cache/
+tools/trace_capture/output/
+
+# Generated project data
+# Keep directory placeholders and local README files only.
+data/sources/**
+!data/sources/.gitkeep
+!data/sources/README.md
+
+data/extracted/**
+!data/extracted/.gitkeep
+!data/extracted/README.md
+
+data/normalized/**
+!data/normalized/.gitkeep
+!data/normalized/README.md
+
+data/diffs/**
+!data/diffs/.gitkeep
+!data/diffs/README.md
+
+data/traces/**
+!data/traces/.gitkeep
+!data/traces/README.md
+
+data/episodes/**
+!data/episodes/.gitkeep
+!data/episodes/README.md
+
+data/datasets/**
+!data/datasets/.gitkeep
+!data/datasets/README.md
+
+data/model_artifacts/**
+!data/model_artifacts/.gitkeep
+!data/model_artifacts/README.md
+
+# Runtime and experiment outputs
+runs/
+outputs/
+artifacts/
+checkpoints/
+wandb/
+mlruns/
+tensorboard/
+
+# Large model/data formats: keep outside Git unless deliberately managed by Git LFS.
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.tflite
+*.h5
+*.joblib
+*.pickle
+*.pkl
+*.npy
+*.npz
+*.parquet
+*.arrow
+*.feather
+
+# Archives and disk images
+*.7z
+*.rar
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.iso
+*.pak
+
+# Native build outputs
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+*.o
+*.obj
+*.a
+*.lib
+CMakeFiles/
+CMakeCache.txt
+cmake-build-*/
