@@ -108,3 +108,38 @@ supported 定义：parser + IR + runtime + 测试全部通过（仅能解析名�
    `ConfigAbilityMixin` 继承树，建立 type_id ↔ runtime_class 候选表。
 3. 第一个验证目标建议选证据最多的 type（当前候选 2），
    达到 E4 后写完整证据链（binary id → class → fields → execute → called systems）。
+
+## 7. 4.4.54 目录重建结果（2026-08-04 实测）
+
+> 工具：`tools/unpack/probe_ability_directory_adaptive.py`（自适应反解，
+> 不依赖旧偏移）。数据：`data/raw/4.4.54/manifest/`。
+
+### 7.1 新偏移表（取代 4.4.53 全部旧偏移）
+
+| 项 | 4.4.53 | 4.4.54 | 说明 |
+|---|---|---|---|
+| 归档文件 | `5515caf6...` (125,590,141 B) | `8625dd99...` (125,829,538 B) | 已替换 |
+| payload base | `0xB0CC68` | **`0xAF6D1C`** | 自适应反解（15/15 名字投票） |
+| 目录块 | `0xB147F8..0xB14A38` | **`0xAFE8AC..0xAFEACC`** | 15 条连续 |
+| 记录起点 | base + zigzag(decoded) | 同左（不变） | 格式稳定 |
+
+### 7.2 跨版本格式稳定性（新证据，E2→E3）
+
+- [CONFIRMED]（E2，跨版本）：目录编码、记录前缀、ZigZag 偏移规则在
+  4.4.53 → 4.4.54 完全一致（格式 F1-F4 全部复现）。
+- [CONFIRMED]（E2）：15 条黑天鹅记录全部重新定位并提取
+  （`data/raw/4.4.54/manifest/config_record_probes/black_swan_records/`）。
+- [CONFIRMED]（E2）：14/15 条记录长度与 4.4.53 完全一致
+  （697/980/531/1918/340/797/460/2275/345/1758/2336/582/5424/754）。
+- [CONFIRMED]（E2）：内容对比——**6 条逐字节相同**；
+  **8 条仅 1-2 个单字节差异**（如 Skill01_Phase02 在 0x2A、0xEA 各差 1 字节，
+  疑似校验/版本字节）；**无任何结构或数值段变化**。
+  → 4.4.54 对黑天鹅是纯热修版本，配置语义未变。
+
+### 7.3 对注册表的影响
+
+- type_id 2/8/14/16 的语义结论维持 UNKNOWN（未新增运行时证据）。
+- 4.4.54 的 15 条记录已可作为后续 mixin 前缀分析的新输入
+  （复用 `inspect_type2_mixin_prefix.py` 的逻辑）。
+- 下一步 Task C 的 class 检索仍依赖 metadata 解密（见
+  `il2cpp_toolchain_4.4.53.md` 第 6 节）。

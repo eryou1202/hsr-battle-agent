@@ -1,0 +1,68 @@
+{
+  "game_version": "4.4.54",
+  "game_version_full": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+  "investigated": "2026-08-04",
+  "artifacts": {
+    "GameAssembly.dll": {
+      "path": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+      "size": 535482160,
+      "sha256": "7B44379BF69352022CB3437B03431DDC558FFB34E3D98E7144200F37E8C837CC",
+      "image_base": "0x180000000",
+      "il2cpp_section": {"rva": "0xB0E3000", "size": "0x13E9DCA0"},
+      "method_pointers_array": {
+        "file_offset": "0x44EBB88",
+        "rva": "0x44ED388",
+        "end_file_offset": "0x47B9158",
+        "entry_count": 367290,
+        "note": "il2cpp methodPointers: 全部指向 il2cpp 段的连续 8 字节指针数组"
+      },
+      "api_getter_export": {
+        "name": "il2cpp_get_api_table",
+        "rva": "0x3BE4230",
+        "obfuscated": true,
+        "note": "反汇编含垃圾指令序列，call 目标落入 .upx0 段 (约 RVA 0x1EFE49xx)"
+      },
+      "upx0_section": {
+        "rva": "0x1EF81000",
+        "raw_size": "0x14C1400",
+        "packer": "UNKNOWN",
+        "note": "无 UPX!/UPX0/NRV2 标记；非标准 UPX，疑似自定义加壳/加密代码段"
+      },
+      "overlay": {"size": 3977520, "note": "RVA 表样式数据，无壳标识"}
+    },
+    "UnityPlayer.dll": {
+      "path": "D:\\StarRail_4.4.53\\UnityPlayer.dll",
+      "size": 38753584,
+      "image_base": "0x180000000",
+      "api_table_at_0x1EED6A8": "INVALID for 4.4.54 (honkai-dumper hardcoded RVA targets game 3.7.0)"
+    },
+    "global-metadata.dat": {
+      "path": "D:\\StarRail_4.4.53\\StarRail_Data\\il2cpp_data\\Metadata\\global-metadata.dat",
+      "size": 100182380,
+      "sha256": "4BFDD6EAED092C1A70431CF32946903E41F716BEEB1322291FA1AB1C6DBB33A7",
+      "header": "4D 48 59 00 00 00 00 00 (MHY\\0 + version=0)",
+      "bulk": "encrypted/obfuscated, entropy 7.94 bit/byte (4MB), no AF1BB1FA, no real strings",
+      "tail": "plaintext ~2KB table of repeated u32 (0x6EC09x155, 0x67C2Cx130, 0x91FE8x66, 0x91FE6x78...)",
+      "decryption": "NOT CRACKED - tried: single-byte XOR(256), 4-byte keys, self-XOR chains, Kasiski periods 1..256, zlib/gzip/zstd/lz4 magics"
+    },
+    "startup-metadata.dat": {
+      "size": 3898140,
+      "header": "fully encrypted, no MHY header, no plaintext tail"
+    }
+  },
+  "toolchain_verdicts": {
+    "honkai-dumper": {
+      "type": "runtime injector (NOT static)",
+      "commit": "bff8cd3122dc773cfc73e9483e1150f176d1a52c",
+      "target_game_version": "3.7.0",
+      "verdict": "P2 runtime probe only; hardcoded api table RVA stale for 4.4.54"
+    },
+    "Pom-Pom": {"verdict": "REJECTED - cheat with anti-cheat bypass, violates project safety boundary, deleted"},
+    "Il2CppDumper/Cpp2IL/Il2CppInspector": {"verdict": "blocked until metadata decryption"}
+  },
+  "next_actions": [
+    "locate community HSR metadata decryptor (datamining community)",
+    "Cpp2IL no-metadata mode fallback",
+    "runtime probe path requires injection policy decision"
+  ]
+}

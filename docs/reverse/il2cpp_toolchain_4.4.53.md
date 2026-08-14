@@ -52,7 +52,7 @@
 ## 2. 工具链评估（静态结论，待实测）
 
 | 工具 | 对本资产预期 | 理由 | 优先级 |
-|---|---|---|---|
+|---|---|---|---|---|
 | [honkai-dumper](https://github.com/lanylow/honkai-dumper)（lanylow） | **主候选，预期可用** | 专为 HSR 定制：处理 `MHY` 定制 metadata 与 api-table 导出；持续维护（2026 仍有提交） | P0 |
 | Il2CppDumper（Perfare） | 预期失败 | 依赖标准 metadata（`AF1BB1FA`+版本）；对最新 metadata 版本支持滞后（issues #892/#894 显示连 v39/Unity 6000 都未跟进） | 不采用 |
 | Cpp2IL（SamboyCoding） | 条件可用 | 本体支持较新 metadata，但同样无法直接读 `MHY` 头；需先把 metadata 解密/转换为标准格式，或走 no-metadata 模式 | P1 备用 |
@@ -144,6 +144,75 @@ AdvanceAction            TriggerBattleEvent
 | api table 布局 | [UNKNOWN] | 导出仅 1 个函数，符号恢复依赖它 |
 | honkai-dumper 对 4.4.54 的兼容性 | [HYPOTHESIS] | 需要实测；若滞后可能需 fork 修 metadata 版本 |
 | Lua/xLua 在战斗中的参与度 | [UNKNOWN] | xluau.dll 存在，需确认战斗 DSL 是否含 Lua 路径 |
+
+## 6. 实测结果（2026-08-04，4.4.54 资产）
+
+本节是上表评估的**实测更新**，结论取代对应旧行。
+
+### 6.1 honkai-dumper 实测
+
+- 已克隆并审阅源码（vendored 于 `tools/reverse/honkai-dumper`，
+  commit `bff8cd3`，2025-11-05，**"Updated for Honkai: Star Rail 3.7.0"**）。
+- **它是进程内注入型工具，不是静态 dump 工具**：以 cdylib 注入运行中的
+  游戏进程，通过 api table 运行时遍历 Il2Cpp 对象图。
+- 其 api table 位置为硬编码 `UnityPlayer.dll + 0x1EED6A8`，**仅对 3.7.0 有效**；
+  实测 4.4.54 的 UnityPlayer.dll 该位置内容为无效值（400 项全部 OUTSIDE）。
+- 结论：作为静态路径不可用；作为运行时探针需配套注入器（lanylow 的
+  genshin-utility）且目标为运行中的全球服客户端 —— 与项目"本地/隔离"
+  边界冲突，**降级为 P2 运行时备选**，不进入本轮主路径。
+
+### 6.2 其他候选工具结论
+
+- **Pom-Pom（gmh5225）**：实测是外挂（含反作弊绕过、速度/隐身等），
+  **违反项目安全边界，已删除克隆并禁止参考**。
+- Il2CppDumper / Cpp2IL / Il2CppInspector：均需标准 metadata；
+  在 metadata 解密完成前不可用（维持原评估）。
+
+### 6.3 global-metadata.dat 保护机制（新确认）
+
+| 项 | 实测结果 | 证据 |
+|---|---|---|
+| 头部 | `4D 48 59 00`（`MHY\0`）+ 4 字节 0（疑似 version=0）+ 加密主体 | 头部字节 |
+| 加密主体 | 100MB 高熵（4MB 熵 7.94 bit/byte），全文无 `AF1BB1FA`、无任何真实字符串（最长"字符串"是随机命中的乱码） | 全文扫描 |
+| 尾部 | **约 2KB 明文表**：重复 u32（0x6EC09×155、0x67C2C×130、0x91FE8×66、0x91FE6×78…） | 尾部 hex |
+| startup-metadata.dat | 3.9MB **全加密**，无 MHY 头、无明文尾 | 头部/尾部 hex |
+
+已尝试并排除：单字节 XOR（256 全扫）、4 字节候选密钥、自 XOR 链、
+Kasiski 周期分析（无显著周期）、zlib/gzip/zstd/lz4 魔数。
+→ 加密算法/密钥**未破解**，需社区方案或运行时探针。
+
+### 6.4 GameAssembly.dll 保护机制（新确认）
+
+- 导出 `il2cpp_get_api_table`（RVA `0x3BE4230`）**代码被混淆**，
+  反汇编含 `movzx/mov r12w/xor` 垃圾指令序列，且 **call 目标落入
+  `.upx0` 段**（约 RVA `0x1EFE49xx`）→ 真实逻辑在加壳段内。
+- `.upx0`（21.5MB）：无 `UPX!`/`UPX0` 标记，非标准 UPX；文件 overlay
+  （3.98MB，RVA 表样式数据）也无壳标识 → **自定义加壳/加密代码段**。
+- **方法指针巨阵已定位**：.rdata 文件偏移 `0x44EBB88..0x47B9158`，
+  RVA `0x44ED388`，**367,290 个连续指针**全部指向 `il2cpp` 段
+  （这是 il2cpp 的 methodPointers 数组；后续 metadata 解密后可用于
+  method index → RVA 映射）。数据见 `data/raw/4.4.54/il2cpp/`。
+- api table 在 4.4.54 中未能在 UnityPlayer 定位（getter 混淆 + 表位置
+  随版本移动）；用已知索引指纹扫描被 .rdata 指针饱和淹没，**未定位**。
+
+### 6.5 静态路径状态与下一步
+
+```text
+静态类 dump 的硬阻塞 = metadata 解密（算法未知）
+下一候选动作（按优先级）：
+  1. 检索社区 HSR metadata 解密器（数据挖掘社区每个版本都在做）
+  2. Cpp2IL no-metadata 模式 + 二进制启发式（无类名，仅结构）
+  3. 运行时探针路径（honkai-dumper 类工具，需先解决注入与边界问题）
+```
+
+新增工具（本会话产出，均为纯静态离线分析）：
+
+- `tools/unpack/probe_ability_directory_adaptive.py` — 4.4.54 能力目录
+  自适应重建（已产出 `data/raw/4.4.54/manifest/`）。
+- `tools/reverse/scripts/parse_api_table.py` — PE/api-table 解析器（4.4.54
+  中 getter 混淆导致直接解析失败，保留用于后续版本验证）。
+- `tools/reverse/scripts/scan_api_table.py` — api table 指纹扫描器
+  （结论：4.4.54 指针饱和，需要更强判别特征）。
 
 > 安全边界提醒：所有分析仅限本地文件（静态）与隔离环境（动态）；
 > 不加载、不修改 `HoYoKProtect.sys`，不研究反作弊绕过。
