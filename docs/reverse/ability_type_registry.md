@@ -143,3 +143,65 @@ supported 定义：parser + IR + runtime + 测试全部通过（仅能解析名�
   （复用 `inspect_type2_mixin_prefix.py` 的逻辑）。
 - 下一步 Task C 的 class 检索仍依赖 metadata 解密（见
   `il2cpp_toolchain_4.4.53.md` 第 6 节）。
+
+## 8. type_id ↔ runtime_class 候选映射初表（2026-08-04）
+
+> 目标 3 产物。所有 runtime_class 均为 **UNKNOWN**；语义列为
+> **假设（E0/E1），未经运行时/反编译证实（NOT PROVEN）**。
+> 结构事实来自 4.4.53 + 4.4.54 双版本复现（E2）。
+
+### 8.1 类型分布（跨版本稳定，E2）
+
+| type_id | 记录数 | 记录（黑天鹅样本） | 记录类型特征 |
+|---|---|---|---|
+| 2 | 7 | PassiveSkill01, SkillMazeInLevel, SkillTree02/03, Rank01/02/06 | 被动/星魂/行迹类 |
+| 8 | 3 | Skill03_Phase01/02, SkillMazeInLevel_Insert | 终结技阶段/插入技能 |
+| 14 | 1 | Skill03_Cutin | 演出/Cutin |
+| 16 | 4 | Skill01_Phase01/02, Skill02_Phase01/02 | 普攻/战技阶段 |
+
+4.4.53 与 4.4.54 的 first_mixin_type 分布完全一致（2×7, 16×4, 8×3, 14×1），
+同一记录映射同一类型（E2，跨版本稳定）。
+
+### 8.2 候选映射（全部 NOT PROVEN）
+
+| type_id | 结构事实（E2） | 字符串签名（E1） | 语义假设 | confidence |
+|---|---|---|---|---|
+| 2 | 前缀: flags(2/8) + opcode 0x31 + 0x0A + selector `Caster` + 引用名（见 §7 工具输出） | 引用名全部是 **Modifier 配置名**（`M_BlackSwan_P01_ListenAddPoison`、`MAvatar_BlackSwan_00_DOT`、`M_BlackSwan_00_SkillTree02`…）；出现 `WithBattleEvent`/`RemoveBattleEvent` 后缀 | "按名引用/附加 Modifier 或监听 BattleEvent 的 mixin" | E1，NOT PROVEN |
+| 8 | 无 type2 式前缀 | `AllEnemy`、`AllDarkTeam`、`DarkTeamCenter`、`MDF_Count`、`MDF_ResistanceDown`、`MAvatar_BlackSwan_00_DOT_Enhance`、`_can_continue`/`_current_chance`/`_loop_count`、`TeamFormation` | "多目标/群体效果或状态机类 mixin" | E1，NOT PROVEN |
+| 14 | 单记录（Cutin） | `CasterWithAllEnemy`、`AllDarkTeam`、`Blend_UltraReady` | "演出/动画控制类 mixin" | E0-E1，NOT PROVEN |
+| 16 | 位于技能阶段开头 | `Basic_DamagePercentage`、`ExtraLayer_DamagePercentage`、`Spread_DamagePercentage`、`DefenceIgnore`、`AddDot`、`Rank06_Weighted_Stack_Layer`、`Cast_By_Level` | "伤害/技能主体类 mixin（含 DealDamage 语义候选）" | E1，NOT PROVEN |
+
+### 8.3 DSL 原语名锚点（E1，供未来 class dump xref）
+
+从 4.4.54 记录字符串签名提取的候选原语名（这些名字将来应能在
+`ConfigAbility*` 类或配置字段中找到对应）：
+
+```text
+# 目标选择器（TargetSelector 候选）
+Caster  AbilityTargetEntity  AbilityTargetAdjoinEntity
+ModifierOwnerEntity  ModifierOwnerAdjoinEntity  ParamEntity  ParamEntityList
+ParamEntityAdjoinEntity  AllEnemy  AllEnemyWithUnSelectable
+AllDarkTeam  DarkTeamCenter  AllTeammateWithUnselectable
+AllTeamMemberWithUnselectable  CurrentTurnOwnerEntity
+SnapshotEntityActualOwner  LevelEntity  AvatarBuffSelf
+
+# 动态值（DynamicValue 候选）
+Basic_DamagePercentage  ExtraLayer_DamagePercentage  Spread_DamagePercentage
+Cast_By_Level  DefenceIgnore  MDF_PropertyValue  MDF_Count  MDF_MaxLayer
+MDF_PropertyRatio  MDF_ResistanceDown  Dot_Layer_Count  Max_DOT_Layer
+Rank06_Extra_Layer  Rank06_Chance  Rank06_Weighted_Stack_Layer
+_count  _loop_count  _current_chance  _enhance_count  _maxLimit  _drawnCard  _can_continue
+
+# 动作/事件（Action/Event 候选）
+DealDamageBlackSwan  AddDot  WithBattleEvent  RemoveBattleEvent
+MazeSkill_Triggered  TeamFormation
+```
+
+这些名字本身只证明"字符串存在"（E1）；语义归属必须靠运行时类型系统。
+
+### 8.4 下一验证优先级
+
+1. metadata 解密后，用 §8.3 锚点检索 `ConfigAbilityMixin` 继承树
+   （首选 `DealDamageBlackSwan`、`AllEnemyWithUnSelectable` 这类独特名字）；
+2. 第一个目标建议 **type 16**（普攻/战技阶段，锚点最丰富，
+   且 Skill01/02 是后续里程碑 3 的验证对象）。
