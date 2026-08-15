@@ -307,6 +307,19 @@ bool enumerate_modules_psapi(DWORD pid, ModuleSnapshot& out) {
     return true;
 }
 
+// Shared module resolution: try Toolhelp first; if it was denied, reuse the
+// official PSAPI fallback. Used by both --check-only selection and the real
+// loader preflight. This changes only module discovery, never the loading
+// mechanism.
+ModuleSnapshot resolve_modules(DWORD pid) {
+    ModuleSnapshot modules = inspect_modules(pid);
+    if (!modules.snapshot_handle_valid &&
+        modules.snapshot_error == ERROR_ACCESS_DENIED) {
+        enumerate_modules_psapi(pid, modules);
+    }
+    return modules;
+}
+
 std::string win_error(DWORD code);
 
 struct IntegrityDiagnostics {
@@ -1004,7 +1017,7 @@ int wmain(int argc, wchar_t** argv) {
             return 2;
         }
     } else {
-        modules = inspect_modules(pid);
+        modules = resolve_modules(pid);
     }
     if (modules.has_probe) {
         wprintf(L"BLOCKED: probe module is already loaded in the target.\n"
