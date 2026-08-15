@@ -1075,10 +1075,53 @@ void HealthCheck::finish_json() {
     if (!build_string_.empty()) {
         result_.set("build_string", Json::string(build_string_));
     }
+    if (hd2_) {
+        final_status_ = "PASS";
+    } else if (failure_step_.empty()) {
+        final_status_ = "FAIL_UNKNOWN";
+    } else if (failure_step_ == "module_discovery") {
+        final_status_ = "FAIL_AT_MODULE_DISCOVERY";
+    } else if (failure_step_ == "api_table_locator") {
+        final_status_ = "FAIL_AT_API_TABLE_LOCATOR";
+    } else if (failure_step_ == "domain_get") {
+        final_status_ = "FAIL_AT_DOMAIN_GET";
+    } else if (failure_step_ == "domain_get_assemblies") {
+        final_status_ = "FAIL_AT_DOMAIN_GET_ASSEMBLIES";
+    } else if (failure_step_ == "assembly_get_image") {
+        final_status_ = "FAIL_AT_ASSEMBLY_GET_IMAGE";
+    } else if (failure_step_ == "image_name") {
+        final_status_ = "FAIL_AT_IMAGE_NAME";
+    } else if (failure_step_ == "image_get_class_count") {
+        final_status_ = "FAIL_AT_IMAGE_GET_CLASS_COUNT";
+    } else if (failure_step_ == "image_get_classes") {
+        final_status_ = "FAIL_AT_IMAGE_GET_CLASS";
+    } else if (failure_step_ == "class_names") {
+        final_status_ = "FAIL_AT_CLASS_GET_NAME";
+    } else {
+        final_status_ = "FAIL_AT_UNKNOWN_STEP";
+    }
+
     result_.set("generated_utc", Json::string(now_utc_iso()));
     result_.set("pid", Json::integer(static_cast<std::int64_t>(pid_ == 0 ? GetCurrentProcessId() : pid_)));
+    result_.set("target_pid", Json::integer(static_cast<std::int64_t>(pid_ == 0 ? GetCurrentProcessId() : pid_)));
     result_.set("process_name", Json::string(process_name_));
     result_.set("process_path", Json::string(process_path_));
+    if (unity_module_ != nullptr) {
+        Json unity = Json::object();
+        unity.set("name", Json::string(unity_module_->name));
+        unity.set("path", Json::string(unity_module_->path));
+        unity.set("base", Json::string(format_hex(unity_module_->base)));
+        unity.set("size", Json::string(format_hex(unity_module_->size)));
+        result_.set("unity_player", std::move(unity));
+    }
+    if (game_module_ != nullptr) {
+        Json game = Json::object();
+        game.set("name", Json::string(game_module_->name));
+        game.set("path", Json::string(game_module_->path));
+        game.set("base", Json::string(format_hex(game_module_->base)));
+        game.set("size", Json::string(format_hex(game_module_->size)));
+        result_.set("game_assembly", std::move(game));
+    }
     Json steps = Json::array();
     for (const Json& step : steps_) {
         steps.push(step);
@@ -1089,15 +1132,15 @@ void HealthCheck::finish_json() {
     result_.set("error",
                 failure_error_.empty() ? Json::null() : Json::string(failure_error_));
     result_.set("hd2", Json::boolean(hd2_));
+    result_.set("final_status", Json::string(final_status_));
 
     if (!json_path_.empty()) {
         write_entire_file(json_path_, result_.dump(2));
         log_.log("JSON written: " + wide_to_utf8(json_path_));
     }
-    if (hd2_) {
-        log_.log("HD-2 = PASS");
-    } else {
-        log_.log("HD-2 = FAIL / BLOCKED step=" +
+    log_.log("HD-2 = " + final_status_);
+    if (!hd2_) {
+        log_.log("failure_step=" +
                  (failure_step_.empty() ? std::string("unknown") : failure_step_) +
                  " error=" +
                  (failure_error_.empty() ? std::string("none") : failure_error_));

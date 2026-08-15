@@ -11,12 +11,14 @@
     "version_source",
     "generated_utc",
     "pid",
+    "target_pid",
     "process_name",
     "process_path",
     "steps",
     "failure_step",
     "error",
-    "hd2"
+    "hd2",
+    "final_status"
   ],
   "properties": {
     "schema_version": {
@@ -44,6 +46,32 @@
     "pid": {
       "type": "integer",
       "minimum": 0
+    },
+    "target_pid": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "unity_player": {
+      "type": "object",
+      "required": ["name", "path", "base", "size"],
+      "properties": {
+        "name": {"type": "string"},
+        "path": {"type": "string"},
+        "base": {"type": "string"},
+        "size": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "game_assembly": {
+      "type": "object",
+      "required": ["name", "path", "base", "size"],
+      "properties": {
+        "name": {"type": "string"},
+        "path": {"type": "string"},
+        "base": {"type": "string"},
+        "size": {"type": "string"}
+      },
+      "additionalProperties": false
     },
     "process_name": {
       "type": "string"
@@ -136,6 +164,10 @@
     },
     "hd2": {
       "type": "boolean"
+    },
+    "final_status": {
+      "type": "string",
+      "minLength": 4
     }
   },
   "additionalProperties": false

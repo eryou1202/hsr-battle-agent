@@ -45,6 +45,7 @@ def make_full_sample():
         "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
         "generated_utc": "2026-08-14T12:00:00Z",
         "pid": 12345,
+        "target_pid": 12345,
         "process_name": "StarRail.exe",
         "process_path": r"D:\StarRail_4.4.53\StarRail.exe",
         "steps": [make_step(name, True) for name in [
@@ -61,6 +62,7 @@ def make_full_sample():
         "failure_step": None,
         "error": None,
         "hd2": True,
+        "final_status": "PASS",
     }
 
 
@@ -111,6 +113,7 @@ class TestRuntimeProbeStatic(unittest.TestCase):
         sample["failure_step"] = "domain_get"
         sample["error"] = "il2cpp_domain_get returned null"
         sample["hd2"] = False
+        sample["final_status"] = "FAIL_AT_DOMAIN_GET"
         schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
         jsonschema.validate(sample, schema)
 

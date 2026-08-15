@@ -93,6 +93,7 @@ public:
     const std::vector<Json>& steps() const { return steps_; }
     bool hd2() const { return hd2_; }
     const std::string& failure_step() const { return failure_step_; }
+    const std::string& final_status() const { return final_status_; }
 
 private:
     bool step_module_discovery();
@@ -116,6 +117,7 @@ private:
     bool hd2_ = false;
     std::string failure_step_;
     std::string failure_error_;
+    std::string final_status_;
     std::uint32_t pid_ = 0;
     std::string process_name_;
     std::string process_path_;
