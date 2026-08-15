@@ -2,9 +2,18 @@
 #
 # 跨小版本 IL2CPP API Function Table 结构定位器（无硬编码 table offset）。
 #
+# ⚠️ SEMANTIC STATUS (2026-08-15, RO-RUNTIME):
+#   This locator still converges to the same structural candidate region on
+#   4.4.54, but that region has been DISPROVEN as a standard IL2CPP
+#   introspection API table. Its q[5] targets register
+#   `::Scripting::UnityEngine::...Proxy` classes, so the region is a Unity
+#   native binding proxy registration table.
+#   Do NOT reuse the honkai-dumper slot names as semantic truth. The locator
+#   remains valuable only as a structural-artifact locator.
+#
 # 目标：
 #   在 UnityPlayer.dll 的只读数据节中自动、唯一、高置信地定位
-#   IL2CPP API function table（函数指针数组，每个元素 8 字节）。
+#   结构上形如 IL2CPP function table 的函数指针数组（每个元素 8 字节）。
 #   table 位置随版本变化；本工具只依赖跨版本稳定的结构指纹，不依赖版本分支。
 #
 # 结构依据（4.4.54 实测，E2 级证据，详见 docs/reverse/il2cpp_api_table.md）：
@@ -542,7 +551,9 @@ class Locator:
             return {"best_candidate": None, "runner_up": None, "score": 0.0,
                     "known_slots_matched": 0, "wrapper_matches": 0,
                     "descriptor_matches": 0, "failed_constraints": ["no candidates"],
-                    "confidence": "none", "candidates": 0}
+                    "confidence": "none", "candidates": 0,
+                    "semantic_status": "disproven_as_il2cpp_api_table",
+                    "structural_artifact_type": "unity_native_proxy_registration_table"}
 
         # 对所有通过硬性预筛的候选做全量结构评分（4.4.54：958 候选 < 1s）
         scored = []
@@ -606,6 +617,8 @@ class Locator:
             "descriptor_matches": best["descriptor_matches"] if best else 0,
             "failed_constraints": best["failed_constraints"] if best else ["no candidates"],
             "confidence": confidence,
+            "semantic_status": "disproven_as_il2cpp_api_table",
+            "structural_artifact_type": "unity_native_proxy_registration_table",
             "candidates_scanned": len(candidates),
             "candidates_scored": len(scored),
             "top_candidates": [

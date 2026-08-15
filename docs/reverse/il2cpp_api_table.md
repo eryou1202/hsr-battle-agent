@@ -4,6 +4,8 @@
 > 已被 q[5] 真实目标静态反汇编证伪——0x1A36480 邻域是 Unity 原生绑定代理注册表
 > （`::Scripting::UnityEngine::...Proxy`），不是标准 IL2CPP introspection API table。
 > 详见 `docs/reverse/ro_runtime_snapshot_4.4.54.md`。
+> export 本身的真实返回源见 `docs/reverse/real_il2cpp_api_root_4.4.54.md`
+> （结果：`REAL_API_ROOT = DYNAMIC_DISPATCH_UNRESOLVED`）。
 > 下文保留原结论作为 E2 结构记录，语义部分不得继续当作 CONFIRMED 使用。
 
 > Task 1 产物。研究目标：`GameAssembly.dll` 导出 `il2cpp_get_api_table` 的

@@ -17,6 +17,19 @@
 - If `edit` returns `FS_NOT_OBSERVED`, recover with: `read` the file, then
   `edit` again. The error itself does not mean the file is corrupted.
 
+## Windows command / tool discovery
+
+- `where.exe` is UNUSABLE in the current DSH environment: it has been observed
+  to raise `0xc0000142` (Application Error). Do not re-test it in new sessions.
+- Use PowerShell `Get-Command <name> -All -ErrorAction SilentlyContinue` for
+  executable discovery.
+- If `Get-Command` finds nothing and a likely install root is already known,
+  use `Test-Path` / `Get-ChildItem` for a limited directory search only.
+  Do not scan the whole disk looking for tools.
+- `bash` remains allowed. Do not add a "no bash" rule.
+- Already-verified no-go launchers remain: `where.exe`, `vswhere.exe`,
+  bare `python`, `py.exe`. Do not re-test them.
+
 ## Python
 
 CONFIRMED in the current DSH environment:
@@ -65,8 +78,18 @@ CONFIRMED:
 - Toolhelp module snapshot: `ERROR_ACCESS_DENIED(5)`.
 - PSAPI `EnumProcessModulesEx`: PASS.
 - `PROCESS_QUERY_INFORMATION | PROCESS_VM_READ`: PASS.
-- Runtime-memory API table locator: best RVA `0x1A36480`, score 98.64,
+- Runtime-memory structural locator: best RVA `0x1A36480`, score 98.64,
   confidence high, known 27/27, wrapper 240, descriptor 237, twin 3/3.
+  SEMANTIC STATUS: **DISPROVEN as IL2CPP API table** — q[5] targets register
+  `::Scripting::UnityEngine::...Proxy` classes, so the region is a Unity
+  native proxy registration table, not the IL2CPP introspection API table.
+- GameAssembly export `il2cpp_get_api_table`: CONFIRMED name-exact, ordinal 1,
+  RVA `0x3BE4230` (.text, executable, not a forwarder), hash
+  `7b44379...c837cc` (full value in
+  `data/raw/4.4.54/il2cpp/real_il2cpp_api_root_4.4.54.json`).
+  Entry = protected stack-machine dispatcher: direct call to `.upx0`
+  `0x1EFE4989`; no static RIP-relative global/pointer chain.
+  `REAL_API_ROOT = DYNAMIC_DISPATCH_UNRESOLVED`.
 - HD-2 = BLOCKED_AT_MODULE_LOAD.
 
 Archived (do not re-open): remote `LoadLibrary` / `CreateRemoteThread` /

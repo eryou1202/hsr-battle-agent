@@ -241,6 +241,8 @@ def main():
         "game_version": args.game_version,
         "slot": args.slot,
         "api_table_rva": args.table_rva,
+        "api_table_rva_semantic_status": "disproven_as_il2cpp_api_table",
+        "structural_artifact_type": "unity_native_proxy_registration_table",
         "final_status": None,
         "read_result": {},
         "pointer_chain": [],
