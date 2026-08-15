@@ -1,0 +1,360 @@
+{
+  "schema": "mhy_0x84_cross_version_validation/1",
+  "current": {
+    "path": "D:\\StarRail_4.4.53\\StarRail_Data\\il2cpp_data\\Metadata\\global-metadata.dat",
+    "template_rva": "0x47BA958",
+    "record_count": 80880,
+    "magic_eq_count": 61412
+  },
+  "reference": {
+    "path": "D:\\miHoYo Launcher\\games\\Star Rail Game\\StarRail_Data\\il2cpp_data\\Metadata\\global-metadata.dat",
+    "template_rva": "0x563FA90",
+    "record_count": 76921,
+    "magic_eq_count": 59045
+  },
+  "checks": [
+    {
+      "check": "schema",
+      "current": "mhy_0x84_record_access_map/1",
+      "reference": "mhy_0x84_record_access_map/1",
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "entry_size_0x84",
+      "current": 70,
+      "reference": 70,
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "index_stride",
+      "current": "imul idx, 0x46 (code)",
+      "reference": "imul idx, 0x46 (code)",
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "field_access_map",
+      "current": [
+        {
+          "offset": 8,
+          "width": 4,
+          "signed": true,
+          "decode": "raw_u32 ^ 0x1A7AF5FE (signed32)",
+          "consumer_rva": "0x3C80C09",
+          "instruction": "movsxd rax, dword ptr [rcx + 8]; xor rax, 0x1a7af5fe",
+          "downstream": "indexes qword runtime pointer array [global+0x40] + decoded",
+          "sentinel": "-1",
+          "semantic_candidate": "method range start (SUPPORTED)",
+          "semantic_evidence": "consecutive non-overlapping starts; consumer iterates count entries from this base"
+        },
+        {
+          "offset": 12,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 (no transform)",
+          "consumer_rva": "0x3C82A81 / 0x3C82BD8 / 0x3C67526",
+          "instruction": "cmp dword ptr [rec + 0xc], 0x1c2ad2ab",
+          "downstream": "record acceptance gate before object builder 0x3C67270",
+          "sentinel": "0x1C2AD2AB acts as the accepted value in three loops",
+          "semantic_candidate": "UNKNOWN (not a universal magic; ~76% of records carry it)",
+          "semantic_evidence": "explicit consumer compare exists; distribution shows many other values"
+        },
+        {
+          "offset": 36,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 + 0xF1D32D89 (u32) -> identifier key",
+          "consumer_rva": "0x3C67341 / 0x3C67562",
+          "instruction": "mov edi, dword ptr [rec + 0x24]; add edi, 0xf1d32d89",
+          "downstream": "0x3C58D70 identifier resolver (code-proven rolling-XOR decoder)",
+          "sentinel": "decoded -1 handled by resolver",
+          "semantic_candidate": "namespace index key (SUPPORTED)",
+          "semantic_evidence": "record 0 key decodes to empty string while name key decodes to '<Module>'"
+        },
+        {
+          "offset": 40,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 + 0xE9FD68F8 (u32) -> identifier key",
+          "consumer_rva": "0x3C6732D / 0x3C67555",
+          "instruction": "mov ecx, dword ptr [rec + 0x28]; add ecx, 0xe9fd68f8",
+          "downstream": "0x3C58D70 identifier resolver; cmp -1 skips name registration",
+          "sentinel": "decoded -1",
+          "semantic_candidate": "name index key (CONFIRMED by decoded type names)",
+          "semantic_evidence": "record 0 decodes to '<Module>'; contiguous mscorlib type order"
+        },
+        {
+          "offset": 52,
+          "width": 2,
+          "signed": false,
+          "decode": "raw_u16 + 0x5F93 (u16 wrap) -> count",
+          "consumer_rva": "0x3C80BA6 / 0x3C80BF6",
+          "instruction": "movzx eax, word ptr [rcx + 0x34]; add eax, 0x5f93",
+          "downstream": "loop bound while walking qword pointer list from field_0x08",
+          "sentinel": "none (wrap gives 0 count for 0xA06D)",
+          "semantic_candidate": "method range count (SUPPORTED)",
+          "semantic_evidence": "pairs with field_0x08; cumulative start+count consistency across records"
+        },
+        {
+          "offset": 58,
+          "width": 2,
+          "signed": true,
+          "decode": "sext16(raw_u16 ^ 0xB2C0)",
+          "consumer_rva": "0x3C672F1",
+          "instruction": "movsx rax, word ptr [rec + 0x3a]; xor rax, 0x3fffffffffffb2c0",
+          "downstream": "start index into 0x12C u32 table; +loop_i -> 0x3C66940 type resolver",
+          "sentinel": "raw 0x4D3F decodes to -1",
+          "semantic_candidate": "type descriptor range start (SUPPORTED)",
+          "semantic_evidence": "consumer resolves every entry through 0x3C66940; bounds check below"
+        },
+        {
+          "offset": 60,
+          "width": 2,
+          "signed": false,
+          "decode": "raw_u16 + 0x5404 (u16 wrap)",
+          "consumer_rva": "0x3C5B606 / 0x3C6310E / 0x3C5BD35",
+          "instruction": "movzx edx, word ptr [rec + 0x3c]; add edx, 0x5404; cmp dx, -1",
+          "downstream": "index into 0xF0 table, entry_size 16 (idx<<4); entry +0x0/+0xC compared",
+          "sentinel": "decoded 0xFFFF (-1)",
+          "semantic_candidate": "16-byte type-relation entry index (SUPPORTED)",
+          "semantic_evidence": "three independent consumers address 0xF0 records through this field"
+        },
+        {
+          "offset": 67,
+          "width": 1,
+          "signed": false,
+          "decode": "(raw_u8 + 4) & 0xFF -> loop count",
+          "consumer_rva": "0x3C67291 / 0x3C672DF",
+          "instruction": "cmp byte ptr [rec + 0x43], 0xfc ; movzx eax, byte ptr [rec + 0x43]; add al, 4",
+          "downstream": "loop count over 0x12C entries; 0xFC means skip (count 0)",
+          "sentinel": "0xFC",
+          "semantic_candidate": "type descriptor range count (SUPPORTED)",
+          "semantic_evidence": "same consumer loop reads field_0x3A + i for i < decoded count"
+        },
+        {
+          "offset": 68,
+          "width": 1,
+          "signed": false,
+          "decode": "raw_u8 ^ 0xC7 -> comparison count",
+          "consumer_rva": "0x3C5B6BE",
+          "instruction": "movzx eax, byte ptr [rax + 0x44]; xor rax, 0xc7",
+          "downstream": "bounds a pointer comparison loop over [runtime_object+0x40]",
+          "sentinel": "decoded 0 skips comparison",
+          "semantic_candidate": "UNKNOWN (secondary relation count candidate)",
+          "semantic_evidence": "consumer comparison loop only"
+        }
+      ],
+      "reference": [
+        {
+          "offset": 8,
+          "width": 4,
+          "signed": true,
+          "decode": "raw_u32 ^ 0x1A7AF5FE (signed32)",
+          "consumer_rva": "0x3C80C09",
+          "instruction": "movsxd rax, dword ptr [rcx + 8]; xor rax, 0x1a7af5fe",
+          "downstream": "indexes qword runtime pointer array [global+0x40] + decoded",
+          "sentinel": "-1",
+          "semantic_candidate": "method range start (SUPPORTED)",
+          "semantic_evidence": "consecutive non-overlapping starts; consumer iterates count entries from this base"
+        },
+        {
+          "offset": 12,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 (no transform)",
+          "consumer_rva": "0x3C82A81 / 0x3C82BD8 / 0x3C67526",
+          "instruction": "cmp dword ptr [rec + 0xc], 0x1c2ad2ab",
+          "downstream": "record acceptance gate before object builder 0x3C67270",
+          "sentinel": "0x1C2AD2AB acts as the accepted value in three loops",
+          "semantic_candidate": "UNKNOWN (not a universal magic; ~76% of records carry it)",
+          "semantic_evidence": "explicit consumer compare exists; distribution shows many other values"
+        },
+        {
+          "offset": 36,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 + 0xF1D32D89 (u32) -> identifier key",
+          "consumer_rva": "0x3C67341 / 0x3C67562",
+          "instruction": "mov edi, dword ptr [rec + 0x24]; add edi, 0xf1d32d89",
+          "downstream": "0x3C58D70 identifier resolver (code-proven rolling-XOR decoder)",
+          "sentinel": "decoded -1 handled by resolver",
+          "semantic_candidate": "namespace index key (SUPPORTED)",
+          "semantic_evidence": "record 0 key decodes to empty string while name key decodes to '<Module>'"
+        },
+        {
+          "offset": 40,
+          "width": 4,
+          "signed": false,
+          "decode": "raw_u32 + 0xE9FD68F8 (u32) -> identifier key",
+          "consumer_rva": "0x3C6732D / 0x3C67555",
+          "instruction": "mov ecx, dword ptr [rec + 0x28]; add ecx, 0xe9fd68f8",
+          "downstream": "0x3C58D70 identifier resolver; cmp -1 skips name registration",
+          "sentinel": "decoded -1",
+          "semantic_candidate": "name index key (CONFIRMED by decoded type names)",
+          "semantic_evidence": "record 0 decodes to '<Module>'; contiguous mscorlib type order"
+        },
+        {
+          "offset": 52,
+          "width": 2,
+          "signed": false,
+          "decode": "raw_u16 + 0x5F93 (u16 wrap) -> count",
+          "consumer_rva": "0x3C80BA6 / 0x3C80BF6",
+          "instruction": "movzx eax, word ptr [rcx + 0x34]; add eax, 0x5f93",
+          "downstream": "loop bound while walking qword pointer list from field_0x08",
+          "sentinel": "none (wrap gives 0 count for 0xA06D)",
+          "semantic_candidate": "method range count (SUPPORTED)",
+          "semantic_evidence": "pairs with field_0x08; cumulative start+count consistency across records"
+        },
+        {
+          "offset": 58,
+          "width": 2,
+          "signed": true,
+          "decode": "sext16(raw_u16 ^ 0xB2C0)",
+          "consumer_rva": "0x3C672F1",
+          "instruction": "movsx rax, word ptr [rec + 0x3a]; xor rax, 0x3fffffffffffb2c0",
+          "downstream": "start index into 0x12C u32 table; +loop_i -> 0x3C66940 type resolver",
+          "sentinel": "raw 0x4D3F decodes to -1",
+          "semantic_candidate": "type descriptor range start (SUPPORTED)",
+          "semantic_evidence": "consumer resolves every entry through 0x3C66940; bounds check below"
+        },
+        {
+          "offset": 60,
+          "width": 2,
+          "signed": false,
+          "decode": "raw_u16 + 0x5404 (u16 wrap)",
+          "consumer_rva": "0x3C5B606 / 0x3C6310E / 0x3C5BD35",
+          "instruction": "movzx edx, word ptr [rec + 0x3c]; add edx, 0x5404; cmp dx, -1",
+          "downstream": "index into 0xF0 table, entry_size 16 (idx<<4); entry +0x0/+0xC compared",
+          "sentinel": "decoded 0xFFFF (-1)",
+          "semantic_candidate": "16-byte type-relation entry index (SUPPORTED)",
+          "semantic_evidence": "three independent consumers address 0xF0 records through this field"
+        },
+        {
+          "offset": 67,
+          "width": 1,
+          "signed": false,
+          "decode": "(raw_u8 + 4) & 0xFF -> loop count",
+          "consumer_rva": "0x3C67291 / 0x3C672DF",
+          "instruction": "cmp byte ptr [rec + 0x43], 0xfc ; movzx eax, byte ptr [rec + 0x43]; add al, 4",
+          "downstream": "loop count over 0x12C entries; 0xFC means skip (count 0)",
+          "sentinel": "0xFC",
+          "semantic_candidate": "type descriptor range count (SUPPORTED)",
+          "semantic_evidence": "same consumer loop reads field_0x3A + i for i < decoded count"
+        },
+        {
+          "offset": 68,
+          "width": 1,
+          "signed": false,
+          "decode": "raw_u8 ^ 0xC7 -> comparison count",
+          "consumer_rva": "0x3C5B6BE",
+          "instruction": "movzx eax, byte ptr [rax + 0x44]; xor rax, 0xc7",
+          "downstream": "bounds a pointer comparison loop over [runtime_object+0x40]",
+          "sentinel": "decoded 0 skips comparison",
+          "semantic_candidate": "UNKNOWN (secondary relation count candidate)",
+          "semantic_evidence": "consumer comparison loop only"
+        }
+      ],
+      "equal": true,
+      "note": "decode rules, widths, consumer RVAs"
+    },
+    {
+      "check": "identifier_resolver_constants",
+      "current": {
+        "hash_mul": "0x907C49622D94D21A",
+        "hash_add": "0x75B679DAF67C3F24",
+        "roll": "0x3E693CD23A41FDEF",
+        "positive_key_mask": "0x1FFFFFF",
+        "negative_key_mask": "0x7FFFFF",
+        "positive_length_shift": 25,
+        "positive_length_mask_bits": 6,
+        "negative_length_shift": 23,
+        "negative_length_mask_bits": 8
+      },
+      "reference": {
+        "hash_mul": "0x907C49622D94D21A",
+        "hash_add": "0x75B679DAF67C3F24",
+        "roll": "0x3E693CD23A41FDEF",
+        "positive_key_mask": "0x1FFFFFF",
+        "negative_key_mask": "0x7FFFFF",
+        "positive_length_shift": 25,
+        "positive_length_mask_bits": 6,
+        "negative_length_shift": 23,
+        "negative_length_mask_bits": 8
+      },
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "method_range_cumulative_ok",
+      "current": true,
+      "reference": true,
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "type_descriptor_0x12C_bounds_ok",
+      "current": true,
+      "reference": true,
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "type_relation_0xF0_bounds_ok",
+      "current": true,
+      "reference": true,
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "consumer_scan_site_count",
+      "current": 43,
+      "reference": 43,
+      "equal": true,
+      "note": ""
+    },
+    {
+      "check": "identifier_samples_common_indices",
+      "current": [
+        ".<Module>",
+        ".<>f__AnonymousType0`1",
+        ".Locale",
+        ".SR",
+        "Mono.Runtime",
+        "Mono.RuntimeClassHandle",
+        "Mono.RuntimeRemoteClassHandle",
+        "Mono.RuntimeGenericParamInfoHandle",
+        "Mono.RuntimeEventHandle",
+        "Mono.RuntimePropertyHandle",
+        "Mono.RuntimeGPtrArrayHandle",
+        "Mono.RuntimeMarshal"
+      ],
+      "reference": [
+        ".<Module>",
+        ".<>f__AnonymousType0`1",
+        ".Locale",
+        ".SR",
+        "Mono.Runtime",
+        "Mono.RuntimeClassHandle",
+        "Mono.RuntimeRemoteClassHandle",
+        "Mono.RuntimeGenericParamInfoHandle",
+        "Mono.RuntimeEventHandle",
+        "Mono.RuntimePropertyHandle",
+        "Mono.RuntimeGPtrArrayHandle",
+        "Mono.RuntimeMarshal"
+      ],
+      "equal": true,
+      "note": "first common record indices"
+    },
+    {
+      "check": "type_registry_proof_status",
+      "current": "MHY_METADATA = TYPE_REGISTRY_PROOF",
+      "reference": "MHY_METADATA = TYPE_REGISTRY_PROOF",
+      "equal": true,
+      "note": ""
+    }
+  ],
+  "all_equal": true,
+  "fixed_file_offsets_not_compared": true
+}
