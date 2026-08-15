@@ -11,6 +11,7 @@ param(
     [switch]$RunTests,
     [string]$UnityPath = "",
     [string]$ExpectRva = "",
+    [string]$PythonExe = "",
     [switch]$Clean
 )
 
@@ -23,6 +24,12 @@ $ProbeDir = Join-Path $RuntimeProbe "probe"
 $LoaderDir = Join-Path $RuntimeProbe "loader"
 $TestsDir = Join-Path $RuntimeProbe "tests"
 $GenScript = Join-Path $RuntimeProbe "scripts\gen_locator_prior.py"
+
+# --- resolve the verified Python interpreter (never bare `python`/py.exe) ---
+$PythonResolver = Join-Path $Repo "scripts\python\resolve_python.ps1"
+. $PythonResolver
+$Py = Resolve-PythonInterpreter -PythonExe $PythonExe
+Write-Host "python: $($Py.Exe) (origin: $($Py.Origin))"
 
 if ($Clean) {
     if (Test-Path $BuildDir) {
@@ -95,7 +102,12 @@ if (-not $ClPath) {
 # --- regenerate locator prior header from the canonical Python locator ------
 Write-Host "regenerating locator prior from find_il2cpp_api_table.py"
 $PriorPath = Join-Path $RuntimeProbe "gen\locator_prior.h"
-cmd /c "python `"$GenScript`" --out `"$PriorPath`""
+$PyBaseArgs = @($Py.BaseArgs)
+if ($PyBaseArgs.Count -gt 0) {
+    & $Py.Exe @PyBaseArgs $GenScript '--out' $PriorPath
+} else {
+    & $Py.Exe $GenScript '--out' $PriorPath
+}
 if ($LASTEXITCODE -ne 0) {
     throw "locator prior generation failed"
 }
