@@ -41,7 +41,7 @@ getter 返回的 table = 函数指针数组（标准 il2cpp api table），
 - wrapper 形状（class_* 族）：
   `45 33 c0 | 48 8d 0d <desc> | 33 d2 | e9 <dispatcher>` —
   即 `lea rcx, descriptor; jmp dispatcher(0x4B1F53A)`；
-- descriptor 表在 UnityPlayer .rdata `0x1EE8xxx`，
+- descriptor 表在 UnityPlayer .data `0x1EE8xxx`（磁盘 .data 加密，LoadLibrary 后可见），
   `descriptor[5]` = 真实函数桩指针（0x48Exxx 区，本身也是桩，
   内部 call/jmp 目标为运行时解码地址）。
 
@@ -88,9 +88,10 @@ getter 返回的 table = 函数指针数组（标准 il2cpp api table），
 3. **slot 顺序是否与旧版本一致**：与 honkai-dumper 3.7.0 索引表
    完全一致（27/27 命中）。[SUPPORTED]
 4. **自动识别方式**：`tools/reverse/scripts/find_il2cpp_api_table.py`
-   初版（基于双子对 + 组内相邻 + 全索引代码指针检查）；
-   4.4.54 上命中 828 个候选（宽松），锚定双子对后可收敛到
-   0x1A36480。[HYPOTHESIS，待细化]
+   已从"宽松候选扫描器"升级为**结构评分定位器**（2026-08-14，Task A 完成）：
+   4.4.54 上从 958 个通过硬性预筛的候选唯一、高置信收敛到
+   `0x1A36480`（runner-up `0x1A36460`，评分差 1.67）。
+   [CONFIRMED，见 §5]
 
 ## 3. 层叠保护结构（4.4.54）
 
@@ -100,7 +101,7 @@ il2cpp_get_api_table (GameAssembly .text 0x3BE4230, 混淆)
        └─ 返回 → api table (UnityPlayer .rdata 0x1A36480)
             ├─ wrapper stub (UnityPlayer .text 0x452C40-0x4556C0, 32B 间隔)
             │    └─ lea rcx, descriptor; jmp dispatcher (0x4B1F53A)
-            ├─ descriptor 表 (UnityPlayer .rdata 0x1EE8xxx)
+            ├─ descriptor 表 (UnityPlayer .data 0x1EE8xxx, 0x58B 记录交错排列)
             │    └─ [5] = 真实函数桩 (0x48Exxx)
             │         └─ 内部 call/jmp 目标 = 运行时解码地址
             └─ 行为: 裸 harness 调用 wrapper → 返回垃圾（门控未开）
@@ -117,3 +118,71 @@ il2cpp_get_api_table (GameAssembly .text 0x3BE4230, 混淆)
 | slot 顺序与 honkai-dumper 一致 | SUPPORTED | 索引映射逐项命中 |
 | wrapper/descriptor/真实桩三层 | SUPPORTED | 结构反汇编 |
 | 运行时枚举可行性（裸 harness） | CONFIRMED 不可行 | 行为测试（domain_get 返回垃圾） |
+
+## 5. Task A 结果：稳定自动 API Table Locator（2026-08-14）
+
+### 5.1 结论
+
+`tools/reverse/scripts/find_il2cpp_api_table.py` 已升级为结构评分定位器。
+4.4.54 实测：
+
+| 项 | 值 |
+|---|---|
+| 硬性预筛后候选 | **958** |
+| best_candidate | **UnityPlayer .rdata RVA `0x1A36480`**（自动，唯一） |
+| runner_up | `0x1A36460`（known-slot shape profile 26/27） |
+| score | **98.64 / 100**（runner-up 96.97，差 1.67） |
+| known_slots_matched | **27/27** |
+| wrapper_matches | **240/240** |
+| descriptor_matches | **237/240**（3 个 C 形 SIMD wrapper 无 lea-rcx descriptor，按定义不计） |
+| failed_constraints | **[]** |
+| confidence | **high** |
+
+结论等级：[CONFIRMED]（locator 输出与独立静态定位结果一致；
+locator 源码不含任何版本分支或 table offset 常量）。
+
+### 5.2 结构评分器使用的特征
+
+| 特征 | 权重 | 内容 |
+|---|---|---|
+| known-slot shape profile | 45 | 27 个 honkai-dumper 已知槽位各自的 wrapper prologue 类别（A/B/C）与结构先验一致 |
+| known-slot descriptor spacing profile | 20 | 已知槽位 descriptor 地址相对首槽的间隔向量一致 |
+| twin pair relations | 15 | slot 63/65 同 A 且 wrapper 距 0x20、desc 距 0x58；slot 10/12 同 B 且 wrapper 距 0x40、desc 距 0x58；两对 desc 间隔 0x930 |
+| wrapper coverage | 10 | 全 240 槽位 wrapper prologue 可识别比例 |
+| descriptor coverage | 5 | 全 240 槽位 descriptor 软校验通过比例 |
+| descriptor cross-link | 5 | 相邻槽位 descriptor 的 q5/q6/q8/q9 交叉链接命中率 |
+
+硬性预筛（不淘汰真值的前提下尽量收缩候选）：
+
+- 全部 27 个已知槽位都是 UnityPlayer 可执行节指针；
+- slot 63/65 双子：0 < delta <= 0x100；
+- 家族组间距：class_* <= 0x4000、method_*/type_* <= 0x1000、
+  image_* <= 0x800（4.4.54 真值 image span = 0x5A0，初版 0x200 过紧，
+  会把真表排除在 828 候选之外——已修正）。
+
+### 5.3 wrapper / descriptor 结构事实（E2，已固化为解析器）
+
+- wrapper shape A（约 118/240）：
+  `45 33 C0 | 48 8D 0D <desc> | 33 D2 | E9 <dispatcher>`；
+  descriptor 校验：`q[1] == -1`、`q[5]` 为可执行指针、`q[8]/q[9]` 为数据指针。
+- wrapper shape B（约 119/240）：
+  `48 83 EC 38 | 45 33 C9 | mov [rsp+20],0 | 45 33 C0 | 48 8D 15 <stub> |
+  48 8D 0D <desc> | E8 <call>`；
+  descriptor 校验：`q[2]` 为可执行指针、`q[5]/q[6]` 为数据指针，
+  `q[9]` 通常为 -1（家族边界槽 76/155/169/200/216 例外，故仅作软校验）。
+- wrapper shape C（3/240：slot 77/170/217）：`66 0F 6F ...` SIMD prologue。
+- descriptor 记录 0x58 字节、奇偶槽交错；跨槽交叉链接：
+  A 的 `q[8]/q[9]` 指向相邻 B descriptor，B 的 `q[5]/q[6]` 指向前/后同族
+  B descriptor。全 240 槽验证 345/466 命中（未命中为家族边界与 C 槽旁）。
+
+### 5.4 跨版本原则落地
+
+- locator 不读取任何"表位置常量"；输入只有 UnityPlayer.dll 文件。
+- 结构先验（shape profile / desc spacing profile）是**结构指纹**而非 offset，
+  可通过 `--prior-json` 覆盖；若下一版本 wrapper 代码生成变化导致 profile
+  失配，locator 会输出低置信度 + failed_constraints + top 候选，人工只需
+  复核异常项并更新先验文件。
+- `--expect-rva` 仅用于验证，不参与候选生成与评分。
+- 集成测试：`tests/cross_version/test_find_il2cpp_api_table.py`
+  （含"源码不得出现验证地址"断言）。
+

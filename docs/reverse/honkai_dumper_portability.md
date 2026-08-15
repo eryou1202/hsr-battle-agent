@@ -36,7 +36,8 @@
    - export/getter 有反 harness 守卫（见 il2cpp_api_table.md §1.1）。
 3. **可移植改造方向**：
    - `Il2CppFunctions::new` 的 table 起点改用自动 locator
-     （`find_il2cpp_api_table`，见 Task 3）；
+     （`find_il2cpp_api_table`；Task A 已完成：4.4.54 上唯一高置信收敛到
+     UnityPlayer RVA `0x1A36480`，见 il2cpp_api_table.md §5）；
    - 若 wrapper 层在游戏内可正常调用（需要运行时验证），
      B/C/D 无需改动；
    - 若 wrapper 层需要额外初始化，则需在注入后等待游戏
