@@ -1,0 +1,73 @@
+0001EAE0  08 90 48 83 c4 30               or       byte ptr [rax + 0x30c48348], dl
+0001EAE6  5b                              pop      rbx
+0001EAE7  5f                              pop      rdi
+0001EAE8  5e                              pop      rsi
+0001EAE9  c3                              ret      
+0001EAEA  44 03 4c 1a 08                  add      r9d, dword ptr [rdx + rbx + 8]
+0001EAEF  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+0001EAF6  75 16                           jne      0x18001eb0e
+0001EAF8  f6 81 c8 00 00 00 0e            test     byte ptr [rcx + 0xc8], 0xe
+0001EAFF  74 21                           je       0x18001eb22
+0001EB01  44 89 ca                        mov      edx, r9d
+0001EB04  e8 07 57 c4 03                  call     0x183c64210
+0001EB09  48 89 c1                        mov      rcx, rax
+0001EB0C  eb c3                           jmp      0x18001ead1
+0001EB0E  0f b7 81 c0 00 00 00            movzx    eax, word ptr [rcx + 0xc0]
+0001EB15  41 01 c1                        add      r9d, eax
+0001EB18  4a 8b 8c c9 d0 00 00 00         mov      rcx, qword ptr [rcx + r9*8 + 0xd0]
+0001EB20  eb af                           jmp      0x18001ead1
+0001EB22  48 8b 41 68                     mov      rax, qword ptr [rcx + 0x68]
+0001EB26  b9 23 5f 4c 4b                  mov      ecx, 0x4b4c5f23
+0001EB2B  33 48 18                        xor      ecx, dword ptr [rax + 0x18]
+0001EB2E  44 01 c9                        add      ecx, r9d
+0001EB31  48 8b 05 78 9c d1 09            mov      rax, qword ptr [rip + 0x9d19c78]
+0001EB38  48 8b 15 69 9c d1 09            mov      rdx, qword ptr [rip + 0x9d19c69]
+0001EB3F  bb 52 cd 69 c7                  mov      ebx, 0xc769cd52
+0001EB44  03 9a 60 01 00 00               add      ebx, dword ptr [rdx + 0x160]
+0001EB4A  48 63 db                        movsxd   rbx, ebx
+0001EB4D  48 01 c3                        add      rbx, rax
+0001EB50  48 63 c9                        movsxd   rcx, ecx
+0001EB53  8b 0c 8b                        mov      ecx, dword ptr [rbx + rcx*4]
+0001EB56  89 cb                           mov      ebx, ecx
+0001EB58  81 e3 ff ff ff 1f               and      ebx, 0x1fffffff
+0001EB5E  81 e1 00 00 00 e0               and      ecx, 0xe0000000
+0001EB64  81 f9 00 00 00 c0               cmp      ecx, 0xc0000000
+0001EB6A  75 3e                           jne      0x18001ebaa
+0001EB6C  48 8b 0d 65 9c d1 09            mov      rcx, qword ptr [rip + 0x9d19c65]
+0001EB73  48 8b 0c d9                     mov      rcx, qword ptr [rcx + rbx*8]
+0001EB77  48 85 c9                        test     rcx, rcx
+0001EB7A  75 75                           jne      0x18001ebf1
+0001EB7C  b9 ab f1 78 f7                  mov      ecx, 0xf778f1ab
+0001EB81  03 4a 38                        add      ecx, dword ptr [rdx + 0x38]
+0001EB84  48 63 c9                        movsxd   rcx, ecx
+0001EB87  48 01 c8                        add      rax, rcx
+0001EB8A  4c 8d 04 5b                     lea      r8, [rbx + rbx*2]
+0001EB8E  4a 63 54 80 08                  movsxd   rdx, dword ptr [rax + r8*4 + 8]
+0001EB93  48 83 fa ff                     cmp      rdx, -1
+0001EB97  74 20                           je       0x18001ebb9
+0001EB99  48 8b 0d f0 9b d1 09            mov      rcx, qword ptr [rip + 0x9d19bf0]
+0001EBA0  48 c1 e2 04                     shl      rdx, 4
+0001EBA4  48 03 51 38                     add      rdx, qword ptr [rcx + 0x38]
+0001EBA8  eb 11                           jmp      0x18001ebbb
+0001EBAA  89 d9                           mov      ecx, ebx
+0001EBAC  e8 cf 83 c4 03                  call     0x183c66f80
+0001EBB1  48 89 c1                        mov      rcx, rax
+0001EBB4  e9 18 ff ff ff                  jmp      0x18001ead1
+0001EBB9  31 d2                           xor      edx, edx
+0001EBBB  42 8b 0c 80                     mov      ecx, dword ptr [rax + r8*4]
+0001EBBF  4e 63 44 80 04                  movsxd   r8, dword ptr [rax + r8*4 + 4]
+0001EBC4  49 83 f8 ff                     cmp      r8, -1
+0001EBC8  74 11                           je       0x18001ebdb
+0001EBCA  48 8b 05 bf 9b d1 09            mov      rax, qword ptr [rip + 0x9d19bbf]
+0001EBD1  49 c1 e0 04                     shl      r8, 4
+0001EBD5  4c 03 40 38                     add      r8, qword ptr [rax + 0x38]
+0001EBD9  eb 03                           jmp      0x18001ebde
+0001EBDB  45 31 c0                        xor      r8d, r8d
+0001EBDE  e8 0d eb c4 03                  call     0x183c6d6f0
+0001EBE3  48 89 c1                        mov      rcx, rax
+0001EBE6  48 8b 05 eb 9b d1 09            mov      rax, qword ptr [rip + 0x9d19beb]
+0001EBED  48 89 0c d8                     mov      qword ptr [rax + rbx*8], rcx
+0001EBF1  31 d2                           xor      edx, edx
+0001EBF3  e8 78 16 c1 03                  call     0x183c30270
+0001EBF8  48 89 c1                        mov      rcx, rax
+0001EBFB  e9 d1 fe ff ff                  jmp      0x18001ead1

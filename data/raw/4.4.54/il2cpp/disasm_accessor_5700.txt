@@ -1,0 +1,41 @@
+00005700  00 48 01                        add      byte ptr [rax + 1], cl
+00005703  c2 48 8b                        ret      0x8b48
+00005706  8c d1                           mov      ecx, ss
+00005708  d0 00                           rol      byte ptr [rax], 1
+0000570A  00 00                           add      byte ptr [rax], al
+0000570C  e9 d2 00 00 00                  jmp      0x1800057e3
+00005711  48 8b 41 68                     mov      rax, qword ptr [rcx + 0x68]
+00005715  b9 23 5f 4c 4b                  mov      ecx, 0x4b4c5f23
+0000571A  33 48 18                        xor      ecx, dword ptr [rax + 0x18]
+0000571D  01 d1                           add      ecx, edx
+0000571F  48 8b 05 8a 30 d3 09            mov      rax, qword ptr [rip + 0x9d3308a]
+00005726  48 8b 15 7b 30 d3 09            mov      rdx, qword ptr [rip + 0x9d3307b]
+0000572D  bb 52 cd 69 c7                  mov      ebx, 0xc769cd52
+00005732  03 9a 60 01 00 00               add      ebx, dword ptr [rdx + 0x160]
+00005738  48 63 db                        movsxd   rbx, ebx
+0000573B  48 01 c3                        add      rbx, rax
+0000573E  48 63 c9                        movsxd   rcx, ecx
+00005741  8b 0c 8b                        mov      ecx, dword ptr [rbx + rcx*4]
+00005744  89 cb                           mov      ebx, ecx
+00005746  81 e3 ff ff ff 1f               and      ebx, 0x1fffffff
+0000574C  81 e1 00 00 00 e0               and      ecx, 0xe0000000
+00005752  81 f9 00 00 00 c0               cmp      ecx, 0xc0000000
+00005758  75 3e                           jne      0x180005798
+0000575A  48 8b 0d 77 30 d3 09            mov      rcx, qword ptr [rip + 0x9d33077]
+00005761  48 8b 0c d9                     mov      rcx, qword ptr [rcx + rbx*8]
+00005765  48 85 c9                        test     rcx, rcx
+00005768  75 6f                           jne      0x1800057d9
+0000576A  b9 ab f1 78 f7                  mov      ecx, 0xf778f1ab
+0000576F  03 4a 38                        add      ecx, dword ptr [rdx + 0x38]
+00005772  48 63 c9                        movsxd   rcx, ecx
+00005775  48 01 c8                        add      rax, rcx
+00005778  4c 8d 04 5b                     lea      r8, [rbx + rbx*2]
+0000577C  4a 63 54 80 08                  movsxd   rdx, dword ptr [rax + r8*4 + 8]
+00005781  48 83 fa ff                     cmp      rdx, -1
+00005785  74 1a                           je       0x1800057a1
+00005787  48 8b 0d 02 30 d3 09            mov      rcx, qword ptr [rip + 0x9d33002]
+0000578E  48 c1 e2 04                     shl      rdx, 4
+00005792  48 03 51 38                     add      rdx, qword ptr [rcx + 0x38]
+00005796  eb 0b                           jmp      0x1800057a3
+00005798  89 d9                           mov      ecx, ebx
+0000579A  e8 e1 17 c6 03                  call     0x183c66f80

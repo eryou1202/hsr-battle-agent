@@ -1,0 +1,89 @@
+03C66F60  ff 15 1a cc f1 01               call     qword ptr [rip + 0x1f1cc1a]
+03C66F66  90                              nop      
+03C66F67  48 83 c4 28                     add      rsp, 0x28
+03C66F6B  5b                              pop      rbx
+03C66F6C  5f                              pop      rdi
+03C66F6D  5e                              pop      rsi
+03C66F6E  41 5c                           pop      r12
+03C66F70  41 5d                           pop      r13
+03C66F72  41 5e                           pop      r14
+03C66F74  41 5f                           pop      r15
+03C66F76  5d                              pop      rbp
+03C66F77  c3                              ret      
+03C66F78  cc                              int3     
+03C66F79  cc                              int3     
+03C66F7A  cc                              int3     
+03C66F7B  cc                              int3     
+03C66F7C  cc                              int3     
+03C66F7D  cc                              int3     
+03C66F7E  cc                              int3     
+03C66F7F  cc                              int3     
+03C66F80  55                              push     rbp
+03C66F81  56                              push     rsi
+03C66F82  57                              push     rdi
+03C66F83  53                              push     rbx
+03C66F84  48 83 ec 38                     sub      rsp, 0x38
+03C66F88  48 8d 6c 24 30                  lea      rbp, [rsp + 0x30]
+03C66F8D  48 c7 45 00 fe ff ff ff         mov      qword ptr [rbp], 0xfffffffffffffffe
+03C66F95  48 8b 05 34 18 0d 06            mov      rax, qword ptr [rip + 0x60d1834]
+03C66F9C  48 63 d9                        movsxd   rbx, ecx
+03C66F9F  48 8b 04 d8                     mov      rax, qword ptr [rax + rbx*8]
+03C66FA3  48 85 c0                        test     rax, rax
+03C66FA6  0f 85 ce 00 00 00               jne      0x183c6707a
+03C66FAC  89 ce                           mov      esi, ecx
+03C66FAE  48 8b 05 f3 17 0d 06            mov      rax, qword ptr [rip + 0x60d17f3]
+03C66FB5  b9 94 42 a0 f3                  mov      ecx, 0xf3a04294
+03C66FBA  03 88 4c 01 00 00               add      ecx, dword ptr [rax + 0x14c]
+03C66FC0  48 63 c1                        movsxd   rax, ecx
+03C66FC3  48 03 05 e6 17 0d 06            add      rax, qword ptr [rip + 0x60d17e6]
+03C66FCA  89 f2                           mov      edx, esi
+03C66FCC  48 69 ca e1 31 00 00            imul     rcx, rdx, 0x31e1
+03C66FD3  48 81 f1 37 49 91 33            xor      rcx, 0x33914937
+03C66FDA  48 69 c9 7d f1 03 2c            imul     rcx, rcx, 0x2c03f17d
+03C66FE1  48 c1 e9 17                     shr      rcx, 0x17
+03C66FE5  48 69 c9 f4 c9 0c 54            imul     rcx, rcx, 0x540cc9f4
+03C66FEC  48 c1 e9 15                     shr      rcx, 0x15
+03C66FF0  48 8d 3c 92                     lea      rdi, [rdx + rdx*4]
+03C66FF4  48 8d 3c bf                     lea      rdi, [rdi + rdi*4]
+03C66FF8  48 01 d7                        add      rdi, rdx
+03C66FFB  81 c1 61 78 bc 71               add      ecx, 0x71bc7861
+03C67001  33 4c 38 10                     xor      ecx, dword ptr [rax + rdi + 0x10]
+03C67005  81 f1 e8 ab 5f 2a               xor      ecx, 0x2a5fabe8
+03C6700B  e8 30 f9 ff ff                  call     0x183c66940
+03C67010  48 89 c7                        mov      rdi, rax
+03C67013  66 83 b8 be 00 00 00 00         cmp      word ptr [rax + 0xbe], 0
+03C6701B  75 09                           jne      0x183c67026
+03C6701D  f6 87 c8 00 00 00 0e            test     byte ptr [rdi + 0xc8], 0xe
+03C67024  74 2d                           je       0x183c67053
+03C67026  48 83 7f 60 00                  cmp      qword ptr [rdi + 0x60], 0
+03C6702B  75 26                           jne      0x183c67053
+03C6702D  48 8b 0d ec 1d 0d 06            mov      rcx, qword ptr [rip + 0x60d1dec]
+03C67034  ff 15 06 c8 f1 01               call     qword ptr [rip + 0x1f1c806]
+03C6703A  48 8d 55 f8                     lea      rdx, [rbp - 8]
+03C6703E  48 89 f9                        mov      rcx, rdi
+03C67041  e8 da 6c ff ff                  call     0x183c5dd20
+03C67046  48 8b 0d d3 1d 0d 06            mov      rcx, qword ptr [rip + 0x60d1dd3]
+03C6704D  ff 15 2d cb f1 01               call     qword ptr [rip + 0x1f1cb2d]
+03C67053  48 8b 47 60                     mov      rax, qword ptr [rdi + 0x60]
+03C67057  48 8b 4f 68                     mov      rcx, qword ptr [rdi + 0x68]
+03C6705B  ba 01 0a 85 e5                  mov      edx, 0xe5850a01
+03C67060  33 51 08                        xor      edx, dword ptr [rcx + 8]
+03C67063  8d 0c 16                        lea      ecx, [rsi + rdx]
+03C67066  ff c1                           inc      ecx
+03C67068  48 63 c9                        movsxd   rcx, ecx
+03C6706B  48 8b 04 c8                     mov      rax, qword ptr [rax + rcx*8]
+03C6706F  48 8b 0d 5a 17 0d 06            mov      rcx, qword ptr [rip + 0x60d175a]
+03C67076  48 89 04 d9                     mov      qword ptr [rcx + rbx*8], rax
+03C6707A  48 83 c4 38                     add      rsp, 0x38
+03C6707E  5b                              pop      rbx
+03C6707F  5f                              pop      rdi
+03C67080  5e                              pop      rsi
+03C67081  5d                              pop      rbp
+03C67082  c3                              ret      
+03C67083  66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+03C67090  48 89 54 24 10                  mov      qword ptr [rsp + 0x10], rdx
+03C67095  55                              push     rbp
+03C67096  56                              push     rsi
+03C67097  57                              push     rdi
+03C67098  53                              push     rbx
+03C67099  48 83 ec 28                     sub      rsp, 0x28

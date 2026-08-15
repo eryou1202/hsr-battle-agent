@@ -1,0 +1,48 @@
+03A1D720  e8 ab a3 25 00                  call     0x183c77ad0
+03A1D725  48 89 46 10                     mov      qword ptr [rsi + 0x10], rax
+03A1D729  48 83 c4 28                     add      rsp, 0x28
+03A1D72D  5f                              pop      rdi
+03A1D72E  5e                              pop      rsi
+03A1D72F  c3                              ret      
+03A1D730  48 8d 05 f9 15 91 00            lea      rax, [rip + 0x9115f9]
+03A1D737  48 89 05 4a b0 31 06            mov      qword ptr [rip + 0x631b04a], rax
+03A1D73E  48 8d 05 53 e3 e1 00            lea      rax, [rip + 0xe1e353]
+03A1D745  48 89 05 44 b0 31 06            mov      qword ptr [rip + 0x631b044], rax
+03A1D74C  48 8d 05 dd e3 e1 00            lea      rax, [rip + 0xe1e3dd]
+03A1D753  48 89 05 3e b0 31 06            mov      qword ptr [rip + 0x631b03e], rax
+03A1D75A  48 8d 05 87 16 91 00            lea      rax, [rip + 0x911687]
+03A1D761  48 89 05 38 b0 31 06            mov      qword ptr [rip + 0x631b038], rax
+03A1D768  48 8d 05 e9 d1 d9 00            lea      rax, [rip + 0xd9d1e9]
+03A1D76F  48 89 05 32 b0 31 06            mov      qword ptr [rip + 0x631b032], rax
+03A1D776  c7 05 d0 ab 31 06 39 13 00 00   mov      dword ptr [rip + 0x631abd0], 0x1339
+03A1D780  48 8d 05 c9 a3 b8 05            lea      rax, [rip + 0x5b8a3c9]
+03A1D787  48 89 05 ca ab 31 06            mov      qword ptr [rip + 0x631abca], rax
+03A1D78E  48 8d 05 cb d3 d9 00            lea      rax, [rip + 0xd9d3cb]
+03A1D795  48 89 05 c4 ab 31 06            mov      qword ptr [rip + 0x631abc4], rax
+03A1D79C  c3                              ret      
+03A1D79D  cc                              int3     
+03A1D79E  cc                              int3     
+03A1D79F  cc                              int3     
+03A1D7A0  48 8d 0d 99 a3 b8 05            lea      rcx, [rip + 0x5b8a399]
+03A1D7A7  48 8d 15 82 ff ff ff            lea      rdx, [rip - 0x7e]
+03A1D7AE  45 31 c0                        xor      r8d, r8d
+03A1D7B1  45 31 c9                        xor      r9d, r9d
+03A1D7B4  e9 d7 de 22 00                  jmp      0x183c4b690
+03A1D7B9  cc                              int3     
+03A1D7BA  cc                              int3     
+03A1D7BB  cc                              int3     
+03A1D7BC  cc                              int3     
+03A1D7BD  cc                              int3     
+03A1D7BE  cc                              int3     
+03A1D7BF  cc                              int3     
+03A1D7C0  48 89 c8                        mov      rax, rcx
+03A1D7C3  4c 89 c1                        mov      rcx, r8
+03A1D7C6  49 89 d0                        mov      r8, rdx
+03A1D7C9  49 8b 11                        mov      rdx, qword ptr [r9]
+03A1D7CC  48 ff e0                        jmp      rax
+03A1D7CF  cc                              int3     
+03A1D7D0  56                              push     rsi
+03A1D7D1  48 83 ec 20                     sub      rsp, 0x20
+03A1D7D5  48 89 d0                        mov      rax, rdx
+03A1D7D8  49 89 ca                        mov      r10, rcx
+03A1D7DB  48 8b 74 24 50                  mov      rsi, qword ptr [rsp + 0x50]

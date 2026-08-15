@@ -1,0 +1,147 @@
+03BFB6E0  56                              push     rsi
+03BFB6E1  48 83 ec 20                     sub      rsp, 0x20
+03BFB6E5  b2 01                           mov      dl, 1
+03BFB6E7  e8 b4 bd 05 00                  call     0x183c574a0
+03BFB6EC  48 89 c6                        mov      rsi, rax
+03BFB6EF  f6 80 c9 00 00 00 04            test     byte ptr [rax + 0xc9], 4
+03BFB6F6  75 08                           jne      0x183bfb700
+03BFB6F8  48 89 f1                        mov      rcx, rsi
+03BFB6FB  e8 e0 3b 06 00                  call     0x183c5f2e0
+03BFB700  48 89 f0                        mov      rax, rsi
+03BFB703  48 83 c4 20                     add      rsp, 0x20
+03BFB707  5e                              pop      rsi
+03BFB708  c3                              ret      
+03BFB709  cc                              int3     
+03BFB70A  cc                              int3     
+03BFB70B  cc                              int3     
+03BFB70C  cc                              int3     
+03BFB70D  cc                              int3     
+03BFB70E  cc                              int3     
+03BFB70F  cc                              int3     
+03BFB710  48 8d 41 30                     lea      rax, [rcx + 0x30]
+03BFB714  c3                              ret      
+03BFB715  cc                              int3     
+03BFB716  cc                              int3     
+03BFB717  cc                              int3     
+03BFB718  cc                              int3     
+03BFB719  cc                              int3     
+03BFB71A  cc                              int3     
+03BFB71B  cc                              int3     
+03BFB71C  cc                              int3     
+03BFB71D  cc                              int3     
+03BFB71E  cc                              int3     
+03BFB71F  cc                              int3     
+03BFB720  56                              push     rsi
+03BFB721  57                              push     rdi
+03BFB722  53                              push     rbx
+03BFB723  48 83 ec 30                     sub      rsp, 0x30
+03BFB727  48 89 d3                        mov      rbx, rdx
+03BFB72A  48 8b 05 7f d0 13 06            mov      rax, qword ptr [rip + 0x613d07f]
+03BFB731  48 8b 15 70 d0 13 06            mov      rdx, qword ptr [rip + 0x613d070]
+03BFB738  48 63 b2 84 00 00 00            movsxd   rsi, dword ptr [rdx + 0x84]
+03BFB73F  48 81 f6 3f 1d 53 68            xor      rsi, 0x68531d3f
+03BFB746  48 01 c6                        add      rsi, rax
+03BFB749  48 8b 39                        mov      rdi, qword ptr [rcx]
+03BFB74C  48 8b 49 68                     mov      rcx, qword ptr [rcx + 0x68]
+03BFB750  48 29 f1                        sub      rcx, rsi
+03BFB753  48 d1 e9                        shr      rcx, 1
+03BFB756  69 c9 8b af f8 8a               imul     ecx, ecx, 0x8af8af8b
+03BFB75C  81 c9 00 00 00 02               or       ecx, 0x2000000
+03BFB762  be 6c 8e cd e6                  mov      esi, 0xe6cd8e6c
+03BFB767  03 72 18                        add      esi, dword ptr [rdx + 0x18]
+03BFB76A  48 63 f6                        movsxd   rsi, esi
+03BFB76D  48 01 c6                        add      rsi, rax
+03BFB770  48 c7 44 24 28 00 00 00 00      mov      qword ptr [rsp + 0x28], 0
+03BFB779  89 4c 24 2c                     mov      dword ptr [rsp + 0x2c], ecx
+03BFB77D  44 8b 47 44                     mov      r8d, dword ptr [rdi + 0x44]
+03BFB781  49 81 f0 8c d1 06 7c            xor      r8, 0x7c06d18c
+03BFB788  48 63 47 30                     movsxd   rax, dword ptr [rdi + 0x30]
+03BFB78C  48 35 f4 3a 63 43               xor      rax, 0x43633af4
+03BFB792  48 8d 14 c6                     lea      rdx, [rsi + rax*8]
+03BFB796  48 8d 05 33 42 07 00            lea      rax, [rip + 0x74233]
+03BFB79D  48 89 44 24 20                  mov      qword ptr [rsp + 0x20], rax
+03BFB7A2  48 8d 4c 24 28                  lea      rcx, [rsp + 0x28]
+03BFB7A7  41 b9 08 00 00 00               mov      r9d, 8
+03BFB7AD  e8 5e 9b 40 00                  call     0x184005310
+03BFB7B2  48 89 c2                        mov      rdx, rax
+03BFB7B5  48 29 f2                        sub      rdx, rsi
+03BFB7B8  48 c1 ea 03                     shr      rdx, 3
+03BFB7BC  31 c9                           xor      ecx, ecx
+03BFB7BE  48 83 f8 01                     cmp      rax, 1
+03BFB7C2  19 c9                           sbb      ecx, ecx
+03BFB7C4  09 d1                           or       ecx, edx
+03BFB7C6  48 89 da                        mov      rdx, rbx
+03BFB7C9  e8 12 42 07 00                  call     0x183c6f9e0
+03BFB7CE  90                              nop      
+03BFB7CF  48 83 c4 30                     add      rsp, 0x30
+03BFB7D3  5b                              pop      rbx
+03BFB7D4  5f                              pop      rdi
+03BFB7D5  5e                              pop      rsi
+03BFB7D6  c3                              ret      
+03BFB7D7  cc                              int3     
+03BFB7D8  cc                              int3     
+03BFB7D9  cc                              int3     
+03BFB7DA  cc                              int3     
+03BFB7DB  cc                              int3     
+03BFB7DC  cc                              int3     
+03BFB7DD  cc                              int3     
+03BFB7DE  cc                              int3     
+03BFB7DF  cc                              int3     
+03BFB7E0  0f b6 81 ca 00 00 00            movzx    eax, byte ptr [rcx + 0xca]
+03BFB7E7  24 02                           and      al, 2
+03BFB7E9  d0 e8                           shr      al, 1
+03BFB7EB  c3                              ret      
+03BFB7EC  cc                              int3     
+03BFB7ED  cc                              int3     
+03BFB7EE  cc                              int3     
+03BFB7EF  cc                              int3     
+03BFB7F0  48 8b 01                        mov      rax, qword ptr [rcx]
+03BFB7F3  c3                              ret      
+03BFB7F4  cc                              int3     
+03BFB7F5  cc                              int3     
+03BFB7F6  cc                              int3     
+03BFB7F7  cc                              int3     
+03BFB7F8  cc                              int3     
+03BFB7F9  cc                              int3     
+03BFB7FA  cc                              int3     
+03BFB7FB  cc                              int3     
+03BFB7FC  cc                              int3     
+03BFB7FD  cc                              int3     
+03BFB7FE  cc                              int3     
+03BFB7FF  cc                              int3     
+03BFB800  48 8b 09                        mov      rcx, qword ptr [rcx]
+03BFB803  48 b8 2a d1 40 ae 41 0e 63 aa   movabs   rax, 0xaa630e41ae40d12a
+03BFB80D  48 03 41 28                     add      rax, qword ptr [rcx + 0x28]
+03BFB811  c3                              ret      
+03BFB812  cc                              int3     
+03BFB813  cc                              int3     
+03BFB814  cc                              int3     
+03BFB815  cc                              int3     
+03BFB816  cc                              int3     
+03BFB817  cc                              int3     
+03BFB818  cc                              int3     
+03BFB819  cc                              int3     
+03BFB81A  cc                              int3     
+03BFB81B  cc                              int3     
+03BFB81C  cc                              int3     
+03BFB81D  cc                              int3     
+03BFB81E  cc                              int3     
+03BFB81F  cc                              int3     
+03BFB820  8b 81 c8 00 00 00               mov      eax, dword ptr [rcx + 0xc8]
+03BFB826  d1 e8                           shr      eax, 1
+03BFB828  83 e0 07                        and      eax, 7
+03BFB82B  c3                              ret      
+03BFB82C  cc                              int3     
+03BFB82D  cc                              int3     
+03BFB82E  cc                              int3     
+03BFB82F  cc                              int3     
+03BFB830  0f b7 81 ba 00 00 00            movzx    eax, word ptr [rcx + 0xba]
+03BFB837  c3                              ret      
+03BFB838  cc                              int3     
+03BFB839  cc                              int3     
+03BFB83A  cc                              int3     
+03BFB83B  cc                              int3     
+03BFB83C  cc                              int3     
+03BFB83D  cc                              int3     
+03BFB83E  cc                              int3     
+03BFB83F  cc                              int3     

@@ -1,0 +1,650 @@
+[
+  {
+    "schema": "mhy_metadata_anchor_scan/1",
+    "input": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+    "file_size": 535482160,
+    "pe": {
+      "is64": true,
+      "image_base": 6442450944,
+      "size_of_image": 545308672,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "vsize": 67269382,
+          "raw_size": 67269632,
+          "raw_ptr": 1024
+        },
+        {
+          "name": ".rdata",
+          "rva": 67276800,
+          "vsize": 87622916,
+          "raw_size": 87623168,
+          "raw_ptr": 67270656
+        },
+        {
+          "name": ".data",
+          "rva": 154902528,
+          "vsize": 11086240,
+          "raw_size": 1277952,
+          "raw_ptr": 154893824
+        },
+        {
+          "name": ".pdata",
+          "rva": 165990400,
+          "vsize": 19459404,
+          "raw_size": 19459584,
+          "raw_ptr": 156171776
+        },
+        {
+          "name": ".00cfg",
+          "rva": 185450496,
+          "vsize": 56,
+          "raw_size": 512,
+          "raw_ptr": 175631360
+        },
+        {
+          "name": ".gxfg",
+          "rva": 185454592,
+          "vsize": 14464,
+          "raw_size": 14848,
+          "raw_ptr": 175631872
+        },
+        {
+          "name": ".tls",
+          "rva": 185470976,
+          "vsize": 133,
+          "raw_size": 512,
+          "raw_ptr": 175646720
+        },
+        {
+          "name": "_RDATA",
+          "rva": 185475072,
+          "vsize": 348,
+          "raw_size": 512,
+          "raw_ptr": 175647232
+        },
+        {
+          "name": "il2cpp",
+          "rva": 185479168,
+          "vsize": 334093472,
+          "raw_size": 334093824,
+          "raw_ptr": 175647744
+        },
+        {
+          "name": ".upx0",
+          "rva": 519573504,
+          "vsize": 21762608,
+          "raw_size": 21763072,
+          "raw_ptr": 509741568
+        },
+        {
+          "name": ".reloc",
+          "rva": 541339648,
+          "vsize": 3965224,
+          "raw_size": 3965440,
+          "raw_ptr": 531504640
+        }
+      ]
+    },
+    "patterns": {
+      "mhy_magic_le_bytes": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 75207000,
+            "context": {
+              "window_offset": 75206904,
+              "hex": "10 CB F1 9A 01 00 00 00 30 CB F1 9A 01 00 00 00 C0 CB F1 9A 01 00 00 00 F0 CC F1 9A 01 00 00 00 20 CE F1 9A 01 00 00 00 90 CF F1 9A 01 00 00 00 E0 D1 F1 9A 01 00 00 00 00 D2 F1 9A 01 00 00 00 90 D2 F1 9A 01 00 00 00 C0 D3 F1 9A 01 00 00 00 F0 D4 F1 9A 01 00 00 00 40 D6 F1 9A 01 00 00 00 4D 48 59 00 00 00 00 00 DB 38 37 09 B8 05 E9 25 3D AC A7 23 2B 43 EC 73 D8 C9 A4 1C 19 68 8A 56 D3 DD 07 4D 75 81 1F 1F 41 06 EF 4E AE F3 06 77 6E 16 8B 28 50 E6 DC 7E C9 2C 5B 0A E3 E4 DA 69 5B 4B 1B 39 50 DE D3 1F 8D 03 DE 54 58 F7 D5 17 54 F2 1F 07 6C 3C C4 2B 72 00 FB 7F 16 A9 08 16",
+              "printable_strings": []
+            },
+            "rva": 75213144,
+            "va": 6517664088,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "mhy_magic_swapped_le": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "std_il2cpp_magic_v24_be_file": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "std_il2cpp_magic_v24_le_imm": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "global-metadata.dat": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 94966215,
+            "context": {
+              "window_offset": 94966119,
+              "hex": "6F 72 6D 61 74 00 5F 6D 61 74 00 74 68 61 74 00 69 6E 76 61 6C 69 64 20 62 69 74 20 6C 65 6E 67 74 68 20 72 65 70 65 61 74 00 53 44 4B 53 74 61 72 74 48 65 61 72 74 62 65 61 74 00 2D 72 65 73 6F 75 72 63 65 73 2E 64 61 74 00 73 74 61 72 74 75 70 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 67 6C 6F 62 61 6C 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 53 74 72 69 6E 67 43 6F 6E 63 61 74 00 63 72 65 61 74 65 64 5F 61 74 00 5F 71 55 61 74 00 5F 54 54 61 74 00 5F 35 53 61 74 00 5F 61 4F 61 74 00 5F 45 4F 61 74 00 54 72 79 55 73 65 4F 72 69 67 69 6E 4D 61 74 00 6D 5F 52 65 6E 64",
+              "printable_strings": [
+                {
+                  "offset": 94966119,
+                  "text": "ormat"
+                },
+                {
+                  "offset": 94966125,
+                  "text": "_mat"
+                },
+                {
+                  "offset": 94966130,
+                  "text": "that"
+                },
+                {
+                  "offset": 94966135,
+                  "text": "invalid bit length repeat"
+                },
+                {
+                  "offset": 94966161,
+                  "text": "SDKStartHeartbeat"
+                },
+                {
+                  "offset": 94966179,
+                  "text": "-resources.dat"
+                },
+                {
+                  "offset": 94966194,
+                  "text": "startup-metadata.dat"
+                },
+                {
+                  "offset": 94966215,
+                  "text": "global-metadata.dat"
+                },
+                {
+                  "offset": 94966235,
+                  "text": "StringConcat"
+                },
+                {
+                  "offset": 94966248,
+                  "text": "created_at"
+                },
+                {
+                  "offset": 94966259,
+                  "text": "_qUat"
+                },
+                {
+                  "offset": 94966265,
+                  "text": "_TTat"
+                },
+                {
+                  "offset": 94966271,
+                  "text": "_5Sat"
+                },
+                {
+                  "offset": 94966277,
+                  "text": "_aOat"
+                },
+                {
+                  "offset": 94966283,
+                  "text": "_EOat"
+                },
+                {
+                  "offset": 94966289,
+                  "text": "TryUseOriginMat"
+                },
+                {
+                  "offset": 94966305,
+                  "text": "m_Rend"
+                }
+              ]
+            },
+            "rva": 94972359,
+            "va": 6537423303,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "global-metadata": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 94966215,
+            "context": {
+              "window_offset": 94966119,
+              "hex": "6F 72 6D 61 74 00 5F 6D 61 74 00 74 68 61 74 00 69 6E 76 61 6C 69 64 20 62 69 74 20 6C 65 6E 67 74 68 20 72 65 70 65 61 74 00 53 44 4B 53 74 61 72 74 48 65 61 72 74 62 65 61 74 00 2D 72 65 73 6F 75 72 63 65 73 2E 64 61 74 00 73 74 61 72 74 75 70 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 67 6C 6F 62 61 6C 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 53 74 72 69 6E 67 43 6F 6E 63 61 74 00 63 72 65 61 74 65 64 5F 61 74 00 5F 71 55 61 74 00 5F 54 54 61 74 00 5F 35 53 61 74 00 5F 61 4F 61 74 00 5F 45 4F 61 74 00 54 72 79 55 73 65 4F 72 69 67 69 6E 4D 61 74 00 6D 5F 52 65 6E 64",
+              "printable_strings": [
+                {
+                  "offset": 94966119,
+                  "text": "ormat"
+                },
+                {
+                  "offset": 94966125,
+                  "text": "_mat"
+                },
+                {
+                  "offset": 94966130,
+                  "text": "that"
+                },
+                {
+                  "offset": 94966135,
+                  "text": "invalid bit length repeat"
+                },
+                {
+                  "offset": 94966161,
+                  "text": "SDKStartHeartbeat"
+                },
+                {
+                  "offset": 94966179,
+                  "text": "-resources.dat"
+                },
+                {
+                  "offset": 94966194,
+                  "text": "startup-metadata.dat"
+                },
+                {
+                  "offset": 94966215,
+                  "text": "global-metadata.dat"
+                },
+                {
+                  "offset": 94966235,
+                  "text": "StringConcat"
+                },
+                {
+                  "offset": 94966248,
+                  "text": "created_at"
+                },
+                {
+                  "offset": 94966259,
+                  "text": "_qUat"
+                },
+                {
+                  "offset": 94966265,
+                  "text": "_TTat"
+                },
+                {
+                  "offset": 94966271,
+                  "text": "_5Sat"
+                },
+                {
+                  "offset": 94966277,
+                  "text": "_aOat"
+                },
+                {
+                  "offset": 94966283,
+                  "text": "_EOat"
+                },
+                {
+                  "offset": 94966289,
+                  "text": "TryUseOriginMat"
+                },
+                {
+                  "offset": 94966305,
+                  "text": "m_Rend"
+                }
+              ]
+            },
+            "rva": 94972359,
+            "va": 6537423303,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "startup-metadata.dat": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 94966194,
+            "context": {
+              "window_offset": 94966098,
+              "hex": "73 43 61 70 73 3A 3A 47 65 74 43 6F 6D 70 61 74 69 62 6C 65 46 6F 72 6D 61 74 00 5F 6D 61 74 00 74 68 61 74 00 69 6E 76 61 6C 69 64 20 62 69 74 20 6C 65 6E 67 74 68 20 72 65 70 65 61 74 00 53 44 4B 53 74 61 72 74 48 65 61 72 74 62 65 61 74 00 2D 72 65 73 6F 75 72 63 65 73 2E 64 61 74 00 73 74 61 72 74 75 70 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 67 6C 6F 62 61 6C 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 53 74 72 69 6E 67 43 6F 6E 63 61 74 00 63 72 65 61 74 65 64 5F 61 74 00 5F 71 55 61 74 00 5F 54 54 61 74 00 5F 35 53 61 74 00 5F 61 4F 61 74 00 5F 45 4F 61 74 00 54",
+              "printable_strings": [
+                {
+                  "offset": 94966098,
+                  "text": "sCaps::GetCompatibleFormat"
+                },
+                {
+                  "offset": 94966125,
+                  "text": "_mat"
+                },
+                {
+                  "offset": 94966130,
+                  "text": "that"
+                },
+                {
+                  "offset": 94966135,
+                  "text": "invalid bit length repeat"
+                },
+                {
+                  "offset": 94966161,
+                  "text": "SDKStartHeartbeat"
+                },
+                {
+                  "offset": 94966179,
+                  "text": "-resources.dat"
+                },
+                {
+                  "offset": 94966194,
+                  "text": "startup-metadata.dat"
+                },
+                {
+                  "offset": 94966215,
+                  "text": "global-metadata.dat"
+                },
+                {
+                  "offset": 94966235,
+                  "text": "StringConcat"
+                },
+                {
+                  "offset": 94966248,
+                  "text": "created_at"
+                },
+                {
+                  "offset": 94966259,
+                  "text": "_qUat"
+                },
+                {
+                  "offset": 94966265,
+                  "text": "_TTat"
+                },
+                {
+                  "offset": 94966271,
+                  "text": "_5Sat"
+                },
+                {
+                  "offset": 94966277,
+                  "text": "_aOat"
+                },
+                {
+                  "offset": 94966283,
+                  "text": "_EOat"
+                }
+              ]
+            },
+            "rva": 94972338,
+            "va": 6537423282,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "startup-metadata": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 94966194,
+            "context": {
+              "window_offset": 94966098,
+              "hex": "73 43 61 70 73 3A 3A 47 65 74 43 6F 6D 70 61 74 69 62 6C 65 46 6F 72 6D 61 74 00 5F 6D 61 74 00 74 68 61 74 00 69 6E 76 61 6C 69 64 20 62 69 74 20 6C 65 6E 67 74 68 20 72 65 70 65 61 74 00 53 44 4B 53 74 61 72 74 48 65 61 72 74 62 65 61 74 00 2D 72 65 73 6F 75 72 63 65 73 2E 64 61 74 00 73 74 61 72 74 75 70 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 67 6C 6F 62 61 6C 2D 6D 65 74 61 64 61 74 61 2E 64 61 74 00 53 74 72 69 6E 67 43 6F 6E 63 61 74 00 63 72 65 61 74 65 64 5F 61 74 00 5F 71 55 61 74 00 5F 54 54 61 74 00 5F 35 53 61 74 00 5F 61 4F 61 74 00 5F 45 4F 61 74 00 54",
+              "printable_strings": [
+                {
+                  "offset": 94966098,
+                  "text": "sCaps::GetCompatibleFormat"
+                },
+                {
+                  "offset": 94966125,
+                  "text": "_mat"
+                },
+                {
+                  "offset": 94966130,
+                  "text": "that"
+                },
+                {
+                  "offset": 94966135,
+                  "text": "invalid bit length repeat"
+                },
+                {
+                  "offset": 94966161,
+                  "text": "SDKStartHeartbeat"
+                },
+                {
+                  "offset": 94966179,
+                  "text": "-resources.dat"
+                },
+                {
+                  "offset": 94966194,
+                  "text": "startup-metadata.dat"
+                },
+                {
+                  "offset": 94966215,
+                  "text": "global-metadata.dat"
+                },
+                {
+                  "offset": 94966235,
+                  "text": "StringConcat"
+                },
+                {
+                  "offset": 94966248,
+                  "text": "created_at"
+                },
+                {
+                  "offset": 94966259,
+                  "text": "_qUat"
+                },
+                {
+                  "offset": 94966265,
+                  "text": "_TTat"
+                },
+                {
+                  "offset": 94966271,
+                  "text": "_5Sat"
+                },
+                {
+                  "offset": 94966277,
+                  "text": "_aOat"
+                },
+                {
+                  "offset": 94966283,
+                  "text": "_EOat"
+                }
+              ]
+            },
+            "rva": 94972338,
+            "va": 6537423282,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "il2cpp_data": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "Metadata/global-metadata.dat": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      }
+    }
+  },
+  {
+    "schema": "mhy_metadata_anchor_scan/1",
+    "input": "D:\\StarRail_4.4.53\\UnityPlayer.dll",
+    "file_size": 38753584,
+    "pe": {
+      "is64": true,
+      "image_base": 6442450944,
+      "size_of_image": 41246720,
+      "sections": [
+        {
+          "name": ".text",
+          "rva": 4096,
+          "vsize": 27473672,
+          "raw_size": 27473920,
+          "raw_ptr": 1536
+        },
+        {
+          "name": ".rdata",
+          "rva": 27480064,
+          "vsize": 4098156,
+          "raw_size": 4098560,
+          "raw_ptr": 27475456
+        },
+        {
+          "name": ".data",
+          "rva": 31580160,
+          "vsize": 3312468,
+          "raw_size": 826368,
+          "raw_ptr": 31574016
+        },
+        {
+          "name": ".pdata",
+          "rva": 34893824,
+          "vsize": 1235556,
+          "raw_size": 1235968,
+          "raw_ptr": 32400384
+        },
+        {
+          "name": ".rodata",
+          "rva": 36130816,
+          "vsize": 2944,
+          "raw_size": 3072,
+          "raw_ptr": 33636352
+        },
+        {
+          "name": "_RDATA",
+          "rva": 36134912,
+          "vsize": 69344,
+          "raw_size": 69632,
+          "raw_ptr": 33639424
+        },
+        {
+          "name": ".fptable",
+          "rva": 36204544,
+          "vsize": 256,
+          "raw_size": 512,
+          "raw_ptr": 33709056
+        },
+        {
+          "name": ".upx0",
+          "rva": 36208640,
+          "vsize": 4800744,
+          "raw_size": 4801024,
+          "raw_ptr": 33709568
+        },
+        {
+          "name": ".reloc",
+          "rva": 41013248,
+          "vsize": 227896,
+          "raw_size": 228352,
+          "raw_ptr": 38510592
+        },
+        {
+          "name": ".rsrc",
+          "rva": 41242624,
+          "vsize": 2188,
+          "raw_size": 2560,
+          "raw_ptr": 38738944
+        }
+      ]
+    },
+    "patterns": {
+      "mhy_magic_le_bytes": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "mhy_magic_swapped_le": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "std_il2cpp_magic_v24_be_file": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "std_il2cpp_magic_v24_le_imm": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "global-metadata.dat": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "global-metadata": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "startup-metadata.dat": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "startup-metadata": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      },
+      "il2cpp_data": {
+        "count_capped": 1,
+        "limit": 300,
+        "hits": [
+          {
+            "file_offset": 27809016,
+            "context": {
+              "window_offset": 27808920,
+              "hex": "6F 72 27 20 69 6E 73 74 65 61 64 2E 00 00 00 00 6D 6F 6E 69 74 6F 72 00 55 6E 69 74 79 53 65 6C 65 63 74 4D 6F 6E 69 74 6F 72 00 00 00 00 00 00 47 61 6D 65 41 73 73 65 6D 62 6C 79 2E 64 6C 6C 00 00 00 00 00 00 00 00 46 61 69 6C 65 64 20 74 6F 20 6C 6F 61 64 20 69 6C 32 63 70 70 00 00 00 69 6C 32 63 70 70 5F 64 61 74 61 00 65 74 63 00 46 61 69 6C 65 64 20 74 6F 20 69 6E 69 74 69 61 6C 69 7A 65 20 49 4C 32 43 50 50 00 55 6E 69 74 79 20 00 00 00 00 00 00 55 6E 69 74 79 20 50 6C 61 79 65 72 00 00 00 00 50 72 6F 63 65 73 73 20 69 73 20 72 75 6E 6E 69 6E 67 20 69 6E 20 6C 6F",
+              "printable_strings": [
+                {
+                  "offset": 27808920,
+                  "text": "or' instead."
+                },
+                {
+                  "offset": 27808936,
+                  "text": "monitor"
+                },
+                {
+                  "offset": 27808944,
+                  "text": "UnitySelectMonitor"
+                },
+                {
+                  "offset": 27808968,
+                  "text": "GameAssembly.dll"
+                },
+                {
+                  "offset": 27808992,
+                  "text": "Failed to load il2cpp"
+                },
+                {
+                  "offset": 27809016,
+                  "text": "il2cpp_data"
+                },
+                {
+                  "offset": 27809032,
+                  "text": "Failed to initialize IL2CPP"
+                },
+                {
+                  "offset": 27809060,
+                  "text": "Unity "
+                },
+                {
+                  "offset": 27809072,
+                  "text": "Unity Player"
+                },
+                {
+                  "offset": 27809088,
+                  "text": "Process is running in lo"
+                }
+              ]
+            },
+            "rva": 27813624,
+            "va": 6470264568,
+            "section": ".rdata"
+          }
+        ]
+      },
+      "Metadata/global-metadata.dat": {
+        "count_capped": 0,
+        "limit": 300,
+        "hits": []
+      }
+    }
+  }
+]

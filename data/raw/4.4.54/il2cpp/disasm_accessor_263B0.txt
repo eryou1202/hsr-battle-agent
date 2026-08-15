@@ -1,0 +1,100 @@
+000263B0  89 f9                           mov      ecx, edi
+000263B2  89 f2                           mov      edx, esi
+000263B4  45 31 c0                        xor      r8d, r8d
+000263B7  48 83 c4 20                     add      rsp, 0x20
+000263BB  5b                              pop      rbx
+000263BC  5f                              pop      rdi
+000263BD  5e                              pop      rsi
+000263BE  48 ff e0                        jmp      rax
+000263C1  48 89 c3                        mov      rbx, rax
+000263C4  f6 81 c8 00 00 00 0e            test     byte ptr [rcx + 0xc8], 0xe
+000263CB  74 0c                           je       0x1800263d9
+000263CD  ba 12 00 00 00                  mov      edx, 0x12
+000263D2  e8 39 de c3 03                  call     0x183c64210
+000263D7  eb 36                           jmp      0x18002640f
+000263D9  48 8b 41 68                     mov      rax, qword ptr [rcx + 0x68]
+000263DD  b9 23 5f 4c 4b                  mov      ecx, 0x4b4c5f23
+000263E2  33 48 18                        xor      ecx, dword ptr [rax + 0x18]
+000263E5  83 c1 12                        add      ecx, 0x12
+000263E8  48 8b 05 b9 23 d1 09            mov      rax, qword ptr [rip + 0x9d123b9]
+000263EF  ba 52 cd 69 c7                  mov      edx, 0xc769cd52
+000263F4  03 90 60 01 00 00               add      edx, dword ptr [rax + 0x160]
+000263FA  48 63 c2                        movsxd   rax, edx
+000263FD  48 03 05 ac 23 d1 09            add      rax, qword ptr [rip + 0x9d123ac]
+00026404  48 63 c9                        movsxd   rcx, ecx
+00026407  8b 0c 88                        mov      ecx, dword ptr [rax + rcx*4]
+0002640A  e8 e1 88 c4 03                  call     0x183c6ecf0
+0002640F  48 89 d8                        mov      rax, rbx
+00026412  eb 9b                           jmp      0x1800263af
+00026414  cc                              int3     
+00026415  cc                              int3     
+00026416  cc                              int3     
+00026417  cc                              int3     
+00026418  cc                              int3     
+00026419  cc                              int3     
+0002641A  cc                              int3     
+0002641B  cc                              int3     
+0002641C  cc                              int3     
+0002641D  cc                              int3     
+0002641E  cc                              int3     
+0002641F  cc                              int3     
+00026420  56                              push     rsi
+00026421  57                              push     rdi
+00026422  53                              push     rbx
+00026423  48 83 ec 20                     sub      rsp, 0x20
+00026427  89 d6                           mov      esi, edx
+00026429  48 89 cf                        mov      rdi, rcx
+0002642C  48 8b 09                        mov      rcx, qword ptr [rcx]
+0002642F  48 8b 81 68 01 00 00            mov      rax, qword ptr [rcx + 0x168]
+00026436  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+0002643D  74 12                           je       0x180026451
+0002643F  48 89 f9                        mov      rcx, rdi
+00026442  89 f2                           mov      edx, esi
+00026444  45 31 c0                        xor      r8d, r8d
+00026447  48 83 c4 20                     add      rsp, 0x20
+0002644B  5b                              pop      rbx
+0002644C  5f                              pop      rdi
+0002644D  5e                              pop      rsi
+0002644E  48 ff e0                        jmp      rax
+00026451  48 89 c3                        mov      rbx, rax
+00026454  f6 81 c8 00 00 00 0e            test     byte ptr [rcx + 0xc8], 0xe
+0002645B  74 0c                           je       0x180026469
+0002645D  ba 13 00 00 00                  mov      edx, 0x13
+00026462  e8 a9 dd c3 03                  call     0x183c64210
+00026467  eb 36                           jmp      0x18002649f
+00026469  48 8b 41 68                     mov      rax, qword ptr [rcx + 0x68]
+0002646D  b9 23 5f 4c 4b                  mov      ecx, 0x4b4c5f23
+00026472  33 48 18                        xor      ecx, dword ptr [rax + 0x18]
+00026475  83 c1 13                        add      ecx, 0x13
+00026478  48 8b 05 29 23 d1 09            mov      rax, qword ptr [rip + 0x9d12329]
+0002647F  ba 52 cd 69 c7                  mov      edx, 0xc769cd52
+00026484  03 90 60 01 00 00               add      edx, dword ptr [rax + 0x160]
+0002648A  48 63 c2                        movsxd   rax, edx
+0002648D  48 03 05 1c 23 d1 09            add      rax, qword ptr [rip + 0x9d1231c]
+00026494  48 63 c9                        movsxd   rcx, ecx
+00026497  8b 0c 88                        mov      ecx, dword ptr [rax + rcx*4]
+0002649A  e8 51 88 c4 03                  call     0x183c6ecf0
+0002649F  48 89 d8                        mov      rax, rbx
+000264A2  eb 9b                           jmp      0x18002643f
+000264A4  cc                              int3     
+000264A5  cc                              int3     
+000264A6  cc                              int3     
+000264A7  cc                              int3     
+000264A8  cc                              int3     
+000264A9  cc                              int3     
+000264AA  cc                              int3     
+000264AB  cc                              int3     
+000264AC  cc                              int3     
+000264AD  cc                              int3     
+000264AE  cc                              int3     
+000264AF  cc                              int3     
+000264B0  56                              push     rsi
+000264B1  57                              push     rdi
+000264B2  53                              push     rbx
+000264B3  48 83 ec 20                     sub      rsp, 0x20
+000264B7  4c 89 c6                        mov      rsi, r8
+000264BA  48 89 d7                        mov      rdi, rdx
+000264BD  89 ca                           mov      edx, ecx
+000264BF  48 8b 0f                        mov      rcx, qword ptr [rdi]
+000264C2  89 d0                           mov      eax, edx
+000264C4  48 8b 84 c1 d0 00 00 00         mov      rax, qword ptr [rcx + rax*8 + 0xd0]
