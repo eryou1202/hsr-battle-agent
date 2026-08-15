@@ -1,0 +1,64 @@
+{
+  "schema": "hsr_runtime_probe_loader_block_record/1",
+  "experiment": "hd2_runtime_health_check",
+  "generated_utc": "2026-08-15T12:11:22Z",
+  "generated_local": "2026-08-15 20:11:22",
+  "target_pid": 36268,
+  "target_process": "StarRail.exe",
+  "target_path": "D:\\StarRail_4.4.53\\StarRail.exe",
+  "game_version": "4.4.54",
+  "final_status": "BLOCKED_AT_MODULE_LOAD",
+  "precheck": "PASS",
+  "blocked_api": "OpenProcess(PROCESS_CREATE_THREAD | PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_WRITE | PROCESS_VM_READ)",
+  "win32_error": 5,
+  "win32_error_name": "ERROR_ACCESS_DENIED",
+  "probe_integrity": {
+    "rid": "0x3000",
+    "level": "High",
+    "elevated": false
+  },
+  "target_integrity": {
+    "rid": "0x3000",
+    "level": "High",
+    "elevated": true
+  },
+  "process_vm_read": "OK",
+  "toolhelp_module_enumeration": "ERROR_ACCESS_DENIED",
+  "psapi_enumeration": {
+    "ok": true,
+    "lpcbNeeded": 1184,
+    "module_count": 148,
+    "unity_player": "found",
+    "game_assembly": "found"
+  },
+  "unity_player": {
+    "path": "D:\\StarRail_4.4.53\\UnityPlayer.dll",
+    "base": "0x7FFC4FEF0000",
+    "size": "0x2756000"
+  },
+  "game_assembly": {
+    "path": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+    "base": "0x7FFC2F6E0000",
+    "size": "0x2080C000"
+  },
+  "api_table_locator_remote": {
+    "candidates": 958,
+    "best_rva": "0x1A36480",
+    "score": 98.64,
+    "confidence": "high",
+    "known_slots_matched": 27,
+    "wrapper_matches": 240,
+    "descriptor_matches": 237,
+    "twin_relations": 3,
+    "comparison_expected": "0x1A36480",
+    "comparison": "MATCH"
+  },
+  "loader_attempt": {
+    "mechanism": "visible LoadLibraryW via CreateRemoteThread",
+    "dll": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\tools\\runtime_probe\\build\\hsr_runtime_health_probe.dll",
+    "result": "BLOCKED before DLL load",
+    "openprocess_error": 5
+  },
+  "actions_taken": "stopped immediately; no SeDebugPrivilege / AdjustTokenPrivileges / PEB traversal / NtQueryInformationProcess / driver / hook / patch / protection bypass",
+  "note": "No probe JSON was produced because the probe DLL was never loaded."
+}
