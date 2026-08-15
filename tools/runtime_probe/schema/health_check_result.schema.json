@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hsr-battle-agent.local/schemas/runtime_probe/health_check_result.schema.json",
+  "title": "Runtime Health Check Probe result",
+  "description": "Stable machine-readable output of tools/runtime_probe/probe/hsr_runtime_health_probe.dll. One record per executed step; the first failing step terminates the run.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool",
+    "game_version",
+    "version_source",
+    "generated_utc",
+    "pid",
+    "process_name",
+    "process_path",
+    "steps",
+    "failure_step",
+    "error",
+    "hd2"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "tool": {
+      "type": "string"
+    },
+    "game_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "build_string": {
+      "type": "string"
+    },
+    "generated_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "pid": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "process_name": {
+      "type": "string"
+    },
+    "process_path": {
+      "type": "string"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["step", "success"],
+        "properties": {
+          "step": {
+            "type": "string",
+            "enum": [
+              "module_discovery",
+              "api_table_locator",
+              "domain_get",
+              "domain_get_assemblies",
+              "assembly_get_image",
+              "image_name",
+              "image_get_class_count",
+              "image_get_classes",
+              "class_names"
+            ]
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "error_code": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "success": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": ["details"]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "success": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "required": ["error_code", "error"]
+            }
+          }
+        ]
+      }
+    },
+    "failure_step": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "error": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hd2": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}
