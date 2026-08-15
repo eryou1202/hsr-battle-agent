@@ -1,0 +1,186 @@
+{
+  "tool": "tools/reverse/scripts/resolve_runtime_api_target.py",
+  "unity_player": "D:\\StarRail_4.4.53\\UnityPlayer.dll",
+  "game_assembly": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+  "slot": 63,
+  "assumed_slot_name": "domain_get",
+  "assumed_slot_name_evidence": "E2_honkai_dumper_index_assumption",
+  "table_location_method": "caller_supplied_rva",
+  "api_table": {
+    "module": "UnityPlayer",
+    "rva": 27485312
+  },
+  "wrapper": {
+    "rva": 4534624,
+    "bytes": "45 33 c0 48 8d 0d fe 59 a9 01 33 d2 e9 cf c3 7e"
+  },
+  "descriptor": {
+    "rva": 32410472,
+    "qwords": {
+      "0": 0,
+      "1": 18446744073709551615,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 140721654325696,
+      "6": 0,
+      "7": 0,
+      "8": 140721681959720,
+      "9": 140721681959896,
+      "10": 0,
+      "11": 0
+    },
+    "qwords_described": {
+      "0": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "1": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "2": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "3": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "4": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "5": {
+        "module": "UnityPlayer",
+        "rva": 4776384,
+        "section": ".text",
+        "is_executable": true
+      },
+      "6": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "7": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "8": {
+        "module": "UnityPlayer",
+        "rva": 32410408,
+        "section": ".data",
+        "is_executable": false
+      },
+      "9": {
+        "module": "UnityPlayer",
+        "rva": 32410584,
+        "section": ".data",
+        "is_executable": false
+      },
+      "10": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      },
+      "11": {
+        "module": "OUTSIDE",
+        "rva": null,
+        "section": null,
+        "is_executable": false
+      }
+    }
+  },
+  "real_target": {
+    "va": 140721654325696,
+    "module": "UnityPlayer",
+    "rva": 4776384,
+    "section": ".text",
+    "classification": {
+      "classification": "proxy-registration",
+      "instruction_bytes": [
+        {
+          "address": 4776384,
+          "bytes": "48 83 ec 28",
+          "mnemonic": "sub",
+          "op_str": "rsp, 0x28"
+        },
+        {
+          "address": 4776388,
+          "bytes": "e8 b7 4e 81 00",
+          "mnemonic": "call",
+          "op_str": "0xca3080"
+        },
+        {
+          "address": 4776393,
+          "bytes": "4c 8d 0d 70 c9 ff ff",
+          "mnemonic": "lea",
+          "op_str": "r9, [rip - 0x3690]"
+        },
+        {
+          "address": 4776400,
+          "bytes": "48 8b c8",
+          "mnemonic": "mov",
+          "op_str": "rcx, rax"
+        },
+        {
+          "address": 4776403,
+          "bytes": "4c 8d 05 e6 dd ff ff",
+          "mnemonic": "lea",
+          "op_str": "r8, [rip - 0x221a]"
+        },
+        {
+          "address": 4776410,
+          "bytes": "48 8d 15 ef fe 5a 01",
+          "mnemonic": "lea",
+          "op_str": "rdx, [rip + 0x15afeef]"
+        },
+        {
+          "address": 4776417,
+          "bytes": "48 83 c4 28",
+          "mnemonic": "add",
+          "op_str": "rsp, 0x28"
+        },
+        {
+          "address": 4776421,
+          "bytes": "e9 a6 6b 81 00",
+          "mnemonic": "jmp",
+          "op_str": "0xca4d90"
+        }
+      ],
+      "stub_triple": {
+        "r9_rva": 4762432,
+        "r8_rva": 4767680,
+        "rdx_rva": 27517136,
+        "r8_rva_described": {
+          "module": "UnityPlayer",
+          "rva": 4767680,
+          "section": ".text",
+          "is_executable": true
+        },
+        "r9_rva_described": {
+          "module": "UnityPlayer",
+          "rva": 4762432,
+          "section": ".text",
+          "is_executable": true
+        },
+        "rdx_rva_string": "::Scripting::UnityEngine::VFX::VFXExpressionNoiseProxy"
+      }
+    }
+  },
+  "status": "STATIC_CHAIN_RESOLVED"
+}

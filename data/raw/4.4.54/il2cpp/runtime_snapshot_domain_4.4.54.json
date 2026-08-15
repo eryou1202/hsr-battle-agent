@@ -1,0 +1,172 @@
+{
+  "schema": "runtime_snapshot/1",
+  "tool": "tools/runtime_snapshot/runtime_snapshot.py",
+  "game_version": "4.4.54",
+  "slot": 63,
+  "api_table_rva": 27485312,
+  "final_status": "STATIC_TARGET_UNRESOLVED",
+  "read_result": {
+    "descriptor_qwords_raw": [
+      2,
+      284,
+      7700194190912,
+      0,
+      0,
+      140721654325696,
+      0,
+      1,
+      140721681959720,
+      140721681959896,
+      5497682103896,
+      2
+    ],
+    "heap_field_probes": {
+      "2": {
+        "pointer": 7700194190912,
+        "probe": "READABLE",
+        "first_qwords": [
+          5497697660672,
+          0,
+          0,
+          0,
+          5497697658200,
+          0,
+          0,
+          0
+        ]
+      },
+      "10": {
+        "pointer": 5497682103896,
+        "probe": "READABLE",
+        "first_qwords": [
+          5497576174584,
+          0,
+          0,
+          5497697663936,
+          5497681764288,
+          0,
+          6031,
+          1179648
+        ]
+      }
+    }
+  },
+  "pointer_chain": [
+    {
+      "level": "table_entry",
+      "va": 140721654083936,
+      "module": "UnityPlayer",
+      "rva": 4534624,
+      "section": ".text",
+      "is_executable": true,
+      "in_known_module": true
+    },
+    {
+      "level": "descriptor",
+      "rva": 32410472,
+      "section": ".data"
+    },
+    {
+      "level": "real_target_q5",
+      "va": 140721654325696,
+      "module": "UnityPlayer",
+      "rva": 4776384,
+      "section": ".text",
+      "is_executable": true,
+      "in_known_module": true
+    }
+  ],
+  "validation": [
+    "OpenProcess read-only: PASS",
+    "PSAPI module discovery: PASS",
+    "table->wrapper->descriptor->q5 chain: readable",
+    "runtime global for domain_get: NOT RESOLVED by static analysis"
+  ],
+  "target_pid": 36268,
+  "modules": {
+    "UnityPlayer": {
+      "base": 140721649549312,
+      "size": 41246720
+    },
+    "GameAssembly": {
+      "base": 140721104224256,
+      "size": 545308672
+    }
+  },
+  "wrapper_rva": 4534624,
+  "descriptor_rva": 32410472,
+  "descriptor_qwords": [
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    },
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    },
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    },
+    null,
+    null,
+    {
+      "module": "UnityPlayer",
+      "rva": 4776384,
+      "section": ".text",
+      "is_executable": true,
+      "in_known_module": true
+    },
+    null,
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    },
+    {
+      "module": "UnityPlayer",
+      "rva": 32410408,
+      "section": ".data",
+      "is_executable": false,
+      "in_known_module": true
+    },
+    {
+      "module": "UnityPlayer",
+      "rva": 32410584,
+      "section": ".data",
+      "is_executable": false,
+      "in_known_module": true
+    },
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    },
+    {
+      "module": "OUTSIDE",
+      "rva": null,
+      "section": null,
+      "is_executable": false,
+      "in_known_module": false
+    }
+  ],
+  "real_target_rva": 4776384,
+  "real_target_module": "UnityPlayer",
+  "runtime_global_rva": null,
+  "domain_source": null,
+  "failure_class": "STATIC_TARGET_UNRESOLVED",
+  "failure_detail": "slot-level static chain resolves, but the q[5] real-target stub is a Unity proxy registration thunk, not an il2cpp_domain_get implementation; the runtime global used by domain_get was not recovered."
+}

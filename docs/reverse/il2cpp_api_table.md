@@ -1,5 +1,11 @@
 # IL2CPP API Table 研究（4.4.54）
 
+> ⚠️ 2026-08-15 RO-RUNTIME 更新：本文中的“slot 索引 = il2cpp API 名称”结论
+> 已被 q[5] 真实目标静态反汇编证伪——0x1A36480 邻域是 Unity 原生绑定代理注册表
+> （`::Scripting::UnityEngine::...Proxy`），不是标准 IL2CPP introspection API table。
+> 详见 `docs/reverse/ro_runtime_snapshot_4.4.54.md`。
+> 下文保留原结论作为 E2 结构记录，语义部分不得继续当作 CONFIRMED 使用。
+
 > Task 1 产物。研究目标：`GameAssembly.dll` 导出 `il2cpp_get_api_table` 的
 > 结构与 4.4.54 的 IL2CPP function table 定位。
 > game_version: 4.4.54（BetaLive 20260731-0529）
