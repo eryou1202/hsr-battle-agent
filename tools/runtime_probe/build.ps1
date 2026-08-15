@@ -34,26 +34,68 @@ if ($Clean) {
 
 New-Item -ItemType Directory -Force -Path $BuildDir | Out-Null
 
-# --- locate MSVC -----------------------------------------------------------
-$vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-if (-not (Test-Path $vswhere)) {
-    throw "vswhere.exe not found; MSVC toolchain unavailable"
+# --- locate cl / set MSVC environment (NO vswhere) ---------------------------
+# 1. Prefer cl.exe already present in PATH.
+$ClPath = Get-Command cl.exe -ErrorAction SilentlyContinue
+
+# 2. Otherwise use the CONFIRMED Visual Studio installation and the installed
+#    Windows SDK. Validate every path with Test-Path; never guess.
+$VsRoot = "D:\VSCcommunity"
+$VsDevCmd = Join-Path $VsRoot "Common7\Tools\VsDevCmd.bat"
+$VcVars64 = Join-Path $VsRoot "VC\Auxiliary\Build\vcvars64.bat"
+$MsvcTools = Join-Path $VsRoot "VC\Tools\MSVC"
+$WindowsKits = "D:\Windows Kits\10"
+Write-Host "VsDevCmd.bat exists: $(Test-Path $VsDevCmd)"
+Write-Host "vcvars64.bat exists: $(Test-Path $VcVars64)"
+
+if (-not $ClPath) {
+    if (-not (Test-Path $VsDevCmd)) {
+        throw "VsDevCmd.bat not found under $VsRoot; cannot build"
+    }
+    if (-not (Test-Path $VcVars64)) {
+        throw "vcvars64.bat not found under $VsRoot; cannot build"
+    }
+    if (-not (Test-Path $MsvcTools)) {
+        throw "MSVC tools directory not found: $MsvcTools"
+    }
+    $MsvcVer = Get-ChildItem $MsvcTools -Directory |
+        Sort-Object Name -Descending |
+        Select-Object -First 1 -ExpandProperty Name
+    if (-not $MsvcVer) {
+        throw "no MSVC toolset version found under $MsvcTools"
+    }
+    $MsvcDir = Join-Path $MsvcTools $MsvcVer
+    $MsvcCl = Join-Path $MsvcDir "bin\Hostx64\x64\cl.exe"
+    if (-not (Test-Path $MsvcCl)) {
+        throw "cl.exe not found at expected path: $MsvcCl"
+    }
+    $SdkInclude = Join-Path $WindowsKits "Include"
+    $SdkLib = Join-Path $WindowsKits "Lib"
+    if (-not (Test-Path $SdkInclude) -or -not (Test-Path $SdkLib)) {
+        throw "Windows SDK directories not found under $WindowsKits"
+    }
+    $SdkVer = Get-ChildItem $SdkInclude -Directory |
+        Sort-Object Name -Descending |
+        Select-Object -First 1 -ExpandProperty Name
+    if (-not $SdkVer -or -not (Test-Path (Join-Path $SdkLib $SdkVer))) {
+        throw "no matching Windows SDK Include/Lib version found under $WindowsKits"
+    }
+    $env:PATH = "$MsvcDir\bin\Hostx64\x64;$WindowsKits\bin\$SdkVer\x64;$WindowsKits\bin\$SdkVer\x86;" + $env:PATH
+    $env:INCLUDE = "$MsvcDir\include;$SdkInclude\$SdkVer\ucrt;$SdkInclude\$SdkVer\shared;$SdkInclude\$SdkVer\um;$SdkInclude\$SdkVer\winrt;$SdkInclude\$SdkVer\cppwinrt"
+    $env:LIB = "$MsvcDir\lib\x64;$SdkLib\$SdkVer\ucrt\x64;$SdkLib\$SdkVer\um\x64"
+    $ClPath = Get-Command cl.exe -ErrorAction SilentlyContinue
+    if (-not $ClPath) {
+        throw "cl.exe still unavailable after setting MSVC/SDK environment"
+    }
+    Write-Host "MSVC env set manually: $MsvcDir (SDK $SdkVer)"
+} else {
+    Write-Host "cl.exe already available in PATH: $($ClPath.Source)"
 }
-$installPath = & $vswhere -latest -products * `
-    -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 `
-    -property installationPath
-if ($LASTEXITCODE -ne 0 -or -not $installPath) {
-    throw "vswhere could not find an MSVC installation with VC x64 tools"
-}
-$vcvars = Join-Path $installPath "VC\Auxiliary\Build\vcvars64.bat"
-if (-not (Test-Path $vcvars)) {
-    throw "vcvars64.bat not found under $installPath"
-}
-Write-Host "MSVC: $installPath"
 
 # --- regenerate locator prior header from the canonical Python locator ------
 Write-Host "regenerating locator prior from find_il2cpp_api_table.py"
-& python $GenScript --out (Join-Path $RuntimeProbe "gen\locator_prior.h")
+$PriorPath = Join-Path $RuntimeProbe "gen\locator_prior.h"
+cmd /c "python `"$GenScript`" --out `"$PriorPath`""
 if ($LASTEXITCODE -ne 0) {
     throw "locator prior generation failed"
 }
@@ -75,10 +117,9 @@ $coreSources = @(
 )
 
 function Invoke-Cl([string]$arguments) {
-    $cmd = "call `"$vcvars`" >nul 2>&1 && $arguments"
-    cmd /c $cmd
+    cmd /c $arguments
     if ($LASTEXITCODE -ne 0) {
-        throw "cl failed with exit code $LASTEXITCODE`ncommand: $cmd"
+        throw "cl failed with exit code $LASTEXITCODE`ncommand: $arguments"
     }
 }
 
@@ -89,7 +130,7 @@ try {
     Invoke-Cl "cl $commonFlags /LD $probeSources /link /OUT:hsr_runtime_health_probe.dll"
 
     Write-Host "building load_probe.exe"
-    Invoke-Cl "cl $commonFlags ..\loader\load_probe.cpp /Fe:load_probe.exe"
+    Invoke-Cl "cl $commonFlags ..\loader\load_probe.cpp ..\probe\common.cpp ..\probe\pe_model.cpp ..\probe\api_locator.cpp /Fe:load_probe.exe"
 
     Write-Host "building probe_self_tests.exe"
     $testSources = @($coreSources + @("..\tests\probe_self_tests.cpp")) -join " "
