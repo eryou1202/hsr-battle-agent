@@ -26,15 +26,79 @@ FILE_HEADER_SIZE = 0x208
 USAGE_TABLE_OFFSET = 0x4C4308C
 TRIPLE_TABLE_OFFSET = 0x1D4207C
 
-TAG_NAMES = {
-    0x60000000: "STRING_LITERAL (standard il2cpp enum, supported)",
-    0xC0000000: "IL2CPP_TYPE (code path at 0x5720, confirmed)",
-    0xE0000000: "TYPE_INFO (standard il2cpp enum, likely)",
-    0xA0000000: "METHOD_DEF (standard il2cpp enum, likely)",
-    0x80000000: "FIELD_INFO (standard il2cpp enum, likely)",
-    0x40000000: "METHOD_REF (standard il2cpp enum, likely)",
-    0x20000000: "INVALID/OTHER (standard il2cpp enum, likely)",
+# Discipline: TAG STRUCTURE CONFIRMED != TAG SEMANTIC NAME CONFIRMED.
+# The 3-bit tag encoding is code-confirmed.  The names below are the
+# standard-IL2CPP candidates only; local code proves a special branch for
+# 0xC0000000, nothing more.
+TAG_STRUCTURE_NAMES = {
+    0x00000000: "TAG_0x00000000 (structure confirmed; semantic UNCONFIRMED)",
+    0x20000000: "TAG_0x20000000 (structure confirmed; semantic UNCONFIRMED)",
+    0x40000000: "TAG_0x40000000 (structure confirmed; semantic UNCONFIRMED)",
+    0x60000000: "TAG_0x60000000 (structure confirmed; semantic UNCONFIRMED)",
+    0x80000000: "TAG_0x80000000 (structure confirmed; semantic UNCONFIRMED)",
+    0xA0000000: "TAG_0xA0000000 (structure confirmed; semantic UNCONFIRMED)",
+    0xC0000000: "TAG_0xC0000000 (structure confirmed; special code branch confirmed)",
+    0xE0000000: "TAG_0xE0000000 (structure confirmed; semantic UNCONFIRMED)",
 }
+
+TAG_SEMANTIC_AUDIT = [
+    {
+        "raw_tag": "0x00000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageInvalid (tag 0)",
+        "local_code_evidence": "tag distribution only",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0x20000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageTypeInfo",
+        "local_code_evidence": "no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0x40000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageIl2CppType",
+        "local_code_evidence": "no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0x60000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageMethodDef",
+        "local_code_evidence": "high frequency; no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0x80000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageFieldInfo",
+        "local_code_evidence": "no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0xA0000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "kIl2CppMetadataUsageStringLiteral",
+        "local_code_evidence": "no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0xC0000000",
+        "observed_code_path": "0x5720: cmp ecx,0xC0000000 -> reads template 0x38 triple table",
+        "standard_reference_candidate": "kIl2CppMetadataUsageMethodRef",
+        "local_code_evidence": "special branch CONFIRMED; triple-table read CONFIRMED; enum identity NOT proven",
+        "final_semantic_confidence": "SPECIAL_BRANCH_CONFIRMED / NAME_UNCONFIRMED",
+    },
+    {
+        "raw_tag": "0xE0000000",
+        "observed_code_path": "generic path after 0xC0000000 check",
+        "standard_reference_candidate": "standard enum values above 6 do not define this; MHY-specific",
+        "local_code_evidence": "no dedicated local branch found",
+        "final_semantic_confidence": "UNCONFIRMED",
+    },
+]
 
 
 def parse_usage(data: np.ndarray, sample_count: int = 64, scan_count: int = 1 << 20):
@@ -52,7 +116,7 @@ def parse_usage(data: np.ndarray, sample_count: int = 64, scan_count: int = 1 <<
             "index": i,
             "raw": f"0x{v:08X}",
             "tag": f"0x{v & 0xE0000000:08X}",
-            "tag_name": TAG_NAMES.get(v & 0xE0000000, "UNKNOWN"),
+            "tag_name": TAG_STRUCTURE_NAMES.get(v & 0xE0000000, "UNKNOWN"),
             "low29_index": v & 0x1FFFFFFF,
         })
     return {
@@ -70,6 +134,7 @@ def parse_usage(data: np.ndarray, sample_count: int = 64, scan_count: int = 1 <<
             "entry_read": "mov ecx, [base + index*4]",
             "semantics": "high bits 0xE0000000 tag; low 29 bits index; 0xC0000000 branch at 0x5752-0x579A",
         },
+        "tag_semantic_audit": TAG_SEMANTIC_AUDIT,
     }
 
 

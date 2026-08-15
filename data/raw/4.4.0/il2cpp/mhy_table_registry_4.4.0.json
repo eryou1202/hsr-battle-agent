@@ -1,0 +1,1215 @@
+{
+  "schema": "mhy_table_registry/1",
+  "game": "D:\\miHoYo Launcher\\games\\Star Rail Game\\GameAssembly.dll",
+  "template_rva": 90438288,
+  "template_size": 520,
+  "file_header_size": 520,
+  "structure_vs_semantic_discipline": {
+    "structure_status_values": [
+      "CONFIRMED",
+      "SUPPORTED",
+      "HYPOTHESIS"
+    ],
+    "semantic_status_values": [
+      "CONFIRMED",
+      "SUPPORTED",
+      "CANDIDATE",
+      "UNKNOWN"
+    ],
+    "rule": "structure confidence and semantic confidence are recorded separately"
+  },
+  "tables": [
+    {
+      "template_field": "0x160",
+      "template_raw_u32": "0x3D1AE606",
+      "transform_type": "add",
+      "transform_constant": "0xC769CD52",
+      "decoded_u32": "0x0484B358",
+      "signed32": 75805528,
+      "base_kind": "payload",
+      "file_offset": "0x484B560",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x5720",
+        "0x1EB31",
+        "0x263D9",
+        "0x3C2DF23"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "mov ecx,[base+idx*4]",
+        "and low 0x1FFFFFFF",
+        "and tag 0xE0000000"
+      ],
+      "candidate_semantic": "metadata usage table (tagged index)",
+      "semantic_evidence": "0x5720: tag mask + cmp 0xC0000000 branch; many generated accessors",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x38",
+      "template_raw_u32": "0x0A42B085",
+      "transform_type": "add",
+      "transform_constant": "0xF778F1AB",
+      "decoded_u32": "0x01BBA230",
+      "signed32": 29073968,
+      "base_kind": "payload",
+      "file_offset": "0x1BBA438",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x5778",
+        "0x1EBB9",
+        "0x3C2DF68"
+      ],
+      "entry_size": 12,
+      "entry_field_accesses": [
+        "record[0]",
+        "record[1] (-1 sentinel)",
+        "record[2] (-1 sentinel)"
+      ],
+      "candidate_semantic": "12-byte triple table consumed by 0xC0000000 usage branch",
+      "semantic_evidence": "0x5720 branch reads triples, resolves two pointer fields, caches result",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x1FC",
+      "template_raw_u32": "0x62BDEF48",
+      "transform_type": "xor",
+      "transform_constant": "0x6238CDB0",
+      "decoded_u32": "0x008522F8",
+      "signed32": 8725240,
+      "base_kind": "payload",
+      "file_offset": "0x852500",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C11478",
+        "0x3C66719"
+      ],
+      "entry_size": 12,
+      "entry_field_accesses": [
+        "record[+0x0] -> 16-byte type entry index",
+        "record[+0x4] -> data offset",
+        "record[+0x8] = match key"
+      ],
+      "candidate_semantic": "type-index lookup map (candidate)",
+      "semantic_evidence": "0x3C113C0 linear scan; +0 -> gptr+0x80 + idx*16; +4 -> table 0x3C byte offset",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x3C",
+      "template_raw_u32": "0x69C7AFA7",
+      "transform_type": "add",
+      "transform_constant": "0x978BE7A5",
+      "decoded_u32": "0x0153974C",
+      "signed32": 22255436,
+      "base_kind": "payload",
+      "file_offset": "0x1539954",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C11520",
+        "0x3C65CC7",
+        "0x3C66765"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "[base + field1_of_0x1FC_record]",
+        "switch on first u32"
+      ],
+      "candidate_semantic": "type-encoding data stream (candidate)",
+      "semantic_evidence": "0x3C1151B adds 0x1FC record field1 to this base and interprets tokens",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x84",
+      "template_raw_u32": "0x693A6427",
+      "transform_type": "xor",
+      "transform_constant": "0x68531D3F",
+      "decoded_u32": "0x01697918",
+      "signed32": 23689496,
+      "base_kind": "payload",
+      "file_offset": "0x1697B20",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C82BAC",
+        "0x3C67502",
+        "0x3C5B5F1",
+        "0x3C63107"
+      ],
+      "entry_size": 70,
+      "entry_field_accesses": [
+        "+0x0C magic == 0x1C2AD2AB",
+        "+0x24 + 0xF1D32D89",
+        "+0x28 + 0xE9FD68F8",
+        "+0x3A xor const",
+        "+0x3C u16 + 0x5404",
+        "+0x43 byte count"
+      ],
+      "candidate_semantic": "definition records (method/type candidate)",
+      "semantic_evidence": "imul idx,0x46 addressing; magic validation; decoded fields feed metadata object builder",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "CANDIDATE"
+    },
+    {
+      "template_field": "0x70",
+      "template_raw_u32": "0x56F4D9AD",
+      "transform_type": "xor",
+      "transform_constant": "0x57A78949",
+      "decoded_u32": "0x015350E4",
+      "signed32": 22237412,
+      "base_kind": "payload",
+      "file_offset": "0x15352EC",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C82BAC",
+        "0x3C5F70E",
+        "0x3C67762"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "mov ecx,[base+idx*4]",
+        "result indexes 0x84 records"
+      ],
+      "candidate_semantic": "definition index map (candidate)",
+      "semantic_evidence": "0x3C82BAC: value -> imul 0x46 -> 0x84 record",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x12C",
+      "template_raw_u32": "0x25B08770",
+      "transform_type": "xor",
+      "transform_constant": "0x26F0FC20",
+      "decoded_u32": "0x03407B50",
+      "signed32": 54557520,
+      "base_kind": "payload",
+      "file_offset": "0x3407D58",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6730A",
+        "0x3C5AE52"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "mov ecx,[base+idx*4]",
+        "value -> 0x3C66940"
+      ],
+      "candidate_semantic": "type index table used by 0x84 record consumer (candidate)",
+      "semantic_evidence": "0x3C672F1-0x3C67325 loads word from 0x84 record, indexes this table, resolves type",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x18",
+      "template_raw_u32": "0x1C740434",
+      "transform_type": "add",
+      "transform_constant": "0xE6CD8E6C",
+      "decoded_u32": "0x034192A0",
+      "signed32": 54629024,
+      "base_kind": "payload",
+      "file_offset": "0x34194A8",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3BFB767",
+        "0x3C6F7E9",
+        "0x3C7D98A"
+      ],
+      "entry_size": 8,
+      "entry_field_accesses": [
+        "binary search element size 8",
+        "u32[0] = count<<24|start",
+        "u32[4] = count<<24|start"
+      ],
+      "candidate_semantic": "packed two-range table (candidate)",
+      "semantic_evidence": "0x3C6F9F4 splits count/start and iterates 0x1EC table",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x1EC",
+      "template_raw_u32": "0x5E2E4197",
+      "transform_type": "add",
+      "transform_constant": "0xA75A2A51",
+      "decoded_u32": "0x05886BE8",
+      "signed32": 92826600,
+      "base_kind": "payload",
+      "file_offset": "0x5886DF0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6FA41"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "movsxd [base+idx*4]",
+        "-1 sentinel",
+        "value indexes allocA pointer cache"
+      ],
+      "candidate_semantic": "range target index table (candidate)",
+      "semantic_evidence": "0x3C6FA40-0x3C6FB1D",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x198",
+      "template_raw_u32": "0x4EF39FA9",
+      "transform_type": "add",
+      "transform_constant": "0xB10C86E7",
+      "decoded_u32": "0x00002690",
+      "signed32": 9872,
+      "base_kind": "payload",
+      "file_offset": "0x2898",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D833"
+      ],
+      "entry_size": 8,
+      "entry_field_accesses": [
+        "decoded value sar 3 -> count",
+        "binary search element size 8"
+      ],
+      "candidate_semantic": "8-byte sorted lookup table (candidate)",
+      "semantic_evidence": "0x3C5D832: add const, sar 3, lower_bound at 0x184005310",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "CANDIDATE"
+    },
+    {
+      "template_field": "0x1C4",
+      "template_raw_u32": "0x1001A493",
+      "transform_type": "xor",
+      "transform_constant": "0x11531BF7",
+      "decoded_u32": "0x0152BF64",
+      "signed32": 22200164,
+      "base_kind": "payload",
+      "file_offset": "0x152C16C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D7B7",
+        "0x3C81254"
+      ],
+      "entry_size": 12,
+      "entry_field_accesses": [
+        "u16 [+0x8]",
+        "u16 [+0xA]",
+        "index -> 0x2C table"
+      ],
+      "candidate_semantic": "12-byte definition/type record (candidate)",
+      "semantic_evidence": "0x3C5D7B3-0x3C5D7EB chains 0x34 -> 0x1C4 -> 0x2C",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x2C",
+      "template_raw_u32": "0x77132562",
+      "transform_type": "xor",
+      "transform_constant": "0x767BDACA",
+      "decoded_u32": "0x0168FFA8",
+      "signed32": 23658408,
+      "base_kind": "payload",
+      "file_offset": "0x16901B0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D467",
+        "0x3C5D7D5"
+      ],
+      "entry_size": 8,
+      "entry_field_accesses": [
+        "lea [base + idx*8]",
+        "feeds 0x183C03BA0"
+      ],
+      "candidate_semantic": "8-byte value pair table (candidate)",
+      "semantic_evidence": "0x3C5D7E3-0x3C5D7EB",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x34",
+      "template_raw_u32": "0x7EEFD58C",
+      "transform_type": "xor",
+      "transform_constant": "0x7FBFB3F8",
+      "decoded_u32": "0x01506674",
+      "signed32": 22046324,
+      "base_kind": "payload",
+      "file_offset": "0x150687C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D7A3"
+      ],
+      "entry_size": 2,
+      "entry_field_accesses": [
+        "movzx [base+idx*2]",
+        "value indexes 0x1C4 records"
+      ],
+      "candidate_semantic": "u16 index table (candidate)",
+      "semantic_evidence": "0x3C5D7A3-0x3C5D7CC",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x94",
+      "template_raw_u32": "0x3C599EEF",
+      "transform_type": "xor",
+      "transform_constant": "0x3D160A8B",
+      "decoded_u32": "0x014F9464",
+      "signed32": 21992548,
+      "base_kind": "payload",
+      "file_offset": "0x14F966C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D8A1",
+        "0x3C3138A"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "[base + idx*4] -> {count<<24|start}",
+        "iterates count"
+      ],
+      "candidate_semantic": "packed range table (candidate)",
+      "semantic_evidence": "0x3C5D89A-0x3C5D8B2",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x10",
+      "template_raw_u32": "0x23D6B9E5",
+      "transform_type": "xor",
+      "transform_constant": "0x22E64E71",
+      "decoded_u32": "0x0130F794",
+      "signed32": 19986324,
+      "base_kind": "payload",
+      "file_offset": "0x130F99C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C8123F"
+      ],
+      "entry_size": 2,
+      "entry_field_accesses": [
+        "movzx [base+idx*2]"
+      ],
+      "candidate_semantic": "u16 table (UNKNOWN)",
+      "semantic_evidence": "none",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x20",
+      "template_raw_u32": "0x4D06D6FF",
+      "transform_type": "add",
+      "transform_constant": "0xB2FCE189",
+      "decoded_u32": "0x0003B888",
+      "signed32": 243848,
+      "base_kind": "payload",
+      "file_offset": "0x3BA90",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6682D"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x4C",
+      "template_raw_u32": "0x17D523FC",
+      "transform_type": "add",
+      "transform_constant": "0xE82C6008",
+      "decoded_u32": "0x00018404",
+      "signed32": 99332,
+      "base_kind": "payload",
+      "file_offset": "0x1860C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C713B5"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x54",
+      "template_raw_u32": "0x2BC3C218",
+      "transform_type": "add",
+      "transform_constant": "0xD43F4844",
+      "decoded_u32": "0x00030A5C",
+      "signed32": 199260,
+      "base_kind": "count",
+      "file_offset": null,
+      "in_metadata": null,
+      "consumer_rvas": [
+        "0x3C81136",
+        "0x3C81214"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "decoded >> 2 = entry count"
+      ],
+      "candidate_semantic": "size/4 count field (not a table offset)",
+      "semantic_evidence": "0x3C81136 shr 2; 0x3C81214 sar 2",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x78",
+      "template_raw_u32": "0x67013880",
+      "transform_type": "xor",
+      "transform_constant": "0x67325228",
+      "decoded_u32": "0x00336AA8",
+      "signed32": 3369640,
+      "base_kind": "payload",
+      "file_offset": "0x336CB0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C811FA",
+        "0x3C81362"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "movsxd [base+idx*4]"
+      ],
+      "candidate_semantic": "index table (candidate)",
+      "semantic_evidence": "0x3C81345-0x3C81362",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x90",
+      "template_raw_u32": "0x6A3A4084",
+      "transform_type": "xor",
+      "transform_constant": "0x697A7664",
+      "decoded_u32": "0x034036E0",
+      "signed32": 54540000,
+      "base_kind": "payload",
+      "file_offset": "0x34038E8",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C3130C"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x9C",
+      "template_raw_u32": "0x4435E481",
+      "transform_type": "add",
+      "transform_constant": "0xBC7EC9D7",
+      "decoded_u32": "0x00B4AE58",
+      "signed32": 11841112,
+      "base_kind": "payload",
+      "file_offset": "0xB4B060",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5C4FC",
+        "0x3C81225"
+      ],
+      "entry_size": 12,
+      "entry_field_accesses": [
+        "lea idx*3",
+        "[base+idx*12]",
+        "u16 fields"
+      ],
+      "candidate_semantic": "12-byte record table (candidate)",
+      "semantic_evidence": "0x3C5C4FC-0x3C5C548, 0x3C81392",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0xA8",
+      "template_raw_u32": "0x2F8F9A38",
+      "transform_type": "xor",
+      "transform_constant": "0x2CE30270",
+      "decoded_u32": "0x036C9848",
+      "signed32": 57448520,
+      "base_kind": "payload",
+      "file_offset": "0x36C9A50",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D53F",
+        "0x3C5E076"
+      ],
+      "entry_size": 1,
+      "entry_field_accesses": [
+        "[base+idx*1+0x4]"
+      ],
+      "candidate_semantic": "byte table (UNKNOWN)",
+      "semantic_evidence": "0x3C5E0E0",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0xB0",
+      "template_raw_u32": "0x749FA219",
+      "transform_type": "add",
+      "transform_constant": "0x8B605DE7",
+      "decoded_u32": "0x00000000",
+      "signed32": 0,
+      "base_kind": "payload",
+      "file_offset": "0x208",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6EEE1"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "decodes to 0"
+      ],
+      "candidate_semantic": "payload-start alias",
+      "semantic_evidence": "decoded == 0",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0xC4",
+      "template_raw_u32": "0x3D3E2078",
+      "transform_type": "xor",
+      "transform_constant": "0x38BDB304",
+      "decoded_u32": "0x0583937C",
+      "signed32": 92509052,
+      "base_kind": "payload",
+      "file_offset": "0x5839584",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5D826"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0xD0",
+      "template_raw_u32": "0x203476D4",
+      "transform_type": "add",
+      "transform_constant": "0xDFCFC6B0",
+      "decoded_u32": "0x00043D84",
+      "signed32": 277892,
+      "base_kind": "payload",
+      "file_offset": "0x43F8C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C7F528"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0xEC",
+      "template_raw_u32": "0x635CB856",
+      "transform_type": "xor",
+      "transform_constant": "0x67F701BA",
+      "decoded_u32": "0x04ABB9EC",
+      "signed32": 78363116,
+      "base_kind": "payload",
+      "file_offset": "0x4ABBBF4",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C80DD3"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0xF0",
+      "template_raw_u32": "0x637117F1",
+      "transform_type": "add",
+      "transform_constant": "0x9D48920F",
+      "decoded_u32": "0x00B9AA00",
+      "signed32": 12167680,
+      "base_kind": "payload",
+      "file_offset": "0xB9AC08",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C11716",
+        "0x3C8F396"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x114",
+      "template_raw_u32": "0x3D961962",
+      "transform_type": "xor",
+      "transform_constant": "0x3EABB25A",
+      "decoded_u32": "0x033DAB38",
+      "signed32": 54373176,
+      "base_kind": "payload",
+      "file_offset": "0x33DAD40",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5C937",
+        "0x3C5D411"
+      ],
+      "entry_size": 2,
+      "entry_field_accesses": [
+        "movzx [base+idx*2+0x4]"
+      ],
+      "candidate_semantic": "u16 table (UNKNOWN)",
+      "semantic_evidence": "0x3C5C949",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x118",
+      "template_raw_u32": "0x092B1D39",
+      "transform_type": "add",
+      "transform_constant": "0xF6D615EF",
+      "decoded_u32": "0x00013328",
+      "signed32": 78632,
+      "base_kind": "payload",
+      "file_offset": "0x13530",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C811E0",
+        "0x3C81345"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "movsxd [base+idx*4]"
+      ],
+      "candidate_semantic": "index table (candidate)",
+      "semantic_evidence": "0x3C81345",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x124",
+      "template_raw_u32": "0x1A4637A3",
+      "transform_type": "xor",
+      "transform_constant": "0x1AFCE463",
+      "decoded_u32": "0x00BAD3C0",
+      "signed32": 12243904,
+      "base_kind": "payload",
+      "file_offset": "0xBAD5C8",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C8FF18"
+      ],
+      "entry_size": 1,
+      "entry_field_accesses": [
+        "[base+idx*1]"
+      ],
+      "candidate_semantic": "byte table (UNKNOWN)",
+      "semantic_evidence": "0x3C8FFA8",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x13C",
+      "template_raw_u32": "0x47F2212B",
+      "transform_type": "xor",
+      "transform_constant": "0x46C8010F",
+      "decoded_u32": "0x013A2024",
+      "signed32": 20586532,
+      "base_kind": "payload",
+      "file_offset": "0x13A222C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5E141"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x140",
+      "template_raw_u32": "0x25538CF7",
+      "transform_type": "add",
+      "transform_constant": "0xDAAC7309",
+      "decoded_u32": "0x00000000",
+      "signed32": 0,
+      "base_kind": "payload",
+      "file_offset": "0x208",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C21B22"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "decodes to 0"
+      ],
+      "candidate_semantic": "payload-start alias",
+      "semantic_evidence": "decoded == 0",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x144",
+      "template_raw_u32": "0x4C5F3DE8",
+      "transform_type": "xor",
+      "transform_constant": "0x4CDE6970",
+      "decoded_u32": "0x00815498",
+      "signed32": 8475800,
+      "base_kind": "payload",
+      "file_offset": "0x8156A0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6EF09"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x148",
+      "template_raw_u32": "0x36075F2A",
+      "transform_type": "xor",
+      "transform_constant": "0x329E1172",
+      "decoded_u32": "0x04994E58",
+      "signed32": 77155928,
+      "base_kind": "payload",
+      "file_offset": "0x4995060",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5C340",
+        "0x3C5C643"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "mov ebp,[base+idx*4]",
+        "test 0x1000000",
+        "low24 index"
+      ],
+      "candidate_semantic": "usage-like u32 table (candidate)",
+      "semantic_evidence": "0x3C5C34E-0x3C5C383",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x14C",
+      "template_raw_u32": "0x0FCD8984",
+      "transform_type": "add",
+      "transform_constant": "0xF3A04294",
+      "decoded_u32": "0x036DCC18",
+      "signed32": 57527320,
+      "base_kind": "payload",
+      "file_offset": "0x36DCE20",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C66FBA",
+        "0x3C71362",
+        "0x3C7D45C"
+      ],
+      "entry_size": 26,
+      "entry_field_accesses": [
+        "idx*26",
+        "[+0x10] xor-decode",
+        "feeds 0x3C66940"
+      ],
+      "candidate_semantic": "26-byte usage resolution records (candidate)",
+      "semantic_evidence": "0x3C66F80-0x3C67082",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x180",
+      "template_raw_u32": "0x20A7D2A9",
+      "transform_type": "add",
+      "transform_constant": "0xE4DBE763",
+      "decoded_u32": "0x0583BA0C",
+      "signed32": 92518924,
+      "base_kind": "payload",
+      "file_offset": "0x583BC14",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5C514"
+      ],
+      "entry_size": 4,
+      "entry_field_accesses": [
+        "movsxd [base+idx*4]",
+        "idx*12 -> 0x9C table"
+      ],
+      "candidate_semantic": "index table into 0x9C records (candidate)",
+      "semantic_evidence": "0x3C5C540-0x3C5C548",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x184",
+      "template_raw_u32": "0x7B2F4725",
+      "transform_type": "add",
+      "transform_constant": "0x8709B6A3",
+      "decoded_u32": "0x0238FDC8",
+      "signed32": 37289416,
+      "base_kind": "payload",
+      "file_offset": "0x238FFD0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C74C90"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1AC",
+      "template_raw_u32": "0x33912A5E",
+      "transform_type": "xor",
+      "transform_constant": "0x37080D6E",
+      "decoded_u32": "0x04992730",
+      "signed32": 77145904,
+      "base_kind": "payload",
+      "file_offset": "0x4992938",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5E924"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1B4",
+      "template_raw_u32": "0x75151DCA",
+      "transform_type": "add",
+      "transform_constant": "0x8D43A4EE",
+      "decoded_u32": "0x0258C2B8",
+      "signed32": 39371448,
+      "base_kind": "payload",
+      "file_offset": "0x258C4C0",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C59C5B"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1C8",
+      "template_raw_u32": "0x01AEB9C1",
+      "transform_type": "xor",
+      "transform_constant": "0x042F9275",
+      "decoded_u32": "0x05812BB4",
+      "signed32": 92351412,
+      "base_kind": "payload",
+      "file_offset": "0x5812DBC",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C5F179"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1D0",
+      "template_raw_u32": "0x37146F1B",
+      "transform_type": "add",
+      "transform_constant": "0xC9A664A5",
+      "decoded_u32": "0x00BAD3C0",
+      "signed32": 12243904,
+      "base_kind": "payload",
+      "file_offset": "0xBAD5C8",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C6D109"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1DC",
+      "template_raw_u32": "0x3E23F992",
+      "transform_type": "xor",
+      "transform_constant": "0x3E0C72F0",
+      "decoded_u32": "0x002F8B62",
+      "signed32": 3115874,
+      "base_kind": "payload",
+      "file_offset": "0x2F8D6A",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C11434",
+        "0x3C666DC"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x1E4",
+      "template_raw_u32": "0x72746074",
+      "transform_type": "xor",
+      "transform_constant": "0x720FEF70",
+      "decoded_u32": "0x007B8F04",
+      "signed32": 8097540,
+      "base_kind": "payload",
+      "file_offset": "0x7B910C",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C80DE8",
+        "0x3C8316F"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "UNKNOWN",
+      "semantic_evidence": "none",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x150",
+      "template_raw_u32": "0x277D9EA2",
+      "transform_type": "add",
+      "transform_constant": "0xD882615E",
+      "decoded_u32": "0x00000000",
+      "signed32": 0,
+      "base_kind": "startup",
+      "file_offset": null,
+      "in_metadata": null,
+      "consumer_rvas": [
+        "0x3C7F193"
+      ],
+      "entry_size": 40,
+      "entry_field_accesses": [
+        "idx*40",
+        "[+0x0C] xor per-index",
+        "writes runtime 0x58-byte records"
+      ],
+      "candidate_semantic": "startup metadata 40-byte table",
+      "semantic_evidence": "0x3C7F120-0x3C7F503",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x158",
+      "template_raw_u32": "0x1FF78A43",
+      "transform_type": "add",
+      "transform_constant": "0xE03EEAC1",
+      "decoded_u32": "0x00367504",
+      "signed32": 3568900,
+      "base_kind": "startup",
+      "file_offset": null,
+      "in_metadata": null,
+      "consumer_rvas": [
+        "0x3C7F510"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "startup metadata table",
+      "semantic_evidence": "0x3C7F50B",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    },
+    {
+      "template_field": "0x164",
+      "template_raw_u32": "0x7F580D54",
+      "transform_type": "xor",
+      "transform_constant": "0x7F5C5934",
+      "decoded_u32": "0x00045460",
+      "signed32": 283744,
+      "base_kind": "startup",
+      "file_offset": null,
+      "in_metadata": null,
+      "consumer_rvas": [
+        "0x3C7E938"
+      ],
+      "entry_size": 8,
+      "entry_field_accesses": [
+        "[base+idx*8+0]",
+        "[base+idx*8+4] (-1 sentinel)"
+      ],
+      "candidate_semantic": "startup metadata 8-byte table",
+      "semantic_evidence": "0x3C7E931-0x3C7EA24",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
+      "template_field": "0x170",
+      "template_raw_u32": "0x61644B20",
+      "transform_type": "xor",
+      "transform_constant": "0x61645FE8",
+      "decoded_u32": "0x000014C8",
+      "signed32": 5320,
+      "base_kind": "startup",
+      "file_offset": null,
+      "in_metadata": null,
+      "consumer_rvas": [
+        "0x3C7FACB"
+      ],
+      "entry_size": null,
+      "entry_field_accesses": [
+        "base only"
+      ],
+      "candidate_semantic": "startup metadata table",
+      "semantic_evidence": "0x3C7FAC4",
+      "structure_status": "SUPPORTED",
+      "semantic_status": "UNKNOWN"
+    }
+  ],
+  "count_fields": [
+    {
+      "template_field": "0xBC",
+      "template_raw_u32": "0x3CD02853",
+      "transform": "sar 3; xor 0x079FC2EC",
+      "consumer_rva": "0x3C7E8D8",
+      "note": "startup 0x164 table entry count (0x642D5 = 410325)"
+    },
+    {
+      "template_field": "0x74",
+      "template_raw_u32": "0x0873BDF9",
+      "transform": "xor 0x080EF250; mul 0xAAAAAAAB; hi>>?; and ~7",
+      "consumer_rva": "0x3C7E59E",
+      "note": "allocation size field"
+    },
+    {
+      "template_field": "0x134",
+      "template_raw_u32": "0x102113E2",
+      "transform": "xor 0x10210728; mul 0xCCCCCCCD; hi>>5",
+      "consumer_rva": "0x3C7E64D",
+      "note": "count 142 used by startup 40-byte table loop"
+    },
+    {
+      "template_field": "0x178",
+      "template_raw_u32": "0x5CC1A646",
+      "transform": "sar 4; xor 0x05CC1AE1",
+      "consumer_rva": "0x3C7E78F",
+      "note": "count 142; 0x58-byte runtime records"
+    },
+    {
+      "template_field": "0x1A8",
+      "template_raw_u32": "0x72C93387",
+      "transform": "xor 0x729B1A9E; mul 0xEA0EA0EA0EA0EA0F; hi>>3; and ~7",
+      "consumer_rva": "0x3C7E43D",
+      "note": "allocation size field"
+    },
+    {
+      "template_field": "0x1F8",
+      "template_raw_u32": "0x171E2589",
+      "transform": "xor 0x1608C2C8; mul 0x4EC4EC4EC4EC4EC5; hi; and ~7",
+      "consumer_rva": "0x3C7E4EE",
+      "note": "allocation size field"
+    }
+  ],
+  "cross_table_links": [
+    {
+      "from_field": "0x160",
+      "to_field": "0x38",
+      "link": "usage tag 0xC0000000 branch reads 0x38 triples"
+    },
+    {
+      "from_field": "0x84",
+      "to_field": "0x70",
+      "link": "0x70 u32 value indexes 0x84 70-byte records"
+    },
+    {
+      "from_field": "0x84",
+      "to_field": "0x12C",
+      "link": "0x84 +0x3A word indexes 0x12C type indices"
+    },
+    {
+      "from_field": "0x34",
+      "to_field": "0x1C4",
+      "link": "0x34 u16 value indexes 0x1C4 12-byte records"
+    },
+    {
+      "from_field": "0x1C4",
+      "to_field": "0x2C",
+      "link": "0x1C4 +0xA value indexes 0x2C 8-byte records"
+    },
+    {
+      "from_field": "0x1FC",
+      "to_field": "0x3C",
+      "link": "0x1FC +0x4 byte offset points into 0x3C type data"
+    },
+    {
+      "from_field": "0x18",
+      "to_field": "0x1EC",
+      "link": "0x18 packed range start/count scans 0x1EC u32 table"
+    },
+    {
+      "from_field": "0x180",
+      "to_field": "0x9C",
+      "link": "0x180 u32 index addresses 0x9C 12-byte records"
+    }
+  ],
+  "final_status": "MHY_METADATA = CROSS_TABLE_SCHEMA_RECOVERED",
+  "not_claimed": [
+    "identifier string table index/length rule",
+    "TypeDefinition table identity",
+    "MethodDefinition / FieldDefinition table identity",
+    "payload transform algorithm"
+  ]
+}
