@@ -1,0 +1,94 @@
+{
+  "schema": "ability_mixin_registry_proof/1",
+  "session_status": "DESIGN_RUNTIME_BRIDGE = ABILITY_MIXIN_REGISTRY_PROOF",
+  "game_version": "4.4.54",
+  "summary": {
+    "ability_mixin_level_1_descriptor_source_located": true,
+    "ability_mixin_level_2_initialized_descriptor_recovered": true,
+    "ability_mixin_level_3_subtype_discriminator_recovered": true,
+    "ability_mixin_level_4_multiple_subtype_mappings_proven": true,
+    "ability_mixin_level_5_automated_cross_version_validated": true,
+    "note": "Level 5 is schema + aligned identity; 4.4.54 has 3 registry insertions relative to 4.4.0, recorded explicitly."
+  },
+  "registry": {
+    "builder": "MKIOEPLIEIH.cctor",
+    "builder_method_index": 132205,
+    "builder_native_rva": "0x1CB745A0",
+    "dispatcher": "MKIOEPLIEIH.OJNNBEJLDIJ",
+    "dispatcher_method_index": 132840,
+    "dispatcher_native_rva": "0x1CB743F0",
+    "registry_global_rva": "0x95B1518",
+    "registry_slot_offset": "0x6990",
+    "entry_count": 636,
+    "null_slots": [0, 538],
+    "resolved_concrete_parser_entries": 614,
+    "pure_allocation_stub_entries": 20,
+    "dispatch_shape": "code=ULEB128; entry=[[[0x95B1518]+0x6990]+0x20+code*8]; call [entry+8]"
+  },
+  "correction": {
+    "target": "SkillAbilityConfig.AbilityList",
+    "finding": "ABILITY_LIST_IS_LIST_OF_STRING",
+    "evidence": [
+      "SkillAbilityConfig.OJNNBEJLDIJ (0x1D4AAC90) passes descriptor globals 0x96B7C00/0x96B7C08 to generic object reader 0x16C86A10",
+      "runtime read of [0x96B7C00+8] = 0x1CBA4E70 = NJLMNDLDGNF.HLECIAGGJGH, whose code calls System.Text.Encoding.get_UTF8 and parses a length-prefixed UTF-8 string",
+      "the same descriptor pair and string parser serve SkillConfig.ChildSkillList and all fields with metadata type_reference 433276"
+    ],
+    "consequence": "SkillAbilityConfig.AbilityList is NOT the polymorphic Ability Mixin list. The real polymorphic dispatch used by SkillConfig ability elements is the MKIOEPLIEIH registry."
+  },
+  "ability_element_dataflow": [
+    "SkillConfig.FromBinary reads two ULEB128 field-presence bitfields (64+13 bits = 77 fields)",
+    "field ordinal 57 UsableConditions -> generic list reader 0x16C86A10, descriptor pair 0x96BF2A0/0x96BF2A8, element parser = UsableConditionConfig.OJNNBEJLDIJ (0x1D597320)",
+    "field ordinal 58 VisibleCondition -> direct call to registry dispatcher 0x1CB743F0",
+    "second bitfield bit 1 (ordinal 65) InsertCondition -> direct call to registry dispatcher 0x1CB743F0",
+    "registry discriminator -> helper method -> concrete Runtime Class parser MethodDefinition"
+  ],
+  "proof_samples": [
+    {"discriminator": 2, "runtime_type_name": "RPG.GameCore.AdvByCheckGameMode", "parser_method_index": 118892, "parser_native_rva": "0x1CD2B170"},
+    {"discriminator": 8, "runtime_type_name": "RPG.GameCore.AdvByCompareDynamicValue", "parser_method_index": 117174, "parser_native_rva": "0x1CD2DFF0"},
+    {"discriminator": 14, "runtime_type_name": "RPG.GameCore.AdvByFastDeliverHasMultiRoute", "parser_method_index": 123198, "parser_native_rva": "0x1CD30B60"},
+    {"discriminator": 16, "runtime_type_name": "RPG.GameCore.AdvByInCustomZone", "parser_method_index": 116292, "parser_native_rva": "0x1CD31740"}
+  ],
+  "black_swan_validation": {
+    "file": "data/raw/4.4.54/bridge/ability_mixin_registry_black_swan_validation_4.4.54.json",
+    "result": "15/15 observed historical first_mixin_type codes are inside the registry range and resolve to concrete Runtime Classes; 2/8/14/16 resolve to four distinct classes",
+    "caveat": "historical field name and byte-level serializer identity of the Black Swan record prefix remain unproven; this is range validation only"
+  },
+  "cross_version": {
+    "file": "data/raw/4.4.54/bridge/ability_mixin_registry_cross_version_4.4.0_vs_4.4.54.json",
+    "status": "BRIDGE_CROSS_VERSION_OK_WITH_INSERTIONS",
+    "old_entry_count": 633,
+    "new_entry_count": 636,
+    "sequence_ratio": 0.994475138121547,
+    "aligned_pairs": 630,
+    "aligned_all_same_parser_method": true,
+    "insertions": [
+      "RPG.GameCore.AdvByCheckFarmElementActive",
+      "JCDELEMIIME",
+      "EJHJKIIHLLE",
+      "RPG.GameCore.ByUsedFiveDimHoldDash"
+    ]
+  },
+  "machine_outputs": [
+    "data/raw/4.4.54/bridge/ability_mixin_type_bridge_4.4.54.json",
+    "data/raw/4.4.54/bridge/mkioeplieih_registry_snapshot_4.4.54.json",
+    "data/raw/4.4.54/bridge/skillconfig_field_map_4.4.54.json",
+    "data/raw/4.4.54/bridge/ability_mixin_registry_black_swan_validation_4.4.54.json",
+    "data/raw/4.4.0/bridge/ability_mixin_type_bridge_4.4.0.json",
+    "data/raw/4.4.54/bridge/ability_mixin_registry_cross_version_4.4.0_vs_4.4.54.json"
+  ],
+  "tools_added": [
+    "tools/runtime_snapshot/ability_descriptor_snapshot.py",
+    "tools/runtime_snapshot/mkioeplieih_registry_snapshot.py",
+    "tools/reverse/scripts/build_ability_mixin_registry_bridge.py",
+    "tools/reverse/scripts/build_ability_mixin_registry_bridge_static.py",
+    "tools/reverse/scripts/compare_ability_mixin_registries.py",
+    "tools/reverse/scripts/extract_skillconfig_field_map.py",
+    "tools/reverse/scripts/build_black_swan_registry_validation.py"
+  ],
+  "not_claimed": [
+    "Battle DSL / Execute / Apply / damage / modifier settlement semantics",
+    "semantic TypeDefinition name of the shared polymorphic base field (type_reference 480840)",
+    "byte-level serializer identity of the historical Black Swan record prefix",
+    "generic IL2CPP runtime type system recovery"
+  ]
+}

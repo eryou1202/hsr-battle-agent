@@ -1,0 +1,33 @@
+1CB69D20  56                              push     rsi
+1CB69D21  57                              push     rdi
+1CB69D22  48 83 ec 28                     sub      rsp, 0x28
+1CB69D26  48 89 ce                        mov      rsi, rcx
+1CB69D29  48 8b 0d 68 99 a6 ec            mov      rcx, qword ptr [rip - 0x13596698]
+1CB69D30  e8 7b 99 10 e7                  call     0x183c736b0
+1CB69D35  48 89 c7                        mov      rdi, rax
+1CB69D38  48 8b 0d 91 11 a6 ec            mov      rcx, qword ptr [rip - 0x1359ee6f]
+1CB69D3F  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CB69D46  74 29                           je       0x19cb69d71
+1CB69D48  48 8b 0d 79 f2 e0 ec            mov      rcx, qword ptr [rip - 0x131f0d87]
+1CB69D4F  e8 ac 22 9a 00                  call     0x19d50c000
+1CB69D54  48 89 47 20                     mov      qword ptr [rdi + 0x20], rax
+1CB69D58  c6 47 10 01                     mov      byte ptr [rdi + 0x10], 1
+1CB69D5C  48 89 f1                        mov      rcx, rsi
+1CB69D5F  48 89 fa                        mov      rdx, rdi
+1CB69D62  e8 19 54 1c 00                  call     0x19cd2f180
+1CB69D67  48 89 f8                        mov      rax, rdi
+1CB69D6A  48 83 c4 28                     add      rsp, 0x28
+1CB69D6E  5f                              pop      rdi
+1CB69D6F  5e                              pop      rsi
+1CB69D70  c3                              ret      
+1CB69D71  e8 6a c0 0f e7                  call     0x183c65de0
+1CB69D76  eb d0                           jmp      0x19cb69d48
+1CB69D78  0f 1f 84 00 00 00 00 00         nop      dword ptr [rax + rax]
+1CB69D80  56                              push     rsi
+1CB69D81  57                              push     rdi
+1CB69D82  48 83 ec 28                     sub      rsp, 0x28
+1CB69D86  48 89 ce                        mov      rsi, rcx
+1CB69D89  48 8b 0d 10 99 a6 ec            mov      rcx, qword ptr [rip - 0x135966f0]
+1CB69D90  e8 1b 99 10 e7                  call     0x183c736b0
+1CB69D95  48 89 c7                        mov      rdi, rax
+1CB69D98  48 8b 0d f1 89 a8 ec            mov      rcx, qword ptr [rip - 0x1357760f]

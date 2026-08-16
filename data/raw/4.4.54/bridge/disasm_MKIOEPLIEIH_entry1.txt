@@ -1,0 +1,26 @@
+1CB69A80  56                              push     rsi
+1CB69A81  57                              push     rdi
+1CB69A82  48 83 ec 28                     sub      rsp, 0x28
+1CB69A86  48 89 ce                        mov      rsi, rcx
+1CB69A89  48 8b 0d a0 9b a6 ec            mov      rcx, qword ptr [rip - 0x13596460]
+1CB69A90  e8 1b 9c 10 e7                  call     0x183c736b0
+1CB69A95  48 89 c7                        mov      rdi, rax
+1CB69A98  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CB69A9C  48 89 f1                        mov      rcx, rsi
+1CB69A9F  48 89 c2                        mov      rdx, rax
+1CB69AA2  e8 e9 10 1c 00                  call     0x19cd2ab90
+1CB69AA7  48 89 f8                        mov      rax, rdi
+1CB69AAA  48 83 c4 28                     add      rsp, 0x28
+1CB69AAE  5f                              pop      rdi
+1CB69AAF  5e                              pop      rsi
+1CB69AB0  c3                              ret      
+1CB69AB1  66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+1CB69AC0  56                              push     rsi
+1CB69AC1  57                              push     rdi
+1CB69AC2  48 83 ec 28                     sub      rsp, 0x28
+1CB69AC6  48 89 ce                        mov      rsi, rcx
+1CB69AC9  48 8b 0d 68 9b a6 ec            mov      rcx, qword ptr [rip - 0x13596498]
+1CB69AD0  e8 db 9b 10 e7                  call     0x183c736b0
+1CB69AD5  48 89 c7                        mov      rdi, rax
+1CB69AD8  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CB69ADC  48 89 f1                        mov      rcx, rsi

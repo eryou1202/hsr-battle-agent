@@ -1,0 +1,30 @@
+1CB6BE00  48 83 ec 28                     sub      rsp, 0x28
+1CB6BE04  80 3d bb d4 ed ec 00            cmp      byte ptr [rip - 0x13122b45], 0
+1CB6BE0B  74 15                           je       0x19cb6be22
+1CB6BE0D  48 8b 0d d4 7d a6 ec            mov      rcx, qword ptr [rip - 0x1359822c]
+1CB6BE14  e8 97 78 10 e7                  call     0x183c736b0
+1CB6BE19  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CB6BE1D  48 83 c4 28                     add      rsp, 0x28
+1CB6BE21  c3                              ret      
+1CB6BE22  b9 d6 21 00 00                  mov      ecx, 0x21d6
+1CB6BE27  e8 b4 12 10 e7                  call     0x183c6d0e0
+1CB6BE2C  c6 05 93 d4 ed ec 01            mov      byte ptr [rip - 0x13122b6d], 1
+1CB6BE33  eb d8                           jmp      0x19cb6be0d
+1CB6BE35  66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+1CB6BE40  56                              push     rsi
+1CB6BE41  57                              push     rdi
+1CB6BE42  48 83 ec 28                     sub      rsp, 0x28
+1CB6BE46  48 89 ce                        mov      rsi, rcx
+1CB6BE49  48 8b 0d b0 7d a6 ec            mov      rcx, qword ptr [rip - 0x13598250]
+1CB6BE50  e8 5b 78 10 e7                  call     0x183c736b0
+1CB6BE55  48 89 c7                        mov      rdi, rax
+1CB6BE58  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CB6BE5C  48 89 f1                        mov      rcx, rsi
+1CB6BE5F  48 89 c2                        mov      rdx, rax
+1CB6BE62  e8 f9 da 2b 00                  call     0x19ce29960
+1CB6BE67  48 89 f8                        mov      rax, rdi
+1CB6BE6A  48 83 c4 28                     add      rsp, 0x28
+1CB6BE6E  5f                              pop      rdi
+1CB6BE6F  5e                              pop      rsi
+1CB6BE70  c3                              ret      
+1CB6BE71  66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
