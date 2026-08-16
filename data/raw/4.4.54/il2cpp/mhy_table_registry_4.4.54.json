@@ -324,6 +324,29 @@
       "semantic_status": "SUPPORTED"
     },
     {
+      "template_field": "0x30",
+      "template_raw_u32": "0x288B166E",
+      "transform_type": "add",
+      "transform_constant": "0xDCF5FDBE",
+      "decoded_u32": "0x0581142C",
+      "signed32": 92345388,
+      "base_kind": "payload",
+      "file_offset": "0x5811634",
+      "in_metadata": true,
+      "consumer_rvas": [
+        "0x3C724D7"
+      ],
+      "entry_size": 8,
+      "entry_field_accesses": [
+        "[base + idx*8] type reference (-1 sentinel)",
+        "[base + idx*8 + 4] name key -> 0x3C58D70"
+      ],
+      "candidate_semantic": "ParameterDefinition records",
+      "semantic_evidence": "MethodDefinition +0x04/+0x18 ranges cover this table exactly once; type reference consumer 0x3C7250D-0x3C7254E; all observed name keys are 0xFFFFFFFF",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "SUPPORTED"
+    },
+    {
       "template_field": "0x34",
       "template_raw_u32": "0x7EDCE650",
       "transform_type": "xor",
@@ -403,16 +426,18 @@
       "file_offset": "0x4C164",
       "in_metadata": true,
       "consumer_rvas": [
-        "0x3C6682D"
+        "0x3C5C5CA",
+        "0x3C5C5FC"
       ],
-      "entry_size": null,
+      "entry_size": 8,
       "entry_field_accesses": [
-        "base only"
+        "[base + idx*8] name key -> 0x3C58D70",
+        "[base + idx*8 + 4] field type reference (-1 sentinel)"
       ],
-      "candidate_semantic": "UNKNOWN",
-      "semantic_evidence": "none",
-      "structure_status": "SUPPORTED",
-      "semantic_status": "UNKNOWN"
+      "candidate_semantic": "FieldDefinition records",
+      "semantic_evidence": "TypeDefinition +0x20/+0x32 ranges cover this table exactly once; field names decode; +4 indexes the 16-byte type-entry array",
+      "structure_status": "CONFIRMED",
+      "semantic_status": "CONFIRMED"
     },
     {
       "template_field": "0x4C",
@@ -835,18 +860,24 @@
       "consumer_rvas": [
         "0x3C66FBA",
         "0x3C71362",
+        "0x3C71C7F",
+        "0x3C72038",
+        "0x3C72314",
         "0x3C7D45C"
       ],
       "entry_size": 26,
       "entry_field_accesses": [
         "idx*26",
-        "[+0x10] xor-decode",
-        "feeds 0x3C66940"
+        "[+0x00] name key -> 0x3C58D70",
+        "[+0x04] parameter start",
+        "[+0x08] return type reference",
+        "[+0x10] declaring type index",
+        "[+0x18] parameter count"
       ],
-      "candidate_semantic": "26-byte usage resolution records (candidate)",
-      "semantic_evidence": "0x3C66F80-0x3C67082",
+      "candidate_semantic": "MethodDefinition records",
+      "semantic_evidence": "capacity == TypeDefinition method partition; names decode; declaring type matches every range owner; parameter ranges cover 0x30 exactly once",
       "structure_status": "CONFIRMED",
-      "semantic_status": "SUPPORTED"
+      "semantic_status": "CONFIRMED"
     },
     {
       "template_field": "0x180",
@@ -1176,6 +1207,21 @@
     },
     {
       "from_field": "0x84",
+      "to_field": "0x14C",
+      "link": "0x84 +0x08/+0x34 method ranges cover the 0x14C MethodDefinition table exactly once"
+    },
+    {
+      "from_field": "0x14C",
+      "to_field": "0x30",
+      "link": "0x14C +0x04/+0x18 parameter ranges cover the 0x30 ParameterDefinition table exactly once"
+    },
+    {
+      "from_field": "0x84",
+      "to_field": "0x20",
+      "link": "0x84 +0x20/+0x32 field ranges cover the 0x20 FieldDefinition table exactly once"
+    },
+    {
+      "from_field": "0x84",
       "to_field": "0x12C",
       "link": "0x84 +0x3A word indexes 0x12C type indices"
     },
@@ -1205,11 +1251,12 @@
       "link": "0x180 u32 index addresses 0x9C 12-byte records"
     }
   ],
-  "final_status": "MHY_METADATA = CROSS_TABLE_SCHEMA_RECOVERED",
+  "final_status": "MHY_METADATA = MEMBER_REGISTRY_PROOF",
   "not_claimed": [
-    "identifier string table index/length rule",
-    "TypeDefinition table identity",
-    "MethodDefinition / FieldDefinition table identity",
+    "MethodDefinition -> GameAssembly RVA mapping",
+    "return type / field type semantic names",
+    "parameter names (observed sentinel-only)",
+    "Image / Assembly semantic decoding",
     "payload transform algorithm"
   ]
 }
