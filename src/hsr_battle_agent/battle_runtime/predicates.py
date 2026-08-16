@@ -24,6 +24,8 @@ Deliberate client-faithful details preserved here:
 """
 from __future__ import annotations
 
+from hsr_battle_agent.battle_ir.values import EvaluatorSpec
+
 _MASK64 = 0xFFFFFFFFFFFFFFFF
 _SIGN64 = 1 << 63
 _INT64_MIN = -(2**63)
@@ -172,3 +174,83 @@ def _validate_raw(value: int, name: str) -> None:
     # unsigned qword spellings; every value is normalized with _MASK64 below.
     if not (_INT64_MIN <= value <= _MASK64):
         raise ValueError(f"{name} out of qword raw range: {value}")
+
+
+def evaluator_spec_from_int32(value: int) -> EvaluatorSpec:
+    """E4 ``ValueEvaluatorConfig.BBNJCKPKPDN(int32)``.
+
+    Native: allocate the evaluator-spec operand object and store
+    ``FixPointFromInt32(value)`` at ``[obj+0x20]``.  The canonical sandbox
+    representation is an immutable ``EvaluatorSpec``; no allocation occurs.
+    """
+    return EvaluatorSpec(fixpoint_from_int32(value))
+
+
+def evaluator_spec_from_fixpoint_raw(value: int) -> EvaluatorSpec:
+    """E4 ``ValueEvaluatorConfig.BBNJCKPKPDN(FixPoint)``.
+
+    Native: allocate the same operand object and store the raw FixPoint qword
+    at ``[obj+0x20]``.
+    """
+    _validate_raw(value, "value")
+    return EvaluatorSpec(value)
+
+
+def evaluator_spec_fixpoint_equal_int32(
+    evaluator_spec: EvaluatorSpec | None,
+    rhs: int,
+) -> bool:
+    """E4 ``ValueEvaluatorConfig.FEIIDFFOICL(type_ref_23221, int32)``.
+
+    Native chain: null / wrong-type operand -> false; otherwise read
+    ``[obj+0x20]``, convert ``rhs`` with ``FixPointFromInt32`` and return
+    ``FixPointEqual(lhs_raw, rhs_raw)``.  Comparison logic is the Batch 03
+    shared helper, never a second implementation.
+    """
+    spec = _coerce_evaluator_spec(evaluator_spec)
+    if spec is None:
+        return False
+    return fixpoint_equal(spec.fixpoint_raw, fixpoint_from_int32(rhs))
+
+
+def evaluator_spec_fixpoint_equal_raw(
+    evaluator_spec: EvaluatorSpec | None,
+    rhs: int,
+) -> bool:
+    """E4 ``ValueEvaluatorConfig.FEIIDFFOICL(type_ref_23221, FixPoint)``.
+
+    Native chain: null / wrong-type operand -> false; otherwise read
+    ``[obj+0x20]`` and return ``FixPointEqual(lhs_raw, rhs)``.
+    """
+    spec = _coerce_evaluator_spec(evaluator_spec)
+    if spec is None:
+        return False
+    return fixpoint_equal(spec.fixpoint_raw, rhs)
+
+
+def evaluator_spec_fixpoint_not_equal_raw(
+    evaluator_spec: EvaluatorSpec | None,
+    rhs: int,
+) -> bool:
+    """E4 ``ValueEvaluatorConfig.DLDBLNNPHKE(type_ref_23221, FixPoint)``.
+
+    Native chain: null / wrong-type operand -> **true** (operator default,
+    confirmed by the ``mov al,1`` prelude); otherwise read ``[obj+0x20]`` and
+    return ``FixPointNotEqual(lhs_raw, rhs)``.
+    """
+    spec = _coerce_evaluator_spec(evaluator_spec)
+    if spec is None:
+        return True
+    return fixpoint_not_equal(spec.fixpoint_raw, rhs)
+
+
+def _coerce_evaluator_spec(value: object) -> EvaluatorSpec | None:
+    """Mirror the native is-instance gate.
+
+    The client accepts the runtime class and its subclasses.  The canonical
+    model has exactly one such class, ``EvaluatorSpec``; any other object maps
+    to the proven null/wrong-type default path.
+    """
+    if isinstance(value, EvaluatorSpec):
+        return value
+    return None

@@ -16,6 +16,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Protocol
 
+from hsr_battle_agent.battle_ir.values import EvaluatorSpec
+
 TRACE_SCHEMA = "battle_sandbox_trace/1"
 TRACE_JSON_RESULT_TYPES = (bool, int, float, str, type(None))
 
@@ -99,13 +101,13 @@ class PrimitiveFinished:
         started: PrimitiveStarted,
         result: Any,
     ) -> "PrimitiveFinished":
-        _validate_trace_result(result)
+        summary = _trace_result_summary(result)
         return cls(
             event="PrimitiveFinished",
             event_id=event_id,
             primitive_event_id=started.event_id,
             primitive_id=started.primitive_id,
-            result=result,
+            result=summary,
             result_type=type(result).__name__,
             semantic_provenance_ref=started.semantic_provenance_ref,
         )
@@ -145,6 +147,20 @@ def _validate_trace_result(value: Any) -> None:
             "trace results must be JSON-safe scalar (None/bool/int/float/str), "
             f"got {type(value).__name__}; never dump whole objects into traces"
         )
+
+
+def _trace_result_summary(value: Any) -> Any:
+    """Return the trace-stored result.
+
+    Scalar primitives keep their value.  ``EvaluatorSpec`` is the first proven
+    non-scalar primitive result; the trace stores a deterministic compact
+    string summary and never dumps the object graph.  ``PrimitiveResult`` still
+    carries the real object for callers.
+    """
+    if isinstance(value, EvaluatorSpec):
+        return f"EvaluatorSpec(fixpoint_raw=0x{value.fixpoint_raw & 0xFFFFFFFFFFFFFFFF:X})"
+    _validate_trace_result(value)
+    return value
 
 
 class ExecutionTrace:

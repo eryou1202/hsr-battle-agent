@@ -71,6 +71,36 @@ class ObjectRef:
         return f"ObjectRef(ref_id={self.ref_id})"
 
 
+@dataclass(frozen=True)
+class EvaluatorSpec:
+    """Minimal predicate/evaluator operand representation (Batch 04).
+
+    The 4.4.54 native bodies recover exactly one field for the runtime operand
+    class behind ``type_reference 23221`` / class-pointer global
+    ``0x95E2B08``: an 8-byte FixPoint raw qword at object offset +0x20.
+
+    No other field is modeled and no ``__eq__`` is defined, because only the
+    FixPoint comparison semantics are proven.  The object is immutable and
+    clone-friendly so it can travel through ``PrimitiveCall`` inputs safely.
+    """
+
+    fixpoint_raw: int
+
+    def __post_init__(self) -> None:
+        if isinstance(self.fixpoint_raw, bool) or not isinstance(self.fixpoint_raw, int):
+            raise TypeError(
+                f"EvaluatorSpec.fixpoint_raw must be int, "
+                f"got {type(self.fixpoint_raw).__name__}"
+            )
+        if not (-(2**63) <= self.fixpoint_raw <= 0xFFFFFFFFFFFFFFFF):
+            raise ValueError(
+                f"EvaluatorSpec.fixpoint_raw out of qword raw range: {self.fixpoint_raw}"
+            )
+
+    def clone(self) -> "EvaluatorSpec":
+        return EvaluatorSpec(self.fixpoint_raw)
+
+
 @dataclass(frozen=True, eq=False)
 class DynamicValue:
     """A canonical battle DynamicValue cell.

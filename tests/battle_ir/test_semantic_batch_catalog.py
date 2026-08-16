@@ -179,13 +179,86 @@ class TestFixPointComparisonBatch03Artifact(unittest.TestCase):
         self.assertNotEqual(semantics["sandbox_constructible_domain"], "")
 
 
+class TestPredicateEvaluationBridgeBatch04Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "predicate_evaluation_bridge_04.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_battle_semantics_batch(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], BATCH_SCHEMA)
+        self.assertEqual(self.raw["game_version"], "4.4.54")
+        self.assertEqual(self.raw["batch_id"], "PREDICATE_EVALUATION_BRIDGE_04")
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(len(self.raw["primitives"]), 5)
+        self.assertTrue(self.raw["composition_chains"])
+        self.assertTrue(self.raw["candidate_table"])
+
+    def test_loader_returns_separated_spec_and_provenance(self):
+        self.assertEqual(len(self.primitives), 5)
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertEqual(primitive.spec.context_writes, ())
+                self.assertEqual(primitive.spec.determinism, "DETERMINISTIC")
+                self.assertEqual(
+                    primitive.provenance.runtime_type,
+                    "RPG.GameCore.ValueEvaluatorConfig",
+                )
+                self.assertEqual(
+                    primitive.provenance.evidence_level,
+                    "E4_STATIC_MACHINE_CODE",
+                )
+                self.assertFalse(hasattr(primitive.spec, "method_index"))
+
+    def test_primitive_ids_grouped_and_unique(self):
+        ids = [primitive.spec.primitive_id for primitive in self.primitives]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue(all(pid.startswith("battle.ir.predicate.") for pid in ids))
+        self.assertEqual(
+            sum(1 for pid in ids if pid.endswith("_from_int32")), 1
+        )
+        self.assertEqual(
+            sum(1 for pid in ids if pid.endswith("_from_fixpoint_raw")), 1
+        )
+        self.assertEqual(
+            sum(1 for pid in ids if pid.endswith("_equal_int32")), 1
+        )
+        self.assertEqual(
+            sum(
+                1
+                for pid in ids
+                if pid == "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw"
+            ),
+            1,
+        )
+        self.assertEqual(
+            sum(1 for pid in ids if pid.endswith("_not_equal_raw")), 1
+        )
+
+    def test_composition_chains_are_machine_readable(self):
+        for chain in self.raw["composition_chains"]:
+            with self.subTest(chain_id=chain["chain_id"]):
+                self.assertIn("steps", chain)
+                self.assertTrue(chain["steps"])
+                for step in chain["steps"]:
+                    self.assertIn("primitive_id", step)
+                    self.assertIn("role", step)
+
+
 class TestSemanticCatalog(unittest.TestCase):
     def test_default_catalog_loads_vertical_slice_plus_batches(self):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 22)
-        self.assertEqual(len(set(ids)), 22)
+        self.assertEqual(len(ids), 27)
+        self.assertEqual(len(set(ids)), 27)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -196,7 +269,7 @@ class TestSemanticCatalog(unittest.TestCase):
         catalog = load_semantic_catalog()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 3)
+        self.assertEqual(len(catalog.artifacts), 4)
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -247,10 +320,14 @@ class TestSemanticCatalog(unittest.TestCase):
             primitives = load_catalog_primitives(catalog_path)
             ids = [primitive.spec.primitive_id for primitive in primitives]
             self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-            self.assertEqual(len(ids), 11)  # vertical slice + FixPoint Batch 03
-            self.assertTrue(
-                all(pid.startswith("battle.ir.compare.") for pid in ids[1:])
-                or any(pid.startswith("battle.ir.value.fixpoint") for pid in ids[1:])
+            # vertical slice + FixPoint Batch 03 + Predicate Bridge Batch 04
+            self.assertEqual(len(ids), 16)
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
+            )
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.predicate.")),
+                3 + 5,
             )
 
     def test_unsupported_artifact_schema_rejected(self):

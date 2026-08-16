@@ -1,0 +1,527 @@
+{
+  "schema": "battle_sandbox_runtime_report/1",
+  "sandbox_schema_version": 1,
+  "battle_state_schema_version": 1,
+  "trace_schema": "battle_sandbox_trace/1",
+  "game_semantic_version": "4.4.54",
+  "final_status": "BATTLE_SANDBOX = PREDICATE_EVALUATION_RUNTIME_04_PROOF",
+  "semantic_batch": {
+    "path": "data/semantics/4.4.54/predicate_evaluation_bridge_04.json",
+    "batch_id": "PREDICATE_EVALUATION_BRIDGE_04",
+    "accepted_primitives": 5
+  },
+  "implemented_primitives": [
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_equals",
+      "semantic_name": "DynamicValueEquals",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.Equals:74632"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_int",
+      "semantic_name": "DynamicValueToInt32",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IntValue:74637"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_uint",
+      "semantic_name": "DynamicValueToUInt32",
+      "result": "uint32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_UintValue:74638"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_long",
+      "semantic_name": "DynamicValueToInt64",
+      "result": "int64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_LongValue:74639"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_float",
+      "semantic_name": "DynamicValueToFloat32",
+      "result": "float32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_FloatValue:74633"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_double",
+      "semantic_name": "DynamicValueToFloat64",
+      "result": "float64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_DoubleValue:74634"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_bool",
+      "semantic_name": "DynamicValueToBool",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_BoolValue:74636"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_type",
+      "semantic_name": "DynamicValueTypeTag",
+      "result": "DynamicValueType",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_ValueType:74648"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_string",
+      "semantic_name": "DynamicValueStringPayload",
+      "result": "string_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_StringValue:74640"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_array",
+      "semantic_name": "DynamicValueIsArray",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsArray:74654"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_map",
+      "semantic_name": "DynamicValueIsMap",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsMap:74655"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_null",
+      "semantic_name": "DynamicValueIsNull",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsNull:74653"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_equal",
+      "semantic_name": "FixPointEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Equality:68214"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_not_equal",
+      "semantic_name": "FixPointNotEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Inequality:68215"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_greater",
+      "semantic_name": "FixPointGreaterThan",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_GreaterThan:68216"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_less",
+      "semantic_name": "FixPointLessThan",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_LessThan:68217"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_greater_equal",
+      "semantic_name": "FixPointGreaterEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_GreaterThanOrEqual:68218"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_less_equal",
+      "semantic_name": "FixPointLessEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_LessThanOrEqual:68219"
+    },
+    {
+      "primitive_id": "battle.ir.value.fixpoint_from_int32",
+      "semantic_name": "FixPointFromInt32",
+      "result": "fixpoint_raw",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Implicit:68256"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_zero",
+      "semantic_name": "FixPointIsZero",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsZero:68173"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_negative",
+      "semantic_name": "FixPointIsNegative",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsNegative:68174"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_positive",
+      "semantic_name": "FixPointIsPositive",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsPositive:68175"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_from_int32",
+      "semantic_name": "EvaluatorSpecFromInt32",
+      "result": "evaluator_spec",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.BBNJCKPKPDN:135379"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_from_fixpoint_raw",
+      "semantic_name": "EvaluatorSpecFromFixPointRaw",
+      "result": "evaluator_spec",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.BBNJCKPKPDN:135380"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_int32",
+      "semantic_name": "EvaluatorSpecFixPointEqualInt32",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.FEIIDFFOICL:135381"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw",
+      "semantic_name": "EvaluatorSpecFixPointEqualRaw",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.FEIIDFFOICL:135383"
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_not_equal_raw",
+      "semantic_name": "EvaluatorSpecFixPointNotEqualRaw",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.DLDBLNNPHKE:135384"
+    }
+  ],
+  "composition_chains": [
+    {
+      "chain_id": "evaluator_spec_int32_equal_chain",
+      "runtime_evidence": "ValueEvaluatorConfig.FEIIDFFOICL(type_ref_23221, int32)",
+      "steps": [
+        {
+          "step": 1,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_from_int32",
+          "role": "runtime object construction (native allocation + [obj+0x20] store)"
+        },
+        {
+          "step": 2,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_int32",
+          "role": "predicate leaf: [obj+0x20] read -> inline FixPointFromInt32 -> inline FixPointEqual -> bool"
+        }
+      ],
+      "inline_reuse": [
+        "battle.ir.value.fixpoint_from_int32",
+        "battle.ir.compare.fixpoint_equal"
+      ],
+      "note": "The leaf body does not call comparator RVAs; it inlines the proven Batch 03 encoding/compare dataflow. Sandbox implementation calls the shared Batch 03 helpers."
+    },
+    {
+      "chain_id": "evaluator_spec_raw_equal_chain",
+      "runtime_evidence": "ValueEvaluatorConfig.FEIIDFFOICL(type_ref_23221, FixPoint)",
+      "steps": [
+        {
+          "step": 1,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_from_fixpoint_raw",
+          "role": "runtime object construction with a raw FixPoint qword"
+        },
+        {
+          "step": 2,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw",
+          "role": "predicate leaf: [obj+0x20] read -> FixPointEqual -> bool"
+        }
+      ],
+      "inline_reuse": [
+        "battle.ir.compare.fixpoint_equal"
+      ]
+    },
+    {
+      "chain_id": "evaluator_spec_raw_not_equal_chain",
+      "runtime_evidence": "ValueEvaluatorConfig.DLDBLNNPHKE(type_ref_23221, FixPoint)",
+      "steps": [
+        {
+          "step": 1,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_from_fixpoint_raw",
+          "role": "runtime object construction with a raw FixPoint qword"
+        },
+        {
+          "step": 2,
+          "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_not_equal_raw",
+          "role": "predicate leaf: [obj+0x20] read -> FixPointNotEqual -> bool"
+        }
+      ],
+      "inline_reuse": [
+        "battle.ir.compare.fixpoint_not_equal"
+      ]
+    }
+  ],
+  "deferred_primitives": [
+    {
+      "runtime_type": "RPG.GameCore.TaskContext",
+      "method": "Evaluate(bool)",
+      "method_index": 505866,
+      "native_rva": "0xE6F0A60",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": "string-keyed evaluator dictionary dispatcher; not a leaf",
+      "deferral": "predicate dispatcher / context-heavy gameplay leaf; specific evaluator leaves were recovered instead"
+    },
+    {
+      "runtime_type": "KPCACPAEMGK",
+      "method": "ILOHHJDPDBE",
+      "method_index": 500558,
+      "native_rva": "0xB6D6E00",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": null,
+      "deferral": "predicate dispatcher / context-heavy gameplay leaf; specific evaluator leaves were recovered instead"
+    },
+    {
+      "runtime_type": "DHGEHJGMCLB",
+      "method": "ILOHHJDPDBE",
+      "method_index": 500572,
+      "native_rva": "0xE88F360",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": null,
+      "deferral": "predicate dispatcher / context-heavy gameplay leaf; specific evaluator leaves were recovered instead"
+    },
+    {
+      "runtime_type": "INEOLMDOFMB",
+      "method": "Evaluate",
+      "method_index": 507741,
+      "native_rva": "0x16117690",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": null,
+      "deferral": "predicate dispatcher / context-heavy gameplay leaf; specific evaluator leaves were recovered instead"
+    },
+    {
+      "runtime_type": "LKJEOBHCOID",
+      "method": "Evaluate",
+      "method_index": 531579,
+      "native_rva": "0xB8AE270",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": null,
+      "deferral": "predicate dispatcher / context-heavy gameplay leaf; specific evaluator leaves were recovered instead"
+    }
+  ],
+  "semantic_dependencies": [
+    {
+      "primitive_id": "battle.ir.value.fixpoint_from_int32",
+      "status": "SATISFIED",
+      "artifact": "fixpoint_comparison_batch_03.json"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_equal",
+      "status": "SATISFIED",
+      "artifact": "fixpoint_comparison_batch_03.json"
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_not_equal",
+      "status": "SATISFIED",
+      "artifact": "fixpoint_comparison_batch_03.json"
+    },
+    {
+      "primitive_id": "TaskContext.Evaluate(bool) predicate dispatcher",
+      "status": "SEMANTIC_DEPENDENCY_REQUIRED",
+      "note": "dispatcher structure observed, not recovered; leaf predicates below it are recovered in this batch"
+    }
+  ],
+  "composition_tests": [
+    {
+      "name": "TestCrossBatchComposition.test_config_value_to_fixpoint_to_comparison_to_boolean",
+      "path": "tests/battle_sandbox/test_predicate_evaluation_bridge_04.py",
+      "chain": [
+        "battle.ir.value.fixpoint_from_int32",
+        "battle.ir.predicate.evaluator_spec_from_fixpoint_raw",
+        "battle.ir.compare.fixpoint_equal",
+        "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw"
+      ],
+      "invocation_path": "PrimitiveCall -> PrimitiveExecutor -> PrimitiveRegistry",
+      "status": "PASS"
+    }
+  ],
+  "semantic_artifacts": [
+    {
+      "path": "vertical_slice_01.json",
+      "schema": "battle_semantics_vertical_slice/1",
+      "sha256": "0335012c109d578be552f76c1feabbd12c7b991c9e965c4493cc3be5d0461368",
+      "enabled": true
+    },
+    {
+      "path": "dynamic_value_batch_02.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "dfa7b722ac2117a132c5c31a4cfef837d75fda11c3418789b986d04b9a292961",
+      "enabled": true
+    },
+    {
+      "path": "fixpoint_comparison_batch_03.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f64e5ce80d573bfc43ec082f0239094cc735a29363575d92acf9dc5fa38a330a",
+      "enabled": true
+    },
+    {
+      "path": "predicate_evaluation_bridge_04.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f34b15692640066cadee96e621d80190109e1e04d79a3f8ce29435b3a58cecdc",
+      "enabled": true
+    }
+  ],
+  "test_count": 243,
+  "test_pass": 243,
+  "representation_conflicts": [],
+  "rng": {
+    "client_rng_algorithm": "UNKNOWN",
+    "sandbox_rng": "DETERMINISTIC_ABSTRACTION",
+    "sandbox_rng_algorithm": "PYTHON_RANDOM_MT19937"
+  },
+  "not_implemented_surfaces": [
+    "legal_actions",
+    "step",
+    "is_terminal",
+    "TaskContext.Evaluate(bool) predicate dispatcher",
+    "Target Selector",
+    "Target list",
+    "Entity model expansion",
+    "Modifier",
+    "Damage",
+    "DOT",
+    "Event listener",
+    "Turn / AV",
+    "HP / ATK / DEF state",
+    "Black Swan full simulation",
+    "Content Compiler full implementation",
+    "Planner"
+  ],
+  "known_unknowns": [
+    "runtime type name behind type_reference 23221 / class-pointer global 0x95E2B08",
+    "object layout beyond the single proven +0x20 qword",
+    "IL2CPP object allocation / type-hierarchy helper internals (error/default paths only)",
+    "no E5 client-side runtime observation",
+    "raw rel32 xref scan can contain false positives from byte-pattern overlap; only curated callers are reported",
+    "DynamicValue conversion methods have no direct RPG.GameCore caller in this scan; conversion reach is virtual/indirect"
+  ],
+  "generated_at": "2026-08-16T12:58:02.025348+00:00"
+}

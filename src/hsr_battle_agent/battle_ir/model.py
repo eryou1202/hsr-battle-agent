@@ -38,6 +38,22 @@ FIXPOINT_IS_ZERO_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_zero"
 FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_negative"
 FIXPOINT_IS_POSITIVE_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_positive"
 
+EVALUATOR_SPEC_FROM_INT32_PRIMITIVE_ID = (
+    "battle.ir.predicate.evaluator_spec_from_int32"
+)
+EVALUATOR_SPEC_FROM_FIXPOINT_RAW_PRIMITIVE_ID = (
+    "battle.ir.predicate.evaluator_spec_from_fixpoint_raw"
+)
+EVALUATOR_SPEC_FIXPOINT_EQUAL_INT32_PRIMITIVE_ID = (
+    "battle.ir.predicate.evaluator_spec_fixpoint_equal_int32"
+)
+EVALUATOR_SPEC_FIXPOINT_EQUAL_RAW_PRIMITIVE_ID = (
+    "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw"
+)
+EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID = (
+    "battle.ir.predicate.evaluator_spec_fixpoint_not_equal_raw"
+)
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

@@ -33,6 +33,11 @@ from hsr_battle_agent.battle_ir.model import (
     DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
     DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
     DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
+    EVALUATOR_SPEC_FIXPOINT_EQUAL_INT32_PRIMITIVE_ID,
+    EVALUATOR_SPEC_FIXPOINT_EQUAL_RAW_PRIMITIVE_ID,
+    EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID,
+    EVALUATOR_SPEC_FROM_FIXPOINT_RAW_PRIMITIVE_ID,
+    EVALUATOR_SPEC_FROM_INT32_PRIMITIVE_ID,
     FIXPOINT_EQUAL_PRIMITIVE_ID,
     FIXPOINT_FROM_INT32_PRIMITIVE_ID,
     FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID,
@@ -61,9 +66,16 @@ PrimitiveImplementation = Callable[[ExecutionContext, Mapping[str, Any]], Any]
 
 
 def _binary_impl(function: Callable[[Any, Any], Any]) -> PrimitiveImplementation:
+    return _named_binary_impl(("lhs", "rhs"), function)
+
+
+def _named_binary_impl(
+    names: tuple[str, str], function: Callable[[Any, Any], Any]
+) -> PrimitiveImplementation:
     def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
         del context  # no state reads/writes in this primitive
-        return function(inputs["lhs"], inputs["rhs"])
+        first_name, second_name = names
+        return function(inputs[first_name], inputs[second_name])
 
     return impl
 
@@ -140,6 +152,24 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     ),
     FIXPOINT_IS_POSITIVE_PRIMITIVE_ID: _unary_impl(
         predicate_runtime.fixpoint_is_positive
+    ),
+    EVALUATOR_SPEC_FROM_INT32_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.evaluator_spec_from_int32
+    ),
+    EVALUATOR_SPEC_FROM_FIXPOINT_RAW_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.evaluator_spec_from_fixpoint_raw
+    ),
+    EVALUATOR_SPEC_FIXPOINT_EQUAL_INT32_PRIMITIVE_ID: _named_binary_impl(
+        ("evaluator_spec", "rhs"),
+        predicate_runtime.evaluator_spec_fixpoint_equal_int32,
+    ),
+    EVALUATOR_SPEC_FIXPOINT_EQUAL_RAW_PRIMITIVE_ID: _named_binary_impl(
+        ("evaluator_spec", "rhs"),
+        predicate_runtime.evaluator_spec_fixpoint_equal_raw,
+    ),
+    EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID: _named_binary_impl(
+        ("evaluator_spec", "rhs"),
+        predicate_runtime.evaluator_spec_fixpoint_not_equal_raw,
     ),
 }
 
