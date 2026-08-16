@@ -1,0 +1,1449 @@
+{
+  "schema": "mhy_method_code_registry_proof/1",
+  "status": "METHOD_CODE = RVA_REGISTRY_PROOF",
+  "game": "D:\\miHoYo Launcher\\games\\Star Rail Game\\GameAssembly.dll",
+  "metadata": "D:\\miHoYo Launcher\\games\\Star Rail Game\\StarRail_Data\\il2cpp_data\\Metadata\\global-metadata.dat",
+  "template_rva": "0x563FA90",
+  "method_definition": {
+    "table_field": "0x14C",
+    "entry_size": 26,
+    "record_count": 703008
+  },
+  "mapping_rule": {
+    "native_rva": "qword(code_table_rva + method_index * 8)",
+    "null_slot_semantic": "no direct native body; see mapping_kind",
+    "consumer": {
+      "consumer_rva": 6647192,
+      "global_load_rva": 6647178,
+      "registry_pointer_global_rva": 149986648,
+      "registry_code_table_field_offset": 136,
+      "method_index_markers_present": true,
+      "disassembly": [
+        "0x656D8A  mov rax, qword ptr [rip + 0x88b2fc7]",
+        "0x656D91  mov rax, qword ptr [rax + 0x88]",
+        "0x656D98  mov r12, qword ptr [rax + r14*8]"
+      ]
+    },
+    "locator": {
+      "code_table_rva": "0x3E9D000",
+      "score": 550,
+      "first_4_slots_zero": true,
+      "semantic_anchor_hits": {
+        "4": true,
+        "16": true,
+        "18": true,
+        "22": true
+      },
+      "registry_struct_rvas": [
+        "0x5652650"
+      ],
+      "candidate_count": 1
+    }
+  },
+  "statistics": {
+    "total_method_defs": 703008,
+    "table_slots": 703008,
+    "null_slots": 26166,
+    "direct_native_slots": 676842,
+    "virtual_vtable_slots": 2831,
+    "no_direct_body_slots": 23335,
+    "unique_native_rvas": 676842,
+    "duplicate_native_pointer_slots": 0,
+    "out_of_range_nonnull_slots": 0,
+    "native_sections": {
+      "il2cpp": 676842
+    },
+    "first_null_run": "0..3 (generic AnonymousType methods)"
+  },
+  "classification": {
+    "DIRECT_NATIVE": "slot < 0 and code_table[method_index] != 0",
+    "VIRTUAL_VTABLE": "slot >= 0; direct table entry is 0; runtime dispatch via type vtable",
+    "NO_BODY": "slot < 0 and code_table[method_index] == 0 (generic/abstract/interface/internal)",
+    "THUNK": "first instruction is jmp; stable entry RVA is recorded, dispatcher is not analyzed"
+  },
+  "samples": [
+    {
+      "method_index": 0,
+      "declaring_type": "<>f__AnonymousType0`1",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 1,
+      "declaring_type": "<>f__AnonymousType0`1",
+      "method_name": "Equals",
+      "name_key": "0x0CE433DB",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 2,
+      "declaring_type": "<>f__AnonymousType0`1",
+      "method_name": "GetHashCode",
+      "name_key": "0x16C13734",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 3,
+      "declaring_type": "<>f__AnonymousType0`1",
+      "method_name": "ToString",
+      "name_key": "0x10E2C804",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 4,
+      "declaring_type": "Locale",
+      "method_name": "GetText",
+      "name_key": "0x0EE3AAAC",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155C3CF0",
+      "native_section": "il2cpp",
+      "first_bytes": "48 89 c8 c3 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov rax, rcx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "jmp 0x1950ccd60",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 5,
+      "declaring_type": "Locale",
+      "method_name": "GetText",
+      "name_key": "0x0EE3AAAC",
+      "mapping_kind": "THUNK",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155C3D00",
+      "native_section": "il2cpp",
+      "first_bytes": "e9 5b 90 b0 ff 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "jmp 0x1950ccd60",
+        "nop word ptr cs:[rax + rax]",
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "test rcx, rcx"
+      ]
+    },
+    {
+      "method_index": 6,
+      "declaring_type": "SR",
+      "method_name": "Format",
+      "name_key": "0x0CE433E7",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A0",
+      "native_rva": "0x15613E60",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 48 49 89 c9 48 8b 0d 72 b6 03 f4 48 8b",
+      "first_instructions": [
+        "sub rsp, 0x48",
+        "mov r9, rcx",
+        "mov rcx, qword ptr [rip - 0xbfc498e]",
+        "mov rcx, qword ptr [rcx + 0x97c0]",
+        "mfence ",
+        "xorps xmm0, xmm0"
+      ]
+    },
+    {
+      "method_index": 7,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "mono_runtime_install_handlers",
+      "name_key": "0x3A6110A7",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A2",
+      "native_rva": "0x155E4260",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 e8 07 50 32 ee cc 66 0f 1f 44 00 00",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "call 0x183909270",
+        "int3 ",
+        "nop word ptr [rax + rax]",
+        "sub rsp, 0x28",
+        "call 0x183909270"
+      ]
+    },
+    {
+      "method_index": 8,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "InstallSignalHandlers",
+      "name_key": "0x2A98C3D7",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155E4270",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 e8 f7 4f 32 ee cc 66 0f 1f 44 00 00",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "call 0x183909270",
+        "int3 ",
+        "nop word ptr [rax + rax]",
+        "sub rsp, 0x28",
+        "call 0x183909290"
+      ]
+    },
+    {
+      "method_index": 9,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "mono_runtime_cleanup_handlers",
+      "name_key": "0x3A6110C4",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A2",
+      "native_rva": "0x155E4280",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 e8 07 50 32 ee cc 66 0f 1f 44 00 00",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "call 0x183909290",
+        "int3 ",
+        "nop word ptr [rax + rax]",
+        "sub rsp, 0x28",
+        "call 0x183909290"
+      ]
+    },
+    {
+      "method_index": 10,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "RemoveSignalHandlers",
+      "name_key": "0x289D6180",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155E4290",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 e8 f7 4f 32 ee cc 66 0f 1f 44 00 00",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "call 0x183909290",
+        "int3 ",
+        "nop word ptr [rax + rax]",
+        "lea rcx, [rip - 0xfddf915]",
+        "mov edx, 0x23"
+      ]
+    },
+    {
+      "method_index": 11,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "GetDisplayName",
+      "name_key": "0x1CB82AC6",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155E42A0",
+      "native_section": "il2cpp",
+      "first_bytes": "48 8d 0d eb 06 22 f0 ba 23 00 00 00 e9 9f 1b 06",
+      "first_instructions": [
+        "lea rcx, [rip - 0xfddf915]",
+        "mov edx, 0x23",
+        "jmp 0x180645e50",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 12,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "GetNativeStackTrace",
+      "name_key": "0x26A2526C",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A2",
+      "native_rva": "0x155E42C0",
+      "native_section": "il2cpp",
+      "first_bytes": "90 66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "nop ",
+        "nop word ptr cs:[rax + rax]",
+        "mov al, 1",
+        "ret ",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 13,
+      "declaring_type": "Mono.Runtime",
+      "method_name": "SetGCAllowSynchronousMajor",
+      "name_key": "0x3469ACF3",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x155E42D0",
+      "native_section": "il2cpp",
+      "first_bytes": "b0 01 c3 66 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov al, 1",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "mov qword ptr [rcx], rdx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 14,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB0",
+      "native_rva": "0x155E42E0",
+      "native_section": "il2cpp",
+      "first_bytes": "48 89 11 c3 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov qword ptr [rcx], rdx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "mov qword ptr [rcx], rdx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 15,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB0",
+      "native_rva": "0x155E42F0",
+      "native_section": "il2cpp",
+      "first_bytes": "48 89 11 c3 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov qword ptr [rcx], rdx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "mov rax, qword ptr [rcx]",
+        "ret ",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 16,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": "get_Value",
+      "name_key": "0x12E170D4",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB0",
+      "native_rva": "0x155E4300",
+      "native_section": "il2cpp",
+      "first_bytes": "48 8b 01 c3 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov rax, qword ptr [rcx]",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "push rsi",
+        "push rdi",
+        "push rbx"
+      ]
+    },
+    {
+      "method_index": 17,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": "Equals",
+      "name_key": "0x0CE433DB",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x155E4310",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 53 48 83 ec 30 48 89 d6 48 89 cf 80 3d b6",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "push rbx",
+        "sub rsp, 0x30",
+        "mov rsi, rdx",
+        "mov rdi, rcx"
+      ]
+    },
+    {
+      "method_index": 18,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": "GetHashCode",
+      "name_key": "0x16C13734",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x155E4410",
+      "native_section": "il2cpp",
+      "first_bytes": "8b 01 c3 66 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov eax, dword ptr [rcx]",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "lea rax, [rcx + 0x30]",
+        "ret ",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 19,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": "GetTypeFromClass",
+      "name_key": "0x20AE871B",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A0",
+      "native_rva": "0x155E4420",
+      "native_section": "il2cpp",
+      "first_bytes": "48 8d 41 30 c3 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "lea rax, [rcx + 0x30]",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "mov rax, qword ptr [rcx]",
+        "add rax, 0x30",
+        "ret "
+      ]
+    },
+    {
+      "method_index": 20,
+      "declaring_type": "Mono.RuntimeClassHandle",
+      "method_name": "GetTypeHandle",
+      "name_key": "0x1ABBAF7A",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B0",
+      "native_rva": "0x155E4430",
+      "native_section": "il2cpp",
+      "first_bytes": "48 8b 01 48 83 c0 30 c3 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov rax, qword ptr [rcx]",
+        "add rax, 0x30",
+        "ret ",
+        "nop dword ptr [rax + rax]",
+        "mov qword ptr [rcx], rdx",
+        "ret "
+      ]
+    },
+    {
+      "method_index": 21,
+      "declaring_type": "Mono.RuntimeRemoteClassHandle",
+      "method_name": "get_ProxyClass",
+      "name_key": "0x1CB82AD4",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB0",
+      "native_rva": "0x155E4C30",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 48 8b 01 48 85 c0 74 09 48 8b 40 10",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "mov rax, qword ptr [rcx]",
+        "test rax, rax",
+        "je 0x1955e4c45",
+        "mov rax, qword ptr [rax + 0x10]",
+        "add rsp, 0x28"
+      ]
+    },
+    {
+      "method_index": 22,
+      "declaring_type": "Mono.RuntimeGenericParamInfoHandle",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB0",
+      "native_rva": "0x155E46E0",
+      "native_section": "il2cpp",
+      "first_bytes": "48 89 11 c3 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov qword ptr [rcx], rdx",
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "jmp 0x1955e4700",
+        "nop word ptr cs:[rax + rax]"
+      ]
+    },
+    {
+      "method_index": 23,
+      "declaring_type": "Mono.RuntimeGenericParamInfoHandle",
+      "method_name": "get_Constraints",
+      "name_key": "0x1EB2A00B",
+      "mapping_kind": "THUNK",
+      "slot": -1,
+      "flags_0x0E": "0x3FB0",
+      "native_rva": "0x155E46F0",
+      "native_section": "il2cpp",
+      "first_bytes": "e9 0b 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "jmp 0x1955e4700",
+        "nop word ptr cs:[rax + rax]",
+        "push r15",
+        "push r14",
+        "push r12",
+        "push rsi"
+      ]
+    },
+    {
+      "method_index": 89,
+      "declaring_type": "IContentHandler",
+      "method_name": "OnStartParsing",
+      "name_key": "0x1CB82B60",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 96,
+      "declaring_type": "IAttrList",
+      "method_name": "get_Length",
+      "name_key": "0x14DF955C",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x3AF5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 516,
+      "declaring_type": "Mono.Security.Cryptography.SymmetricTransform",
+      "method_name": "ECB",
+      "name_key": "0x06E4DB0D",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F7",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 632,
+      "declaring_type": "Mono.Math.Prime.Generator.PrimeGeneratorBase",
+      "method_name": "GenerateNewPrime",
+      "name_key": "0x20AE88BB",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 656,
+      "declaring_type": "Microsoft.Win32.IRegistryApi",
+      "method_name": "OpenSubKey",
+      "name_key": "0x14DF97AA",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 769,
+      "declaring_type": "System.ReadOnlySpan`1",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 784,
+      "declaring_type": "PerTypeValues`1",
+      "method_name": ".cctor",
+      "name_key": "0x0CE4342F",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x2FA2",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 804,
+      "declaring_type": "System.ThrowHelper",
+      "method_name": "IfNullAndNullsAreIllegalThenThrow",
+      "name_key": "0x42577EAF",
+      "mapping_kind": "VIRTUAL_VTABLE",
+      "slot": 6,
+      "flags_0x0E": "0x37A0",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 821,
+      "declaring_type": "System.TupleExtensions",
+      "method_name": "Deconstruct",
+      "name_key": "0x16C13AD0",
+      "mapping_kind": "VIRTUAL_VTABLE",
+      "slot": 7,
+      "flags_0x0E": "0x37A5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 839,
+      "declaring_type": "System.ValueTuple",
+      "method_name": "Create",
+      "name_key": "0x0CE434EF",
+      "mapping_kind": "VIRTUAL_VTABLE",
+      "slot": 9,
+      "flags_0x0E": "0x37A5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 854,
+      "declaring_type": "System.ValueTuple`1",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 1454,
+      "declaring_type": "System.Predicate`1",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 1455,
+      "declaring_type": "System.Predicate`1",
+      "method_name": "Invoke",
+      "name_key": "0x0CE43513",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x36F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 1456,
+      "declaring_type": "System.Predicate`1",
+      "method_name": "BeginInvoke",
+      "name_key": "0x16C13986",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x36F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 1457,
+      "declaring_type": "System.Predicate`1",
+      "method_name": "EndInvoke",
+      "name_key": "0x12E172F9",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x36F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 4837,
+      "declaring_type": "System.ModifierSpec",
+      "method_name": "Resolve",
+      "name_key": "0x0EE3B13C",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 4838,
+      "declaring_type": "System.ModifierSpec",
+      "method_name": "Append",
+      "name_key": "0x0CE43807",
+      "mapping_kind": "NO_BODY",
+      "slot": -1,
+      "flags_0x0E": "0x32F5",
+      "native_rva": null,
+      "native_section": null,
+      "first_bytes": "",
+      "first_instructions": []
+    },
+    {
+      "method_index": 5856,
+      "declaring_type": "System.Reflection.ParameterModifier",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1A80AB00",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 89 d7 48 89 ce 80 3d 4c 49 e0",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov edi, edx",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0x111fb6b4], 0"
+      ]
+    },
+    {
+      "method_index": 73040,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B7D0",
+      "native_section": "il2cpp",
+      "first_bytes": "c3 66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "mov byte ptr [rcx + 0x30], 2",
+        "movzx eax, dl",
+        "mov qword ptr [rcx + 0x28], rax",
+        "ret "
+      ]
+    },
+    {
+      "method_index": 73041,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B7E0",
+      "native_section": "il2cpp",
+      "first_bytes": "c6 41 30 02 0f b6 c2 48 89 41 28 c3 0f 1f 40 00",
+      "first_instructions": [
+        "mov byte ptr [rcx + 0x30], 2",
+        "movzx eax, dl",
+        "mov qword ptr [rcx + 0x28], rax",
+        "ret ",
+        "nop dword ptr [rax]",
+        "cvtss2sd xmm0, xmm1"
+      ]
+    },
+    {
+      "method_index": 73042,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B7F0",
+      "native_section": "il2cpp",
+      "first_bytes": "f3 0f 5a c1 c6 41 30 01 f2 0f 11 41 28 c3 66 90",
+      "first_instructions": [
+        "cvtss2sd xmm0, xmm1",
+        "mov byte ptr [rcx + 0x30], 1",
+        "movsd qword ptr [rcx + 0x28], xmm0",
+        "ret ",
+        "nop ",
+        "mov byte ptr [rcx + 0x30], 1"
+      ]
+    },
+    {
+      "method_index": 73043,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B800",
+      "native_section": "il2cpp",
+      "first_bytes": "c6 41 30 01 f2 0f 11 49 28 c3 66 0f 1f 44 00 00",
+      "first_instructions": [
+        "mov byte ptr [rcx + 0x30], 1",
+        "movsd qword ptr [rcx + 0x28], xmm1",
+        "ret ",
+        "nop word ptr [rax + rax]",
+        "mov byte ptr [rcx + 0x30], 5",
+        "mov qword ptr [rcx + 0x10], rdx"
+      ]
+    },
+    {
+      "method_index": 73044,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B810",
+      "native_section": "il2cpp",
+      "first_bytes": "c6 41 30 05 48 89 51 10 c3 0f 1f 80 00 00 00 00",
+      "first_instructions": [
+        "mov byte ptr [rcx + 0x30], 5",
+        "mov qword ptr [rcx + 0x10], rdx",
+        "ret ",
+        "nop dword ptr [rax]",
+        "movsxd rax, edx",
+        "mov byte ptr [rcx + 0x30], 0"
+      ]
+    },
+    {
+      "method_index": 73045,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B820",
+      "native_section": "il2cpp",
+      "first_bytes": "48 63 c2 c6 41 30 00 48 89 41 28 c3 0f 1f 40 00",
+      "first_instructions": [
+        "movsxd rax, edx",
+        "mov byte ptr [rcx + 0x30], 0",
+        "mov qword ptr [rcx + 0x28], rax",
+        "ret ",
+        "nop dword ptr [rax]",
+        "mov byte ptr [rcx + 0x30], 0"
+      ]
+    },
+    {
+      "method_index": 73046,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B830",
+      "native_section": "il2cpp",
+      "first_bytes": "c6 41 30 00 48 89 51 28 c3 0f 1f 80 00 00 00 00",
+      "first_instructions": [
+        "mov byte ptr [rcx + 0x30], 0",
+        "mov qword ptr [rcx + 0x28], rdx",
+        "ret ",
+        "nop dword ptr [rax]",
+        "mov byte ptr [rcx + 0x30], 3",
+        "mov qword ptr [rcx + 0x20], rdx"
+      ]
+    },
+    {
+      "method_index": 73047,
+      "declaring_type": "RPG.GameCore.DynamicValue",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1BB2B840",
+      "native_section": "il2cpp",
+      "first_bytes": "c6 41 30 03 48 89 51 20 c3 0f 1f 80 00 00 00 00",
+      "first_instructions": [
+        "mov byte ptr [rcx + 0x30], 3",
+        "mov qword ptr [rcx + 0x20], rdx",
+        "ret ",
+        "nop dword ptr [rax]",
+        "mov byte ptr [rcx + 0x30], 4",
+        "mov qword ptr [rcx + 0x18], rdx"
+      ]
+    },
+    {
+      "method_index": 85067,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1A3ED5F0",
+      "native_section": "il2cpp",
+      "first_bytes": "c3 66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "ret ",
+        "nop word ptr cs:[rax + rax]",
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rcx"
+      ]
+    },
+    {
+      "method_index": 85068,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "FromTableOffset",
+      "name_key": "0x1EB37247",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x36D5",
+      "native_rva": "0x1A3ED550",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 40 48 89 ce 8b 42 08 89 44 24 28 48",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x40",
+        "mov rsi, rcx",
+        "mov eax, dword ptr [rdx + 8]",
+        "mov dword ptr [rsp + 0x28], eax",
+        "mov rax, qword ptr [rdx]"
+      ]
+    },
+    {
+      "method_index": 85069,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "Reset",
+      "name_key": "0x0AE49CA9",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x36D5",
+      "native_rva": "0x1A3ED5B0",
+      "native_section": "il2cpp",
+      "first_bytes": "c7 41 7c 00 00 00 00 66 c7 41 79 00 00 0f 57 c0",
+      "first_instructions": [
+        "mov dword ptr [rcx + 0x7c], 0",
+        "mov word ptr [rcx + 0x79], 0",
+        "xorps xmm0, xmm0",
+        "movups xmmword ptr [rcx + 0x10], xmm0",
+        "movups xmmword ptr [rcx + 0x20], xmm0",
+        "mov qword ptr [rcx + 0x30], 0"
+      ]
+    },
+    {
+      "method_index": 85070,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "FromBinaryWithoutNew",
+      "name_key": "0x289E3524",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x1A3EC180",
+      "native_section": "il2cpp",
+      "first_bytes": "41 57 41 56 56 57 53 48 83 ec 20 48 89 d6 49 89",
+      "first_instructions": [
+        "push r15",
+        "push r14",
+        "push rsi",
+        "push rdi",
+        "push rbx",
+        "sub rsp, 0x20"
+      ]
+    },
+    {
+      "method_index": 85071,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "FromBinary",
+      "name_key": "0x14DF9958",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37A5",
+      "native_rva": "0x1A3EC730",
+      "native_section": "il2cpp",
+      "first_bytes": "41 57 41 56 56 57 53 48 83 ec 20 49 89 d6 49 89",
+      "first_instructions": [
+        "push r15",
+        "push r14",
+        "push rsi",
+        "push rdi",
+        "push rbx",
+        "sub rsp, 0x20"
+      ]
+    },
+    {
+      "method_index": 85072,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "get_Prefab",
+      "name_key": "0x14E01D24",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB5",
+      "native_rva": "0x1A3ED600",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 48 89 ce 80 79 78 00 74 0f 48",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rcx",
+        "cmp byte ptr [rcx + 0x78], 0",
+        "je 0x19a3ed61e"
+      ]
+    },
+    {
+      "method_index": 85073,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "get_LevelAreaPrefab",
+      "name_key": "0x26A32DAA",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB5",
+      "native_rva": "0x1A3ED6B0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 48 89 ce 80 79 78 00 74 0f 48",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rcx",
+        "cmp byte ptr [rcx + 0x78], 0",
+        "je 0x19a3ed6ce"
+      ]
+    },
+    {
+      "method_index": 85074,
+      "declaring_type": "RPG.GameCore.BattleEventRow",
+      "method_name": "get_BEActionBarPrefab",
+      "name_key": "0x2A998E21",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB5",
+      "native_rva": "0x1A3ED710",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 48 89 ce 80 79 78 00 74 0f 48",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rcx",
+        "cmp byte ptr [rcx + 0x78], 0",
+        "je 0x19a3ed72e"
+      ]
+    },
+    {
+      "method_index": 257369,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x1728EA90",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 81 ec 20 01 00 00 48 89 ce 0f 28 05 de 55",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x120",
+        "mov rsi, rcx",
+        "movaps xmm0, xmmword ptr [rip - 0x11d2aa22]",
+        "movups xmmword ptr [rcx + 0x68], xmm0",
+        "movups xmmword ptr [rcx + 0x78], xmm0"
+      ]
+    },
+    {
+      "method_index": 257370,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "GetWeight",
+      "name_key": "0x12E21727",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B5",
+      "native_rva": "0x1728D150",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 89 d7 48 89 ce 80 3d 6a e8 37",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov edi, edx",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xdc81796], 0"
+      ]
+    },
+    {
+      "method_index": 257371,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "SetWeight",
+      "name_key": "0x12E1AE75",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B5",
+      "native_rva": "0x1728D290",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 38 0f 29 74 24 20 0f 28 f2 89 d7",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x38",
+        "movaps xmmword ptr [rsp + 0x20], xmm6",
+        "movaps xmm6, xmm2",
+        "mov edi, edx"
+      ]
+    },
+    {
+      "method_index": 257372,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "GetWeight",
+      "name_key": "0x12E21727",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B5",
+      "native_rva": "0x1728D3E0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 53 48 83 ec 20 48 89 d7 48 89 ce 80 3d e3",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "push rbx",
+        "sub rsp, 0x20",
+        "mov rdi, rdx",
+        "mov rsi, rcx"
+      ]
+    },
+    {
+      "method_index": 257373,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "SetWeight",
+      "name_key": "0x12E1AE75",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B5",
+      "native_rva": "0x1728D8F0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 53 48 83 ec 30 0f 29 74 24 20 0f 28 f2 48",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "push rbx",
+        "sub rsp, 0x30",
+        "movaps xmmword ptr [rsp + 0x20], xmm6",
+        "movaps xmm6, xmm2"
+      ]
+    },
+    {
+      "method_index": 257374,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "set_LiveChild",
+      "name_key": "0x1ABCF815",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB2",
+      "native_rva": "0x1728DA80",
+      "native_section": "il2cpp",
+      "first_bytes": "48 89 91 70 01 00 00 c3 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov qword ptr [rcx + 0x170], rdx",
+        "ret ",
+        "nop dword ptr [rax + rax]",
+        "mov rax, qword ptr [rcx + 0x170]",
+        "ret ",
+        "nop dword ptr [rax + rax]"
+      ]
+    },
+    {
+      "method_index": 257375,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "get_LiveChild",
+      "name_key": "0x1ABCF822",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FB2",
+      "native_rva": "0x1728DA90",
+      "native_section": "il2cpp",
+      "first_bytes": "48 8b 81 70 01 00 00 c3 0f 1f 84 00 00 00 00 00",
+      "first_instructions": [
+        "mov rax, qword ptr [rcx + 0x170]",
+        "ret ",
+        "nop dword ptr [rax + rax]",
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx"
+      ]
+    },
+    {
+      "method_index": 257376,
+      "declaring_type": "Cinemachine.CinemachineMixingCamera",
+      "method_name": "get_State",
+      "name_key": "0x12E184E7",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x3FF5",
+      "native_rva": "0x1728DAA0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 48 81 c2 90 00 00 00 41",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "add rdx, 0x90",
+        "mov r8d, 0xe0",
+        "call 0x183e58550"
+      ]
+    },
+    {
+      "method_index": 619607,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x182E9FA0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 48 89 ce c7 41 68 00 00 80 3f",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rcx",
+        "mov dword ptr [rcx + 0x68], 0x3f800000",
+        "mov rcx, qword ptr [rip - 0xf133ad7]"
+      ]
+    },
+    {
+      "method_index": 619608,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": ".cctor",
+      "name_key": "0x0CE4342F",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FA2",
+      "native_rva": "0x182EA060",
+      "native_section": "il2cpp",
+      "first_bytes": "48 83 ec 28 80 3d 06 a9 33 f1 00 74 64 48 8b 0d",
+      "first_instructions": [
+        "sub rsp, 0x28",
+        "cmp byte ptr [rip - 0xecc56fa], 0",
+        "je 0x1982ea0d1",
+        "mov rcx, qword ptr [rip - 0xed530ac]",
+        "call qword ptr [rip - 0xec80baa]",
+        "mov dword ptr [rip - 0xec8cb68], eax"
+      ]
+    },
+    {
+      "method_index": 619609,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "KPJGDHLENIP",
+      "name_key": "0x16C68DF4",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E8250",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d fa cb 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe3406], 0",
+        "jne 0x1982e8274",
+        "cmp byte ptr [rip - 0xebe3580], 0"
+      ]
+    },
+    {
+      "method_index": 619610,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "PCNAKDOLCCD",
+      "name_key": "0x16CB2BFB",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E82B0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d 9b cb 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe3465], 0",
+        "jne 0x1982e82ce",
+        "mov rcx, rsi"
+      ]
+    },
+    {
+      "method_index": 619611,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "MFCDKJIHDEH",
+      "name_key": "0x16CB2C06",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E8B50",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d fc c2 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe3d04], 0",
+        "jne 0x1982e8b6e",
+        "mov rcx, rsi"
+      ]
+    },
+    {
+      "method_index": 619612,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "CGEJMGFOLMP",
+      "name_key": "0x16CECDB2",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E8E90",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d bd bf 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe4043], 0",
+        "jne 0x1982e8eb0",
+        "cmp byte ptr [rip - 0xebe41b9], 0"
+      ]
+    },
+    {
+      "method_index": 619613,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "JPKHCNDFAEL",
+      "name_key": "0x16CF64BB",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E8EF0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d 5e bf 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe40a2], 0",
+        "jne 0x1982e8f14",
+        "cmp byte ptr [rip - 0xebe4218], 0"
+      ]
+    },
+    {
+      "method_index": 619614,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingBehavior",
+      "method_name": "OIBPOPCFDHA",
+      "name_key": "0x16CF64C6",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37F5",
+      "native_rva": "0x182E8F50",
+      "native_section": "il2cpp",
+      "first_bytes": "56 48 83 ec 20 48 89 ce 80 3d ff be 41 f1 00 75",
+      "first_instructions": [
+        "push rsi",
+        "sub rsp, 0x20",
+        "mov rsi, rcx",
+        "cmp byte ptr [rip - 0xebe4101], 0",
+        "jne 0x1982e8f74",
+        "cmp byte ptr [rip - 0xebe4277], 0"
+      ]
+    },
+    {
+      "method_index": 619623,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingMonoPlugin",
+      "method_name": ".ctor",
+      "name_key": "0x0AE49C45",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x2FB5",
+      "native_rva": "0x182EA180",
+      "native_section": "il2cpp",
+      "first_bytes": "f2 0f 10 05 48 33 85 ec f2 0f 11 41 34 0f 28 05",
+      "first_instructions": [
+        "movsd xmm0, qword ptr [rip - 0x137accb8]",
+        "movsd qword ptr [rcx + 0x34], xmm0",
+        "movaps xmm0, xmmword ptr [rip - 0xec9aa74]",
+        "movups xmmword ptr [rcx + 0x40], xmm0",
+        "mov dword ptr [rcx + 0x50], 0x3f800000"
+      ]
+    },
+    {
+      "method_index": 619624,
+      "declaring_type": "RPG.Client.UIMusicVisualization_MusicMixingMonoPlugin",
+      "method_name": "SetMaterial",
+      "name_key": "0x16C17D07",
+      "mapping_kind": "DIRECT_NATIVE",
+      "slot": -1,
+      "flags_0x0E": "0x37B5",
+      "native_rva": "0x182EA0F0",
+      "native_section": "il2cpp",
+      "first_bytes": "56 57 48 83 ec 28 48 89 d6 48 89 cf 80 3d 74 a8",
+      "first_instructions": [
+        "push rsi",
+        "push rdi",
+        "sub rsp, 0x28",
+        "mov rsi, rdx",
+        "mov rdi, rcx",
+        "cmp byte ptr [rip - 0xecc578c], 0"
+      ]
+    }
+  ],
+  "sample_count": 76,
+  "checks": {
+    "table_slots_equal_method_defs": true,
+    "all_nonnull_point_to_executable_section": true,
+    "all_nonnull_unique": true,
+    "consumer_method_index_markers_present": true,
+    "registry_struct_reference_found": true,
+    "semantic_anchor_hits_present": true
+  },
+  "evidence_level": "E3 metadata/runtime structural + E4 code-level consumer evidence",
+  "not_claimed": [
+    "semantic decompilation of mapped native functions",
+    "vtable slot -> final implementation RVA resolution",
+    "dynamic dispatcher internals",
+    "Battle DSL / ability semantics / Black Swan analysis"
+  ]
+}

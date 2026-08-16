@@ -1,0 +1,69 @@
+{
+  "schema": "mhy_method_code_cross_version_validation/1",
+  "status": "METHOD_CODE = RVA_REGISTRY_PROOF",
+  "old": "data\\raw\\4.4.0\\il2cpp\\method_code_registry_proof_4.4.0.json",
+  "new": "data\\raw\\4.4.54\\il2cpp\\method_code_registry_proof_4.4.54.json",
+  "version_independent_mechanism": {
+    "mapping_rule": "qword(code_table + method_index * 8)",
+    "null_semantic": "no direct body (virtual slots use vtable, others classified NO_BODY)",
+    "consumer_shape": "mov r12, qword ptr [rax + r14*8] with method_index from TypeDefinition +0x08/+0x34",
+    "registry_field_offset_old": "0x88",
+    "registry_field_offset_new": "0x40"
+  },
+  "checks": {
+    "schema_matches": {
+      "pass": true,
+      "detail": "mhy_method_code_registry_proof/1 vs mhy_method_code_registry_proof/1"
+    },
+    "method_definition_entry_size_26": {
+      "pass": true,
+      "detail": "both entry_size=26"
+    },
+    "consumer_shape_matches": {
+      "pass": true,
+      "detail": "old field offset=0x88, new field offset=0x40"
+    },
+    "consumer_method_index_markers_present": {
+      "pass": true,
+      "detail": "both decode TypeDefinition method index +0x08 ^ 0x1A7AF5FE / +0x34 + 0x5F93"
+    },
+    "first_4_slots_zero_both": {
+      "pass": true,
+      "detail": "generic AnonymousType methods have no direct body in both versions"
+    },
+    "one_table_slot_per_method": {
+      "pass": true,
+      "detail": "old=703008/703008 new=732328/732328"
+    },
+    "all_nonnull_executable": {
+      "pass": true,
+      "detail": "old bad=0 new bad=0"
+    },
+    "all_nonnull_unique": {
+      "pass": true,
+      "detail": "every non-null slot has a unique native RVA in both versions"
+    },
+    "native_sections_il2cpp": {
+      "pass": true,
+      "detail": "old={'il2cpp': 676842} new={'il2cpp': 700198}"
+    },
+    "common_method_semantic_identity": {
+      "pass": true,
+      "detail": "38/38 common samples have identical type+method names"
+    },
+    "common_native_methods_have_valid_rva_both": {
+      "pass": true,
+      "detail": "20 common direct-native samples resolve in both versions"
+    },
+    "native_rva_expected_to_differ": {
+      "pass": true,
+      "detail": "20/20 RVAs differ between versions"
+    }
+  },
+  "common_samples_checked": 38,
+  "not_claimed": [
+    "native RVA equality across versions (expected to differ)",
+    "semantic decompilation",
+    "vtable/dispatcher deep dive"
+  ]
+}
