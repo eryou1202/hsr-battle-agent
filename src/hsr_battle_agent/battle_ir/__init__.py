@@ -55,6 +55,13 @@ from hsr_battle_agent.battle_ir.model import (
     TARGET_SELECT_CASTER_PRIMITIVE_ID,
     TARGET_SELECT_NONE_PRIMITIVE_ID,
     TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID,
+    TASK_BEGIN_IMMEDIATE_SUCCESS_PRIMITIVE_ID,
+    TASK_BEGIN_SELECT_SINGLE_TARGET_PRIMITIVE_ID,
+    TASK_EXECUTOR_BASE_READY_INIT_PRIMITIVE_ID,
+    TASK_EXECUTOR_INIT_PRIMITIVE_ID,
+    TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID,
+    TASK_RESET_READY_PRIMITIVE_ID,
+    TASK_STATE_READ_PRIMITIVE_ID,
     PrimitiveArgument,
     PrimitiveCall,
     PrimitiveInputSpec,
@@ -82,6 +89,7 @@ from hsr_battle_agent.battle_ir.values import (
     EvaluatorSpec,
     ObjectRef,
 )
+from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 
 __all__ = [
@@ -122,6 +130,13 @@ __all__ = [
     "TARGET_SELECT_CASTER_PRIMITIVE_ID",
     "TARGET_SELECT_NONE_PRIMITIVE_ID",
     "TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID",
+    "TASK_BEGIN_IMMEDIATE_SUCCESS_PRIMITIVE_ID",
+    "TASK_BEGIN_SELECT_SINGLE_TARGET_PRIMITIVE_ID",
+    "TASK_EXECUTOR_BASE_READY_INIT_PRIMITIVE_ID",
+    "TASK_EXECUTOR_INIT_PRIMITIVE_ID",
+    "TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID",
+    "TASK_RESET_READY_PRIMITIVE_ID",
+    "TASK_STATE_READ_PRIMITIVE_ID",
     "CatalogArtifactEntry",
     "DynamicValue",
     "DynamicValueType",
@@ -129,6 +144,8 @@ __all__ = [
     "EvaluatorSpec",
     "ObjectRef",
     "TargetSet",
+    "TaskExecutionState",
+    "TaskState",
     "PrimitiveArgument",
     "PrimitiveCall",
     "PrimitiveInputSpec",

@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Protocol
 
+from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import EvaluatorSpec
 
@@ -163,6 +164,10 @@ def _trace_result_summary(value: Any) -> Any:
     if isinstance(value, EntityRef):
         return value.trace_summary()
     if isinstance(value, TargetSet):
+        return value.trace_summary()
+    if isinstance(value, TaskState):
+        return value.trace_summary()
+    if isinstance(value, TaskExecutionState):
         return value.trace_summary()
     _validate_trace_result(value)
     return value

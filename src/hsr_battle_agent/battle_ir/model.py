@@ -71,6 +71,22 @@ TARGET_COLLAPSE_REQUIRED_SINGLE_OR_NULL_PRIMITIVE_ID = (
 )
 ENTITY_GAME_ENTITY_RUNTIME_ID_PRIMITIVE_ID = "battle.ir.entity.game_entity_runtime_id"
 
+TASK_EXECUTOR_INIT_PRIMITIVE_ID = "battle.ir.action.task_executor_init"
+TASK_BEGIN_IMMEDIATE_SUCCESS_PRIMITIVE_ID = (
+    "battle.ir.action.task_begin_immediate_success"
+)
+TASK_RESET_READY_PRIMITIVE_ID = "battle.ir.action.task_reset_ready"
+TASK_STATE_READ_PRIMITIVE_ID = "battle.ir.action.task_state_read"
+TASK_EXECUTOR_BASE_READY_INIT_PRIMITIVE_ID = (
+    "battle.ir.action.task_executor_base_ready_init"
+)
+TASK_BEGIN_SELECT_SINGLE_TARGET_PRIMITIVE_ID = (
+    "battle.ir.action.task_begin_select_single_target"
+)
+TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID = (
+    "battle.ir.action.task_reset_ready_clear_selected_target"
+)
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

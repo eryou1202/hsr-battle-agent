@@ -56,11 +56,19 @@ from hsr_battle_agent.battle_ir.model import (
     TARGET_SELECT_CASTER_PRIMITIVE_ID,
     TARGET_SELECT_NONE_PRIMITIVE_ID,
     TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID,
+    TASK_BEGIN_IMMEDIATE_SUCCESS_PRIMITIVE_ID,
+    TASK_BEGIN_SELECT_SINGLE_TARGET_PRIMITIVE_ID,
+    TASK_EXECUTOR_BASE_READY_INIT_PRIMITIVE_ID,
+    TASK_EXECUTOR_INIT_PRIMITIVE_ID,
+    TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID,
+    TASK_RESET_READY_PRIMITIVE_ID,
+    TASK_STATE_READ_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
 )
+from hsr_battle_agent.battle_runtime import actions as action_runtime
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
 from hsr_battle_agent.battle_runtime import targets as target_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
@@ -118,6 +126,18 @@ def _context_target_set_impl(
     function: Callable[[ExecutionContext], Any]
 ) -> PrimitiveImplementation:
     return _context_impl(function)
+
+
+def _no_input_impl(function: Callable[[], Any]) -> PrimitiveImplementation:
+    """Implementation that takes no explicit inputs and no context reads."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        del context
+        if inputs:
+            raise ValueError("no-input primitives take no explicit inputs")
+        return function()
+
+    return impl
 
 
 # Explicit implementation bindings.  This mapping contains no semantic spec and
@@ -226,6 +246,28 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     ),
     ENTITY_GAME_ENTITY_RUNTIME_ID_PRIMITIVE_ID: _named_unary_impl(
         "entity", target_runtime.game_entity_runtime_id
+    ),
+    TASK_EXECUTOR_INIT_PRIMITIVE_ID: _named_unary_impl(
+        "config", action_runtime.task_executor_init
+    ),
+    TASK_BEGIN_IMMEDIATE_SUCCESS_PRIMITIVE_ID: _named_unary_impl(
+        "execution", action_runtime.task_begin_immediate_success
+    ),
+    TASK_RESET_READY_PRIMITIVE_ID: _named_unary_impl(
+        "execution", action_runtime.task_reset_ready
+    ),
+    TASK_STATE_READ_PRIMITIVE_ID: _named_unary_impl(
+        "execution", action_runtime.task_state_read
+    ),
+    TASK_EXECUTOR_BASE_READY_INIT_PRIMITIVE_ID: _no_input_impl(
+        action_runtime.task_executor_base_ready_init
+    ),
+    TASK_BEGIN_SELECT_SINGLE_TARGET_PRIMITIVE_ID: _named_binary_impl(
+        ("execution", "targets"),
+        action_runtime.task_begin_select_single_target,
+    ),
+    TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID: _named_unary_impl(
+        "execution", action_runtime.task_reset_ready_clear_selected_target
     ),
 }
 
