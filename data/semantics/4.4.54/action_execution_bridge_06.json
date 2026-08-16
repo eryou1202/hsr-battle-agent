@@ -1,0 +1,1571 @@
+{
+  "schema": "battle_semantics_batch/1",
+  "game_version": "4.4.54",
+  "batch_id": "ACTION_EXECUTION_BRIDGE_06",
+  "generated_at": "2026-08-16T14:09:02.574078Z",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "final_status": "BATTLE_SEMANTIC = ACTION_EXECUTION_BRIDGE_06_PROOF",
+  "runtime_layer_name": "GENERATED_TASK_EXECUTOR_RUNTIME",
+  "runtime_layer_shape": {
+    "serialized_config_layer": "TaskConfig DSL family; serializer identity = OJNNBEJLDIJ/MGMEGEDLMAK/LJACLBNEEEB/EOJLPDGNHEK (SKIP_SERIALIZATION, unchanged from Batch 03/04/05 discipline)",
+    "generated_runtime_layer": "generated task executor class; .ctor(TaskContext, config) stores TaskContext/config slots and initializes TaskState; OnTaskBegin / OnTaskReset / Tick / Dispose implement the task lifecycle",
+    "execution_state": "TaskState enum at executor [+0x10]: Ready=0x7777, Executing=0x8888, Success=0x9999, Fail=0xAAAA",
+    "named_base_types": {
+      "RPG.GameCore.TaskState": {
+        "type_index": 54932,
+        "members": [
+          "Ready",
+          "Executing",
+          "Success",
+          "Fail",
+          "value__"
+        ]
+      },
+      "obfuscated_task_base_GELIALJDFBL": {
+        "type_index": 54936,
+        "evidence": ".ctor sets Ready; MDFBKGOJOJI reads [+0x10]; GetConfig returns TaskConfig runtime type_reference 22744"
+      },
+      "obfuscated_task_base_DJPBAKPBELL": {
+        "type_index": 36279,
+        "evidence": "FLFLCMEJEPM returns TaskConfig runtime type_reference 22744; MDFBKGOJOJI reads [+0x10]"
+      }
+    }
+  },
+  "gameassembly": {
+    "path": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+    "sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc"
+  },
+  "primitives": [
+    {
+      "primitive_id": "battle.ir.action.task_executor_init",
+      "semantic_name": "GeneratedTaskExecutorInit",
+      "description": "Generated task executor ctor for RPG.GameCore.Obsolete (HDDPKFNLMEG..ctor): stores arg0 (TaskContext) at executor [+0x20], arg1 (task config) at executor [+0x18] and sets TaskState [+0x10] = Ready (0x7777). No config/context field is read. Canonical sandbox materializes the config reference and TaskState and never stores the live ExecutionContext (reference-only native slot).",
+      "inputs": [
+        {
+          "name": "config",
+          "type": "action_config_ref"
+        }
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [],
+      "action_writes": [
+        "task_context_slot",
+        "task_config_slot",
+        "task_state"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "HDDPKFNLMEG",
+      "source_method": ".ctor",
+      "source_method_index": 517404,
+      "source_native_rva": "0x15886B40",
+      "native_body_hash": "60b01dfebe4e22c9e58550c7b67d2ac588bf479695900b700f87b763f145edba",
+      "source_identity": {
+        "method_index": 517404,
+        "declaring_type_index": 56494,
+        "method_name": ".ctor",
+        "parameter_count": 2,
+        "return_type_reference": 416617,
+        "parameter_relations": [
+          {
+            "parameter_index": 478612,
+            "method_index": 517404,
+            "name_key": "0xFFFFFFFF",
+            "name": "",
+            "type_reference": 417116,
+            "structure_status": "CONFIRMED",
+            "semantic_status": "PARAMETER_NAME_STRIPPED"
+          },
+          {
+            "parameter_index": 478613,
+            "method_index": 517404,
+            "name_key": "0xFFFFFFFF",
+            "name": "",
+            "type_reference": 417805,
+            "structure_status": "CONFIRMED",
+            "semantic_status": "PARAMETER_NAME_STRIPPED"
+          }
+        ],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0x15886B40",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 16,
+        "body_sha256": "60b01dfebe4e22c9e58550c7b67d2ac588bf479695900b700f87b763f145edba",
+        "code_table_slot_va": "0x195886B40",
+        "code_table_slot_index": 517404,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 16,
+        "instruction_count": 4,
+        "conditional_branch_count": 0,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "15886B40  c7 41 10 77 77 00 00      mov      dword ptr [rcx + 0x10], 0x7777",
+          "15886B47  48 89 51 20               mov      qword ptr [rcx + 0x20], rdx",
+          "15886B4B  4c 89 41 18               mov      qword ptr [rcx + 0x18], r8",
+          "15886B4F  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "15886B40  c7 41 10 77 77 00 00      mov      dword ptr [rcx + 0x10], 0x7777",
+          "15886B47  48 89 51 20               mov      qword ptr [rcx + 0x20], rdx",
+          "15886B4B  4c 89 41 18               mov      qword ptr [rcx + 0x18], r8",
+          "15886B4F  c3                        ret      "
+        ]
+      },
+      "branch_conditions": [
+        "none"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskExecutorInit(this, TaskContext ctx, TaskConfig config):",
+        "    this[+0x20] = ctx                # TaskContext slot (arg0)",
+        "    this[+0x18] = config             # task config slot (arg1)",
+        "    this[+0x10] = TaskState.Ready     # 0x7777"
+      ],
+      "null_behavior": "native stores pointers without validation; null ctx/config stored as-is",
+      "ordering_behavior": "single initialization; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_begin_immediate_success",
+      "semantic_name": "GeneratedTaskBeginImmediateSuccess",
+      "description": "Generated task executor OnTaskBegin for RPG.GameCore.Obsolete (HDDPKFNLMEG.OnTaskBegin): write TaskState [+0x10] = Success (0x9999) and return. This is the real empty/no-op action DSL leaf: an Obsolete task config compiles to an executor whose only observable effect is the deterministic Success transition.",
+      "inputs": [
+        {
+          "name": "execution",
+          "type": "task_execution"
+        }
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [],
+      "action_writes": [
+        "task_state"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "HDDPKFNLMEG",
+      "source_method": "OnTaskBegin",
+      "source_method_index": 517406,
+      "source_native_rva": "0x15886B90",
+      "native_body_hash": "af239a5a4e0ad3e5f45afff50e61b6a984be2e0bc1ec84ba4bb7f076ea071f20",
+      "source_identity": {
+        "method_index": 517406,
+        "declaring_type_index": 56494,
+        "method_name": "OnTaskBegin",
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0x15886B90",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 30,
+        "body_sha256": "af239a5a4e0ad3e5f45afff50e61b6a984be2e0bc1ec84ba4bb7f076ea071f20",
+        "code_table_slot_va": "0x195886B90",
+        "code_table_slot_index": 517406,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 80,
+        "instruction_count": 9,
+        "conditional_branch_count": 1,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "15886B90  56                        push     rsi",
+          "15886B91  48 83 ec 20               sub      rsp, 0x20",
+          "15886B95  48 89 ce                  mov      rsi, rcx",
+          "15886B98  80 3d 0f c8 ce f3 00      cmp      byte ptr [rip - 0xc3137f1], 0 ; [rip]->0x1895733AE (rva 0x95733AE)",
+          "15886B9F  75 0d                     jne      0x195886bae",
+          "15886BA1  c7 46 10 99 99 00 00      mov      dword ptr [rsi + 0x10], 0x9999",
+          "15886BA8  48 83 c4 20               add      rsp, 0x20",
+          "15886BAC  5e                        pop      rsi",
+          "15886BAD  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "15886B90  56                        push     rsi",
+          "15886B91  48 83 ec 20               sub      rsp, 0x20",
+          "15886B95  48 89 ce                  mov      rsi, rcx",
+          "15886B98  80 3d 0f c8 ce f3 00      cmp      byte ptr [rip - 0xc3137f1], 0 ; [rip]->0x1895733AE (rva 0x95733AE)",
+          "15886B9F  75 0d                     jne      0x195886bae",
+          "15886BA1  c7 46 10 99 99 00 00      mov      dword ptr [rsi + 0x10], 0x9999",
+          "15886BA8  48 83 c4 20               add      rsp, 0x20",
+          "15886BAC  5e                        pop      rsi",
+          "15886BAD  c3                        ret      ",
+          "15886BAE  b9 1e e5 07 00            mov      ecx, 0x7e51e",
+          "15886BB3  e8 98 08 76 00            call     0x195fe7450",
+          "15886BB8  48 85 c0                  test     rax, rax",
+          "15886BBB  74 10                     je       0x195886bcd",
+          "15886BBD  48 89 c1                  mov      rcx, rax",
+          "15886BC0  48 89 f2                  mov      rdx, rsi",
+          "15886BC3  48 83 c4 20               add      rsp, 0x20",
+          "15886BC7  5e                        pop      rsi",
+          "15886BC8  e9 e3 5c 2b 00            jmp      0x195b3c8b0",
+          "15886BCD  e8 6e b7 37 ee            call     0x183c02340",
+          "15886BD2  cc                        int3     ",
+          "15886BD3  66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]"
+        ]
+      },
+      "branch_conditions": [
+        "IL2CPP class-init gate (one-time runtime infrastructure, excluded from semantics)"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskBeginImmediateSuccess(TaskExecution execution):",
+        "    execution.task_state = TaskState.Success   # native: [+0x10] = 0x9999",
+        "    return execution"
+      ],
+      "null_behavior": "missing executor object -> native null-instance throw; no config/ctx read",
+      "ordering_behavior": "single terminal transition; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_reset_ready",
+      "semantic_name": "GeneratedTaskResetReady",
+      "description": "Generated task executor OnTaskReset for RPG.GameCore.Obsolete (HDDPKFNLMEG.OnTaskReset): write TaskState [+0x10] = Ready (0x7777) and return. Only the state field is written; this exact leaf touches no other executor slot.",
+      "inputs": [
+        {
+          "name": "execution",
+          "type": "task_execution"
+        }
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [],
+      "action_writes": [
+        "task_state"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "HDDPKFNLMEG",
+      "source_method": "OnTaskReset",
+      "source_method_index": 517407,
+      "source_native_rva": "0x15886BE0",
+      "native_body_hash": "017caa836969ee681caba06c29c49bcbc884a851addbbcbcb1d46d5f89e030c6",
+      "source_identity": {
+        "method_index": 517407,
+        "declaring_type_index": 56494,
+        "method_name": "OnTaskReset",
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0x15886BE0",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 30,
+        "body_sha256": "017caa836969ee681caba06c29c49bcbc884a851addbbcbcb1d46d5f89e030c6",
+        "code_table_slot_va": "0x195886BE0",
+        "code_table_slot_index": 517407,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 80,
+        "instruction_count": 9,
+        "conditional_branch_count": 1,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "15886BE0  56                        push     rsi",
+          "15886BE1  48 83 ec 20               sub      rsp, 0x20",
+          "15886BE5  48 89 ce                  mov      rsi, rcx",
+          "15886BE8  80 3d c0 c7 ce f3 00      cmp      byte ptr [rip - 0xc313840], 0 ; [rip]->0x1895733AF (rva 0x95733AF)",
+          "15886BEF  75 0d                     jne      0x195886bfe",
+          "15886BF1  c7 46 10 77 77 00 00      mov      dword ptr [rsi + 0x10], 0x7777",
+          "15886BF8  48 83 c4 20               add      rsp, 0x20",
+          "15886BFC  5e                        pop      rsi",
+          "15886BFD  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "15886BE0  56                        push     rsi",
+          "15886BE1  48 83 ec 20               sub      rsp, 0x20",
+          "15886BE5  48 89 ce                  mov      rsi, rcx",
+          "15886BE8  80 3d c0 c7 ce f3 00      cmp      byte ptr [rip - 0xc313840], 0 ; [rip]->0x1895733AF (rva 0x95733AF)",
+          "15886BEF  75 0d                     jne      0x195886bfe",
+          "15886BF1  c7 46 10 77 77 00 00      mov      dword ptr [rsi + 0x10], 0x7777",
+          "15886BF8  48 83 c4 20               add      rsp, 0x20",
+          "15886BFC  5e                        pop      rsi",
+          "15886BFD  c3                        ret      ",
+          "15886BFE  b9 1f e5 07 00            mov      ecx, 0x7e51f",
+          "15886C03  e8 48 08 76 00            call     0x195fe7450",
+          "15886C08  48 85 c0                  test     rax, rax",
+          "15886C0B  74 10                     je       0x195886c1d",
+          "15886C0D  48 89 c1                  mov      rcx, rax",
+          "15886C10  48 89 f2                  mov      rdx, rsi",
+          "15886C13  48 83 c4 20               add      rsp, 0x20",
+          "15886C17  5e                        pop      rsi",
+          "15886C18  e9 93 5c 2b 00            jmp      0x195b3c8b0",
+          "15886C1D  e8 1e b7 37 ee            call     0x183c02340",
+          "15886C22  cc                        int3     ",
+          "15886C23  66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]"
+        ]
+      },
+      "branch_conditions": [
+        "IL2CPP class-init gate (one-time runtime infrastructure, excluded from semantics)"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskResetReady(TaskExecution execution):",
+        "    execution.task_state = TaskState.Ready    # native: [+0x10] = 0x7777",
+        "    return execution"
+      ],
+      "null_behavior": "missing executor object -> native null-instance throw",
+      "ordering_behavior": "single reset transition; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_state_read",
+      "semantic_name": "GeneratedTaskBaseTaskStateAccessor",
+      "description": "Generated task-executor base class accessor (GELIALJDFBL.MDFBKGOJOJI): return the raw int32 TaskState stored at executor [+0x10]. The obfuscated method name is anchored by the TaskState constants (0x7777/0x8888/0x9999/0xAAAA) written by every recovered lifecycle leaf and by GELIALJDFBL.GetConfig returning TaskConfig runtime type_reference 22744.",
+      "inputs": [
+        {
+          "name": "execution",
+          "type": "task_execution"
+        }
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [
+        "task_state"
+      ],
+      "action_writes": [],
+      "result": "task_state",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "GELIALJDFBL",
+      "source_method": "MDFBKGOJOJI",
+      "source_method_index": 505903,
+      "source_native_rva": "0x156A31A0",
+      "native_body_hash": "7ce19da4913468429ecebd5dc99e275051391d86edef04a4c613b8b2b1108820",
+      "source_identity": {
+        "method_index": 505903,
+        "declaring_type_index": 54936,
+        "method_name": "MDFBKGOJOJI",
+        "parameter_count": 0,
+        "return_type_reference": 281962,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0x156A31A0",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 26,
+        "body_sha256": "7ce19da4913468429ecebd5dc99e275051391d86edef04a4c613b8b2b1108820",
+        "code_table_slot_va": "0x1956A31A0",
+        "code_table_slot_index": 505903,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 64,
+        "instruction_count": 9,
+        "conditional_branch_count": 1,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "156A31A0  56                        push     rsi",
+          "156A31A1  48 83 ec 20               sub      rsp, 0x20",
+          "156A31A5  48 89 ce                  mov      rsi, rcx",
+          "156A31A8  80 3d 10 d5 ec f3 00      cmp      byte ptr [rip - 0xc132af0], 0 ; [rip]->0x1895706BF (rva 0x95706BF)",
+          "156A31AF  75 09                     jne      0x1956a31ba",
+          "156A31B1  8b 46 10                  mov      eax, dword ptr [rsi + 0x10]",
+          "156A31B4  48 83 c4 20               add      rsp, 0x20",
+          "156A31B8  5e                        pop      rsi",
+          "156A31B9  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "156A31A0  56                        push     rsi",
+          "156A31A1  48 83 ec 20               sub      rsp, 0x20",
+          "156A31A5  48 89 ce                  mov      rsi, rcx",
+          "156A31A8  80 3d 10 d5 ec f3 00      cmp      byte ptr [rip - 0xc132af0], 0 ; [rip]->0x1895706BF (rva 0x95706BF)",
+          "156A31AF  75 09                     jne      0x1956a31ba",
+          "156A31B1  8b 46 10                  mov      eax, dword ptr [rsi + 0x10]",
+          "156A31B4  48 83 c4 20               add      rsp, 0x20",
+          "156A31B8  5e                        pop      rsi",
+          "156A31B9  c3                        ret      ",
+          "156A31BA  b9 2f b8 07 00            mov      ecx, 0x7b82f",
+          "156A31BF  e8 8c 42 94 00            call     0x195fe7450",
+          "156A31C4  48 85 c0                  test     rax, rax",
+          "156A31C7  74 10                     je       0x1956a31d9",
+          "156A31C9  48 89 c1                  mov      rcx, rax",
+          "156A31CC  48 89 f2                  mov      rdx, rsi",
+          "156A31CF  48 83 c4 20               add      rsp, 0x20",
+          "156A31D3  5e                        pop      rsi",
+          "156A31D4  e9 77 df 4a 00            jmp      0x195b51150",
+          "156A31D9  e8 62 f1 55 ee            call     0x183c02340",
+          "156A31DE  cc                        int3     ",
+          "156A31DF  90                        nop      "
+        ]
+      },
+      "branch_conditions": [
+        "IL2CPP class-init gate (one-time runtime infrastructure, excluded from semantics)"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "task_state TaskStateRead(TaskExecution execution):",
+        "    return execution.task_state         # native: eax = [this + 0x10]"
+      ],
+      "null_behavior": "missing executor object -> native null-instance throw",
+      "ordering_behavior": "single scalar read; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_executor_base_ready_init",
+      "semantic_name": "GeneratedTaskBaseReadyInit",
+      "description": "Generated task-executor base ctor (GELIALJDFBL..ctor): set TaskState [+0x10] = Ready (0x7777). This is the shared base-state initialization every generated executor inherits; config/context slots are written by the concrete generated ctor.",
+      "inputs": [],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [],
+      "action_writes": [
+        "task_state"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "GELIALJDFBL",
+      "source_method": ".ctor",
+      "source_method_index": 505902,
+      "source_native_rva": "0x156600E0",
+      "native_body_hash": "c60790e2c4a20d17e615da999144ab1f227933ceb6c89a0bd06be3cd71ae8d9f",
+      "source_identity": {
+        "method_index": 505902,
+        "declaring_type_index": 54936,
+        "method_name": ".ctor",
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0x156600E0",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 8,
+        "body_sha256": "c60790e2c4a20d17e615da999144ab1f227933ceb6c89a0bd06be3cd71ae8d9f",
+        "code_table_slot_va": "0x1956600E0",
+        "code_table_slot_index": 505902,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 16,
+        "instruction_count": 2,
+        "conditional_branch_count": 0,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "156600E0  c7 41 10 77 77 00 00      mov      dword ptr [rcx + 0x10], 0x7777",
+          "156600E7  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "156600E0  c7 41 10 77 77 00 00      mov      dword ptr [rcx + 0x10], 0x7777",
+          "156600E7  c3                        ret      ",
+          "156600E8  0f 1f 84 00 00 00 00 00   nop      dword ptr [rax + rax]"
+        ]
+      },
+      "branch_conditions": [
+        "none"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskBaseReadyInit():",
+        "    execution.task_state = TaskState.Ready   # native: [+0x10] = 0x7777",
+        "    return execution"
+      ],
+      "null_behavior": "missing receiver -> native null-instance throw",
+      "ordering_behavior": "single initialization; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_begin_select_single_target",
+      "semantic_name": "GeneratedTaskBeginSelectSingleTarget",
+      "description": "Generated task executor OnTaskBegin for RPG.GameCore.SwitchHandItemSetBreathingLight (CPHGMLEAPJL.OnTaskBegin): set TaskState [+0x10] = Executing (0x8888), evaluate the config target slot through TaskContext.EvaluateSingleTarget (Batch 05 collapse semantics), store the resulting single entity at executor [+0x28], then tailcall Tick with deltaTime=0. Canonical sandbox receives the already-evaluated ordered TargetSet and applies the proven Batch 05 collapse; the deferred Tick gameplay leaf is recorded separately.",
+      "inputs": [
+        {
+          "name": "execution",
+          "type": "task_execution"
+        },
+        {
+          "name": "targets",
+          "type": "TargetSet"
+        }
+      ],
+      "context_reads": [
+        "targets"
+      ],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [
+        "task_state"
+      ],
+      "action_writes": [
+        "task_state",
+        "selected_target",
+        "next_phase"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "CPHGMLEAPJL",
+      "source_method": "OnTaskBegin",
+      "source_method_index": 498176,
+      "source_native_rva": "0xDD77480",
+      "native_body_hash": "fd86dbf0b137f008384d0bda402af484a54d529a4d997484e5c4b0b1855ecf7f",
+      "source_identity": {
+        "method_index": 498176,
+        "declaring_type_index": 53526,
+        "method_name": "OnTaskBegin",
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xDD77480",
+        "body_window_kind": "NORMAL_PATH_FIRST_TAILCALL_PROJECTION",
+        "body_length_bytes": 76,
+        "body_sha256": "fd86dbf0b137f008384d0bda402af484a54d529a4d997484e5c4b0b1855ecf7f",
+        "code_table_slot_va": "0x18DD77480",
+        "code_table_slot_index": 498176,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 128,
+        "instruction_count": 21,
+        "conditional_branch_count": 3,
+        "direct_call_count": 1,
+        "direct_jump_count": 1,
+        "disassembly": [
+          "0DD77480  56                        push     rsi",
+          "0DD77481  48 83 ec 20               sub      rsp, 0x20",
+          "0DD77485  48 89 ce                  mov      rsi, rcx",
+          "0DD77488  80 3d 01 74 7f fb 00      cmp      byte ptr [rip - 0x4808bff], 0 ; [rip]->0x18956E890 (rva 0x956E890)",
+          "0DD7748F  75 3b                     jne      0x18dd774cc",
+          "0DD77491  c7 46 10 88 88 00 00      mov      dword ptr [rsi + 0x10], 0x8888",
+          "0DD77498  48 8b 46 18               mov      rax, qword ptr [rsi + 0x18]",
+          "0DD7749C  48 85 c0                  test     rax, rax",
+          "0DD7749F  74 4a                     je       0x18dd774eb",
+          "0DD774A1  48 8b 4e 20               mov      rcx, qword ptr [rsi + 0x20]",
+          "0DD774A5  48 85 c9                  test     rcx, rcx",
+          "0DD774A8  74 46                     je       0x18dd774f0",
+          "0DD774AA  48 8b 50 18               mov      rdx, qword ptr [rax + 0x18]",
+          "0DD774AE  66 41 b8 ff ff            mov      r8w, 0xffff",
+          "0DD774B3  e8 78 e3 95 00            call     0x18e6d5830",
+          "0DD774B8  48 89 46 28               mov      qword ptr [rsi + 0x28], rax",
+          "0DD774BC  0f 57 c9                  xorps    xmm1, xmm1",
+          "0DD774BF  48 89 f1                  mov      rcx, rsi",
+          "0DD774C2  48 83 c4 20               add      rsp, 0x20",
+          "0DD774C6  5e                        pop      rsi",
+          "0DD774C7  e9 14 fe ff ff            jmp      0x18dd772e0"
+        ],
+        "full_gap_disassembly": [
+          "0DD77480  56                        push     rsi",
+          "0DD77481  48 83 ec 20               sub      rsp, 0x20",
+          "0DD77485  48 89 ce                  mov      rsi, rcx",
+          "0DD77488  80 3d 01 74 7f fb 00      cmp      byte ptr [rip - 0x4808bff], 0 ; [rip]->0x18956E890 (rva 0x956E890)",
+          "0DD7748F  75 3b                     jne      0x18dd774cc",
+          "0DD77491  c7 46 10 88 88 00 00      mov      dword ptr [rsi + 0x10], 0x8888",
+          "0DD77498  48 8b 46 18               mov      rax, qword ptr [rsi + 0x18]",
+          "0DD7749C  48 85 c0                  test     rax, rax",
+          "0DD7749F  74 4a                     je       0x18dd774eb",
+          "0DD774A1  48 8b 4e 20               mov      rcx, qword ptr [rsi + 0x20]",
+          "0DD774A5  48 85 c9                  test     rcx, rcx",
+          "0DD774A8  74 46                     je       0x18dd774f0",
+          "0DD774AA  48 8b 50 18               mov      rdx, qword ptr [rax + 0x18]",
+          "0DD774AE  66 41 b8 ff ff            mov      r8w, 0xffff",
+          "0DD774B3  e8 78 e3 95 00            call     0x18e6d5830",
+          "0DD774B8  48 89 46 28               mov      qword ptr [rsi + 0x28], rax",
+          "0DD774BC  0f 57 c9                  xorps    xmm1, xmm1",
+          "0DD774BF  48 89 f1                  mov      rcx, rsi",
+          "0DD774C2  48 83 c4 20               add      rsp, 0x20",
+          "0DD774C6  5e                        pop      rsi",
+          "0DD774C7  e9 14 fe ff ff            jmp      0x18dd772e0",
+          "0DD774CC  b9 00 9a 07 00            mov      ecx, 0x79a00",
+          "0DD774D1  e8 7a ff 26 08            call     0x195fe7450",
+          "0DD774D6  48 85 c0                  test     rax, rax",
+          "0DD774D9  74 1a                     je       0x18dd774f5",
+          "0DD774DB  48 89 c1                  mov      rcx, rax",
+          "0DD774DE  48 89 f2                  mov      rdx, rsi",
+          "0DD774E1  48 83 c4 20               add      rsp, 0x20",
+          "0DD774E5  5e                        pop      rsi",
+          "0DD774E6  e9 c5 53 dc 07            jmp      0x195b3c8b0",
+          "0DD774EB  e8 50 ae e8 f5            call     0x183c02340",
+          "0DD774F0  e8 4b ae e8 f5            call     0x183c02340",
+          "0DD774F5  e8 46 ae e8 f5            call     0x183c02340",
+          "0DD774FA  cc                        int3     ",
+          "0DD774FB  0f 1f 44 00 00            nop      dword ptr [rax + rax]"
+        ]
+      },
+      "branch_conditions": [
+        "IL2CPP class-init gate (one-time runtime infrastructure)",
+        "ctx slot [+0x20] null -> throw",
+        "config slot [+0x18] null -> throw",
+        "EvaluateSingleTarget: 0 or >=2 targets -> null (Batch 05)",
+        "tailcall Tick with dt=0 after storing the selected target"
+      ],
+      "required_callees": [
+        "0x18E6D5830 TaskContext.EvaluateSingleTarget (SEMANTIC_DEPENDENCY_SATISFIED_BATCH_05)",
+        "0x18DD772E0 CPHGMLEAPJL.Tick (tailcall, gameplay leaf DEFERRED_ACTION_LEAF)"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskBeginSelectSingleTarget(TaskExecution execution, TargetSet targets):",
+        "    execution.task_state = TaskState.Executing   # native: [+0x10] = 0x8888",
+        "    entity = EvaluateSingleTarget(ctx, config.TargetType, mask=0xffff)",
+        "            # Batch 05: collapse_required_single_or_null(targets)",
+        "    execution.selected_target = entity           # native: [+0x28] = rax",
+        "    execution.next_phase = 'Tick'                # native: tailcall Tick(this, dt=0)",
+        "    return execution"
+      ],
+      "null_behavior": "null ctx/config slots -> throw; null/0/2+ target results -> selected_target=null",
+      "ordering_behavior": "single-target projection; Batch 05 ordered-list collapse",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_reset_ready_clear_selected_target",
+      "semantic_name": "GeneratedTaskResetReadyClearTarget",
+      "description": "Generated task executor OnTaskReset for RPG.GameCore.SwitchHandItemSetBreathingLight (CPHGMLEAPJL.OnTaskReset): write TaskState [+0x10] = Ready (0x7777) and clear the selected-target slot [+0x28] = null. This is the target-aware reset leaf paired with task_begin_select_single_target.",
+      "inputs": [
+        {
+          "name": "execution",
+          "type": "task_execution"
+        }
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "state_reads": [],
+      "state_writes": [],
+      "action_reads": [],
+      "action_writes": [
+        "task_state",
+        "selected_target"
+      ],
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "source_runtime_type": "CPHGMLEAPJL",
+      "source_method": "OnTaskReset",
+      "source_method_index": 498177,
+      "source_native_rva": "0xDD77500",
+      "native_body_hash": "66e2ebad94e090c1a7d39d22ec2f5de4e7db350b025a1a8cf4b51cd18534d1fd",
+      "source_identity": {
+        "method_index": 498177,
+        "declaring_type_index": 53526,
+        "method_name": "OnTaskReset",
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "parameter_relations": [],
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xDD77500",
+        "body_window_kind": "NORMAL_PATH_FIRST_RET_PROJECTION",
+        "body_length_bytes": 38,
+        "body_sha256": "66e2ebad94e090c1a7d39d22ec2f5de4e7db350b025a1a8cf4b51cd18534d1fd",
+        "code_table_slot_va": "0x18DD77500",
+        "code_table_slot_index": 498177,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "full_gap_to_next_method": 80,
+        "instruction_count": 10,
+        "conditional_branch_count": 1,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "disassembly": [
+          "0DD77500  56                        push     rsi",
+          "0DD77501  48 83 ec 20               sub      rsp, 0x20",
+          "0DD77505  48 89 ce                  mov      rsi, rcx",
+          "0DD77508  80 3d 82 73 7f fb 00      cmp      byte ptr [rip - 0x4808c7e], 0 ; [rip]->0x18956E891 (rva 0x956E891)",
+          "0DD7750F  75 15                     jne      0x18dd77526",
+          "0DD77511  c7 46 10 77 77 00 00      mov      dword ptr [rsi + 0x10], 0x7777",
+          "0DD77518  48 c7 46 28 00 00 00 00   mov      qword ptr [rsi + 0x28], 0",
+          "0DD77520  48 83 c4 20               add      rsp, 0x20",
+          "0DD77524  5e                        pop      rsi",
+          "0DD77525  c3                        ret      "
+        ],
+        "full_gap_disassembly": [
+          "0DD77500  56                        push     rsi",
+          "0DD77501  48 83 ec 20               sub      rsp, 0x20",
+          "0DD77505  48 89 ce                  mov      rsi, rcx",
+          "0DD77508  80 3d 82 73 7f fb 00      cmp      byte ptr [rip - 0x4808c7e], 0 ; [rip]->0x18956E891 (rva 0x956E891)",
+          "0DD7750F  75 15                     jne      0x18dd77526",
+          "0DD77511  c7 46 10 77 77 00 00      mov      dword ptr [rsi + 0x10], 0x7777",
+          "0DD77518  48 c7 46 28 00 00 00 00   mov      qword ptr [rsi + 0x28], 0",
+          "0DD77520  48 83 c4 20               add      rsp, 0x20",
+          "0DD77524  5e                        pop      rsi",
+          "0DD77525  c3                        ret      ",
+          "0DD77526  b9 01 9a 07 00            mov      ecx, 0x79a01",
+          "0DD7752B  e8 20 ff 26 08            call     0x195fe7450",
+          "0DD77530  48 85 c0                  test     rax, rax",
+          "0DD77533  74 10                     je       0x18dd77545",
+          "0DD77535  48 89 c1                  mov      rcx, rax",
+          "0DD77538  48 89 f2                  mov      rdx, rsi",
+          "0DD7753B  48 83 c4 20               add      rsp, 0x20",
+          "0DD7753F  5e                        pop      rsi",
+          "0DD77540  e9 6b 53 dc 07            jmp      0x195b3c8b0",
+          "0DD77545  e8 f6 ad e8 f5            call     0x183c02340",
+          "0DD7754A  cc                        int3     ",
+          "0DD7754B  0f 1f 44 00 00            nop      dword ptr [rax + rax]"
+        ]
+      },
+      "branch_conditions": [
+        "IL2CPP class-init gate (one-time runtime infrastructure, excluded from semantics)"
+      ],
+      "required_callees": [
+        "none"
+      ],
+      "pseudocode": [
+        "TaskExecution TaskResetReadyClearTarget(TaskExecution execution):",
+        "    execution.task_state = TaskState.Ready     # native: [+0x10] = 0x7777",
+        "    execution.selected_target = null           # native: [+0x28] = 0",
+        "    return execution"
+      ],
+      "null_behavior": "missing executor object -> native null-instance throw",
+      "ordering_behavior": "single reset transition; no ordering",
+      "determinism_note": "task-state transitions are constant writes; no PRNG / clock / context dependency in the accepted leaves"
+    }
+  ],
+  "execution_chains": [
+    {
+      "chain_id": "obsolete_empty_action_chain",
+      "status": "E4_CHAIN_CLOSED",
+      "config": {
+        "runtime_type": "RPG.GameCore.Obsolete",
+        "type_index": 23463,
+        "serializer_method_index": 133237,
+        "serializer_native_rva": "0x1D26B830",
+        "runtime_type_reference": 417805,
+        "fields": [
+          "Message (string, serializer-only; never read by the leaf)"
+        ]
+      },
+      "runtime_bridge": {
+        "kind": "TYPE_REFERENCE_MATCH",
+        "evidence": "generated executor .ctor second parameter type_reference == RPG.GameCore.Obsolete.MGMEGEDLMAK second parameter type_reference (417805)",
+        "executor_runtime_type": "HDDPKFNLMEG",
+        "executor_type_index": 56494
+      },
+      "steps": [
+        {
+          "step": 1,
+          "role": "config -> generated executor",
+          "method": ".ctor",
+          "method_index": 517404,
+          "native_rva": "0x15886B40",
+          "primitive_id": "battle.ir.action.task_executor_init"
+        },
+        {
+          "step": 2,
+          "role": "execution method",
+          "method": "OnTaskBegin",
+          "method_index": 517406,
+          "native_rva": "0x15886B90",
+          "primitive_id": "battle.ir.action.task_begin_immediate_success"
+        },
+        {
+          "step": 3,
+          "role": "observable deterministic effect",
+          "effect": "TaskState [+0x10] = Success (0x9999); no context/state write"
+        }
+      ]
+    },
+    {
+      "chain_id": "obsolete_empty_action_reset_chain",
+      "status": "E4_CHAIN_CLOSED",
+      "config": {
+        "runtime_type": "RPG.GameCore.Obsolete",
+        "type_index": 23463,
+        "serializer_method_index": 133237,
+        "serializer_native_rva": "0x1D26B830",
+        "runtime_type_reference": 417805,
+        "fields": [
+          "Message (string, serializer-only; never read by the leaf)"
+        ]
+      },
+      "runtime_bridge": {
+        "kind": "TYPE_REFERENCE_MATCH",
+        "evidence": "generated executor .ctor second parameter type_reference == RPG.GameCore.Obsolete.MGMEGEDLMAK second parameter type_reference (417805)",
+        "executor_runtime_type": "HDDPKFNLMEG",
+        "executor_type_index": 56494
+      },
+      "steps": [
+        {
+          "step": 1,
+          "role": "generated executor lifecycle reset",
+          "method": "OnTaskReset",
+          "method_index": 517407,
+          "native_rva": "0x15886BE0",
+          "primitive_id": "battle.ir.action.task_reset_ready"
+        },
+        {
+          "step": 2,
+          "role": "observable deterministic effect",
+          "effect": "TaskState [+0x10] = Ready (0x7777)"
+        }
+      ]
+    },
+    {
+      "chain_id": "target_select_executor_chain",
+      "status": "E4_CHAIN_TARGET_STORE_CLOSED_TICK_LEAF_DEFERRED",
+      "config": {
+        "runtime_type": "RPG.GameCore.SwitchHandItemSetBreathingLight",
+        "type_index": 20711,
+        "serializer_method_index": 119514,
+        "serializer_native_rva": "0x1D4FDF80",
+        "runtime_type_reference": 418221,
+        "fields": [
+          "TargetType (target config slot read at +0x18)",
+          "Enable",
+          "EnableItem"
+        ]
+      },
+      "runtime_bridge": {
+        "kind": "TYPE_REFERENCE_MATCH",
+        "evidence": "generated executor .ctor second parameter type_reference == config MGMEGEDLMAK second parameter type_reference (418221)",
+        "executor_runtime_type": "CPHGMLEAPJL",
+        "executor_type_index": 53526
+      },
+      "steps": [
+        {
+          "step": 1,
+          "role": "task state -> Executing",
+          "method": "OnTaskBegin",
+          "method_index": 498176,
+          "native_rva": "0xDD77480",
+          "primitive_id": "battle.ir.action.task_begin_select_single_target"
+        },
+        {
+          "step": 2,
+          "role": "target input (Batch 05 reuse)",
+          "dependency": "battle.ir.target.collapse_required_single_or_null",
+          "status": "SATISFIED_BATCH_05"
+        },
+        {
+          "step": 3,
+          "role": "transient write",
+          "effect": "executor [+0x28] = selected target (EntityRef|null)"
+        },
+        {
+          "step": 4,
+          "role": "next phase",
+          "effect": "tailcall Tick(this, dt=0) -> DEFERRED_ACTION_LEAF (component field write)"
+        }
+      ]
+    },
+    {
+      "chain_id": "battle_current_turn_action_chain",
+      "status": "E4_STRUCTURE_SUPPORTED_PERSISTENT_DEPENDENCY",
+      "config": {
+        "runtime_type": "RPG.GameCore.SetCurrentTurnActionEntity",
+        "type_index": 23367,
+        "serializer_method_index": 128083,
+        "serializer_native_rva": "0x1D45CE10",
+        "runtime_type_reference": 431371,
+        "fields": [
+          "TargetType (target config slot read at +0x18)"
+        ]
+      },
+      "runtime_bridge": {
+        "kind": "TYPE_REFERENCE_MATCH",
+        "evidence": "generated executor .ctor second parameter type_reference == config MGMEGEDLMAK second parameter type_reference (431371)",
+        "executor_runtime_type": "EBHAGBCPFEN",
+        "executor_type_index": 55529
+      },
+      "steps": [
+        {
+          "step": 1,
+          "role": "task state -> Success before gameplay leaf",
+          "method": "OnTaskBegin",
+          "method_index": 508567,
+          "native_rva": "0x12844660",
+          "effect": "TaskState [+0x10] = Success (0x9999)"
+        },
+        {
+          "step": 2,
+          "role": "target input (Batch 05 reuse)",
+          "dependency": "battle.ir.target.collapse_single_or_null",
+          "status": "SATISFIED_BATCH_05",
+          "native_call": "0x18E43E160 AbilityStatic.GetTaskSingleTarget"
+        },
+        {
+          "step": 3,
+          "role": "gameplay leaf",
+          "dependency": "RPG.GameCore.TurnBasedGameMode.SetCurrentTurnActionEntity",
+          "method_index": 499719,
+          "native_rva": "0xE75F700",
+          "status": "PERSISTENT_STATE_DEPENDENCY_REQUIRED",
+          "observed_writes": "[mode+0x2FA]=0, [mode+0x318]=0 and conditional [mode+0x2C9]/[mode+0x2CA]=0 when the new entity differs"
+        }
+      ]
+    }
+  ],
+  "context_reads": [
+    "targets"
+  ],
+  "context_writes": [],
+  "state_reads": [],
+  "state_writes": [],
+  "deferred_effects": [
+    {
+      "effect_id": "turn_based_game_mode_set_current_turn_action_entity",
+      "entry": "RPG.GameCore.SetCurrentTurnActionEntity config -> EBHAGBCPFEN.OnTaskBegin",
+      "native_rva": "0x12844660",
+      "leaf": {
+        "runtime_type": "RPG.GameCore.TurnBasedGameMode",
+        "method": "SetCurrentTurnActionEntity",
+        "method_index": 499719,
+        "native_rva": "0xE75F700"
+      },
+      "classification": "PERSISTENT_STATE_DEPENDENCY_REQUIRED",
+      "observed_writes": "[mode+0x2FA]=0, [mode+0x318]=0, conditional [mode+0x2C9]/[mode+0x2CA]=0 when current entity differs",
+      "dependency": "TurnBasedGameMode field identities +0x100/+0x2FA/+0x318/+0x2C9/+0x2CA"
+    },
+    {
+      "effect_id": "switch_hand_item_breathing_light_tick_leaf",
+      "entry": "CPHGMLEAPJL.OnTaskBegin tailcall -> CPHGMLEAPJL.Tick",
+      "native_rva": "0xDD772E0",
+      "classification": "COMPONENT_STATE_DEPENDENCY_REQUIRED",
+      "observed_writes": "component [+0x44] bytes from TaskContext [+0x20]/[+0x21] (class global 0x983DA48)",
+      "dependency": "component class identity and +0x44 field semantic"
+    },
+    {
+      "effect_id": "trigger_hit_target_leaf",
+      "entry": "RPG.GameCore.TriggerHitTarget -> FNGLHFPADGA.OnTaskBegin -> NICNFGOAOHI",
+      "native_rva": "0x15547AB0",
+      "classification": "SEMANTIC_DEPENDENCY_REQUIRED",
+      "dependency": "hit/damage target processing subsystem"
+    },
+    {
+      "effect_id": "notify_manager_client_event_effects",
+      "entry": "ForbidBattleConditionOnStart / SetBattleTargetMultiTargetSwitch leaves",
+      "native_rva": "0xD994450",
+      "classification": "SKIP_EVENT_SYSTEM",
+      "dependency": "RPG.Client.NotifyManager event dispatch"
+    }
+  ],
+  "semantic_dependencies": [
+    {
+      "primitive_id": "battle.ir.target.collapse_single_or_null",
+      "status": "SATISFIED_BATCH_05",
+      "artifact": "target_selector_batch_05.json"
+    },
+    {
+      "primitive_id": "battle.ir.target.collapse_required_single_or_null",
+      "status": "SATISFIED_BATCH_05",
+      "artifact": "target_selector_batch_05.json"
+    },
+    {
+      "primitive_id": "RPG.GameCore.TaskContext.EvaluateTarget (0xE6F1530)",
+      "status": "SEMANTIC_DEPENDENCY_REQUIRED",
+      "note": "dispatcher itself deferred; Batch 05 collapse leaves reused"
+    },
+    {
+      "primitive_id": "CPHGMLEAPJL.Tick gameplay leaf",
+      "status": "SEMANTIC_DEPENDENCY_REQUIRED",
+      "note": "component field identity unresolved"
+    },
+    {
+      "primitive_id": "RPG.GameCore.TurnBasedGameMode.SetCurrentTurnActionEntity",
+      "status": "PERSISTENT_STATE_DEPENDENCY_REQUIRED",
+      "note": "BattleState field identities unresolved"
+    }
+  ],
+  "unknowns": [
+    "obfuscated base class GELIALJDFBL/DJPBAKPBELL true type names (anchored by TaskConfig typeref 22744 and TaskState field semantics)",
+    "TaskState fieldDefinition provenance (typeref 586147) not resolved by a formal type-reference resolver; E4 constants + E3 enum members carry the identity",
+    "generated executor slot layouts differ between generated base families (e.g. CPHGMLEAPJL: config +0x18 / ctx +0x20; KLJNMOLABGO: ctx +0x18 / config +0x20)",
+    "three generated TaskConfig executors share ctor signature (GOIIFDECJBI/EPLMOIMGMIH/KOOGIKKDHBC); specialization rule not recovered",
+    "SequenceConfig Step helper internals (2080B) and exact early-stop conditions beyond the proven state transitions",
+    "no E5 client-side runtime observation",
+    "IL2CPP class-init tail paths after the accepted normal-path windows are instrumentation and not part of the semantics"
+  ],
+  "candidate_table": [
+    {
+      "method_index": 517404,
+      "candidate": "HDDPKFNLMEG..ctor",
+      "native_rva": "0x15886B40",
+      "classification": "ACCEPT",
+      "reason": "Generated task executor ctor for RPG.GameCore.Obsolete (HDDPKFNLMEG..ctor): stores arg0 (TaskContext) at executor [+0x20], arg1 (task config) at executor [+0x18] and sets TaskState [+0x10] = Ready (0x7777). No config/context field is read. Canonical sandbox materializes the config reference and TaskState and never stores the live ExecutionContext (reference-only native slot)."
+    },
+    {
+      "method_index": 517406,
+      "candidate": "HDDPKFNLMEG.OnTaskBegin",
+      "native_rva": "0x15886B90",
+      "classification": "ACCEPT",
+      "reason": "Generated task executor OnTaskBegin for RPG.GameCore.Obsolete (HDDPKFNLMEG.OnTaskBegin): write TaskState [+0x10] = Success (0x9999) and return. This is the real empty/no-op action DSL leaf: an Obsolete task config compiles to an executor whose only observable effect is the deterministic Success transition."
+    },
+    {
+      "method_index": 517407,
+      "candidate": "HDDPKFNLMEG.OnTaskReset",
+      "native_rva": "0x15886BE0",
+      "classification": "ACCEPT",
+      "reason": "Generated task executor OnTaskReset for RPG.GameCore.Obsolete (HDDPKFNLMEG.OnTaskReset): write TaskState [+0x10] = Ready (0x7777) and return. Only the state field is written; this exact leaf touches no other executor slot."
+    },
+    {
+      "method_index": 505903,
+      "candidate": "GELIALJDFBL.MDFBKGOJOJI",
+      "native_rva": "0x156A31A0",
+      "classification": "ACCEPT",
+      "reason": "Generated task-executor base class accessor (GELIALJDFBL.MDFBKGOJOJI): return the raw int32 TaskState stored at executor [+0x10]. The obfuscated method name is anchored by the TaskState constants (0x7777/0x8888/0x9999/0xAAAA) written by every recovered lifecycle leaf and by GELIALJDFBL.GetConfig returning TaskConfig runtime type_reference 22744."
+    },
+    {
+      "method_index": 505902,
+      "candidate": "GELIALJDFBL..ctor",
+      "native_rva": "0x156600E0",
+      "classification": "ACCEPT",
+      "reason": "Generated task-executor base ctor (GELIALJDFBL..ctor): set TaskState [+0x10] = Ready (0x7777). This is the shared base-state initialization every generated executor inherits; config/context slots are written by the concrete generated ctor."
+    },
+    {
+      "method_index": 498176,
+      "candidate": "CPHGMLEAPJL.OnTaskBegin",
+      "native_rva": "0xDD77480",
+      "classification": "ACCEPT",
+      "reason": "Generated task executor OnTaskBegin for RPG.GameCore.SwitchHandItemSetBreathingLight (CPHGMLEAPJL.OnTaskBegin): set TaskState [+0x10] = Executing (0x8888), evaluate the config target slot through TaskContext.EvaluateSingleTarget (Batch 05 collapse semantics), store the resulting single entity at executor [+0x28], then tailcall Tick with deltaTime=0. Canonical sandbox receives the already-evaluated ordered TargetSet and applies the proven Batch 05 collapse; the deferred Tick gameplay leaf is recorded separately."
+    },
+    {
+      "method_index": 498177,
+      "candidate": "CPHGMLEAPJL.OnTaskReset",
+      "native_rva": "0xDD77500",
+      "classification": "ACCEPT",
+      "reason": "Generated task executor OnTaskReset for RPG.GameCore.SwitchHandItemSetBreathingLight (CPHGMLEAPJL.OnTaskReset): write TaskState [+0x10] = Ready (0x7777) and clear the selected-target slot [+0x28] = null. This is the target-aware reset leaf paired with task_begin_select_single_target."
+    },
+    {
+      "method_index": 505873,
+      "candidate": "RPG.GameCore.TaskContext.EvaluateTarget",
+      "native_rva": "0xE6F1530",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": "target selector registry dispatcher (544 rel32 call sites); Batch 05 leaves reused instead"
+    },
+    {
+      "method_index": 505813,
+      "candidate": "SequenceConfig generated executor step helper (JDHDNAFAKCN)",
+      "native_rva": "0xB526340",
+      "classification": "DISPATCHER_STRUCTURE_SUPPORTED",
+      "reason": "ordered child-executor iteration proven at E4 shape (Ready->OnTaskBegin, Success/Fail early stop, Tick advances); 2080-byte helper with vtable/global dispatch deferred"
+    },
+    {
+      "method_index": 535645,
+      "candidate": "FNGLHFPADGA.NICNFGOAOHI (TriggerHitTarget leaf)",
+      "native_rva": "0x15547AB0",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": "enters hit/damage target processing; 656-byte body beyond leaf budget"
+    },
+    {
+      "method_index": 538414,
+      "candidate": "RPG.Client.NotifyManager.Notify (ForbidBattleConditionOnStart / SetBattleTargetMultiTargetSwitch leaves)",
+      "native_rva": "0xD994450",
+      "classification": "SKIP_EVENT_SYSTEM",
+      "reason": "task effect is client notify event dispatch; event system excluded this round"
+    },
+    {
+      "method_index": 499719,
+      "candidate": "RPG.GameCore.TurnBasedGameMode.SetCurrentTurnActionEntity",
+      "native_rva": "0xE75F700",
+      "classification": "PERSISTENT_STATE_DEPENDENCY_REQUIRED",
+      "reason": "persistent turn-mode field writes proven at E4 shape; field identities +0x100/+0x2FA/+0x318/+0x2C9/+0x2CA not resolved"
+    },
+    {
+      "method_index": 498175,
+      "candidate": "CPHGMLEAPJL.Tick (SwitchHandItemSetBreathingLight gameplay leaf)",
+      "native_rva": "0xDD772E0",
+      "classification": "COMPONENT_STATE_DEPENDENCY_REQUIRED",
+      "reason": "writes ctx bytes to component [+0x44] (class global 0x983DA48); component type/field semantic unresolved"
+    },
+    {
+      "method_index": 508633,
+      "candidate": "OMBLCOFIDOA.LAPFHJPBOED / NOICODFGEIE (SetDynamicValueByBattleTargetParam)",
+      "native_rva": "0xC007800",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": "TaskContext string-hash dictionary setter; dispatcher exceeds budget"
+    },
+    {
+      "method_index": 133237,
+      "candidate": "RPG.GameCore.Obsolete serializer family",
+      "native_rva": "0x1D26B830",
+      "classification": "SKIP_SERIALIZATION",
+      "reason": "config identity via bridge; execution recovered in generated executor"
+    },
+    {
+      "method_index": 517405,
+      "candidate": "HDDPKFNLMEG.Dispose (Obsolete)",
+      "native_rva": "0x15886B50",
+      "classification": "SKIP_WRAPPER",
+      "reason": "empty normal path (no slots written); lifecycle no-op"
+    },
+    {
+      "method_index": 517408,
+      "candidate": "HDDPKFNLMEG.Tick (Obsolete)",
+      "native_rva": "0x15886C30",
+      "classification": "SKIP_WRAPPER",
+      "reason": "empty normal path after immediate Success; no further action"
+    },
+    {
+      "method_index": 531457,
+      "candidate": "RPG.GameCore.BaseLevelTask.OnTaskBegin",
+      "native_rva": "0xE4F0B90",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "reason": "named level-task base; dispatcher-shaped body not needed for the recovered generated-runtime"
+    }
+  ],
+  "first_round_report": {
+    "commits_confirmed": [
+      "74c5a59 sandbox: add target selector runtime batch",
+      "7ae767f reverse: recover target selector semantic batch",
+      "dc668d7 sandbox: add predicate evaluation runtime",
+      "8d4319e reverse: recover predicate evaluation bridge"
+    ],
+    "tracked_state": "clean; pre-existing untracked files left untouched",
+    "config_family_count": 6578,
+    "config_runtime_type_ref_count": 6578,
+    "generated_executor_class_count": 3070,
+    "generated_executor_type_ref_count": 3060,
+    "matched_bridge_rows": 3024,
+    "unmatched_executor_type_refs": 41,
+    "config_to_executor_bridge": "YES_TYPE_REFERENCE_MATCH_E3_METADATA_PLUS_E4_CTOR_STORES",
+    "task_context_action_side_callers": {
+      "EvaluateTarget_rel32_call_sites": 544,
+      "EvaluateSingleTarget_rel32_call_sites": 424,
+      "OnTaskBegin_callers_of_EvaluateTarget": 427,
+      "OnTaskBegin_callers_of_EvaluateSingleTarget": 320,
+      "set_TaskActionTarget_rel32_call_sites": 0,
+      "set_TaskActionTarget_note": "generated executors write TaskContext slots inline; setter has no direct rel32 callers",
+      "get_SourceEntity_rel32_call_sites": 13,
+      "get_SourceEntity_OnTaskBegin_callers": [
+        "GPCKKEPGEDB (config AGPMEJILJBO, 4000-byte body)",
+        "JAJPDPAHFOA (config RPG.GameCore.AddModifier, 6592-byte body -> modifier dependency)"
+      ]
+    },
+    "plausible_candidate_count": 3024,
+    "shortlist_candidates": [
+      {
+        "config": [
+          "RPG.GameCore.WaitDialogueEvent"
+        ],
+        "executor": "DOENEFFFOHP",
+        "method_index": 536128,
+        "native_rva": "0x11B76F00",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "FPHCKGCLMAF"
+        ],
+        "executor": "DPKFCPNLPLB",
+        "method_index": 493623,
+        "native_rva": "0x121FE3A0",
+        "gap_bytes": 80,
+        "instruction_count": 22,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ParallelConfig"
+        ],
+        "executor": "DPNAANANDJD",
+        "method_index": 505757,
+        "native_rva": "0x12203160",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.LoadBattleArea"
+        ],
+        "executor": "AJJFELKEEBF",
+        "method_index": 507816,
+        "native_rva": "0x134B62C0",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.DrinkMakerController"
+        ],
+        "executor": "EFJIJODKGCC",
+        "method_index": 495968,
+        "native_rva": "0x1351B370",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.MonsterResearchSubmit"
+        ],
+        "executor": "ELLJDIIHPOI",
+        "method_index": 497152,
+        "native_rva": "0x152260E0",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "GOOGNAIABBN"
+        ],
+        "executor": "ELLLEIOFNIJ",
+        "method_index": 532562,
+        "native_rva": "0x15226250",
+        "gap_bytes": 80,
+        "instruction_count": 23,
+        "conditional_branch_count": 2,
+        "direct_call_count": 3
+      },
+      {
+        "config": [
+          "RPG.GameCore.PlayerHPRatioCheck"
+        ],
+        "executor": "AMOMPADBOAE",
+        "method_index": 533127,
+        "native_rva": "0x1532C120",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ST_Main_Wait"
+        ],
+        "executor": "FDKDCLCEGPN",
+        "method_index": 493614,
+        "native_rva": "0x153C7460",
+        "gap_bytes": 80,
+        "instruction_count": 22,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.RtGridMoveToTarget"
+        ],
+        "executor": "FFOEMMBPAOO",
+        "method_index": 502966,
+        "native_rva": "0x15432BC0",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ShowPenaconyGiftSubmitPage"
+        ],
+        "executor": "FGIHIMBKOKE",
+        "method_index": 498033,
+        "native_rva": "0x15446C80",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.LittleGameAbilityTaskFireMonoEffectConfig"
+        ],
+        "executor": "FHDPKNAAGAF",
+        "method_index": 532568,
+        "native_rva": "0x15458730",
+        "gap_bytes": 80,
+        "instruction_count": 23,
+        "conditional_branch_count": 2,
+        "direct_call_count": 3
+      },
+      {
+        "config": [
+          "RPG.GameCore.LockCamera"
+        ],
+        "executor": "FHOCCCLDFOB",
+        "method_index": 496966,
+        "native_rva": "0x15470760",
+        "gap_bytes": 80,
+        "instruction_count": 23,
+        "conditional_branch_count": 2,
+        "direct_call_count": 3
+      },
+      {
+        "config": [
+          "RPG.GameCore.WaitStreamingJobFinished"
+        ],
+        "executor": "FJLIIODCNBG",
+        "method_index": 536444,
+        "native_rva": "0x154B61B0",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ShowGuideDetailDialog"
+        ],
+        "executor": "FKBJIEDHOJG",
+        "method_index": 534926,
+        "native_rva": "0x154C3920",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.AdvNpcCommanded"
+        ],
+        "executor": "FKNJEHJKGAM",
+        "method_index": 494337,
+        "native_rva": "0x154EBC10",
+        "gap_bytes": 80,
+        "instruction_count": 22,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.CallBack"
+        ],
+        "executor": "FLEIHJLMHDD",
+        "method_index": 495401,
+        "native_rva": "0x15508150",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.TriggerHitTarget"
+        ],
+        "executor": "FNGLHFPADGA",
+        "method_index": 535644,
+        "native_rva": "0x15547A60",
+        "gap_bytes": 80,
+        "instruction_count": 22,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.AdvNpcPetSearchFollow"
+        ],
+        "executor": "FODLHPFPEEK",
+        "method_index": 494643,
+        "native_rva": "0x155763A0",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ChangeMechanismBarValue"
+        ],
+        "executor": "FOOEEFJMCDA",
+        "method_index": 507109,
+        "native_rva": "0x15589F50",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.CharacterChangeModel"
+        ],
+        "executor": "APDDMCICIFA",
+        "method_index": 507133,
+        "native_rva": "0x15650840",
+        "gap_bytes": 80,
+        "instruction_count": 22,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.SetEntityUnselectable"
+        ],
+        "executor": "GFBDMLJGMKA",
+        "method_index": 508850,
+        "native_rva": "0x156ABA80",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ChimeraDuelEnterShowcaseBattle"
+        ],
+        "executor": "GJPGIBAFBEC",
+        "method_index": 531804,
+        "native_rva": "0x15742760",
+        "gap_bytes": 80,
+        "instruction_count": 23,
+        "conditional_branch_count": 2,
+        "direct_call_count": 4
+      },
+      {
+        "config": [
+          "RPG.GameCore.TriggerAndWaitMonopolyEvent"
+        ],
+        "executor": "GKOAHBPDALB",
+        "method_index": 535545,
+        "native_rva": "0x15758120",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ST_Side_ResetForceExitCombat"
+        ],
+        "executor": "GMENIJPKGNE",
+        "method_index": 493746,
+        "native_rva": "0x1577D100",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.ShowFightActivityLose"
+        ],
+        "executor": "GMLHPOPEDIB",
+        "method_index": 534903,
+        "native_rva": "0x15785210",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.WaitHipplenGameExit"
+        ],
+        "executor": "GNBCHJONFOM",
+        "method_index": 493934,
+        "native_rva": "0x157A4C90",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "LHLGEKFHPHA"
+        ],
+        "executor": "GNKHLKGNCPB",
+        "method_index": 493231,
+        "native_rva": "0x157C3C40",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.RogueTournEnterNextRoom"
+        ],
+        "executor": "GPOEJMNKGEL",
+        "method_index": 534202,
+        "native_rva": "0x15810D70",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      },
+      {
+        "config": [
+          "RPG.GameCore.Obsolete"
+        ],
+        "executor": "HDDPKFNLMEG",
+        "method_index": 517406,
+        "native_rva": "0x15886B90",
+        "gap_bytes": 80,
+        "instruction_count": 21,
+        "conditional_branch_count": 2,
+        "direct_call_count": 2
+      }
+    ],
+    "accepted_shortlist": [
+      "HDDPKFNLMEG..ctor (517404)",
+      "HDDPKFNLMEG.OnTaskBegin (517406)",
+      "HDDPKFNLMEG.OnTaskReset (517407)",
+      "GELIALJDFBL.MDFBKGOJOJI (505903)",
+      "GELIALJDFBL..ctor (505902)",
+      "CPHGMLEAPJL.OnTaskBegin (498176)",
+      "CPHGMLEAPJL.OnTaskReset (498177)"
+    ],
+    "primary_chain": "RPG.GameCore.Obsolete -> HDDPKFNLMEG .ctor -> OnTaskBegin -> TaskState.Success (empty/no-op action leaf)",
+    "heavy_dependency_skip_list": [
+      "SequenceConfig step helper (2080B dispatcher; ordered iteration shape SUPPORTED)",
+      "TriggerHitTarget leaf (hit/damage processing)",
+      "AddModifier / AGPMEJILJBO OnTaskBegin (modifier subsystem)",
+      "NotifyManager.Notify leaves (event system)",
+      "SetDynamicValueByBattleTargetParam (TaskContext dictionary hash dispatcher)",
+      "TurnBasedGameMode.SetCurrentTurnActionEntity persistent write (field identity unresolved)",
+      "CPHGMLEAPJL.Tick component write (component class/field unresolved)"
+    ],
+    "real_runtime_layer_name": "GENERATED_TASK_EXECUTOR_RUNTIME: serialized TaskConfig DSL -> generated executor class (.ctor/OnTaskBegin/OnTaskReset/Tick/Dispose) -> TaskState transition; there is no single ActionExecutor class. The batch label ACTION_EXECUTION_BRIDGE_06 is retained for the session plan; the recovered layer itself is the generated task executor runtime."
+  },
+  "task_state_model": {
+    "runtime_type": "RPG.GameCore.TaskState",
+    "type_index": 54932,
+    "members": [
+      "Ready",
+      "Executing",
+      "Success",
+      "Fail",
+      "value__"
+    ],
+    "native_field_offset": "+0x10 (int32) on generated task executors",
+    "raw_values": {
+      "Ready": "0x7777",
+      "Executing": "0x8888",
+      "Success": "0x9999",
+      "Fail": "0xAAAA"
+    },
+    "evidence": "E3 enum member names + E4 constant stores in generated ctors (Ready), OnTaskBegin leaves (Executing/Success), failure paths (Fail), and the base accessor read"
+  },
+  "config_runtime_bridge": {
+    "path": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+    "config_family_count": 6578,
+    "generated_executor_class_count": 3070,
+    "matched_rows": 3024,
+    "identity_rule": "generated executor .ctor(parameter 2 type_reference) == config MGMEGEDLMAK(parameter 2 type_reference); native ctor stores arg1 at executor [+0x20] (config slot) and arg0 at [+0x18] (TaskContext slot)"
+  }
+}
