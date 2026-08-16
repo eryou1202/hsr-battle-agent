@@ -79,6 +79,14 @@ from hsr_battle_agent.battle_ir.model import (
     MODIFIER_STATE_MAX_LAYER_PRIMITIVE_ID,
     MODIFIER_STATE_CURRENT_LIFE_PRIMITIVE_ID,
     MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID,
+    MODIFIER_TRY_ADD_INSTANCE_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_FIND_INSTANCE_PRIMITIVE_ID,
+    MODIFIER_MATCH_SEARCH_PRIMITIVE_ID,
+    MODIFIER_LIFECYCLE_DESTROY_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_REMOVE_DIRTY_PRIMITIVE_ID,
+    MODIFIER_LIFECYCLE_PROCESS_REDD_PRIMITIVE_ID,
+    MODIFIER_LIFECYCLE_ON_ADDED_PRIMITIVE_ID,
+    MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
@@ -185,6 +193,34 @@ def _modifier_task_begin_impl(
             inputs["targets"],
             inputs["modifier"],
         )
+
+    return impl
+
+
+def _modifier_lifecycle_impl(
+    function: Callable[..., Any],
+    input_names: tuple[str, ...],
+) -> PrimitiveImplementation:
+    """Lifecycle implementation that reads/writes BattleState.
+
+    The implementation receives ``(context.state, *named_inputs)``.
+    """
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        return function(context.state, *(inputs[name] for name in input_names))
+
+    return impl
+
+
+def _modifier_lifecycle_no_state_impl(
+    function: Callable[..., Any],
+    input_names: tuple[str, ...],
+) -> PrimitiveImplementation:
+    """Lifecycle implementation that does not touch BattleState."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        del context
+        return function(*(inputs[name] for name in input_names))
 
     return impl
 
@@ -368,6 +404,46 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     ),
     MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID: _named_unary_impl(
         "modifier", modifier_runtime.modifier_state_source_entity
+    ),
+    MODIFIER_TRY_ADD_INSTANCE_PRIMITIVE_ID: _modifier_lifecycle_impl(
+        modifier_runtime.try_add_modifier_instance,
+        (
+            "target",
+            "modifier",
+            "stacking",
+            "stacking_flag",
+            "caster_entity",
+            "source_provider_ref",
+            "activate",
+        ),
+    ),
+    MODIFIER_CONTAINER_FIND_INSTANCE_PRIMITIVE_ID: _modifier_lifecycle_no_state_impl(
+        modifier_runtime.modifier_container_find,
+        ("container", "match_key", "state_filter"),
+    ),
+    MODIFIER_MATCH_SEARCH_PRIMITIVE_ID: _modifier_lifecycle_no_state_impl(
+        modifier_runtime.modifier_match_search,
+        ("modifier", "match_key", "state_filter"),
+    ),
+    MODIFIER_LIFECYCLE_DESTROY_PRIMITIVE_ID: _modifier_lifecycle_impl(
+        modifier_runtime.destroy_modifier_instance,
+        ("target", "modifier", "destroy_arg"),
+    ),
+    MODIFIER_CONTAINER_REMOVE_DIRTY_PRIMITIVE_ID: _modifier_lifecycle_impl(
+        modifier_runtime.remove_dirty_modifiers,
+        ("target",),
+    ),
+    MODIFIER_LIFECYCLE_PROCESS_REDD_PRIMITIVE_ID: _modifier_lifecycle_impl(
+        modifier_runtime.process_modifier_redd,
+        ("target", "modifier", "stacking", "new_count", "new_life"),
+    ),
+    MODIFIER_LIFECYCLE_ON_ADDED_PRIMITIVE_ID: _modifier_lifecycle_no_state_impl(
+        modifier_runtime.on_added_modifier,
+        ("modifier",),
+    ),
+    MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID: _modifier_lifecycle_impl(
+        modifier_runtime.on_activate_modifier,
+        ("target", "modifier"),
     ),
 }
 

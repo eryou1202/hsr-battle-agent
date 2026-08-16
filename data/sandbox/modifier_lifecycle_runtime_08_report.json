@@ -1,0 +1,811 @@
+{
+  "schema": "battle_sandbox_runtime_report/1",
+  "sandbox_schema_version": 1,
+  "battle_state_schema_version": 2,
+  "trace_schema": "battle_sandbox_trace/1",
+  "game_semantic_version": "4.4.54",
+  "final_status": "BATTLE_SANDBOX = MODIFIER_LIFECYCLE_RUNTIME_08_PROOF",
+  "semantic_batch": {
+    "path": "data/semantics/4.4.54/modifier_lifecycle_bridge_08.json",
+    "batch_id": "MODIFIER_LIFECYCLE_BRIDGE_08",
+    "accepted_primitives": 8,
+    "runtime_layer_name": "TURNBASED_MODIFIER_LIFECYCLE_RUNTIME"
+  },
+  "implemented_primitives": [
+    {
+      "primitive_id": "battle.ir.modifier.try_add_modifier_instance",
+      "semantic_name": "TryAddModifierInstance",
+      "result": "modifier_lifecycle_result",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedAbilityComponent.TryAddModifierInstance:506463",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_find_modifier_instance",
+      "semantic_name": "FindModifierInstanceContainer",
+      "result": "modifier_state_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.FindModifierInstance:520243",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.match_modifier_search",
+      "semantic_name": "ModifierMatchSearchPredicate",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent._IsModifierMatchSearch:520252",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.lifecycle_destroy",
+      "semantic_name": "DestroyModifierInstanceBoundary",
+      "result": "modifier_state",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.Destroy:506250",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_remove_dirty",
+      "semantic_name": "RemoveDirtyModifiers",
+      "result": "modifier_container",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.RemoveDirtyModifiers:520247",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.lifecycle_process_redd",
+      "semantic_name": "ProcessModifierReddBoundary",
+      "result": "modifier_state",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedAbilityComponent._ProcessModifierRedd:506464",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.lifecycle_on_added",
+      "semantic_name": "OnAddedLifecycleMount",
+      "result": "modifier_state",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.OnAdded:506175",
+      "batch": "modifier_lifecycle_bridge_08"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.lifecycle_on_activate",
+      "semantic_name": "OnActivateLifecycleTransition",
+      "result": "modifier_state",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.OnActivate:506176",
+      "batch": "modifier_lifecycle_bridge_08"
+    }
+  ],
+  "duplicate_policy": {
+    "decision_tree": "TryAddModifierInstance ModifierStacking switch",
+    "multiple": "APPEND_DUPLICATE_KEEP_EXISTING",
+    "retain_global_latest": "DESTROY_EXISTING_THEN_APPEND",
+    "retain_global_latest_unique": "CASTER_IS_OWNER_REFRESH_EXISTING_ELSE_DESTROY_AND_APPEND",
+    "other_stackings": "PROCESS_EXISTING_IN_PLACE",
+    "cases": [
+      {
+        "stacking_ordinal": 0,
+        "stacking_name": "Unknow",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 0,
+        "stacking_name": "Unknow",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 1,
+        "stacking_name": "Unique",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 1,
+        "stacking_name": "Unique",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 2,
+        "stacking_name": "Refresh",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 2,
+        "stacking_name": "Refresh",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 3,
+        "stacking_name": "Prolong",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 3,
+        "stacking_name": "Prolong",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 4,
+        "stacking_name": "Multiple",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 4,
+        "stacking_name": "Multiple",
+        "existing": true,
+        "policy": "APPEND_DUPLICATE_KEEP_EXISTING",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 5,
+        "stacking_name": "Replace",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 5,
+        "stacking_name": "Replace",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 6,
+        "stacking_name": "Merge",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 6,
+        "stacking_name": "Merge",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 7,
+        "stacking_name": "ReplaceByCaster",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 7,
+        "stacking_name": "ReplaceByCaster",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 8,
+        "stacking_name": "ReplaceByCasterOrUnStack",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 8,
+        "stacking_name": "ReplaceByCasterOrUnStack",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 9,
+        "stacking_name": "EntityUnique",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 9,
+        "stacking_name": "EntityUnique",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 10,
+        "stacking_name": "ReplaceButKeepLifeTime",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 10,
+        "stacking_name": "ReplaceButKeepLifeTime",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 11,
+        "stacking_name": "RetainGlobalLatest",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "global_manager_scope",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 11,
+        "stacking_name": "RetainGlobalLatest",
+        "existing": true,
+        "policy": "DESTROY_EXISTING_THEN_APPEND",
+        "lookup_scope": "global_manager_scope",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 12,
+        "stacking_name": "ReplaceByCasterAbility",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 12,
+        "stacking_name": "ReplaceByCasterAbility",
+        "existing": true,
+        "policy": "PROCESS_EXISTING_IN_PLACE",
+        "lookup_scope": "local_component",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "source_provider_resolved_entity_runtime_id",
+          "source_provider": "source_provider_object_identity"
+        }
+      },
+      {
+        "stacking_ordinal": 13,
+        "stacking_name": "RetainGlobalLatestUnique",
+        "existing": false,
+        "policy": "APPEND_NEW_INSTANCE",
+        "lookup_scope": "global_manager_scope",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      },
+      {
+        "stacking_ordinal": 13,
+        "stacking_name": "RetainGlobalLatestUnique",
+        "existing": true,
+        "policy": "CASTER_IS_OWNER_REFRESH_EXISTING_ELSE_DESTROY_AND_APPEND",
+        "lookup_scope": "global_manager_scope",
+        "match_filters": {
+          "name": "ordinal string equality",
+          "stacking_flag": "runtime param [+0x5c]",
+          "caster_entity": "wildcard",
+          "source_provider": "none"
+        }
+      }
+    ]
+  },
+  "match_identity": [
+    {
+      "field": "name",
+      "native_source": "BaseModifierInstance.Name [+0x60]; ordinal string equality in _IsModifierMatchSearch",
+      "status": "PROVEN"
+    },
+    {
+      "field": "stacking_flag",
+      "native_source": "BaseModifierInstance.StackingFlag [+0x88] == runtime param [+0x5c]; 100 wildcard",
+      "status": "PROVEN"
+    },
+    {
+      "field": "caster_entity",
+      "native_source": "lazy resolver [+0x48] -> GameEntity.RuntimeID [+0xd0]; 0/-1 wildcard; required by Stacking 7/8/12 lookup",
+      "status": "PROVEN"
+    },
+    {
+      "field": "source_provider",
+      "native_source": "object identity through resolver vtable slot [+0x130]; canonical ObjectRef materialization; native instance id UNKNOWN",
+      "status": "E4_PREDICATE_SHAPE_OBJECT_IDENTITY_UNRESOLVED"
+    },
+    {
+      "field": "owner_entity",
+      "native_source": "implicit: lookup happens inside the owner AbilityComponent collection",
+      "status": "PROVEN_IMPLICIT_SCOPE"
+    }
+  ],
+  "removal_semantics": {
+    "destroy": "State [+0x80] = ToBeRemoved(2); idempotent for state > 1",
+    "container_removal": "RemoveDirtyModifiers: non-Alive & destroy_guard==0 removed; shift-left, remaining order preserved",
+    "chains": [
+      {
+        "chain_id": "destroy_then_remove_dirty_chain",
+        "status": "E4_CHAIN_CLOSED_CONTAINER_MUTATION_EFFECTS_DEFERRED",
+        "steps": [
+          "TurnBasedModifierInstance.Destroy(0) -> State [+0x80] = 2 (ToBeRemoved)",
+          "AbilityComponent.RemoveDirtyModifiers -> non-Alive & guard==0 entries removed",
+          "list count--; remaining entries shift left one slot; freed tail cleared; version++",
+          "remaining order preserved (List<T>.RemoveAt equivalence)"
+        ]
+      },
+      {
+        "chain_id": "retain_global_latest_duplicate_chain",
+        "status": "E4_CHAIN_CLOSED_BOUNDARY_PROJECTION",
+        "steps": [
+          "existing found by global lookup",
+          "Destroy(existing, 0) -> State=ToBeRemoved",
+          "fresh TurnBasedModifierInstance + AddModifierInstance append",
+          "old entry remains until RemoveDirtyModifiers removes it"
+        ]
+      }
+    ]
+  },
+  "ordering": {
+    "append": "ORDERED_APPEND (Batch 07 reuse)",
+    "removal": "SHIFT_LEFT_PRESERVE_REMAINING_ORDER (List<T>.RemoveAt equivalent)",
+    "global_scope_projection": "deterministic runtime-id ascending order; native global-list order UNKNOWN and recorded"
+  },
+  "battle_state_changes": {
+    "schema_version": 2,
+    "changed": false,
+    "modifier_representation_additions": [
+      "ModifierState.previous_life [+0x2e4] (E4 ProcessRedd)",
+      "ModifierState.is_max_layer [+0x8e] (E4 ProcessRedd/TryAdd)",
+      "ModifierState.destroy_guard [+0x94] (E4 Destroy/RemoveDirty)",
+      "ModifierState.source_provider_ref (sandbox ObjectRef materialization of native source-provider pointer identity)",
+      "ModifierConfigRef.stacking (ModifierConfig [+0x18], E4 parser + switches)"
+    ],
+    "note": "BattleState v2 top-level schema unchanged; no forced version bump"
+  },
+  "stack_status": [
+    {
+      "scope": "ModifierConfig.Stacking enum",
+      "members": [
+        {
+          "ordinal": 0,
+          "name": "Unknow"
+        },
+        {
+          "ordinal": 1,
+          "name": "Unique"
+        },
+        {
+          "ordinal": 2,
+          "name": "Refresh"
+        },
+        {
+          "ordinal": 3,
+          "name": "Prolong"
+        },
+        {
+          "ordinal": 4,
+          "name": "Multiple"
+        },
+        {
+          "ordinal": 5,
+          "name": "Replace"
+        },
+        {
+          "ordinal": 6,
+          "name": "Merge"
+        },
+        {
+          "ordinal": 7,
+          "name": "ReplaceByCaster"
+        },
+        {
+          "ordinal": 8,
+          "name": "ReplaceByCasterOrUnStack"
+        },
+        {
+          "ordinal": 9,
+          "name": "EntityUnique"
+        },
+        {
+          "ordinal": 10,
+          "name": "ReplaceButKeepLifeTime"
+        },
+        {
+          "ordinal": 11,
+          "name": "RetainGlobalLatest"
+        },
+        {
+          "ordinal": 12,
+          "name": "ReplaceByCasterAbility"
+        },
+        {
+          "ordinal": 13,
+          "name": "RetainGlobalLatestUnique"
+        }
+      ],
+      "status": "E3_MEMBER_ORDER + E4_SWITCH_CONSUMERS"
+    },
+    {
+      "scope": "instance Layer/Count integer increments",
+      "status": "PARTIAL_STRUCTURE_ONLY",
+      "note": "Count/Layer getters proven in Batch 07; ProcessRedd writes Count and life fields; full OnStack effect graph deferred"
+    }
+  ],
+  "duration_status": [
+    {
+      "scope": "CurrentLife [+0x2c4] / previous life [+0x2e4] refresh arithmetic",
+      "status": "E4_STRUCTURE_SUPPORTED",
+      "note": "Refresh/Prolong/Merge/Replace core arithmetic recovered; expiration trigger still deferred"
+    },
+    {
+      "scope": "duration expiration engine",
+      "status": "MODIFIER_EXPIRATION_DEPENDENCY_REQUIRED",
+      "note": "Turn/Round/Event/Timeline not entered"
+    }
+  ],
+  "lifecycle_callback_status": [
+    {
+      "chain_id": "try_add_duplicate_decision_chain",
+      "status": "E4_CHAIN_CLOSED_DECISION_TREE",
+      "steps": [
+        "read config [+0x18] Stacking",
+        "select lookup scope/filter",
+        "existing lookup by duplicate_match_key",
+        "branch by Stacking + existing State",
+        "append / destroy+append / process-in-place / delayed-add"
+      ]
+    },
+    {
+      "chain_id": "post_apply_virtual_mount_chain",
+      "status": "E4_CHAIN_CLOSED_SLOT_IDENTITY_EFFECTS_DEFERRED",
+      "steps": [
+        "AddModifierInstance append",
+        "virtual slot 13 -> OnAdded (unconditional, arg 0)",
+        "virtual slot 14 -> OnActivate (conditional on bool arg)",
+        "OnActivate writes State=Alive(1); effect internals deferred"
+      ]
+    }
+  ],
+  "deferred_effects": [
+    "OnAdded/OnActivate effect internals (sequence state fields [+0x168..+0x170])",
+    "_ProcessModifierRedd OnReplace / _OnModifierValueChanged / UI refresh",
+    "Destroy cleanup callbacks and child modifier recursion",
+    "_PostProcessAfterModifierAdd RemoveUnStackModifier fan-out"
+  ],
+  "deferred_events": [
+    "NotifyManager.Notify tailcalls in Destroy and _ProcessModifierRedd",
+    "behavior-flag event graph not entered"
+  ],
+  "deferred_turn_dependencies": [
+    "duration expiration, _ModifierLifeStep, turn/round phase processors not entered"
+  ],
+  "state_transition_tests": [
+    {
+      "name": "TestLifecycleThroughExecutor.test_apply_to_empty_changes_state_hash",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "apply_to_empty",
+      "status": "PASS"
+    },
+    {
+      "name": "TestLifecycleThroughExecutor.test_duplicate_application_branch",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "duplicate_application (Multiple(4) append)",
+      "status": "PASS"
+    },
+    {
+      "name": "TestLifecycleThroughExecutor.test_retain_global_latest_replace_branch",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "replace (RetainGlobalLatest(11) destroy + append)",
+      "status": "PASS"
+    },
+    {
+      "name": "TestLifecycleThroughExecutor.test_refresh_branch_updates_life_and_count",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "refresh in place (Refresh(2) life/count core)",
+      "status": "PASS"
+    },
+    {
+      "name": "TestLifecycleThroughExecutor.test_destroy_and_remove_dirty_branch_preserves_order",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "remove (RemoveDirtyModifiers shift-left ordering)",
+      "status": "PASS"
+    },
+    {
+      "name": "TestLifecycleThroughExecutor.test_not_found_behavior_is_append",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "not_found",
+      "status": "PASS"
+    },
+    {
+      "name": "TestCloneSnapshotHashReplay.test_clone_divergence_is_isolated",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "clone_divergence",
+      "status": "PASS"
+    },
+    {
+      "name": "TestCloneSnapshotHashReplay.test_snapshot_roundtrip_restores_lifecycle_state",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "snapshot_roundtrip",
+      "status": "PASS"
+    },
+    {
+      "name": "TestCloneSnapshotHashReplay.test_deterministic_replay",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "deterministic_replay",
+      "status": "PASS"
+    },
+    {
+      "name": "TestCrossLayerChain.test_executor_init_try_add_remove_dirty_formal_path",
+      "path": "tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py",
+      "branch": "cross_layer Action/ExecutionContext -> modifier lifecycle -> BattleState",
+      "status": "PASS"
+    }
+  ],
+  "semantic_artifacts": [
+    {
+      "path": "vertical_slice_01.json",
+      "schema": "battle_semantics_vertical_slice/1",
+      "sha256": "0335012c109d578be552f76c1feabbd12c7b991c9e965c4493cc3be5d0461368",
+      "enabled": true
+    },
+    {
+      "path": "dynamic_value_batch_02.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "dfa7b722ac2117a132c5c31a4cfef837d75fda11c3418789b986d04b9a292961",
+      "enabled": true
+    },
+    {
+      "path": "fixpoint_comparison_batch_03.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f64e5ce80d573bfc43ec082f0239094cc735a29363575d92acf9dc5fa38a330a",
+      "enabled": true
+    },
+    {
+      "path": "predicate_evaluation_bridge_04.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f34b15692640066cadee96e621d80190109e1e04d79a3f8ce29435b3a58cecdc",
+      "enabled": true
+    },
+    {
+      "path": "target_selector_batch_05.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "c5e605c0694f1e01c6e46ea9a41de5b1778f82bcee64ac2cde05276182b0bfa6",
+      "enabled": true
+    },
+    {
+      "path": "action_execution_bridge_06.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "8d914b7ef53be645f6ec7e9c153459959bd5fdd6d3efe9128d16a08632772a25",
+      "enabled": true
+    },
+    {
+      "path": "modifier_application_bridge_07.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "3d01b3e43fecba64fa75018fce4609b580f808a16aa8086005b5e448aa951d9d",
+      "enabled": true
+    },
+    {
+      "path": "modifier_lifecycle_bridge_08.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "76868325b89aad061a79160daeb32f4d294b25ec37b0e8027d53ba2c9e512e43",
+      "enabled": true
+    }
+  ],
+  "test_count": 381,
+  "test_pass": 381,
+  "representation_conflicts": [],
+  "rng": {
+    "client_rng_algorithm": "UNKNOWN",
+    "sandbox_rng": "DETERMINISTIC_ABSTRACTION",
+    "sandbox_rng_algorithm": "PYTHON_RANDOM_MT19937"
+  },
+  "not_implemented_surfaces": [
+    "legal_actions",
+    "step",
+    "is_terminal",
+    "full Modifier effect system",
+    "DOT",
+    "Damage",
+    "Event listener runtime",
+    "Turn expiration engine",
+    "AV / action queue",
+    "Planner"
+  ],
+  "known_unknowns": [
+    "runtime param typeref 608873 canonical type name",
+    "source provider resolver vtable slot [+0x130] method identity",
+    "TurnBasedAbilityComponent [+0x2b4] counter and activation bool semantics",
+    "global modifier manager search ordering (native list order unresolved)",
+    "delayed-add queue [+0x1e0] processing trigger internals",
+    "no E5 client-side runtime observation"
+  ],
+  "candidate_discovery": {
+    "path": "data/raw/4.4.54/modifier_lifecycle_discovery_08.json",
+    "candidate_count": 25,
+    "shortlist": [
+      506463,
+      520243,
+      520252,
+      506250,
+      520247,
+      506464,
+      506175,
+      506176
+    ]
+  },
+  "generated_at": "2026-08-16T15:52:37.595511+00:00"
+}

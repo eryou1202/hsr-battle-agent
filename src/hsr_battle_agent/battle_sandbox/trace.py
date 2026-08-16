@@ -20,6 +20,8 @@ from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
 from hsr_battle_agent.battle_ir.modifiers import (
     ModifierConfigRef,
     ModifierContainer,
+    ModifierLifecycleResult,
+    ModifierMatchKey,
     ModifierRef,
     ModifierState,
     ModifierTaskApplication,
@@ -181,6 +183,8 @@ def _trace_result_summary(value: Any) -> Any:
     if isinstance(value, ModifierContainer):
         return value.trace_summary()
     if isinstance(value, ModifierTaskApplication):
+        return value.trace_summary()
+    if isinstance(value, (ModifierMatchKey, ModifierLifecycleResult)):
         return value.trace_summary()
     _validate_trace_result(value)
     return value

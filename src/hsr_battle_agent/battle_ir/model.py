@@ -125,6 +125,30 @@ MODIFIER_STATE_CURRENT_LIFE_PRIMITIVE_ID = (
 MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID = (
     "battle.ir.modifier.state_source_entity"
 )
+MODIFIER_TRY_ADD_INSTANCE_PRIMITIVE_ID = (
+    "battle.ir.modifier.try_add_modifier_instance"
+)
+MODIFIER_CONTAINER_FIND_INSTANCE_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_find_modifier_instance"
+)
+MODIFIER_MATCH_SEARCH_PRIMITIVE_ID = (
+    "battle.ir.modifier.match_modifier_search"
+)
+MODIFIER_LIFECYCLE_DESTROY_PRIMITIVE_ID = (
+    "battle.ir.modifier.lifecycle_destroy"
+)
+MODIFIER_CONTAINER_REMOVE_DIRTY_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_remove_dirty"
+)
+MODIFIER_LIFECYCLE_PROCESS_REDD_PRIMITIVE_ID = (
+    "battle.ir.modifier.lifecycle_process_redd"
+)
+MODIFIER_LIFECYCLE_ON_ADDED_PRIMITIVE_ID = (
+    "battle.ir.modifier.lifecycle_on_added"
+)
+MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID = (
+    "battle.ir.modifier.lifecycle_on_activate"
+)
 
 
 @dataclass(frozen=True)

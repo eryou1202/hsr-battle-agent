@@ -464,13 +464,83 @@ class TestModifierApplicationBridgeBatch07Artifact(unittest.TestCase):
         self.assertTrue(self.raw["unknowns"])
 
 
+class TestModifierLifecycleBridgeBatch08Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "modifier_lifecycle_bridge_08.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_battle_semantics_batch(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], BATCH_SCHEMA)
+        self.assertEqual(self.raw["game_version"], "4.4.54")
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(
+            self.raw["final_status"],
+            "BATTLE_SEMANTIC = MODIFIER_LIFECYCLE_BRIDGE_08_PROOF",
+        )
+        self.assertEqual(len(self.raw["primitives"]), 8)
+        self.assertEqual(
+            self.raw["runtime_layer_name"],
+            "TURNBASED_MODIFIER_LIFECYCLE_RUNTIME",
+        )
+        self.assertTrue(self.raw["duplicate_application_cases"])
+        self.assertTrue(self.raw["removal_chains"])
+        self.assertTrue(self.raw["lifecycle_chains"])
+        self.assertTrue(self.raw["instance_identity"])
+        self.assertTrue(self.raw["duplicate_match_identity"])
+
+    def test_loader_returns_separated_spec_and_provenance(self):
+        self.assertEqual(len(self.primitives), 8)
+        expected_ids = {
+            "battle.ir.modifier.try_add_modifier_instance",
+            "battle.ir.modifier.container_find_modifier_instance",
+            "battle.ir.modifier.match_modifier_search",
+            "battle.ir.modifier.lifecycle_destroy",
+            "battle.ir.modifier.container_remove_dirty",
+            "battle.ir.modifier.lifecycle_process_redd",
+            "battle.ir.modifier.lifecycle_on_added",
+            "battle.ir.modifier.lifecycle_on_activate",
+        }
+        self.assertEqual(
+            {primitive.spec.primitive_id for primitive in self.primitives},
+            expected_ids,
+        )
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertIn("4.4.54:", primitive.provenance.source_reference())
+                self.assertEqual(
+                    primitive.provenance.evidence_level,
+                    "E4_STATIC_MACHINE_CODE",
+                )
+                self.assertFalse(hasattr(primitive.spec, "method_index"))
+
+    def test_duplicate_cases_cover_every_stacking_ordinal(self):
+        cases = self.raw["duplicate_application_cases"]
+        self.assertEqual(len(cases), 28)  # 14 ordinals x existing/no-existing
+        self.assertEqual(
+            {case["stacking_ordinal"] for case in cases},
+            set(range(14)),
+        )
+        self.assertIn(
+            "DESTROY_EXISTING_THEN_APPEND",
+            {case["policy"] for case in cases},
+        )
+
+
 class TestSemanticCatalog(unittest.TestCase):
     def test_default_catalog_loads_vertical_slice_plus_batches(self):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 58)
-        self.assertEqual(len(set(ids)), 58)
+        self.assertEqual(len(ids), 66)
+        self.assertEqual(len(set(ids)), 66)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -481,7 +551,7 @@ class TestSemanticCatalog(unittest.TestCase):
         catalog = load_semantic_catalog()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 7)
+        self.assertEqual(len(catalog.artifacts), 8)
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -534,9 +604,9 @@ class TestSemanticCatalog(unittest.TestCase):
             self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
             # vertical slice + FixPoint Batch 03 + Predicate Bridge Batch 04
             # + Target Selector Batch 05 + Action Execution Bridge 06
-            # + Modifier Application Bridge 07
+            # + Modifier Application Bridge 07 + Modifier Lifecycle Bridge 08
             # (DynamicValue Batch 02 disabled)
-            self.assertEqual(len(ids), 47)
+            self.assertEqual(len(ids), 55)
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
             )
@@ -551,7 +621,7 @@ class TestSemanticCatalog(unittest.TestCase):
                 sum(1 for pid in ids if pid.startswith("battle.ir.action.")), 8
             )
             self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.modifier.")), 15
+                sum(1 for pid in ids if pid.startswith("battle.ir.modifier.")), 23
             )
 
     def test_unsupported_artifact_schema_rejected(self):

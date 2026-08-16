@@ -8,6 +8,8 @@ from typing import Any
 from hsr_battle_agent.battle_ir.model import PrimitiveCall, PrimitiveResult
 from hsr_battle_agent.battle_ir.modifiers import (
     ModifierContainer,
+    ModifierLifecycleResult,
+    ModifierMatchKey,
     ModifierState,
 )
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
@@ -77,5 +79,9 @@ def _input_tag(value: Any) -> str:
     if isinstance(value, ModifierState):
         return value.trace_summary()
     if isinstance(value, ModifierContainer):
+        return value.trace_summary()
+    if isinstance(value, ModifierMatchKey):
+        return value.trace_summary()
+    if isinstance(value, ModifierLifecycleResult):
         return value.trace_summary()
     return type(value).__name__
