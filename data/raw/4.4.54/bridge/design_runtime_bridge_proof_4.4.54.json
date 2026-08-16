@@ -1,0 +1,485 @@
+{
+  "schema": "mhy_design_runtime_bridge_proof/1",
+  "session_status": "DESIGN_RUNTIME_BRIDGE = PARTIAL_MAPPING_RECOVERED",
+  "game_version": "4.4.54",
+  "summary": {
+    "bridge_level_1_deserializer_located": true,
+    "bridge_level_2_discriminator_recovered": true,
+    "bridge_level_3_discriminator_to_runtime_type": true,
+    "bridge_level_4_multiple_codes_validated": true,
+    "bridge_level_5_cross_version_automated": true,
+    "note": "LEVEL 4/5 are proven for the static-switch domains ability_config and modifier_config. The Black Swan ability_mixin codes 2/8/14/16 are NOT yet mapped to runtime classes; see ability_mixin_status."
+  },
+  "confirmed_domains": [
+    {
+      "serialized_domain": "ability_config",
+      "mapping_kind": "STATIC_SWITCH_FACTORY",
+      "factory": {
+        "runtime_type_index": 15459,
+        "runtime_type_name": "RPG.GameCore.AbilityConfig",
+        "method_name": "FromBinary",
+        "method_index": 103101,
+        "native_rva": "0x1CCDCAF0"
+      },
+      "mechanism": {
+        "kind": "STATIC_SWITCH_FACTORY",
+        "type_tag_reader": "ULEB128 (MOMNMLHNPLH.BIKABOFADBP @ 0x1CB8A410)",
+        "dispatch_shape": "cmp eax, N; ja default; movsxd [table+idx*4]; add table; jmp",
+        "jump_table_rva": "0x1CCDCCF8",
+        "case_bound": 3
+      },
+      "mappings": [
+        {
+          "type_code": 0,
+          "case_block_rva": "0x1CCDCB44",
+          "parser_tail_rva": "0x1CCDCD20",
+          "parser_method_index": 103102,
+          "parser_method_name": "FromBinaryImpl",
+          "runtime_type_index": 15459,
+          "runtime_type_name": "RPG.GameCore.AbilityConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1CCDCD20",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 1,
+          "case_block_rva": "0x1CCDCBBB",
+          "parser_tail_rva": "0x1CD50E60",
+          "parser_method_index": 107046,
+          "parser_method_name": "MGMEGEDLMAK",
+          "runtime_type_index": 17212,
+          "runtime_type_name": "RPG.GameCore.AdventureAbilityConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1CD50E60",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 2,
+          "case_block_rva": "0x1CCDCB64",
+          "parser_tail_rva": "0x1D4084D0",
+          "parser_method_index": 107513,
+          "parser_method_name": "MGMEGEDLMAK",
+          "runtime_type_index": 17419,
+          "runtime_type_name": "RPG.GameCore.RtAbilityConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1D4084D0",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 3,
+          "case_block_rva": "0x1CCDCC12",
+          "parser_tail_rva": "0x1D580150",
+          "parser_method_index": 108926,
+          "parser_method_name": "MGMEGEDLMAK",
+          "runtime_type_index": 17965,
+          "runtime_type_name": "RPG.GameCore.TurnBasedAbilityConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1D580150",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        }
+      ],
+      "statistics": {
+        "mapping_count": 4,
+        "resolved": 4,
+        "duplicate_code": 0,
+        "duplicate_class": null,
+        "unknown_entries": 0,
+        "null_entries": 0
+      },
+      "status": "CONFIRMED"
+    },
+    {
+      "serialized_domain": "modifier_config",
+      "mapping_kind": "STATIC_SWITCH_FACTORY",
+      "factory": {
+        "runtime_type_index": 15464,
+        "runtime_type_name": "RPG.GameCore.ModifierConfig",
+        "method_name": "OJNNBEJLDIJ",
+        "method_index": 103116,
+        "native_rva": "0x1D21C470"
+      },
+      "mechanism": {
+        "kind": "STATIC_SWITCH_FACTORY",
+        "type_tag_reader": "ULEB128 (MOMNMLHNPLH.BIKABOFADBP @ 0x1CB8A410)",
+        "dispatch_shape": "cmp eax, N; ja default; movsxd [table+idx*4]; add table; jmp",
+        "jump_table_rva": "0x1D21C7AC",
+        "case_bound": 3
+      },
+      "mappings": [
+        {
+          "type_code": 0,
+          "case_block_rva": "0x1D21C4C5",
+          "parser_tail_rva": "0x1D21C7D0",
+          "parser_method_index": 103117,
+          "parser_method_name": "MGMEGEDLMAK",
+          "runtime_type_index": 15464,
+          "runtime_type_name": "RPG.GameCore.ModifierConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1D21C7D0",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 1,
+          "case_block_rva": "0x1D21C62D",
+          "parser_tail_rva": "0x1CD63BA0",
+          "parser_method_index": 107223,
+          "parser_method_name": "FromBinaryImpl",
+          "runtime_type_index": 17289,
+          "runtime_type_name": "RPG.GameCore.AdventureModifierConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1CD63BA0",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 2,
+          "case_block_rva": "0x1D21C4F4",
+          "parser_tail_rva": "0x1D4219B0",
+          "parser_method_index": 107548,
+          "parser_method_name": "MGMEGEDLMAK",
+          "runtime_type_index": 17429,
+          "runtime_type_name": "RPG.GameCore.RtModifierConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1D4219B0",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        },
+        {
+          "type_code": 3,
+          "case_block_rva": "0x1D21C577",
+          "parser_tail_rva": "0x1D5810E0",
+          "parser_method_index": 108955,
+          "parser_method_name": "FromBinaryImpl",
+          "runtime_type_index": 17997,
+          "runtime_type_name": "RPG.GameCore.TurnBasedModifierConfig",
+          "runtime_type_namespace": "RPG",
+          "parser_native_rva": "0x1D5810E0",
+          "mapping_kind": "SWITCH_CASE_TO_METHOD"
+        }
+      ],
+      "statistics": {
+        "mapping_count": 4,
+        "resolved": 4,
+        "duplicate_code": 0,
+        "duplicate_class": null,
+        "unknown_entries": 0,
+        "null_entries": 0
+      },
+      "status": "CONFIRMED"
+    }
+  ],
+  "cross_version": {
+    "file": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\data\\raw\\4.4.54\\bridge\\design_runtime_bridge_cross_version_4.4.0_vs_4.4.54.json",
+    "all_ok": true,
+    "results": [
+      {
+        "domain": "ability_config",
+        "old_file": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\data\\raw\\4.4.0\\bridge\\ability_config_type_bridge_4.4.0.json",
+        "new_file": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\data\\raw\\4.4.54\\bridge\\ability_config_type_bridge_4.4.54.json",
+        "checks": {
+          "same_case_set": true,
+          "same_factory_type": true,
+          "same_mechanism_kind": true,
+          "all_same_runtime_type": true,
+          "all_same_parser_method": true,
+          "all_rva_differ": true
+        },
+        "rows": [
+          {
+            "type_code": 0,
+            "old": {
+              "type_code": 0,
+              "case_block_rva": "0x1B9F9964",
+              "parser_tail_rva": "0x1B9F9B40",
+              "parser_method_index": 101054,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 15035,
+              "runtime_type_name": "RPG.GameCore.AbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1B9F9B40",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 0,
+              "case_block_rva": "0x1CCDCB44",
+              "parser_tail_rva": "0x1CCDCD20",
+              "parser_method_index": 103102,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 15459,
+              "runtime_type_name": "RPG.GameCore.AbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1CCDCD20",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 1,
+            "old": {
+              "type_code": 1,
+              "case_block_rva": "0x1B9F99DB",
+              "parser_tail_rva": "0x1AE4B380",
+              "parser_method_index": 104849,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 16727,
+              "runtime_type_name": "RPG.GameCore.AdventureAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1AE4B380",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 1,
+              "case_block_rva": "0x1CCDCBBB",
+              "parser_tail_rva": "0x1CD50E60",
+              "parser_method_index": 107046,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 17212,
+              "runtime_type_name": "RPG.GameCore.AdventureAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1CD50E60",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 2,
+            "old": {
+              "type_code": 2,
+              "case_block_rva": "0x1B9F9984",
+              "parser_tail_rva": "0x1BB83BF0",
+              "parser_method_index": 105315,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 16934,
+              "runtime_type_name": "RPG.GameCore.RtAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1BB83BF0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 2,
+              "case_block_rva": "0x1CCDCB64",
+              "parser_tail_rva": "0x1D4084D0",
+              "parser_method_index": 107513,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 17419,
+              "runtime_type_name": "RPG.GameCore.RtAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1D4084D0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 3,
+            "old": {
+              "type_code": 3,
+              "case_block_rva": "0x1B9F9A32",
+              "parser_tail_rva": "0x1B0637C0",
+              "parser_method_index": 106687,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 17466,
+              "runtime_type_name": "RPG.GameCore.TurnBasedAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1B0637C0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 3,
+              "case_block_rva": "0x1CCDCC12",
+              "parser_tail_rva": "0x1D580150",
+              "parser_method_index": 108926,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 17965,
+              "runtime_type_name": "RPG.GameCore.TurnBasedAbilityConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1D580150",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          }
+        ],
+        "status": "BRIDGE_CROSS_VERSION_OK"
+      },
+      {
+        "domain": "modifier_config",
+        "old_file": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\data\\raw\\4.4.0\\bridge\\modifier_config_type_bridge_4.4.0.json",
+        "new_file": "D:\\HSR_Battle_Agent\\hsr-battle-agent\\data\\raw\\4.4.54\\bridge\\modifier_config_type_bridge_4.4.54.json",
+        "checks": {
+          "same_case_set": true,
+          "same_factory_type": true,
+          "same_mechanism_kind": true,
+          "all_same_runtime_type": true,
+          "all_same_parser_method": true,
+          "all_rva_differ": true
+        },
+        "rows": [
+          {
+            "type_code": 0,
+            "old": {
+              "type_code": 0,
+              "case_block_rva": "0x1AF70C85",
+              "parser_tail_rva": "0x1AF70F90",
+              "parser_method_index": 101069,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 15040,
+              "runtime_type_name": "RPG.GameCore.ModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1AF70F90",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 0,
+              "case_block_rva": "0x1D21C4C5",
+              "parser_tail_rva": "0x1D21C7D0",
+              "parser_method_index": 103117,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 15464,
+              "runtime_type_name": "RPG.GameCore.ModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1D21C7D0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 1,
+            "old": {
+              "type_code": 1,
+              "case_block_rva": "0x1AF70DED",
+              "parser_tail_rva": "0x1AE5DF90",
+              "parser_method_index": 105025,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 16804,
+              "runtime_type_name": "RPG.GameCore.AdventureModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1AE5DF90",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 1,
+              "case_block_rva": "0x1D21C62D",
+              "parser_tail_rva": "0x1CD63BA0",
+              "parser_method_index": 107223,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 17289,
+              "runtime_type_name": "RPG.GameCore.AdventureModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1CD63BA0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 2,
+            "old": {
+              "type_code": 2,
+              "case_block_rva": "0x1AF70CB4",
+              "parser_tail_rva": "0x1B7674B0",
+              "parser_method_index": 105350,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 16944,
+              "runtime_type_name": "RPG.GameCore.RtModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1B7674B0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 2,
+              "case_block_rva": "0x1D21C4F4",
+              "parser_tail_rva": "0x1D4219B0",
+              "parser_method_index": 107548,
+              "parser_method_name": "MGMEGEDLMAK",
+              "runtime_type_index": 17429,
+              "runtime_type_name": "RPG.GameCore.RtModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1D4219B0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          },
+          {
+            "type_code": 3,
+            "old": {
+              "type_code": 3,
+              "case_block_rva": "0x1AF70D37",
+              "parser_tail_rva": "0x1B064750",
+              "parser_method_index": 106716,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 17498,
+              "runtime_type_name": "RPG.GameCore.TurnBasedModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1B064750",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "new": {
+              "type_code": 3,
+              "case_block_rva": "0x1D21C577",
+              "parser_tail_rva": "0x1D5810E0",
+              "parser_method_index": 108955,
+              "parser_method_name": "FromBinaryImpl",
+              "runtime_type_index": 17997,
+              "runtime_type_name": "RPG.GameCore.TurnBasedModifierConfig",
+              "runtime_type_namespace": "RPG",
+              "parser_native_rva": "0x1D5810E0",
+              "mapping_kind": "SWITCH_CASE_TO_METHOD"
+            },
+            "same_runtime_type": true,
+            "same_parser_method": true,
+            "rva_differs": true
+          }
+        ],
+        "status": "BRIDGE_CROSS_VERSION_OK"
+      }
+    ]
+  },
+  "ability_record_structural_status": {
+    "sample_domain": "black_swan_ability_records (4.4.53/4.4.54, 15/15)",
+    "observed_outer_codes": [
+      0,
+      1,
+      9,
+      10,
+      15,
+      30,
+      50,
+      62,
+      86,
+      121
+    ],
+    "observed_first_mixin_type_codes": [
+      2,
+      8,
+      14,
+      16
+    ],
+    "correction": "The first two ULEB128 values of each ability record are field-presence bitfields in generated binary parsers (two-bitfield shape, e.g. SkillConfig.FromBinary reads two ULEBs then tests bits). 'wrapper_type_code' and 'first_mixin_type' are NOT proven Runtime Type indices.",
+    "mapping_status": "ABILITY_MIXIN_TYPE_MAPPING_UNRESOLVED",
+    "evidence": [
+      "SkillAbilityConfig.OJNNBEJLDIJ is the only static direct-call target of the nested CommonSkill parser; it reads one bitfield (Name + AbilityList shape) and is a candidate for the post-outer-header record body",
+      "CommonSkill.OJNNBEJLDIJ (0x1CF60710) reads a bitfield and calls SkillConfig.FromBinary / SkillAbilityConfig.OJNNBEJLDIJ / 0x1CFC5830",
+      "SkillConfig.FromBinary (0x1D4AAEE0) reads exactly two ULEB bitfields followed by 64+13 optional-field branches (77 fields)",
+      "AbilityConfig.FromBinary and ModifierConfig.OJNNBEJLDIJ are static 0..3 switch factories recovered in this session; the Black Swan mixin codes 2/8/14/16 do not fit those switches",
+      "No static jump-table switch with case coverage matching 2/8/14/16 and core ability semantics was found in the 4.4.54 il2cpp scan",
+      "Generic list/object readers (0x16C86A10/0x16C8E0D0) dispatch element parsers through runtime type descriptors; descriptor slots are BSS-initialized, so static recovery of the mixin element class needs the runtime registry initializer path (not opened in this session)"
+    ]
+  },
+  "evidence_level": "E4 machine-code serializer/factory dataflow for the two confirmed domains; E2 structural for ability records; E3 metadata registry used throughout",
+  "not_claimed": [
+    "ability_mixin type codes 2/8/14/16 -> Runtime Class mapping",
+    "battle Execute / damage / modifier settlement semantics",
+    "full DesignData parsing",
+    "dynamic runtime type descriptor registry internals"
+  ]
+}

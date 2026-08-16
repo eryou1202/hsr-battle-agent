@@ -1,0 +1,136 @@
+1CB8A360  48 83 ec 28                     sub      rsp, 0x28
+1CB8A364  48 81 fa 80 00 00 00            cmp      rdx, 0x80
+1CB8A36B  73 0d                           jae      0x19cb8a37a
+1CB8A36D  45 31 c0                        xor      r8d, r8d
+1CB8A370  48 85 c9                        test     rcx, rcx
+1CB8A373  75 57                           jne      0x19cb8a3cc
+1CB8A375  e8 c6 7f 07 e7                  call     0x183c02340
+1CB8A37A  48 85 c9                        test     rcx, rcx
+1CB8A37D  0f 84 85 00 00 00               je       0x19cb8a408
+1CB8A383  45 31 c0                        xor      r8d, r8d
+1CB8A386  66 2e 0f 1f 84 00 00 00 00 00   nop      word ptr cs:[rax + rax]
+1CB8A390  4c 8b 51 10                     mov      r10, qword ptr [rcx + 0x10]
+1CB8A394  4d 85 d2                        test     r10, r10
+1CB8A397  74 65                           je       0x19cb8a3fe
+1CB8A399  4c 63 49 18                     movsxd   r9, dword ptr [rcx + 0x18]
+1CB8A39D  43 8d 04 08                     lea      eax, [r8 + r9]
+1CB8A3A1  41 3b 42 18                     cmp      eax, dword ptr [r10 + 0x18]
+1CB8A3A5  73 52                           jae      0x19cb8a3f9
+1CB8A3A7  89 d0                           mov      eax, edx
+1CB8A3A9  0c 80                           or       al, 0x80
+1CB8A3AB  4d 01 ca                        add      r10, r9
+1CB8A3AE  43 88 44 10 20                  mov      byte ptr [r8 + r10 + 0x20], al
+1CB8A3B3  48 89 d0                        mov      rax, rdx
+1CB8A3B6  48 c1 e8 07                     shr      rax, 7
+1CB8A3BA  49 ff c0                        inc      r8
+1CB8A3BD  48 81 fa 00 40 00 00            cmp      rdx, 0x4000
+1CB8A3C4  48 89 c2                        mov      rdx, rax
+1CB8A3C7  73 c7                           jae      0x19cb8a390
+1CB8A3C9  48 89 c2                        mov      rdx, rax
+1CB8A3CC  4c 8b 49 10                     mov      r9, qword ptr [rcx + 0x10]
+1CB8A3D0  4d 85 c9                        test     r9, r9
+1CB8A3D3  74 2e                           je       0x19cb8a403
+1CB8A3D5  4c 63 51 18                     movsxd   r10, dword ptr [rcx + 0x18]
+1CB8A3D9  49 63 c0                        movsxd   rax, r8d
+1CB8A3DC  4c 01 d0                        add      rax, r10
+1CB8A3DF  41 3b 41 18                     cmp      eax, dword ptr [r9 + 0x18]
+1CB8A3E3  73 14                           jae      0x19cb8a3f9
+1CB8A3E5  41 ff c0                        inc      r8d
+1CB8A3E8  41 88 54 01 20                  mov      byte ptr [r9 + rax + 0x20], dl
+1CB8A3ED  44 89 c2                        mov      edx, r8d
+1CB8A3F0  48 83 c4 28                     add      rsp, 0x28
+1CB8A3F4  e9 f7 b5 b1 00                  jmp      0x19d6a59f0
+1CB8A3F9  e8 b2 7c 07 e7                  call     0x183c020b0
+1CB8A3FE  e8 3d 7f 07 e7                  call     0x183c02340
+1CB8A403  e8 38 7f 07 e7                  call     0x183c02340
+1CB8A408  e8 33 7f 07 e7                  call     0x183c02340
+1CB8A40D  cc                              int3     
+1CB8A40E  66 90                           nop      
+1CB8A410  41 56                           push     r14
+1CB8A412  56                              push     rsi
+1CB8A413  57                              push     rdi
+1CB8A414  53                              push     rbx
+1CB8A415  48 83 ec 28                     sub      rsp, 0x28
+1CB8A419  48 85 c9                        test     rcx, rcx
+1CB8A41C  0f 84 9a 01 00 00               je       0x19cb8a5bc
+1CB8A422  48 8b 41 10                     mov      rax, qword ptr [rcx + 0x10]
+1CB8A426  48 85 c0                        test     rax, rax
+1CB8A429  0f 84 92 01 00 00               je       0x19cb8a5c1
+1CB8A42F  4c 63 41 18                     movsxd   r8, dword ptr [rcx + 0x18]
+1CB8A433  8b 70 18                        mov      esi, dword ptr [rax + 0x18]
+1CB8A436  31 d2                           xor      edx, edx
+1CB8A438  44 29 c6                        sub      esi, r8d
+1CB8A43B  0f 42 f2                        cmovb    esi, edx
+1CB8A43E  0f 86 73 01 00 00               jbe      0x19cb8a5b7
+1CB8A444  42 0f b6 5c 00 20               movzx    ebx, byte ptr [rax + r8 + 0x20]
+1CB8A44A  41 89 de                        mov      r14d, ebx
+1CB8A44D  41 83 e6 7f                     and      r14d, 0x7f
+1CB8A451  ba 01 00 00 00                  mov      edx, 1
+1CB8A456  84 db                           test     bl, bl
+1CB8A458  0f 89 47 01 00 00               jns      0x19cb8a5a5
+1CB8A45E  83 fe 01                        cmp      esi, 1
+1CB8A461  0f 84 50 01 00 00               je       0x19cb8a5b7
+1CB8A467  41 0f b6 7c 00 21               movzx    edi, byte ptr [r8 + rax + 0x21]
+1CB8A46D  89 fa                           mov      edx, edi
+1CB8A46F  83 e2 7f                        and      edx, 0x7f
+1CB8A472  48 c1 e2 07                     shl      rdx, 7
+1CB8A476  49 09 d6                        or       r14, rdx
+1CB8A479  ba 02 00 00 00                  mov      edx, 2
+1CB8A47E  40 84 ff                        test     dil, dil
+1CB8A481  0f 89 1e 01 00 00               jns      0x19cb8a5a5
+1CB8A487  83 fe 02                        cmp      esi, 2
+1CB8A48A  0f 84 27 01 00 00               je       0x19cb8a5b7
+1CB8A490  41 0f b6 7c 00 22               movzx    edi, byte ptr [r8 + rax + 0x22]
+1CB8A496  89 fa                           mov      edx, edi
+1CB8A498  83 e2 7f                        and      edx, 0x7f
+1CB8A49B  48 c1 e2 0e                     shl      rdx, 0xe
+1CB8A49F  49 09 d6                        or       r14, rdx
+1CB8A4A2  ba 03 00 00 00                  mov      edx, 3
+1CB8A4A7  40 84 ff                        test     dil, dil
+1CB8A4AA  0f 89 f5 00 00 00               jns      0x19cb8a5a5
+1CB8A4B0  83 fe 03                        cmp      esi, 3
+1CB8A4B3  0f 84 fe 00 00 00               je       0x19cb8a5b7
+1CB8A4B9  41 0f b6 7c 00 23               movzx    edi, byte ptr [r8 + rax + 0x23]
+1CB8A4BF  89 fa                           mov      edx, edi
+1CB8A4C1  83 e2 7f                        and      edx, 0x7f
+1CB8A4C4  48 c1 e2 15                     shl      rdx, 0x15
+1CB8A4C8  49 09 d6                        or       r14, rdx
+1CB8A4CB  ba 04 00 00 00                  mov      edx, 4
+1CB8A4D0  40 84 ff                        test     dil, dil
+1CB8A4D3  0f 89 cc 00 00 00               jns      0x19cb8a5a5
+1CB8A4D9  83 fe 04                        cmp      esi, 4
+1CB8A4DC  0f 84 d5 00 00 00               je       0x19cb8a5b7
+1CB8A4E2  41 0f b6 7c 00 24               movzx    edi, byte ptr [r8 + rax + 0x24]
+1CB8A4E8  89 fa                           mov      edx, edi
+1CB8A4EA  83 e2 7f                        and      edx, 0x7f
+1CB8A4ED  48 c1 e2 1c                     shl      rdx, 0x1c
+1CB8A4F1  49 09 d6                        or       r14, rdx
+1CB8A4F4  ba 05 00 00 00                  mov      edx, 5
+1CB8A4F9  40 84 ff                        test     dil, dil
+1CB8A4FC  0f 89 a3 00 00 00               jns      0x19cb8a5a5
+1CB8A502  83 fe 05                        cmp      esi, 5
+1CB8A505  0f 84 ac 00 00 00               je       0x19cb8a5b7
+1CB8A50B  41 0f b6 7c 00 25               movzx    edi, byte ptr [r8 + rax + 0x25]
+1CB8A511  89 fa                           mov      edx, edi
+1CB8A513  83 e2 7f                        and      edx, 0x7f
+1CB8A516  48 c1 e2 23                     shl      rdx, 0x23
+1CB8A51A  49 09 d6                        or       r14, rdx
+1CB8A51D  ba 06 00 00 00                  mov      edx, 6
+1CB8A522  40 84 ff                        test     dil, dil
+1CB8A525  79 7e                           jns      0x19cb8a5a5
+1CB8A527  83 fe 06                        cmp      esi, 6
+1CB8A52A  0f 84 87 00 00 00               je       0x19cb8a5b7
+1CB8A530  41 0f b6 7c 00 26               movzx    edi, byte ptr [r8 + rax + 0x26]
+1CB8A536  89 fa                           mov      edx, edi
+1CB8A538  83 e2 7f                        and      edx, 0x7f
+1CB8A53B  48 c1 e2 2a                     shl      rdx, 0x2a
+1CB8A53F  49 09 d6                        or       r14, rdx
+1CB8A542  ba 07 00 00 00                  mov      edx, 7
+1CB8A547  40 84 ff                        test     dil, dil
+1CB8A54A  79 59                           jns      0x19cb8a5a5
+1CB8A54C  83 fe 07                        cmp      esi, 7
+1CB8A54F  74 66                           je       0x19cb8a5b7
+1CB8A551  41 0f b6 7c 00 27               movzx    edi, byte ptr [r8 + rax + 0x27]
+1CB8A557  89 fa                           mov      edx, edi
+1CB8A559  83 e2 7f                        and      edx, 0x7f
+1CB8A55C  48 c1 e2 31                     shl      rdx, 0x31

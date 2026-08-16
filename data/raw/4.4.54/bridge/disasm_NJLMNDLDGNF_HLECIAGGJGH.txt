@@ -1,0 +1,253 @@
+1CBA4E70  41 57                           push     r15
+1CBA4E72  41 56                           push     r14
+1CBA4E74  41 54                           push     r12
+1CBA4E76  56                              push     rsi
+1CBA4E77  57                              push     rdi
+1CBA4E78  55                              push     rbp
+1CBA4E79  53                              push     rbx
+1CBA4E7A  48 83 ec 30                     sub      rsp, 0x30
+1CBA4E7E  49 89 d6                        mov      r14, rdx
+1CBA4E81  48 89 ce                        mov      rsi, rcx
+1CBA4E84  48 8b 0d cd 4a a2 ec            mov      rcx, qword ptr [rip - 0x135db533]
+1CBA4E8B  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA4E92  0f 84 a8 00 00 00               je       0x19cba4f40
+1CBA4E98  48 89 f1                        mov      rcx, rsi
+1CBA4E9B  e8 70 55 fe ff                  call     0x19cb8a410
+1CBA4EA0  48 89 c3                        mov      rbx, rax
+1CBA4EA3  85 db                           test     ebx, ebx
+1CBA4EA5  74 62                           je       0x19cba4f09
+1CBA4EA7  e8 64 16 fe fe                  call     0x19bb86510
+1CBA4EAC  48 85 f6                        test     rsi, rsi
+1CBA4EAF  0f 84 95 00 00 00               je       0x19cba4f4a
+1CBA4EB5  48 89 c7                        mov      rdi, rax
+1CBA4EB8  48 85 c0                        test     rax, rax
+1CBA4EBB  0f 84 8e 00 00 00               je       0x19cba4f4f
+1CBA4EC1  4c 8b 7e 10                     mov      r15, qword ptr [rsi + 0x10]
+1CBA4EC5  8b 6e 18                        mov      ebp, dword ptr [rsi + 0x18]
+1CBA4EC8  48 8b 0f                        mov      rcx, qword ptr [rdi]
+1CBA4ECB  4c 8b a1 40 02 00 00            mov      r12, qword ptr [rcx + 0x240]
+1CBA4ED2  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+1CBA4ED9  74 79                           je       0x19cba4f54
+1CBA4EDB  48 c7 44 24 20 00 00 00 00      mov      qword ptr [rsp + 0x20], 0
+1CBA4EE4  48 89 f9                        mov      rcx, rdi
+1CBA4EE7  4c 89 fa                        mov      rdx, r15
+1CBA4EEA  41 89 e8                        mov      r8d, ebp
+1CBA4EED  41 89 d9                        mov      r9d, ebx
+1CBA4EF0  41 ff d4                        call     r12
+1CBA4EF3  48 85 c0                        test     rax, rax
+1CBA4EF6  0f 84 b0 00 00 00               je       0x19cba4fac
+1CBA4EFC  48 89 c1                        mov      rcx, rax
+1CBA4EFF  e8 ac 0b 0e e7                  call     0x183c85ab0
+1CBA4F04  49 89 06                        mov      qword ptr [r14], rax
+1CBA4F07  eb 1f                           jmp      0x19cba4f28
+1CBA4F09  48 8b 0d 38 3e da ec            mov      rcx, qword ptr [rip - 0x1325c1c8]
+1CBA4F10  48 85 c9                        test     rcx, rcx
+1CBA4F13  0f 84 c0 00 00 00               je       0x19cba4fd9
+1CBA4F19  e8 92 0b 0e e7                  call     0x183c85ab0
+1CBA4F1E  49 89 06                        mov      qword ptr [r14], rax
+1CBA4F21  31 db                           xor      ebx, ebx
+1CBA4F23  48 85 f6                        test     rsi, rsi
+1CBA4F26  74 44                           je       0x19cba4f6c
+1CBA4F28  48 89 f1                        mov      rcx, rsi
+1CBA4F2B  89 da                           mov      edx, ebx
+1CBA4F2D  48 83 c4 30                     add      rsp, 0x30
+1CBA4F31  5b                              pop      rbx
+1CBA4F32  5d                              pop      rbp
+1CBA4F33  5f                              pop      rdi
+1CBA4F34  5e                              pop      rsi
+1CBA4F35  41 5c                           pop      r12
+1CBA4F37  41 5e                           pop      r14
+1CBA4F39  41 5f                           pop      r15
+1CBA4F3B  e9 b0 0a b0 00                  jmp      0x19d6a59f0
+1CBA4F40  e8 9b 0e 0c e7                  call     0x183c65de0
+1CBA4F45  e9 4e ff ff ff                  jmp      0x19cba4e98
+1CBA4F4A  e8 f1 d3 05 e7                  call     0x183c02340
+1CBA4F4F  e8 ec d3 05 e7                  call     0x183c02340
+1CBA4F54  f6 81 c8 00 00 00 0e            test     byte ptr [rcx + 0xc8], 0xe
+1CBA4F5B  74 14                           je       0x19cba4f71
+1CBA4F5D  ba 2e 00 00 00                  mov      edx, 0x2e
+1CBA4F62  e8 a9 f2 0b e7                  call     0x183c64210
+1CBA4F67  e9 6f ff ff ff                  jmp      0x19cba4edb
+1CBA4F6C  e8 cf d3 05 e7                  call     0x183c02340
+1CBA4F71  48 8b 41 68                     mov      rax, qword ptr [rcx + 0x68]
+1CBA4F75  b9 23 5f 4c 4b                  mov      ecx, 0x4b4c5f23
+1CBA4F7A  33 48 18                        xor      ecx, dword ptr [rax + 0x18]
+1CBA4F7D  83 c1 2e                        add      ecx, 0x2e
+1CBA4F80  48 8b 05 21 38 19 ed            mov      rax, qword ptr [rip - 0x12e6c7df]
+1CBA4F87  ba 52 cd 69 c7                  mov      edx, 0xc769cd52
+1CBA4F8C  03 90 60 01 00 00               add      edx, dword ptr [rax + 0x160]
+1CBA4F92  48 63 c2                        movsxd   rax, edx
+1CBA4F95  48 03 05 14 38 19 ed            add      rax, qword ptr [rip - 0x12e6c7ec]
+1CBA4F9C  48 63 c9                        movsxd   rcx, ecx
+1CBA4F9F  8b 0c 88                        mov      ecx, dword ptr [rax + rcx*4]
+1CBA4FA2  e8 49 9d 0c e7                  call     0x183c6ecf0
+1CBA4FA7  e9 2f ff ff ff                  jmp      0x19cba4edb
+1CBA4FAC  48 8b 0d 9d 1c a2 ec            mov      rcx, qword ptr [rip - 0x135de363]
+1CBA4FB3  e8 18 d2 05 e7                  call     0x183c021d0
+1CBA4FB8  48 89 c6                        mov      rsi, rax
+1CBA4FBB  48 8b 15 56 5a db ec            mov      rdx, qword ptr [rip - 0x1324a5aa]
+1CBA4FC2  48 89 c1                        mov      rcx, rax
+1CBA4FC5  e8 e6 6b f6 fe                  call     0x19bb0bbb0
+1CBA4FCA  48 8b 15 4f f4 b4 ec            mov      rdx, qword ptr [rip - 0x134b0bb1]
+1CBA4FD1  48 89 f1                        mov      rcx, rsi
+1CBA4FD4  e8 57 d3 05 e7                  call     0x183c02330
+1CBA4FD9  48 8b 0d 70 1c a2 ec            mov      rcx, qword ptr [rip - 0x135de390]
+1CBA4FE0  e8 eb d1 05 e7                  call     0x183c021d0
+1CBA4FE5  48 89 c6                        mov      rsi, rax
+1CBA4FE8  48 8b 15 29 5a db ec            mov      rdx, qword ptr [rip - 0x1324a5d7]
+1CBA4FEF  48 89 c1                        mov      rcx, rax
+1CBA4FF2  e8 b9 6b f6 fe                  call     0x19bb0bbb0
+1CBA4FF7  48 8b 15 22 f4 b4 ec            mov      rdx, qword ptr [rip - 0x134b0bde]
+1CBA4FFE  48 89 f1                        mov      rcx, rsi
+1CBA5001  e8 2a d3 05 e7                  call     0x183c02330
+1CBA5006  cc                              int3     
+1CBA5007  66 0f 1f 84 00 00 00 00 00      nop      word ptr [rax + rax]
+1CBA5010  56                              push     rsi
+1CBA5011  57                              push     rdi
+1CBA5012  48 83 ec 28                     sub      rsp, 0x28
+1CBA5016  48 89 d6                        mov      rsi, rdx
+1CBA5019  48 89 cf                        mov      rdi, rcx
+1CBA501C  48 8b 0d 15 ea a2 ec            mov      rcx, qword ptr [rip - 0x135d15eb]
+1CBA5023  e8 88 e6 0c e7                  call     0x183c736b0
+1CBA5028  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CBA502C  48 89 06                        mov      qword ptr [rsi], rax
+1CBA502F  48 89 f9                        mov      rcx, rdi
+1CBA5032  48 89 c2                        mov      rdx, rax
+1CBA5035  48 83 c4 28                     add      rsp, 0x28
+1CBA5039  5f                              pop      rdi
+1CBA503A  5e                              pop      rsi
+1CBA503B  e9 10 00 00 00                  jmp      0x19cba5050
+1CBA5040  c6 41 10 01                     mov      byte ptr [rcx + 0x10], 1
+1CBA5044  c3                              ret      
+1CBA5045  66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+1CBA5050  56                              push     rsi
+1CBA5051  57                              push     rdi
+1CBA5052  53                              push     rbx
+1CBA5053  48 83 ec 20                     sub      rsp, 0x20
+1CBA5057  48 89 d7                        mov      rdi, rdx
+1CBA505A  48 89 ce                        mov      rsi, rcx
+1CBA505D  48 8b 0d f4 48 a2 ec            mov      rcx, qword ptr [rip - 0x135db70c]
+1CBA5064  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA506B  0f 84 a8 00 00 00               je       0x19cba5119
+1CBA5071  48 89 f1                        mov      rcx, rsi
+1CBA5074  e8 97 53 fe ff                  call     0x19cb8a410
+1CBA5079  48 89 c3                        mov      rbx, rax
+1CBA507C  f6 c3 01                        test     bl, 1
+1CBA507F  74 42                           je       0x19cba50c3
+1CBA5081  48 85 ff                        test     rdi, rdi
+1CBA5084  0f 84 cb 00 00 00               je       0x19cba5155
+1CBA508A  48 8b 0d c7 48 a2 ec            mov      rcx, qword ptr [rip - 0x135db739]
+1CBA5091  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA5098  0f 84 c1 00 00 00               je       0x19cba515f
+1CBA509E  48 85 f6                        test     rsi, rsi
+1CBA50A1  0f 84 c6 00 00 00               je       0x19cba516d
+1CBA50A7  48 8b 4e 10                     mov      rcx, qword ptr [rsi + 0x10]
+1CBA50AB  8b 56 18                        mov      edx, dword ptr [rsi + 0x18]
+1CBA50AE  e8 ad 62 f7 fe                  call     0x19bb1b360
+1CBA50B3  88 47 10                        mov      byte ptr [rdi + 0x10], al
+1CBA50B6  48 89 f1                        mov      rcx, rsi
+1CBA50B9  ba 01 00 00 00                  mov      edx, 1
+1CBA50BE  e8 2d 09 b0 00                  call     0x19d6a59f0
+1CBA50C3  f6 c3 02                        test     bl, 2
+1CBA50C6  75 08                           jne      0x19cba50d0
+1CBA50C8  48 83 c4 20                     add      rsp, 0x20
+1CBA50CC  5b                              pop      rbx
+1CBA50CD  5f                              pop      rdi
+1CBA50CE  5e                              pop      rsi
+1CBA50CF  c3                              ret      
+1CBA50D0  48 85 ff                        test     rdi, rdi
+1CBA50D3  0f 84 81 00 00 00               je       0x19cba515a
+1CBA50D9  48 8b 0d 78 48 a2 ec            mov      rcx, qword ptr [rip - 0x135db788]
+1CBA50E0  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA50E7  0f 84 85 00 00 00               je       0x19cba5172
+1CBA50ED  48 85 f6                        test     rsi, rsi
+1CBA50F0  0f 84 8a 00 00 00               je       0x19cba5180
+1CBA50F6  48 8b 4e 10                     mov      rcx, qword ptr [rsi + 0x10]
+1CBA50FA  8b 56 18                        mov      edx, dword ptr [rsi + 0x18]
+1CBA50FD  e8 5e 62 f7 fe                  call     0x19bb1b360
+1CBA5102  88 47 18                        mov      byte ptr [rdi + 0x18], al
+1CBA5105  48 89 f1                        mov      rcx, rsi
+1CBA5108  ba 01 00 00 00                  mov      edx, 1
+1CBA510D  48 83 c4 20                     add      rsp, 0x20
+1CBA5111  5b                              pop      rbx
+1CBA5112  5f                              pop      rdi
+1CBA5113  5e                              pop      rsi
+1CBA5114  e9 d7 08 b0 00                  jmp      0x19d6a59f0
+1CBA5119  e8 c2 0c 0c e7                  call     0x183c65de0
+1CBA511E  48 8b 0d 33 48 a2 ec            mov      rcx, qword ptr [rip - 0x135db7cd]
+1CBA5125  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA512C  0f 85 3f ff ff ff               jne      0x19cba5071
+1CBA5132  e8 a9 0c 0c e7                  call     0x183c65de0
+1CBA5137  48 8b 0d 1a 48 a2 ec            mov      rcx, qword ptr [rip - 0x135db7e6]
+1CBA513E  80 b9 c7 00 00 00 00            cmp      byte ptr [rcx + 0xc7], 0
+1CBA5145  0f 85 26 ff ff ff               jne      0x19cba5071
+1CBA514B  e8 90 0c 0c e7                  call     0x183c65de0
+1CBA5150  e9 1c ff ff ff                  jmp      0x19cba5071
+1CBA5155  e8 e6 d1 05 e7                  call     0x183c02340
+1CBA515A  e8 e1 d1 05 e7                  call     0x183c02340
+1CBA515F  e8 7c 0c 0c e7                  call     0x183c65de0
+1CBA5164  48 85 f6                        test     rsi, rsi
+1CBA5167  0f 85 3a ff ff ff               jne      0x19cba50a7
+1CBA516D  e8 ce d1 05 e7                  call     0x183c02340
+1CBA5172  e8 69 0c 0c e7                  call     0x183c65de0
+1CBA5177  48 85 f6                        test     rsi, rsi
+1CBA517A  0f 85 76 ff ff ff               jne      0x19cba50f6
+1CBA5180  e8 bb d1 05 e7                  call     0x183c02340
+1CBA5185  cc                              int3     
+1CBA5186  66 2e 0f 1f 84 00 00 00 00 00   nop      word ptr cs:[rax + rax]
+1CBA5190  56                              push     rsi
+1CBA5191  57                              push     rdi
+1CBA5192  48 83 ec 28                     sub      rsp, 0x28
+1CBA5196  48 89 d6                        mov      rsi, rdx
+1CBA5199  48 89 cf                        mov      rdi, rcx
+1CBA519C  48 8b 0d 95 e8 a2 ec            mov      rcx, qword ptr [rip - 0x135d176b]
+1CBA51A3  e8 08 e5 0c e7                  call     0x183c736b0
+1CBA51A8  c6 40 10 01                     mov      byte ptr [rax + 0x10], 1
+1CBA51AC  48 89 06                        mov      qword ptr [rsi], rax
+1CBA51AF  48 89 f9                        mov      rcx, rdi
+1CBA51B2  48 89 c2                        mov      rdx, rax
+1CBA51B5  48 83 c4 28                     add      rsp, 0x28
+1CBA51B9  5f                              pop      rdi
+1CBA51BA  5e                              pop      rsi
+1CBA51BB  e9 00 00 00 00                  jmp      0x19cba51c0
+1CBA51C0  41 56                           push     r14
+1CBA51C2  56                              push     rsi
+1CBA51C3  57                              push     rdi
+1CBA51C4  53                              push     rbx
+1CBA51C5  48 83 ec 28                     sub      rsp, 0x28
+1CBA51C9  49 89 d6                        mov      r14, rdx
+1CBA51CC  48 89 cf                        mov      rdi, rcx
+1CBA51CF  80 3d 18 53 ea ec 00            cmp      byte ptr [rip - 0x1315ace8], 0
+1CBA51D6  0f 84 3f 01 00 00               je       0x19cba531b
+1CBA51DC  48 85 ff                        test     rdi, rdi
+1CBA51DF  0f 84 50 01 00 00               je       0x19cba5335
+1CBA51E5  48 8b 1d 84 62 da ec            mov      rbx, qword ptr [rip - 0x13259d7c]
+1CBA51EC  48 8b 0f                        mov      rcx, qword ptr [rdi]
+1CBA51EF  48 8b b1 08 01 00 00            mov      rsi, qword ptr [rcx + 0x108]
+1CBA51F6  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+1CBA51FD  0f 84 37 01 00 00               je       0x19cba533a
+1CBA5203  48 89 f9                        mov      rcx, rdi
+1CBA5206  48 89 da                        mov      rdx, rbx
+1CBA5209  45 31 c0                        xor      r8d, r8d
+1CBA520C  ff d6                           call     rsi
+1CBA520E  48 85 c0                        test     rax, rax
+1CBA5211  74 68                           je       0x19cba527b
+1CBA5213  48 89 c3                        mov      rbx, rax
+1CBA5216  48 8b 05 93 26 a2 ec            mov      rax, qword ptr [rip - 0x135dd96d]
+1CBA521D  48 8b 0b                        mov      rcx, qword ptr [rbx]
+1CBA5220  48 39 c1                        cmp      rcx, rax
+1CBA5223  74 56                           je       0x19cba527b
+1CBA5225  0f b6 90 c4 00 00 00            movzx    edx, byte ptr [rax + 0xc4]
+1CBA522C  38 91 c4 00 00 00               cmp      byte ptr [rcx + 0xc4], dl
+1CBA5232  72 0b                           jb       0x19cba523f
+1CBA5234  48 8b 71 70                     mov      rsi, qword ptr [rcx + 0x70]
+1CBA5238  48 39 44 d6 f8                  cmp      qword ptr [rsi + rdx*8 - 8], rax
+1CBA523D  74 3c                           je       0x19cba527b
+1CBA523F  4d 85 f6                        test     r14, r14
+1CBA5242  0f 84 98 01 00 00               je       0x19cba53e0
+1CBA5248  48 8b 05 11 4c a2 ec            mov      rax, qword ptr [rip - 0x135db3ef]
+1CBA524F  80 b8 c7 00 00 00 00            cmp      byte ptr [rax + 0xc7], 0
+1CBA5256  0f 84 89 01 00 00               je       0x19cba53e5
+1CBA525C  48 8b b1 e8 01 00 00            mov      rsi, qword ptr [rcx + 0x1e8]
+1CBA5263  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+1CBA526A  0f 84 94 01 00 00               je       0x19cba5404

@@ -1,0 +1,83 @@
+{
+  "schema": "mhy_design_runtime_bridge/1",
+  "game_version": "4.4.0",
+  "serialized_domain": "ability_config",
+  "factory": {
+    "runtime_type_index": 15035,
+    "runtime_type_name": "RPG.GameCore.AbilityConfig",
+    "method_name": "FromBinary",
+    "method_index": 101053,
+    "native_rva": "0x1B9F9910"
+  },
+  "mechanism": {
+    "kind": "STATIC_SWITCH_FACTORY",
+    "type_tag_reader": "ULEB128 (MOMNMLHNPLH.BIKABOFADBP @ 0x1CB8A410)",
+    "dispatch_shape": "cmp eax, N; ja default; movsxd [table+idx*4]; add table; jmp",
+    "jump_table_rva": "0x1B9F9B18",
+    "case_bound": 3
+  },
+  "mappings": [
+    {
+      "type_code": 0,
+      "case_block_rva": "0x1B9F9964",
+      "parser_tail_rva": "0x1B9F9B40",
+      "parser_method_index": 101054,
+      "parser_method_name": "FromBinaryImpl",
+      "runtime_type_index": 15035,
+      "runtime_type_name": "RPG.GameCore.AbilityConfig",
+      "runtime_type_namespace": "RPG",
+      "parser_native_rva": "0x1B9F9B40",
+      "mapping_kind": "SWITCH_CASE_TO_METHOD"
+    },
+    {
+      "type_code": 1,
+      "case_block_rva": "0x1B9F99DB",
+      "parser_tail_rva": "0x1AE4B380",
+      "parser_method_index": 104849,
+      "parser_method_name": "MGMEGEDLMAK",
+      "runtime_type_index": 16727,
+      "runtime_type_name": "RPG.GameCore.AdventureAbilityConfig",
+      "runtime_type_namespace": "RPG",
+      "parser_native_rva": "0x1AE4B380",
+      "mapping_kind": "SWITCH_CASE_TO_METHOD"
+    },
+    {
+      "type_code": 2,
+      "case_block_rva": "0x1B9F9984",
+      "parser_tail_rva": "0x1BB83BF0",
+      "parser_method_index": 105315,
+      "parser_method_name": "MGMEGEDLMAK",
+      "runtime_type_index": 16934,
+      "runtime_type_name": "RPG.GameCore.RtAbilityConfig",
+      "runtime_type_namespace": "RPG",
+      "parser_native_rva": "0x1BB83BF0",
+      "mapping_kind": "SWITCH_CASE_TO_METHOD"
+    },
+    {
+      "type_code": 3,
+      "case_block_rva": "0x1B9F9A32",
+      "parser_tail_rva": "0x1B0637C0",
+      "parser_method_index": 106687,
+      "parser_method_name": "MGMEGEDLMAK",
+      "runtime_type_index": 17466,
+      "runtime_type_name": "RPG.GameCore.TurnBasedAbilityConfig",
+      "runtime_type_namespace": "RPG",
+      "parser_native_rva": "0x1B0637C0",
+      "mapping_kind": "SWITCH_CASE_TO_METHOD"
+    }
+  ],
+  "statistics": {
+    "mapping_count": 4,
+    "resolved": 4,
+    "duplicate_code": 0,
+    "duplicate_class": null,
+    "unknown_entries": 0,
+    "null_entries": 0
+  },
+  "evidence_level": "E4 machine-code serializer/factory dataflow + E3 MHY TypeDefinition/MethodDefinition registry",
+  "not_claimed": [
+    "battle Execute semantics",
+    "field-level payload parsing beyond factory dispatch",
+    "type_tag meaning outside this serialized domain"
+  ]
+}
