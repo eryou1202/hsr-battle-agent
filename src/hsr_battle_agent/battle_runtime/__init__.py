@@ -9,6 +9,18 @@ Runtime functions must not import battle_sandbox or provenance decision logic.
 """
 from __future__ import annotations
 
+from hsr_battle_agent.battle_runtime.predicates import (
+    fixpoint_equal,
+    fixpoint_from_int32,
+    fixpoint_greater,
+    fixpoint_greater_equal,
+    fixpoint_is_negative,
+    fixpoint_is_positive,
+    fixpoint_is_zero,
+    fixpoint_less,
+    fixpoint_less_equal,
+    fixpoint_not_equal,
+)
 from hsr_battle_agent.battle_runtime.values import (
     dynamic_value_equals,
     dynamic_value_is_array,
@@ -37,4 +49,14 @@ __all__ = [
     "dynamic_value_to_long",
     "dynamic_value_to_uint",
     "dynamic_value_type",
+    "fixpoint_equal",
+    "fixpoint_from_int32",
+    "fixpoint_greater",
+    "fixpoint_greater_equal",
+    "fixpoint_is_negative",
+    "fixpoint_is_positive",
+    "fixpoint_is_zero",
+    "fixpoint_less",
+    "fixpoint_less_equal",
+    "fixpoint_not_equal",
 ]

@@ -49,6 +49,27 @@ def load_dynamic_value_batch_02(
 ) -> list[RecoveredPrimitive]:
     """Load the DynamicValue Batch 02 artifact as validated primitives."""
     artifact_path = Path(path) if path is not None else default_batch_02_path()
+    return _load_batch_artifact(artifact_path, require_dynamic_value_enum=True)
+
+
+def load_battle_semantics_batch(
+    path: str | Path,
+) -> list[RecoveredPrimitive]:
+    """Load any ``battle_semantics_batch/1`` artifact as validated primitives.
+
+    This is the shared batch loader used by the catalog.  It is not tied to a
+    specific batch; batch-specific knowledge (for example the DynamicValue enum
+    block of Batch 02) is passed as validation flags, never encoded as a new
+    loader module.
+    """
+    return _load_batch_artifact(Path(path), require_dynamic_value_enum=False)
+
+
+def _load_batch_artifact(
+    artifact_path: Path,
+    *,
+    require_dynamic_value_enum: bool,
+) -> list[RecoveredPrimitive]:
     try:
         raw = artifact_path.read_text(encoding="utf-8")
     except OSError as exc:
@@ -61,13 +82,39 @@ def load_dynamic_value_batch_02(
         raise SemanticArtifactError(
             f"semantic batch artifact is not valid JSON: {exc}"
         ) from exc
-    return validate_dynamic_value_batch_02(data, artifact_path=str(artifact_path))
+    return validate_battle_semantics_batch(
+        data,
+        artifact_path=str(artifact_path),
+        require_dynamic_value_enum=require_dynamic_value_enum,
+    )
 
 
 def validate_dynamic_value_batch_02(
     data: Mapping[str, Any],
     artifact_path: str = "<memory>",
 ) -> list[RecoveredPrimitive]:
+    """Back-compatible Batch 02 validator (requires the DynamicValue enum)."""
+    return validate_battle_semantics_batch(
+        data,
+        artifact_path=artifact_path,
+        require_dynamic_value_enum=True,
+    )
+
+
+def validate_battle_semantics_batch(
+    data: Mapping[str, Any],
+    artifact_path: str = "<memory>",
+    *,
+    require_dynamic_value_enum: bool = False,
+) -> list[RecoveredPrimitive]:
+    """Validate the shared ``battle_semantics_batch/1`` contract.
+
+    Batch-specific evidence blocks are optional.  When
+    ``require_dynamic_value_enum`` is true the Batch 02 DynamicValue enum block
+    is mandatory; for other batches (FixPoint Comparison Batch 03) the block
+    is allowed
+    but not required, and is validated whenever present.
+    """
     def require(container: Mapping[str, Any], key: str) -> Any:
         if key not in container:
             raise SemanticArtifactError(
@@ -92,7 +139,10 @@ def validate_dynamic_value_batch_02(
             f"expected {EVIDENCE_E4!r}"
         )
 
-    _validate_dynamic_value_enum(data, artifact_path)
+    if require_dynamic_value_enum:
+        _validate_dynamic_value_enum(data, artifact_path)
+    elif "dynamic_value_type_enum" in data:
+        _validate_dynamic_value_enum(data, artifact_path)
 
     primitives = require(data, "primitives")
     if not isinstance(primitives, list) or not primitives:

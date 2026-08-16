@@ -28,6 +28,11 @@ ARTIFACTS = [
         "schema": "battle_semantics_batch/1",
         "enabled": True,
     },
+    {
+        "path": "fixpoint_comparison_batch_03.json",
+        "schema": "battle_semantics_batch/1",
+        "enabled": True,
+    },
 ]
 
 

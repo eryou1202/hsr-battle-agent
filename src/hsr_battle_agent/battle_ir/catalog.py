@@ -28,7 +28,7 @@ from hsr_battle_agent.battle_ir.semantic_artifact import (
     load_vertical_slice_01,
 )
 from hsr_battle_agent.battle_ir.semantic_batch import (
-    load_dynamic_value_batch_02,
+    load_battle_semantics_batch,
 )
 
 CATALOG_SCHEMA = "battle_semantics_catalog/1"
@@ -37,7 +37,7 @@ BATCH_SCHEMA = "battle_semantics_batch/1"
 
 _LOADERS = {
     VERTICAL_SLICE_SCHEMA: lambda path: [load_vertical_slice_01(path)],
-    BATCH_SCHEMA: load_dynamic_value_batch_02,
+    BATCH_SCHEMA: load_battle_semantics_batch,
 }
 
 

@@ -33,11 +33,22 @@ from hsr_battle_agent.battle_ir.model import (
     DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
     DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
     DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
+    FIXPOINT_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_FROM_INT32_PRIMITIVE_ID,
+    FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_GREATER_PRIMITIVE_ID,
+    FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID,
+    FIXPOINT_IS_POSITIVE_PRIMITIVE_ID,
+    FIXPOINT_IS_ZERO_PRIMITIVE_ID,
+    FIXPOINT_LESS_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_LESS_PRIMITIVE_ID,
+    FIXPOINT_NOT_EQUAL_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
 )
+from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
 from hsr_battle_agent.battle_sandbox.errors import (
     DuplicatePrimitiveError,
@@ -103,6 +114,32 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     ),
     DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID: _unary_impl(
         dynamic_value_runtime.dynamic_value_is_null
+    ),
+    FIXPOINT_FROM_INT32_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.fixpoint_from_int32
+    ),
+    FIXPOINT_EQUAL_PRIMITIVE_ID: _binary_impl(predicate_runtime.fixpoint_equal),
+    FIXPOINT_NOT_EQUAL_PRIMITIVE_ID: _binary_impl(
+        predicate_runtime.fixpoint_not_equal
+    ),
+    FIXPOINT_LESS_PRIMITIVE_ID: _binary_impl(predicate_runtime.fixpoint_less),
+    FIXPOINT_LESS_EQUAL_PRIMITIVE_ID: _binary_impl(
+        predicate_runtime.fixpoint_less_equal
+    ),
+    FIXPOINT_GREATER_PRIMITIVE_ID: _binary_impl(
+        predicate_runtime.fixpoint_greater
+    ),
+    FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID: _binary_impl(
+        predicate_runtime.fixpoint_greater_equal
+    ),
+    FIXPOINT_IS_ZERO_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.fixpoint_is_zero
+    ),
+    FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.fixpoint_is_negative
+    ),
+    FIXPOINT_IS_POSITIVE_PRIMITIVE_ID: _unary_impl(
+        predicate_runtime.fixpoint_is_positive
     ),
 }
 

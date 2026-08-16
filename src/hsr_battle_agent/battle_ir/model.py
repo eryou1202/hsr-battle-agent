@@ -27,6 +27,17 @@ DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_array"
 DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_map"
 DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_null"
 
+FIXPOINT_FROM_INT32_PRIMITIVE_ID = "battle.ir.value.fixpoint_from_int32"
+FIXPOINT_EQUAL_PRIMITIVE_ID = "battle.ir.compare.fixpoint_equal"
+FIXPOINT_NOT_EQUAL_PRIMITIVE_ID = "battle.ir.compare.fixpoint_not_equal"
+FIXPOINT_LESS_PRIMITIVE_ID = "battle.ir.compare.fixpoint_less"
+FIXPOINT_LESS_EQUAL_PRIMITIVE_ID = "battle.ir.compare.fixpoint_less_equal"
+FIXPOINT_GREATER_PRIMITIVE_ID = "battle.ir.compare.fixpoint_greater"
+FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID = "battle.ir.compare.fixpoint_greater_equal"
+FIXPOINT_IS_ZERO_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_zero"
+FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_negative"
+FIXPOINT_IS_POSITIVE_PRIMITIVE_ID = "battle.ir.predicate.fixpoint_is_positive"
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

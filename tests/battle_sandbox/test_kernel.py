@@ -23,6 +23,16 @@ from hsr_battle_agent.battle_ir.model import (  # noqa: E402
     DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
     DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
     DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
+    FIXPOINT_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_FROM_INT32_PRIMITIVE_ID,
+    FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_GREATER_PRIMITIVE_ID,
+    FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID,
+    FIXPOINT_IS_POSITIVE_PRIMITIVE_ID,
+    FIXPOINT_IS_ZERO_PRIMITIVE_ID,
+    FIXPOINT_LESS_EQUAL_PRIMITIVE_ID,
+    FIXPOINT_LESS_PRIMITIVE_ID,
+    FIXPOINT_NOT_EQUAL_PRIMITIVE_ID,
     PrimitiveCall,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (  # noqa: E402
@@ -354,7 +364,7 @@ class TestTrace(unittest.TestCase):
 
 
 class TestRegistryAndExecutor(unittest.TestCase):
-    def test_default_registry_has_vertical_slice_and_batch_02(self):
+    def test_default_registry_has_all_recovered_primitives(self):
         registry = PrimitiveRegistry.create_default()
         self.assertEqual(
             registry.known_primitive_ids,
@@ -371,6 +381,16 @@ class TestRegistryAndExecutor(unittest.TestCase):
                 DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
                 DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID,
                 DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID,
+                FIXPOINT_EQUAL_PRIMITIVE_ID,
+                FIXPOINT_NOT_EQUAL_PRIMITIVE_ID,
+                FIXPOINT_GREATER_PRIMITIVE_ID,
+                FIXPOINT_LESS_PRIMITIVE_ID,
+                FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID,
+                FIXPOINT_LESS_EQUAL_PRIMITIVE_ID,
+                FIXPOINT_FROM_INT32_PRIMITIVE_ID,
+                FIXPOINT_IS_ZERO_PRIMITIVE_ID,
+                FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID,
+                FIXPOINT_IS_POSITIVE_PRIMITIVE_ID,
             ),
         )
         self.assertTrue(registry.frozen)
