@@ -54,6 +54,23 @@ EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID = (
     "battle.ir.predicate.evaluator_spec_fixpoint_not_equal_raw"
 )
 
+TARGET_CONTEXT_TASK_ACTION_TARGET_PRIMITIVE_ID = (
+    "battle.ir.target.context_task_action_target"
+)
+TARGET_CONTEXT_OWNER_ENTITY_PRIMITIVE_ID = "battle.ir.target.context_owner_entity"
+TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID = (
+    "battle.ir.target.select_task_action_target"
+)
+TARGET_SELECT_CASTER_PRIMITIVE_ID = "battle.ir.target.select_caster"
+TARGET_SELECT_NONE_PRIMITIVE_ID = "battle.ir.target.select_none"
+TARGET_COLLAPSE_SINGLE_OR_NULL_PRIMITIVE_ID = (
+    "battle.ir.target.collapse_single_or_null"
+)
+TARGET_COLLAPSE_REQUIRED_SINGLE_OR_NULL_PRIMITIVE_ID = (
+    "battle.ir.target.collapse_required_single_or_null"
+)
+ENTITY_GAME_ENTITY_RUNTIME_ID_PRIMITIVE_ID = "battle.ir.entity.game_entity_runtime_id"
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

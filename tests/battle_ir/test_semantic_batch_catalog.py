@@ -252,13 +252,67 @@ class TestPredicateEvaluationBridgeBatch04Artifact(unittest.TestCase):
                     self.assertIn("role", step)
 
 
+class TestTargetSelectorBatch05Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "target_selector_batch_05.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_battle_semantics_batch(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], BATCH_SCHEMA)
+        self.assertEqual(self.raw["game_version"], "4.4.54")
+        self.assertEqual(self.raw["batch_id"], "TARGET_SELECTOR_BATCH_05")
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(
+            self.raw["final_status"],
+            "BATTLE_SEMANTIC = TARGET_SELECTOR_BATCH_05_PROOF",
+        )
+        self.assertEqual(len(self.raw["primitives"]), 8)
+        self.assertEqual(len(self.raw["selector_chains"]), 3)
+        self.assertTrue(self.raw["context_requirements"])
+        self.assertTrue(self.raw["candidate_table"])
+
+    def test_loader_returns_separated_spec_and_provenance(self):
+        self.assertEqual(len(self.primitives), 8)
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertEqual(primitive.spec.context_writes, ())
+                self.assertEqual(primitive.spec.determinism, "DETERMINISTIC")
+                self.assertEqual(
+                    primitive.provenance.evidence_level,
+                    "E4_STATIC_MACHINE_CODE",
+                )
+                self.assertFalse(hasattr(primitive.spec, "method_index"))
+
+    def test_primitive_ids_grouped_and_unique(self):
+        ids = [primitive.spec.primitive_id for primitive in self.primitives]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(sum(1 for pid in ids if pid.startswith("battle.ir.target.")), 7)
+        self.assertEqual(sum(1 for pid in ids if pid.startswith("battle.ir.entity.")), 1)
+
+    def test_selector_chains_are_machine_readable(self):
+        for chain in self.raw["selector_chains"]:
+            with self.subTest(chain_id=chain["chain_id"]):
+                self.assertIn("selector_config", chain)
+                self.assertIn("runtime_bridge", chain)
+                self.assertIn("evaluator_method_index", chain["runtime_bridge"])
+                self.assertTrue(chain["steps"])
+
+
 class TestSemanticCatalog(unittest.TestCase):
     def test_default_catalog_loads_vertical_slice_plus_batches(self):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 27)
-        self.assertEqual(len(set(ids)), 27)
+        self.assertEqual(len(ids), 35)
+        self.assertEqual(len(set(ids)), 35)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -269,7 +323,7 @@ class TestSemanticCatalog(unittest.TestCase):
         catalog = load_semantic_catalog()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 4)
+        self.assertEqual(len(catalog.artifacts), 5)
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -321,13 +375,17 @@ class TestSemanticCatalog(unittest.TestCase):
             ids = [primitive.spec.primitive_id for primitive in primitives]
             self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
             # vertical slice + FixPoint Batch 03 + Predicate Bridge Batch 04
-            self.assertEqual(len(ids), 16)
+            # + Target Selector Batch 05 (DynamicValue Batch 02 disabled)
+            self.assertEqual(len(ids), 24)
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
             )
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.predicate.")),
                 3 + 5,
+            )
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.target.")), 7
             )
 
     def test_unsupported_artifact_schema_rejected(self):

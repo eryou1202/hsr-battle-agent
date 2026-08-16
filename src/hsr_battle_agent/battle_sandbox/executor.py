@@ -6,6 +6,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from hsr_battle_agent.battle_ir.model import PrimitiveCall, PrimitiveResult
+from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import DynamicValue
 from hsr_battle_agent.battle_sandbox.context import ExecutionContext
 from hsr_battle_agent.battle_sandbox.errors import InvalidPrimitiveInputError
@@ -65,4 +66,8 @@ class PrimitiveExecutor:
 def _input_tag(value: Any) -> str:
     if isinstance(value, DynamicValue):
         return f"DynamicValue:{value.tag_name}"
+    if isinstance(value, EntityRef):
+        return value.trace_summary()
+    if isinstance(value, TargetSet):
+        return value.trace_summary()
     return type(value).__name__

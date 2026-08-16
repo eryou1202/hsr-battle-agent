@@ -10,6 +10,7 @@ from unittest import mock
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
 
+from hsr_battle_agent.battle_ir.catalog import load_catalog_primitives  # noqa: E402
 from hsr_battle_agent.battle_ir.model import (  # noqa: E402
     DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
     DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
@@ -371,38 +372,10 @@ class TestTrace(unittest.TestCase):
 class TestRegistryAndExecutor(unittest.TestCase):
     def test_default_registry_has_all_recovered_primitives(self):
         registry = PrimitiveRegistry.create_default()
-        self.assertEqual(
-            registry.known_primitive_ids,
-            (
-                DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID,
-                DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
-                DYNAMIC_VALUE_STRING_PRIMITIVE_ID,
-                DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
-                DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID,
-                DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID,
-                FIXPOINT_EQUAL_PRIMITIVE_ID,
-                FIXPOINT_NOT_EQUAL_PRIMITIVE_ID,
-                FIXPOINT_GREATER_PRIMITIVE_ID,
-                FIXPOINT_LESS_PRIMITIVE_ID,
-                FIXPOINT_GREATER_EQUAL_PRIMITIVE_ID,
-                FIXPOINT_LESS_EQUAL_PRIMITIVE_ID,
-                FIXPOINT_FROM_INT32_PRIMITIVE_ID,
-                FIXPOINT_IS_ZERO_PRIMITIVE_ID,
-                FIXPOINT_IS_NEGATIVE_PRIMITIVE_ID,
-                FIXPOINT_IS_POSITIVE_PRIMITIVE_ID,
-                EVALUATOR_SPEC_FROM_INT32_PRIMITIVE_ID,
-                EVALUATOR_SPEC_FROM_FIXPOINT_RAW_PRIMITIVE_ID,
-                EVALUATOR_SPEC_FIXPOINT_EQUAL_INT32_PRIMITIVE_ID,
-                EVALUATOR_SPEC_FIXPOINT_EQUAL_RAW_PRIMITIVE_ID,
-                EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID,
-            ),
+        catalog_ids = tuple(
+            primitive.spec.primitive_id for primitive in load_catalog_primitives()
         )
+        self.assertEqual(registry.known_primitive_ids, catalog_ids)
         self.assertTrue(registry.frozen)
 
     def test_default_registry_spec_and_provenance_come_from_artifact(self):

@@ -16,6 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping, Protocol
 
+from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import EvaluatorSpec
 
 TRACE_SCHEMA = "battle_sandbox_trace/1"
@@ -152,13 +153,17 @@ def _validate_trace_result(value: Any) -> None:
 def _trace_result_summary(value: Any) -> Any:
     """Return the trace-stored result.
 
-    Scalar primitives keep their value.  ``EvaluatorSpec`` is the first proven
-    non-scalar primitive result; the trace stores a deterministic compact
-    string summary and never dumps the object graph.  ``PrimitiveResult`` still
-    carries the real object for callers.
+    Scalar primitives keep their value.  ``EvaluatorSpec``, ``EntityRef`` and
+    ``TargetSet`` are non-scalar primitive results; the trace stores
+    deterministic compact summaries and never dumps object graphs.
+    ``PrimitiveResult`` still carries the real object for callers.
     """
     if isinstance(value, EvaluatorSpec):
         return f"EvaluatorSpec(fixpoint_raw=0x{value.fixpoint_raw & 0xFFFFFFFFFFFFFFFF:X})"
+    if isinstance(value, EntityRef):
+        return value.trace_summary()
+    if isinstance(value, TargetSet):
+        return value.trace_summary()
     _validate_trace_result(value)
     return value
 

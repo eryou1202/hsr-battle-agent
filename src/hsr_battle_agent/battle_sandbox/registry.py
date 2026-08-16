@@ -48,12 +48,21 @@ from hsr_battle_agent.battle_ir.model import (
     FIXPOINT_LESS_EQUAL_PRIMITIVE_ID,
     FIXPOINT_LESS_PRIMITIVE_ID,
     FIXPOINT_NOT_EQUAL_PRIMITIVE_ID,
+    ENTITY_GAME_ENTITY_RUNTIME_ID_PRIMITIVE_ID,
+    TARGET_COLLAPSE_REQUIRED_SINGLE_OR_NULL_PRIMITIVE_ID,
+    TARGET_COLLAPSE_SINGLE_OR_NULL_PRIMITIVE_ID,
+    TARGET_CONTEXT_OWNER_ENTITY_PRIMITIVE_ID,
+    TARGET_CONTEXT_TASK_ACTION_TARGET_PRIMITIVE_ID,
+    TARGET_SELECT_CASTER_PRIMITIVE_ID,
+    TARGET_SELECT_NONE_PRIMITIVE_ID,
+    TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
 )
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
+from hsr_battle_agent.battle_runtime import targets as target_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
 from hsr_battle_agent.battle_sandbox.errors import (
     DuplicatePrimitiveError,
@@ -81,11 +90,34 @@ def _named_binary_impl(
 
 
 def _unary_impl(function: Callable[[Any], Any]) -> PrimitiveImplementation:
+    return _named_unary_impl("value", function)
+
+
+def _named_unary_impl(
+    name: str, function: Callable[[Any], Any]
+) -> PrimitiveImplementation:
     def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
         del context  # no state reads/writes in this primitive
-        return function(inputs["value"])
+        return function(inputs[name])
 
     return impl
+
+
+def _context_impl(function: Callable[[ExecutionContext], Any]) -> PrimitiveImplementation:
+    """Implementation whose only input is the executor's ExecutionContext."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        if inputs:
+            raise ValueError("context primitives take no explicit inputs")
+        return function(context)
+
+    return impl
+
+
+def _context_target_set_impl(
+    function: Callable[[ExecutionContext], Any]
+) -> PrimitiveImplementation:
+    return _context_impl(function)
 
 
 # Explicit implementation bindings.  This mapping contains no semantic spec and
@@ -170,6 +202,30 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     EVALUATOR_SPEC_FIXPOINT_NOT_EQUAL_RAW_PRIMITIVE_ID: _named_binary_impl(
         ("evaluator_spec", "rhs"),
         predicate_runtime.evaluator_spec_fixpoint_not_equal_raw,
+    ),
+    TARGET_CONTEXT_TASK_ACTION_TARGET_PRIMITIVE_ID: _context_impl(
+        target_runtime.context_task_action_target
+    ),
+    TARGET_CONTEXT_OWNER_ENTITY_PRIMITIVE_ID: _context_impl(
+        target_runtime.context_owner_entity
+    ),
+    TARGET_SELECT_TASK_ACTION_TARGET_PRIMITIVE_ID: _context_target_set_impl(
+        target_runtime.select_task_action_target
+    ),
+    TARGET_SELECT_CASTER_PRIMITIVE_ID: _context_target_set_impl(
+        target_runtime.select_caster
+    ),
+    TARGET_SELECT_NONE_PRIMITIVE_ID: _context_target_set_impl(
+        target_runtime.select_none
+    ),
+    TARGET_COLLAPSE_SINGLE_OR_NULL_PRIMITIVE_ID: _named_unary_impl(
+        "targets", target_runtime.collapse_single_or_null
+    ),
+    TARGET_COLLAPSE_REQUIRED_SINGLE_OR_NULL_PRIMITIVE_ID: _named_unary_impl(
+        "targets", target_runtime.collapse_required_single_or_null
+    ),
+    ENTITY_GAME_ENTITY_RUNTIME_ID_PRIMITIVE_ID: _named_unary_impl(
+        "entity", target_runtime.game_entity_runtime_id
     ),
 }
 

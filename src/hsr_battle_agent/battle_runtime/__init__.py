@@ -40,6 +40,16 @@ from hsr_battle_agent.battle_runtime.values import (
     dynamic_value_to_uint,
     dynamic_value_type,
 )
+from hsr_battle_agent.battle_runtime.targets import (
+    collapse_required_single_or_null,
+    collapse_single_or_null,
+    context_owner_entity,
+    context_task_action_target,
+    game_entity_runtime_id,
+    select_caster,
+    select_none,
+    select_task_action_target,
+)
 
 __all__ = [
     "dynamic_value_equals",
@@ -69,4 +79,12 @@ __all__ = [
     "fixpoint_less",
     "fixpoint_less_equal",
     "fixpoint_not_equal",
+    "collapse_required_single_or_null",
+    "collapse_single_or_null",
+    "context_owner_entity",
+    "context_task_action_target",
+    "game_entity_runtime_id",
+    "select_caster",
+    "select_none",
+    "select_task_action_target",
 ]
