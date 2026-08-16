@@ -1,0 +1,1034 @@
+{
+  "schema": "battle_sandbox_runtime_report/1",
+  "sandbox_schema_version": 1,
+  "battle_state_schema_version": 2,
+  "trace_schema": "battle_sandbox_trace/1",
+  "game_semantic_version": "4.4.54",
+  "final_status": "BATTLE_SANDBOX = MODIFIER_APPLICATION_RUNTIME_07_PROOF",
+  "semantic_batch": {
+    "path": "data/semantics/4.4.54/modifier_application_bridge_07.json",
+    "batch_id": "MODIFIER_APPLICATION_BRIDGE_07",
+    "accepted_primitives": 16,
+    "runtime_layer_name": "TURNBASED_MODIFIER_APPLICATION_RUNTIME"
+  },
+  "implemented_primitives": [
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_equals",
+      "semantic_name": "DynamicValueEquals",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.Equals:74632",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_int",
+      "semantic_name": "DynamicValueToInt32",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IntValue:74637",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_uint",
+      "semantic_name": "DynamicValueToUInt32",
+      "result": "uint32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_UintValue:74638",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_long",
+      "semantic_name": "DynamicValueToInt64",
+      "result": "int64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_LongValue:74639",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_float",
+      "semantic_name": "DynamicValueToFloat32",
+      "result": "float32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_FloatValue:74633",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_double",
+      "semantic_name": "DynamicValueToFloat64",
+      "result": "float64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_DoubleValue:74634",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_bool",
+      "semantic_name": "DynamicValueToBool",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_BoolValue:74636",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_type",
+      "semantic_name": "DynamicValueTypeTag",
+      "result": "DynamicValueType",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_ValueType:74648",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_string",
+      "semantic_name": "DynamicValueStringPayload",
+      "result": "string_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_StringValue:74640",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_array",
+      "semantic_name": "DynamicValueIsArray",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsArray:74654",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_map",
+      "semantic_name": "DynamicValueIsMap",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsMap:74655",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_null",
+      "semantic_name": "DynamicValueIsNull",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsNull:74653",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_equal",
+      "semantic_name": "FixPointEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Equality:68214",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_not_equal",
+      "semantic_name": "FixPointNotEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Inequality:68215",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_greater",
+      "semantic_name": "FixPointGreaterThan",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_GreaterThan:68216",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_less",
+      "semantic_name": "FixPointLessThan",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_LessThan:68217",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_greater_equal",
+      "semantic_name": "FixPointGreaterEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_GreaterThanOrEqual:68218",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.compare.fixpoint_less_equal",
+      "semantic_name": "FixPointLessEqual",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_LessThanOrEqual:68219",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.value.fixpoint_from_int32",
+      "semantic_name": "FixPointFromInt32",
+      "result": "fixpoint_raw",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.op_Implicit:68256",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_zero",
+      "semantic_name": "FixPointIsZero",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsZero:68173",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_negative",
+      "semantic_name": "FixPointIsNegative",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsNegative:68174",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.fixpoint_is_positive",
+      "semantic_name": "FixPointIsPositive",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.FixPoint.get_IsPositive:68175",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_from_int32",
+      "semantic_name": "EvaluatorSpecFromInt32",
+      "result": "evaluator_spec",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.BBNJCKPKPDN:135379",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_from_fixpoint_raw",
+      "semantic_name": "EvaluatorSpecFromFixPointRaw",
+      "result": "evaluator_spec",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.BBNJCKPKPDN:135380",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_int32",
+      "semantic_name": "EvaluatorSpecFixPointEqualInt32",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.FEIIDFFOICL:135381",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_equal_raw",
+      "semantic_name": "EvaluatorSpecFixPointEqualRaw",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.FEIIDFFOICL:135383",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.predicate.evaluator_spec_fixpoint_not_equal_raw",
+      "semantic_name": "EvaluatorSpecFixPointNotEqualRaw",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "evaluator_spec",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.ValueEvaluatorConfig.DLDBLNNPHKE:135384",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.context_task_action_target",
+      "semantic_name": "TaskContextTaskActionTarget",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "task_action_target"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TaskContext.get_TaskActionTarget:505847",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.context_owner_entity",
+      "semantic_name": "TaskContextOwnerEntity",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "owner_entity"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TaskContext.get_OwnerEntity:505843",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.select_task_action_target",
+      "semantic_name": "TargetFetchTaskActionTargetEvaluate",
+      "result": "TargetSet",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "task_action_target"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:NDIJLODKLJB.Evaluate:538090",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.select_caster",
+      "semantic_name": "TargetFetchCasterEvaluate",
+      "result": "TargetSet",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "caster_entity"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:KCFPGFDHIEO.Evaluate:538052",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.select_none",
+      "semantic_name": "TargetFetchNoneEvaluate",
+      "result": "TargetSet",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:NAOFIGCCGPF.Evaluate:538056",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.collapse_single_or_null",
+      "semantic_name": "GetTaskSingleTarget",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "targets"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityStatic.GetTaskSingleTarget:504364",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.target.collapse_required_single_or_null",
+      "semantic_name": "TaskContextEvaluateSingleTarget",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "targets"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TaskContext.EvaluateSingleTarget:505875",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.entity.game_entity_runtime_id",
+      "semantic_name": "GameEntityRuntimeID",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "entity"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.GameEntity.get_RuntimeID:499138",
+      "batch": null
+    },
+    {
+      "primitive_id": "battle.ir.action.task_executor_init",
+      "semantic_name": "GeneratedTaskExecutorInit",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:HDDPKFNLMEG..ctor:517404",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_begin_immediate_success",
+      "semantic_name": "GeneratedTaskBeginImmediateSuccess",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:HDDPKFNLMEG.OnTaskBegin:517406",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_reset_ready",
+      "semantic_name": "GeneratedTaskResetReady",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:HDDPKFNLMEG.OnTaskReset:517407",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_state_read",
+      "semantic_name": "GeneratedTaskBaseTaskStateAccessor",
+      "result": "task_state",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:GELIALJDFBL.MDFBKGOJOJI:505903",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_executor_base_ready_init",
+      "semantic_name": "GeneratedTaskBaseReadyInit",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:GELIALJDFBL..ctor:505902",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_begin_select_single_target",
+      "semantic_name": "GeneratedTaskBeginSelectSingleTarget",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "targets"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:CPHGMLEAPJL.OnTaskBegin:498176",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.task_reset_ready_clear_selected_target",
+      "semantic_name": "GeneratedTaskResetReadyClearTarget",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:CPHGMLEAPJL.OnTaskReset:498177",
+      "batch": "action_execution_bridge_06"
+    },
+    {
+      "primitive_id": "battle.ir.action.add_modifier_executor_init",
+      "semantic_name": "AddModifierExecutorInit",
+      "result": "task_execution",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:JAJPDPAHFOA..ctor:506046",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.add_modifier_task_begin_apply",
+      "semantic_name": "AddModifierTaskBeginApplyBoundary",
+      "result": "modifier_task_application",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "targets"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:JAJPDPAHFOA.OnTaskBegin:506048",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.apply_modifier_instance",
+      "semantic_name": "AbilityComponentAddModifierInstance",
+      "result": "modifier_container",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.AddModifierInstance:520236",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_get_by_index",
+      "semantic_name": "AbilityComponentGetModifierByIndex",
+      "result": "modifier_state_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.GetModifierByIndex:520239",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_index_of",
+      "semantic_name": "AbilityComponentGetIndexByModifier",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.GetIndexByModifier:520240",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_has_modifier_by_name",
+      "semantic_name": "AbilityComponentHasModifier",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.HasModifier:520246",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.container_count",
+      "semantic_name": "AbilityComponentModifierCount",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.AbilityComponent.get_ModifierCount:520257",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_name",
+      "semantic_name": "BaseModifierInstanceName",
+      "result": "string_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.BaseModifierInstance.get_Name:504746",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_count",
+      "semantic_name": "BaseModifierInstanceCount",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.BaseModifierInstance.get_Count:504765",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_state_raw",
+      "semantic_name": "BaseModifierInstanceStateRaw",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.BaseModifierInstance.get_State:504749",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_stacking_flag_raw",
+      "semantic_name": "BaseModifierInstanceStackingFlagRaw",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.BaseModifierInstance.get_StackingFlag:504751",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_caster_entity",
+      "semantic_name": "BaseModifierInstanceCasterEntity",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.BaseModifierInstance.get_CasterEntity:504757",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_layer",
+      "semantic_name": "TurnBasedModifierInstanceLayer",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.get_Layer:506325",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_max_layer",
+      "semantic_name": "TurnBasedModifierInstanceMaxLayer",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.get_MaxLayer:506327",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_current_life",
+      "semantic_name": "TurnBasedModifierInstanceCurrentLife",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.get_CurrentLife:506329",
+      "batch": "modifier_application_bridge_07"
+    },
+    {
+      "primitive_id": "battle.ir.modifier.state_source_entity",
+      "semantic_name": "TurnBasedModifierInstanceSourceEntity",
+      "result": "EntityRef",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.TurnBasedModifierInstance.get_SourceEntity:506280",
+      "batch": "modifier_application_bridge_07"
+    }
+  ],
+  "application_chains": [
+    {
+      "chain_id": "add_modifier_action_application_chain",
+      "status": "E4_CHAIN_CLOSED_BOUNDARY_PROJECTION",
+      "config": {
+        "runtime_type": "RPG.GameCore.AddModifier",
+        "type_index": 22786,
+        "serializer_method_index": 126119,
+        "serializer_native_rva": "0x1CD26280",
+        "runtime_type_reference": 283020,
+        "fields_used": [
+          "TargetType (config [+0x18] -> EvaluateTarget)",
+          "AliveOnly (config [+0x20] -> target mask 0xF / 1)",
+          "ModifierName (E3 field identity; runtime name slot [+0x60])",
+          "SuccessTaskList / FailTaskList / ResistedTaskList (config [+0xc8]/[+0xd0]/[+0xd8] -> ctor child executors)"
+        ]
+      },
+      "runtime_bridge": {
+        "kind": "TYPE_REFERENCE_MATCH",
+        "evidence": "generated executor .ctor(parameter 2 type_reference) == config MGMEGEDLMAK(parameter 2 type_reference) (283020)",
+        "executor_runtime_type": "JAJPDPAHFOA",
+        "executor_type_index": 54975
+      },
+      "steps": [
+        {
+          "step": 1,
+          "role": "config -> generated executor",
+          "method": ".ctor",
+          "method_index": 506046,
+          "native_rva": "0x1617FE60",
+          "evidence": "[+0x20]=config, [+0x18]=TaskContext, [+0x10]=Ready; child task executors from config [+0xc8]/[+0xd0]/[+0xd8]"
+        },
+        {
+          "step": 2,
+          "role": "source entity context read",
+          "method": "get_SourceEntity",
+          "method_index": 505849,
+          "native_rva": "0xE6EEFE0",
+          "evidence": "TaskContext [+0x68] -> source/caster entity chain"
+        },
+        {
+          "step": 3,
+          "role": "target selection (Batch 05 layer reuse)",
+          "method": "EvaluateTarget",
+          "method_index": 505873,
+          "native_rva": "0xE6F1530",
+          "evidence": "call site 0x16180353: EvaluateTarget(ctx=[executor+0x18], targetType=config[+0x18], list, mask); result target list iterated at 0x16180517..0x1618059A using [+0x10]/[+0x18]"
+        },
+        {
+          "step": 4,
+          "role": "per-target application helper",
+          "method": "TryAddModifierInstance",
+          "method_index": 506463,
+          "native_rva": "0xE729500",
+          "evidence": "OnTaskBegin call site 0x16181043; signature (this=TurnBasedAbilityComponent, string, ModifierConfig typeref 104288, ability typeref 286703, param typeref 608873, bool typeref 433618)"
+        },
+        {
+          "step": 5,
+          "role": "modifier instance construction",
+          "method": ".ctor",
+          "method_index": 506132,
+          "native_rva": "0xE77EB00",
+          "evidence": "TryAddModifierInstance allocates TurnBasedModifierInstance class global 0x95CAFF8 at 0xE729890 and calls its ctor 0xE77EB00 at 0xE7298AE; config/name copied into instance slots"
+        },
+        {
+          "step": 6,
+          "role": "persistent container mutation",
+          "method": "AddModifierInstance",
+          "method_index": 520236,
+          "native_rva": "0xE431890",
+          "evidence": "TryAddModifierInstance call site 0xE729C2E; leaf writes _ModifierList at AbilityComponent [+0x38]: version [list+0x1c]++, items [array + count*8 + 0x20], count [list+0x18]++"
+        },
+        {
+          "step": 7,
+          "role": "task state result",
+          "method": "OnTaskBegin",
+          "method_index": 506048,
+          "native_rva": "0x161801C0",
+          "evidence": "normal path writes TaskState [+0x10] = Success (0x9999); early-path success store at 0x16180263, normal tail store at 0x16181708"
+        }
+      ]
+    },
+    {
+      "chain_id": "modifier_owner_container_chain",
+      "status": "E4_CHAIN_CLOSED",
+      "steps": [
+        {
+          "step": 1,
+          "role": "entity owns component",
+          "method": "_OnInitOwnerRef",
+          "method_index": 506418,
+          "native_rva": "0xE723BB0",
+          "evidence": "TurnBasedAbilityComponent [+0x10] is the owner entity; body reads [component+0x10] and stores it into new owner structures at [+0x1e8] and [+0x160]+0x18"
+        },
+        {
+          "step": 2,
+          "role": "component owns modifier list",
+          "method": "get_ModifierList / AddModifierInstance",
+          "method_index": 520258,
+          "native_rva": "0xE433E20",
+          "evidence": "get_ModifierList returns AbilityComponent [+0x38]; AddModifierInstance mutates that same slot's list"
+        },
+        {
+          "step": 3,
+          "role": "instance remembers owner component",
+          "method": "GetOwnerAbilityComponent",
+          "method_index": 506159,
+          "native_rva": "0xE740660",
+          "evidence": "TurnBasedModifierInstance [+0x198] returns owner component"
+        }
+      ]
+    }
+  ],
+  "battle_state_additions": [
+    {
+      "field": "modifier_state_by_entity",
+      "schema_version": 2,
+      "canonical_shape": "dict[str(entity runtime_id), list[ModifierState dict]]; ordered list, duplicates preserved, positional reads",
+      "native_evidence": "AbilityComponent._ModifierList [+0x38] append leaf (M520236) + owner entity component slot [+0x10] (M506418) + instance owner component [+0x198] (M506159)"
+    }
+  ],
+  "modifier_identity": [
+    {
+      "kind": "config_name_string",
+      "native_source": "BaseModifierInstance.get_Name [+0x60] (M504746, 0xE4EEF10)",
+      "config_metadata": "RPG.GameCore.AddModifier.ModifierName field (typeref 483870, E3)",
+      "status": "PROVEN"
+    },
+    {
+      "kind": "owner_entity",
+      "native_source": "component [+0x10] owner entity -> list owner (_OnInitOwnerRef 0xE723BB0)",
+      "logical_id": "GameEntity.RuntimeID (Batch 05 EntityRef)",
+      "status": "PROVEN"
+    },
+    {
+      "kind": "instance_ordinal",
+      "native_source": "ordered append tail + GetIndexByModifier linear index (M520240)",
+      "status": "PROVEN_ORDERED_APPEND_ORDINAL"
+    },
+    {
+      "kind": "runtime_instance_id",
+      "native_source": "not recovered in this round (object pointer only)",
+      "status": "UNKNOWN"
+    }
+  ],
+  "container_semantics": {
+    "native_container": "RPG.GameCore.AbilityComponent._ModifierList",
+    "native_slot": "+0x38",
+    "ordering": "ORDERED_APPEND",
+    "duplicates": "PRESERVED_NO_DEDUPLICATION at the accepted append leaf",
+    "canonical_type": "ModifierContainer(tuple[ModifierState, ...])",
+    "note": "never an unordered Python set"
+  },
+  "stack_policy_status": [
+    {
+      "scope": "AbilityComponent.AddModifierInstance",
+      "policy": "PRESERVED_NO_DEDUPLICATION",
+      "status": "PROVEN",
+      "evidence": "no contains/search before append; version/count/items writes only"
+    },
+    {
+      "scope": "TurnBasedAbilityComponent.TryAddModifierInstance",
+      "policy": "DESTROY_AND_READD_PATH_OBSERVED_CONDITION_UNRESOLVED",
+      "status": "UNKNOWN",
+      "evidence": "GlobalFindModifierInstance (0xE43E2B0), FindModifierInstance (0xE72B410), Destroy (0xE7384B0) and fresh allocation path observed; exact duplicate condition not recovered"
+    },
+    {
+      "scope": "canonical sandbox duplicate behavior",
+      "policy": "UNKNOWN",
+      "status": "STACK_POLICY_UNKNOWN"
+    }
+  ],
+  "lifetime_status": [
+    {
+      "field": "TurnBasedModifierInstance.CurrentLife [+0x2c4]",
+      "evidence": "getter E4 (M506329)",
+      "policy": "FIELDS_PROVEN_EXPIRATION_TRIGGER_UNKNOWN"
+    },
+    {
+      "field": "TurnBasedModifierInstance.Layer [+0x288] / MaxLayer",
+      "evidence": "getters E4 (M506325/M506327)",
+      "policy": "FIELDS_PROVEN_STACK_POLICY_UNKNOWN"
+    },
+    {
+      "scope": "duration/round/turn expiration",
+      "policy": "UNKNOWN"
+    }
+  ],
+  "event_dependency": [
+    {
+      "dependency": "AbilityAddModifier / AbilityPreAddModifier / LevelAfterAddModifier event rows",
+      "status": "POST_APPLY_EVENT_DEPENDENCY_REQUIRED",
+      "note": "application mutation itself is proven; notify/listener side effects are deferred"
+    }
+  ],
+  "effect_dependency": [
+    {
+      "effect_id": "post_apply_instance_lifecycle_calls",
+      "entry": "AbilityComponent.AddModifierInstance after append",
+      "native_rva": "0xE431890",
+      "classification": "POST_APPLY_LIFECYCLE_DEPENDENCY_REQUIRED",
+      "observed": "two virtual interface dispatches on the appended instance guarded by bool arg"
+    },
+    {
+      "effect_id": "try_add_modifier_instance_lifecycle",
+      "entry": "TurnBasedAbilityComponent.TryAddModifierInstance",
+      "native_rva": "0xE729500",
+      "classification": "SKIP_LIFECYCLE_HEAVY",
+      "observed": "duplicate find/destroy, property min/max arithmetic, _PostProcessAfterModifierAdd, _ProcessModifierRedd"
+    },
+    {
+      "effect_id": "addmodifier_dynamic_parameter_evaluation",
+      "entry": "JAJPDPAHFOA.OnTaskBegin dynamic values/strings",
+      "native_rva": "0x161801C0",
+      "classification": "SKIP_CONTEXT_HEAVY",
+      "observed": "TaskContext.Evaluate and generated helper evaluators inside the 6592-byte body"
+    },
+    {
+      "effect_id": "modifier_effect_semantics",
+      "entry": "TurnBasedModifierInstance events/property stacks/DOT",
+      "classification": "SEMANTIC_DEPENDENCY_REQUIRED",
+      "observed": "event processor and property stack APIs exist on TurnBasedAbilityComponent; not entered"
+    }
+  ],
+  "state_transition_tests": [
+    {
+      "name": "TestCrossLayerComposition.test_context_target_to_action_write_chain",
+      "path": "tests/battle_sandbox/test_action_execution_runtime_06.py",
+      "chain": [
+        "battle.ir.target.select_task_action_target",
+        "battle.ir.action.task_executor_init",
+        "battle.ir.action.task_begin_select_single_target"
+      ],
+      "invocation_path": "PrimitiveCall -> PrimitiveExecutor -> PrimitiveRegistry",
+      "note": "regression: Batch 05/06 chain unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "TestNormalApplicationThroughExecutor.test_pre_apply_to_post_battle_state_transition",
+      "path": "tests/battle_sandbox/test_modifier_application_runtime_07.py",
+      "chain": [
+        "BattleState v2 (pre)",
+        "battle.ir.modifier.apply_modifier_instance",
+        "BattleState v2 (post, modifier_state_by_entity)"
+      ],
+      "invocation_path": "PrimitiveCall -> PrimitiveExecutor -> PrimitiveRegistry",
+      "note": "first real BattleState transition: persistent modifier append",
+      "status": "PASS"
+    },
+    {
+      "name": "TestNormalApplicationThroughExecutor.test_add_modifier_executor_init_then_task_boundary",
+      "path": "tests/battle_sandbox/test_modifier_application_runtime_07.py",
+      "chain": [
+        "battle.ir.action.add_modifier_executor_init",
+        "battle.ir.modifier.add_modifier_task_begin_apply"
+      ],
+      "invocation_path": "PrimitiveCall -> PrimitiveExecutor -> PrimitiveRegistry",
+      "note": "AddModifier generated executor init -> OnTaskBegin normal-path boundary -> Success + ordered persistent writes",
+      "status": "PASS"
+    },
+    {
+      "name": "TestNormalApplicationThroughExecutor.test_cross_layer_target_to_modifier_to_persistent_state",
+      "path": "tests/battle_sandbox/test_modifier_application_runtime_07.py",
+      "chain": [
+        "battle.ir.target.select_task_action_target",
+        "battle.ir.target.collapse_single_or_null",
+        "battle.ir.action.add_modifier_executor_init",
+        "battle.ir.modifier.apply_modifier_instance"
+      ],
+      "invocation_path": "PrimitiveCall -> PrimitiveExecutor -> PrimitiveRegistry",
+      "note": "Action config -> target -> modifier application -> persistent state",
+      "status": "PASS"
+    }
+  ],
+  "semantic_artifacts": [
+    {
+      "path": "vertical_slice_01.json",
+      "schema": "battle_semantics_vertical_slice/1",
+      "sha256": "0335012c109d578be552f76c1feabbd12c7b991c9e965c4493cc3be5d0461368",
+      "enabled": true
+    },
+    {
+      "path": "dynamic_value_batch_02.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "dfa7b722ac2117a132c5c31a4cfef837d75fda11c3418789b986d04b9a292961",
+      "enabled": true
+    },
+    {
+      "path": "fixpoint_comparison_batch_03.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f64e5ce80d573bfc43ec082f0239094cc735a29363575d92acf9dc5fa38a330a",
+      "enabled": true
+    },
+    {
+      "path": "predicate_evaluation_bridge_04.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "f34b15692640066cadee96e621d80190109e1e04d79a3f8ce29435b3a58cecdc",
+      "enabled": true
+    },
+    {
+      "path": "target_selector_batch_05.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "c5e605c0694f1e01c6e46ea9a41de5b1778f82bcee64ac2cde05276182b0bfa6",
+      "enabled": true
+    },
+    {
+      "path": "action_execution_bridge_06.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "8d914b7ef53be645f6ec7e9c153459959bd5fdd6d3efe9128d16a08632772a25",
+      "enabled": true
+    },
+    {
+      "path": "modifier_application_bridge_07.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "3d01b3e43fecba64fa75018fce4609b580f808a16aa8086005b5e448aa951d9d",
+      "enabled": true
+    }
+  ],
+  "test_count": 347,
+  "test_pass": 347,
+  "representation_conflicts": [],
+  "rng": {
+    "client_rng_algorithm": "UNKNOWN",
+    "sandbox_rng": "DETERMINISTIC_ABSTRACTION",
+    "sandbox_rng_algorithm": "PYTHON_RANDOM_MT19937"
+  },
+  "not_implemented_surfaces": [
+    "legal_actions",
+    "step",
+    "is_terminal",
+    "higher-level ActionExecutor (not proven by native evidence)",
+    "TaskContext.EvaluateTarget registry dispatcher internals",
+    "TryAddModifierInstance full stack/lifetime/event dispatcher",
+    "Modifier effects (property stacks / DOT / damage hooks)",
+    "Turn expiration / duration triggers",
+    "Damage",
+    "Event listener / NotifyManager",
+    "Turn / AV",
+    "HP / ATK / DEF state",
+    "Black Swan full simulation",
+    "Planner"
+  ],
+  "known_unknowns": [
+    "TryAddModifierInstance param typeref 608873 name",
+    "TryAddModifierInstance return typeref 231567 and AbilityComponent list element typeref 232380 canonical names (anchored by consumers, not resolved)",
+    "BaseModifierInstance.State enum member ordinals (raw read only)",
+    "BaseModifierInstance.StackingFlag enum member ordinals (raw read only)",
+    "TurnBasedModifierInstance MaxLayer slot names [+0x2e0]/[+0x270]",
+    "unregistered local helper 0xB429790 exact method identity (lazy entity resolver)",
+    "OnTaskBegin 6592-byte full control flow beyond the accepted boundary projection",
+    "exact duplicate modifier stack/refresh/replace policy",
+    "duration expiration trigger semantics",
+    "no E5 client-side runtime observation",
+    "ModifierConfig numeric/config-id stable identity not recovered; canonical identity is name + owner + ordinal"
+  ],
+  "generated_at": "2026-08-16T15:12:57.155799+00:00"
+}

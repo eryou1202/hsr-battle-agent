@@ -59,6 +59,23 @@ from hsr_battle_agent.battle_runtime.actions import (
     task_reset_ready_clear_selected_target,
     task_state_read,
 )
+from hsr_battle_agent.battle_runtime.modifiers import (
+    add_modifier_task_begin_apply,
+    apply_modifier_instance,
+    modifier_container_count,
+    modifier_container_get_by_index,
+    modifier_container_has_modifier_by_name,
+    modifier_container_index_of,
+    modifier_state_caster_entity,
+    modifier_state_count,
+    modifier_state_current_life,
+    modifier_state_layer,
+    modifier_state_max_layer,
+    modifier_state_name,
+    modifier_state_source_entity,
+    modifier_state_stacking_flag_raw,
+    modifier_state_state_raw,
+)
 
 __all__ = [
     "dynamic_value_equals",
@@ -103,4 +120,19 @@ __all__ = [
     "task_reset_ready",
     "task_reset_ready_clear_selected_target",
     "task_state_read",
+    "add_modifier_task_begin_apply",
+    "apply_modifier_instance",
+    "modifier_container_count",
+    "modifier_container_get_by_index",
+    "modifier_container_has_modifier_by_name",
+    "modifier_container_index_of",
+    "modifier_state_caster_entity",
+    "modifier_state_count",
+    "modifier_state_current_life",
+    "modifier_state_layer",
+    "modifier_state_max_layer",
+    "modifier_state_name",
+    "modifier_state_source_entity",
+    "modifier_state_stacking_flag_raw",
+    "modifier_state_state_raw",
 ]

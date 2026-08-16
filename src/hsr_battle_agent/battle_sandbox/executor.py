@@ -6,6 +6,10 @@ from collections.abc import Mapping
 from typing import Any
 
 from hsr_battle_agent.battle_ir.model import PrimitiveCall, PrimitiveResult
+from hsr_battle_agent.battle_ir.modifiers import (
+    ModifierContainer,
+    ModifierState,
+)
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import DynamicValue
 from hsr_battle_agent.battle_sandbox.context import ExecutionContext
@@ -69,5 +73,9 @@ def _input_tag(value: Any) -> str:
     if isinstance(value, EntityRef):
         return value.trace_summary()
     if isinstance(value, TargetSet):
+        return value.trace_summary()
+    if isinstance(value, ModifierState):
+        return value.trace_summary()
+    if isinstance(value, ModifierContainer):
         return value.trace_summary()
     return type(value).__name__

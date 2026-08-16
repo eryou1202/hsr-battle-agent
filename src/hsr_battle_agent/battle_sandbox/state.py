@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
-"""BattleState v0.
+"""Versioned BattleState.
 
 State schema grows only when a recovered semantic slice proves a new
-read/write requirement.  BattleState v0 therefore has **no** client battle
-fields (no hp / atk / def / spd / energy / toughness / buffs / ...).
+read/write requirement.
 
-It contains only kernel infrastructure:
-
-* ``schema_version`` -- versioned snapshot evolution
-* ``extensions``      -- infrastructure-only key/value bag used to prove clone
-  isolation and future migration mechanics; game-semantic fields must become
-  real dataclass fields in a later schema version, never hide in extensions
+* BattleState v1: kernel infrastructure only (``extensions``).
+* BattleState v2: adds ``modifier_state_by_entity``, the first real
+  client-battle field, recovered by Modifier Application Bridge 07 (E4):
+  ``RPG.GameCore.AbilityComponent._ModifierList`` at native slot [+0x38] is an
+  ordered persistent list owned by an entity component.  The canonical
+  representation is a JSON-safe mapping ``entity_runtime_id (string) ->
+  list[ModifierState dict]``; ordered list semantics are preserved (append
+  order, duplicates, positional reads).  There are still no hp/atk/def/spd/
+  energy/toughness fields.
 
 JSON contract (strict):
 
@@ -29,29 +31,42 @@ from typing import Any, Mapping
 from hsr_battle_agent.battle_sandbox.errors import UnsupportedStateVersionError
 from hsr_battle_agent.battle_sandbox.hash import stable_json_hash
 
-BATTLE_STATE_SCHEMA_VERSION = 1
+BATTLE_STATE_SCHEMA_VERSION = 2
 _STATE_SCHEMA_KEY = "schema_version"
 _EXTENSIONS_KEY = "extensions"
+_MODIFIER_STATE_BY_ENTITY_KEY = "modifier_state_by_entity"
+_LEGACY_SCHEMA_VERSION = 1
 
 
 @dataclass
 class BattleState:
     schema_version: int = BATTLE_STATE_SCHEMA_VERSION
     extensions: dict[str, Any] = field(default_factory=dict)
+    modifier_state_by_entity: dict[str, list[dict[str, Any]]] = field(
+        default_factory=dict
+    )
 
     def __post_init__(self) -> None:
         if self.schema_version != BATTLE_STATE_SCHEMA_VERSION:
             raise UnsupportedStateVersionError(self.schema_version)
         if not isinstance(self.extensions, dict):
             raise TypeError("BattleState extensions must be a dict")
-        # Normalize to a private deep copy: caller-owned nested containers can
+        if not isinstance(self.modifier_state_by_entity, dict):
+            raise TypeError("BattleState modifier_state_by_entity must be a dict")
+        # Normalize to private deep copies: caller-owned nested containers can
         # never alias BattleState internals, even on direct construction.
         self.extensions = deep_copy_json_value(self.extensions)
+        self.modifier_state_by_entity = deep_copy_json_value(
+            self.modifier_state_by_entity
+        )
 
     def clone(self) -> "BattleState":
         return BattleState(
             schema_version=self.schema_version,
             extensions=deep_copy_json_value(self.extensions),
+            modifier_state_by_entity=deep_copy_json_value(
+                self.modifier_state_by_entity
+            ),
         )
 
     def set_extension(self, key: str, value: Any) -> None:
@@ -62,10 +77,28 @@ class BattleState:
     def remove_extension(self, key: str) -> None:
         self.extensions.pop(key, None)
 
+    def set_modifier_collection(self, entity_runtime_id: int, items: list[dict[str, Any]]) -> None:
+        """Replace one entity modifier collection with a validated deep copy."""
+        if isinstance(entity_runtime_id, bool) or not isinstance(entity_runtime_id, int):
+            raise TypeError("entity_runtime_id must be an int")
+        if not isinstance(items, list):
+            raise TypeError("modifier collection items must be a list in JSON form")
+        self.modifier_state_by_entity[str(entity_runtime_id)] = deep_copy_json_value(
+            items
+        )
+
+    def clear_modifier_collection(self, entity_runtime_id: int) -> None:
+        if isinstance(entity_runtime_id, bool) or not isinstance(entity_runtime_id, int):
+            raise TypeError("entity_runtime_id must be an int")
+        self.modifier_state_by_entity.pop(str(entity_runtime_id), None)
+
     def to_dict(self) -> dict[str, Any]:
         return {
             _STATE_SCHEMA_KEY: self.schema_version,
             _EXTENSIONS_KEY: deep_copy_json_value(self.extensions),
+            _MODIFIER_STATE_BY_ENTITY_KEY: deep_copy_json_value(
+                self.modifier_state_by_entity
+            ),
         }
 
     @classmethod
@@ -73,19 +106,43 @@ class BattleState:
         if not isinstance(data, Mapping):
             raise TypeError("BattleState dict must be a mapping")
         schema_version = data.get(_STATE_SCHEMA_KEY)
-        if schema_version != BATTLE_STATE_SCHEMA_VERSION:
+        if schema_version not in (BATTLE_STATE_SCHEMA_VERSION, _LEGACY_SCHEMA_VERSION):
             raise UnsupportedStateVersionError(schema_version)
-        unknown = set(data) - {_STATE_SCHEMA_KEY, _EXTENSIONS_KEY}
+        if schema_version == _LEGACY_SCHEMA_VERSION:
+            unknown = set(data) - {_STATE_SCHEMA_KEY, _EXTENSIONS_KEY}
+            if unknown:
+                raise ValueError(
+                    f"unknown BattleState v1 keys: {', '.join(sorted(unknown))}"
+                )
+            extensions = data.get(_EXTENSIONS_KEY, {})
+            if not isinstance(extensions, dict):
+                raise TypeError("BattleState extensions must be a dict")
+            return cls(
+                schema_version=BATTLE_STATE_SCHEMA_VERSION,
+                extensions=deep_copy_json_value(extensions),
+            )
+        unknown = set(data) - {
+            _STATE_SCHEMA_KEY,
+            _EXTENSIONS_KEY,
+            _MODIFIER_STATE_BY_ENTITY_KEY,
+        }
         if unknown:
             raise ValueError(
-                f"unknown BattleState v1 keys: {', '.join(sorted(unknown))}"
+                f"unknown BattleState v{BATTLE_STATE_SCHEMA_VERSION} keys: "
+                f"{', '.join(sorted(unknown))}"
             )
         extensions = data.get(_EXTENSIONS_KEY, {})
         if not isinstance(extensions, dict):
             raise TypeError("BattleState extensions must be a dict")
+        modifiers = data.get(_MODIFIER_STATE_BY_ENTITY_KEY, {})
+        if not isinstance(modifiers, dict):
+            raise TypeError(
+                "BattleState modifier_state_by_entity must be a dict"
+            )
         return cls(
             schema_version=BATTLE_STATE_SCHEMA_VERSION,
             extensions=deep_copy_json_value(extensions),
+            modifier_state_by_entity=deep_copy_json_value(modifiers),
         )
 
     def state_hash(self) -> str:

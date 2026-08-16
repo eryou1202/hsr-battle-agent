@@ -63,12 +63,29 @@ from hsr_battle_agent.battle_ir.model import (
     TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID,
     TASK_RESET_READY_PRIMITIVE_ID,
     TASK_STATE_READ_PRIMITIVE_ID,
+    ADD_MODIFIER_EXECUTOR_INIT_PRIMITIVE_ID,
+    MODIFIER_TASK_BEGIN_APPLY_PRIMITIVE_ID,
+    MODIFIER_APPLY_INSTANCE_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_GET_BY_INDEX_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_INDEX_OF_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_HAS_MODIFIER_BY_NAME_PRIMITIVE_ID,
+    MODIFIER_CONTAINER_COUNT_PRIMITIVE_ID,
+    MODIFIER_STATE_NAME_PRIMITIVE_ID,
+    MODIFIER_STATE_COUNT_PRIMITIVE_ID,
+    MODIFIER_STATE_STATE_RAW_PRIMITIVE_ID,
+    MODIFIER_STATE_STACKING_FLAG_RAW_PRIMITIVE_ID,
+    MODIFIER_STATE_CASTER_ENTITY_PRIMITIVE_ID,
+    MODIFIER_STATE_LAYER_PRIMITIVE_ID,
+    MODIFIER_STATE_MAX_LAYER_PRIMITIVE_ID,
+    MODIFIER_STATE_CURRENT_LIFE_PRIMITIVE_ID,
+    MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
 )
 from hsr_battle_agent.battle_runtime import actions as action_runtime
+from hsr_battle_agent.battle_runtime import modifiers as modifier_runtime
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
 from hsr_battle_agent.battle_runtime import targets as target_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
@@ -136,6 +153,38 @@ def _no_input_impl(function: Callable[[], Any]) -> PrimitiveImplementation:
         if inputs:
             raise ValueError("no-input primitives take no explicit inputs")
         return function()
+
+    return impl
+
+
+def _modifier_state_write_impl(
+    function: Callable[[Any, Any, Any], Any],
+) -> PrimitiveImplementation:
+    """Implementation that writes BattleState.modifier_state_by_entity.
+
+    The function signature is ``(state, target, modifier)``.  The executor
+    passes the live isolated branch state; the primitive returns the updated
+    canonical container.
+    """
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        return function(context.state, inputs["target"], inputs["modifier"])
+
+    return impl
+
+
+def _modifier_task_begin_impl(
+    function: Callable[[Any, Any, Any, Any], Any],
+) -> PrimitiveImplementation:
+    """AddModifier OnTaskBegin boundary: ``(state, execution, targets, modifier)``."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        return function(
+            context.state,
+            inputs["execution"],
+            inputs["targets"],
+            inputs["modifier"],
+        )
 
     return impl
 
@@ -268,6 +317,57 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     ),
     TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID: _named_unary_impl(
         "execution", action_runtime.task_reset_ready_clear_selected_target
+    ),
+    ADD_MODIFIER_EXECUTOR_INIT_PRIMITIVE_ID: _named_unary_impl(
+        "config", action_runtime.task_executor_init
+    ),
+    MODIFIER_TASK_BEGIN_APPLY_PRIMITIVE_ID: _modifier_task_begin_impl(
+        modifier_runtime.add_modifier_task_begin_apply
+    ),
+    MODIFIER_APPLY_INSTANCE_PRIMITIVE_ID: _modifier_state_write_impl(
+        modifier_runtime.apply_modifier_instance
+    ),
+    MODIFIER_CONTAINER_GET_BY_INDEX_PRIMITIVE_ID: _named_binary_impl(
+        ("container", "index"),
+        modifier_runtime.modifier_container_get_by_index,
+    ),
+    MODIFIER_CONTAINER_INDEX_OF_PRIMITIVE_ID: _named_binary_impl(
+        ("container", "modifier"),
+        modifier_runtime.modifier_container_index_of,
+    ),
+    MODIFIER_CONTAINER_HAS_MODIFIER_BY_NAME_PRIMITIVE_ID: _named_binary_impl(
+        ("container", "name"),
+        modifier_runtime.modifier_container_has_modifier_by_name,
+    ),
+    MODIFIER_CONTAINER_COUNT_PRIMITIVE_ID: _named_unary_impl(
+        "container", modifier_runtime.modifier_container_count
+    ),
+    MODIFIER_STATE_NAME_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_name
+    ),
+    MODIFIER_STATE_COUNT_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_count
+    ),
+    MODIFIER_STATE_STATE_RAW_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_state_raw
+    ),
+    MODIFIER_STATE_STACKING_FLAG_RAW_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_stacking_flag_raw
+    ),
+    MODIFIER_STATE_CASTER_ENTITY_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_caster_entity
+    ),
+    MODIFIER_STATE_LAYER_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_layer
+    ),
+    MODIFIER_STATE_MAX_LAYER_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_max_layer
+    ),
+    MODIFIER_STATE_CURRENT_LIFE_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_current_life
+    ),
+    MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID: _named_unary_impl(
+        "modifier", modifier_runtime.modifier_state_source_entity
     ),
 }
 

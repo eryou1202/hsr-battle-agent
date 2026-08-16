@@ -87,6 +87,45 @@ TASK_RESET_READY_CLEAR_SELECTED_TARGET_PRIMITIVE_ID = (
     "battle.ir.action.task_reset_ready_clear_selected_target"
 )
 
+ADD_MODIFIER_EXECUTOR_INIT_PRIMITIVE_ID = (
+    "battle.ir.action.add_modifier_executor_init"
+)
+MODIFIER_TASK_BEGIN_APPLY_PRIMITIVE_ID = (
+    "battle.ir.modifier.add_modifier_task_begin_apply"
+)
+MODIFIER_APPLY_INSTANCE_PRIMITIVE_ID = (
+    "battle.ir.modifier.apply_modifier_instance"
+)
+MODIFIER_CONTAINER_GET_BY_INDEX_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_get_by_index"
+)
+MODIFIER_CONTAINER_INDEX_OF_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_index_of"
+)
+MODIFIER_CONTAINER_HAS_MODIFIER_BY_NAME_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_has_modifier_by_name"
+)
+MODIFIER_CONTAINER_COUNT_PRIMITIVE_ID = (
+    "battle.ir.modifier.container_count"
+)
+MODIFIER_STATE_NAME_PRIMITIVE_ID = "battle.ir.modifier.state_name"
+MODIFIER_STATE_COUNT_PRIMITIVE_ID = "battle.ir.modifier.state_count"
+MODIFIER_STATE_STATE_RAW_PRIMITIVE_ID = "battle.ir.modifier.state_state_raw"
+MODIFIER_STATE_STACKING_FLAG_RAW_PRIMITIVE_ID = (
+    "battle.ir.modifier.state_stacking_flag_raw"
+)
+MODIFIER_STATE_CASTER_ENTITY_PRIMITIVE_ID = (
+    "battle.ir.modifier.state_caster_entity"
+)
+MODIFIER_STATE_LAYER_PRIMITIVE_ID = "battle.ir.modifier.state_layer"
+MODIFIER_STATE_MAX_LAYER_PRIMITIVE_ID = "battle.ir.modifier.state_max_layer"
+MODIFIER_STATE_CURRENT_LIFE_PRIMITIVE_ID = (
+    "battle.ir.modifier.state_current_life"
+)
+MODIFIER_STATE_SOURCE_ENTITY_PRIMITIVE_ID = (
+    "battle.ir.modifier.state_source_entity"
+)
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

@@ -17,6 +17,13 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Protocol
 
 from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
+from hsr_battle_agent.battle_ir.modifiers import (
+    ModifierConfigRef,
+    ModifierContainer,
+    ModifierRef,
+    ModifierState,
+    ModifierTaskApplication,
+)
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import EvaluatorSpec
 
@@ -168,6 +175,12 @@ def _trace_result_summary(value: Any) -> Any:
     if isinstance(value, TaskState):
         return value.trace_summary()
     if isinstance(value, TaskExecutionState):
+        return value.trace_summary()
+    if isinstance(value, (ModifierConfigRef, ModifierRef, ModifierState)):
+        return value.trace_summary()
+    if isinstance(value, ModifierContainer):
+        return value.trace_summary()
+    if isinstance(value, ModifierTaskApplication):
         return value.trace_summary()
     _validate_trace_result(value)
     return value
