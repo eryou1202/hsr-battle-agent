@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 """Small primitive registry: primitive_id -> implementation.
 
-Bootstrap path (source of truth is the semantic artifact):
+Bootstrap path (source of truth is the explicit semantic catalog):
 
-    semantic artifact JSON
-      -> validated RecoveredPrimitive(spec, provenance)
+    catalog.json
+      -> artifact validation (schema + sha256 + enabled)
+      -> validated RecoveredPrimitive(spec, provenance) list
       -> explicit implementation binding by primitive_id
       -> frozen PrimitiveRegistry
 
 ``create_default`` performs this bootstrap exactly once (cached).  Execution
-paths never read the artifact file and never touch this bootstrap code.
+paths never read the catalog or artifact files and never touch bootstrap code.
 """
 from __future__ import annotations
 
@@ -18,14 +19,26 @@ from dataclasses import dataclass
 from functools import lru_cache
 from typing import Any
 
+from hsr_battle_agent.battle_ir.catalog import load_catalog_primitives
 from hsr_battle_agent.battle_ir.model import (
     DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID,
+    DYNAMIC_VALUE_STRING_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
-    load_vertical_slice_01,
 )
+from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
 from hsr_battle_agent.battle_sandbox.errors import (
     DuplicatePrimitiveError,
     FrozenRegistryError,
@@ -36,21 +49,61 @@ from hsr_battle_agent.battle_sandbox.context import ExecutionContext
 PrimitiveImplementation = Callable[[ExecutionContext, Mapping[str, Any]], Any]
 
 
-def _dynamic_value_equals_impl(
-    context: ExecutionContext, inputs: Mapping[str, Any]
-) -> Any:
-    del context  # no state reads/writes in this primitive
-    # Imported lazily only as a documentation of the dispatch boundary; the
-    # module import itself is cheap and the registry is built once.
-    from hsr_battle_agent.battle_runtime.values import dynamic_value_equals
+def _binary_impl(function: Callable[[Any, Any], Any]) -> PrimitiveImplementation:
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        del context  # no state reads/writes in this primitive
+        return function(inputs["lhs"], inputs["rhs"])
 
-    return dynamic_value_equals(inputs["lhs"], inputs["rhs"])
+    return impl
+
+
+def _unary_impl(function: Callable[[Any], Any]) -> PrimitiveImplementation:
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        del context  # no state reads/writes in this primitive
+        return function(inputs["value"])
+
+    return impl
 
 
 # Explicit implementation bindings.  This mapping contains no semantic spec and
-# no provenance: those come exclusively from the semantic artifact.
+# no provenance: those come exclusively from the validated semantic artifacts.
 DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
-    DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID: _dynamic_value_equals_impl,
+    DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID: _binary_impl(
+        dynamic_value_runtime.dynamic_value_equals
+    ),
+    DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_int
+    ),
+    DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_uint
+    ),
+    DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_long
+    ),
+    DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_float
+    ),
+    DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_double
+    ),
+    DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_to_bool
+    ),
+    DYNAMIC_VALUE_TYPE_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_type
+    ),
+    DYNAMIC_VALUE_STRING_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_string
+    ),
+    DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_is_array
+    ),
+    DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_is_map
+    ),
+    DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID: _unary_impl(
+        dynamic_value_runtime.dynamic_value_is_null
+    ),
 }
 
 
@@ -135,18 +188,22 @@ class PrimitiveRegistry:
     @classmethod
     @lru_cache(maxsize=1)
     def create_default(cls) -> "PrimitiveRegistry":
-        """Bootstrap Kernel 01 from the validated semantic artifact.
+        """Bootstrap the runtime from the validated semantic catalog.
 
         Disk access happens only here, at registry setup time, and the returned
-        frozen registry is cached so the artifact is loaded once per process.
+        frozen registry is cached so the catalog/artifacts are loaded once per
+        process.  Execution never re-reads the catalog.
         """
-        recovered = load_vertical_slice_01()
-        primitive_id = recovered.spec.primitive_id
-        try:
-            implementation = DEFAULT_IMPLEMENTATION_BINDINGS[primitive_id]
-        except KeyError:
-            raise UnsupportedPrimitiveError(primitive_id) from None
+        recovered_primitives = load_catalog_primitives()
+        if not recovered_primitives:
+            raise UnsupportedPrimitiveError("<empty semantic catalog>")
         registry = cls()
-        registry.bind_recovered_primitive(recovered, implementation)
+        for recovered in recovered_primitives:
+            primitive_id = recovered.spec.primitive_id
+            try:
+                implementation = DEFAULT_IMPLEMENTATION_BINDINGS[primitive_id]
+            except KeyError:
+                raise UnsupportedPrimitiveError(primitive_id) from None
+            registry.bind_recovered_primitive(recovered, implementation)
         registry.freeze()
         return registry

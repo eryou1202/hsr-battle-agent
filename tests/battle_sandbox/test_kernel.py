@@ -12,6 +12,17 @@ sys.path.insert(0, str(REPO / "src"))
 
 from hsr_battle_agent.battle_ir.model import (  # noqa: E402
     DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID,
+    DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID,
+    DYNAMIC_VALUE_STRING_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
+    DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
     PrimitiveCall,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (  # noqa: E402
@@ -343,11 +354,24 @@ class TestTrace(unittest.TestCase):
 
 
 class TestRegistryAndExecutor(unittest.TestCase):
-    def test_default_registry_has_dynamic_value_equals(self):
+    def test_default_registry_has_vertical_slice_and_batch_02(self):
         registry = PrimitiveRegistry.create_default()
         self.assertEqual(
             registry.known_primitive_ids,
-            (DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,),
+            (
+                DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID,
+                DYNAMIC_VALUE_TYPE_PRIMITIVE_ID,
+                DYNAMIC_VALUE_STRING_PRIMITIVE_ID,
+                DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID,
+                DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID,
+                DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID,
+            ),
         )
         self.assertTrue(registry.frozen)
 
@@ -369,13 +393,13 @@ class TestRegistryAndExecutor(unittest.TestCase):
             PrimitiveRegistry.create_default(),
         )
 
-    def test_execution_hot_path_never_loads_semantic_artifact(self):
+    def test_execution_hot_path_never_loads_semantic_catalog(self):
         registry = PrimitiveRegistry.create_default()
         context = ExecutionContext()
         executor = PrimitiveExecutor(registry)
         with mock.patch(
-            "hsr_battle_agent.battle_sandbox.registry.load_vertical_slice_01",
-            side_effect=AssertionError("artifact disk read on hot execution path"),
+            "hsr_battle_agent.battle_sandbox.registry.load_catalog_primitives",
+            side_effect=AssertionError("catalog disk read on hot execution path"),
         ):
             result = executor.execute(
                 _call(DynamicValue.int_value(1), DynamicValue.int_value(1)),

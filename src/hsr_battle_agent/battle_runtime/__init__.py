@@ -9,6 +9,32 @@ Runtime functions must not import battle_sandbox or provenance decision logic.
 """
 from __future__ import annotations
 
-from hsr_battle_agent.battle_runtime.values import dynamic_value_equals
+from hsr_battle_agent.battle_runtime.values import (
+    dynamic_value_equals,
+    dynamic_value_is_array,
+    dynamic_value_is_map,
+    dynamic_value_is_null,
+    dynamic_value_string,
+    dynamic_value_to_bool,
+    dynamic_value_to_double,
+    dynamic_value_to_float,
+    dynamic_value_to_int,
+    dynamic_value_to_long,
+    dynamic_value_to_uint,
+    dynamic_value_type,
+)
 
-__all__ = ["dynamic_value_equals"]
+__all__ = [
+    "dynamic_value_equals",
+    "dynamic_value_is_array",
+    "dynamic_value_is_map",
+    "dynamic_value_is_null",
+    "dynamic_value_string",
+    "dynamic_value_to_bool",
+    "dynamic_value_to_double",
+    "dynamic_value_to_float",
+    "dynamic_value_to_int",
+    "dynamic_value_to_long",
+    "dynamic_value_to_uint",
+    "dynamic_value_type",
+]

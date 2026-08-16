@@ -1,0 +1,472 @@
+{
+  "schema": "battle_sandbox_runtime_report/1",
+  "sandbox_schema_version": 1,
+  "battle_state_schema_version": 1,
+  "trace_schema": "battle_sandbox_trace/1",
+  "game_semantic_version": "4.4.54",
+  "final_status": "BATTLE_SANDBOX = DYNAMIC_VALUE_RUNTIME_02_PROOF",
+  "implemented_primitives": [
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_equals",
+      "semantic_name": "DynamicValueEquals",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.Equals:74632"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_int",
+      "semantic_name": "DynamicValueToInt32",
+      "result": "int32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IntValue:74637"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_uint",
+      "semantic_name": "DynamicValueToUInt32",
+      "result": "uint32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_UintValue:74638"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_long",
+      "semantic_name": "DynamicValueToInt64",
+      "result": "int64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_LongValue:74639"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_float",
+      "semantic_name": "DynamicValueToFloat32",
+      "result": "float32",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_FloatValue:74633"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_double",
+      "semantic_name": "DynamicValueToFloat64",
+      "result": "float64",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_DoubleValue:74634"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_to_bool",
+      "semantic_name": "DynamicValueToBool",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_BoolValue:74636"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_type",
+      "semantic_name": "DynamicValueTypeTag",
+      "result": "DynamicValueType",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_ValueType:74648"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_string",
+      "semantic_name": "DynamicValueStringPayload",
+      "result": "string_or_null",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_StringValue:74640"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_array",
+      "semantic_name": "DynamicValueIsArray",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsArray:74654"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_map",
+      "semantic_name": "DynamicValueIsMap",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsMap:74655"
+    },
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_is_null",
+      "semantic_name": "DynamicValueIsNull",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "value"
+      ],
+      "context_writes": [],
+      "provenance_ref": "4.4.54:RPG.GameCore.DynamicValue.get_IsNull:74653"
+    }
+  ],
+  "semantic_artifacts": [
+    {
+      "path": "vertical_slice_01.json",
+      "schema": "battle_semantics_vertical_slice/1",
+      "sha256": "0335012c109d578be552f76c1feabbd12c7b991c9e965c4493cc3be5d0461368",
+      "enabled": true
+    },
+    {
+      "path": "dynamic_value_batch_02.json",
+      "schema": "battle_semantics_batch/1",
+      "sha256": "dfa7b722ac2117a132c5c31a4cfef837d75fda11c3418789b986d04b9a292961",
+      "enabled": true
+    }
+  ],
+  "test_count": 190,
+  "test_pass": 190,
+  "skipped_primitives": [
+    {
+      "method_index": 74611,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDA60",
+      "classification": "SKIP_WRAPPER",
+      "reason": "parameterless constructor wrapper"
+    },
+    {
+      "method_index": 74612,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDA70",
+      "classification": "SKIP_WRAPPER",
+      "reason": "bool constructor wrapper"
+    },
+    {
+      "method_index": 74613,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDA80",
+      "classification": "SKIP_WRAPPER",
+      "reason": "float32 constructor wrapper"
+    },
+    {
+      "method_index": 74614,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDA90",
+      "classification": "SKIP_WRAPPER",
+      "reason": "float64 constructor wrapper"
+    },
+    {
+      "method_index": 74615,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDAA0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "string constructor wrapper"
+    },
+    {
+      "method_index": 74616,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDAB0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "int32 constructor wrapper"
+    },
+    {
+      "method_index": 74617,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDAC0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "int64 constructor wrapper"
+    },
+    {
+      "method_index": 74618,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDAD0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "array payload constructor wrapper"
+    },
+    {
+      "method_index": 74619,
+      "name": ".ctor",
+      "native_rva": "0x1CFBDAE0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "map payload constructor wrapper"
+    },
+    {
+      "method_index": 74620,
+      "name": ".cctor",
+      "native_rva": "0x1CFBFD60",
+      "classification": "SKIP_COMPLEX",
+      "reason": "static class initializer; 251 calls / 88 jumps, runtime infrastructure"
+    },
+    {
+      "method_index": 74621,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDAF0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(string) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74622,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDB20",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(int32) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74623,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDB50",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(int64) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74624,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDB80",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(float32) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74625,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDBC0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(float64) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74626,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDBF0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(bool) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74627,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDC20",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(map) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74628,
+      "name": "op_Implicit",
+      "native_rva": "0x1CFBDC50",
+      "classification": "SKIP_WRAPPER",
+      "reason": "op_Implicit(array) allocates a DynamicValue cell; allocation-shaped wrapper"
+    },
+    {
+      "method_index": 74629,
+      "name": "ToString",
+      "native_rva": "0x1CFBDC80",
+      "classification": "SKIP_COMPLEX",
+      "reason": "ToString formatting dispatcher; 639 instructions, 57 calls, 33 jumps"
+    },
+    {
+      "method_index": 74630,
+      "name": "Equals",
+      "native_rva": "0x1CFBE8F0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "Equals(object) adds IL2CPP runtime type identity check then duplicates the recovered Equals(DynamicValue) switch; no new battle semantic"
+    },
+    {
+      "method_index": 74631,
+      "name": "GetHashCode",
+      "native_rva": "0x1CFBEAD0",
+      "classification": "SKIP_COMPLEX",
+      "reason": "GetHashCode dispatcher; 195 instructions, 15 branches, 6 calls"
+    },
+    {
+      "method_index": 74632,
+      "name": "Equals",
+      "native_rva": "0x1CFBE9E0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "already recovered as battle.ir.value.dynamic_value_equals in vertical_slice_01.json"
+    },
+    {
+      "method_index": 74635,
+      "name": "get_FixPointValue",
+      "native_rva": "0x1CFBEEA0",
+      "classification": "SKIP_COMPLEX",
+      "reason": "FixPoint framework: 89 instructions, 14 branches, range/shift encoding and two FixPoint global constants (0x95B1E00 / 0x95B1E60); exceeds single-callee batch budget"
+    },
+    {
+      "method_index": 74641,
+      "name": "get_ArrayValue",
+      "native_rva": "0x1CFBF1D0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "get_ArrayValue returns ObjectRef; current scalar-only trace contract would need a reference-result summary, deferred instead of special-cased"
+    },
+    {
+      "method_index": 74642,
+      "name": "get_MapValue",
+      "native_rva": "0x1CFBF220",
+      "classification": "SKIP_WRAPPER",
+      "reason": "get_MapValue returns ObjectRef; current scalar-only trace contract would need a reference-result summary, deferred instead of special-cased"
+    },
+    {
+      "method_index": 74643,
+      "name": "_LogError",
+      "native_rva": "0x1CFBF270",
+      "classification": "SKIP_COMPLEX",
+      "reason": "private logging helper; no value semantic"
+    },
+    {
+      "method_index": 74644,
+      "name": "_LogError",
+      "native_rva": "0x1CFBF2C0",
+      "classification": "SKIP_COMPLEX",
+      "reason": "private logging helper; no value semantic"
+    },
+    {
+      "method_index": 74645,
+      "name": "_LogTypeMismatch",
+      "native_rva": "0x1CFBF310",
+      "classification": "SKIP_COMPLEX",
+      "reason": "private logging helper; no value semantic"
+    },
+    {
+      "method_index": 74646,
+      "name": "_LogInvalidValue",
+      "native_rva": "0x1CFBF470",
+      "classification": "SKIP_COMPLEX",
+      "reason": "private logging helper; no value semantic"
+    },
+    {
+      "method_index": 74647,
+      "name": "_EscapeString",
+      "native_rva": "0x1CFBE660",
+      "classification": "SKIP_COMPLEX",
+      "reason": "string escaping helper; 150 instructions, 15 calls, not a gameplay value semantic"
+    },
+    {
+      "method_index": 74649,
+      "name": "get_IsInt",
+      "native_rva": "0x1CFBEE00",
+      "classification": "SKIP_WRAPPER",
+      "reason": "single tag comparison already covered by get_ValueType + selected tag predicates; excluded to respect batch value budget"
+    },
+    {
+      "method_index": 74650,
+      "name": "get_IsFloat",
+      "native_rva": "0x1CFBEDF0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "single tag comparison already covered by get_ValueType + selected tag predicates; excluded to respect batch value budget"
+    },
+    {
+      "method_index": 74651,
+      "name": "get_IsBool",
+      "native_rva": "0x1CFBEE10",
+      "classification": "SKIP_WRAPPER",
+      "reason": "single tag comparison already covered by get_ValueType + selected tag predicates; excluded to respect batch value budget"
+    },
+    {
+      "method_index": 74652,
+      "name": "get_IsString",
+      "native_rva": "0x1CFBF1C0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "single tag comparison already covered by get_ValueType + selected tag predicates; excluded to respect batch value budget"
+    },
+    {
+      "method_index": 74656,
+      "name": "get_longValue",
+      "native_rva": "0x1CFBED70",
+      "classification": "SKIP_WRAPPER",
+      "reason": "raw unionValue reinterpreter without tag check; canonical representation is tag-typed and cannot expose stale union bytes for ARRAY/MAP/STRING cells"
+    },
+    {
+      "method_index": 74657,
+      "name": "get_doubleValue",
+      "native_rva": "0x1CFBED80",
+      "classification": "SKIP_WRAPPER",
+      "reason": "raw unionValue reinterpreter without tag check; canonical representation is tag-typed and cannot expose stale union bytes for ARRAY/MAP/STRING cells"
+    },
+    {
+      "method_index": 74658,
+      "name": "get_boolValue",
+      "native_rva": "0x1CFBE8E0",
+      "classification": "SKIP_WRAPPER",
+      "reason": "raw unionValue reinterpreter without tag check; canonical representation is tag-typed and cannot expose stale union bytes for ARRAY/MAP/STRING cells"
+    },
+    {
+      "method_index": 74659,
+      "name": "FromByteBinary",
+      "native_rva": "0x1CFBF630",
+      "classification": "SKIP_SERIALIZATION",
+      "reason": "explicitly excluded FromByteBinary serialization semantic"
+    },
+    {
+      "method_index": 74660,
+      "name": "ToBinary",
+      "native_rva": "0x1CFBF900",
+      "classification": "SKIP_SERIALIZATION",
+      "reason": "explicitly excluded ToBinary serialization semantic"
+    },
+    {
+      "method_index": 74661,
+      "name": "get__DebuggerDisplay",
+      "native_rva": "0x1CFBFCD0",
+      "classification": "SKIP_COMPLEX",
+      "reason": "debugger-display formatter; 34 instructions, 4 calls, allocates debug string"
+    }
+  ],
+  "representation_conflicts": [
+    {
+      "primitive_ids": [
+        "battle.ir.value.dynamic_value_is_array",
+        "battle.ir.value.dynamic_value_is_map"
+      ],
+      "native_behavior": "get_IsArray/get_IsMap return false when tag matches but the payload pointer is null",
+      "canonical_behavior": "DynamicValue ARRAY/MAP require a non-null ObjectRef; null payload is rejected at the representation boundary",
+      "analysis": "For every representable input the native and canonical results agree; the unreachable native null-payload case is kept as a defensive runtime check.  No representation change is justified yet.",
+      "status": "REPRESENTATION_CONFLICT_RECORDED_NO_CHANGE"
+    }
+  ],
+  "rng": {
+    "client_rng_algorithm": "UNKNOWN",
+    "sandbox_rng": "DETERMINISTIC_ABSTRACTION",
+    "sandbox_rng_algorithm": "PYTHON_RANDOM_MT19937"
+  },
+  "not_implemented_surfaces": [
+    "legal_actions",
+    "step",
+    "is_terminal"
+  ],
+  "known_unknowns": [
+    "FieldDefinition provenance for the +0x30 ValueType tag byte",
+    "Type-mismatch / invalid-value log helper internals (0x1CFD2950 / 0x1CFD2AB0); error paths only and value-neutral",
+    "IL2CPP runtime class-init helper internals (0x3C6D0E0); one-time infrastructure on get_LongValue / get_DoubleValue",
+    "get_FloatValue cvtsd2ss assumes default MXCSR round-to-nearest-even",
+    "No E5 client-side runtime observation for any Batch 02 primitive",
+    "Canonical DynamicValue cannot represent ARRAY/MAP cells with null payload pointers; IsArray/IsMap keep the native null-check defensively (REPRESENTATION_CONFLICT recorded, no representation change)"
+  ],
+  "generated_at": "2026-08-16T11:52:47.394035+00:00"
+}

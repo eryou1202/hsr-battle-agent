@@ -15,6 +15,17 @@ DETERMINISM_DETERMINISTIC = "DETERMINISTIC"
 RESULT_BOOLEAN = "boolean"
 
 DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID = "battle.ir.value.dynamic_value_equals"
+DYNAMIC_VALUE_TO_INT_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_int"
+DYNAMIC_VALUE_TO_UINT_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_uint"
+DYNAMIC_VALUE_TO_LONG_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_long"
+DYNAMIC_VALUE_TO_FLOAT_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_float"
+DYNAMIC_VALUE_TO_DOUBLE_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_double"
+DYNAMIC_VALUE_TO_BOOL_PRIMITIVE_ID = "battle.ir.value.dynamic_value_to_bool"
+DYNAMIC_VALUE_TYPE_PRIMITIVE_ID = "battle.ir.value.dynamic_value_type"
+DYNAMIC_VALUE_STRING_PRIMITIVE_ID = "battle.ir.value.dynamic_value_string"
+DYNAMIC_VALUE_IS_ARRAY_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_array"
+DYNAMIC_VALUE_IS_MAP_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_map"
+DYNAMIC_VALUE_IS_NULL_PRIMITIVE_ID = "battle.ir.value.dynamic_value_is_null"
 
 
 @dataclass(frozen=True)
