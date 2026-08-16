@@ -1,0 +1,55 @@
+{
+  "schema": "battle_sandbox_kernel_report/1",
+  "sandbox_schema_version": 1,
+  "battle_state_schema_version": 1,
+  "trace_schema": "battle_sandbox_trace/1",
+  "game_semantic_version": "4.4.54",
+  "final_status": "BATTLE_SANDBOX = KERNEL_01_PROOF",
+  "implemented_primitives": [
+    {
+      "primitive_id": "battle.ir.value.dynamic_value_equals",
+      "semantic_name": "DynamicValueEquals",
+      "result": "boolean",
+      "determinism": "DETERMINISTIC",
+      "context_reads": [
+        "lhs",
+        "rhs"
+      ],
+      "context_writes": [],
+      "source_runtime_type": "RPG.GameCore.DynamicValue",
+      "source_method": "Equals",
+      "source_method_index": 74632,
+      "source_native_rva": "0x1CFBE9E0",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "provenance_note": "RVA is provenance only; runtime logic must not depend on it"
+    }
+  ],
+  "test_count": 87,
+  "test_pass": 87,
+  "semantic_sources": [
+    {
+      "path": "data/semantics/4.4.54/vertical_slice_01.json",
+      "schema": "battle_semantics_vertical_slice/1",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "sha256": "0335012c109d578be552f76c1feabbd12c7b991c9e965c4493cc3be5d0461368"
+    }
+  ],
+  "rng": {
+    "client_rng_algorithm": "UNKNOWN",
+    "sandbox_rng": "DETERMINISTIC_ABSTRACTION",
+    "sandbox_rng_algorithm": "PYTHON_RANDOM_MT19937"
+  },
+  "not_implemented_surfaces": [
+    "legal_actions",
+    "step",
+    "is_terminal"
+  ],
+  "known_unknowns": [
+    "FieldDefinition provenance for the +0x30 ValueType tag byte",
+    "Generic IL2CPP null-check helper internals (error path only)",
+    "No E5 client-side runtime observation yet (out of scope for this slice)",
+    "Real client PRNG algorithm (sandbox RNG is a deterministic abstraction)",
+    "ARRAY/MAP heap contents are only carried as optional ObjectRef metadata; a real heap model is deferred until a recovered semantic slice reads them"
+  ],
+  "generated_at": "2026-08-16T11:14:52.885873+00:00"
+}
