@@ -1,6 +1,6 @@
-# Battle Sandbox Kernel 01 — DynamicValueEquals Proof
+# Battle Sandbox Kernel 01 — DynamicValueEquals Proof (Hardened)
 
-> Final status: **`BATTLE_SANDBOX = KERNEL_01_PROOF`**
+> Final status: **`BATTLE_SANDBOX = KERNEL_01_HARDENED`**
 > Game semantic version: `4.4.54`
 > Evidence source: Battle Semantic Vertical Slice 01
 > (`docs/battle_semantics/vertical_slice_01.md`,
@@ -149,6 +149,12 @@ BattleState(schema_version=1, extensions={})
 - `extensions` is kernel infrastructure used to verify clone isolation and
   migration mechanics.  It must never smuggle game-semantic fields; future
   proven fields become real dataclass fields in a new schema version.
+- Strict JSON contract: `None`, `bool`, `int`, finite `float`, `str`, `list`,
+  and `dict` with `str` keys.  **Tuples are forbidden** and rejected by the
+  validator, constructor, `set_extension`, and `from_dict`.
+- Every state boundary (`__init__`, `set_extension`, `clone`, `to_dict`,
+  `from_dict`) deep-copies nested lists/dicts; no clone or caller-owned
+  container can alias BattleState internals.
 - Versioned `from_dict` rejects unknown schema versions instead of guessing.
 
 ## 7. RNG boundary
@@ -192,6 +198,16 @@ Future event kinds (`ValueResolved`, `PredicateEvaluated`, `TargetSelected`,
 - `PrimitiveRegistry` maps `primitive_id -> RegisteredPrimitive(spec,
   implementation, provenance_ref)`.  Unknown ids raise
   `UnsupportedPrimitiveError`; there is no silent no-op.
+- Registry bootstrap: `semantic artifact -> validated RecoveredPrimitive ->
+  explicit implementation binding by primitive_id -> frozen registry`.
+  `PrimitiveRegistry.create_default()` is cached, so the artifact is loaded
+  once at setup; execution never reads the artifact file.
+- `PrimitiveCall` rejects empty/non-string ids, empty argument names, duplicate
+  argument names, and non-tuple argument containers.  `as_input_mapping`
+  contains a defensive no-overwrite check.
+- `PrimitiveResult` separates canonical `semantic_result_type` (from the
+  registered `PrimitiveSpec`, e.g. `"boolean"`) from optional
+  `runtime_result_type` (Python debug metadata, e.g. `"bool"`).
 - `PrimitiveExecutor.execute(PrimitiveCall, ExecutionContext)` validates input
   names against the registered spec, records started/finished trace events, and
   returns `PrimitiveResult`.
@@ -201,6 +217,9 @@ Future event kinds (`ValueResolved`, `PredicateEvaluated`, `TargetSelected`,
   (`copy_trace=True` is available for debugging).
 - `SandboxSnapshot` captures `BattleState` + RNG state + trace; `to_dict` /
   `from_dict` roundtrip, and `restore_context()` rebuilds an exact branch.
+- Snapshot storage is private and every boundary (`capture`, constructor,
+  `from_dict`, `to_dict`, public properties) returns deep copies; mutating a
+  caller-owned dict/list or a returned view never changes the snapshot.
 - `state_hash` uses SHA-256 over sorted-key compact JSON of logical state
   (BattleState + RNG state).  Python `id()` never enters hashes; trace is
   excluded.
@@ -208,6 +227,8 @@ Future event kinds (`ValueResolved`, `PredicateEvaluated`, `TargetSelected`,
   - clone hash initially identical; clone mutation changes hash;
   - original and clone mutations are isolated;
   - snapshot roundtrip restores state, RNG continuation and trace;
+  - snapshot external mutation (capture source, property views, `to_dict`,
+    `from_dict`) cannot alter snapshot content;
   - equal logical state -> equal hash regardless of dict insertion order.
 
 ## 10. Top-level API v0
@@ -230,17 +251,20 @@ fake empty action sets or `false`.
 `data/semantics/4.4.54/vertical_slice_01.json` is a real input:
 
 - `battle_ir.semantic_artifact.load_vertical_slice_01()` validates schema,
-  `primitive_id`, `semantic_name`, `result`, `determinism`,
-  `evidence_level`, the full DynamicValueType enum ordinals and provenance
-  note, then produces separated `PrimitiveSpec` + `SourceProvenance`.
-- The generated spec is what callers register into `PrimitiveRegistry`; the
-  report generator and tests prove this path.
+  `primitive_id`, `semantic_name`, inputs, context read/write set, `result`,
+  `determinism`, `evidence_level`, the full DynamicValueType enum ordinals and
+  provenance note, then produces separated `PrimitiveSpec` +
+  `SourceProvenance`.
+- The generated spec is the **source of truth** for the default registry;
+  `PrimitiveRegistry.create_default()` does not hand-copy a semantic spec or
+  hardcode provenance.  The report generator and tests prove this path.
 - `method_index` / `native_rva` are provenance only and never participate in
   execution logic.
 
 ## 12. Performance discipline
 
-- Registry construction is in-memory and happens once per sandbox setup.
+- Registry bootstrap is cached (`lru_cache(maxsize=1)`) and frozen; the
+  semantic artifact is loaded once per process.
 - Execution hot path performs no disk access and no JSON reload.
 - No global mutable registry/RNG singleton; `Sandbox` owns its context.
 - Optimization is deferred until correctness work reaches a profiler.

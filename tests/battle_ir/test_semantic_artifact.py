@@ -17,7 +17,7 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
 
 from hsr_battle_agent.battle_ir.model import (  # noqa: E402
-    DYNAMIC_VALUE_EQUALS_SPEC,
+    PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (  # noqa: E402
     ARTIFACT_SCHEMA,
@@ -48,8 +48,15 @@ class TestSemanticArtifactLoad(unittest.TestCase):
         self.assertEqual(spec.context_reads, ("lhs", "rhs"))
         self.assertEqual(spec.context_writes, ())
 
-    def test_loaded_spec_equals_canonical_runtime_spec(self):
-        self.assertEqual(self.recovered.spec, DYNAMIC_VALUE_EQUALS_SPEC)
+    def test_loaded_spec_matches_artifact_semantic_shape(self):
+        spec = self.recovered.spec
+        self.assertIsInstance(spec, PrimitiveSpec)
+        self.assertEqual(
+            [(item.name, item.type) for item in spec.inputs],
+            [("lhs", "DynamicValue"), ("rhs", "DynamicValue")],
+        )
+        self.assertEqual(spec.result, "boolean")
+        self.assertEqual(spec.determinism, "DETERMINISTIC")
 
     def test_provenance_is_separate_and_exact(self):
         provenance = self.recovered.provenance

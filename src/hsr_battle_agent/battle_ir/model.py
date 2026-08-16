@@ -8,7 +8,7 @@ indices or native RVAs; those live in ``provenance.py`` and are evidence-only.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any
 
 DETERMINISM_DETERMINISTIC = "DETERMINISTIC"
@@ -104,27 +104,14 @@ class PrimitiveSpec:
             raise ValueError(f"invalid PrimitiveSpec dict: {exc}") from exc
 
 
-DYNAMIC_VALUE_EQUALS_SPEC = PrimitiveSpec(
-    primitive_id=DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
-    semantic_name="DynamicValueEquals",
-    description=(
-        "Tag-aware equality over two RPG.GameCore.DynamicValue cells"
-    ),
-    inputs=(
-        PrimitiveInputSpec(name="lhs", type="DynamicValue"),
-        PrimitiveInputSpec(name="rhs", type="DynamicValue"),
-    ),
-    context_reads=("lhs", "rhs"),
-    context_writes=(),
-    result=RESULT_BOOLEAN,
-    determinism=DETERMINISM_DETERMINISTIC,
-)
-
-
 @dataclass(frozen=True)
 class PrimitiveArgument:
     name: str
     value: Any
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.name, str) or not self.name:
+            raise ValueError("PrimitiveArgument.name must be a non-empty string")
 
 
 @dataclass(frozen=True)
@@ -139,24 +126,64 @@ class PrimitiveCall:
     primitive_id: str
     arguments: tuple[PrimitiveArgument, ...] = ()
 
+    def __post_init__(self) -> None:
+        if not isinstance(self.primitive_id, str) or not self.primitive_id:
+            raise ValueError("primitive_id must be a non-empty string")
+        if not isinstance(self.arguments, tuple):
+            raise TypeError("arguments must be a tuple of PrimitiveArgument")
+        seen: set[str] = set()
+        for argument in self.arguments:
+            if not isinstance(argument, PrimitiveArgument):
+                raise TypeError(
+                    f"arguments must contain PrimitiveArgument, "
+                    f"got {type(argument).__name__}"
+                )
+            if argument.name in seen:
+                raise ValueError(
+                    f"duplicate argument name in PrimitiveCall: {argument.name!r}"
+                )
+            seen.add(argument.name)
+
     @classmethod
     def create(cls, primitive_id: str, **inputs: Any) -> "PrimitiveCall":
-        if not isinstance(primitive_id, str) or not primitive_id:
-            raise ValueError("primitive_id must be a non-empty string")
         return cls(
             primitive_id=primitive_id,
             arguments=tuple(PrimitiveArgument(name, value) for name, value in inputs.items()),
         )
 
     def as_input_mapping(self) -> dict[str, Any]:
-        return {item.name: item.value for item in self.arguments}
+        mapping: dict[str, Any] = {}
+        for argument in self.arguments:
+            if argument.name in mapping:
+                # Defense-in-depth: PrimitiveCall construction already rejects
+                # duplicates; as_input_mapping must never silently overwrite.
+                raise ValueError(
+                    f"duplicate argument name in PrimitiveCall: {argument.name!r}"
+                )
+            mapping[argument.name] = argument.value
+        return mapping
 
 
 @dataclass(frozen=True)
 class PrimitiveResult:
+    """Result of one primitive execution.
+
+    ``semantic_result_type`` is the canonical IR result type declared by the
+    registered ``PrimitiveSpec`` (for DynamicValueEquals: ``"boolean"``).
+    ``runtime_result_type`` is optional Python debug metadata (``"bool"``) and
+    must never be used as the canonical type.
+    """
+
     primitive_id: str
     value: Any
-    result_type: str = field(init=False)
+    semantic_result_type: str
+    runtime_result_type: str | None = None
 
     def __post_init__(self) -> None:
-        object.__setattr__(self, "result_type", type(self.value).__name__)
+        if not isinstance(self.primitive_id, str) or not self.primitive_id:
+            raise ValueError("primitive_id must be a non-empty string")
+        if not isinstance(self.semantic_result_type, str) or not self.semantic_result_type:
+            raise ValueError("semantic_result_type must be a non-empty string")
+        if self.runtime_result_type is not None:
+            if not isinstance(self.runtime_result_type, str) or not self.runtime_result_type:
+                raise ValueError("runtime_result_type must be a non-empty string or None")

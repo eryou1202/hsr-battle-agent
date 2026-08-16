@@ -54,7 +54,12 @@ class PrimitiveExecutor:
         )
         value = registered.implementation(context, ordered_inputs)
         context.trace.finished(started=started, result=value)
-        return PrimitiveResult(primitive_id=primitive.primitive_id, value=value)
+        return PrimitiveResult(
+            primitive_id=primitive.primitive_id,
+            value=value,
+            semantic_result_type=registered.spec.result,
+            runtime_result_type=type(value).__name__,
+        )
 
 
 def _input_tag(value: Any) -> str:

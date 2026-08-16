@@ -17,16 +17,21 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
-from hsr_battle_agent.battle_ir.model import (
-    DYNAMIC_VALUE_EQUALS_SPEC,
-    PrimitiveSpec,
-)
+from hsr_battle_agent.battle_ir.model import PrimitiveSpec
 from hsr_battle_agent.battle_ir.provenance import SourceProvenance
 
 ARTIFACT_SCHEMA = "battle_semantics_vertical_slice/1"
 
 EXPECTED_PRIMITIVE_ID = "battle.ir.value.dynamic_value_equals"
 EXPECTED_SEMANTIC_NAME = "DynamicValueEquals"
+EXPECTED_INPUTS = (
+    ("lhs", "DynamicValue"),
+    ("rhs", "DynamicValue"),
+)
+EXPECTED_CONTEXT_READS = ("lhs", "rhs")
+EXPECTED_CONTEXT_WRITES = ()
+EXPECTED_RESULT = "boolean"
+EXPECTED_DETERMINISM = "DETERMINISTIC"
 EXPECTED_DYNAMIC_VALUE_TYPES = (
     ("INT", 0),
     ("FLOAT", 1),
@@ -117,16 +122,31 @@ def validate_vertical_slice_01(
             f"{artifact_path}: semantic_name {spec.semantic_name!r}; "
             f"expected {EXPECTED_SEMANTIC_NAME!r}"
         )
-    if spec != DYNAMIC_VALUE_EQUALS_SPEC:
+    observed_inputs = tuple((item.name, item.type) for item in spec.inputs)
+    if observed_inputs != EXPECTED_INPUTS:
         raise SemanticArtifactError(
-            f"{artifact_path}: ir_primitive semantic fields do not match "
-            "the recovered DynamicValueEquals specification"
+            f"{artifact_path}: inputs {observed_inputs!r}; "
+            f"expected {EXPECTED_INPUTS!r}"
         )
-    if require(ir, "result") != "boolean":
-        raise SemanticArtifactError(f"{artifact_path}: result must be 'boolean'")
-    if require(ir, "determinism") != "DETERMINISTIC":
+    if spec.context_reads != EXPECTED_CONTEXT_READS:
         raise SemanticArtifactError(
-            f"{artifact_path}: determinism must be 'DETERMINISTIC'"
+            f"{artifact_path}: context_reads {spec.context_reads!r}; "
+            f"expected {EXPECTED_CONTEXT_READS!r}"
+        )
+    if spec.context_writes != EXPECTED_CONTEXT_WRITES:
+        raise SemanticArtifactError(
+            f"{artifact_path}: context_writes {spec.context_writes!r}; "
+            f"expected {EXPECTED_CONTEXT_WRITES!r}"
+        )
+    if spec.result != EXPECTED_RESULT:
+        raise SemanticArtifactError(
+            f"{artifact_path}: result {spec.result!r}; "
+            f"expected {EXPECTED_RESULT!r}"
+        )
+    if spec.determinism != EXPECTED_DETERMINISM:
+        raise SemanticArtifactError(
+            f"{artifact_path}: determinism {spec.determinism!r}; "
+            f"expected {EXPECTED_DETERMINISM!r}"
         )
 
     _validate_dynamic_value_enum(data, artifact_path)

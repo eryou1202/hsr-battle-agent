@@ -5,6 +5,7 @@ from __future__ import annotations
 import sys
 import unittest
 from pathlib import Path
+from unittest import mock
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
@@ -37,6 +38,7 @@ from hsr_battle_agent.battle_sandbox.rng import (  # noqa: E402
 )
 from hsr_battle_agent.battle_sandbox.sandbox import Sandbox  # noqa: E402
 from hsr_battle_agent.battle_sandbox.snapshot import (  # noqa: E402
+    SandboxSnapshot,
     capture_snapshot,
 )
 from hsr_battle_agent.battle_sandbox.state import (  # noqa: E402
@@ -138,6 +140,43 @@ class TestBattleStateCloneSnapshotHash(unittest.TestCase):
         with self.assertRaises(TypeError):
             BattleState().set_extension("bad", object())
 
+    def test_tuple_rejected_by_strict_json_model(self):
+        with self.assertRaises(TypeError):
+            BattleState().set_extension("x", (1, 2))
+        with self.assertRaises(TypeError):
+            BattleState(extensions={"x": (1, 2)})
+        with self.assertRaises(TypeError):
+            BattleState.from_dict(
+                {"schema_version": BATTLE_STATE_SCHEMA_VERSION, "extensions": {"x": (1, 2)}}
+            )
+
+    def test_setter_input_has_no_alias_into_state(self):
+        state = BattleState()
+        nested = {"items": [{"v": 1}]}
+        state.set_extension("nested", nested)
+        nested["items"].append({"v": 2})
+        self.assertEqual(state.extensions["nested"]["items"], [{"v": 1}])
+
+    def test_clone_has_no_nested_alias_in_either_direction(self):
+        original = BattleState()
+        original.set_extension("nested", {"items": [{"v": 1}]})
+        branch = original.clone()
+
+        branch.extensions["nested"]["items"].append({"v": 2})
+        self.assertEqual(original.extensions["nested"]["items"], [{"v": 1}])
+
+        original.extensions["nested"]["items"][0]["v"] = 99
+        self.assertEqual(branch.extensions["nested"]["items"][0]["v"], 1)
+
+    def test_from_dict_has_no_alias_to_input_mapping(self):
+        data = {
+            "schema_version": BATTLE_STATE_SCHEMA_VERSION,
+            "extensions": {"nested": {"items": [1]}},
+        }
+        state = BattleState.from_dict(data)
+        data["extensions"]["nested"]["items"].append(2)  # type: ignore[index]
+        self.assertEqual(state.extensions["nested"]["items"], [1])
+
 
 class TestSnapshotAndContextHash(unittest.TestCase):
     def test_context_state_hash_ignores_trace(self):
@@ -194,6 +233,71 @@ class TestSnapshotAndContextHash(unittest.TestCase):
         right = {"b": 2, "a": 1}
         self.assertEqual(stable_json_hash(left), stable_json_hash(right))
 
+    @staticmethod
+    def _captured_snapshot_with_content(seed: int = 12) -> tuple[Sandbox, SandboxSnapshot]:
+        sandbox = Sandbox(seed=seed)
+        sandbox.context.state.set_extension("nested", {"items": [1, 2]})
+        sandbox.context.rng.next_u64()
+        sandbox.execute(
+            DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
+            lhs=DynamicValue.int_value(1),
+            rhs=DynamicValue.int_value(1),
+        )
+        return sandbox, sandbox.snapshot()
+
+    def test_capture_snapshot_is_isolated_from_later_context_mutation(self):
+        sandbox, snapshot = self._captured_snapshot_with_content()
+        before = snapshot.to_dict()
+
+        sandbox.context.state.set_extension("nested", {"items": [9]})
+        sandbox.context.rng.next_u64()
+        sandbox.execute(
+            DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID,
+            lhs=DynamicValue.int_value(2),
+            rhs=DynamicValue.int_value(2),
+        )
+
+        self.assertEqual(snapshot.to_dict(), before)
+        self.assertEqual(snapshot.battle_state["extensions"]["nested"]["items"], [1, 2])
+
+    def test_snapshot_public_properties_return_defensive_copies(self):
+        _, snapshot = self._captured_snapshot_with_content()
+        before = snapshot.to_dict()
+
+        battle_view = snapshot.battle_state
+        battle_view["extensions"]["nested"]["items"].append(99)
+
+        rng_view = snapshot.rng_state
+        rng_view["state"]["internal_state"][0] = -1
+
+        trace_view = snapshot.trace_events
+        trace_view[0]["primitive_id"] = "corrupted"
+
+        self.assertEqual(snapshot.to_dict(), before)
+
+    def test_snapshot_from_dict_has_no_alias_to_input(self):
+        _, snapshot = self._captured_snapshot_with_content()
+        data = snapshot.to_dict()
+        restored = SandboxSnapshot.from_dict(data)
+        before = restored.to_dict()
+
+        data["battle_state"]["extensions"]["nested"]["items"].append(99)
+        data["rng_state"]["state"]["internal_state"][0] = -1
+        data["trace"][0]["primitive_id"] = "corrupted"
+
+        self.assertEqual(restored.to_dict(), before)
+
+    def test_snapshot_to_dict_returns_defensive_copy(self):
+        _, snapshot = self._captured_snapshot_with_content()
+        before = snapshot.to_dict()
+
+        exported = snapshot.to_dict()
+        exported["battle_state"]["extensions"]["nested"]["items"].append(99)
+        exported["rng_state"]["state"]["internal_state"][0] = -1
+        exported["trace"][0]["primitive_id"] = "corrupted"
+
+        self.assertEqual(snapshot.to_dict(), before)
+
 
 class TestTrace(unittest.TestCase):
     def _execute(self) -> ExecutionTrace:
@@ -247,6 +351,38 @@ class TestRegistryAndExecutor(unittest.TestCase):
         )
         self.assertTrue(registry.frozen)
 
+    def test_default_registry_spec_and_provenance_come_from_artifact(self):
+        registry = PrimitiveRegistry.create_default()
+        recovered = load_vertical_slice_01()
+        self.assertEqual(
+            registry.get_spec(DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID),
+            recovered.spec,
+        )
+        self.assertEqual(
+            registry.resolve(DYNAMIC_VALUE_EQUALS_PRIMITIVE_ID).provenance_ref,
+            recovered.provenance.source_reference(),
+        )
+
+    def test_default_registry_is_bootstrapped_once(self):
+        self.assertIs(
+            PrimitiveRegistry.create_default(),
+            PrimitiveRegistry.create_default(),
+        )
+
+    def test_execution_hot_path_never_loads_semantic_artifact(self):
+        registry = PrimitiveRegistry.create_default()
+        context = ExecutionContext()
+        executor = PrimitiveExecutor(registry)
+        with mock.patch(
+            "hsr_battle_agent.battle_sandbox.registry.load_vertical_slice_01",
+            side_effect=AssertionError("artifact disk read on hot execution path"),
+        ):
+            result = executor.execute(
+                _call(DynamicValue.int_value(1), DynamicValue.int_value(1)),
+                context,
+            )
+        self.assertTrue(result.value)
+
     def test_unknown_primitive_fails_explicitly(self):
         sandbox = Sandbox(seed=1)
         with self.assertRaises(UnsupportedPrimitiveError):
@@ -275,7 +411,8 @@ class TestRegistryAndExecutor(unittest.TestCase):
             context,
         )
         self.assertTrue(result.value)
-        self.assertEqual(result.result_type, "bool")
+        self.assertEqual(result.semantic_result_type, "boolean")
+        self.assertEqual(result.runtime_result_type, "bool")
         self.assertEqual(len(context.trace), 2)
 
     def test_registry_rejects_duplicate_and_frozen_registration(self):
@@ -300,11 +437,7 @@ class TestRegistryAndExecutor(unittest.TestCase):
             del context
             return dynamic_value_equals(inputs["lhs"], inputs["rhs"])
 
-        registry.register(
-            spec=recovered.spec,
-            implementation=impl,
-            provenance_ref=recovered.provenance.source_reference(),
-        )
+        registry.bind_recovered_primitive(recovered, impl)
         registry.freeze()
         sandbox = Sandbox(registry=registry, seed=3)
         result = sandbox.execute(
@@ -313,6 +446,7 @@ class TestRegistryAndExecutor(unittest.TestCase):
             rhs=DynamicValue.bool_value(2),
         )
         self.assertFalse(result.value)
+        self.assertEqual(result.semantic_result_type, "boolean")
         started = sandbox.context.trace.events[0]
         self.assertEqual(
             started.semantic_provenance_ref,

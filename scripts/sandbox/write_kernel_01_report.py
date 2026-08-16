@@ -73,7 +73,7 @@ def main() -> int:
         "battle_state_schema_version": BATTLE_STATE_SCHEMA_VERSION,
         "trace_schema": TRACE_SCHEMA,
         "game_semantic_version": recovered.provenance.game_version,
-        "final_status": "BATTLE_SANDBOX = KERNEL_01_PROOF",
+        "final_status": "BATTLE_SANDBOX = KERNEL_01_HARDENED",
         "implemented_primitives": [
             {
                 "primitive_id": recovered.spec.primitive_id,

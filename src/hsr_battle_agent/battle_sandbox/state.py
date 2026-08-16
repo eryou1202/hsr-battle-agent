@@ -11,6 +11,14 @@ It contains only kernel infrastructure:
 * ``extensions``      -- infrastructure-only key/value bag used to prove clone
   isolation and future migration mechanics; game-semantic fields must become
   real dataclass fields in a later schema version, never hide in extensions
+
+JSON contract (strict):
+
+* allowed values: ``None``, ``bool``, ``int``, finite ``float``, ``str``,
+  ``list``, ``dict`` with ``str`` keys;
+* tuples are **forbidden** even though Python can serialize them: the kernel
+  only accepts the JSON model and every boundary deep-copies nested
+  lists/dicts, so clone/snapshot can never alias a caller-owned container.
 """
 from __future__ import annotations
 
@@ -34,19 +42,22 @@ class BattleState:
     def __post_init__(self) -> None:
         if self.schema_version != BATTLE_STATE_SCHEMA_VERSION:
             raise UnsupportedStateVersionError(self.schema_version)
-        _validate_jsonable(self.extensions, "extensions")
+        if not isinstance(self.extensions, dict):
+            raise TypeError("BattleState extensions must be a dict")
+        # Normalize to a private deep copy: caller-owned nested containers can
+        # never alias BattleState internals, even on direct construction.
+        self.extensions = deep_copy_json_value(self.extensions)
 
     def clone(self) -> "BattleState":
         return BattleState(
             schema_version=self.schema_version,
-            extensions={key: _deep_copy_jsonable(value) for key, value in self.extensions.items()},
+            extensions=deep_copy_json_value(self.extensions),
         )
 
     def set_extension(self, key: str, value: Any) -> None:
         if not isinstance(key, str) or not key:
             raise ValueError("extension key must be a non-empty string")
-        _validate_jsonable(value, f"extensions.{key}")
-        self.extensions[key] = value
+        self.extensions[key] = deep_copy_json_value(value)
 
     def remove_extension(self, key: str) -> None:
         self.extensions.pop(key, None)
@@ -54,7 +65,7 @@ class BattleState:
     def to_dict(self) -> dict[str, Any]:
         return {
             _STATE_SCHEMA_KEY: self.schema_version,
-            _EXTENSIONS_KEY: _deep_copy_jsonable(self.extensions),
+            _EXTENSIONS_KEY: deep_copy_json_value(self.extensions),
         }
 
     @classmethod
@@ -70,44 +81,58 @@ class BattleState:
                 f"unknown BattleState v1 keys: {', '.join(sorted(unknown))}"
             )
         extensions = data.get(_EXTENSIONS_KEY, {})
-        if not isinstance(extensions, Mapping):
-            raise TypeError("BattleState extensions must be a mapping")
+        if not isinstance(extensions, dict):
+            raise TypeError("BattleState extensions must be a dict")
         return cls(
             schema_version=BATTLE_STATE_SCHEMA_VERSION,
-            extensions={str(key): _deep_copy_jsonable(value) for key, value in extensions.items()},
+            extensions=deep_copy_json_value(extensions),
         )
 
     def state_hash(self) -> str:
         return stable_json_hash(self.to_dict())
 
 
-def _deep_copy_jsonable(value: Any) -> Any:
-    _validate_jsonable(value, "value")
-    if isinstance(value, Mapping):
-        return {str(key): _deep_copy_jsonable(value[key]) for key in value}
-    if isinstance(value, list):
-        return [_deep_copy_jsonable(item) for item in value]
-    return value
-
-
-def _validate_jsonable(value: Any, where: str) -> None:
+def validate_json_value(value: Any, where: str = "value") -> None:
+    """Validate the strict BattleState JSON value model."""
     if value is None or isinstance(value, (bool, int, str)):
         return
     if isinstance(value, float):
         if not math.isfinite(value):
             raise ValueError(f"{where} float values must be finite")
         return
-    if isinstance(value, Mapping):
+    if isinstance(value, dict):
         for key, item in value.items():
             if not isinstance(key, str):
-                raise TypeError(f"{where} mapping keys must be strings, got {type(key).__name__}")
-            _validate_jsonable(item, f"{where}.{key}")
+                raise TypeError(
+                    f"{where} mapping keys must be strings, got {type(key).__name__}"
+                )
+            validate_json_value(item, f"{where}.{key}")
         return
-    if isinstance(value, (list, tuple)):
-        for item in value:
-            _validate_jsonable(item, where)
+    if isinstance(value, tuple):
+        raise TypeError(
+            f"{where} tuples are forbidden by the strict JSON model; "
+            "use a list instead"
+        )
+    if isinstance(value, list):
+        for index, item in enumerate(value):
+            validate_json_value(item, f"{where}[{index}]")
         return
     raise TypeError(
-        f"{where} must be JSON-safe (None/bool/int/float/str/list/dict), "
+        f"{where} must be JSON-safe "
+        "(None/bool/int/finite float/str/list/dict with str keys), "
         f"got {type(value).__name__}"
     )
+
+
+def deep_copy_json_value(value: Any) -> Any:
+    """Validate and recursively copy a strict JSON value.
+
+    Returns a fully independent copy for every nested ``list`` / ``dict``;
+    tuples are rejected by the validator and therefore never pass through.
+    """
+    validate_json_value(value)
+    if isinstance(value, dict):
+        return {key: deep_copy_json_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [deep_copy_json_value(item) for item in value]
+    return value
