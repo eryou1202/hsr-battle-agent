@@ -1,0 +1,118 @@
+15755FD0  56                              push     rsi
+15755FD1  57                              push     rdi
+15755FD2  48 83 ec 28                     sub      rsp, 0x28
+15755FD6  89 d7                           mov      edi, edx
+15755FD8  48 89 ce                        mov      rsi, rcx
+15755FDB  80 3d 55 d3 e1 f3 00            cmp      byte ptr [rip - 0xc1e2cab], 0
+15755FE2  75 55                           jne      0x195756039
+15755FE4  83 7e 60 00                     cmp      dword ptr [rsi + 0x60], 0
+15755FE8  7e 42                           jle      0x19575602c
+15755FEA  48 8b 4e 20                     mov      rcx, qword ptr [rsi + 0x20]
+15755FEE  48 85 c9                        test     rcx, rcx
+15755FF1  74 69                           je       0x19575605c
+15755FF3  39 79 18                        cmp      dword ptr [rcx + 0x18], edi
+15755FF6  76 3c                           jbe      0x195756034
+15755FF8  48 63 c7                        movsxd   rax, edi
+15755FFB  c6 44 01 20 00                  mov      byte ptr [rcx + rax + 0x20], 0
+15756000  48 8b 4e 10                     mov      rcx, qword ptr [rsi + 0x10]
+15756004  48 85 c9                        test     rcx, rcx
+15756007  74 58                           je       0x195756061
+15756009  39 79 18                        cmp      dword ptr [rcx + 0x18], edi
+1575600C  76 26                           jbe      0x195756034
+1575600E  c7 44 81 20 00 00 00 00         mov      dword ptr [rcx + rax*4 + 0x20], 0
+15756016  48 89 f1                        mov      rcx, rsi
+15756019  e8 52 00 00 00                  call     0x195756070
+1575601E  48 89 f1                        mov      rcx, rsi
+15756021  48 83 c4 28                     add      rsp, 0x28
+15756025  5f                              pop      rdi
+15756026  5e                              pop      rsi
+15756027  e9 b4 fa ff ff                  jmp      0x195755ae0
+1575602C  90                              nop
+1575602D  48 83 c4 28                     add      rsp, 0x28
+15756031  5f                              pop      rdi
+15756032  5e                              pop      rsi
+15756033  c3                              ret
+15756034  e8 77 c0 4a ee                  call     0x183c020b0
+15756039  b9 a7 e4 07 00                  mov      ecx, 0x7e4a7
+1575603E  e8 0d 14 89 00                  call     0x195fe7450
+15756043  48 85 c0                        test     rax, rax
+15756046  74 1e                           je       0x195756066
+15756048  48 89 c1                        mov      rcx, rax
+1575604B  48 89 f2                        mov      rdx, rsi
+1575604E  41 89 f8                        mov      r8d, edi
+15756051  48 83 c4 28                     add      rsp, 0x28
+15756055  5f                              pop      rdi
+15756056  5e                              pop      rsi
+15756057  e9 d4 98 3e 00                  jmp      0x195b3f930
+1575605C  e8 df c2 4a ee                  call     0x183c02340
+15756061  e8 da c2 4a ee                  call     0x183c02340
+15756066  e8 d5 c2 4a ee                  call     0x183c02340
+1575606B  cc                              int3
+1575606C  0f 1f 40 00                     nop      dword ptr [rax]
+15756070  41 56                           push     r14
+15756072  56                              push     rsi
+15756073  57                              push     rdi
+15756074  53                              push     rbx
+15756075  48 83 ec 28                     sub      rsp, 0x28
+15756079  49 89 ce                        mov      r14, rcx
+1575607C  80 3d bd d2 e1 f3 00            cmp      byte ptr [rip - 0xc1e2d43], 0
+15756083  0f 85 ff 00 00 00               jne      0x195756188
+15756089  4d 8b 4e 10                     mov      r9, qword ptr [r14 + 0x10]
+1575608D  4d 85 c9                        test     r9, r9
+15756090  0f 84 15 01 00 00               je       0x1957561ab
+15756096  41 8b 41 18                     mov      eax, dword ptr [r9 + 0x18]
+1575609A  85 c0                           test     eax, eax
+1575609C  0f 84 e1 00 00 00               je       0x195756183
+157560A2  45 8b 46 60                     mov      r8d, dword ptr [r14 + 0x60]
+157560A6  45 85 c0                        test     r8d, r8d
+157560A9  7e 29                           jle      0x1957560d4
+157560AB  41 8d 48 ff                     lea      ecx, [r8 - 1]
+157560AF  39 c1                           cmp      ecx, eax
+157560B1  0f 83 cc 00 00 00               jae      0x195756183
+157560B7  41 8b 79 20                     mov      edi, dword ptr [r9 + 0x20]
+157560BB  49 8d 40 ff                     lea      rax, [r8 - 1]
+157560BF  44 89 c1                        mov      ecx, r8d
+157560C2  83 e1 03                        and      ecx, 3
+157560C5  48 83 f8 03                     cmp      rax, 3
+157560C9  73 10                           jae      0x1957560db
+157560CB  31 d2                           xor      edx, edx
+157560CD  31 f6                           xor      esi, esi
+157560CF  e9 7f 00 00 00                  jmp      0x195756153
+157560D4  31 f6                           xor      esi, esi
+157560D6  e9 9a 00 00 00                  jmp      0x195756175
+157560DB  41 83 e0 fc                     and      r8d, 0xfffffffc
+157560DF  31 d2                           xor      edx, edx
+157560E1  31 f6                           xor      esi, esi
+157560E3  eb 16                           jmp      0x1957560fb
+157560E5  66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+157560F0  89 df                           mov      edi, ebx
+157560F2  48 83 c2 04                     add      rdx, 4
+157560F6  4c 39 c2                        cmp      rdx, r8
+157560F9  74 58                           je       0x195756153
+157560FB  41 8b 44 91 20                  mov      eax, dword ptr [r9 + rdx*4 + 0x20]
+15756100  39 f8                           cmp      eax, edi
+15756102  0f 4f f8                        cmovg    edi, eax
+15756105  41 8b 44 91 24                  mov      eax, dword ptr [r9 + rdx*4 + 0x24]
+1575610A  0f 4f f2                        cmovg    esi, edx
+1575610D  39 f8                           cmp      eax, edi
+1575610F  7f 1f                           jg       0x195756130
+15756111  89 f8                           mov      eax, edi
+15756113  41 8b 5c 91 28                  mov      ebx, dword ptr [r9 + rdx*4 + 0x28]
+15756118  39 c3                           cmp      ebx, eax
+1575611A  7e 20                           jle      0x19575613c
+1575611C  8d 72 02                        lea      esi, [rdx + 2]
+1575611F  41 8b 7c 91 2c                  mov      edi, dword ptr [r9 + rdx*4 + 0x2c]
+15756124  39 df                           cmp      edi, ebx
+15756126  7e c8                           jle      0x1957560f0
+15756128  eb 1d                           jmp      0x195756147
+1575612A  66 0f 1f 44 00 00               nop      word ptr [rax + rax]
+15756130  8d 72 01                        lea      esi, [rdx + 1]
+15756133  41 8b 5c 91 28                  mov      ebx, dword ptr [r9 + rdx*4 + 0x28]
+15756138  39 c3                           cmp      ebx, eax
+1575613A  7f e0                           jg       0x19575611c
+1575613C  89 c3                           mov      ebx, eax
+1575613E  41 8b 7c 91 2c                  mov      edi, dword ptr [r9 + rdx*4 + 0x2c]
+15756143  39 df                           cmp      edi, ebx
+15756145  7e a9                           jle      0x1957560f0
+15756147  8d 72 03                        lea      esi, [rdx + 3]
+1575614A  48 83 c2 04                     add      rdx, 4

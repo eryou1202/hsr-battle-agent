@@ -13,15 +13,15 @@
 
 ## Latest semantic frontier
 
-- Latest completed capability: `MODIFIER_PROPERTY_CONTRIBUTION_BOUNDARY_09_PROOF`.
-- Artifact: `data/semantics/4.4.54/modifier_property_effect_09.json`.
+- Latest completed capability: `GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF`.
+- Artifact: `data/semantics/4.4.54/generic_property_materialization_10.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoff: `docs/agent/handoffs/semantic_handoff_09.md`.
-- The capability is contribution lifecycle only.
-- It is not stat materialization.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`.
+- Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
+- The capability includes source-slot lifecycle and materialization framework.
+- Per-kind fixed-point operator names/formulas are still not accepted.
 - It is not a damage formula.
-- It adds a persistent, Modifier-owned contribution record.
-- It removes the same contribution through an opaque key.
+- It adds a persistent, Modifier-owned contribution record and reverses it through the same stable source index.
 
 ## Confirmed reusable runtime chain
 
@@ -36,6 +36,7 @@
 - Persistent modifier BattleState.
 - Generic Modifier property-contribution ownership.
 - Generic property contribution removal boundary.
+- Generic PropertyEntry source-slot lifecycle and materialized-value write boundary.
 
 ## Baseline commits that MUST remain intact
 
@@ -96,25 +97,26 @@
 - M506082 invokes Modifier `StackProperty` M506199 per target.
 - M506199 no-ops when Modifier State is beyond Alive.
 - Normal M506199 path calls component `StackProperty` M506495.
-- M506495 returns an opaque contribution key.
-- M506199 appends `{property_id, key, target_component}` at Modifier `+0x240`.
+- M506495 allocates a stable target PropertyEntry `source_index`.
+- M506199 appends `{property_id, source_index, target_component}` at Modifier `+0x240`.
 - Refresh uses a forward matching scan and M506497.
 - Source of refresh flag for every config path is UNKNOWN.
 - `_PopStackedProperties` M506312 walks `+0x240` in forward order.
-- M506312 calls component `UnStackProperty` M506496 with the recorded key.
+- M506312 calls component `UnStackProperty` M506496 with the recorded source index.
 - M506312 consumes/clears its contribution records.
-- Component add/remove both enter generic dispatcher `0xE72EFC0`.
-- `0xE72EFC0` has 83 observed case arms.
-- No final-value formula is accepted.
+- Source allocation/update/removal marks slots active/inactive without shifting indices.
+- Each mutation rebuilds PropertyEntry `+0x78` before `_AfterPropertyChanged` notification.
+- PropertyEntry materialization kind `+0x58` has seven native modes; only reducer topology is accepted.
+- The adapter `0x15C6E450` sits between raw StackProperty input and source-slot value; it is not yet canonical.
 
 ## Current BattleState requirements
 
 - Existing: `modifier_state_by_entity`.
 - New required: `modifier_property_contributions` keyed by logical ModifierRef.
-- A contribution record keeps target identity, property ID, and opaque key.
-- New required: `entity_property_contributions` keyed by `(entity, property_id)`.
-- That map stores contributions, not materialized stats.
-- Contribution and final property values must remain separate representations.
+- A contribution record keeps target identity, property ID, and stable source index.
+- New required: `entity_property_entries` keyed by `(entity, property_id)`.
+- Each entry owns source generation, active flags, source values, materialization kind/base/post-transform inputs, and materialized value.
+- Contribution sources and materialized values must remain separate representations.
 - Ordered records are part of the contract.
 - Key removal is part of the contract.
 
@@ -129,24 +131,25 @@
 - Topology 09: `data/raw/4.4.54/modifier_effect_topology_09.json`.
 - Property capability 09: `data/semantics/4.4.54/modifier_property_effect_09.json`.
 - Handoff 09: `docs/agent/handoffs/semantic_handoff_09.md`.
+- Property materialization 10: `data/semantics/4.4.54/generic_property_materialization_10.json`.
+- Handoff 10: `docs/agent/handoffs/semantic_handoff_10.md`.
+- Property materialization builder: `tools/reverse/scripts/build_generic_property_materialization_10.py`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 
 ## Current direct dependency frontier
 
-- Do not expand the 83-case property materializer first.
-- It is known, bounded as an address, but too broad for the next simple-skill milestone.
-- Index generated task executors that reach a damage-request boundary.
-- Select the highest-reuse, bounded request family.
-- Recover request construction before damage resolution.
-- Then recover a smallest direct HP transition only if native graph remains bounded.
-- Event/listener work remains a competing dependency if the chosen damage task requires it.
+- First close `StackProperty`'s adapter `0x15C6E450 -> 0x19B4485C0`, which decides the stored source value.
+- Continue the already indexed simple HP path: SetHP executor M508871 -> DirectChangeHP M506500 -> DirectDamageHP M506499.
+- Recover the actual direct-damage request/record boundary before damage formula work.
+- Event/listener work remains a competing dependency because both OnActivate and damage paths enqueue/dispatch event work.
 - Turn/AV work remains deferred until action completion requires it.
 
 ## Known UNKNOWN
 
-- Generic property-domain key allocator.
-- Base/contribution/final property materialization.
+- Per-property adapter semantics for raw StackProperty input.
+- Exact fixed-point operator names/formulas for materialization kinds 3..7.
+- Design-data initialization of PropertyEntry kind/base/post-transform fields.
 - Exact semantics of `Silence` and `IsRefresh` in every StackProperty path.
 - Universal lifecycle route from `Destroy` to property-pop cleanup.
 - Minimal DamageRequest/HitContext runtime boundary.
@@ -170,8 +173,8 @@
 
 ## Implementation prohibitions
 
-- Do not turn contribution addition into `final += value`.
-- Do not turn contribution pop into `final -= value`.
+- Do not turn contribution addition into `final += value` or bypass PropertyEntry rebuild.
+- Do not turn contribution pop into `final -= value`, shift source keys, or clear stale value slots as a substitute for deactivation.
 - Do not hardcode Black Swan.
 - Do not build full EntityState speculatively.
 - Do not implement planner, Beam, MCTS, model training, or frontend work.
@@ -190,8 +193,7 @@
 
 ## Immediate next entry procedure
 
-- Script an index across generated task `OnTaskBegin` bodies.
-- Rank direct callees by damage/hit/HP-adjacent shared targets.
-- Resolve native RVAs through the recovered method-code table.
-- Inspect only the top bounded cluster.
-- Write a new machine artifact and handoff at the next coding-ready capability.
+- Enter `0x15C6E450` from M506495, then `0x19B4485C0`; preserve raw value/context reads and writes.
+- Resume at SetHP M508871 only after the adapter boundary is classified, or sooner if direct HP writes prove independent.
+- Treat `0x195C6D120` from DirectDamageHP M506499 as the current concrete request/record submission candidate.
+- Write the next handoff only after a chain reaches an observable state write or a real request boundary.

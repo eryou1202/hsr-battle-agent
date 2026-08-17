@@ -1,0 +1,719 @@
+{
+  "schema": "battle_semantic_bridge/1",
+  "game_version": "4.4.54",
+  "capability_id": "GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF",
+  "status": "CONFIRMED_SOURCE_SLOT_LIFECYCLE_AND_MATERIALIZATION_FRAMEWORK__PER_KIND_FIXEDPOINT_OPERATOR_NAMES_DEFERRED",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "generated_at": "2026-08-17T08:38:32.562856+00:00",
+  "source_hashes": {
+    "GameAssembly_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc"
+  },
+  "property_entry_state": {
+    "source_generation_by_index": "entry[+0x10][index]:int32; zero disables the index",
+    "source_active_by_index": "entry[+0x20][index]:bool",
+    "source_value_by_index": "entry[+0x30][index]:fixedpoint-like runtime numeric",
+    "post_hook_context": "entry[+0x40]:opaque",
+    "post_transform_a": "entry[+0x48]:opaque",
+    "post_transform_b": "entry[+0x50]:opaque",
+    "materialization_kind": "entry[+0x58]:enum 1..7",
+    "generation_counter": "entry[+0x5C]:int32",
+    "active_source_extent": "entry[+0x60]:int32",
+    "last_changed_source": "entry[+0x64]:int32",
+    "base_or_fallback": "entry[+0x70]:runtime numeric",
+    "materialized_value": "entry[+0x78]:runtime numeric"
+  },
+  "config_bindings": [
+    {
+      "config_type": "RPG.GameCore.StackProperty",
+      "config_fields": [
+        "TargetType",
+        "Property",
+        "PropertyValue",
+        "Silence",
+        "IsRefresh"
+      ],
+      "runtime_fields": {
+        "target": "+0x18",
+        "property_id": "+0x20",
+        "dynamic_value": "+0x28"
+      },
+      "semantic_input": "M506082 evaluates PropertyValue and M506199 forwards it to M506495; M506495's native adapter remains a separate dependency."
+    }
+  ],
+  "primitives": [
+    {
+      "primitive_id": "battle.ir.property.component_stack_source",
+      "semantic_name": "ComponentStackPropertySource",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+        "method_index": 506495,
+        "method_name": "StackProperty",
+        "declaring_type_index": 55009
+      },
+      "native_rva": "0xE72EB90",
+      "native_body_hash": "9950bfd264c81de590eefb175f0a8a9dc05a16a015a05f1eeafeb1008419f2d5",
+      "native_evidence": {
+        "body_rva": "0xE72EB90",
+        "body_length_bytes": 615,
+        "body_sha256": "9950bfd264c81de590eefb175f0a8a9dc05a16a015a05f1eeafeb1008419f2d5",
+        "code_table_slot_va": "0x18E72EB90",
+        "code_table_slot_index": 506495,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 152,
+        "conditional_branch_count": 15,
+        "direct_call_count": 15,
+        "direct_jump_count": 4,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "component",
+        "property_id",
+        "runtime_value",
+        "context_token"
+      ],
+      "output": "source_index",
+      "reads": [
+        "component property entry",
+        "entry[+0x78] pre-materialized value"
+      ],
+      "writes": [
+        "allocates one active source slot through 0x15755890",
+        "notifies through _AfterPropertyChanged"
+      ],
+      "exact_semantics": [
+        "Fetches the selected property entry.",
+        "Routes the input through a bounded native value/context adapter at 0x15C6E450.",
+        "Passes the adapter result to AllocatePropertySourceSlot; its returned int is the source_index tracked by ModifierStackProperty.",
+        "Reads entry[+0x78] before and after the source allocation and forwards both values to _AfterPropertyChanged."
+      ],
+      "pseudocode": [
+        "entry = safe_fetch(component, property_id)",
+        "source_value = native_property_value_adapter(component, property_id, runtime_value, context_token)",
+        "source_index = allocate_source_slot(entry, source_value)",
+        "notify_after_property_changed(component, property_id, old_materialized, entry.materialized, context_token)",
+        "return source_index"
+      ],
+      "unknowns": [
+        "The adapter's per-property transformation is not part of this capability; raw DynamicValue is not proven identical to stored source_value."
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.update_contribution_source",
+      "semantic_name": "UpdateStackPropertySource",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+        "method_index": 506497,
+        "method_name": "UpdateStackPropertyValue",
+        "declaring_type_index": 55009
+      },
+      "native_rva": "0xE731D90",
+      "native_body_hash": "a51b77289c7b0d36185912f4f937bc31cf5bdd3b2e4355144b5e788e95ffaceb",
+      "native_evidence": {
+        "body_rva": "0xE731D90",
+        "body_length_bytes": 703,
+        "body_sha256": "a51b77289c7b0d36185912f4f937bc31cf5bdd3b2e4355144b5e788e95ffaceb",
+        "code_table_slot_va": "0x18E731D90",
+        "code_table_slot_index": 506497,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 187,
+        "conditional_branch_count": 23,
+        "direct_call_count": 13,
+        "direct_jump_count": 6,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "component",
+        "property_id",
+        "source_index",
+        "new_source_value",
+        "context_token"
+      ],
+      "output": "none",
+      "reads": [
+        "property entry[+0x78] old value"
+      ],
+      "writes": [
+        "source slot at source_index through 0x157559D0",
+        "entry[+0x78] materialized value"
+      ],
+      "exact_semantics": [
+        "Updates the existing source_index, rebuilds immediately, then notifies old/new materialized values."
+      ],
+      "pseudocode": [
+        "entry = safe_fetch(component, property_id)",
+        "old = entry.materialized",
+        "update_source_slot(entry, source_index, new_source_value)",
+        "notify_after_property_changed(component, property_id, old, entry.materialized, context_token)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.remove_contribution_source",
+      "semantic_name": "UnStackPropertySource",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+        "method_index": 506496,
+        "method_name": "UnStackProperty",
+        "declaring_type_index": 55009
+      },
+      "native_rva": "0xE731B80",
+      "native_body_hash": "ca1fc3692e7db537807189107832b2ff7aa763f5b494e0d64f8e0b01d1a093b7",
+      "native_evidence": {
+        "body_rva": "0xE731B80",
+        "body_length_bytes": 507,
+        "body_sha256": "ca1fc3692e7db537807189107832b2ff7aa763f5b494e0d64f8e0b01d1a093b7",
+        "code_table_slot_va": "0x18E731B80",
+        "code_table_slot_index": 506496,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 127,
+        "conditional_branch_count": 14,
+        "direct_call_count": 13,
+        "direct_jump_count": 3,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "component",
+        "property_id",
+        "source_index",
+        "context_token"
+      ],
+      "output": "none",
+      "reads": [
+        "property entry[+0x78] old value"
+      ],
+      "writes": [
+        "source active/version records at source_index through 0x15755FD0",
+        "entry[+0x78] materialized value"
+      ],
+      "exact_semantics": [
+        "Disables the source_index rather than shift-removing it, rebuilds immediately, then notifies old/new materialized values."
+      ],
+      "pseudocode": [
+        "entry = safe_fetch(component, property_id)",
+        "old = entry.materialized",
+        "remove_source_slot(entry, source_index)",
+        "notify_after_property_changed(component, property_id, old, entry.materialized, context_token)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.allocate_source_slot",
+      "semantic_name": "AllocatePropertySourceSlot",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15755890",
+      "native_body_hash": "878f88784312598329401fd6e35056468e71a66ae67b2b609d88732e22e7bd8d",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15755890",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15755890",
+        "body_length_bytes": 120,
+        "body_sha256": "878f88784312598329401fd6e35056468e71a66ae67b2b609d88732e22e7bd8d",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 42,
+        "conditional_branch_count": 7,
+        "direct_call_count": 2,
+        "direct_jump_count": 0,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry",
+        "source_value"
+      ],
+      "output": "source_index:int32",
+      "reads": [
+        "entry[+0x10] source generation array",
+        "entry[+0x20] active-bit array",
+        "entry[+0x30] source-value array",
+        "entry[+0x5C] generation counter"
+      ],
+      "writes": [
+        "entry[+0x30][source_index] = source_value",
+        "entry[+0x20][source_index] = true",
+        "entry[+0x10][source_index] = ++entry[+0x5C]",
+        "entry[+0x64] = source_index",
+        "entry[+0x78] through rebuild"
+      ],
+      "exact_semantics": [
+        "Allocates a source index via 0x15755F00, stores the source value, marks it active/versioned, then immediately rebuilds."
+      ],
+      "pseudocode": [
+        "source_index = allocate_entry_index(entry)",
+        "entry.source_values[source_index] = source_value",
+        "entry.source_active[source_index] = true",
+        "entry.source_generation[source_index] = ++entry.generation",
+        "entry.last_changed_source = source_index",
+        "rebuild_materialized(entry)",
+        "return source_index"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.update_source_slot",
+      "semantic_name": "UpdatePropertySourceSlot",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x157559D0",
+      "native_body_hash": "1a5105a81b2a52842ed0a55399d4cf288956750914ade1b912c8904e38db5843",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x157559D0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x157559D0",
+        "body_length_bytes": 109,
+        "body_sha256": "1a5105a81b2a52842ed0a55399d4cf288956750914ade1b912c8904e38db5843",
+        "body_projection": "NORMAL_PATH_TAIL_JUMP",
+        "instruction_count": 38,
+        "conditional_branch_count": 7,
+        "direct_call_count": 0,
+        "direct_jump_count": 1,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry",
+        "source_index",
+        "source_value"
+      ],
+      "output": "none",
+      "reads": [
+        "entry source arrays",
+        "entry[+0x5C] generation counter"
+      ],
+      "writes": [
+        "entry[+0x30][source_index] = source_value",
+        "entry[+0x20][source_index] = true",
+        "entry[+0x10][source_index] = ++entry[+0x5C]",
+        "entry[+0x64] = source_index",
+        "entry[+0x78] through rebuild"
+      ],
+      "exact_semantics": [
+        "Overwrites a stable source index and rebuilds; it does not allocate a new index."
+      ],
+      "pseudocode": [
+        "entry.source_values[source_index] = source_value",
+        "entry.source_active[source_index] = true",
+        "entry.source_generation[source_index] = ++entry.generation",
+        "entry.last_changed_source = source_index",
+        "rebuild_materialized(entry)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.remove_source_slot",
+      "semantic_name": "RemovePropertySourceSlot",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15755FD0",
+      "native_body_hash": "22db4c710c898117bdb26221fea2b08f4c591973774d3af7a23d4dace634879a",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15755FD0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15755FD0",
+        "body_length_bytes": 92,
+        "body_sha256": "22db4c710c898117bdb26221fea2b08f4c591973774d3af7a23d4dace634879a",
+        "body_projection": "NORMAL_PATH_TAIL_JUMP",
+        "instruction_count": 29,
+        "conditional_branch_count": 6,
+        "direct_call_count": 1,
+        "direct_jump_count": 1,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry",
+        "source_index"
+      ],
+      "output": "none",
+      "reads": [
+        "entry[+0x60] active-source extent",
+        "entry source arrays"
+      ],
+      "writes": [
+        "entry[+0x20][source_index] = false",
+        "entry[+0x10][source_index] = 0",
+        "entry[+0x78] through rebuild"
+      ],
+      "exact_semantics": [
+        "Does not shift source slots or clear the stale source value; only active/version state changes before rebuild."
+      ],
+      "pseudocode": [
+        "if entry.active_source_extent <= 0: return",
+        "entry.source_active[source_index] = false",
+        "entry.source_generation[source_index] = 0",
+        "refresh_source_extent(entry)",
+        "rebuild_materialized(entry)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.rebuild_materialized",
+      "semantic_name": "RebuildMaterializedProperty",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15755AE0",
+      "native_body_hash": "b29fc89c8fa98231758ebc90d00a2bab4f8b8b600090024f53dba1d3b4e07449",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15755AE0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15755AE0",
+        "body_length_bytes": 239,
+        "body_sha256": "b29fc89c8fa98231758ebc90d00a2bab4f8b8b600090024f53dba1d3b4e07449",
+        "body_projection": "NORMAL_PATH_TAIL_JUMP",
+        "instruction_count": 61,
+        "conditional_branch_count": 8,
+        "direct_call_count": 6,
+        "direct_jump_count": 8,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "materialized_fixedpoint",
+      "reads": [
+        "entry[+0x58] materialization_kind",
+        "entry[+0x20] active sources",
+        "entry[+0x30] source values",
+        "entry[+0x40], [+0x48], [+0x50], [+0x64], [+0x70]"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "Kinds 1 and 2 are inline source selections (source 0 and last-changed source respectively).",
+        "Kinds 3..7 dispatch to five native reducers over active source slots in ascending index order.",
+        "After the reducer, a further native transform consumes entry[+0x48]/[+0x50] before the final value is written to +0x78; a tail call consumes entry[+0x40]."
+      ],
+      "pseudocode": [
+        "candidate = materialize_by_kind(entry.materialization_kind, entry.active_source_slots)",
+        "entry.materialized = native_post_transform(candidate, entry.slot_48, entry.slot_50)",
+        "native_post_materialization_hook(&entry.materialized, entry.slot_40)",
+        "return entry.materialized"
+      ],
+      "unknowns": [
+        "The gameplay names of materialization kinds and the exact fixed-point operator names are intentionally not inferred from helper addresses."
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.materialize_kind_3",
+      "semantic_name": "MaterializeKind3ActiveFold",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15756820",
+      "native_body_hash": "36ee9487889fe3312f669da5e076c30e87a7f1abaf5b451254184e1282e5c73a",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15756820",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15756820",
+        "body_length_bytes": 133,
+        "body_sha256": "36ee9487889fe3312f669da5e076c30e87a7f1abaf5b451254184e1282e5c73a",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 43,
+        "conditional_branch_count": 8,
+        "direct_call_count": 2,
+        "direct_jump_count": 1,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "entry[+0x78] materialized_fixedpoint",
+      "reads": [
+        "entry[+0x20] active slots",
+        "entry[+0x30] source values",
+        "entry[+0x60] active-source extent",
+        "entry[+0x70] base/fallback"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "forward active-slot fold using direct callee 0x19D65EF80"
+      ],
+      "pseudocode": [
+        "fold active source slots in ascending source_index",
+        "write the reducer result to entry.materialized"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.materialize_kind_4",
+      "semantic_name": "MaterializeKind4ActiveFold",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x157568E0",
+      "native_body_hash": "50545ec571bf675a4df8edf12dc1d87dca45dffea240e73db42f0a1a2304c960",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x157568E0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x157568E0",
+        "body_length_bytes": 162,
+        "body_sha256": "50545ec571bf675a4df8edf12dc1d87dca45dffea240e73db42f0a1a2304c960",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 50,
+        "conditional_branch_count": 9,
+        "direct_call_count": 2,
+        "direct_jump_count": 1,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "entry[+0x78] materialized_fixedpoint",
+      "reads": [
+        "entry[+0x20] active slots",
+        "entry[+0x30] source values",
+        "entry[+0x60] active-source extent",
+        "entry[+0x70] base/fallback"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "forward active-slot fold using direct callee 0x19D661A00; no-active path falls back to entry[+0x70]"
+      ],
+      "pseudocode": [
+        "fold active source slots in ascending source_index",
+        "write the reducer result to entry.materialized"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.materialize_kind_5",
+      "semantic_name": "MaterializeKind5ActiveFold",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x157569C0",
+      "native_body_hash": "25d5695c2cbb959b2b5fe2aa5055b1571ef78291988bc86f9c1a165b85979f7b",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x157569C0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x157569C0",
+        "body_length_bytes": 171,
+        "body_sha256": "25d5695c2cbb959b2b5fe2aa5055b1571ef78291988bc86f9c1a165b85979f7b",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 52,
+        "conditional_branch_count": 8,
+        "direct_call_count": 4,
+        "direct_jump_count": 2,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "entry[+0x78] materialized_fixedpoint",
+      "reads": [
+        "entry[+0x20] active slots",
+        "entry[+0x30] source values",
+        "entry[+0x60] active-source extent",
+        "entry[+0x70] base/fallback"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "forward active-slot fold using 0x19D661B60 then 0x19D661A00"
+      ],
+      "pseudocode": [
+        "fold active source slots in ascending source_index",
+        "write the reducer result to entry.materialized"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.materialize_kind_6",
+      "semantic_name": "MaterializeKind6Extremum",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15756AA0",
+      "native_body_hash": "d0c23653f467c9bd0893f08ae309f4c2b79e47da4979a4889242e9c4ad44696e",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15756AA0",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15756AA0",
+        "body_length_bytes": 353,
+        "body_sha256": "d0c23653f467c9bd0893f08ae309f4c2b79e47da4979a4889242e9c4ad44696e",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 110,
+        "conditional_branch_count": 14,
+        "direct_call_count": 0,
+        "direct_jump_count": 6,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "entry[+0x78] materialized_fixedpoint",
+      "reads": [
+        "entry[+0x20] active slots",
+        "entry[+0x30] source values",
+        "entry[+0x60] active-source extent",
+        "entry[+0x70] base/fallback"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "forward active-slot extremum reducer; direction is deliberately unnamed"
+      ],
+      "pseudocode": [
+        "fold active source slots in ascending source_index",
+        "write the reducer result to entry.materialized"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.materialize_kind_7",
+      "semantic_name": "MaterializeKind7Extremum",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "PropertyEntry (native layout; metadata type unresolved)",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x15756C40",
+      "native_body_hash": "d505ffaef9610814f80844366ac67644980eab638ae7c164cddccf3b9d77e105",
+      "native_evidence": {
+        "runtime_identity": "native_helper@0x15756C40",
+        "method_index": null,
+        "method_identity_status": "UNREGISTERED_NATIVE_HELPER",
+        "native_rva": "0x15756C40",
+        "body_length_bytes": 353,
+        "body_sha256": "d505ffaef9610814f80844366ac67644980eab638ae7c164cddccf3b9d77e105",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 110,
+        "conditional_branch_count": 14,
+        "direct_call_count": 0,
+        "direct_jump_count": 6,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC",
+      "inputs": [
+        "property_entry"
+      ],
+      "output": "entry[+0x78] materialized_fixedpoint",
+      "reads": [
+        "entry[+0x20] active slots",
+        "entry[+0x30] source values",
+        "entry[+0x60] active-source extent",
+        "entry[+0x70] base/fallback"
+      ],
+      "writes": [
+        "entry[+0x78]"
+      ],
+      "exact_semantics": [
+        "forward active-slot extremum reducer complementary to kind 6; direction is deliberately unnamed"
+      ],
+      "pseudocode": [
+        "fold active source slots in ascending source_index",
+        "write the reducer result to entry.materialized"
+      ]
+    }
+  ],
+  "semantic_chains": [
+    {
+      "chain_id": "modifier_stack_property_add",
+      "steps": [
+        "M506082 task target/value evaluation",
+        "M506199 modifier tracking",
+        "M506495 component stack",
+        "0x15755890 allocate source slot",
+        "0x15755AE0 rebuild",
+        "entry[+0x78] observable materialized value"
+      ]
+    },
+    {
+      "chain_id": "modifier_stack_property_refresh",
+      "steps": [
+        "M506199 finds same property+component tracked record",
+        "M506497",
+        "0x157559D0 update stable source_index",
+        "0x15755AE0 rebuild",
+        "entry[+0x78]"
+      ]
+    },
+    {
+      "chain_id": "modifier_stack_property_remove",
+      "steps": [
+        "M506312 iterates tracked records",
+        "M506496",
+        "0x15755FD0 disables stable source_index",
+        "0x15755AE0 rebuild",
+        "entry[+0x78]"
+      ]
+    }
+  ],
+  "dependencies": [
+    "DynamicValue runtime (Batch 02)",
+    "Target selector runtime (Batch 05)",
+    "modifier application/lifecycle (Batches 07-08)"
+  ],
+  "unknowns": [
+    "The generic adapter at 0x15C6E450 is a real pre-source dependency; its per-property value transform is not restated as raw DynamicValue assignment.",
+    "Names/formulas of the fixed-point operators in materialization kinds 3..7 are not yet canonical.",
+    "The design-data/runtime source that initializes each PropertyEntry materialization_kind/base/post-transform fields is not recovered here."
+  ],
+  "must_not_implement": [
+    "Do not represent contributions as final_value += value / final_value -= value.",
+    "Do not shift source indices on removal; modifier tracked keys remain stable source indices.",
+    "Do not assign named SUM/MUL/MIN/MAX semantics to materialization kinds solely from current helper addresses.",
+    "Do not bypass native post-transform/post-hook state when materializing a property entry."
+  ]
+}
