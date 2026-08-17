@@ -1,0 +1,131 @@
+{
+  "schema": "battle_semantic_bridge/1",
+  "game_version": "4.4.54",
+  "capability_id": "DAMAGE_EVALUATOR_Q_14_PROOF",
+  "status": "CODING_READY_WITH_UNKNOWN_GLOBAL_THRESHOLD",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "generated_at": "2026-08-17T16:00:00Z",
+  "evaluator": {
+    "method_index": 530155,
+    "method_name": "GOCKCOMLFEO",
+    "declaring_type_index": 57813,
+    "native_rva": "0x154B9420",
+    "native_va": "0x1954B9420",
+    "body_length": 504,
+    "body_sha256": "630349815c23a2180b414f4df59045a2074245907a9a24fd139b3504384693f6"
+  },
+  "semantic_role": "SELECTED_RATIO_OR_ZERO",
+  "inputs": {
+    "evaluator_object": "rcx",
+    "field_component_key": "e[+0x10] (optional)",
+    "field_fallback_numerator": "e[+0x18]",
+    "field_fallback_denominator": "e[+0x20]"
+  },
+  "normal_algorithm": {
+    "threshold": "U = global 0x95B1E18; concrete value UNKNOWN",
+    "denominator_selection": [
+      "if e[+0x10] != null: D = GetProperty(resolve(e[+0x10]), 1)",
+      "else: D = e[+0x20]"
+    ],
+    "selection_test": "ordinary finite FixPoint: Q = fixpoint_divide(N, D) iff D > U; otherwise Q = FixPoint(0)",
+    "numerator_selection": [
+      "only when D > U",
+      "if e[+0x10] != null: N = GetProperty(resolve(e[+0x10]), 10)",
+      "else: N = e[+0x18]"
+    ],
+    "zero_return": {
+      "rva": "0x154B95BD -> 0x154B95CB ret",
+      "value": "FixPoint(0) from global 0x95B1DE0"
+    },
+    "ratio_return": {
+      "tail_rva": "0x154B95DA",
+      "target": "0x1D65FD90",
+      "operation": "FixPoint division rcx / rdx"
+    }
+  },
+  "property_reads": [
+    {
+      "property_id": 1,
+      "sealed_identity": "MaxHP",
+      "role": "denominator D when e[+0x10] != null"
+    },
+    {
+      "property_id": 10,
+      "sealed_identity": "CurrentHP",
+      "role": "numerator N when e[+0x10] != null and D > U"
+    }
+  ],
+  "fixedpoint_operations": [
+    {
+      "operation": "compare D > U",
+      "evidence": "inline cmp/setg/cmov blocks at 0x154B9499, 0x154B94B0, 0x154B953D, 0x154B9574, 0x154B9582",
+      "normal_encoding_semantics": "signed qword compare, strict greater"
+    },
+    {
+      "operation": "fixpoint_divide(N, D)",
+      "target_rva": "0x1D65FD90",
+      "body_length": 654,
+      "body_sha256": "598c57671d7b27de3f821c1359b5fff2b436fb2389d2197228d2731d5354f5f2",
+      "inputs": [
+        "rcx numerator",
+        "rdx denominator"
+      ],
+      "output": "FixPoint quotient numerator / denominator for normal finite inputs"
+    }
+  ],
+  "global_roles": {
+    "0x95B1E18": {
+      "role": "denominator threshold U",
+      "concrete_value": "UNKNOWN",
+      "note": "Do not derive from disk qword 0xCC0A1BA48763671C"
+    },
+    "0x95B1DE0": {
+      "role": "FixPoint(0) zero return",
+      "status": "CONFIRMED (Handoff 12)"
+    },
+    "0x96B72E8": {
+      "role": "resolver type token for 0x18B429D40",
+      "status": "CONFIRMED_USAGE_ONLY"
+    },
+    "0x9576579_0x957657A_0x957657B": {
+      "role": "patch-path feature bytes",
+      "status": "RECORDED_BOUNDARY"
+    }
+  },
+  "pseudocode": [
+    "evaluate_q(e):",
+    "    U = GLOBAL_0x95B1E18",
+    "    if PATCH_FLAG_B: return PATCH_TAIL(e)   # boundary",
+    "    if e.component_key != null:",
+    "        D = get_property(resolve(e.component_key), 1)",
+    "        if PATCH_FLAG_A: D = PATCH_TAIL(e)",
+    "    else:",
+    "        D = e.denominator_fixpoint",
+    "    if D > U:",
+    "        if e.component_key != null:",
+    "            N = get_property(resolve(e.component_key), 10)",
+    "            if PATCH_FLAG_N: N = PATCH_TAIL(e)",
+    "        else:",
+    "            N = e.numerator_fixpoint",
+    "        return fixpoint_divide(N, D)",
+    "    return FixPoint(0)"
+  ],
+  "downstream_consequence": {
+    "handoff_13_composition": [
+      "component path with D > U: Q = CurrentHP / MaxHP",
+      "therefore S0 = fp_mul(MaxHP, Q) = CurrentHP and M504579 normal delta = 0",
+      "component path with D <= U: Q = 0, S0 = 0, M504579 delta is negative"
+    ]
+  },
+  "unknowns": [
+    "concrete runtime value of global 0x95B1E18",
+    "special FixPoint encoding comparison paths",
+    "fixpoint division overflow/special operands",
+    "M723335 0x15B8BB50 patch return semantics"
+  ],
+  "dependencies": [
+    "DAMAGE_VALUE_TO_HP_BRIDGE_13_PROOF",
+    "DIRECT_DAMAGE_HP_TRANSITION_12_PROOF (FixPoint(0), property identities)"
+  ],
+  "next_frontier": "global 0x95B1E18 concrete initialization/meaning, or M723335 only if patch paths are promoted"
+}

@@ -21,6 +21,8 @@
 - Completed: Handoff 13 `DAMAGE_VALUE_TO_HP_BRIDGE_13_PROOF` (scoped
   generated-executor -> TargetDamageHP -> DirectDamageHP bridge; still not a
   damage formula).
+- Completed: Handoff 14 `DAMAGE_EVALUATOR_Q_14_PROOF` (Q is a selected ratio
+  or FixPoint(0); only global 0x95B1E18 concrete value remains UNKNOWN).
 - Current frontier: HP transition for `DirectDamageHP(damage_kind=100,
   mode=0)` is CLOSED; modes 4/5/6 and post-transition consumers remain
   UNKNOWN.
@@ -33,7 +35,7 @@
   `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12.md`, `docs/agent/handoffs/semantic_handoff_13.md`.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12.md`, `docs/agent/handoffs/semantic_handoff_13.md`, `docs/agent/handoffs/semantic_handoff_14.md`.
 - Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
 - The capability includes source-slot lifecycle and materialization framework.
 - Per-kind fixed-point operator names/formulas are still not accepted.
@@ -191,6 +193,10 @@
   `data/semantics/4.4.54/damage_value_to_hp_bridge_13.json`.
 - Damage value to HP bridge handoff:
   `docs/agent/handoffs/semantic_handoff_13.md`.
+- Damage evaluator Q artifact:
+  `data/semantics/4.4.54/damage_evaluator_q_14.json`.
+- Damage evaluator Q handoff:
+  `docs/agent/handoffs/semantic_handoff_14.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 - Global/static writer classifier:
@@ -219,9 +225,13 @@
   `DirectDamageHP(damage_kind=11, mode=0)` with delta
   `fp_mul(MaxHP, Q) - CurrentHP`; fallback path uses `-V` with
   damage_kind 10/0 and mode 0 (or a dynamic mode UNKNOWN).
-- Next native frontier, only if promoted to a new task: M530155
-  `GOCKCOMLFEO` `0x1954B9420`, M504598 `_MortallyWondedProcess`
-  `0xE465660`, and the M504579 fallback mode branch `0xE46EA17`.
+- M530155 `GOCKCOMLFEO` is now closed (`DAMAGE_EVALUATOR_Q_14_PROOF`):
+  `Q = fp_div(N, D)` when `D > global 0x95B1E18`, else `Q = FixPoint(0)`.
+  Component path uses `D = MaxHP` and `N = CurrentHP`; fallback fields are
+  `e[+0x20]` / `e[+0x18]`.
+- Next native frontier, only if promoted to a new task: concrete
+  initialization/meaning of global `0x95B1E18`, or M723335 `0x15B8BB50`
+  patch paths.
 - `0x195C6D120` remains generated tag-dispatch evidence, not a DamageRequest.
 - Event/listener and Turn/AV work remain deferred.
 
@@ -241,7 +251,8 @@
   (DirtyHPDelta remains M506511 `GetDirtyHP` only).
 - General NegativeHP consumers beyond the scoped DirectDamageHP policy.
 - M504598 `_MortallyWondedProcess` internal post-process formula.
-- M530155 `GOCKCOMLFEO` evaluator selection/clamp and global `0x95B1E18`.
+- M530155 `GOCKCOMLFEO` evaluator algorithm is CONFIRMED; concrete runtime
+  value of global `0x95B1E18` is UNKNOWN (threshold role only).
 - M504557 `RecomputeShieldCost` and fallback global `0x95C1CC0`.
 - M504579 dynamic fallback mode `record[+0x19C]` (may select DirectDamageHP
   modes 4/5/6; not reversed).
@@ -288,12 +299,10 @@
 
 ## Immediate next entry procedure
 
-- The damage-value-to-HP bridge is closed; implementation input is Handoff 13
-  and `data/semantics/4.4.54/damage_value_to_hp_bridge_13.json`.
-- Do not reopen M507308/M504579 call-shape evidence, Handoff 12, or broad
+- The damage-evaluator Q contract is closed; implementation input is
+  Handoff 14 and `data/semantics/4.4.54/damage_evaluator_q_14.json`.
+- Do not reopen M530155 disassembly, Handoff 13, Handoff 12, or broad
   generated-executor topology scans.
-- Only promote a new task for: M530155 `GOCKCOMLFEO` (`0x1954B9420`),
-  M504598 `_MortallyWondedProcess` (`0xE465660`), M504557
-  `RecomputeShieldCost`, or the M504579 dynamic fallback mode
-  (`0xE46EA17`).
+- Only promote a new task for: concrete initialization/meaning of global
+  `0x95B1E18`, or M723335 `0x15B8BB50` if patch paths are needed.
 - Do not enter full damage formula, stance, display, or event subsystems.
