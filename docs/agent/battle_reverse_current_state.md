@@ -13,10 +13,16 @@
 
 ## Latest semantic frontier
 
-- Latest completed capability: `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
+- Completed capabilities: Handoff 09 `MODIFIER_PROPERTY_EFFECT_09_PROOF`,
+  Handoff 10 `GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF`, and
+  Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
+- Partial checkpoint: Handoff 12 `SET_HP_CURRENT_HP_TRANSITION_12_PARTIAL`.
+- Current frontier: `CurrentHP / DirtyHP / DirectDamageHP`.
+- Session stop state: `STOP_D`; do not continue native exploration in this
+  session.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12_partial.md`.
 - Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
 - The capability includes source-slot lifecycle and materialization framework.
 - Per-kind fixed-point operator names/formulas are still not accepted.
@@ -24,6 +30,9 @@
 - It adds a persistent, Modifier-owned contribution record and reverses it through the same stable source index.
 - Handoff 11 adds the scoped mutable/base path: source slot `0` supports fixed-point `Set/Add/Mul/Min/Max`, rebuild, then a post-change bridge call.
 - This mutation capability deliberately excludes non-null post-transform context and the native special-property IDs.
+- Handoff 12 is deliberately partial: it records SetHP -> DirectChangeHP ->
+  DirectDamageHP -> CurrentHP source-0 evidence, but it does not publish a
+  complete HP or damage contract.
 
 ## Confirmed reusable runtime chain
 
@@ -41,6 +50,7 @@
 - Generic PropertyEntry source-slot lifecycle and materialized-value write boundary.
 - Generic untransformed source-0 Property mutation.
 - Fixed-point Add/Subtract/Multiply helpers used by Property mutation.
+- Partial SetHP-to-CurrentHP source-0 transition evidence.
 
 ## Baseline commits that MUST remain intact
 
@@ -153,18 +163,23 @@
 - Property mutation 11: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Handoff 11: `docs/agent/handoffs/semantic_handoff_11.md`.
 - Property mutation builder: `tools/reverse/scripts/build_generic_property_mutation_11.py`.
+- Partial HP handoff: `docs/agent/handoffs/semantic_handoff_12_partial.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 
 ## Current direct dependency frontier
 
 - `0x19B4485C0` is now classified as a large tag-dispatch runtime rather than a small property formula; do not collapse it into arithmetic.
-- Close `ModifyProperty` CurrentHP special branch: property index `10` is `CurrentHP`; it reads index `1` MaxHP and M506511 `GetDirtyHP` before the common write tail.
-- `GetDirtyHP` reads MaxHP plus property indices `6/7` (DirtyHPDelta/DirtyHPRatio supporting identity); exact formula/policy remains active work.
-- Continue the indexed simple HP path: SetHP executor M508871 -> DirectChangeHP M506500 -> DirectDamageHP M506499.
-- Recover the actual direct-damage request/record boundary before damage formula work; `0x195C6D120` enters generated tag-dispatch and is not yet accepted as a DamageRequest object.
-- Event/listener work remains a competing dependency because both OnActivate and damage paths enqueue/dispatch event work.
-- Turn/AV work remains deferred until action completion requires it.
+- Resume at M506503's CurrentHP branch `0xE72E162`: it reads MaxHP index `1`,
+  M506511 `GetDirtyHP`, and branches around the common source-0 tail.
+- M506511 `GetDirtyHP` at `0xE734050` has confirmed
+  `MaxHP * DirtyHPRatio + DirtyHPDelta` arithmetic, but the CurrentHP bound
+  policy remains UNKNOWN.
+- M506499 `DirectDamageHP` needs its `0xE7333E0` intercept split and its
+  `0xE73231C -> 0xE7327B4 -> 0xE732C6B` ordinary branch reconciled before a
+  general HP/damage contract is accepted.
+- `0x195C6D120` remains generated tag-dispatch evidence, not a DamageRequest.
+- Event/listener and Turn/AV work remain deferred.
 
 ## Known UNKNOWN
 
@@ -177,6 +192,7 @@
 - Damage resolution formula.
 - Non-null `0x19CAF14A0` post-transform policy.
 - CurrentHP/NegativeHP special mutation and DirtyHP policy.
+- DirectDamageHP intercept decision and modes 4/5/6.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
 
@@ -217,8 +233,9 @@
 
 ## Immediate next entry procedure
 
-- Re-enter `M506503` property-id `10` branch at `0xE72E162`; then M506511 `GetDirtyHP` at `0xE734050` and common tail `0xE72E8F9`.
-- Keep `0x19CAF14A0` separate as a bounded non-null post-transform family.
-- Resume SetHP M508871 -> DirectChangeHP M506500 only with the CurrentHP special branch in view.
-- Treat `0x195C6D120` from DirectDamageHP M506499 as generated tag-dispatch evidence, not a settled request object.
-- Write the next handoff only after a chain reaches an observable state write or a real request boundary.
+- Next session: re-enter M506503 property-id `10` branch at `0xE72E162`, then
+  M506511 `GetDirtyHP` at `0xE734050` and the common tail `0xE72E8F9`.
+- In parallel only after that branch is bounded, resume DirectDamageHP M506499
+  at `0xE7333E0` / `0xE73231C`; treat `0x195C6D120` as generated tag-dispatch
+  evidence, not a settled DamageRequest.
+- Do not implement HP policy from Handoff 12 Partial.

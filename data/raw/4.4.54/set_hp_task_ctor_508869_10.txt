@@ -1,0 +1,42 @@
+0C03AC20  c7 41 10 77 77 00 00            mov      dword ptr [rcx + 0x10], 0x7777
+0C03AC27  4c 89 41 20                     mov      qword ptr [rcx + 0x20], r8
+0C03AC2B  48 89 51 18                     mov      qword ptr [rcx + 0x18], rdx
+0C03AC2F  c3                              ret
+0C03AC30  56                              push     rsi
+0C03AC31  48 83 ec 20                     sub      rsp, 0x20
+0C03AC35  80 3d 1a 66 53 fd 00            cmp      byte ptr [rip - 0x2ac99e6], 0
+0C03AC3C  75 06                           jne      0x18c03ac44
+0C03AC3E  48 83 c4 20                     add      rsp, 0x20
+0C03AC42  5e                              pop      rsi
+0C03AC43  c3                              ret
+0C03AC44  48 89 ce                        mov      rsi, rcx
+0C03AC47  b9 c6 c3 07 00                  mov      ecx, 0x7c3c6
+0C03AC4C  e8 ff c7 fa 09                  call     0x195fe7450
+0C03AC51  48 85 c0                        test     rax, rax
+0C03AC54  74 10                           je       0x18c03ac66
+0C03AC56  48 89 c1                        mov      rcx, rax
+0C03AC59  48 89 f2                        mov      rdx, rsi
+0C03AC5C  48 83 c4 20                     add      rsp, 0x20
+0C03AC60  5e                              pop      rsi
+0C03AC61  e9 4a 1c b0 09                  jmp      0x195b3c8b0
+0C03AC66  e8 d5 76 bc f7                  call     0x183c02340
+0C03AC6B  cc                              int3
+0C03AC6C  0f 1f 40 00                     nop      dword ptr [rax]
+0C03AC70  41 57                           push     r15
+0C03AC72  41 56                           push     r14
+0C03AC74  41 55                           push     r13
+0C03AC76  41 54                           push     r12
+0C03AC78  56                              push     rsi
+0C03AC79  57                              push     rdi
+0C03AC7A  55                              push     rbp
+0C03AC7B  53                              push     rbx
+0C03AC7C  48 81 ec 68 03 00 00            sub      rsp, 0x368
+0C03AC83  48 89 ce                        mov      rsi, rcx
+0C03AC86  48 8d 4c 24 50                  lea      rcx, [rsp + 0x50]
+0C03AC8B  41 b8 08 01 00 00               mov      r8d, 0x108
+0C03AC91  31 d2                           xor      edx, edx
+0C03AC93  e8 68 9f fa f7                  call     0x183fe4c00
+0C03AC98  80 3d b8 65 53 fd 00            cmp      byte ptr [rip - 0x2ac9a48], 0
+0C03AC9F  0f 85 33 06 00 00               jne      0x18c03b2d8
+0C03ACA5  48 8b 46 20                     mov      rax, qword ptr [rsi + 0x20]
+0C03ACA9  48 85 c0                        test     rax, rax
