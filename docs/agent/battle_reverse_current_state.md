@@ -20,8 +20,9 @@
 - Current frontier: `CurrentHP / DirtyHP / DirectDamageHP`.
 - Session stop state: `STOP_BUDGET_3_PERCENT`; CurrentHP symbolic control flow
   is checkpointed. `K` is confirmed as writable `.data` RVA `0x95B1E80` with
-  raw image `0x41BC903DBD203697`, but its writer, runtime value, and semantics
-  remain unresolved.
+  raw image `0x41BC903DBD203697`; its runtime value and semantics remain
+  unresolved. A reusable global/static writer classifier now exists and its K
+  probe output is at `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
 - Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12_partial.md`.
@@ -172,6 +173,9 @@
 - Partial HP handoff: `docs/agent/handoffs/semantic_handoff_12_partial.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
+- Global/static writer classifier:
+  `tools/reverse/scripts/global_static_writer_classifier.py`.
+- K probe output: `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
 
 ## Current direct dependency frontier
 
@@ -200,8 +204,10 @@
 - Damage resolution formula.
 - Non-null `0x19CAF14A0` post-transform policy.
 - CurrentHP/NegativeHP special mutation and DirtyHP policy.
-- CurrentHP bound threshold `K` global writer/initializer and semantic identity
-  (raw `.data` image only; mutation policy UNKNOWN).
+- CurrentHP bound threshold `K` semantic identity and runtime value (mechanical
+  writer/initializer census exists in
+  `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`; mutation policy
+  UNKNOWN).
 - DirectDamageHP intercept decision and modes 4/5/6.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
@@ -243,10 +249,12 @@
 
 ## Immediate next entry procedure
 
-- Next session: first establish a global-static writer/initializer classifier
+- Next session: the global-static writer/initializer classifier is now
+  available at `tools/reverse/scripts/global_static_writer_classifier.py` and
+  has already produced `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`
   for writable data RVA `0x95B1E80`, used at M506503
-  `0xE72E1B9/E72E1D0/E72E1E7`; no unique native writer entry is currently
-  proven.
+  `0xE72E1B9/E72E1D0/E72E1E7`. Use that mechanical output before resuming K
+  semantic work; do not re-derive the writer census from scratch.
 - Only after that closes the bound primitive, resume DirectDamageHP M506499 at
   `0xE7333E0` / `0xE73231C`; treat `0x195C6D120` as generated tag-dispatch
   evidence, not a settled DamageRequest.
