@@ -87,6 +87,29 @@ from hsr_battle_agent.battle_ir.model import (
     MODIFIER_LIFECYCLE_PROCESS_REDD_PRIMITIVE_ID,
     MODIFIER_LIFECYCLE_ON_ADDED_PRIMITIVE_ID,
     MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID,
+    STACK_PROPERTY_EXECUTOR_INIT_PRIMITIVE_ID,
+    STACK_PROPERTY_EXECUTE_PRIMITIVE_ID,
+    MODIFIER_STACK_PROPERTY_CONTRIBUTION_PRIMITIVE_ID,
+    MODIFIER_POP_PROPERTY_CONTRIBUTIONS_PRIMITIVE_ID,
+    COMPONENT_STACK_BOUNDARY_PRIMITIVE_ID,
+    COMPONENT_UNSTACK_BOUNDARY_PRIMITIVE_ID,
+    COMPONENT_STACK_SOURCE_PRIMITIVE_ID,
+    UPDATE_CONTRIBUTION_SOURCE_PRIMITIVE_ID,
+    REMOVE_CONTRIBUTION_SOURCE_PRIMITIVE_ID,
+    ALLOCATE_SOURCE_SLOT_PRIMITIVE_ID,
+    UPDATE_SOURCE_SLOT_PRIMITIVE_ID,
+    REMOVE_SOURCE_SLOT_PRIMITIVE_ID,
+    REBUILD_MATERIALIZED_PRIMITIVE_ID,
+    MATERIALIZE_KIND_3_PRIMITIVE_ID,
+    MATERIALIZE_KIND_4_PRIMITIVE_ID,
+    MATERIALIZE_KIND_5_PRIMITIVE_ID,
+    MATERIALIZE_KIND_6_PRIMITIVE_ID,
+    MATERIALIZE_KIND_7_PRIMITIVE_ID,
+    FIXPOINT_ADD_PRIMITIVE_ID,
+    FIXPOINT_SUBTRACT_PRIMITIVE_ID,
+    FIXPOINT_MULTIPLY_PRIMITIVE_ID,
+    PROPERTY_APPLY_MODIFY_FUNCTION_PRIMITIVE_ID,
+    PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
@@ -95,6 +118,7 @@ from hsr_battle_agent.battle_ir.semantic_artifact import (
 from hsr_battle_agent.battle_runtime import actions as action_runtime
 from hsr_battle_agent.battle_runtime import modifiers as modifier_runtime
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
+from hsr_battle_agent.battle_runtime import property as property_runtime
 from hsr_battle_agent.battle_runtime import targets as target_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
 from hsr_battle_agent.battle_sandbox.errors import (
@@ -221,6 +245,57 @@ def _modifier_lifecycle_no_state_impl(
     def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
         del context
         return function(*(inputs[name] for name in input_names))
+
+    return impl
+
+
+def _property_entry_impl(
+    function: Callable[..., Any],
+    input_names: tuple[str, ...],
+) -> PrimitiveImplementation:
+    """Pure PropertyEntry helper (no BattleState, no boundary sink)."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        del context
+        return function(*(inputs[name] for name in input_names))
+
+    return impl
+
+
+def _property_state_impl(
+    function: Callable[..., Any],
+    input_names: tuple[str, ...],
+    *,
+    with_boundary: bool = True,
+) -> PrimitiveImplementation:
+    """Property primitive that reads/writes BattleState.
+
+    The implementation receives ``(context.state, *named_inputs)``.  For
+    mutating primitives a boundary sink is attached so exactly one
+    ``PropertyChangeBoundary`` is recorded per accepted mutation.
+    """
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        boundary_sink = (
+            context.trace.record_property_change_boundary if with_boundary else None
+        )
+        return function(
+            context.state,
+            *(inputs[name] for name in input_names),
+            boundary_sink=boundary_sink,
+        )
+
+    return impl
+
+
+def _property_state_no_boundary_impl(
+    function: Callable[..., Any],
+    input_names: tuple[str, ...],
+) -> PrimitiveImplementation:
+    """Property state primitive whose native body has no change boundary."""
+
+    def impl(context: ExecutionContext, inputs: Mapping[str, Any]) -> Any:
+        return function(context.state, *(inputs[name] for name in input_names))
 
     return impl
 
@@ -444,6 +519,111 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID: _modifier_lifecycle_impl(
         modifier_runtime.on_activate_modifier,
         ("target", "modifier"),
+    ),
+    # Handoff 09 + 10 modifier-owned property contribution lifecycle.
+    STACK_PROPERTY_EXECUTOR_INIT_PRIMITIVE_ID: _modifier_lifecycle_no_state_impl(
+        property_runtime.stack_property_executor_init,
+        ("task_context", "task_config"),
+    ),
+    STACK_PROPERTY_EXECUTE_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.stack_property_execute,
+        ("executor", "selected_targets", "evaluated_property_value"),
+    ),
+    MODIFIER_STACK_PROPERTY_CONTRIBUTION_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.stack_property_contribution,
+        (
+            "modifier",
+            "property_id",
+            "value",
+            "target_component",
+            "context_token",
+            "is_refresh",
+        ),
+    ),
+    MODIFIER_POP_PROPERTY_CONTRIBUTIONS_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.pop_property_contributions,
+        ("modifier",),
+    ),
+    COMPONENT_STACK_BOUNDARY_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.component_stack_boundary,
+        ("component", "property_id", "value", "context_token"),
+    ),
+    COMPONENT_UNSTACK_BOUNDARY_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.component_unstack_boundary,
+        ("component", "property_id", "contribution_key", "owner_modifier"),
+    ),
+    # Handoff 10 source-slot/materialization runtime.
+    COMPONENT_STACK_SOURCE_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.component_stack_source,
+        ("component", "property_id", "runtime_value", "context_token"),
+    ),
+    UPDATE_CONTRIBUTION_SOURCE_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.update_contribution_source,
+        (
+            "component",
+            "property_id",
+            "source_index",
+            "new_source_value",
+            "context_token",
+        ),
+    ),
+    REMOVE_CONTRIBUTION_SOURCE_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.remove_contribution_source,
+        ("component", "property_id", "source_index", "context_token"),
+    ),
+    ALLOCATE_SOURCE_SLOT_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.allocate_source_slot,
+        ("property_entry", "source_value"),
+    ),
+    UPDATE_SOURCE_SLOT_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.update_source_slot,
+        ("property_entry", "source_index", "source_value"),
+    ),
+    REMOVE_SOURCE_SLOT_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.remove_source_slot,
+        ("property_entry", "source_index"),
+    ),
+    REBUILD_MATERIALIZED_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.rebuild_materialized,
+        ("property_entry",),
+    ),
+    MATERIALIZE_KIND_3_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.materialize_kind_3,
+        ("property_entry",),
+    ),
+    MATERIALIZE_KIND_4_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.materialize_kind_4,
+        ("property_entry",),
+    ),
+    MATERIALIZE_KIND_5_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.materialize_kind_5,
+        ("property_entry",),
+    ),
+    MATERIALIZE_KIND_6_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.materialize_kind_6,
+        ("property_entry",),
+    ),
+    MATERIALIZE_KIND_7_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.materialize_kind_7,
+        ("property_entry",),
+    ),
+    # Handoff 11 fixed-point mutation runtime.
+    FIXPOINT_ADD_PRIMITIVE_ID: _named_binary_impl(
+        ("left", "right"), property_runtime.fixedpoint_add
+    ),
+    FIXPOINT_SUBTRACT_PRIMITIVE_ID: _named_binary_impl(
+        ("left", "right"), property_runtime.fixedpoint_subtract
+    ),
+    FIXPOINT_MULTIPLY_PRIMITIVE_ID: _named_binary_impl(
+        ("left", "right"), property_runtime.fixedpoint_multiply
+    ),
+    PROPERTY_APPLY_MODIFY_FUNCTION_PRIMITIVE_ID: _property_entry_impl(
+        property_runtime.apply_modify_function,
+        ("function_id", "old_materialized_value", "operand"),
+    ),
+    PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID: _property_state_impl(
+        property_runtime.modify_source_zero_untransformed,
+        ("component", "property_id", "function_id", "operand", "context_token"),
     ),
 }
 

@@ -26,11 +26,28 @@ from hsr_battle_agent.battle_ir.modifiers import (
     ModifierState,
     ModifierTaskApplication,
 )
+from hsr_battle_agent.battle_ir.property import (
+    ModifierPropertyContribution,
+    PropertyChangeBoundary,
+    PropertyEntry,
+    StackPropertyExecutor,
+    StackPropertyTaskContext,
+    StackPropertyTaskConfig,
+    StackPropertyTaskResult,
+)
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import EvaluatorSpec
 
 TRACE_SCHEMA = "battle_sandbox_trace/1"
 TRACE_JSON_RESULT_TYPES = (bool, int, float, str, type(None))
+
+_PROPERTY_BOUNDARY_PREFIX = "battle.ir.property.boundary."
+_PROPERTY_BOUNDARY_OPERATION_IDS = {
+    "source_allocated": f"{_PROPERTY_BOUNDARY_PREFIX}source_allocated",
+    "source_updated": f"{_PROPERTY_BOUNDARY_PREFIX}source_updated",
+    "source_removed": f"{_PROPERTY_BOUNDARY_PREFIX}source_removed",
+    "after_property_changed": f"{_PROPERTY_BOUNDARY_PREFIX}after_property_changed",
+}
 
 
 class TraceSink(Protocol):
@@ -186,6 +203,22 @@ def _trace_result_summary(value: Any) -> Any:
         return value.trace_summary()
     if isinstance(value, (ModifierMatchKey, ModifierLifecycleResult)):
         return value.trace_summary()
+    if isinstance(value, PropertyEntry):
+        return value.trace_summary()
+    if isinstance(value, ModifierPropertyContribution):
+        return value.trace_summary()
+    if isinstance(value, PropertyChangeBoundary):
+        return value.trace_summary()
+    if isinstance(
+        value,
+        (
+            StackPropertyTaskContext,
+            StackPropertyTaskConfig,
+            StackPropertyExecutor,
+            StackPropertyTaskResult,
+        ),
+    ):
+        return value.trace_summary()
     _validate_trace_result(value)
     return value
 
@@ -239,6 +272,29 @@ class ExecutionTrace:
             )
         self._events.append(event)
         self._next_event_id = max(self._next_event_id, event.event_id + 1)
+
+    def record_property_change_boundary(self, boundary: PropertyChangeBoundary) -> None:
+        """Record one deterministic post-materialization change boundary.
+
+        This stays inside the existing ``PrimitiveStarted`` /
+        ``PrimitiveFinished`` taxonomy (two compact events with a string
+        summary).  It is an observational trace, never an event dispatch.
+        """
+        if not isinstance(boundary, PropertyChangeBoundary):
+            raise TypeError(
+                "boundary must be PropertyChangeBoundary, "
+                f"got {type(boundary).__name__}"
+            )
+        primitive_id = _PROPERTY_BOUNDARY_OPERATION_IDS.get(
+            boundary.operation,
+            f"{_PROPERTY_BOUNDARY_PREFIX}property_changed",
+        )
+        started = self.started(
+            primitive_id=primitive_id,
+            input_tags=(boundary.trace_summary(),),
+            semantic_provenance_ref=None,
+        )
+        self.finished(started=started, result=boundary.trace_summary())
 
     def clone(self) -> "ExecutionTrace":
         return ExecutionTrace(events=list(self._events))

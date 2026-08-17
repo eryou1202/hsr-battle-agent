@@ -12,6 +12,15 @@ from hsr_battle_agent.battle_ir.modifiers import (
     ModifierMatchKey,
     ModifierState,
 )
+from hsr_battle_agent.battle_ir.property import (
+    ModifierPropertyContribution,
+    PropertyChangeBoundary,
+    PropertyEntry,
+    StackPropertyExecutor,
+    StackPropertyTaskContext,
+    StackPropertyTaskConfig,
+    StackPropertyTaskResult,
+)
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
 from hsr_battle_agent.battle_ir.values import DynamicValue
 from hsr_battle_agent.battle_sandbox.context import ExecutionContext
@@ -83,5 +92,21 @@ def _input_tag(value: Any) -> str:
     if isinstance(value, ModifierMatchKey):
         return value.trace_summary()
     if isinstance(value, ModifierLifecycleResult):
+        return value.trace_summary()
+    if isinstance(value, PropertyEntry):
+        return value.trace_summary()
+    if isinstance(value, ModifierPropertyContribution):
+        return value.trace_summary()
+    if isinstance(value, PropertyChangeBoundary):
+        return value.trace_summary()
+    if isinstance(
+        value,
+        (
+            StackPropertyTaskContext,
+            StackPropertyTaskConfig,
+            StackPropertyExecutor,
+            StackPropertyTaskResult,
+        ),
+    ):
         return value.trace_summary()
     return type(value).__name__

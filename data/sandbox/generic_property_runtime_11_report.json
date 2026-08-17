@@ -1,0 +1,153 @@
+{
+  "schema": "battle_sandbox_report/1",
+  "game_version": "4.4.54",
+  "generated_at": "2026-08-17T11:42:27Z",
+  "final_status": "BATTLE_SANDBOX = GENERIC_PROPERTY_RUNTIME_11_PROOF",
+  "baseline_status": {
+    "battle_semantic": "MODIFIER_LIFECYCLE_BRIDGE_08_PROOF",
+    "battle_sandbox_before": "MODIFIER_LIFECYCLE_RUNTIME_08_PROOF"
+  },
+  "implemented_handoffs": [
+    "semantic_handoff_09",
+    "semantic_handoff_10",
+    "semantic_handoff_11"
+  ],
+  "handoff_12_status": "PARTIAL / NOT_IMPLEMENTED",
+  "handoff_12_actions": [
+    "CurrentHP property_id 10 guarded from Handoff 11 generic source-0 mutation",
+    "PropertyEntry source-0 slot leaves a clean future HP/damage write boundary",
+    "No SetHP/DirectChangeHP/DirectDamageHP/HP clamp/DirtyHP/NegativeHP/damage policy implemented"
+  ],
+  "implemented_primitives": [
+    "battle.ir.task.stack_property_executor_init",
+    "battle.ir.task.stack_property_execute",
+    "battle.ir.modifier.stack_property_contribution",
+    "battle.ir.modifier.pop_property_contributions",
+    "battle.ir.property.component_stack_boundary",
+    "battle.ir.property.component_unstack_boundary",
+    "battle.ir.property.component_stack_source",
+    "battle.ir.property.update_contribution_source",
+    "battle.ir.property.remove_contribution_source",
+    "battle.ir.property.allocate_source_slot",
+    "battle.ir.property.update_source_slot",
+    "battle.ir.property.remove_source_slot",
+    "battle.ir.property.rebuild_materialized",
+    "battle.ir.property.materialize_kind_3",
+    "battle.ir.property.materialize_kind_4",
+    "battle.ir.property.materialize_kind_5",
+    "battle.ir.property.materialize_kind_6",
+    "battle.ir.property.materialize_kind_7",
+    "battle.ir.fixedpoint.add",
+    "battle.ir.fixedpoint.subtract",
+    "battle.ir.fixedpoint.multiply",
+    "battle.ir.property.apply_modify_function",
+    "battle.ir.property.modify_source_zero_untransformed"
+  ],
+  "battle_state_schema": {
+    "from": 2,
+    "to": 3,
+    "new_fields": [
+      "entity_property_entries",
+      "modifier_property_contributions"
+    ],
+    "migration": [
+      "v1 -> v3: property fields default to empty",
+      "v2 -> v3: modifier_state_by_entity preserved; property fields default to empty",
+      "v3 strict keys; property state included in to_dict/from_dict/clone/state_hash"
+    ],
+    "property_key": "property_entry:<entity_runtime_id>:<property_id>",
+    "modifier_contribution_key": "modifier_property:<owner_runtime_id>:<instance_ordinal>:<name>"
+  },
+  "property_source_semantics": {
+    "model": "PropertyEntry parallel arrays source_generation/source_active/source_value",
+    "source_identity": "stable source_index",
+    "allocation": "first inactive index from 1 upward; never claims source 0; extends only when all slots active",
+    "refresh": "update existing source_index; generation increments; no new index; no append",
+    "remove": "active=false, generation=0, stale source_value retained; no shift; no remap",
+    "source_zero_rule": "source_index 0 reserved for Handoff 11 generic mutation/base path",
+    "state_staleness": "stale source_value is retained; active/generation decide participation"
+  },
+  "materialization_coverage": {
+    "kind_1": "source-zero selection",
+    "kind_2": "last-changed-source selection",
+    "kind_3": "active fold using recovered fixed-point add callee",
+    "kind_4": "active fold using recovered fixed-point multiply callee; no-active falls back to base_or_fallback",
+    "kind_5": "explicit UnsupportedMaterializationKind: subtract/multiply callees identified but fold seed/order not exactly recovered; no guessed formula",
+    "kind_6": "complementary extremum direction A (neutral label)",
+    "kind_7": "complementary extremum direction B (neutral label)",
+    "unknown_kind": "explicit UnsupportedMaterializationKind; never falls back to addition",
+    "post_stages": "post_hook_context/post_transform_a/post_transform_b must all be null; non-null raises UnsupportedPropertyPostStageError and is never silently ignored",
+    "labels": "neutral MaterializationKind names only; no invented SUM/MULTIPLY/MIN/MAX gameplay labels"
+  },
+  "modifier_contribution_lifecycle": {
+    "tracking": "ordered ModifierPropertyContribution records keyed by logical ModifierRef",
+    "record": "modifier identity + target EntityRef + property_id + stable source_index",
+    "refresh": "forward scan for (property_id, target); updates the same source_index; no duplicate record",
+    "pop": "forward owner-record order; remove exact source_index; clear owner key; other modifiers (even same target/property) untouched",
+    "lifecycle_boundary": "pop primitive is explicit only; generic Destroy/RemoveDirtyModifiers do NOT auto-pop unproven paths",
+    "no_two_key_systems": "Handoff 09 opaque contribution_key is replaced by Handoff 10 source_index everywhere"
+  },
+  "generic_mutation_coverage": {
+    "function_ids": {
+      "1": "Set",
+      "2": "Add",
+      "3": "Mul",
+      "4": "MinSet",
+      "5": "MaxSet",
+      "other": "native Set fallthrough"
+    },
+    "path": "old materialized -> apply_modify_function -> update source slot 0 -> rebuild -> new materialized -> one AfterPropertyChanged boundary",
+    "preconditions": "entry exists; post_hook_context null; property_id outside special set",
+    "post_transform": "non-null post-transform/post-hook context rejects explicitly with UnsupportedPropertyPostStageError",
+    "special_property_ids_deferred": [10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32],
+    "current_hp_guard": "property_id 10 cannot reach the generic source-0 path; UnsupportedSpecialPropertyMutationError",
+    "notification": "internal deterministic PropertyChangeBoundary trace record only; no event bus or listener dispatch invented"
+  },
+  "clone_snapshot_hash": {
+    "clone": "BattleState.clone deep-copies property entries and contribution records; mutating a clone never touches the original",
+    "snapshot": "SandboxSnapshot roundtrip includes BattleState v3 property fields",
+    "hash": "state_hash includes entity_property_entries and modifier_property_contributions; active/value/materialized changes change the hash",
+    "replay": "same logical sequence reproduces the same hash ladder"
+  },
+  "trace": {
+    "taxonomy": "existing PrimitiveStarted/PrimitiveFinished only",
+    "property_boundary": "battle.ir.property.boundary.<operation> pairs with compact old/new summaries",
+    "no_event_system": true
+  },
+  "test_totals": {
+    "battle_ir": 121,
+    "battle_runtime": 166,
+    "battle_sandbox": 147,
+    "unpacker": 15,
+    "cross_version": 12,
+    "total": 461
+  },
+  "known_unknowns": [
+    "0x15C6E450 per-property value/context adapter; component_stack_source accepts already-adapted runtime numeric only",
+    "Materialization kind 5 subtract/multiply fold seed and argument order",
+    "Materialization kind 6/7 gameplay direction labels",
+    "Non-null post-transform/post-hook native stage semantics",
+    "Native special property-ID branch policies (including CurrentHP/DirtyHP)",
+    "Universal Modifier Destroy -> _PopStackedProperties lifecycle caller",
+    "StackProperty Silence/IsRefresh source in every generated path",
+    "AfterPropertyChanged listener/event consumers"
+  ],
+  "success_criteria": {
+    "A_handoff09_contribution_lifecycle": true,
+    "B_handoff10_stable_source_slot_lifecycle": true,
+    "C_proven_materialization_semantics": true,
+    "D_handoff11_source0_generic_mutation": true,
+    "E_persistent_battle_state_property": true,
+    "F_clone_snapshot_hash_deterministic": true,
+    "G_modifier_a_b_ownership": true,
+    "H_special_property_ids_deferred": true,
+    "I_current_hp_generic_guard": true,
+    "J_full_regression_pass": true
+  },
+  "artifact_catalog": [
+    "modifier_property_effect_09.json",
+    "generic_property_materialization_10.json",
+    "generic_property_mutation_11.json"
+  ],
+  "docs": "docs/battle_sandbox/generic_property_runtime_11.md"
+}

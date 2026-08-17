@@ -30,6 +30,12 @@ from hsr_battle_agent.battle_ir.semantic_artifact import (
 from hsr_battle_agent.battle_ir.semantic_batch import (
     load_battle_semantics_batch,
 )
+from hsr_battle_agent.battle_ir.semantic_property import (
+    PROPERTY_BRIDGE_SCHEMA,
+    PROPERTY_CAPABILITY_SCHEMA,
+    load_property_bridge,
+    load_property_capability,
+)
 
 CATALOG_SCHEMA = "battle_semantics_catalog/1"
 VERTICAL_SLICE_SCHEMA = "battle_semantics_vertical_slice/1"
@@ -38,6 +44,8 @@ BATCH_SCHEMA = "battle_semantics_batch/1"
 _LOADERS = {
     VERTICAL_SLICE_SCHEMA: lambda path: [load_vertical_slice_01(path)],
     BATCH_SCHEMA: load_battle_semantics_batch,
+    PROPERTY_CAPABILITY_SCHEMA: load_property_capability,
+    PROPERTY_BRIDGE_SCHEMA: load_property_bridge,
 }
 
 

@@ -19,7 +19,7 @@ class SourceProvenance:
     game_version: str
     runtime_type: str
     method: str
-    method_index: int
+    method_index: int | None
     native_rva: str
     evidence_level: str
     note: str = PROVENANCE_NOTE_DEFAULT
@@ -31,14 +31,20 @@ class SourceProvenance:
             raise ValueError("runtime_type must be non-empty")
         if not self.method:
             raise ValueError("method must be non-empty")
-        if isinstance(self.method_index, bool) or not isinstance(self.method_index, int):
-            raise TypeError("method_index must be an int")
-        if self.method_index < 0:
-            raise ValueError("method_index must be >= 0")
+        if self.method_index is not None:
+            if isinstance(self.method_index, bool) or not isinstance(self.method_index, int):
+                raise TypeError("method_index must be an int or None")
+            if self.method_index < 0:
+                raise ValueError("method_index must be >= 0")
 
     def source_reference(self) -> str:
         """Compact debug/audit reference; never used for dispatch."""
-        return f"{self.game_version}:{self.runtime_type}.{self.method}:{self.method_index}"
+        method_index = (
+            str(self.method_index)
+            if self.method_index is not None
+            else f"unregistered@{self.native_rva}"
+        )
+        return f"{self.game_version}:{self.runtime_type}.{self.method}:{method_index}"
 
     def to_dict(self) -> dict[str, Any]:
         return {

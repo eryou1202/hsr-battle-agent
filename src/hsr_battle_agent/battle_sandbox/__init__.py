@@ -19,6 +19,14 @@ from hsr_battle_agent.battle_sandbox.errors import (
 )
 from hsr_battle_agent.battle_sandbox.executor import PrimitiveExecutor
 from hsr_battle_agent.battle_sandbox.registry import PrimitiveRegistry
+from hsr_battle_agent.battle_runtime.property import (
+    PropertyEntryNotFoundError,
+    PropertySemanticError,
+    PropertySourceSlotError,
+    UnsupportedMaterializationKind,
+    UnsupportedPropertyPostStageError,
+    UnsupportedSpecialPropertyMutationError,
+)
 from hsr_battle_agent.battle_sandbox.rng import (
     CLIENT_RNG_ALGORITHM,
     SANDBOX_RNG,
@@ -58,5 +66,11 @@ __all__ = [
     "TraceSink",
     "UnsupportedPrimitiveError",
     "UnsupportedStateVersionError",
+    "PropertyEntryNotFoundError",
+    "PropertySemanticError",
+    "PropertySourceSlotError",
+    "UnsupportedMaterializationKind",
+    "UnsupportedPropertyPostStageError",
+    "UnsupportedSpecialPropertyMutationError",
     "capture_snapshot",
 ]

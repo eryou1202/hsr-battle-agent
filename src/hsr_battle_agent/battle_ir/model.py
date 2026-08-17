@@ -150,6 +150,52 @@ MODIFIER_LIFECYCLE_ON_ACTIVATE_PRIMITIVE_ID = (
     "battle.ir.modifier.lifecycle_on_activate"
 )
 
+STACK_PROPERTY_EXECUTOR_INIT_PRIMITIVE_ID = (
+    "battle.ir.task.stack_property_executor_init"
+)
+STACK_PROPERTY_EXECUTE_PRIMITIVE_ID = (
+    "battle.ir.task.stack_property_execute"
+)
+MODIFIER_STACK_PROPERTY_CONTRIBUTION_PRIMITIVE_ID = (
+    "battle.ir.modifier.stack_property_contribution"
+)
+MODIFIER_POP_PROPERTY_CONTRIBUTIONS_PRIMITIVE_ID = (
+    "battle.ir.modifier.pop_property_contributions"
+)
+COMPONENT_STACK_BOUNDARY_PRIMITIVE_ID = (
+    "battle.ir.property.component_stack_boundary"
+)
+COMPONENT_UNSTACK_BOUNDARY_PRIMITIVE_ID = (
+    "battle.ir.property.component_unstack_boundary"
+)
+COMPONENT_STACK_SOURCE_PRIMITIVE_ID = (
+    "battle.ir.property.component_stack_source"
+)
+UPDATE_CONTRIBUTION_SOURCE_PRIMITIVE_ID = (
+    "battle.ir.property.update_contribution_source"
+)
+REMOVE_CONTRIBUTION_SOURCE_PRIMITIVE_ID = (
+    "battle.ir.property.remove_contribution_source"
+)
+ALLOCATE_SOURCE_SLOT_PRIMITIVE_ID = "battle.ir.property.allocate_source_slot"
+UPDATE_SOURCE_SLOT_PRIMITIVE_ID = "battle.ir.property.update_source_slot"
+REMOVE_SOURCE_SLOT_PRIMITIVE_ID = "battle.ir.property.remove_source_slot"
+REBUILD_MATERIALIZED_PRIMITIVE_ID = "battle.ir.property.rebuild_materialized"
+MATERIALIZE_KIND_3_PRIMITIVE_ID = "battle.ir.property.materialize_kind_3"
+MATERIALIZE_KIND_4_PRIMITIVE_ID = "battle.ir.property.materialize_kind_4"
+MATERIALIZE_KIND_5_PRIMITIVE_ID = "battle.ir.property.materialize_kind_5"
+MATERIALIZE_KIND_6_PRIMITIVE_ID = "battle.ir.property.materialize_kind_6"
+MATERIALIZE_KIND_7_PRIMITIVE_ID = "battle.ir.property.materialize_kind_7"
+FIXPOINT_ADD_PRIMITIVE_ID = "battle.ir.fixedpoint.add"
+FIXPOINT_SUBTRACT_PRIMITIVE_ID = "battle.ir.fixedpoint.subtract"
+FIXPOINT_MULTIPLY_PRIMITIVE_ID = "battle.ir.fixedpoint.multiply"
+PROPERTY_APPLY_MODIFY_FUNCTION_PRIMITIVE_ID = (
+    "battle.ir.property.apply_modify_function"
+)
+PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID = (
+    "battle.ir.property.modify_source_zero_untransformed"
+)
+
 
 @dataclass(frozen=True)
 class PrimitiveInputSpec:

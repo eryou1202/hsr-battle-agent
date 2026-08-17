@@ -29,6 +29,14 @@ from hsr_battle_agent.battle_ir.semantic_batch import (  # noqa: E402
     load_dynamic_value_batch_02,
     validate_dynamic_value_batch_02,
 )
+from hsr_battle_agent.battle_ir.semantic_property import (  # noqa: E402
+    PROPERTY_BRIDGE_SCHEMA,
+    PROPERTY_CAPABILITY_SCHEMA,
+    load_property_bridge,
+    load_property_capability,
+    validate_property_bridge,
+    validate_property_capability,
+)
 
 
 class TestBatch02Artifact(unittest.TestCase):
@@ -534,13 +542,259 @@ class TestModifierLifecycleBridgeBatch08Artifact(unittest.TestCase):
         )
 
 
-class TestSemanticCatalog(unittest.TestCase):
+class TestModifierPropertyEffectCapability09Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "modifier_property_effect_09.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_property_capability(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], PROPERTY_CAPABILITY_SCHEMA)
+        self.assertEqual(self.raw["game_version"], "4.4.54")
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(
+            self.raw["capability_id"],
+            "MODIFIER_PROPERTY_CONTRIBUTION_BOUNDARY_09_PROOF",
+        )
+        self.assertEqual(len(self.raw["primitives"]), 6)
+
+    def test_loader_returns_spec_and_provenance(self):
+        self.assertEqual(len(self.primitives), 6)
+        expected_ids = {
+            "battle.ir.task.stack_property_executor_init",
+            "battle.ir.task.stack_property_execute",
+            "battle.ir.modifier.stack_property_contribution",
+            "battle.ir.property.component_stack_boundary",
+            "battle.ir.modifier.pop_property_contributions",
+            "battle.ir.property.component_unstack_boundary",
+        }
+        self.assertEqual(
+            {item.spec.primitive_id for item in self.primitives},
+            expected_ids,
+        )
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertEqual(
+                    primitive.provenance.evidence_level,
+                    "E4_STATIC_MACHINE_CODE",
+                )
+                self.assertIsInstance(primitive.provenance.method_index, int)
+                self.assertTrue(
+                    primitive.provenance.source_reference().startswith("4.4.54:")
+                )
+
+    def test_artifact_is_source_of_truth_for_ownership(self):
+        contract = self.raw["persistent_state_contract"]
+        self.assertIn("modifier_property_contributions", [
+            field["name"] for field in contract["required_new_battle_state_fields"]
+        ])
+        self.assertTrue(self.raw["semantic_chains"])
+        self.assertIn(
+            "Do not implement this contract as final_property_value += value or -= value.",
+            contract["forbidden_shortcut"],
+        )
+
+
+class TestGenericPropertyMaterialization10Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "generic_property_materialization_10.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_property_bridge(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], PROPERTY_BRIDGE_SCHEMA)
+        self.assertEqual(
+            self.raw["capability_id"],
+            "GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF",
+        )
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(len(self.raw["primitives"]), 12)
+        self.assertEqual(len(self.raw["property_entry_state"]), 12)
+
+    def test_loader_returns_spec_and_provenance(self):
+        self.assertEqual(len(self.primitives), 12)
+        ids = {item.spec.primitive_id for item in self.primitives}
+        self.assertIn("battle.ir.property.allocate_source_slot", ids)
+        self.assertIn("battle.ir.property.update_source_slot", ids)
+        self.assertIn("battle.ir.property.remove_source_slot", ids)
+        self.assertIn("battle.ir.property.rebuild_materialized", ids)
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertEqual(primitive.provenance.evidence_level, "E4_STATIC_MACHINE_CODE")
+                self.assertTrue(
+                    primitive.provenance.source_reference().startswith("4.4.54:")
+                )
+        unregistered = [
+            item
+            for item in self.primitives
+            if item.spec.primitive_id
+            in {
+                "battle.ir.property.allocate_source_slot",
+                "battle.ir.property.update_source_slot",
+                "battle.ir.property.remove_source_slot",
+                "battle.ir.property.rebuild_materialized",
+            }
+        ]
+        self.assertTrue(unregistered)
+        self.assertTrue(
+            all(item.provenance.method_index is None for item in unregistered)
+        )
+
+    def test_must_not_shortcuts_are_machine_readable(self):
+        self.assertIn(
+            "Do not represent contributions as final_value += value / final_value -= value.",
+            self.raw["must_not_implement"],
+        )
+        self.assertIn(
+            "Do not shift source indices on removal; modifier tracked keys remain stable source indices.",
+            self.raw["must_not_implement"],
+        )
+        self.assertTrue(self.raw["semantic_chains"])
+
+
+class TestGenericPropertyMutation11Artifact(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.path = (
+            Path(REPO)
+            / "data"
+            / "semantics"
+            / "4.4.54"
+            / "generic_property_mutation_11.json"
+        )
+        cls.raw = json.loads(cls.path.read_text(encoding="utf-8"))
+        cls.primitives = load_property_bridge(cls.path)
+
+    def test_artifact_has_expected_shape(self):
+        self.assertEqual(self.raw["schema"], PROPERTY_BRIDGE_SCHEMA)
+        self.assertEqual(
+            self.raw["capability_id"],
+            "GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF",
+        )
+        self.assertEqual(self.raw["evidence_level"], "E4_STATIC_MACHINE_CODE")
+        self.assertEqual(len(self.raw["primitives"]), 5)
+
+    def test_mutation_mapping_is_exact(self):
+        mapping = self.raw["config_bindings"][0]["enum_mapping"]
+        self.assertEqual(
+            mapping,
+            {"1": "Set", "2": "Add", "3": "Mul", "4": "MinSet", "5": "MaxSet"},
+        )
+
+    def test_special_ids_are_machine_readable(self):
+        primitive = next(
+            item
+            for item in self.primitives
+            if item.spec.primitive_id
+            == "battle.ir.property.modify_source_zero_untransformed"
+        )
+        preconditions = self.raw["primitives"][-1]["scope_preconditions"]
+        self.assertTrue(
+            any("10,12,14,16,18,20,22,24,26,28,30,32" in item for item in preconditions)
+        )
+        self.assertEqual(
+            primitive.spec.input_names,
+            ("component", "property_id", "function_id", "operand", "context_token"),
+        )
+
+    def test_loader_keeps_saturating_determinism(self):
+        fixedpoint_ids = {
+            "battle.ir.fixedpoint.add",
+            "battle.ir.fixedpoint.subtract",
+            "battle.ir.fixedpoint.multiply",
+        }
+        for primitive in self.primitives:
+            with self.subTest(primitive_id=primitive.spec.primitive_id):
+                self.assertEqual(
+                    primitive.provenance.evidence_level,
+                    "E4_STATIC_MACHINE_CODE",
+                )
+                if primitive.spec.primitive_id in fixedpoint_ids:
+                    self.assertEqual(
+                        primitive.spec.determinism,
+                        "DETERMINISTIC_SATURATING_FIXEDPOINT",
+                    )
+
+
+class TestPropertyArtifactValidation(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.capability = json.loads(
+            (
+                Path(REPO)
+                / "data/semantics/4.4.54/modifier_property_effect_09.json"
+            ).read_text(encoding="utf-8")
+        )
+        cls.bridge = json.loads(
+            (
+                Path(REPO)
+                / "data/semantics/4.4.54/generic_property_materialization_10.json"
+            ).read_text(encoding="utf-8")
+        )
+
+    def test_wrong_schema_rejected(self):
+        data = copy.deepcopy(self.capability)
+        data["schema"] = "battle_semantics_batch/1"
+        with self.assertRaises(SemanticArtifactError):
+            validate_property_capability(data)
+
+        bridge = copy.deepcopy(self.bridge)
+        bridge["schema"] = "battle_semantics_capability/1"
+        with self.assertRaises(SemanticArtifactError):
+            validate_property_bridge(bridge)
+
+    def test_wrong_evidence_rejected(self):
+        data = copy.deepcopy(self.capability)
+        data["evidence_level"] = "E3_METADATA"
+        with self.assertRaises(SemanticArtifactError):
+            validate_property_capability(data)
+
+    def test_duplicate_primitive_id_rejected(self):
+        data = copy.deepcopy(self.bridge)
+        data["primitives"][1]["primitive_id"] = data["primitives"][0]["primitive_id"]
+        with self.assertRaises(SemanticArtifactError):
+            validate_property_bridge(data)
+
+    def test_bridge_accepts_unregistered_helper_identity(self):
+        data = copy.deepcopy(self.bridge)
+        helper = next(
+            item
+            for item in data["primitives"]
+            if item["runtime_identity"].get("method_index") is None
+        )
+        self.assertIsNone(helper["runtime_identity"]["method_index"])
+        self.assertIsNone(helper["runtime_identity"]["method_name"])
+        primitives = validate_property_bridge(data)
+        recovered = next(
+            item
+            for item in primitives
+            if item.spec.primitive_id == helper["primitive_id"]
+        )
+        self.assertIsNone(recovered.provenance.method_index)
+        self.assertIn("unregistered", recovered.provenance.source_reference())
+
+
+
     def test_default_catalog_loads_vertical_slice_plus_batches(self):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 66)
-        self.assertEqual(len(set(ids)), 66)
+        self.assertEqual(len(ids), 89)
+        self.assertEqual(len(set(ids)), 89)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -551,7 +805,7 @@ class TestSemanticCatalog(unittest.TestCase):
         catalog = load_semantic_catalog()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 8)
+        self.assertEqual(len(catalog.artifacts), 11)
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -605,8 +859,10 @@ class TestSemanticCatalog(unittest.TestCase):
             # vertical slice + FixPoint Batch 03 + Predicate Bridge Batch 04
             # + Target Selector Batch 05 + Action Execution Bridge 06
             # + Modifier Application Bridge 07 + Modifier Lifecycle Bridge 08
+            # + Property Effect Capability 09 + Property Materialization
+            # Bridge 10 + Property Mutation Bridge 11
             # (DynamicValue Batch 02 disabled)
-            self.assertEqual(len(ids), 55)
+            self.assertEqual(len(ids), 78)
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
             )
@@ -621,7 +877,13 @@ class TestSemanticCatalog(unittest.TestCase):
                 sum(1 for pid in ids if pid.startswith("battle.ir.action.")), 8
             )
             self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.modifier.")), 23
+                sum(1 for pid in ids if pid.startswith("battle.ir.modifier.")), 25
+            )
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.property.")), 16
+            )
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.fixedpoint.")), 3
             )
 
     def test_unsupported_artifact_schema_rejected(self):
