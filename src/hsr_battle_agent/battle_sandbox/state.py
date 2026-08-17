@@ -13,6 +13,9 @@ read/write requirement.
   and ``modifier_property_contributions`` keyed by logical ``ModifierRef``.
   Property state is the source of truth; there are still no standalone
   hp/atk/def/spd/energy/toughness fields.
+* BattleState v3 also carries ``component_lock_hp_records`` for the Handoff 12
+  native component[+0x50] lock-HP list.  It is the smallest persistent
+  representation required by TryGetLockHP and DirectDamageHP mode 0.
 
 JSON contract (strict):
 
@@ -37,6 +40,7 @@ _EXTENSIONS_KEY = "extensions"
 _MODIFIER_STATE_BY_ENTITY_KEY = "modifier_state_by_entity"
 _ENTITY_PROPERTY_ENTRIES_KEY = "entity_property_entries"
 _MODIFIER_PROPERTY_CONTRIBUTIONS_KEY = "modifier_property_contributions"
+_COMPONENT_LOCK_HP_RECORDS_KEY = "component_lock_hp_records"
 _LEGACY_V1_SCHEMA_VERSION = 1
 _LEGACY_V2_SCHEMA_VERSION = 2
 
@@ -50,6 +54,9 @@ class BattleState:
     )
     entity_property_entries: dict[str, dict[str, Any]] = field(default_factory=dict)
     modifier_property_contributions: dict[str, list[dict[str, Any]]] = field(
+        default_factory=dict
+    )
+    component_lock_hp_records: dict[str, list[dict[str, Any]]] = field(
         default_factory=dict
     )
 
@@ -66,6 +73,10 @@ class BattleState:
             raise TypeError(
                 "BattleState modifier_property_contributions must be a dict"
             )
+        if not isinstance(self.component_lock_hp_records, dict):
+            raise TypeError(
+                "BattleState component_lock_hp_records must be a dict"
+            )
         # Normalize to private deep copies: caller-owned nested containers can
         # never alias BattleState internals, even on direct construction.
         self.extensions = deep_copy_json_value(self.extensions)
@@ -77,6 +88,9 @@ class BattleState:
         )
         self.modifier_property_contributions = deep_copy_json_value(
             self.modifier_property_contributions
+        )
+        self.component_lock_hp_records = deep_copy_json_value(
+            self.component_lock_hp_records
         )
 
     def clone(self) -> "BattleState":
@@ -91,6 +105,9 @@ class BattleState:
             ),
             modifier_property_contributions=deep_copy_json_value(
                 self.modifier_property_contributions
+            ),
+            component_lock_hp_records=deep_copy_json_value(
+                self.component_lock_hp_records
             ),
         )
 
@@ -129,6 +146,9 @@ class BattleState:
             ),
             _MODIFIER_PROPERTY_CONTRIBUTIONS_KEY: deep_copy_json_value(
                 self.modifier_property_contributions
+            ),
+            _COMPONENT_LOCK_HP_RECORDS_KEY: deep_copy_json_value(
+                self.component_lock_hp_records
             ),
         }
 
@@ -188,6 +208,7 @@ class BattleState:
             _MODIFIER_STATE_BY_ENTITY_KEY,
             _ENTITY_PROPERTY_ENTRIES_KEY,
             _MODIFIER_PROPERTY_CONTRIBUTIONS_KEY,
+            _COMPONENT_LOCK_HP_RECORDS_KEY,
         }
         if unknown:
             raise ValueError(
@@ -212,12 +233,18 @@ class BattleState:
             raise TypeError(
                 "BattleState modifier_property_contributions must be a dict"
             )
+        lock_records = data.get(_COMPONENT_LOCK_HP_RECORDS_KEY, {})
+        if not isinstance(lock_records, dict):
+            raise TypeError(
+                "BattleState component_lock_hp_records must be a dict"
+            )
         return cls(
             schema_version=BATTLE_STATE_SCHEMA_VERSION,
             extensions=deep_copy_json_value(extensions),
             modifier_state_by_entity=deep_copy_json_value(modifiers),
             entity_property_entries=deep_copy_json_value(properties),
             modifier_property_contributions=deep_copy_json_value(contributions),
+            component_lock_hp_records=deep_copy_json_value(lock_records),
         )
 
     def state_hash(self) -> str:

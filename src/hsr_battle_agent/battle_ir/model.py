@@ -195,6 +195,10 @@ PROPERTY_APPLY_MODIFY_FUNCTION_PRIMITIVE_ID = (
 PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID = (
     "battle.ir.property.modify_source_zero_untransformed"
 )
+DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID = (
+    "battle.ir.hp.direct_damage.transition"
+)
+TRY_GET_LOCK_HP_PRIMITIVE_ID = "battle.ir.hp.try_get_lock_hp"
 
 
 @dataclass(frozen=True)

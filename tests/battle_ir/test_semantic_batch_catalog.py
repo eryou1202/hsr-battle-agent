@@ -793,8 +793,8 @@ class TestPropertyArtifactValidation(unittest.TestCase):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 89)
-        self.assertEqual(len(set(ids)), 89)
+        self.assertEqual(len(ids), 91)
+        self.assertEqual(len(set(ids)), 91)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -805,7 +805,7 @@ class TestPropertyArtifactValidation(unittest.TestCase):
         catalog = load_semantic_catalog()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 11)
+        self.assertEqual(len(catalog.artifacts), 12)
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -860,9 +860,9 @@ class TestPropertyArtifactValidation(unittest.TestCase):
             # + Target Selector Batch 05 + Action Execution Bridge 06
             # + Modifier Application Bridge 07 + Modifier Lifecycle Bridge 08
             # + Property Effect Capability 09 + Property Materialization
-            # Bridge 10 + Property Mutation Bridge 11
+            # Bridge 10 + Property Mutation Bridge 11 + HP Transition 12
             # (DynamicValue Batch 02 disabled)
-            self.assertEqual(len(ids), 78)
+            self.assertEqual(len(ids), 80)
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
             )
@@ -884,6 +884,9 @@ class TestPropertyArtifactValidation(unittest.TestCase):
             )
             self.assertEqual(
                 sum(1 for pid in ids if pid.startswith("battle.ir.fixedpoint.")), 3
+            )
+            self.assertEqual(
+                sum(1 for pid in ids if pid.startswith("battle.ir.hp.")), 2
             )
 
     def test_unsupported_artifact_schema_rejected(self):

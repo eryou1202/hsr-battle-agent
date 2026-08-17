@@ -1,0 +1,87 @@
+{
+  "schema": "battle_sandbox_runtime_report/1",
+  "game_version": "4.4.54",
+  "capability_id": "HP_TRANSITION_RUNTIME_12_PROOF",
+  "semantic_artifact": "data/semantics/4.4.54/direct_damage_hp_transition_12.json",
+  "handoff": "docs/agent/handoffs/semantic_handoff_12.md",
+  "implemented_scope": {
+    "summary": "Scoped DirectDamageHP mode-0 HP transition for SetHP negative-delta composition.",
+    "primitives": [
+      "battle.ir.hp.try_get_lock_hp",
+      "battle.ir.hp.direct_damage.transition"
+    ],
+    "composition": "SetHP -> target = ModifyValue + fp_mul(MaxHP, ModifyRatio) -> delta = target - CurrentHP -> negative delta -> DirectDamageHP(damage_kind=100, mode=0) -> TryGetLockHP -> CurrentHP source-0 write -> bounded NegativeHP source-0 write",
+    "not_implemented": [
+      "DamageRequest runtime",
+      "DirectDamageHP modes 4/5/6",
+      "positive DirectChangeHP behavior",
+      "general NegativeHP semantics",
+      "event/listener dispatch"
+    ]
+  },
+  "current_hp_representation": {
+    "property_id": 10,
+    "storage": "PropertyEntry in BattleState.entity_property_entries",
+    "source_index": 0,
+    "materialized_field": "entry.materialized",
+    "write_path": "update_source_slot(entry, 0, Y) through Generic Property Runtime 11"
+  },
+  "negative_hp_bounded_representation": {
+    "property_id": 9,
+    "storage": "PropertyEntry in BattleState.entity_property_entries",
+    "source_index": 0,
+    "read_condition": "only when NegativeHP gate is true and lock overflow P > 0",
+    "write_value": "fp_add(N_old, P)",
+    "out_applied_on_property_path": "-D"
+  },
+  "lock_hp_model": {
+    "native_source": "component[+0x50]",
+    "battle_state_field": "component_lock_hp_records",
+    "record_fields": {
+      "action_ref": "opaque deterministic action reference (record[+0x20])",
+      "kind": "int32 (record[+0x28])",
+      "value": "FixPoint raw (record[+0x30])"
+    },
+    "selection": "descending scan; skip kind < damage_kind; first accepted value selected; equal values extend best to lower index; non-equal accepted value stops scan",
+    "output_actions": "records from best index to list end, forward order",
+    "lifecycle_boundary": "no add/remove lifecycle API invented; records are set through a deterministic sandbox composition helper"
+  },
+  "persistent_reads": [
+    "CurrentHP materialized, property 10",
+    "MaxHP materialized, property 1",
+    "DirtyHPRatio materialized, property 7 (no-lock side / lock-hit C>=T side only)",
+    "component_lock_hp_records for TryGetLockHP",
+    "NegativeHP materialized, property 9 (only NegativeHP gate + P > 0)"
+  ],
+  "persistent_writes": [
+    "CurrentHP source_index 0 = Y (always on normal mode-0 path)",
+    "NegativeHP source_index 0 = fp_add(N_old, P) (only NegativeHP gate + P > 0)"
+  ],
+  "unsupported_modes": [
+    "DirectDamageHP mode 4",
+    "DirectDamageHP mode 5",
+    "DirectDamageHP mode 6"
+  ],
+  "native_unresolved_boundaries": {
+    "after_property_changed": "M506625 identity preserved as PropertyChangeBoundary; consumer semantics not implemented",
+    "negative_hp_record_submit": "0x18DA9CFF0 boundary preserved as NegativeHPRecordBoundary trace; consumer not followed",
+    "lock_action_list_submit": "selected ordered opaque actions preserved as LockActionBoundary trace; submission consumer not followed",
+    "native_tail": "0x18B429F50 tail call not implemented",
+    "negative_hp_gate_fields": "feature byte / component[+0x20] list are not modeled; exposed as deterministic negative_hp_gate input for the scoped contract"
+  },
+  "battle_state_changes": {
+    "schema_version": 3,
+    "added_field": "component_lock_hp_records",
+    "added_field_type": "dict[str, list[dict]] keyed by entity runtime id",
+    "to_dict": "included",
+    "from_dict": "included; v1/v2 migrate with empty component_lock_hp_records",
+    "clone": "deep copied",
+    "snapshot": "included through BattleState.to_dict",
+    "state_hash": "included through stable_json_hash(BattleState.to_dict)"
+  },
+  "test_totals": {
+    "related_HP_property_kernel_suite": 143,
+    "new_HP_tests": 33,
+    "mandatory_cases": "covered in tests/battle_sandbox/test_hp_transition_runtime_12.py and tests/battle_runtime/test_hp.py"
+  }
+}

@@ -6,6 +6,12 @@ from collections.abc import Mapping
 from typing import Any
 
 from hsr_battle_agent.battle_ir.model import PrimitiveCall, PrimitiveResult
+from hsr_battle_agent.battle_ir.hp import (
+    HPTransitionInput,
+    HPTransitionResult,
+    LockHPRecord,
+    LockHPResult,
+)
 from hsr_battle_agent.battle_ir.modifiers import (
     ModifierContainer,
     ModifierLifecycleResult,
@@ -108,5 +114,11 @@ def _input_tag(value: Any) -> str:
             StackPropertyTaskResult,
         ),
     ):
+        return value.trace_summary()
+    if isinstance(value, (LockHPRecord, LockHPResult)):
+        return value.trace_summary()
+    if isinstance(value, HPTransitionInput):
+        return value.trace_summary()
+    if isinstance(value, HPTransitionResult):
         return value.trace_summary()
     return type(value).__name__

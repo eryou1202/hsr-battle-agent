@@ -110,12 +110,15 @@ from hsr_battle_agent.battle_ir.model import (
     FIXPOINT_MULTIPLY_PRIMITIVE_ID,
     PROPERTY_APPLY_MODIFY_FUNCTION_PRIMITIVE_ID,
     PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID,
+    DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID,
+    TRY_GET_LOCK_HP_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
     RecoveredPrimitive,
 )
 from hsr_battle_agent.battle_runtime import actions as action_runtime
+from hsr_battle_agent.battle_runtime import hp as hp_runtime
 from hsr_battle_agent.battle_runtime import modifiers as modifier_runtime
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
 from hsr_battle_agent.battle_runtime import property as property_runtime
@@ -298,6 +301,37 @@ def _property_state_no_boundary_impl(
         return function(context.state, *(inputs[name] for name in input_names))
 
     return impl
+
+
+def _try_get_lock_hp_impl(
+    context: ExecutionContext,
+    inputs: Mapping[str, Any],
+) -> Any:
+    """TryGetLockHP reads ordered component lock records from BattleState."""
+    return hp_runtime.try_get_lock_hp_from_state(
+        context.state,
+        inputs["component"],
+        inputs["damage_kind"],
+    )
+
+
+def _direct_damage_hp_transition_impl(
+    context: ExecutionContext,
+    inputs: Mapping[str, Any],
+) -> Any:
+    """DirectDamageHP mode-0 transition through the formal executor."""
+    return hp_runtime.direct_damage_hp_transition(
+        context.state,
+        inputs["component"],
+        inputs["delta"],
+        inputs["damage_kind"],
+        context_token=inputs["context_token"],
+        input_record=inputs["input_record"],
+        mode=inputs["mode"],
+        negative_hp_gate=inputs["negative_hp_gate"],
+        boundary_sink=context.trace.record_property_change_boundary,
+        hp_boundary_sink=context.trace.record_hp_boundary,
+    )
 
 
 # Explicit implementation bindings.  This mapping contains no semantic spec and
@@ -625,6 +659,9 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
         property_runtime.modify_source_zero_untransformed,
         ("component", "property_id", "function_id", "operand", "context_token"),
     ),
+    # Handoff 12 scoped HP transition.
+    TRY_GET_LOCK_HP_PRIMITIVE_ID: _try_get_lock_hp_impl,
+    DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID: _direct_damage_hp_transition_impl,
 }
 
 

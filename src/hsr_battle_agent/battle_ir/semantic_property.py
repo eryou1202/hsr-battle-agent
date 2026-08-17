@@ -18,7 +18,12 @@ import re
 from pathlib import Path
 from typing import Any, Mapping
 
-from hsr_battle_agent.battle_ir.model import PrimitiveInputSpec, PrimitiveSpec
+from hsr_battle_agent.battle_ir.model import (
+    DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID,
+    TRY_GET_LOCK_HP_PRIMITIVE_ID,
+    PrimitiveInputSpec,
+    PrimitiveSpec,
+)
 from hsr_battle_agent.battle_ir.provenance import (
     PROVENANCE_NOTE_DEFAULT,
     SourceProvenance,
@@ -63,15 +68,161 @@ def load_property_capability(
     )
 
 
+HP_TRANSITION_BRIDGE_CAPABILITY_ID = "DIRECT_DAMAGE_HP_TRANSITION_12_PROOF"
+
+
 def load_property_bridge(
     path: str | Path,
 ) -> list[RecoveredPrimitive]:
-    """Load a Handoff 10/11 ``battle_semantic_bridge/1`` artifact."""
+    """Load a Handoff 10/11/12 ``battle_semantic_bridge/1`` artifact.
+
+    Handoff 12 uses the same top-level bridge schema but a different primitive
+    projection.  It is detected by capability id and routed to the narrow HP
+    loader so the catalog can bind the new HP primitives without duplicating
+    the already-registered property/fixed-point helpers.
+    """
+    artifact_path = Path(path)
+    try:
+        raw = artifact_path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise SemanticArtifactError(
+            f"cannot read semantic property artifact {artifact_path}: {exc}"
+        ) from exc
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise SemanticArtifactError(
+            f"semantic property artifact is not valid JSON: {exc}"
+        ) from exc
+    if data.get("capability_id") == HP_TRANSITION_BRIDGE_CAPABILITY_ID:
+        return _validate_hp_transition_artifact(data, artifact_path=str(artifact_path))
     return _load_property_artifact(
-        Path(path),
+        artifact_path,
         expected_schema=PROPERTY_BRIDGE_SCHEMA,
         validator=_validate_bridge_artifact,
     )
+
+
+def validate_hp_transition_bridge(
+    data: Mapping[str, Any],
+    artifact_path: str = "<memory>",
+) -> list[RecoveredPrimitive]:
+    """Public validator for the Handoff 12 HP-transition bridge artifact."""
+    return _validate_hp_transition_artifact(data, artifact_path)
+
+
+def _validate_hp_transition_artifact(
+    data: Mapping[str, Any],
+    artifact_path: str,
+) -> list[RecoveredPrimitive]:
+    _require_root_common(data, artifact_path, PROPERTY_BRIDGE_SCHEMA)
+    game_version = str(data["game_version"])
+    primitives = data.get("primitives")
+    if not isinstance(primitives, list) or not primitives:
+        raise SemanticArtifactError(
+            f"{artifact_path}: primitives must be a non-empty list"
+        )
+
+    recovered: list[RecoveredPrimitive] = []
+    seen_ids: set[str] = set()
+    for index, raw_primitive in enumerate(primitives):
+        if not isinstance(raw_primitive, Mapping):
+            raise SemanticArtifactError(
+                f"{artifact_path}: primitives[{index}] must be an object"
+            )
+        p = raw_primitive
+        label = f"{artifact_path}: primitives[{index}]"
+        primitive_id = p.get("primitive_id")
+        if primitive_id not in {
+            DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID,
+            TRY_GET_LOCK_HP_PRIMITIVE_ID,
+        }:
+            # Existing property/fixed-point primitives are already registered
+            # by earlier artifacts; the HP artifact lists them only as
+            # dependencies and must not duplicate them in the catalog.
+            continue
+        if primitive_id in seen_ids:
+            raise SemanticArtifactError(
+                f"{artifact_path}: duplicate primitive_id {primitive_id!r}"
+            )
+        seen_ids.add(primitive_id)
+
+        semantic_name = _require_string(p, "semantic_name", label)
+        if p.get("evidence_level") not in (EVIDENCE_E4, "CONFIRMED"):
+            raise SemanticArtifactError(
+                f"{label}: evidence_level {p.get('evidence_level')!r}; "
+                f"expected {EVIDENCE_E4!r} or CONFIRMED"
+            )
+        native_rva = _require_rva(p, "native_rva", label)
+
+        runtime_type = p.get("runtime_type")
+        if not isinstance(runtime_type, str) or not runtime_type:
+            raise SemanticArtifactError(
+                f"{label}: runtime_type must be a non-empty string"
+            )
+        method_index = p.get("method_index")
+        if method_index is not None:
+            if isinstance(method_index, bool) or not isinstance(method_index, int):
+                raise SemanticArtifactError(
+                    f"{label}: method_index must be an int or null"
+                )
+            if method_index < 0:
+                raise SemanticArtifactError(
+                    f"{label}: method_index must be >= 0"
+                )
+        method_name = p.get("method_name")
+        method = (
+            method_name
+            if isinstance(method_name, str) and method_name
+            else semantic_name
+        )
+
+        if primitive_id == TRY_GET_LOCK_HP_PRIMITIVE_ID:
+            inputs = (
+                PrimitiveInputSpec(name="component", type="ability_component_ref"),
+                PrimitiveInputSpec(name="damage_kind", type="int32"),
+            )
+            result = "lock_hp_result"
+        else:
+            inputs = (
+                PrimitiveInputSpec(name="component", type="ability_component_ref"),
+                PrimitiveInputSpec(name="delta", type="runtime_numeric_value"),
+                PrimitiveInputSpec(name="damage_kind", type="int32"),
+                PrimitiveInputSpec(name="context_token", type="opaque_context_token"),
+                PrimitiveInputSpec(name="input_record", type="opaque_input_record"),
+                PrimitiveInputSpec(name="mode", type="int32"),
+                PrimitiveInputSpec(
+                    name="negative_hp_gate", type="boolean"
+                ),
+            )
+            result = "hp_transition_result"
+
+        spec = PrimitiveSpec(
+            primitive_id=primitive_id,
+            semantic_name=semantic_name,
+            description=semantic_name,
+            inputs=inputs,
+            context_reads=(),
+            context_writes=(),
+            result=result,
+            determinism="DETERMINISTIC",
+        )
+        provenance = SourceProvenance(
+            game_version=game_version,
+            runtime_type=runtime_type,
+            method=method,
+            method_index=method_index,
+            native_rva=native_rva,
+            evidence_level=EVIDENCE_E4,
+            note=PROVENANCE_NOTE_DEFAULT,
+        )
+        recovered.append(RecoveredPrimitive(spec=spec, provenance=provenance))
+
+    if not recovered:
+        raise SemanticArtifactError(
+            f"{artifact_path}: no Handoff 12 HP primitives found in artifact"
+        )
+    return recovered
 
 
 def _load_property_artifact(

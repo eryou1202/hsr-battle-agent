@@ -17,6 +17,12 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Protocol
 
 from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
+from hsr_battle_agent.battle_ir.hp import (
+    HPTransitionInput,
+    HPTransitionResult,
+    LockHPRecord,
+    LockHPResult,
+)
 from hsr_battle_agent.battle_ir.modifiers import (
     ModifierConfigRef,
     ModifierContainer,
@@ -219,6 +225,12 @@ def _trace_result_summary(value: Any) -> Any:
         ),
     ):
         return value.trace_summary()
+    if isinstance(value, (LockHPRecord, LockHPResult)):
+        return value.trace_summary()
+    if isinstance(value, HPTransitionInput):
+        return value.trace_summary()
+    if isinstance(value, HPTransitionResult):
+        return value.trace_summary()
     _validate_trace_result(value)
     return value
 
@@ -295,6 +307,26 @@ class ExecutionTrace:
             semantic_provenance_ref=None,
         )
         self.finished(started=started, result=boundary.trace_summary())
+
+    def record_hp_boundary(self, boundary_id: str, summary: str) -> None:
+        """Record one deterministic HP semantic boundary.
+
+        This stays inside the existing ``PrimitiveStarted`` /
+        ``PrimitiveFinished`` taxonomy.  It is an observational trace, never an
+        event dispatch.  Boundary ids are compact strings such as
+        ``NegativeHPRecordBoundary`` and ``LockActionBoundary``.
+        """
+        if not isinstance(boundary_id, str) or not boundary_id:
+            raise TypeError("boundary_id must be a non-empty string")
+        if not isinstance(summary, str) or not summary:
+            raise TypeError("summary must be a non-empty string")
+        primitive_id = f"battle.ir.hp.boundary.{boundary_id}"
+        started = self.started(
+            primitive_id=primitive_id,
+            input_tags=(summary,),
+            semantic_provenance_ref=None,
+        )
+        self.finished(started=started, result=summary)
 
     def clone(self) -> "ExecutionTrace":
         return ExecutionTrace(events=list(self._events))
