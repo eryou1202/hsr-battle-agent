@@ -1,0 +1,120 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Build the DamageByAttackProperty indirect-dispatch resolution probe."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[3]
+OUT = REPO / "data" / "raw" / "4.4.54" / "damage_request_dispatch_resolution_18.json"
+
+DATA = {
+    "schema": "damage_request_dispatch_resolution/1",
+    "game_version": "4.4.54",
+    "status": "PREPROCESS_ONLY",
+    "call_site": {
+        "method_index": 507304,
+        "method_name": "GLDAGCNDCMA",
+        "rva": "0xC30F0BC",
+        "rcx_provenance": {
+            "register": "r15",
+            "origin": "first argument of M507304; M507296 passed r12 (OnTaskBegin this) as rcx",
+            "runtime_type_hint": "PGOOHIHKHNJ executor instance",
+            "container_path": "M507296 this -> r12 -> M507304 r15",
+            "classification": "object instance (PGOOHIHKHNJ)",
+        },
+        "slot_0x120_identity": {
+            "load_instruction": "0xC30F07D mov rbp, qword ptr [rcx + 0x120]",
+            "load_base": "rcx = [r15] (first qword of PGOOHIHKHNJ instance)",
+            "classification": "UNKNOWN; appears to be a klass/dispatch-table-like pointer, but exact vtable base is not proven",
+            "candidate_table": "0x4C1A880 .rdata contains PGOOHIHKHNJ method pointers; if that is the base, +0x120 = 0x4C1A9A0 -> M507328 .ctor of HIPAIGMJNOE, which conflicts with the return-object contract",
+        },
+    },
+    "target_candidates": [
+        {
+            "method_index": 507307,
+            "method_name": "COADOLBGKGK",
+            "rva": "0xC310B10",
+            "declaring_type": "PGOOHIHKHNJ",
+            "body_hash": "68c8e38ba0a4f7e22d77e944148d5425085663e9dea16d019a54e48cb52dcad4",
+            "evidence": "6-parameter PGOOHIHKHNJ method; tail-calls 0x18B429F50 and may return an object pointer in rax",
+            "reachable_for_damage_by_attack_property": "SUPPORTED_BUT_NOT_CONFIRMED",
+        },
+        {
+            "method_index": 507309,
+            "method_name": "CJFALFFMGLG",
+            "rva": "0xC313A10",
+            "declaring_type": "PGOOHIHKHNJ",
+            "body_hash": "469d1663f66179b9f02caf3517ec88427a32b19c159b65c944956d4c7a208a96",
+            "evidence": "exact call arity (rcx,rdx,r8,r9 + 2 stack); calls M504421 ApplyStanceDamage and returns void-like, so return-object contract is weak",
+            "reachable_for_damage_by_attack_property": "SUPPORTED_BUT_NOT_CONFIRMED",
+        },
+        {
+            "method_index": 507328,
+            "method_name": ".ctor",
+            "rva": "0x15997360",
+            "declaring_type": "HIPAIGMJNOE",
+            "body_hash": "d9f89799326db915cf7b1c6609564dc52e41b1ec4d29c8f6e1533a0a2d5769f3",
+            "evidence": "If the vtable base is 0x4C1A880, +0x120 points here; however it is a 2-arg constructor and does not satisfy the return-object contract",
+            "reachable_for_damage_by_attack_property": "UNLIKELY",
+        },
+    ],
+    "selected_target": {
+        "method_index": 507307,
+        "method_name": "COADOLBGKGK",
+        "rva": "0xC310B10",
+        "selection_reason": "Strongest return-object candidate among arity-compatible PGOOHIHKHNJ methods; exact vtable base still unproven.",
+        "confidence": "SUPPORTED_NOT_CONFIRMED",
+    },
+    "return_object": {
+        "A_identity": "object allocated at M507296 0xC30DBFB with token 0x9788B90",
+        "B_identity": "return value of indirect call at 0xC30F0BC, stored to [rsp+0x60], passed as r8 to M507308",
+        "alias_result": "UNKNOWN",
+        "note": "If M507307 is the target, its tail-call to 0x18B429F50 may return B; whether B==A is not proven.",
+    },
+    "slot_0x2D8_writer": {
+        "result": "UNKNOWN",
+        "detail": "No +0x2D8 writer found inside M507296/M507304/M507308 or in the first layer of the shortlisted dispatch targets.",
+        "candidate_next_layer": [
+            {"method_index": 507307, "helper_rva": "0x18B429F50", "note": "tail-called resolver/helper; may return B or an object whose +0x2D8 is already populated"},
+            {"method_index": 507309, "helper_rva": "0xE4487C0", "helper_method_index": 504421, "helper_name": "ApplyStanceDamage", "note": "called by M507309; stance-related, not obviously a +0x2D8 producer"},
+        ],
+    },
+    "damageformula_connection": {
+        "result": "NO_BOUNDED_CONNECTION",
+        "evidence": "Neither M507307 nor M507309 directly calls M504550 DamageFormula (0xE460BE0); M507309 calls M504421 ApplyStanceDamage.",
+    },
+    "recommended_v4p_entry": {
+        "primary": {
+            "method_index": 507307,
+            "method_name": "COADOLBGKGK",
+            "rva": "0xC310B10",
+            "reason": "Most plausible return-object dispatch target; inspect its tail-call helper 0x18B429F50 and the object it returns.",
+        },
+        "alternates": [
+            {"method_index": 507309, "method_name": "CJFALFFMGLG", "rva": "0xC313A10", "reason": "Exact arity match; inspect M504421 ApplyStanceDamage if M507307 is disproven."},
+            {"method_index": 507304, "method_name": "GLDAGCNDCMA", "rva": "0xC30ED00", "reason": "Contains the unresolved indirect dispatch."},
+        ],
+        "minimal_unresolved_contract": "Prove the vtable/dispatch-table base for PGOOHIHKHNJ so the exact +0x120 target is confirmed, then trace B[+0x2D8] initialization inside the selected target or its single callee layer.",
+    },
+    "remaining_unknown": [
+        "Exact vtable/dispatch-table base for PGOOHIHKHNJ; the 0x4C1A880 table is a candidate but not proven.",
+        "Whether the +0x120 slot is M507307, M507309, M507328, or another interface slot.",
+        "Whether B == A or a different request object.",
+        "The exact +0x2D8 writer inside the resolved target or its callee.",
+    ],
+}
+
+
+def main() -> int:
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump(DATA, f, indent=2, sort_keys=True)
+        f.write("\n")
+    print(f"wrote {OUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
