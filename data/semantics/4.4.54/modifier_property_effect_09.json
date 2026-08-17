@@ -1,0 +1,608 @@
+{
+  "schema": "battle_semantic_capability/1",
+  "generated_at": "2026-08-17T08:03:34.927204Z",
+  "game_version": "4.4.54",
+  "capability_id": "MODIFIER_PROPERTY_CONTRIBUTION_BOUNDARY_09_PROOF",
+  "status": "CONFIRMED_CONTRIBUTION_LIFECYCLE__MATERIALIZATION_DEFERRED",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "scope": "Generic property contribution add/update/remove ownership, not concrete stat formulas.",
+  "primitives": [
+    {
+      "primitive_id": "battle.ir.task.stack_property_executor_init",
+      "semantic_name": "StackPropertyTaskExecutorInit",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "LEIHMEGJNME",
+      "source_method": ".ctor",
+      "source_method_index": 506081,
+      "source_native_rva": "0xB770D00",
+      "native_body_hash": "eea586cc6fcbd946b5ca0b8ed710b7d25bb2df2771804e802f0cd8e5258e27ed",
+      "source_identity": {
+        "method_index": 506081,
+        "declaring_type_index": 54986,
+        "method_name": ".ctor",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xB770D00",
+        "body_length_bytes": 65,
+        "body_sha256": "eea586cc6fcbd946b5ca0b8ed710b7d25bb2df2771804e802f0cd8e5258e27ed",
+        "code_table_slot_va": "0x18B770D00",
+        "code_table_slot_index": 506081,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 23,
+        "conditional_branch_count": 4,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "task_context",
+          "type": "task_context_ref"
+        },
+        {
+          "name": "task_config",
+          "type": "stack_property_config_ref"
+        }
+      ],
+      "output": "stack_property_executor",
+      "field_reads": [],
+      "field_writes": [
+        "executor[+0x18] = task_context",
+        "executor[+0x20] = task_config",
+        "executor[+0x10] = 0x7777 task kind marker"
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "persistent_reads": [],
+      "persistent_writes": [],
+      "branches": [
+        "null executor/context -> IL2CPP throw paths",
+        "task_context[+0x68] is lazily initialized if absent"
+      ],
+      "necessary_callees": [
+        "0x1962C0160 task-context lazy initializer (unregistered helper)"
+      ],
+      "null_default_error_behavior": "null executor/task_context enters throw path; constructor has no default config.",
+      "pseudocode": [
+        "executor.task_context = task_context",
+        "executor.task_config = task_config",
+        "executor.kind_marker = 0x7777",
+        "ensure task_context.modifier_source exists"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.task.stack_property_execute",
+      "semantic_name": "ExecuteStackPropertyTask",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "LEIHMEGJNME",
+      "source_method": "OnTaskBegin",
+      "source_method_index": 506082,
+      "source_native_rva": "0xB770D90",
+      "native_body_hash": "ff68b01727e135b2b22effcace3103b0d0e6c18990ded65e643b106fd124ba22",
+      "source_identity": {
+        "method_index": 506082,
+        "declaring_type_index": 54986,
+        "method_name": "OnTaskBegin",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xB770D90",
+        "body_length_bytes": 1129,
+        "body_sha256": "ff68b01727e135b2b22effcace3103b0d0e6c18990ded65e643b106fd124ba22",
+        "code_table_slot_va": "0x18B770D90",
+        "code_table_slot_index": 506082,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 275,
+        "conditional_branch_count": 37,
+        "direct_call_count": 30,
+        "direct_jump_count": 9,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "executor",
+          "type": "stack_property_executor"
+        },
+        {
+          "name": "selected_targets",
+          "type": "resolved_target_sequence"
+        },
+        {
+          "name": "evaluated_property_value",
+          "type": "runtime_numeric_value"
+        }
+      ],
+      "output": "task_completion",
+      "field_reads": [
+        "executor[+0x18] task_context",
+        "executor[+0x20] task_config",
+        "task_context[+0x68] modifier_source",
+        "task_config[+0x18] target-selection payload",
+        "task_config[+0x20] property identity",
+        "task_config[+0x28] dynamic value payload"
+      ],
+      "field_writes": [
+        "executor[+0x10] failure/status marker on invalid preconditions"
+      ],
+      "context_reads": [
+        "TaskContext modifier source",
+        "DynamicValue evaluation context",
+        "Target selector context"
+      ],
+      "context_writes": [],
+      "persistent_reads": [
+        "target sequence",
+        "modifier State checked by callee"
+      ],
+      "persistent_writes": [
+        "one property contribution record per processed target (through M506199)"
+      ],
+      "branches": [
+        "missing modifier source or task config -> error path",
+        "target sequence iterates forward from index 0 to count-1",
+        "each target is resolved before the contribution call"
+      ],
+      "necessary_callees": [
+        "0xE6F1530 target-selection helper (Batch 05 selector runtime)",
+        "0xE6EFAE0 DynamicValue evaluator (Batch 02 reuse)",
+        "0xB429D40 target-wrapper -> ability component resolver",
+        "0xE7851A0 TurnBasedModifierInstance.StackProperty (M506199)"
+      ],
+      "null_default_error_behavior": "missing used context/config/target element enters IL2CPP throw paths; empty selected list completes without a contribution call.",
+      "ordering_behavior": "forward target-list order; one M506199 call for each resolved target.",
+      "pseudocode": [
+        "modifier = executor.task_context.modifier_source",
+        "targets = select(executor.task_config.slot_18, task_context)",
+        "value = evaluate_dynamic_value(executor.task_config.slot_28, task_context)",
+        "for target in targets in order:",
+        "    component = resolve_target_component(target)",
+        "    modifier.stack_property(executor.task_config.slot_20, value, component, context_token, false)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.modifier.stack_property_contribution",
+      "semantic_name": "ModifierStackPropertyContribution",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "RPG.GameCore.TurnBasedModifierInstance",
+      "source_method": "StackProperty",
+      "source_method_index": 506199,
+      "source_native_rva": "0xE7851A0",
+      "native_body_hash": "d4b7412d7fe22d17ee5e9e90ba468bac66fb978cbc7305405ef4ef62ee1a5c6f",
+      "source_identity": {
+        "method_index": 506199,
+        "declaring_type_index": 55002,
+        "method_name": "StackProperty",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xE7851A0",
+        "body_length_bytes": 1174,
+        "body_sha256": "d4b7412d7fe22d17ee5e9e90ba468bac66fb978cbc7305405ef4ef62ee1a5c6f",
+        "code_table_slot_va": "0x18E7851A0",
+        "code_table_slot_index": 506199,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 259,
+        "conditional_branch_count": 38,
+        "direct_call_count": 36,
+        "direct_jump_count": 5,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "modifier",
+          "type": "modifier_ref"
+        },
+        {
+          "name": "property_id",
+          "type": "opaque_property_id"
+        },
+        {
+          "name": "value",
+          "type": "runtime_numeric_value"
+        },
+        {
+          "name": "target_component",
+          "type": "ability_component_ref"
+        },
+        {
+          "name": "context_token",
+          "type": "opaque_context_token"
+        },
+        {
+          "name": "is_refresh",
+          "type": "boolean"
+        }
+      ],
+      "output": "contribution_key_or_noop",
+      "field_reads": [
+        "modifier[+0x80] State",
+        "modifier[+0x240] tracked property-contribution list",
+        "modifier[+0x2d1], [+0x264], [+0x2c0] internal reentrancy/guard state"
+      ],
+      "field_writes": [
+        "normal path appends {property_id:int32, contribution_key:int32, target_component:ref} to modifier[+0x240]",
+        "refresh path delegates an update to the existing contribution key"
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "persistent_reads": [
+        "modifier property-contribution records",
+        "target component property domain"
+      ],
+      "persistent_writes": [
+        "modifier property-contribution records",
+        "target component contribution domain (via M506495/M506497)"
+      ],
+      "branches": [
+        "State > Alive(1) -> no-op",
+        "is_refresh -> ordered scan for same property_id and target_component; matching record routes to M506497",
+        "normal path -> M506495 returns opaque contribution_key, then record append",
+        "internal guard/reentrancy paths may suppress work; exact policy remains UNKNOWN"
+      ],
+      "necessary_callees": [
+        "0xE72EB90 TurnBasedAbilityComponent.StackProperty (M506495)",
+        "0xE731D90 TurnBasedAbilityComponent.UpdateStackPropertyValue (M506497; refresh only)",
+        "0xE78C6C0 tracked-record reader (local helper, not separately registered)"
+      ],
+      "null_default_error_behavior": "State guard returns normally; used null list/component paths enter IL2CPP throw paths rather than creating an implicit contribution.",
+      "ordering_behavior": "refresh scan is forward; normal record append occurs after the component-stack call returns its key.",
+      "pseudocode": [
+        "if modifier.state > Alive: return NOOP",
+        "if is_refresh and (record = first tracked record matching property_id and target_component):",
+        "    update_component_contribution(target_component, property_id, record.contribution_key, value, context_token)",
+        "    return record.contribution_key",
+        "key = component_stack_property(target_component, property_id, value, context_token, modifier_tracking_list)",
+        "append modifier.tracked_property_contributions, (property_id, key, target_component)",
+        "return key"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.component_stack_boundary",
+      "semantic_name": "ComponentStackPropertyBoundary",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+      "source_method": "StackProperty",
+      "source_method_index": 506495,
+      "source_native_rva": "0xE72EB90",
+      "native_body_hash": "9950bfd264c81de590eefb175f0a8a9dc05a16a015a05f1eeafeb1008419f2d5",
+      "source_identity": {
+        "method_index": 506495,
+        "declaring_type_index": 55009,
+        "method_name": "StackProperty",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xE72EB90",
+        "body_length_bytes": 615,
+        "body_sha256": "9950bfd264c81de590eefb175f0a8a9dc05a16a015a05f1eeafeb1008419f2d5",
+        "code_table_slot_va": "0x18E72EB90",
+        "code_table_slot_index": 506495,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 152,
+        "conditional_branch_count": 15,
+        "direct_call_count": 15,
+        "direct_jump_count": 4,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "target_component",
+          "type": "ability_component_ref"
+        },
+        {
+          "name": "property_id",
+          "type": "opaque_property_id"
+        },
+        {
+          "name": "value",
+          "type": "runtime_numeric_value"
+        },
+        {
+          "name": "context_token",
+          "type": "opaque_context_token"
+        }
+      ],
+      "output": "opaque_contribution_key",
+      "field_reads": [
+        "component property lookup/domain state"
+      ],
+      "field_writes": [
+        "property-domain contribution storage through 0xE72EFC0"
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "persistent_reads": [
+        "target component property domain"
+      ],
+      "persistent_writes": [
+        "target component property contribution domain"
+      ],
+      "branches": [
+        "property-id normalization/special cases",
+        "property lookup may be absent",
+        "broad generic dispatcher has 83 observed case arms"
+      ],
+      "necessary_callees": [
+        "0xE72EE10 internal property lookup helper",
+        "0xE72C6F0 TurnBasedAbilityComponent.GetProperty",
+        "0xE72EFC0 generic property-domain dispatcher"
+      ],
+      "null_default_error_behavior": "null used component/property-domain path enters IL2CPP throw path; no default property is synthesized.",
+      "pseudocode": [
+        "return property_domain_stack(target_component, property_id, value, context_token)"
+      ],
+      "semantic_limit": "CONFIRMED boundary and opaque contribution key only. Base/final value materialization and per-property arithmetic are UNKNOWN."
+    },
+    {
+      "primitive_id": "battle.ir.modifier.pop_property_contributions",
+      "semantic_name": "PopModifierPropertyContributions",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "RPG.GameCore.TurnBasedModifierInstance",
+      "source_method": "_PopStackedProperties",
+      "source_method_index": 506312,
+      "source_native_rva": "0xE78B740",
+      "native_body_hash": "95fc6bd67c4efaa08d073baccf9125940b44b679639b01b2765084c7dc6cc807",
+      "source_identity": {
+        "method_index": 506312,
+        "declaring_type_index": 55002,
+        "method_name": "_PopStackedProperties",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xE78B740",
+        "body_length_bytes": 2486,
+        "body_sha256": "95fc6bd67c4efaa08d073baccf9125940b44b679639b01b2765084c7dc6cc807",
+        "code_table_slot_va": "0x18E78B740",
+        "code_table_slot_index": 506312,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 587,
+        "conditional_branch_count": 112,
+        "direct_call_count": 81,
+        "direct_jump_count": 15,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "modifier",
+          "type": "modifier_ref"
+        }
+      ],
+      "output": "none",
+      "field_reads": [
+        "modifier[+0x240] tracked property-contribution list"
+      ],
+      "field_writes": [
+        "modifier[+0x2d1] = true during property-pop loop, then false",
+        "tracked contribution list is consumed/cleared after the loop"
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "persistent_reads": [
+        "ordered modifier property-contribution records"
+      ],
+      "persistent_writes": [
+        "target component contribution domain via M506496",
+        "modifier property-contribution records"
+      ],
+      "branches": [
+        "forward loop over modifier[+0x240]",
+        "each record has target component, property_id, contribution_key",
+        "additional non-property cleanup follows and is out of scope"
+      ],
+      "necessary_callees": [
+        "0xE731B80 TurnBasedAbilityComponent.UnStackProperty (M506496)"
+      ],
+      "null_default_error_behavior": "null tracked list skips the loop; malformed used record/component paths enter IL2CPP throw paths.",
+      "ordering_behavior": "forward tracked-record order; each UnStackProperty call completes before the next record.",
+      "pseudocode": [
+        "modifier.is_popping_stack_property = true",
+        "for record in modifier.tracked_property_contributions in order:",
+        "    component_unstack_property(record.target_component, record.property_id, record.contribution_key, modifier)",
+        "clear modifier.tracked_property_contributions",
+        "modifier.is_popping_stack_property = false"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.component_unstack_boundary",
+      "semantic_name": "ComponentUnStackPropertyBoundary",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "determinism": "DETERMINISTIC",
+      "source_runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+      "source_method": "UnStackProperty",
+      "source_method_index": 506496,
+      "source_native_rva": "0xE731B80",
+      "native_body_hash": "ca1fc3692e7db537807189107832b2ff7aa763f5b494e0d64f8e0b01d1a093b7",
+      "source_identity": {
+        "method_index": 506496,
+        "declaring_type_index": 55009,
+        "method_name": "UnStackProperty",
+        "mapping_kind": "DIRECT_NATIVE"
+      },
+      "native_evidence": {
+        "body_rva": "0xE731B80",
+        "body_length_bytes": 507,
+        "body_sha256": "ca1fc3692e7db537807189107832b2ff7aa763f5b494e0d64f8e0b01d1a093b7",
+        "code_table_slot_va": "0x18E731B80",
+        "code_table_slot_index": 506496,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 127,
+        "conditional_branch_count": 14,
+        "direct_call_count": 13,
+        "direct_jump_count": 3,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        {
+          "name": "target_component",
+          "type": "ability_component_ref"
+        },
+        {
+          "name": "property_id",
+          "type": "opaque_property_id"
+        },
+        {
+          "name": "contribution_key",
+          "type": "opaque_contribution_key"
+        },
+        {
+          "name": "owner_modifier",
+          "type": "modifier_ref"
+        }
+      ],
+      "output": "none",
+      "field_reads": [
+        "component property lookup/domain state"
+      ],
+      "field_writes": [
+        "property-domain contribution storage through 0xE72EFC0"
+      ],
+      "context_reads": [],
+      "context_writes": [],
+      "persistent_reads": [
+        "target component property contribution domain"
+      ],
+      "persistent_writes": [
+        "target component property contribution domain"
+      ],
+      "branches": [
+        "property-id normalization/special cases",
+        "property lookup may be absent",
+        "broad generic dispatcher is shared with add path"
+      ],
+      "necessary_callees": [
+        "0xE72EE10 internal property lookup helper",
+        "0xE72C6F0 GetProperty",
+        "0xE72EFC0 generic property-domain dispatcher"
+      ],
+      "null_default_error_behavior": "null used component/property-domain path enters IL2CPP throw path; absent property is not materialized by this boundary.",
+      "pseudocode": [
+        "property_domain_unstack(target_component, property_id, contribution_key, owner_modifier)"
+      ],
+      "semantic_limit": "CONFIRMED remove boundary keyed by the opaque key returned on add; final numeric materialization remains UNKNOWN."
+    }
+  ],
+  "config_source": {
+    "declared_runtime_type": "RPG.GameCore.StackProperty",
+    "declaring_type_index": 23267,
+    "serializer_method_index": 127753,
+    "serializer_native_rva": "0x1D4C1780",
+    "serializer_body_hash": "373b6df0486ebfbb5a58cb26fb959a36545004e5aadb507f6262133143df08f5",
+    "serializer_projection": "FIRST_SUCCESSFUL_RET",
+    "declared_fields": [
+      "TargetType",
+      "Property",
+      "PropertyValue",
+      "Silence",
+      "IsRefresh"
+    ],
+    "native_slots_consumed_by_M506082": {
+      "+0x18": "target-selection payload",
+      "+0x20": "opaque property identity",
+      "+0x28": "DynamicValue payload",
+      "+0x30": "bool slot; not consumed by the proven M506082 direct property call",
+      "+0x31": "bool slot; not consumed by the proven M506082 direct property call"
+    },
+    "association_status": "SUPPORTED",
+    "association_evidence": "StackProperty serializer writes the same +0x18/+0x20/+0x28/+0x30/+0x31 layout that M506082 consumes; the executor reaches M506199. No direct allocation/factory edge from this config class to LEIHMEGJNME was recovered in this bounded batch."
+  },
+  "semantic_chains": [
+    {
+      "chain_id": "stack_property_task_to_modifier_contribution",
+      "evidence_level": "E4 except config/executor association SUPPORTED",
+      "steps": [
+        "StackProperty serialized fields (+0x18 target payload, +0x20 property id, +0x28 DynamicValue)",
+        "LEIHMEGJNME.OnTaskBegin M506082 selects targets and evaluates the DynamicValue",
+        "M506082 -> TurnBasedModifierInstance.StackProperty M506199 once per target in forward order",
+        "M506199 -> TurnBasedAbilityComponent.StackProperty M506495",
+        "M506199 appends {property_id, contribution_key, target_component} to modifier[+0x240]"
+      ],
+      "observable_result": "persistent, owner-scoped property contribution record with an opaque component contribution key"
+    },
+    {
+      "chain_id": "modifier_contribution_inverse",
+      "evidence_level": "E4",
+      "steps": [
+        "TurnBasedModifierInstance._PopStackedProperties M506312 iterates modifier[+0x240] in forward order",
+        "record fields feed TurnBasedAbilityComponent.UnStackProperty M506496",
+        "M506496 reaches the shared property-domain dispatcher with property_id and opaque contribution_key",
+        "M506312 consumes/clears tracked records and resets its pop guard"
+      ],
+      "observable_result": "the same owner-scoped contribution key is removed rather than applying an inverse numeric delta"
+    }
+  ],
+  "persistent_state_contract": {
+    "required_new_battle_state_fields": [
+      {
+        "name": "modifier_property_contributions",
+        "key": "ModifierRef",
+        "value": "ordered sequence of PropertyContribution",
+        "record": {
+          "target_entity_or_component_ref": "identity only",
+          "property_id": "opaque int32 identity",
+          "contribution_key": "opaque int32 returned by add boundary"
+        }
+      },
+      {
+        "name": "entity_property_contributions",
+        "key": "(entity_ref, property_id)",
+        "value": "ordered keyed contributions; materialized final value intentionally absent"
+      }
+    ],
+    "forbidden_shortcut": "Do not implement this contract as final_property_value += value or -= value."
+  },
+  "dependencies": {
+    "reuse": [
+      "DynamicValue runtime batch 02 for M506082 value evaluation",
+      "Target selector runtime batch 05 for M506082 target resolution",
+      "Generated task executor runtime batch 06 for task lifecycle",
+      "Modifier lifecycle runtime batch 08 for persistent modifier identity and State"
+    ],
+    "deferred": [
+      "0xE72EFC0 generic property-domain dispatcher (83 observed case arms)",
+      "base/contribution/final property materialization formulae",
+      "exact semantic meaning of StackProperty.Silence and StackProperty.IsRefresh in this executor path",
+      "lifecycle caller that invokes _PopStackedProperties during every destroy/remove path"
+    ]
+  },
+  "reads": [
+    "modifier State [+0x80]",
+    "modifier tracked property list [+0x240]",
+    "executor task context/config [+0x18]/[+0x20]",
+    "StackProperty config slots [+0x18]/[+0x20]/[+0x28]",
+    "target component property domain"
+  ],
+  "writes": [
+    "modifier tracked contribution record {property_id, contribution_key, target_component}",
+    "target component generic contribution domain via M506495/M506496",
+    "temporary modifier pop guard [+0x2d1]"
+  ],
+  "unknowns": [
+    "How 0xE72EFC0 materializes each property identity into final gameplay values",
+    "Exact contribution-key allocation/collision policy inside generic property domain",
+    "Direct config-class allocation/factory edge to LEIHMEGJNME",
+    "Whether the M506199 refresh flag is sourced from StackProperty.IsRefresh for a different generated path",
+    "Which property identities are required for the first simple skill's damage formula"
+  ],
+  "source_hashes": {
+    "gameassembly_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7"
+  }
+}
