@@ -1,0 +1,157 @@
+0E4410D0  56                              push     rsi
+0E4410D1  57                              push     rdi
+0E4410D2  53                              push     rbx
+0E4410D3  48 83 ec 20                     sub      rsp, 0x20
+0E4410D7  4c 89 c6                        mov      rsi, r8
+0E4410DA  48 89 d7                        mov      rdi, rdx
+0E4410DD  89 cb                           mov      ebx, ecx
+0E4410DF  80 3d e8 ef 12 fb 00            cmp      byte ptr [rip - 0x4ed1018], 0
+0E4410E6  0f 85 a4 01 00 00               jne      0x18e441290
+0E4410EC  ff cb                           dec      ebx
+0E4410EE  83 fb 04                        cmp      ebx, 4
+0E4410F1  77 22                           ja       0x18e441115
+0E4410F3  48 8d 05 c2 01 00 00            lea      rax, [rip + 0x1c2]
+0E4410FA  48 63 0c 98                     movsxd   rcx, dword ptr [rax + rbx*4]
+0E4410FE  48 01 c1                        add      rcx, rax
+0E441101  ff e1                           jmp      rcx
+0E441103  48 89 f9                        mov      rcx, rdi
+0E441106  48 89 f2                        mov      rdx, rsi
+0E441109  48 83 c4 20                     add      rsp, 0x20
+0E44110D  5b                              pop      rbx
+0E44110E  5f                              pop      rdi
+0E44110F  5e                              pop      rsi
+0E441110  e9 6b de 21 0f                  jmp      0x19d65ef80
+0E441115  48 89 fe                        mov      rsi, rdi
+0E441118  e9 68 01 00 00                  jmp      0x18e441285
+0E44111D  48 89 f9                        mov      rcx, rdi
+0E441120  48 89 f2                        mov      rdx, rsi
+0E441123  48 83 c4 20                     add      rsp, 0x20
+0E441127  5b                              pop      rbx
+0E441128  5f                              pop      rdi
+0E441129  5e                              pop      rsi
+0E44112A  e9 d1 08 22 0f                  jmp      0x19d661a00
+0E44112F  40 f6 c7 01                     test     dil, 1
+0E441133  75 44                           jne      0x18e441179
+0E441135  40 f6 c6 01                     test     sil, 1
+0E441139  0f 85 b4 00 00 00               jne      0x18e4411f3
+0E44113F  31 c9                           xor      ecx, ecx
+0E441141  48 39 f7                        cmp      rdi, rsi
+0E441144  0f 9f c1                        setg     cl
+0E441147  b8 ff ff ff ff                  mov      eax, 0xffffffff
+0E44114C  0f 4d c1                        cmovge   eax, ecx
+0E44114F  e9 0f 01 00 00                  jmp      0x18e441263
+0E441154  40 f6 c7 01                     test     dil, 1
+0E441158  75 5c                           jne      0x18e4411b6
+0E44115A  40 f6 c6 01                     test     sil, 1
+0E44115E  0f 85 bd 00 00 00               jne      0x18e441221
+0E441164  31 c9                           xor      ecx, ecx
+0E441166  48 39 f7                        cmp      rdi, rsi
+0E441169  0f 9f c1                        setg     cl
+0E44116C  b8 ff ff ff ff                  mov      eax, 0xffffffff
+0E441171  0f 4d c1                        cmovge   eax, ecx
+0E441174  e9 06 01 00 00                  jmp      0x18e44127f
+0E441179  48 89 f8                        mov      rax, rdi
+0E44117C  48 83 e0 fe                     and      rax, 0xfffffffffffffffe
+0E441180  48 89 f1                        mov      rcx, rsi
+0E441183  40 f6 c6 01                     test     sil, 1
+0E441187  0f 85 c2 00 00 00               jne      0x18e44124f
+0E44118D  48 c1 f9 07                     sar      rcx, 7
+0E441191  31 d2                           xor      edx, edx
+0E441193  48 39 c1                        cmp      rcx, rax
+0E441196  0f 9f c2                        setg     dl
+0E441199  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+0E44119E  0f 4d ca                        cmovge   ecx, edx
+0E4411A1  31 c0                           xor      eax, eax
+0E4411A3  40 f6 c6 7f                     test     sil, 0x7f
+0E4411A7  0f 95 c0                        setne    al
+0E4411AA  85 c9                           test     ecx, ecx
+0E4411AC  0f 45 c1                        cmovne   eax, ecx
+0E4411AF  f7 d8                           neg      eax
+0E4411B1  e9 ad 00 00 00                  jmp      0x18e441263
+0E4411B6  48 89 f8                        mov      rax, rdi
+0E4411B9  48 83 e0 fe                     and      rax, 0xfffffffffffffffe
+0E4411BD  48 89 f1                        mov      rcx, rsi
+0E4411C0  40 f6 c6 01                     test     sil, 1
+0E4411C4  0f 85 a1 00 00 00               jne      0x18e44126b
+0E4411CA  48 c1 f9 07                     sar      rcx, 7
+0E4411CE  31 d2                           xor      edx, edx
+0E4411D0  48 39 c1                        cmp      rcx, rax
+0E4411D3  0f 9f c2                        setg     dl
+0E4411D6  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+0E4411DB  0f 4d ca                        cmovge   ecx, edx
+0E4411DE  31 c0                           xor      eax, eax
+0E4411E0  40 f6 c6 7f                     test     sil, 0x7f
+0E4411E4  0f 95 c0                        setne    al
+0E4411E7  85 c9                           test     ecx, ecx
+0E4411E9  0f 45 c1                        cmovne   eax, ecx
+0E4411EC  f7 d8                           neg      eax
+0E4411EE  e9 8c 00 00 00                  jmp      0x18e44127f
+0E4411F3  48 89 f0                        mov      rax, rsi
+0E4411F6  48 83 e0 fe                     and      rax, 0xfffffffffffffffe
+0E4411FA  48 89 f9                        mov      rcx, rdi
+0E4411FD  48 c1 f9 07                     sar      rcx, 7
+0E441201  31 d2                           xor      edx, edx
+0E441203  48 39 c1                        cmp      rcx, rax
+0E441206  0f 9f c2                        setg     dl
+0E441209  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+0E44120E  0f 4d ca                        cmovge   ecx, edx
+0E441211  31 c0                           xor      eax, eax
+0E441213  40 f6 c7 7f                     test     dil, 0x7f
+0E441217  0f 95 c0                        setne    al
+0E44121A  85 c9                           test     ecx, ecx
+0E44121C  0f 45 c1                        cmovne   eax, ecx
+0E44121F  eb 42                           jmp      0x18e441263
+0E441221  48 89 f0                        mov      rax, rsi
+0E441224  48 83 e0 fe                     and      rax, 0xfffffffffffffffe
+0E441228  48 89 f9                        mov      rcx, rdi
+0E44122B  48 c1 f9 07                     sar      rcx, 7
+0E44122F  31 d2                           xor      edx, edx
+0E441231  48 39 c1                        cmp      rcx, rax
+0E441234  0f 9f c2                        setg     dl
+0E441237  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+0E44123C  0f 4d ca                        cmovge   ecx, edx
+0E44123F  31 c0                           xor      eax, eax
+0E441241  40 f6 c7 7f                     test     dil, 0x7f
+0E441245  0f 95 c0                        setne    al
+0E441248  85 c9                           test     ecx, ecx
+0E44124A  0f 45 c1                        cmovne   eax, ecx
+0E44124D  eb 30                           jmp      0x18e44127f
+0E44124F  48 83 e1 fe                     and      rcx, 0xfffffffffffffffe
+0E441253  31 d2                           xor      edx, edx
+0E441255  48 39 c8                        cmp      rax, rcx
+0E441258  0f 9f c2                        setg     dl
+0E44125B  b8 ff ff ff ff                  mov      eax, 0xffffffff
+0E441260  0f 4d c2                        cmovge   eax, edx
+0E441263  85 c0                           test     eax, eax
+0E441265  48 0f 48 f7                     cmovs    rsi, rdi
+0E441269  eb 1a                           jmp      0x18e441285
+0E44126B  48 83 e1 fe                     and      rcx, 0xfffffffffffffffe
+0E44126F  31 d2                           xor      edx, edx
+0E441271  48 39 c8                        cmp      rax, rcx
+0E441274  0f 9f c2                        setg     dl
+0E441277  b8 ff ff ff ff                  mov      eax, 0xffffffff
+0E44127C  0f 4d c2                        cmovge   eax, edx
+0E44127F  85 c0                           test     eax, eax
+0E441281  48 0f 4f f7                     cmovg    rsi, rdi
+0E441285  48 89 f0                        mov      rax, rsi
+0E441288  48 83 c4 20                     add      rsp, 0x20
+0E44128C  5b                              pop      rbx
+0E44128D  5f                              pop      rdi
+0E44128E  5e                              pop      rsi
+0E44128F  c3                              ret
+0E441290  b9 3e b2 07 00                  mov      ecx, 0x7b23e
+0E441295  e8 b6 61 ba 07                  call     0x195fe7450
+0E44129A  48 85 c0                        test     rax, rax
+0E44129D  74 17                           je       0x18e4412b6
+0E44129F  48 89 c1                        mov      rcx, rax
+0E4412A2  89 da                           mov      edx, ebx
+0E4412A4  49 89 f8                        mov      r8, rdi
+0E4412A7  49 89 f1                        mov      r9, rsi
+0E4412AA  48 83 c4 20                     add      rsp, 0x20
+0E4412AE  5b                              pop      rbx
+0E4412AF  5f                              pop      rdi
+0E4412B0  5e                              pop      rsi
+0E4412B1  e9 aa 9c 79 07                  jmp      0x195bdaf60
+0E4412B6  e8 85 10 7c f5                  call     0x183c02340
+0E4412BB  cc                              int3
+0E4412BC  c9                              leave

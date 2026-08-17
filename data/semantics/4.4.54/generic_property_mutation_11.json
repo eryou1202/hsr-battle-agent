@@ -1,0 +1,311 @@
+{
+  "schema": "battle_semantic_bridge/1",
+  "game_version": "4.4.54",
+  "capability_id": "GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF",
+  "status": "CONFIRMED_SCOPED_UNTRANSFORMED_COMMON_PROPERTY_MUTATION",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "generated_at": "2026-08-17T08:59:03.092093+00:00",
+  "source_hashes": {
+    "GameAssembly_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc"
+  },
+  "config_bindings": [
+    {
+      "config_source": "RPG.GameCore.PropertyModifyFunction enum (type 15455; native arithmetic is primary evidence)",
+      "serialized_fields": [
+        "property_id",
+        "function_id",
+        "operand"
+      ],
+      "runtime_inputs": [
+        "M506503 edx=property_id",
+        "r8d=function_id",
+        "r9=operand",
+        "stack=context_token"
+      ],
+      "enum_mapping": {
+        "1": "Set",
+        "2": "Add",
+        "3": "Mul",
+        "4": "MinSet",
+        "5": "MaxSet"
+      }
+    }
+  ],
+  "primitives": [
+    {
+      "primitive_id": "battle.ir.fixedpoint.add",
+      "semantic_name": "FixedPointAdd",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "native fixed-point/property helper",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x1D65EF80",
+      "native_body_hash": "db84c503bdba96493d67342df83dcdb8d90f64591b6464dc8318d609b38eb8a6",
+      "native_evidence": {
+        "native_rva": "0x1D65EF80",
+        "body_length_bytes": 291,
+        "body_sha256": "db84c503bdba96493d67342df83dcdb8d90f64591b6464dc8318d609b38eb8a6",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 78,
+        "conditional_branch_count": 12,
+        "direct_call_count": 0,
+        "direct_jump_count": 1,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC_SATURATING_FIXEDPOINT",
+      "inputs": [
+        "left",
+        "right"
+      ],
+      "output": "saturating fixed-point sum",
+      "reads": [],
+      "writes": [],
+      "exact_semantics": [
+        "Native fast path computes left + right; overflow/non-immediate paths saturate through the same fixed-point representation."
+      ],
+      "pseudocode": [
+        "return saturating_fixedpoint_add(left, right)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.fixedpoint.subtract",
+      "semantic_name": "FixedPointSubtract",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "native fixed-point/property helper",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x1D661B60",
+      "native_body_hash": "39d843245aa77af8308c812b1a8ced6c72029bb43d7521d48da8e73f72756c0e",
+      "native_evidence": {
+        "native_rva": "0x1D661B60",
+        "body_length_bytes": 111,
+        "body_sha256": "39d843245aa77af8308c812b1a8ced6c72029bb43d7521d48da8e73f72756c0e",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 30,
+        "conditional_branch_count": 5,
+        "direct_call_count": 0,
+        "direct_jump_count": 0,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC_SATURATING_FIXEDPOINT",
+      "inputs": [
+        "left",
+        "right"
+      ],
+      "output": "saturating fixed-point difference",
+      "reads": [],
+      "writes": [],
+      "exact_semantics": [
+        "Native fast path computes left - right; overflow/non-immediate paths saturate through the same fixed-point representation."
+      ],
+      "pseudocode": [
+        "return saturating_fixedpoint_subtract(left, right)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.fixedpoint.multiply",
+      "semantic_name": "FixedPointMultiply",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "native fixed-point/property helper",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0x1D661A00",
+      "native_body_hash": "aa213631eaeb53e1a2c4d0037443e59b4e8bcfc5b65a11e5d464c0f360d915c8",
+      "native_evidence": {
+        "native_rva": "0x1D661A00",
+        "body_length_bytes": 346,
+        "body_sha256": "aa213631eaeb53e1a2c4d0037443e59b4e8bcfc5b65a11e5d464c0f360d915c8",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 105,
+        "conditional_branch_count": 15,
+        "direct_call_count": 0,
+        "direct_jump_count": 4,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC_SATURATING_FIXEDPOINT",
+      "inputs": [
+        "left",
+        "right"
+      ],
+      "output": "saturating fixed-point product",
+      "reads": [],
+      "writes": [],
+      "exact_semantics": [
+        "Native path multiplies the encoded fixed-point operands and saturates on range overflow."
+      ],
+      "pseudocode": [
+        "return saturating_fixedpoint_multiply(left, right)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.apply_modify_function",
+      "semantic_name": "ApplyPropertyModifyFunction",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "native fixed-point/property helper",
+        "method_index": null,
+        "method_name": null,
+        "identity_status": "UNREGISTERED_NATIVE_HELPER"
+      },
+      "native_rva": "0xE4410D0",
+      "native_body_hash": "aa8775d71b41bb6b9112630c4cba3892cdf6db8a41fbaef9ff604e5f1b337dc3",
+      "native_evidence": {
+        "native_rva": "0xE4410D0",
+        "body_length_bytes": 448,
+        "body_sha256": "aa8775d71b41bb6b9112630c4cba3892cdf6db8a41fbaef9ff604e5f1b337dc3",
+        "body_projection": "FIRST_SUCCESSFUL_RET",
+        "instruction_count": 141,
+        "conditional_branch_count": 8,
+        "direct_call_count": 0,
+        "direct_jump_count": 11,
+        "abi": "win64"
+      },
+      "determinism": "DETERMINISTIC_SATURATING_FIXEDPOINT",
+      "inputs": [
+        "function_id",
+        "old_materialized_value",
+        "operand"
+      ],
+      "output": "pre-post-transform candidate",
+      "reads": [],
+      "writes": [],
+      "exact_semantics": [
+        "function_id 1 returns operand (Set).",
+        "function_id 2 calls FixedPointAdd(old, operand).",
+        "function_id 3 calls FixedPointMultiply(old, operand).",
+        "function_id 4 returns min(old, operand) under fixed-point comparison.",
+        "function_id 5 returns max(old, operand) under fixed-point comparison.",
+        "An out-of-range function_id follows the same return-operand fallthrough as Set in this helper."
+      ],
+      "pseudocode": [
+        "switch function_id:",
+        "  case 1: return operand",
+        "  case 2: return fp_add(old, operand)",
+        "  case 3: return fp_mul(old, operand)",
+        "  case 4: return fp_min(old, operand)",
+        "  case 5: return fp_max(old, operand)",
+        "  default: return operand"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.modify_source_zero_untransformed",
+      "semantic_name": "ModifyPropertySourceZeroUntransformed",
+      "evidence_level": "E4_STATIC_MACHINE_CODE",
+      "runtime_identity": {
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+        "method_index": 506503,
+        "method_name": "ModifyProperty",
+        "declaring_type_index": 55009
+      },
+      "native_rva": "0xE72DCE0",
+      "native_body_hash": "dc83a97417b6fd89d9a9c640b7caf916c5d9e1de6bfdd98d6237060c63fdacd9",
+      "native_evidence": {
+        "body_rva": "0xE72DCE0",
+        "body_length_bytes": 2278,
+        "body_sha256": "dc83a97417b6fd89d9a9c640b7caf916c5d9e1de6bfdd98d6237060c63fdacd9",
+        "code_table_slot_va": "0x18E72DCE0",
+        "code_table_slot_index": 506503,
+        "image_base": "0x180000000",
+        "mapping_kind": "DIRECT_NATIVE",
+        "instruction_count": 523,
+        "conditional_branch_count": 84,
+        "direct_call_count": 49,
+        "direct_jump_count": 21,
+        "abi": "win64",
+        "body_projection": "FIRST_SUCCESSFUL_RET"
+      },
+      "inputs": [
+        "component",
+        "property_id",
+        "function_id",
+        "operand",
+        "context_token"
+      ],
+      "output": "bool changed",
+      "reads": [
+        "component property-entry table at +0xA0",
+        "selected entry[+0x78] old materialized value",
+        "selected entry[+0x40] post-transform context",
+        "component/property acceptance guards"
+      ],
+      "writes": [
+        "selected entry source slot 0 through 0x1957559D0",
+        "selected entry[+0x78] through the existing materialization runtime",
+        "post-change call M506625 _AfterPropertyChanged"
+      ],
+      "determinism": "DETERMINISTIC_WHEN_ACCEPTANCE_GUARDS_AND_CONTEXT_ARE_FIXED",
+      "scope_preconditions": [
+        "The selected property entry exists and native acceptance guards admit the mutation.",
+        "entry[+0x40] is null, making 0x19CAF14A0 an observed no-op.",
+        "property_id is outside {10,12,14,16,18,20,22,24,26,28,30,32}, so the native special-property jump table takes its common path."
+      ],
+      "exact_semantics": [
+        "Captures old = entry[+0x78].",
+        "Computes candidate with ApplyPropertyModifyFunction(function_id, old, operand).",
+        "For the scoped null post-transform, candidate is unchanged by 0x19CAF14A0.",
+        "Calls the stable-slot updater with source_index=0 and candidate; this rebuilds entry[+0x78] immediately.",
+        "Computes materialized_delta = entry[+0x78] - old and invokes M506625 with old/new/context data before returning true.",
+        "A normal guard rejection reaches the false return path without this source-0 write."
+      ],
+      "pseudocode": [
+        "entry = require_mutable_property_entry(component, property_id)",
+        "old = entry.materialized",
+        "candidate = apply_modify_function(function_id, old, operand)",
+        "assert entry.post_transform_context is null  # scoped contract",
+        "update_source_slot(entry, source_index=0, source_value=candidate)",
+        "new = entry.materialized",
+        "after_property_changed(component, property_id, old, new, context_token)",
+        "return true"
+      ],
+      "unknowns": [
+        "Non-null entry[+0x40] invokes the distinct post-transform family at 0x19CAF14A0.",
+        "The special property IDs have dedicated policy branches and are intentionally excluded from this capability.",
+        "The downstream listener/event semantics of _AfterPropertyChanged are not asserted here; the observable contract ends at the persistent materialized write."
+      ]
+    }
+  ],
+  "semantic_chains": [
+    {
+      "chain_id": "untransformed_common_property_mutation",
+      "steps": [
+        "M506503 ModifyProperty",
+        "0xE4410D0 ApplyPropertyModifyFunction",
+        "0x19CAF14A0 null-context no-op",
+        "0x1957559D0 UpdatePropertySourceSlot(entry, 0, candidate)",
+        "entry[+0x78] materialized persistent result",
+        "M506625 _AfterPropertyChanged call"
+      ],
+      "observable_result": "selected property entry's persistent materialized value changes through source slot 0"
+    }
+  ],
+  "persistent_state_requirements": [
+    "Reuse Generic Property Materialization 10's source arrays and entry[+0x78].",
+    "Source index 0 is the native mutable base/update slot in this path; do not allocate or shift it.",
+    "Persist the selected entry's post-transform context so unsupported non-null contexts can be rejected rather than silently ignored."
+  ],
+  "dependencies": [
+    "GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF",
+    "FixedPoint runtime and comparison primitives (Batches 03-04)"
+  ],
+  "unknowns": [
+    "0x19CAF14A0 non-null post-transform contract",
+    "CurrentHP/NegativeHP and other special-property branch policies",
+    "Config-to-M506503 action executor bridge",
+    "_AfterPropertyChanged listener/event consumers"
+  ],
+  "must_not_implement": [
+    "Do not apply the scoped path when entry[+0x40] is non-null.",
+    "Do not treat source slot 0 as a disposable modifier contribution key.",
+    "Do not apply this generic common path to the listed special property IDs.",
+    "Do not invent callback/event behavior after M506625 from its name alone."
+  ]
+}

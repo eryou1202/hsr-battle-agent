@@ -13,15 +13,17 @@
 
 ## Latest semantic frontier
 
-- Latest completed capability: `GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF`.
-- Artifact: `data/semantics/4.4.54/generic_property_materialization_10.json`.
+- Latest completed capability: `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
+- Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`.
 - Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
 - The capability includes source-slot lifecycle and materialization framework.
 - Per-kind fixed-point operator names/formulas are still not accepted.
 - It is not a damage formula.
 - It adds a persistent, Modifier-owned contribution record and reverses it through the same stable source index.
+- Handoff 11 adds the scoped mutable/base path: source slot `0` supports fixed-point `Set/Add/Mul/Min/Max`, rebuild, then a post-change bridge call.
+- This mutation capability deliberately excludes non-null post-transform context and the native special-property IDs.
 
 ## Confirmed reusable runtime chain
 
@@ -37,6 +39,8 @@
 - Generic Modifier property-contribution ownership.
 - Generic property contribution removal boundary.
 - Generic PropertyEntry source-slot lifecycle and materialized-value write boundary.
+- Generic untransformed source-0 Property mutation.
+- Fixed-point Add/Subtract/Multiply helpers used by Property mutation.
 
 ## Baseline commits that MUST remain intact
 
@@ -109,6 +113,16 @@
 - PropertyEntry materialization kind `+0x58` has seven native modes; only reducer topology is accepted.
 - The adapter `0x15C6E450` sits between raw StackProperty input and source-slot value; it is not yet canonical.
 
+## Generic Property mutation 11
+
+- `M506503 ModifyProperty` is a generic source-0 mutation API on `TurnBasedAbilityComponent`.
+- Native function IDs are proven: `1 Set`, `2 Add`, `3 Mul`, `4 Min`, `5 Max`; unsupported IDs use the native Set fallthrough.
+- The helper reads old `entry[+0x78]`, computes fixed-point candidate, then calls `0x19CAF14A0` before the common source-0 update.
+- The exact coding-ready scope requires `entry[+0x40] == null`; `0x19CAF14A0` then returns without changing the candidate.
+- For property IDs outside `{10,12,14,16,18,20,22,24,26,28,30,32}`, M506503 reaches common tail `0xE72E8F9`.
+- The tail calls Handoff 10 `UpdatePropertySourceSlot(entry, 0, candidate)`, rebuilds `+0x78`, and calls M506625 with old/new values.
+- Source index `0` is a native mutable/base path, not a Modifier-owned contribution allocation.
+
 ## Current BattleState requirements
 
 - Existing: `modifier_state_by_entity`.
@@ -119,6 +133,8 @@
 - Contribution sources and materialized values must remain separate representations.
 - Ordered records are part of the contract.
 - Key removal is part of the contract.
+- Preserve source index `0` separately from modifier contribution ownership.
+- Persist post-transform context so the scoped mutation runtime can reject non-null contexts.
 
 ## Source-of-truth files
 
@@ -134,14 +150,19 @@
 - Property materialization 10: `data/semantics/4.4.54/generic_property_materialization_10.json`.
 - Handoff 10: `docs/agent/handoffs/semantic_handoff_10.md`.
 - Property materialization builder: `tools/reverse/scripts/build_generic_property_materialization_10.py`.
+- Property mutation 11: `data/semantics/4.4.54/generic_property_mutation_11.json`.
+- Handoff 11: `docs/agent/handoffs/semantic_handoff_11.md`.
+- Property mutation builder: `tools/reverse/scripts/build_generic_property_mutation_11.py`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 
 ## Current direct dependency frontier
 
-- First close `StackProperty`'s adapter `0x15C6E450 -> 0x19B4485C0`, which decides the stored source value.
-- Continue the already indexed simple HP path: SetHP executor M508871 -> DirectChangeHP M506500 -> DirectDamageHP M506499.
-- Recover the actual direct-damage request/record boundary before damage formula work.
+- `0x19B4485C0` is now classified as a large tag-dispatch runtime rather than a small property formula; do not collapse it into arithmetic.
+- Close `ModifyProperty` CurrentHP special branch: property index `10` is `CurrentHP`; it reads index `1` MaxHP and M506511 `GetDirtyHP` before the common write tail.
+- `GetDirtyHP` reads MaxHP plus property indices `6/7` (DirtyHPDelta/DirtyHPRatio supporting identity); exact formula/policy remains active work.
+- Continue the indexed simple HP path: SetHP executor M508871 -> DirectChangeHP M506500 -> DirectDamageHP M506499.
+- Recover the actual direct-damage request/record boundary before damage formula work; `0x195C6D120` enters generated tag-dispatch and is not yet accepted as a DamageRequest object.
 - Event/listener work remains a competing dependency because both OnActivate and damage paths enqueue/dispatch event work.
 - Turn/AV work remains deferred until action completion requires it.
 
@@ -154,7 +175,8 @@
 - Universal lifecycle route from `Destroy` to property-pop cleanup.
 - Minimal DamageRequest/HitContext runtime boundary.
 - Damage resolution formula.
-- Entity HP representation and mutation boundary.
+- Non-null `0x19CAF14A0` post-transform policy.
+- CurrentHP/NegativeHP special mutation and DirtyHP policy.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
 
@@ -175,6 +197,8 @@
 
 - Do not turn contribution addition into `final += value` or bypass PropertyEntry rebuild.
 - Do not turn contribution pop into `final -= value`, shift source keys, or clear stale value slots as a substitute for deactivation.
+- Do not treat generic source `0` mutation as modifier contribution removal/rollback.
+- Do not use generic untransformed mutation for CurrentHP or another native special property ID.
 - Do not hardcode Black Swan.
 - Do not build full EntityState speculatively.
 - Do not implement planner, Beam, MCTS, model training, or frontend work.
@@ -193,7 +217,8 @@
 
 ## Immediate next entry procedure
 
-- Enter `0x15C6E450` from M506495, then `0x19B4485C0`; preserve raw value/context reads and writes.
-- Resume at SetHP M508871 only after the adapter boundary is classified, or sooner if direct HP writes prove independent.
-- Treat `0x195C6D120` from DirectDamageHP M506499 as the current concrete request/record submission candidate.
+- Re-enter `M506503` property-id `10` branch at `0xE72E162`; then M506511 `GetDirtyHP` at `0xE734050` and common tail `0xE72E8F9`.
+- Keep `0x19CAF14A0` separate as a bounded non-null post-transform family.
+- Resume SetHP M508871 -> DirectChangeHP M506500 only with the CurrentHP special branch in view.
+- Treat `0x195C6D120` from DirectDamageHP M506499 as generated tag-dispatch evidence, not a settled request object.
 - Write the next handoff only after a chain reaches an observable state write or a real request boundary.
