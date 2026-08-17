@@ -1,0 +1,1481 @@
+{
+  "schema": "damage_request_topology_probe/1",
+  "generated_at": "2026-08-17T14:14:42.979577Z",
+  "game_version": "4.4.54",
+  "purpose": "TOPOLOGY_PROBE_ONLY; no gameplay formula recovery.",
+  "executor_count_scanned": 3024,
+  "initial_candidate_count": 101,
+  "cluster_count": 11,
+  "damage_hinted_executor_count": 146,
+  "shared_helper_clusters": [
+    {
+      "hub_method_index": 506532,
+      "hub_native_rva": "0xE7333E0",
+      "hub_name": "TryGetLockHP",
+      "member_ranks": [
+        2,
+        5,
+        25
+      ],
+      "member_count": 3
+    },
+    {
+      "hub_method_index": 526810,
+      "hub_native_rva": "0xE693520",
+      "hub_name": "RefreshPalyerLockable",
+      "member_ranks": [
+        77,
+        78,
+        79
+      ],
+      "member_count": 3
+    },
+    {
+      "hub_method_index": 506499,
+      "hub_native_rva": "0xE732180",
+      "hub_name": "DirectDamageHP",
+      "member_ranks": [
+        2,
+        3
+      ],
+      "member_count": 2
+    },
+    {
+      "hub_method_index": 504391,
+      "hub_native_rva": "0xE443020",
+      "hub_name": "GetStanceDamageType",
+      "member_ranks": [
+        21,
+        47
+      ],
+      "member_count": 2
+    },
+    {
+      "hub_method_index": 506542,
+      "hub_native_rva": "0xE739920",
+      "hub_name": "CanStanceDamage",
+      "member_ranks": [
+        21,
+        49
+      ],
+      "member_count": 2
+    },
+    {
+      "hub_method_index": 529480,
+      "hub_native_rva": "0xE6D46B0",
+      "hub_name": "get_AttackType",
+      "member_ranks": [
+        56,
+        57
+      ],
+      "member_count": 2
+    },
+    {
+      "hub_method_index": 504390,
+      "hub_native_rva": "0xE442F00",
+      "hub_name": "GetStanceDamage",
+      "member_ranks": [
+        1
+      ],
+      "member_count": 1
+    },
+    {
+      "hub_method_index": 509968,
+      "hub_native_rva": "0x162E55E0",
+      "hub_name": "MHBNBLKADHP",
+      "member_ranks": [
+        6
+      ],
+      "member_count": 1
+    },
+    {
+      "hub_method_index": 504426,
+      "hub_native_rva": "0xE44A830",
+      "hub_name": "GetTargetAttackDamageType",
+      "member_ranks": [
+        7
+      ],
+      "member_count": 1
+    },
+    {
+      "hub_method_index": 537271,
+      "hub_native_rva": "0xE4CD0A0",
+      "hub_name": "ProcessOnHitEffect",
+      "member_ranks": [
+        10
+      ],
+      "member_count": 1
+    },
+    {
+      "hub_method_index": 537299,
+      "hub_native_rva": "0xE4CEA80",
+      "hub_name": "_AttackDetectByBoxConfig",
+      "member_ranks": [
+        11
+      ],
+      "member_count": 1
+    }
+  ],
+  "ranked_candidates": [
+    {
+      "rank": 1,
+      "classification": "DAMAGE_VALUE_RESOLVE_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 507308,
+        "native_rva": "0xC3123B0",
+        "method_name": "NNGMOCFGPBN",
+        "declaring_type_index": 55138,
+        "runtime_type": "PGOOHIHKHNJ"
+      },
+      "body_hash": "8476ff815aa429870f3c6869dbe5d4e0a2c48322b307a93b5849577e8bf31945",
+      "body_gap_bytes": 5728,
+      "important_reads": [
+        {
+          "method_index": 559287,
+          "native_rva": "0xD0EC7D0",
+          "name": "get_s_SimulationSpeed",
+          "runtime_type": "RPG.Client.GlobalVars"
+        },
+        {
+          "method_index": 504390,
+          "native_rva": "0xE442F00",
+          "name": "GetStanceDamage",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504422,
+          "native_rva": "0xE449B60",
+          "name": "ResolveDamageDisplayResult",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504467,
+          "native_rva": "0xE453DF0",
+          "name": "ResolveAimWorldPos",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 506482,
+          "native_rva": "0xE72BD90",
+          "name": "IsContainModifierBehavior",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 506504,
+          "native_rva": "0xE72C6F0",
+          "name": "GetProperty",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        },
+        {
+          "method_index": 87822,
+          "native_rva": "0x1CF09520",
+          "name": "GetData",
+          "runtime_type": "RPG.GameCore.CharacterNatureExcelTable"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "GLDAGCNDCMA",
+          "caller_method_index": 507304,
+          "caller_rva": "0xC30ED00"
+        },
+        {
+          "executor_type": "AABAELPKKGK",
+          "executor_type_index": 55419,
+          "config_candidates": [
+            "RPG.GameCore.ProcessStoredDamage"
+          ],
+          "caller_method": "FENDMHJDPJD",
+          "caller_method_index": 508237,
+          "caller_rva": "0xB3DCD30"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 2,
+        "total_executor_types": 2,
+        "raw_caller_sites": 2
+      },
+      "important_callees": [
+        {
+          "method_index": 504390,
+          "native_rva": "0xE442F00",
+          "name": "GetStanceDamage",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504410,
+          "native_rva": "0xE445E90",
+          "name": "CommonProcessForDamageFinish",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504422,
+          "native_rva": "0xE449B60",
+          "name": "ResolveDamageDisplayResult",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504559,
+          "native_rva": "0xE4655B0",
+          "name": "DamagePostProcess",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504579,
+          "native_rva": "0xE46D760",
+          "name": "TargetDamageHP",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 519594,
+          "native_rva": "0xE663A60",
+          "name": "Init",
+          "runtime_type": "RPG.GameCore.LevelPreDamageEntity"
+        },
+        {
+          "method_index": 506412,
+          "native_rva": "0xE722DB0",
+          "name": "LogDamageOutcome",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        }
+      ],
+      "downstream_hp_path": {
+        "TargetDamageHP": {
+          "depth": 1,
+          "via_rva": 204546992
+        },
+        "DirectDamageHP": {
+          "depth": 2,
+          "via_rva": 239523680
+        }
+      },
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared by multiple damage-hinted executors and has a bounded downstream path toward HP transition."
+    },
+    {
+      "rank": 2,
+      "classification": "HP_DELTA_BRIDGE_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 504579,
+        "native_rva": "0xE46D760",
+        "method_name": "TargetDamageHP",
+        "declaring_type_index": 54573,
+        "runtime_type": "RPG.GameCore.AbilityStatic"
+      },
+      "body_hash": "0b786840c0676358981c18a5c23b5a6f93830897a5928bb18f1be492e101ce27",
+      "body_gap_bytes": 6448,
+      "important_reads": [
+        {
+          "method_index": 504556,
+          "native_rva": "0xE4647A0",
+          "name": "ResolveSharedTargetShieldCost",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 506504,
+          "native_rva": "0xE72C6F0",
+          "name": "GetProperty",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "FNJBHDJHIIG",
+          "executor_type_index": 55316,
+          "config_candidates": [
+            "RPG.GameCore.LoseHPByRatio"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507897,
+          "caller_rva": "0x1554AEC0"
+        },
+        {
+          "executor_type": "PMIOBHFIGCA",
+          "executor_type_index": 55317,
+          "config_candidates": [
+            "RPG.GameCore.LoseHP"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507899,
+          "caller_rva": "0xC3F44D0"
+        },
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "NNGMOCFGPBN",
+          "caller_method_index": 507308,
+          "caller_rva": "0xC3123B0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 3,
+        "total_executor_types": 3,
+        "raw_caller_sites": 3
+      },
+      "important_callees": [
+        {
+          "method_index": 506499,
+          "native_rva": "0xE732180",
+          "name": "DirectDamageHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 506532,
+          "native_rva": "0xE7333E0",
+          "name": "TryGetLockHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        }
+      ],
+      "downstream_hp_path": {
+        "DirectDamageHP": {
+          "depth": 1,
+          "via_rva": 239523680
+        },
+        "TagDispatch_0x15C6D120": {
+          "depth": 2,
+          "via_rva": 242426240
+        }
+      },
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "AbilityStatic.TargetDamageHP directly calls DirectDamageHP; strongest known HP delta bridge."
+    },
+    {
+      "rank": 3,
+      "classification": "HP_DELTA_BRIDGE_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 506500,
+        "native_rva": "0xE733830",
+        "method_name": "DirectChangeHP",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      },
+      "body_hash": "f1c68507136088c9331b2a88ce3d607ce27562ff5e6ccf885ea5f01675d12de4",
+      "body_gap_bytes": 2080,
+      "important_reads": [
+        {
+          "method_index": 506511,
+          "native_rva": "0xE734050",
+          "name": "GetDirtyHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "AAOLFLMHBEK",
+          "executor_type_index": 55244,
+          "config_candidates": [
+            "RPG.GameCore.HealHP"
+          ],
+          "caller_method": "PBFANKMMAOC",
+          "caller_method_index": 507658,
+          "caller_rva": "0xB3F50D0"
+        },
+        {
+          "executor_type": "ONECLKJPNJP",
+          "executor_type_index": 55652,
+          "config_candidates": [
+            "RPG.GameCore.SetHP"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 508871,
+          "caller_rva": "0xC03AC70"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 2,
+        "total_executor_types": 2,
+        "raw_caller_sites": 2
+      },
+      "important_callees": [
+        {
+          "method_index": 506499,
+          "native_rva": "0xE732180",
+          "name": "DirectDamageHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 506511,
+          "native_rva": "0xE734050",
+          "name": "GetDirtyHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        }
+      ],
+      "downstream_hp_path": {
+        "DirectDamageHP": {
+          "depth": 1,
+          "via_rva": 242432048
+        },
+        "TagDispatch_0x15C6D120": {
+          "depth": 2,
+          "via_rva": 242426240
+        }
+      },
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "DirectChangeHP endpoint; SetHP-specific, penalized as an already-completed HP mutation path."
+    },
+    {
+      "rank": 4,
+      "classification": "HIT_CONTEXT_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 507297,
+        "native_rva": "0xC30FC40",
+        "method_name": "HPKFAFOPGPG",
+        "declaring_type_index": 55138,
+        "runtime_type": "PGOOHIHKHNJ"
+      },
+      "body_hash": "199e6e59f575f624b91da162dcfbe82ceb353953225af246e571a173d9d779f8",
+      "body_gap_bytes": 1312,
+      "important_reads": [
+        {
+          "method_index": 530659,
+          "native_rva": "0xE620010",
+          "name": "IsInTeamFormation",
+          "runtime_type": "RPG.GameCore.GameEntityExtensions"
+        },
+        {
+          "method_index": 500053,
+          "native_rva": "0xE771AE0",
+          "name": "IsEntityUnselectable",
+          "runtime_type": "RPG.GameCore.TurnBasedGameMode"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507296,
+          "caller_rva": "0xC30D850"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 1,
+        "total_executor_types": 1,
+        "raw_caller_sites": 1
+      },
+      "important_callees": [],
+      "downstream_hp_path": {
+        "TargetDamageHP": {
+          "depth": 3,
+          "via_rva": 204546992
+        }
+      },
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Name/type hint only; topology needs V4P confirmation."
+    },
+    {
+      "rank": 5,
+      "classification": "HP_DELTA_BRIDGE_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 506499,
+        "native_rva": "0xE732180",
+        "method_name": "DirectDamageHP",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      },
+      "body_hash": "4bf71e1c1e264095407e716a1011958e08a82422336c992682eaa05260b060db",
+      "body_gap_bytes": 4704,
+      "important_reads": [
+        {
+          "method_index": 506504,
+          "native_rva": "0xE72C6F0",
+          "name": "GetProperty",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [],
+      "caller_count": {
+        "damage_executor_types": 0,
+        "total_executor_types": 0,
+        "raw_caller_sites": 0
+      },
+      "important_callees": [
+        {
+          "method_index": 506532,
+          "native_rva": "0xE7333E0",
+          "name": "TryGetLockHP",
+          "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+        },
+        {
+          "method_index": 725276,
+          "native_rva": "0x15C6D120",
+          "name": "__Gen_Wrap_2256",
+          "runtime_type": "IFix.ILFixDynamicMethodWrapper"
+        }
+      ],
+      "downstream_hp_path": {
+        "TagDispatch_0x15C6D120": {
+          "depth": 1,
+          "via_rva": 242426240
+        }
+      },
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Already-recovered DirectDamageHP endpoint; used as terminal anchor, not a new damage request."
+    },
+    {
+      "rank": 6,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 509955,
+        "native_rva": "0x162C0160",
+        "method_name": "DCADIANHPFD",
+        "declaring_type_index": 55950,
+        "runtime_type": "JKNLHJLPIOO"
+      },
+      "body_hash": "186bd4c45e153f44794fdae3054dcaf01ff2ef6ec76896eb409d3d23a4b6077d",
+      "body_gap_bytes": 144,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "OHJOKACIEMG",
+          "executor_type_index": 54977,
+          "config_candidates": [
+            "RPG.GameCore.AddRegardAsAttackType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 506064,
+          "caller_rva": "0xBF5F420"
+        },
+        {
+          "executor_type": "GMOELMHCNEE",
+          "executor_type_index": 54983,
+          "config_candidates": [
+            "RPG.GameCore.AddWeakByTeamAttackType"
+          ],
+          "caller_method": ".ctor",
+          "caller_method_index": 506077,
+          "caller_rva": "0x15788540"
+        },
+        {
+          "executor_type": "GMOELMHCNEE",
+          "executor_type_index": 54983,
+          "config_candidates": [
+            "RPG.GameCore.AddWeakByTeamAttackType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 506079,
+          "caller_rva": "0x157885F0"
+        },
+        {
+          "executor_type": "JGGNPDLOLMM",
+          "executor_type_index": 55121,
+          "config_candidates": [
+            "RPG.GameCore.ClearRegardAsAttackType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507238,
+          "caller_rva": "0x16256050"
+        },
+        {
+          "executor_type": "ANPEFPOPHJL",
+          "executor_type_index": 55587,
+          "config_candidates": [
+            "RPG.GameCore.SetDynamicValueByHPSharedGroup"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 508704,
+          "caller_rva": "0x1534C490"
+        },
+        {
+          "executor_type": "OJEJIIDCFMG",
+          "executor_type_index": 55590,
+          "config_candidates": [
+            "RPG.GameCore.SetDynamicValueByHitSplitRatio"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 508711,
+          "caller_rva": "0xBF9ED60"
+        },
+        {
+          "executor_type": "KPCFMCINLBF",
+          "executor_type_index": 55717,
+          "config_candidates": [
+            "RPG.GameCore.SetTargetDamageTextVisible"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 509060,
+          "caller_rva": "0xB6D7790"
+        },
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "GLDAGCNDCMA",
+          "caller_method_index": 507304,
+          "caller_rva": "0xC30ED00"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 7,
+        "total_executor_types": 126,
+        "raw_caller_sites": 8
+      },
+      "important_callees": [
+        {
+          "method_index": 509968,
+          "native_rva": "0x162E55E0",
+          "name": "MHBNBLKADHP",
+          "runtime_type": "JKNLHJLPIOO"
+        }
+      ],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 7,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 504425,
+        "native_rva": "0xE44A310",
+        "method_name": "GetAttackDamageType",
+        "declaring_type_index": 54573,
+        "runtime_type": "RPG.GameCore.AbilityStatic"
+      },
+      "body_hash": "ff44c4e46c3d2dc91a798608f810987dfe6ea4004697b3797ced73239f492b12",
+      "body_gap_bytes": 1312,
+      "important_reads": [
+        {
+          "method_index": 504364,
+          "native_rva": "0xE43E160",
+          "name": "GetTaskSingleTarget",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 504426,
+          "native_rva": "0xE44A830",
+          "name": "GetTargetAttackDamageType",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "GMOELMHCNEE",
+          "executor_type_index": 54983,
+          "config_candidates": [
+            "RPG.GameCore.AddWeakByTeamAttackType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 506079,
+          "caller_rva": "0x157885F0"
+        },
+        {
+          "executor_type": "HLJLIANGNBA",
+          "executor_type_index": 55019,
+          "config_candidates": [
+            "RPG.GameCore.AttachPreshowDamageTypeForSkill"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 506802,
+          "caller_rva": "0x159F3C80"
+        },
+        {
+          "executor_type": "HGMGLKKGNJC",
+          "executor_type_index": 55598,
+          "config_candidates": [
+            "RPG.GameCore.SetDynamicValueByPreCalcStanceDamage"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 508737,
+          "caller_rva": "0x15902220"
+        },
+        {
+          "executor_type": "IPOLHCLEBED",
+          "executor_type_index": 55813,
+          "config_candidates": [
+            "RPG.GameCore.SwitchCaseByAttackDamageType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 509378,
+          "caller_rva": "0x1614F8D0"
+        },
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "DMPONLJNPHC",
+          "caller_method_index": 507318,
+          "caller_rva": "0xC30EB60"
+        },
+        {
+          "executor_type": "PMPLHCFJCMB",
+          "executor_type_index": 55145,
+          "config_candidates": [
+            "RPG.GameCore.DamageStance"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507332,
+          "caller_rva": "0xC3FD1F0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 6,
+        "total_executor_types": 6,
+        "raw_caller_sites": 6
+      },
+      "important_callees": [
+        {
+          "method_index": 504426,
+          "native_rva": "0xE44A830",
+          "name": "GetTargetAttackDamageType",
+          "runtime_type": "RPG.GameCore.AbilityStatic"
+        },
+        {
+          "method_index": 505873,
+          "native_rva": "0xE6F1530",
+          "name": "EvaluateTarget",
+          "runtime_type": "RPG.GameCore.TaskContext"
+        }
+      ],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 8,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 537264,
+        "native_rva": "0xE4CC670",
+        "method_name": "ProcessAttackResultDirectKill",
+        "declaring_type_index": 59103,
+        "runtime_type": "RPG.GameCore.AdventureStatic"
+      },
+      "body_hash": "adcb757803fe8fa4069b887d3ffe7ef463a5070bafa17b870893ffaa3084bb57",
+      "body_gap_bytes": 816,
+      "important_reads": [
+        {
+          "method_index": 537243,
+          "native_rva": "0xE4C87F0",
+          "name": "GetAdventureMapDef",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "HEPDMLHECBA",
+          "executor_type_index": 57994,
+          "config_candidates": [
+            "RPG.GameCore.AdventureAbortAttack"
+          ],
+          "caller_method": "CIGFBOHPKNJ",
+          "caller_method_index": 531287,
+          "caller_rva": "0x158B8F90"
+        },
+        {
+          "executor_type": "MEMHGHMEBBM",
+          "executor_type_index": 58833,
+          "config_candidates": [
+            "RPG.GameCore.SwitchMascotBulletTriggerAttack"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 535456,
+          "caller_rva": "0xB9EF3B0"
+        },
+        {
+          "executor_type": "BEGBJAEAFDN",
+          "executor_type_index": 59046,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroMonsterHitBoomProp"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536684,
+          "caller_rva": "0x160CEAE0"
+        },
+        {
+          "executor_type": "FDIDPNMEIDO",
+          "executor_type_index": 59054,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroUseBulletHitTarget"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536720,
+          "caller_rva": "0x153C2F30"
+        },
+        {
+          "executor_type": "NBIDNGEDEMJ",
+          "executor_type_index": 57993,
+          "config_candidates": [
+            "RPG.GameCore.AdventureLoopAttackDetect"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 531281,
+          "caller_rva": "0xBBCAB10"
+        },
+        {
+          "executor_type": "NJIOAKCLACC",
+          "executor_type_index": 58014,
+          "config_candidates": [
+            "RPG.GameCore.AdventureTriggerAttack"
+          ],
+          "caller_method": "LDODMCJAKKP",
+          "caller_method_index": 531370,
+          "caller_rva": "0xBD12720"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 6,
+        "total_executor_types": 6,
+        "raw_caller_sites": 6
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 9,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 537261,
+        "native_rva": "0xE4CB940",
+        "method_name": "CalcEffectiveHitEntityList",
+        "declaring_type_index": 59103,
+        "runtime_type": "RPG.GameCore.AdventureStatic"
+      },
+      "body_hash": "68ce7696b6654217cfce638bb3d951eef3a2f61d0936adc82ee79226282405ea",
+      "body_gap_bytes": 3104,
+      "important_reads": [
+        {
+          "method_index": 568171,
+          "native_rva": "0xD5C8AC0",
+          "name": "get_SkipEventID",
+          "runtime_type": "RPG.Client.MapNpcDef"
+        },
+        {
+          "method_index": 537162,
+          "native_rva": "0xE4C0220",
+          "name": "IsTargetHolyShield",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        },
+        {
+          "method_index": 537262,
+          "native_rva": "0xE4CC560",
+          "name": "GetNpcMonsterStageType",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        },
+        {
+          "method_index": 530670,
+          "native_rva": "0xE620950",
+          "name": "IsEnemyOf",
+          "runtime_type": "RPG.GameCore.GameEntityExtensions"
+        },
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "MEMHGHMEBBM",
+          "executor_type_index": 58833,
+          "config_candidates": [
+            "RPG.GameCore.SwitchMascotBulletTriggerAttack"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 535456,
+          "caller_rva": "0xB9EF3B0"
+        },
+        {
+          "executor_type": "BEGBJAEAFDN",
+          "executor_type_index": 59046,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroMonsterHitBoomProp"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536684,
+          "caller_rva": "0x160CEAE0"
+        },
+        {
+          "executor_type": "BEGBJAEAFDN",
+          "executor_type_index": 59046,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroMonsterHitBoomProp"
+          ],
+          "caller_method": "AABHECHJMAN",
+          "caller_method_index": 536685,
+          "caller_rva": "0x160CF560"
+        },
+        {
+          "executor_type": "FDIDPNMEIDO",
+          "executor_type_index": 59054,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroUseBulletHitTarget"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536720,
+          "caller_rva": "0x153C2F30"
+        },
+        {
+          "executor_type": "FDIDPNMEIDO",
+          "executor_type_index": 59054,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroUseBulletHitTarget"
+          ],
+          "caller_method": "AABHECHJMAN",
+          "caller_method_index": 536721,
+          "caller_rva": "0x153C3AC0"
+        },
+        {
+          "executor_type": "NBIDNGEDEMJ",
+          "executor_type_index": 57993,
+          "config_candidates": [
+            "RPG.GameCore.AdventureLoopAttackDetect"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 531281,
+          "caller_rva": "0xBBCAB10"
+        },
+        {
+          "executor_type": "NJIOAKCLACC",
+          "executor_type_index": 58014,
+          "config_candidates": [
+            "RPG.GameCore.AdventureTriggerAttack"
+          ],
+          "caller_method": "HJCNEIGMBOJ",
+          "caller_method_index": 531377,
+          "caller_rva": "0xBD0FBD0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 5,
+        "total_executor_types": 6,
+        "raw_caller_sites": 7
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 10,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 537270,
+        "native_rva": "0xE4CCFC0",
+        "method_name": "ProcessOnHitEffect",
+        "declaring_type_index": 59103,
+        "runtime_type": "RPG.GameCore.AdventureStatic"
+      },
+      "body_hash": "a27b6cf9bd00128d16592656df8494361fb89e7182a7990b063f17c1e9034d51",
+      "body_gap_bytes": 224,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "MEMHGHMEBBM",
+          "executor_type_index": 58833,
+          "config_candidates": [
+            "RPG.GameCore.SwitchMascotBulletTriggerAttack"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 535456,
+          "caller_rva": "0xB9EF3B0"
+        },
+        {
+          "executor_type": "BEGBJAEAFDN",
+          "executor_type_index": 59046,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroMonsterHitBoomProp"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536684,
+          "caller_rva": "0x160CEAE0"
+        },
+        {
+          "executor_type": "FDIDPNMEIDO",
+          "executor_type_index": 59054,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroUseBulletHitTarget"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536720,
+          "caller_rva": "0x153C2F30"
+        },
+        {
+          "executor_type": "NBIDNGEDEMJ",
+          "executor_type_index": 57993,
+          "config_candidates": [
+            "RPG.GameCore.AdventureLoopAttackDetect"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 531281,
+          "caller_rva": "0xBBCAB10"
+        },
+        {
+          "executor_type": "NJIOAKCLACC",
+          "executor_type_index": 58014,
+          "config_candidates": [
+            "RPG.GameCore.AdventureTriggerAttack"
+          ],
+          "caller_method": "CCJBBIOCLIM",
+          "caller_method_index": 531378,
+          "caller_rva": "0xBD139C0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 5,
+        "total_executor_types": 7,
+        "raw_caller_sites": 5
+      },
+      "important_callees": [
+        {
+          "method_index": 537271,
+          "native_rva": "0xE4CD0A0",
+          "name": "ProcessOnHitEffect",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        }
+      ],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 11,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 537276,
+        "native_rva": "0xE4CE810",
+        "method_name": "CalculateAttackRangeEnemyList",
+        "declaring_type_index": 59103,
+        "runtime_type": "RPG.GameCore.AdventureStatic"
+      },
+      "body_hash": "06487581a7e14b248dfaf75bef4c57218fedc372e2c0b4f627a0706848131dc9",
+      "body_gap_bytes": 624,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "MEMHGHMEBBM",
+          "executor_type_index": 58833,
+          "config_candidates": [
+            "RPG.GameCore.SwitchMascotBulletTriggerAttack"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 535456,
+          "caller_rva": "0xB9EF3B0"
+        },
+        {
+          "executor_type": "BEGBJAEAFDN",
+          "executor_type_index": 59046,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroMonsterHitBoomProp"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536684,
+          "caller_rva": "0x160CEAE0"
+        },
+        {
+          "executor_type": "FDIDPNMEIDO",
+          "executor_type_index": 59054,
+          "config_candidates": [
+            "RPG.GameCore.WolfBroUseBulletHitTarget"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 536720,
+          "caller_rva": "0x153C2F30"
+        },
+        {
+          "executor_type": "NBIDNGEDEMJ",
+          "executor_type_index": 57993,
+          "config_candidates": [
+            "RPG.GameCore.AdventureLoopAttackDetect"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 531281,
+          "caller_rva": "0xBBCAB10"
+        },
+        {
+          "executor_type": "NJIOAKCLACC",
+          "executor_type_index": 58014,
+          "config_candidates": [
+            "RPG.GameCore.AdventureTriggerAttack"
+          ],
+          "caller_method": "HJCNEIGMBOJ",
+          "caller_method_index": 531377,
+          "caller_rva": "0xBD0FBD0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 5,
+        "total_executor_types": 5,
+        "raw_caller_sites": 5
+      },
+      "important_callees": [
+        {
+          "method_index": 537299,
+          "native_rva": "0xE4CEA80",
+          "name": "_AttackDetectByBoxConfig",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        },
+        {
+          "method_index": 537300,
+          "native_rva": "0xE4CED70",
+          "name": "_AttackDetectBySphereConfig",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        },
+        {
+          "method_index": 537301,
+          "native_rva": "0xE4CEFB0",
+          "name": "_AttackDetectByCircleConfig",
+          "runtime_type": "RPG.GameCore.AdventureStatic"
+        }
+      ],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    },
+    {
+      "rank": 12,
+      "classification": "DAMAGE_REQUEST_CANDIDATE",
+      "runtime_identity": {
+        "method_index": 505813,
+        "native_rva": "0xB526340",
+        "method_name": "JDHDNAFAKCN",
+        "declaring_type_index": 54928,
+        "runtime_type": "KFELGAIGHAP"
+      },
+      "body_hash": "22d63358f64cee369fea51f281dbe9b95285a4da14b8816cb6af3f5ac21e9fd7",
+      "body_gap_bytes": 2080,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "IPOLHCLEBED",
+          "executor_type_index": 55813,
+          "config_candidates": [
+            "RPG.GameCore.SwitchCaseByAttackDamageType"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 509378,
+          "caller_rva": "0x1614F8D0"
+        },
+        {
+          "executor_type": "DECNAACHGFG",
+          "executor_type_index": 55845,
+          "config_candidates": [
+            "RPG.GameCore.TriggeBattleLoadFinishPerformance"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 509476,
+          "caller_rva": "0xE5A8160"
+        },
+        {
+          "executor_type": "DECNAACHGFG",
+          "executor_type_index": 55845,
+          "config_candidates": [
+            "RPG.GameCore.TriggeBattleLoadFinishPerformance"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 509477,
+          "caller_rva": "0xE5A86B0"
+        },
+        {
+          "executor_type": "GCGHJHGDHMI",
+          "executor_type_index": 55838,
+          "config_candidates": [
+            "RPG.GameCore.TaskTemplateFetchParamSequence"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 509452,
+          "caller_rva": "0x155F17D0"
+        },
+        {
+          "executor_type": "GCGHJHGDHMI",
+          "executor_type_index": 55838,
+          "config_candidates": [
+            "RPG.GameCore.TaskTemplateFetchParamSequence"
+          ],
+          "caller_method": "Tick",
+          "caller_method_index": 509454,
+          "caller_rva": "0x155F1AB0"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 3,
+        "total_executor_types": 161,
+        "raw_caller_sites": 5
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Shared across damage-hinted generated executors; request/context construction not yet proven."
+    }
+  ],
+  "reference_anchors": [
+    {
+      "rank": 82,
+      "classification": "DAMAGE_CHUNK_SCOPE_ONLY",
+      "runtime_identity": {
+        "method_index": 506407,
+        "native_rva": "0xE7227E0",
+        "method_name": "BeginDamageChunk",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      },
+      "body_hash": "6d253928f8d23892b1aaf5c4dd8f8a2a93a3bef0887e94887d77aa444c42cb7d",
+      "body_gap_bytes": 160,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507296,
+          "caller_rva": "0xC30D850"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 1,
+        "total_executor_types": 1,
+        "raw_caller_sites": 1
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Chunk scope boundary with no resolved damage value production."
+    },
+    {
+      "rank": 83,
+      "classification": "DAMAGE_CHUNK_SCOPE_ONLY",
+      "runtime_identity": {
+        "method_index": 506408,
+        "native_rva": "0xE722880",
+        "method_name": "EndDamageChunk",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      },
+      "body_hash": "78bb64e80a1a57a8f98ded0a691c71712d1f5b0e651d5fc916f07409c8f6857b",
+      "body_gap_bytes": 576,
+      "important_reads": [
+        {
+          "method_index": 732322,
+          "native_rva": "0x15FE7450",
+          "name": "GetPatch",
+          "runtime_type": "IFix.WrappersManagerImpl"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [
+        {
+          "executor_type": "PGOOHIHKHNJ",
+          "executor_type_index": 55138,
+          "config_candidates": [
+            "RPG.GameCore.DamageByAttackProperty"
+          ],
+          "caller_method": "OnTaskBegin",
+          "caller_method_index": 507296,
+          "caller_rva": "0xC30D850"
+        }
+      ],
+      "caller_count": {
+        "damage_executor_types": 1,
+        "total_executor_types": 1,
+        "raw_caller_sites": 1
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Chunk scope boundary with no resolved damage value production."
+    },
+    {
+      "rank": 101,
+      "classification": "GENERATED_DISPATCH",
+      "runtime_identity": {
+        "method_index": 725276,
+        "native_rva": "0x15C6D120",
+        "method_name": "__Gen_Wrap_2256",
+        "declaring_type_index": 80868,
+        "runtime_type": "IFix.ILFixDynamicMethodWrapper"
+      },
+      "body_hash": "0faae3fdb9c8c2fc9aaccb7eeac2a4f6f82c9335950841ac5f3af0ed9b370a59",
+      "body_gap_bytes": 784,
+      "important_reads": [
+        {
+          "method_index": 69389,
+          "native_rva": "0x1B42CBB0",
+          "name": "get_Stack",
+          "runtime_type": "IFix.Core.ThreadStackInfo"
+        }
+      ],
+      "source_caster_context_reads": "not resolved by topology probe; caller/executor graph only",
+      "property_reads": "not resolved by topology probe; read-adjacent callees listed in important_reads",
+      "representative_callers": [],
+      "caller_count": {
+        "damage_executor_types": 0,
+        "total_executor_types": 0,
+        "raw_caller_sites": 0
+      },
+      "important_callees": [],
+      "downstream_hp_path": {},
+      "evidence_level": "DISCOVERY_TOPOLOGY",
+      "reason": "Generated tag-dispatch evidence; not a settled DamageRequest."
+    }
+  ],
+  "recommended_v4p_entry": {
+    "primary": {
+      "method_index": 507308,
+      "native_rva": "0xC3123B0",
+      "method_name": "NNGMOCFGPBN",
+      "declaring_type_index": 55138,
+      "runtime_type": "PGOOHIHKHNJ"
+    },
+    "alternates": [
+      {
+        "method_index": 504579,
+        "native_rva": "0xE46D760",
+        "method_name": "TargetDamageHP",
+        "declaring_type_index": 54573,
+        "runtime_type": "RPG.GameCore.AbilityStatic"
+      },
+      {
+        "method_index": 506500,
+        "native_rva": "0xE733830",
+        "method_name": "DirectChangeHP",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      },
+      {
+        "method_index": 507297,
+        "native_rva": "0xC30FC40",
+        "method_name": "HPKFAFOPGPG",
+        "declaring_type_index": 55138,
+        "runtime_type": "PGOOHIHKHNJ"
+      },
+      {
+        "method_index": 506499,
+        "native_rva": "0xE732180",
+        "method_name": "DirectDamageHP",
+        "declaring_type_index": 55009,
+        "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent"
+      }
+    ],
+    "reason": "NNGMOCFGPBN is the top non-anchor candidate: a generated executor helper shared by DamageByAttackProperty and ProcessStoredDamage, with a bounded downstream path NNGMOCFGPBN -> TargetDamageHP -> DirectDamageHP. V4P should start here and use TargetDamageHP/DirectChangeHP as HP-bridge alternates."
+  },
+  "source_inputs": {
+    "action_bridge": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+    "existing_topology": "data/raw/4.4.54/generated_task_damage_topology_10.json",
+    "damage_direct_hp_xrefs": "data/raw/4.4.54/damage_direct_hp_xrefs_10.json"
+  }
+}
