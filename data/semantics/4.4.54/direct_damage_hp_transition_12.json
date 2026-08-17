@@ -1,0 +1,310 @@
+{
+  "schema": "battle_semantic_bridge/1",
+  "game_version": "4.4.54",
+  "capability_id": "DIRECT_DAMAGE_HP_TRANSITION_12_PROOF",
+  "status": "COMPLETED_SCOPED_DIRECT_DAMAGE_HP_TRANSITION",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "generated_at": "2026-08-16T12:00:00Z",
+  "source": {
+    "handoff": "docs/agent/handoffs/semantic_handoff_12.md",
+    "raw_disassembly": "data/raw/4.4.54/ability_direct_damage_hp_506499_full_10.txt"
+  },
+  "scope": {
+    "method_name": "DirectDamageHP",
+    "method_index": 506499,
+    "native_rva": "0xE732180",
+    "body_bytes": 3974,
+    "body_sha256": "7f712493e35452e66166f1bcca4c51f2b8b3eecf5f65df54c1a85c00526e887a",
+    "caller_shape": "M506500 negative delta -> damage_kind=100, mode=0",
+    "excluded": [
+      "modes 4, 5, 6",
+      "special FixPoint NaN/Infinity encoding branches",
+      "M506625 after-change consumers",
+      "0x18DA9CFF0 submit consumer",
+      "0x18B429F50 tail call"
+    ]
+  },
+  "primitives": [
+    {
+      "primitive_id": "battle.ir.hp.direct_damage.transition",
+      "semantic_name": "DirectDamageHPMode0Transition",
+      "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+      "method_index": 506499,
+      "native_rva": "0xE732180",
+      "body_sha256": "7f712493e35452e66166f1bcca4c51f2b8b3eecf5f65df54c1a85c00526e887a",
+      "evidence_level": "CONFIRMED",
+      "inputs": {
+        "component": "rcx",
+        "delta": "rdx",
+        "damage_kind": "r8d = 100",
+        "context": "r9",
+        "out_applied_ptr": "stack arg 5",
+        "input_record_ptr": "stack arg 6, {value@+0, flag_byte@+8}",
+        "mode": "stack arg 7 = 0"
+      },
+      "outputs": [
+        "out_applied: 0 at entry; then applied_delta = new_current - old_current, or -delta on the NegativeHP property path",
+        "persistent CurrentHP source slot 0 update",
+        "conditional persistent NegativeHP source slot 0 update",
+        "M506625 after-change calls (boundary)",
+        "0x18DA9CFF0 submit (boundary, only when Y <= 0 and gate passes)",
+        "0x18B429F50 tail call (boundary)"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.hp.try_get_lock_hp",
+      "semantic_name": "TryGetLockHP",
+      "runtime_type": "RPG.GameCore.TurnBasedAbilityComponent",
+      "method_index": 506532,
+      "native_rva": "0xE7333E0",
+      "body_bytes": 907,
+      "body_sha256": "8fbd0e438355b720eb98c765e4703a6168addb7e9c183830f0a21832d60bc86d",
+      "evidence_level": "CONFIRMED",
+      "inputs": [
+        "component",
+        "damage_kind",
+        "out_lock_value_ptr",
+        "out_action_list_ptr"
+      ],
+      "outputs": [
+        "bool: false with out_lock_value=0 when list empty or no accepted record",
+        "true: out_lock_value = selected record value; out_action_list cleared and filled with record action pointers from best index to list end"
+      ],
+      "exact_semantics": [
+        "reads component[+0x50]; list null -> native throw",
+        "scans records descending by index; record stride 0x18",
+        "record[+0x28] int32 compared to damage_kind; record[kind] < damage_kind -> continue",
+        "first accepted record sets out_lock_value = record[+0x30] and best = index",
+        "subsequent lower records accepted only when record[+0x30] == current out_lock_value; equality updates best",
+        "on non-equal record, scan stops and current best is used",
+        "on success clears out_action_list and appends record[+0x20] pointers for indices best .. count-1",
+        "sentinel initial value is global 0x95B1E00, initialized by FixPoint..cctor to raw 0xA2DE246004000001"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.property.update_source_slot",
+      "semantic_name": "UpdatePropertySourceSlot",
+      "native_rva": "0x1957559D0",
+      "body_bytes": 109,
+      "body_sha256": "1a5105a81b2a52842ed0a55399d4cf288956750914ade1b912c8904e38db5843",
+      "evidence_level": "CONFIRMED",
+      "inputs": [
+        "property_entry",
+        "source_index=0",
+        "source_value"
+      ],
+      "outputs": [
+        "updated source slot and rebuilt materialized entry[+0x78]"
+      ]
+    },
+    {
+      "primitive_id": "battle.ir.fp.add",
+      "semantic_name": "fp_add",
+      "native_rva": "0x19D65EF80",
+      "evidence_level": "CONFIRMED"
+    },
+    {
+      "primitive_id": "battle.ir.fp.mul",
+      "semantic_name": "fp_mul",
+      "native_rva": "0x19D661A00",
+      "evidence_level": "CONFIRMED"
+    },
+    {
+      "primitive_id": "battle.ir.fp.sub",
+      "semantic_name": "fp_sub",
+      "native_rva": "0x19D661B60",
+      "evidence_level": "CONFIRMED"
+    },
+    {
+      "primitive_id": "battle.ir.after_property_changed_boundary",
+      "semantic_name": "AfterPropertyChangedBoundary",
+      "method_index": 506625,
+      "native_rva": "0xE72EFC0",
+      "evidence_level": "CONFIRMED_IDENTITY_ONLY",
+      "inputs": [
+        "component",
+        "property_id 10 or 9",
+        "old value",
+        "new value",
+        "context args"
+      ],
+      "outputs": [
+        "UNKNOWN event/listener semantics; recorded boundary only"
+      ]
+    }
+  ],
+  "semantics": {
+    "definitions": {
+      "O": "CurrentHP materialized value, property 10, entry[+0x78]",
+      "D": "input delta (negative for proven SetHP path)",
+      "C": "fp_add(O, D), mode 0 default candidate",
+      "M": "MaxHP materialized value, property 1 via M506504",
+      "R": "DirtyHPRatio materialized value, property 7, entry[+0x78]",
+      "L": "TryGetLockHP out_lock_value",
+      "K": "FixPoint(2) initialized global 0x95B1E80; lifetime immutability UNKNOWN",
+      "Z": "FixPoint(0) global 0x95B1DE0",
+      "B": "fp_sub(M, fp_mul(M, R))"
+    },
+    "intercept_decision": {
+      "helper": "M506532 TryGetLockHP(component, damage_kind, &L, &actions)",
+      "call_rva": "0xE732317",
+      "test_rva": "0xE73231C",
+      "false_destination": "0xE7327B4",
+      "true_destination": "0xE732324",
+      "meaning": "false = no lock-HP intercept; true = lock-HP threshold selected from component[+0x50]"
+    },
+    "transition_normal_finite": {
+      "lock_hit_true": {
+        "T": "fp_min(O, fp_max(fp_min(K, M), fp_mul(M, L)))",
+        "if_C_lt_T": {
+          "X": "T",
+          "bound": "M",
+          "P": "fp_sub(T, C)",
+          "flag": 1
+        },
+        "if_C_ge_T": {
+          "X": "C",
+          "bound": "B",
+          "P": 0,
+          "flag": 0
+        }
+      },
+      "lock_hit_false": {
+        "X": "C",
+        "bound": "B",
+        "P": 0,
+        "flag": 0
+      },
+      "shared_clamp": {
+        "if_X_lt_bound": "Y = X",
+        "elif_X_ge_Z_and_M_gt_Z": "Y = max(Z, bound)",
+        "else": "Y = fp_min(X, M)"
+      },
+      "persistent_current_hp_write": {
+        "entry": "CurrentHP, property 10",
+        "source_index": 0,
+        "value": "Y",
+        "call_rva": "0xE732C73"
+      }
+    },
+    "negative_hp_policy": {
+      "pre_write_record": {
+        "condition": "Y <= 0",
+        "gate": [
+          "component[+0x10] != null",
+          "[component[+0x10] + 0xD4] == 1",
+          "[[component[+0x10] + 0x80] + 0xD0] != null"
+        ],
+        "action": [
+          "allocate object via 0x18B42A0C0",
+          "object[+0x10] = component[+0x10][+0x80][+0xD0]",
+          "object[+0x18] = 8",
+          "call 0x18DA9CFF0(object, 1) -> boundary, not followed"
+        ],
+        "effect_on_current_hp_write": "none; CurrentHP source 0 write still occurs with Y <= 0"
+      },
+      "post_write_property": {
+        "gate": [
+          "feature byte 0x9570924 == 0",
+          "component[+0x20] != null",
+          "[component[+0x20] + 0x18] > 0",
+          "P > 0"
+        ],
+        "read": "N_old = NegativeHP entry[+0x78], property 9, table slot +0x68",
+        "write": {
+          "entry": "NegativeHP, property 9",
+          "source_index": 0,
+          "value": "fp_add(N_old, P)",
+          "call_rva": "0xE732D12"
+        },
+        "after_change": [
+          "if applied != 0: M506625(component, 10, ...)",
+          "M506625(component, 9, ...)"
+        ],
+        "out_applied": "-D"
+      },
+      "no_property_gate": {
+        "out_applied": "applied = fp_sub(new_current, O)",
+        "after_change": [
+          "M506625(component, 10, ...)"
+        ]
+      }
+    },
+    "persistent_reads": [
+      "CurrentHP entry[+0x78], property 10",
+      "MaxHP via M506504(component, 1)",
+      "DirtyHPRatio entry[+0x78], property 7 (no-lock side only)",
+      "component[+0x50] lock-HP list",
+      "NegativeHP entry[+0x78], property 9 (only P > 0 gate)"
+    ],
+    "persistent_writes": [
+      "CurrentHP source slot 0 = Y (always on normal path)",
+      "NegativeHP source slot 0 = fp_add(N_old, P) (only P > 0 gate)"
+    ],
+    "fixedpoint_operations": [
+      "C = fp_add(O, D)",
+      "lockcap = fp_mul(M, L)",
+      "T = fp_min(O, fp_max(fp_min(K, M), lockcap))",
+      "B = fp_sub(M, fp_mul(M, R))",
+      "P = fp_sub(T, C)",
+      "applied = fp_sub(new_current, O)",
+      "N_new = fp_add(N_old, P)"
+    ],
+    "source_index": 0,
+    "branch_constants": {
+      "mode_0": "default candidate path",
+      "damage_kind": 100,
+      "K": "FixPoint(2)",
+      "Z": "FixPoint(0)",
+      "negative_record_word": 8,
+      "property_ids": {
+        "CurrentHP": 10,
+        "NegativeHP": 9,
+        "MaxHP": 1,
+        "DirtyHPRatio": 7
+      }
+    },
+    "pseudocode": [
+      "O = property_entry(component, 10).materialized",
+      "C = fp_add(O, D)",
+      "M = get_property(component, 1)",
+      "lock_hit = try_get_lock_hp(component, damage_kind, &L, &actions)",
+      "if lock_hit and M > 0:",
+      "    T = fp_min(O, fp_max(fp_min(K, M), fp_mul(M, L)))",
+      "    if C < T: X=T; bound=M; P=fp_sub(T,C); flag=1",
+      "    else: X=C; R=get_property(component,7); bound=fp_sub(M,fp_mul(M,R)); P=0; flag=0",
+      "else:",
+      "    X=C; R=get_property(component,7); bound=fp_sub(M,fp_mul(M,R)); P=0; flag=0",
+      "if X < bound: Y = X",
+      "elif X >= 0 and M > 0: Y = max(0, bound)",
+      "else: Y = fp_min(X, M)",
+      "if Y <= 0: maybe_submit_negative_hp_record(component)  # boundary",
+      "update_property_source_slot(current_entry, 0, Y)",
+      "applied = fp_sub(current_entry.materialized, O)",
+      "if feature_byte(0x9570924) == 0 and component[+0x20] nonempty and P > 0:",
+      "    neg_entry = property_entry(component, 9)",
+      "    update_property_source_slot(neg_entry, 0, fp_add(neg_entry.materialized, P))",
+      "    out_applied = -D",
+      "    after_property_changed boundaries for 10 (if applied != 0) and 9",
+      "else:",
+      "    out_applied = applied",
+      "    after_property_changed boundary for 10",
+      "if flag: submit_lock_action_list(actions)  # boundary",
+      "native_tail_boundary()"
+    ]
+  },
+  "dependencies": [
+    "GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF",
+    "GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF",
+    "SET_HP_CURRENT_HP_TRANSITION_12_PARTIAL (superseded by this artifact)"
+  ],
+  "unknowns": [
+    "DirectDamageHP modes 4, 5, 6",
+    "special FixPoint NaN/Infinity encoding branches",
+    "component[+0x50] record/action type identities; _LockHPList field-name link is SUPPORTED",
+    "M506625 consumers",
+    "0x18DA9CFF0 submit consumer",
+    "0x18B429F50 tail call",
+    "K lifetime immutability"
+  ]
+}

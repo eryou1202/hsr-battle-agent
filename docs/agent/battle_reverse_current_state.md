@@ -16,18 +16,21 @@
 - Completed capabilities: Handoff 09 `MODIFIER_PROPERTY_EFFECT_09_PROOF`,
   Handoff 10 `GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF`, and
   Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
-- Partial checkpoint: Handoff 12 `SET_HP_CURRENT_HP_TRANSITION_12_PARTIAL`.
-- Current frontier: `DirectDamageHP` (CurrentHP bound policy coding-ready;
-  overall HP transition PARTIAL).
-- Session stop state: `STOP_BUDGET_3_PERCENT`; CurrentHP bound policy is now
-  coding-ready with `K_INITIALIZED_VALUE = FixPoint(2)`, while overall HP
-  transition remains `PARTIAL`. `K` is confirmed as writable `.data` RVA
-  `0x95B1E80` with raw image `0x41BC903DBD203697`; its lifetime immutability
-  remains UNKNOWN. A reusable global/static writer classifier exists and its K
-  probe output is at `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
+- Completed: Handoff 12 `DIRECT_DAMAGE_HP_TRANSITION_12_PROOF` (scoped
+  HP-transition contract, not damage-system semantics).
+- Current frontier: HP transition for `DirectDamageHP(damage_kind=100,
+  mode=0)` is CLOSED; modes 4/5/6 and post-transition consumers remain
+  UNKNOWN.
+- Session state: DirectDamageHP intercept at `0xE7333E0` is resolved as
+  M506532 `TryGetLockHP`; both sides of the decision, the shared source-0
+  CurrentHP write, and the bounded NegativeHP policy are recovered.
+  `K_INITIALIZED_VALUE = FixPoint(2)` remains CONFIRMED, with lifetime
+  immutability UNKNOWN. The reusable global/static writer classifier and its
+  K probe output remain at
+  `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12_partial.md`.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12.md`.
 - Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
 - The capability includes source-slot lifecycle and materialization framework.
 - Per-kind fixed-point operator names/formulas are still not accepted.
@@ -35,14 +38,15 @@
 - It adds a persistent, Modifier-owned contribution record and reverses it through the same stable source index.
 - Handoff 11 adds the scoped mutable/base path: source slot `0` supports fixed-point `Set/Add/Mul/Min/Max`, rebuild, then a post-change bridge call.
 - This mutation capability deliberately excludes non-null post-transform context and the native special-property IDs.
-- Handoff 12 is deliberately partial: it records SetHP -> DirectChangeHP ->
-  DirectDamageHP -> CurrentHP source-0 evidence, but it does not publish a
-  complete HP or damage contract.
+- Handoff 12 is now a completed, scoped HP-transition contract: SetHP ->
+  DirectChangeHP -> DirectDamageHP(damage_kind=100, mode=0) -> CurrentHP
+  source-0, with the `TryGetLockHP` intercept, lock threshold, DirtyHP-ratio
+  bound, and bounded NegativeHP policy. It is not a damage contract.
 - Handoff 12 additionally records the CurrentHP bound branch's exact control
   flow with a confirmed initial value: `K` at `.data` RVA `0x95B1E80` is
   initialized to `FixPoint(2)` by `RPG.GameCore.FixPoint..cctor` (M68145,
   RVA `0x1D66A320`, direct store `0x1D66A34E`). Lifetime immutability is
-  UNKNOWN; the overall HP transition remains PARTIAL.
+  UNKNOWN.
 
 ## Confirmed reusable runtime chain
 
@@ -60,9 +64,11 @@
 - Generic PropertyEntry source-slot lifecycle and materialized-value write boundary.
 - Generic untransformed source-0 Property mutation.
 - Fixed-point Add/Subtract/Multiply helpers used by Property mutation.
-- Partial SetHP-to-CurrentHP source-0 transition evidence.
-- Coding-ready CurrentHP bound initial-value contract (`K = FixPoint(2)`);
-  overall HP transition remains PARTIAL.
+- SetHP-to-CurrentHP source-0 transition evidence.
+- DirectDamageHP HP transition: `TryGetLockHP` intercept, lock threshold,
+  DirtyHP-ratio bound, shared source-0 CurrentHP write, bounded NegativeHP
+  policy.
+- Coding-ready CurrentHP bound initial-value contract (`K = FixPoint(2)`).
 
 ## Baseline commits that MUST remain intact
 
@@ -175,7 +181,9 @@
 - Property mutation 11: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Handoff 11: `docs/agent/handoffs/semantic_handoff_11.md`.
 - Property mutation builder: `tools/reverse/scripts/build_generic_property_mutation_11.py`.
-- Partial HP handoff: `docs/agent/handoffs/semantic_handoff_12_partial.md`.
+- DirectDamageHP HP-transition artifact:
+  `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
+- HP-transition handoff: `docs/agent/handoffs/semantic_handoff_12.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 - Global/static writer classifier:
@@ -194,10 +202,14 @@
   bound` writes candidate; candidate `>= bound` uses fixed-point min/max
   against `K` before the same source-0 write. `K` lifetime immutability remains
   UNKNOWN.
-- Next semantic frontier is `M506499 DirectDamageHP` at RVA `0xE732180`,
-  starting with intercept entry `0xE7333E0` and the existing split
-  `0xE73231C -> 0xE7327B4 -> 0xE732C6B` before a general HP/damage contract is
-  accepted.
+- `M506499 DirectDamageHP(damage_kind=100, mode=0)` is now closed as an
+  HP-transition contract: intercept `0xE7333E0` is M506532 `TryGetLockHP`;
+  `0xE73231C -> 0xE7327B4 -> 0xE732C6B` is the no-lock path; the lock side
+  converges through the same source-0 CurrentHP write. See Handoff 12 and
+  `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
+- Next native frontier, only if promoted to a new task: DirectDamageHP modes
+  4/5/6 at `0xE732235`, `0xE732288`, `0xE7322A6`; post-transition submit
+  consumers `0x18DA9CFF0` and `0x18B429F50`.
 - `0x195C6D120` remains generated tag-dispatch evidence, not a DamageRequest.
 - Event/listener and Turn/AV work remain deferred.
 
@@ -211,11 +223,14 @@
 - Minimal DamageRequest/HitContext runtime boundary.
 - Damage resolution formula.
 - Non-null `0x19CAF14A0` post-transform policy.
-- CurrentHP/NegativeHP special mutation and DirtyHP policy.
+- DirectDamageHP modes 4/5/6 and special FixPoint NaN/Infinity encoding
+  branches inside its inlined compare blocks.
+- General DirtyHP policy beyond the M506499 mode-0 DirtyHPRatio bound
+  (DirtyHPDelta remains M506511 `GetDirtyHP` only).
+- General NegativeHP consumers beyond the scoped DirectDamageHP policy.
 - `K` lifetime immutability (initialized value `FixPoint(2)` is CONFIRMED;
   absolute immutability UNKNOWN; probe census in
   `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`).
-- DirectDamageHP intercept decision and modes 4/5/6.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
 
@@ -256,13 +271,14 @@
 
 ## Immediate next entry procedure
 
-- Next semantic frontier: `M506499 DirectDamageHP` at RVA `0xE732180`.
-- Begin at intercept entry `0xE7333E0`; reconcile the existing split
-  `0xE73231C -> 0xE7327B4 -> 0xE732C6B`.
+- The DirectDamageHP mode-0 HP transition is closed; implementation input is
+  Handoff 12 and `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
+- Do not reopen M506499 intercept/clamp/source-0 evidence or the K writer
+  work unless lifetime immutability must be established.
+- Only promote a new task for: DirectDamageHP modes 4/5/6
+  (`0xE732235`, `0xE732288`, `0xE7322A6`), post-transition submit consumers
+  (`0x18DA9CFF0`, `0x18B429F50`), or M506625 `_AfterPropertyChanged`
+  consumer semantics.
 - Treat `0x195C6D120` as generated tag-dispatch evidence, not a settled
   DamageRequest.
-- The CurrentHP bound initial-value contract is coding-ready
-  (`K = FixPoint(2)`); do not re-open K writer work unless lifetime
-  immutability needs to be established.
-- Do not implement HP policy beyond the already-confirmed Handoff 12 subset
-  until the full HP transition is closed.
+- Do not implement HP policy beyond the completed Handoff 12 contract.
