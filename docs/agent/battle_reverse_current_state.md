@@ -18,6 +18,9 @@
   Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
 - Completed: Handoff 12 `DIRECT_DAMAGE_HP_TRANSITION_12_PROOF` (scoped
   HP-transition contract, not damage-system semantics).
+- Completed: Handoff 13 `DAMAGE_VALUE_TO_HP_BRIDGE_13_PROOF` (scoped
+  generated-executor -> TargetDamageHP -> DirectDamageHP bridge; still not a
+  damage formula).
 - Current frontier: HP transition for `DirectDamageHP(damage_kind=100,
   mode=0)` is CLOSED; modes 4/5/6 and post-transition consumers remain
   UNKNOWN.
@@ -30,7 +33,7 @@
   `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
-- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12.md`.
+- Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12.md`, `docs/agent/handoffs/semantic_handoff_13.md`.
 - Handoff 10 refines 09's opaque contribution key to a stable PropertyEntry `source_index`.
 - The capability includes source-slot lifecycle and materialization framework.
 - Per-kind fixed-point operator names/formulas are still not accepted.
@@ -184,6 +187,10 @@
 - DirectDamageHP HP-transition artifact:
   `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
 - HP-transition handoff: `docs/agent/handoffs/semantic_handoff_12.md`.
+- Damage value to HP bridge artifact:
+  `data/semantics/4.4.54/damage_value_to_hp_bridge_13.json`.
+- Damage value to HP bridge handoff:
+  `docs/agent/handoffs/semantic_handoff_13.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
 - Global/static writer classifier:
@@ -207,9 +214,14 @@
   `0xE73231C -> 0xE7327B4 -> 0xE732C6B` is the no-lock path; the lock side
   converges through the same source-0 CurrentHP write. See Handoff 12 and
   `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
-- Next native frontier, only if promoted to a new task: DirectDamageHP modes
-  4/5/6 at `0xE732235`, `0xE732288`, `0xE7322A6`; post-transition submit
-  consumers `0x18DA9CFF0` and `0x18B429F50`.
+- `M507308 -> M504579 -> M506499` is now closed as a scoped bridge
+  (`DAMAGE_VALUE_TO_HP_BRIDGE_13_PROOF`). Normal path:
+  `DirectDamageHP(damage_kind=11, mode=0)` with delta
+  `fp_mul(MaxHP, Q) - CurrentHP`; fallback path uses `-V` with
+  damage_kind 10/0 and mode 0 (or a dynamic mode UNKNOWN).
+- Next native frontier, only if promoted to a new task: M530155
+  `GOCKCOMLFEO` `0x1954B9420`, M504598 `_MortallyWondedProcess`
+  `0xE465660`, and the M504579 fallback mode branch `0xE46EA17`.
 - `0x195C6D120` remains generated tag-dispatch evidence, not a DamageRequest.
 - Event/listener and Turn/AV work remain deferred.
 
@@ -228,6 +240,11 @@
 - General DirtyHP policy beyond the M506499 mode-0 DirtyHPRatio bound
   (DirtyHPDelta remains M506511 `GetDirtyHP` only).
 - General NegativeHP consumers beyond the scoped DirectDamageHP policy.
+- M504598 `_MortallyWondedProcess` internal post-process formula.
+- M530155 `GOCKCOMLFEO` evaluator selection/clamp and global `0x95B1E18`.
+- M504557 `RecomputeShieldCost` and fallback global `0x95C1CC0`.
+- M504579 dynamic fallback mode `record[+0x19C]` (may select DirectDamageHP
+  modes 4/5/6; not reversed).
 - `K` lifetime immutability (initialized value `FixPoint(2)` is CONFIRMED;
   absolute immutability UNKNOWN; probe census in
   `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`).
@@ -271,14 +288,12 @@
 
 ## Immediate next entry procedure
 
-- The DirectDamageHP mode-0 HP transition is closed; implementation input is
-  Handoff 12 and `data/semantics/4.4.54/direct_damage_hp_transition_12.json`.
-- Do not reopen M506499 intercept/clamp/source-0 evidence or the K writer
-  work unless lifetime immutability must be established.
-- Only promote a new task for: DirectDamageHP modes 4/5/6
-  (`0xE732235`, `0xE732288`, `0xE7322A6`), post-transition submit consumers
-  (`0x18DA9CFF0`, `0x18B429F50`), or M506625 `_AfterPropertyChanged`
-  consumer semantics.
-- Treat `0x195C6D120` as generated tag-dispatch evidence, not a settled
-  DamageRequest.
-- Do not implement HP policy beyond the completed Handoff 12 contract.
+- The damage-value-to-HP bridge is closed; implementation input is Handoff 13
+  and `data/semantics/4.4.54/damage_value_to_hp_bridge_13.json`.
+- Do not reopen M507308/M504579 call-shape evidence, Handoff 12, or broad
+  generated-executor topology scans.
+- Only promote a new task for: M530155 `GOCKCOMLFEO` (`0x1954B9420`),
+  M504598 `_MortallyWondedProcess` (`0xE465660`), M504557
+  `RecomputeShieldCost`, or the M504579 dynamic fallback mode
+  (`0xE46EA17`).
+- Do not enter full damage formula, stance, display, or event subsystems.

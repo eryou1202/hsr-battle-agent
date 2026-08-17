@@ -1,0 +1,187 @@
+{
+  "schema": "battle_semantic_bridge/1",
+  "game_version": "4.4.54",
+  "capability_id": "DAMAGE_VALUE_TO_HP_BRIDGE_13_PROOF",
+  "status": "COMPLETED_SCOPED_GENERATED_EXECUTOR_TO_DIRECT_DAMAGE_HP_BRIDGE",
+  "evidence_level": "E4_STATIC_MACHINE_CODE",
+  "generated_at": "2026-08-17T15:00:00Z",
+  "chain": [
+    "M507308 NNGMOCFGPBN -> M504579 TargetDamageHP -> M506499 DirectDamageHP"
+  ],
+  "stages": [
+    {
+      "stage": "generated_executor_dispatch",
+      "method_index": 507308,
+      "method_name": "NNGMOCFGPBN",
+      "declaring_type_index": 55138,
+      "native_rva": "0xC3123B0",
+      "body_hash": "8476ff815aa429870f3c6869dbe5d4e0a2c48322b307a93b5849577e8bf31945",
+      "evidence_level": "CONFIRMED",
+      "semantic_role": "DAMAGE_REQUEST_BUILD_AND_DISPATCH",
+      "inputs": [
+        "rcx: PGOOHIHKHNJ executor record",
+        "rdx: outer executor record [caller r15+0x20]",
+        "r8: damage-result/request object; reads [+0xE8], [+0x2D8]",
+        "r9: stance/source object",
+        "stack arg5: resolved component/ability object",
+        "stack arg6: task[+0x18] entity",
+        "stack arg7: task[+0x10] entity (forwarded to TargetDamageHP)",
+        "stack arg8: second resolved component/ability object",
+        "stack arg9: byte flag",
+        "stack arg10: extra pointer"
+      ],
+      "reads": [
+        "request[+0xE8]",
+        "request[+0x2D8] FixPoint damage slot",
+        "executor record [+0x20] config area copied 0xB2 bytes",
+        "executor record [+0xD2], [+0xD3], [+0xD7], [+0x190]",
+        "entity flags [+0xD4]"
+      ],
+      "writes": [
+        "local context struct [rsp+0x460]",
+        "local output struct [rsp+0xD8]",
+        "M504598 writes FixPoint through &[rsp+0xA0]"
+      ],
+      "fixedpoint_operations": [
+        "none directly on the forwarded value; inline compare of [rsp+0xA0] against FixPoint(0) selects a local flag"
+      ],
+      "outputs_to_target_damage_hp": {
+        "call_rva": "0xC313187",
+        "target_method": "M504579",
+        "arg1_rcx": "task[+0x10] entity (M507308 r14)",
+        "arg2_rdx": "&local_context [rsp+0x460]",
+        "arg3_r8": "FixPoint V = [rsp+0xA0], post-processed from request[+0x2D8] by M504559->M504598",
+        "arg4_r9": "&out_struct [rsp+0xD8]",
+        "arg5_stack": "PGOOHIHKHNJ executor record (M507308 rdi)"
+      },
+      "ordering": "one TargetDamageHP call; no target iteration in M507308",
+      "branch_behavior": [
+        "request[+0x2B] gate bypasses into native patch path",
+        "damage value slot post-processed before the TargetDamageHP call"
+      ],
+      "unknowns": [
+        "exact semantic names of arg2/arg3 fields",
+        "M504598 post-process formula"
+      ]
+    },
+    {
+      "stage": "target_damage_hp_bridge",
+      "method_index": 504579,
+      "method_name": "TargetDamageHP",
+      "declaring_type_index": 54573,
+      "native_rva": "0xE46D760",
+      "body_hash": "0b786840c0676358981c18a5c23b5a6f93830897a5928bb18f1be492e101ce27",
+      "evidence_level": "CONFIRMED",
+      "semantic_role": "TARGET_DAMAGE_HP_BRIDGE",
+      "inputs": [
+        "entity (resolves target list and evaluator)",
+        "context struct",
+        "FixPoint damage value V",
+        "out pointer",
+        "executor/request record"
+      ],
+      "reads": [
+        "entity[+0x80] -> [+0xA0] -> [+0x88][entity[+0xFC]] target/evaluator resolution",
+        "target component CurrentHP via M506504 property 10",
+        "target component MaxHP via M506504 property 1",
+        "evaluator M530155 GOCKCOMLFEO output Q",
+        "executor record [+0x2F9] damage-kind gate",
+        "executor record [+0x19C] fallback mode"
+      ],
+      "writes": [
+        "output slot [+0x680] applied-delta",
+        "per-target damage record list entries",
+        "context record [+0x5E8]=-V, [+0x5F0]=1 for DirectDamageHP"
+      ],
+      "fixedpoint_operations": [
+        "S0 = fp_mul(MaxHP, Q)",
+        "delta = fp_sub(S, CurrentHP)",
+        "normal passed delta = fp_sub(CurrentHP, S)",
+        "record_value = fp_neg(V) for normal finite V"
+      ],
+      "property_ids": {
+        "CurrentHP": 10,
+        "MaxHP": 1
+      },
+      "normal_edge": {
+        "call_rva": "0xE46E5D1",
+        "target": "M506499 DirectDamageHP",
+        "rcx": "resolved target component [rbp+0x698]",
+        "rdx": "delta = S - CurrentHP (negative for damage)",
+        "r8d": "11 (damage_kind)",
+        "r9": "copy of arg2 context (0x108 bytes)",
+        "stack_arg5": "&[rbp+0x680] out applied",
+        "stack_arg6": "&[rbp+0x5E8] record {-V, flag=1}",
+        "stack_arg7": "0 (mode)"
+      },
+      "fallback_edges": [
+        {
+          "call_rva": "0xE46E8D2",
+          "rcx": "source-resolved component r12",
+          "rdx": "delta = -V (normal finite)",
+          "r8d": "r13d = 10 if record[+0x2F9]==0 else 0",
+          "stack_arg7": "0"
+        },
+        {
+          "call_rva": "0xE46EA17",
+          "rcx": "source-resolved component r12",
+          "rdx": "delta = -V (normal finite)",
+          "r8d": "r13d (same selector)",
+          "stack_arg7": "record[+0x19C] (dynamic mode; UNKNOWN)"
+        }
+      ],
+      "ordering": "target list iterated internally in forward list order; normal path calls DirectDamageHP once per target",
+      "branch_behavior": [
+        "normal path when evaluator/target resolution succeeds",
+        "S0 > 0 uses S0; S0 <= 0 uses S0 only when evaluator flag [+0x48][+0x31] != 0, else global 0x95C1CC0",
+        "resolution failure takes direct -V fallback"
+      ],
+      "unknowns": [
+        "global 0x95C1CC0 identity",
+        "M530155 exact selection/clamp",
+        "M504557 RecomputeShieldCost effect on V",
+        "fallback dynamic mode record[+0x19C]"
+      ]
+    },
+    {
+      "stage": "sealed_hp_endpoint",
+      "method_index": 506499,
+      "method_name": "DirectDamageHP",
+      "declaring_type_index": 55009,
+      "native_rva": "0xE732180",
+      "body_hash": "7f712493e35452e66166f1bcca4c51f2b8b3eecf5f65df54c1a85c00526e887a",
+      "evidence_level": "CONFIRMED_SEALED_HANDOFF_12",
+      "semantic_role": "TERMINAL_HP_TRANSITION",
+      "actual_shape": {
+        "normal_path": {
+          "damage_kind": 11,
+          "mode": 0
+        },
+        "fallback_path": {
+          "damage_kind": "10 or 0",
+          "mode": "0 or record[+0x19C]"
+        }
+      },
+      "note": "Handoff 12 sealed mode=0 semantics; damage_kind=11 is a new native caller-shape fact, not a reopened HP policy."
+    }
+  ],
+  "dependencies": [
+    "DIRECT_DAMAGE_HP_TRANSITION_12_PROOF",
+    "damage_request_topology_probe_13"
+  ],
+  "known_boundaries": [
+    "M504390 GetStanceDamage 0xE442F00 (not entered)",
+    "M504422 ResolveDamageDisplayResult 0xE449B60 (not entered)",
+    "M504557 RecomputeShieldCost 0xE464D20 (not entered)",
+    "M504598 _MortallyWondedProcess 0xE465660 (output pointer contract only)",
+    "M530155 GOCKCOMLFEO 0x1954B9420 (output contract only)"
+  ],
+  "unknowns": [
+    "M504598 internal post-process writes",
+    "M530155 evaluator selection/clamp and global 0x95B1E18",
+    "fallback global 0x95C1CC0",
+    "M504557 shield recompute semantics",
+    "M504579 dynamic fallback mode record[+0x19C]",
+    "DamageByAttackProperty config field-name mapping beyond native offsets"
+  ]
+}
