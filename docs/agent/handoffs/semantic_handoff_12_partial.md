@@ -93,6 +93,25 @@ The single global `K` is loaded at `0xE72E1B9`, `0xE72E1D0`, and
 `0xE72E1E7`. Its runtime semantic value/initializer is not recovered here.
 It must not be named or assumed to be zero.
 
+### K storage probe — PARTIAL / bounded stop
+
+- **Storage identity (CONFIRMED):** module data RVA `0x95B1E80`, in PE section
+  `.data` (section RVA `0x93BA000`), file offset `0x95AFC80`.
+- **Initial image (CONFIRMED):** the on-disk 64-bit little-endian word is
+  `0x41BC903DBD203697`. This is a storage image only, **not** a decoded
+  CurrentHP threshold value. Its runtime initialization and FixedPoint
+  interpretation remain UNKNOWN.
+- **Existing metadata map (CONFIRMED negative):** no `0x95B1E80` entry exists
+  in the normalized 4.4.54 JSON artifacts.
+- **Direct xrefs (SUPPORTED):** the already-run target census found 760
+  RIP-relative `mov` references and 37 RIP-relative `lea` references, with no
+  `rel32` or qword-reference result. It does not expose a unique direct writer
+  or initializer without classifying a large static-global consumer set.
+- **Mutation / immutability:** UNKNOWN. `.data` is writable storage; no
+  initializer or runtime writer is proven.
+- **Stop boundary:** resolving a writer would require a new global/static-field
+  initialization foundation, beyond the bounded CurrentHP branch probe.
+
 | Helper | Native identity | Exact operation |
 | --- | --- | --- |
 | `fp_ge` | `0x19D660C50`, len `0x90`, SHA-256 `927ce232af90a197938433fff3c904fa43ac27ff7bc6874f20d7e6e27b4c9573` | `left >= right` |
@@ -199,7 +218,8 @@ at `0xE732C6B -> 0xE732C73`; it is not an unconditional HP semantic.
 
 ## Exact next native entry points
 
-1. Resolve the initializer/semantic identity of CurrentHP branch global data
-   `0x95B1E80`, loaded at `0xE72E1B9`, `0xE72E1D0`, and `0xE72E1E7`.
+1. Establish a global-static writer/initializer classifier for writable data
+   RVA `0x95B1E80`; no unique native method/address is currently proven. Do
+   not infer a semantic value from the `.data` image.
 2. Only after that closes `K`, resume M506499 intercept decision `0xE7333E0`
    and its `0xE73231C -> 0xE7327B4` split; it remains out of scope here.

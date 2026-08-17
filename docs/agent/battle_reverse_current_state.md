@@ -18,8 +18,10 @@
   Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
 - Partial checkpoint: Handoff 12 `SET_HP_CURRENT_HP_TRANSITION_12_PARTIAL`.
 - Current frontier: `CurrentHP / DirtyHP / DirectDamageHP`.
-- Session stop state: `STOP_HARD_BUDGET`; CurrentHP symbolic control flow is
-  checkpointed, but global threshold `K` remains unresolved.
+- Session stop state: `STOP_BUDGET_3_PERCENT`; CurrentHP symbolic control flow
+  is checkpointed. `K` is confirmed as writable `.data` RVA `0x95B1E80` with
+  raw image `0x41BC903DBD203697`, but its writer, runtime value, and semantics
+  remain unresolved.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
 - Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12_partial.md`.
@@ -34,8 +36,9 @@
   DirectDamageHP -> CurrentHP source-0 evidence, but it does not publish a
   complete HP or damage contract.
 - Handoff 12 additionally records the CurrentHP bound branch's exact symbolic
-  control flow. It remains partial because global threshold `K` at data RVA
-  `0x95B1E80` has no recovered initialization/semantic identity.
+  control flow. It remains partial: `K` at `.data` RVA `0x95B1E80` has raw
+  image `0x41BC903DBD203697`, no normalized identity, and no recovered writer
+  or runtime semantic value.
 
 ## Confirmed reusable runtime chain
 
@@ -197,7 +200,8 @@
 - Damage resolution formula.
 - Non-null `0x19CAF14A0` post-transform policy.
 - CurrentHP/NegativeHP special mutation and DirtyHP policy.
-- CurrentHP bound threshold `K` global initializer/semantic identity.
+- CurrentHP bound threshold `K` global writer/initializer and semantic identity
+  (raw `.data` image only; mutation policy UNKNOWN).
 - DirectDamageHP intercept decision and modes 4/5/6.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
@@ -239,8 +243,10 @@
 
 ## Immediate next entry procedure
 
-- Next session: resolve the initializer/semantic identity of CurrentHP global
-  threshold data `0x95B1E80`, used at M506503 `0xE72E1B9/E72E1D0/E72E1E7`.
+- Next session: first establish a global-static writer/initializer classifier
+  for writable data RVA `0x95B1E80`, used at M506503
+  `0xE72E1B9/E72E1D0/E72E1E7`; no unique native writer entry is currently
+  proven.
 - Only after that closes the bound primitive, resume DirectDamageHP M506499 at
   `0xE7333E0` / `0xE73231C`; treat `0x195C6D120` as generated tag-dispatch
   evidence, not a settled DamageRequest.
