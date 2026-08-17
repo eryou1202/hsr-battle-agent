@@ -77,6 +77,66 @@ DirtyHP = fp_add(fp_mul(MaxHP, DirtyHPRatio), DirtyHPDelta)
 - If the CurrentHP candidate is below the checked bound, M506503 reaches the
   common source-0 write tail. The equal/over-bound policy is UNKNOWN.
 
+## CurrentHP special bound branch — PARTIAL
+
+`SUBSECTION_STATUS = PARTIAL_SYMBOLIC_CONTROL_FLOW_CONFIRMED`
+
+Definitions for the post-transform candidate at this point in M506503:
+
+```text
+C = candidate after 0x19CAF14A0
+B = fp_sub(MaxHP, GetDirtyHP(component))
+K = runtime global loaded from data RVA 0x95B1E80
+```
+
+The single global `K` is loaded at `0xE72E1B9`, `0xE72E1D0`, and
+`0xE72E1E7`. Its runtime semantic value/initializer is not recovered here.
+It must not be named or assumed to be zero.
+
+| Helper | Native identity | Exact operation |
+| --- | --- | --- |
+| `fp_ge` | `0x19D660C50`, len `0x90`, SHA-256 `927ce232af90a197938433fff3c904fa43ac27ff7bc6874f20d7e6e27b4c9573` | `left >= right` |
+| `fp_gt` | `0x19D6645B0`, len `0x90`, SHA-256 `93587ee19a0b623341ca4c341c52676f312c7b3225e84f6463473bf2880c58c0` | `left > right` |
+| `fp_max` | `0x19D669330`, len `0xB9`, SHA-256 `83dbebb797696eb2c760601e0c0306f0dcd6358e1e7fab45dfd1e8b412600213` | `max(left, right)` |
+| `fp_min` | `0x19D6693F0`, len `0xB9`, SHA-256 `e4cb86eeddaf038f03b8daca6dbf17005aedf85549d466728f82a8fb9e405e61` | `min(left, right)` |
+
+Confirmed branch results:
+
+| Candidate relation to B | Native result supplied to common tail | Source-0 write | Other property access |
+| --- | --- | --- | --- |
+| `C < B` | `C` | Yes, CurrentHP selected entry through `0xE72E8F9 -> 0x1957559D0(entry, 0, C)` | Reads MaxHP and GetDirtyHP inputs only; no NegativeHP access in this branch. |
+| `C == B` | Enters the `C >= B` path. If `C >= K && MaxHP > K`, result is `max(B, K)`; otherwise `min(B, MaxHP)`. | Yes, same source-0 call. | Same reads; no second property write before the common tail. |
+| `C > B` | If `C >= K && MaxHP > K`, result is `max(B, K)`; otherwise `min(C, MaxHP)`. | Yes, same source-0 call. | Same reads; no second property write before the common tail. |
+
+ABI-independent pseudocode for the exact proven subset:
+
+```text
+candidate = post_transform(apply_modify_function(...))
+max_hp = property[MaxHP /* 1 */].materialized
+dirty_hp = fp_add(fp_mul(max_hp, property[DirtyHPRatio /* 7 */]),
+                  property[DirtyHPDelta /* 6 */])
+bound = fp_sub(max_hp, dirty_hp)
+
+if candidate < bound:
+    result = candidate
+elif candidate >= K and max_hp > K:
+    result = fp_max(bound, K)
+else:
+    result = fp_min(candidate, max_hp)
+
+update_property_source_slot(current_hp_entry, source_index=0, source_value=result)
+```
+
+All normal relations above reach the common tail and issue the source-index-0
+update; no normal no-op/rejection exists in this bounded control-flow slice.
+Malformed component/property-table guards instead enter native error paths.
+After the update, M506503 calls its existing post-change bridge; that edge is
+recorded but not followed.
+
+This is not yet a coding-ready CurrentHP-bound primitive: the value and
+initialization contract of `K` are UNKNOWN. In particular, do **not** simplify
+this code to a conventional `clamp(C, 0, MaxHP - DirtyHP)`.
+
 ## Confirmed subset pseudocode
 
 ```text
@@ -139,8 +199,7 @@ at `0xE732C6B -> 0xE732C73`; it is not an unconditional HP semantic.
 
 ## Exact next native entry points
 
-1. M506503 CurrentHP branch at `0xE72E162`, especially the equal/over-bound
-   control-flow after `MaxHP - GetDirtyHP`.
-2. M506511 `GetDirtyHP` at `0xE734050`, only as needed to close that branch.
-3. M506499 intercept decision `0xE7333E0` and its `0xE73231C -> 0xE7327B4`
-   split before accepting any direct-damage policy.
+1. Resolve the initializer/semantic identity of CurrentHP branch global data
+   `0x95B1E80`, loaded at `0xE72E1B9`, `0xE72E1D0`, and `0xE72E1E7`.
+2. Only after that closes `K`, resume M506499 intercept decision `0xE7333E0`
+   and its `0xE73231C -> 0xE7327B4` split; it remains out of scope here.

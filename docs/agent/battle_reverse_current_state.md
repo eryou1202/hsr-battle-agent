@@ -18,8 +18,8 @@
   Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.
 - Partial checkpoint: Handoff 12 `SET_HP_CURRENT_HP_TRANSITION_12_PARTIAL`.
 - Current frontier: `CurrentHP / DirtyHP / DirectDamageHP`.
-- Session stop state: `STOP_D`; do not continue native exploration in this
-  session.
+- Session stop state: `STOP_HARD_BUDGET`; CurrentHP symbolic control flow is
+  checkpointed, but global threshold `K` remains unresolved.
 - Artifact: `data/semantics/4.4.54/generic_property_mutation_11.json`.
 - Topology artifact: `data/raw/4.4.54/modifier_effect_topology_09.json`.
 - Handoffs: `docs/agent/handoffs/semantic_handoff_09.md`, `docs/agent/handoffs/semantic_handoff_10.md`, `docs/agent/handoffs/semantic_handoff_11.md`, `docs/agent/handoffs/semantic_handoff_12_partial.md`.
@@ -33,6 +33,9 @@
 - Handoff 12 is deliberately partial: it records SetHP -> DirectChangeHP ->
   DirectDamageHP -> CurrentHP source-0 evidence, but it does not publish a
   complete HP or damage contract.
+- Handoff 12 additionally records the CurrentHP bound branch's exact symbolic
+  control flow. It remains partial because global threshold `K` at data RVA
+  `0x95B1E80` has no recovered initialization/semantic identity.
 
 ## Confirmed reusable runtime chain
 
@@ -174,7 +177,9 @@
   M506511 `GetDirtyHP`, and branches around the common source-0 tail.
 - M506511 `GetDirtyHP` at `0xE734050` has confirmed
   `MaxHP * DirtyHPRatio + DirtyHPDelta` arithmetic, but the CurrentHP bound
-  policy remains UNKNOWN.
+  policy is only symbolically confirmed: candidate `< bound` writes candidate;
+  candidate `>= bound` uses fixed-point min/max against unrecovered runtime
+  threshold `K` at data RVA `0x95B1E80` before the same source-0 write.
 - M506499 `DirectDamageHP` needs its `0xE7333E0` intercept split and its
   `0xE73231C -> 0xE7327B4 -> 0xE732C6B` ordinary branch reconciled before a
   general HP/damage contract is accepted.
@@ -192,6 +197,7 @@
 - Damage resolution formula.
 - Non-null `0x19CAF14A0` post-transform policy.
 - CurrentHP/NegativeHP special mutation and DirtyHP policy.
+- CurrentHP bound threshold `K` global initializer/semantic identity.
 - DirectDamageHP intercept decision and modes 4/5/6.
 - Event listener registration, order, and unregister identity.
 - Action completion and next-turn scheduling.
@@ -233,9 +239,9 @@
 
 ## Immediate next entry procedure
 
-- Next session: re-enter M506503 property-id `10` branch at `0xE72E162`, then
-  M506511 `GetDirtyHP` at `0xE734050` and the common tail `0xE72E8F9`.
-- In parallel only after that branch is bounded, resume DirectDamageHP M506499
-  at `0xE7333E0` / `0xE73231C`; treat `0x195C6D120` as generated tag-dispatch
+- Next session: resolve the initializer/semantic identity of CurrentHP global
+  threshold data `0x95B1E80`, used at M506503 `0xE72E1B9/E72E1D0/E72E1E7`.
+- Only after that closes the bound primitive, resume DirectDamageHP M506499 at
+  `0xE7333E0` / `0xE73231C`; treat `0x195C6D120` as generated tag-dispatch
   evidence, not a settled DamageRequest.
 - Do not implement HP policy from Handoff 12 Partial.

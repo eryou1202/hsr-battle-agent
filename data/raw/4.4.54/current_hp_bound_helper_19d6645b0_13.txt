@@ -1,0 +1,85 @@
+1D6645B0  f6 c1 01                        test     cl, 1
+1D6645B3  75 36                           jne      0x19d6645eb
+1D6645B5  f6 c2 01                        test     dl, 1
+1D6645B8  74 6d                           je       0x19d664627
+1D6645BA  48 83 e2 fe                     and      rdx, 0xfffffffffffffffe
+1D6645BE  48 89 c8                        mov      rax, rcx
+1D6645C1  48 c1 f8 07                     sar      rax, 7
+1D6645C5  45 31 c0                        xor      r8d, r8d
+1D6645C8  48 39 d0                        cmp      rax, rdx
+1D6645CB  41 0f 9f c0                     setg     r8b
+1D6645CF  ba ff ff ff ff                  mov      edx, 0xffffffff
+1D6645D4  41 0f 4d d0                     cmovge   edx, r8d
+1D6645D8  31 c0                           xor      eax, eax
+1D6645DA  f6 c1 7f                        test     cl, 0x7f
+1D6645DD  0f 95 c0                        setne    al
+1D6645E0  85 d2                           test     edx, edx
+1D6645E2  0f 45 c2                        cmovne   eax, edx
+1D6645E5  85 c0                           test     eax, eax
+1D6645E7  0f 9f c0                        setg     al
+1D6645EA  c3                              ret
+1D6645EB  48 83 e1 fe                     and      rcx, 0xfffffffffffffffe
+1D6645EF  f6 c2 01                        test     dl, 1
+1D6645F2  75 2f                           jne      0x19d664623
+1D6645F4  48 89 d0                        mov      rax, rdx
+1D6645F7  48 c1 f8 07                     sar      rax, 7
+1D6645FB  45 31 c0                        xor      r8d, r8d
+1D6645FE  48 39 c8                        cmp      rax, rcx
+1D664601  41 0f 9f c0                     setg     r8b
+1D664605  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+1D66460A  41 0f 4d c8                     cmovge   ecx, r8d
+1D66460E  31 c0                           xor      eax, eax
+1D664610  f6 c2 7f                        test     dl, 0x7f
+1D664613  0f 95 c0                        setne    al
+1D664616  85 c9                           test     ecx, ecx
+1D664618  0f 45 c1                        cmovne   eax, ecx
+1D66461B  f7 d8                           neg      eax
+1D66461D  85 c0                           test     eax, eax
+1D66461F  0f 9f c0                        setg     al
+1D664622  c3                              ret
+1D664623  48 83 e2 fe                     and      rdx, 0xfffffffffffffffe
+1D664627  45 31 c0                        xor      r8d, r8d
+1D66462A  48 39 d1                        cmp      rcx, rdx
+1D66462D  41 0f 9f c0                     setg     r8b
+1D664631  b8 ff ff ff ff                  mov      eax, 0xffffffff
+1D664636  41 0f 4d c0                     cmovge   eax, r8d
+1D66463A  85 c0                           test     eax, eax
+1D66463C  0f 9f c0                        setg     al
+1D66463F  c3                              ret
+1D664640  48 8b 09                        mov      rcx, qword ptr [rcx]
+1D664643  f6 c1 01                        test     cl, 1
+1D664646  75 31                           jne      0x19d664679
+1D664648  f6 c2 01                        test     dl, 1
+1D66464B  74 63                           je       0x19d6646b0
+1D66464D  48 83 e2 fe                     and      rdx, 0xfffffffffffffffe
+1D664651  48 89 c8                        mov      rax, rcx
+1D664654  48 c1 f8 07                     sar      rax, 7
+1D664658  45 31 c0                        xor      r8d, r8d
+1D66465B  48 39 d0                        cmp      rax, rdx
+1D66465E  41 0f 9f c0                     setg     r8b
+1D664662  ba ff ff ff ff                  mov      edx, 0xffffffff
+1D664667  41 0f 4d d0                     cmovge   edx, r8d
+1D66466B  31 c0                           xor      eax, eax
+1D66466D  f6 c1 7f                        test     cl, 0x7f
+1D664670  0f 95 c0                        setne    al
+1D664673  85 d2                           test     edx, edx
+1D664675  0f 45 c2                        cmovne   eax, edx
+1D664678  c3                              ret
+1D664679  48 83 e1 fe                     and      rcx, 0xfffffffffffffffe
+1D66467D  f6 c2 01                        test     dl, 1
+1D664680  75 2a                           jne      0x19d6646ac
+1D664682  48 89 d0                        mov      rax, rdx
+1D664685  48 c1 f8 07                     sar      rax, 7
+1D664689  45 31 c0                        xor      r8d, r8d
+1D66468C  48 39 c8                        cmp      rax, rcx
+1D66468F  41 0f 9f c0                     setg     r8b
+1D664693  b9 ff ff ff ff                  mov      ecx, 0xffffffff
+1D664698  41 0f 4d c8                     cmovge   ecx, r8d
+1D66469C  31 c0                           xor      eax, eax
+1D66469E  f6 c2 7f                        test     dl, 0x7f
+1D6646A1  0f 95 c0                        setne    al
+1D6646A4  85 c9                           test     ecx, ecx
+1D6646A6  0f 45 c1                        cmovne   eax, ecx
+1D6646A9  f7 d8                           neg      eax
+1D6646AB  c3                              ret
+1D6646AC  48 83 e2 fe                     and      rdx, 0xfffffffffffffffe
