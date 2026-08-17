@@ -1,0 +1,282 @@
+{
+  "game_version": "4.4.54",
+  "ranked_candidates": [
+    {
+      "body_hash": "5fa81c58bac1420f8527951e2f7551d5584a6b9df886e3274079bf3aa0f48d87",
+      "classification": "DAMAGE_VALUE_ACCUMULATOR_CANDIDATE",
+      "instruction_rva": "0xB3DC80C",
+      "method_index": 508236,
+      "method_name": "OnTaskBegin",
+      "preceding_helpers": [
+        "0x19D661A00"
+      ],
+      "rank": 1,
+      "reason": "Only confirmed pre-postprocess writer that writes +0x2D8 before M507308 in a generated executor path.",
+      "representative_callers": [
+        {
+          "caller_method": "OnTaskBegin",
+          "config": "RPG.GameCore.ProcessStoredDamage",
+          "executor_type": "AABAELPKKGK"
+        }
+      ],
+      "rva": "0xB3DC5B0",
+      "source_value_provenance": "existing request[+0x2D8] + r13 via 0x19D661A00",
+      "upstream_executor_config_evidence": "ProcessStoredDamage executor path; calls M508237 FENDMHJDPJD which calls M507308."
+    },
+    {
+      "body_hash": null,
+      "classification": "REQUEST_INITIALIZER",
+      "instruction_rva": "0xC30EC14",
+      "method_index": 507296,
+      "method_name": "OnTaskBegin",
+      "preceding_helpers": [
+        "0x183C736B0"
+      ],
+      "rank": 2,
+      "reason": "Closest DamageByAttackProperty request-object materialization site; actual +0x2D8 value source remains unresolved.",
+      "representative_callers": [
+        {
+          "caller_method": "OnTaskBegin",
+          "config": "RPG.GameCore.DamageByAttackProperty",
+          "executor_type": "PGOOHIHKHNJ"
+        }
+      ],
+      "rva": "0xC30D850",
+      "source_value_provenance": "allocates request-like object via 0x183C736B0 with type token 0x962F8E0; +0x2D8 not directly written in this method",
+      "upstream_executor_config_evidence": "DamageByAttackProperty executor path; calls M507304 -> M507308."
+    },
+    {
+      "body_hash": "f4b8931c72e5a5044edb36fb72e282528ff80d75d929073a05fddd006ecf29e7",
+      "classification": "POSTPROCESS_ONLY",
+      "instruction_rva": "0xE4650B9",
+      "method_index": 504557,
+      "method_name": "RecomputeShieldCost",
+      "preceding_helpers": [
+        "0x19D661B60",
+        "0x19D65EF80"
+      ],
+      "rank": 3,
+      "reason": "Writes +0x2D8 but is a post-process writer, not the original pre-M507308 producer.",
+      "representative_callers": [],
+      "rva": "0xE464D20",
+      "source_value_provenance": "[rsp+0x38] after fixed-point calls; writes to [rax+0x2D8]",
+      "upstream_executor_config_evidence": "AbilityStatic post-process / shield cost path."
+    },
+    {
+      "body_hash": "6fac82d4e55bcdad1366184fdd1a133fce5b7f511e012d75c3226be2943efe0a",
+      "classification": "POSTPROCESS_ONLY",
+      "instruction_rva": "0xE465C77",
+      "method_index": 504598,
+      "method_name": "_MortallyWondedProcess",
+      "preceding_helpers": [
+        "0x95B1DE0"
+      ],
+      "rank": 4,
+      "reason": "Post-process writer explicitly separated from the original producer.",
+      "representative_callers": [
+        {
+          "caller_method": "DamagePostProcess",
+          "caller_method_index": 504559
+        }
+      ],
+      "rva": "0xE465660",
+      "source_value_provenance": "FixPoint(0) from global 0x95B1DE0 in one branch",
+      "upstream_executor_config_evidence": "M507308 calls M504559 -> M504598 before forwarding V."
+    },
+    {
+      "body_hash": "0d49400e9a0466e497520bddea20a5318d6a8ee84e00d981641c48a0becde986",
+      "classification": "UNKNOWN",
+      "instruction_rva": "0xE462D51",
+      "method_index": 504550,
+      "method_name": "DamageFormula",
+      "preceding_helpers": [
+        "0x19D661A00",
+        "0x19D661A00"
+      ],
+      "rank": 5,
+      "reason": "Name is suggestive but the write target is a stack frame slot; needs disambiguation before promotion.",
+      "representative_callers": [],
+      "rva": "0xE460BE0",
+      "source_value_provenance": "[rsp+0x38] after two 0x19D661A00 calls; writes to [rbp+0x2D8]",
+      "upstream_executor_config_evidence": "AbilityStatic.DamageFormula; likely a stack-local FixPoint result, not proven request slot."
+    },
+    {
+      "body_hash": "adf12edbadb2a2d560b26153728c4c7a9cc871c18b4bac0e043326f22245439d",
+      "classification": "UNKNOWN",
+      "instruction_rva": "0xE46AB2A",
+      "method_index": 504576,
+      "method_name": "SnapshotDamageMod",
+      "preceding_helpers": [
+        "0x183C736B0"
+      ],
+      "rank": 6,
+      "reason": "Writes a pointer, not a FixPoint; not promoted as damage value producer.",
+      "representative_callers": [],
+      "rva": "0xE468AC0",
+      "source_value_provenance": "allocated object pointer via 0x183C736B0; writes [rsi+0x2D8] = pointer",
+      "upstream_executor_config_evidence": "AbilityStatic.SnapshotDamageMod; likely a different object family where +0x2D8 is a reference."
+    }
+  ],
+  "recommended_v4p_entry": {
+    "alternates": [
+      {
+        "method_index": 507296,
+        "method_name": "OnTaskBegin",
+        "reason": "DamageByAttackProperty request materialization site; +0x2D8 source still unresolved.",
+        "rva": "0xC30D850"
+      },
+      {
+        "method_index": 504557,
+        "method_name": "RecomputeShieldCost",
+        "reason": "Post-process writer that may overwrite +0x2D8.",
+        "rva": "0xE464D20"
+      },
+      {
+        "method_index": 504598,
+        "method_name": "_MortallyWondedProcess",
+        "reason": "Post-process writer explicitly separated from original producer.",
+        "rva": "0xE465660"
+      }
+    ],
+    "minimal_unresolved_input_output_contract": "For DamageByAttackProperty, locate the actual +0x2D8 initialization before M507308; trace the object allocated at 0xC30EC14 (type token 0x962F8E0) to its field-write site.",
+    "primary": {
+      "instruction_rva": "0xB3DC80C",
+      "method_index": 508236,
+      "method_name": "OnTaskBegin",
+      "reason": "Only confirmed pre-postprocess +0x2D8 writer on a generated executor path that calls M507308.",
+      "rva": "0xB3DC5B0"
+    }
+  },
+  "remaining_ambiguity": [
+    "No direct +0x2D8 writer was found inside M507296/M507304/M507308 for DamageByAttackProperty; the request object may be populated before OnTaskBegin or via an indirect helper.",
+    "M504550/M504500 writes are on stack frames and are not proven to target the request object.",
+    "M504576 writes a pointer into +0x2D8 and is likely a different object family."
+  ],
+  "request_identity": {
+    "allocation_or_materialization_site": "M507296 OnTaskBegin at 0xC30EC14 calls 0x183C736B0 with type token global 0x962F8E0 and stores into a request-like object",
+    "declared_field_0x2D8": "UNKNOWN; +0x2D8 is treated as a native/runtime slot in this probe",
+    "evidence_level": "SUPPORTED",
+    "normalized_type_match": "UNKNOWN; no type containing DamageRequest/DamageResult matched the runtime object in the current normalized type set",
+    "note": "The same +0x2D8 offset is used by multiple object families; only methods on the M507308/M504579/M504598/M508236 chain are treated as request-family evidence here.",
+    "observed_as": "M507308 r8 object"
+  },
+  "schema": "damage_value_producer_probe/1",
+  "slot_0x2D8": {
+    "postprocess_writers": [
+      {
+        "instruction_rva": "0xE4650B9",
+        "method_index": 504557,
+        "method_name": "RecomputeShieldCost"
+      },
+      {
+        "instruction_rva": "0xE465C77",
+        "method_index": 504598,
+        "method_name": "_MortallyWondedProcess"
+      }
+    ],
+    "pre_postprocess_writers": [
+      {
+        "classification": "ACCUMULATION_WRITE",
+        "config": "RPG.GameCore.ProcessStoredDamage",
+        "declaring_type": "AABAELPKKGK",
+        "instruction_rva": "0xB3DC80C",
+        "method_index": 508236,
+        "method_name": "OnTaskBegin",
+        "source": "reads existing [r12+0x2D8], adds r13 via 0x19D661A00, writes back"
+      }
+    ],
+    "reads": [
+      {
+        "method_index": 507308,
+        "method_name": "NNGMOCFGPBN",
+        "rva": "0xC3125F4"
+      },
+      {
+        "method_index": 507308,
+        "method_name": "NNGMOCFGPBN",
+        "rva": "0xC3135FA"
+      },
+      {
+        "method_index": 507308,
+        "method_name": "NNGMOCFGPBN",
+        "rva": "0xC31367F"
+      },
+      {
+        "method_index": 508236,
+        "method_name": "OnTaskBegin",
+        "rva": "0xB3DC7FC"
+      }
+    ],
+    "writes": [
+      {
+        "class": "ACCUMULATION_WRITE",
+        "form": "mov qword ptr [r12 + 0x2d8], rax",
+        "method_index": 508236,
+        "method_name": "OnTaskBegin",
+        "rva": "0xB3DC80C"
+      },
+      {
+        "class": "POSTPROCESS_WRITE",
+        "form": "mov qword ptr [rax + 0x2d8], rcx",
+        "method_index": 504557,
+        "method_name": "RecomputeShieldCost",
+        "rva": "0xE4650B9"
+      },
+      {
+        "class": "POSTPROCESS_WRITE",
+        "form": "mov qword ptr [rax + 0x2d8], rcx",
+        "method_index": 504598,
+        "method_name": "_MortallyWondedProcess",
+        "rva": "0xE465C77"
+      },
+      {
+        "class": "UNKNOWN_LIKELY_STACK_LOCAL",
+        "form": "mov qword ptr [rbp + 0x2d8], rbx",
+        "method_index": 504550,
+        "method_name": "DamageFormula",
+        "rva": "0xE462D51"
+      },
+      {
+        "class": "UNKNOWN_POINTER_WRITE",
+        "form": "mov qword ptr [rsi + 0x2d8], rax",
+        "method_index": 504576,
+        "method_name": "SnapshotDamageMod",
+        "rva": "0xE46AB2A"
+      },
+      {
+        "class": "UNKNOWN_LIKELY_STACK_LOCAL",
+        "form": "mov qword ptr [rbp + 0x2d8], rdx",
+        "method_index": 504500,
+        "method_name": "ModifyEntitiesActionDelay",
+        "rva": "0xE458491"
+      }
+    ]
+  },
+  "status": "PREPROCESS_ONLY",
+  "writer_clusters": [
+    {
+      "members": [
+        508236
+      ],
+      "name": "PROCESS_STORED_DAMAGE_ACCUMULATOR",
+      "reason": "M508236 OnTaskBegin reads/writes request[+0x2D8] and then calls M508237 -> M507308."
+    },
+    {
+      "members": [
+        504557,
+        504598
+      ],
+      "name": "ABILITY_STATIC_POSTPROCESS",
+      "reason": "Both write +0x2D8 inside AbilityStatic post-process helpers; they are downstream of the original producer."
+    },
+    {
+      "members": [
+        504550,
+        504576,
+        504500
+      ],
+      "name": "STACK_LOCAL_OR_OTHER_OBJECT_FAMILY",
+      "reason": "Writes to +0x2D8 on stack frames or to a pointer-typed slot; not yet proven to be the same request FixPoint slot."
+    }
+  ]
+}
