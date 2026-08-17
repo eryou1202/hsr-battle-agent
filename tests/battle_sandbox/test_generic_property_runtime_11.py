@@ -576,6 +576,18 @@ class TestBattleStateSchemaV3(unittest.TestCase):
         self.assertEqual(restored.to_dict(), state.to_dict())
         self.assertEqual(restored.state_hash(), state.state_hash())
 
+    def test_old_v3_without_component_lock_hp_records_loads_empty(self):
+        old_v3 = {
+            "schema_version": 3,
+            "extensions": {},
+            "modifier_state_by_entity": {},
+            "entity_property_entries": {},
+            "modifier_property_contributions": {},
+        }
+        state = BattleState.from_dict(old_v3)
+        self.assertEqual(state.component_lock_hp_records, {})
+        self.assertEqual(state.to_dict()["component_lock_hp_records"], {})
+
     def test_property_state_is_not_smuggled_through_extensions(self):
         state = BattleState()
         property_runtime.ensure_property_entry(
