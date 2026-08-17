@@ -3,7 +3,7 @@
   "ranked_candidates": [
     {
       "body_hash": "5fa81c58bac1420f8527951e2f7551d5584a6b9df886e3274079bf3aa0f48d87",
-      "classification": "DAMAGE_VALUE_ACCUMULATOR_CANDIDATE",
+      "classification": "STORED_DAMAGE_VALUE_TRANSFORM",
       "instruction_rva": "0xB3DC80C",
       "method_index": 508236,
       "method_name": "OnTaskBegin",
@@ -20,7 +20,7 @@
         }
       ],
       "rva": "0xB3DC5B0",
-      "source_value_provenance": "existing request[+0x2D8] + r13 via 0x19D661A00",
+      "source_value_provenance": "existing request[+0x2D8] transformed with r13 via fp_mul (0x19D661A00)",
       "upstream_executor_config_evidence": "ProcessStoredDamage executor path; calls M508237 FENDMHJDPJD which calls M507308."
     },
     {
@@ -176,13 +176,13 @@
     ],
     "pre_postprocess_writers": [
       {
-        "classification": "ACCUMULATION_WRITE",
+        "classification": "STORED_DAMAGE_VALUE_TRANSFORM",
         "config": "RPG.GameCore.ProcessStoredDamage",
         "declaring_type": "AABAELPKKGK",
         "instruction_rva": "0xB3DC80C",
         "method_index": 508236,
         "method_name": "OnTaskBegin",
-        "source": "reads existing [r12+0x2D8], adds r13 via 0x19D661A00, writes back"
+        "source": "reads existing [r12+0x2D8], applies fp_mul with r13 via 0x19D661A00, writes back"
       }
     ],
     "reads": [
@@ -209,7 +209,7 @@
     ],
     "writes": [
       {
-        "class": "ACCUMULATION_WRITE",
+        "class": "STORED_DAMAGE_VALUE_TRANSFORM",
         "form": "mov qword ptr [r12 + 0x2d8], rax",
         "method_index": 508236,
         "method_name": "OnTaskBegin",
@@ -258,8 +258,8 @@
       "members": [
         508236
       ],
-      "name": "PROCESS_STORED_DAMAGE_ACCUMULATOR",
-      "reason": "M508236 OnTaskBegin reads/writes request[+0x2D8] and then calls M508237 -> M507308."
+      "name": "PROCESS_STORED_DAMAGE_VALUE_TRANSFORM",
+      "reason": "M508236 OnTaskBegin reads/writes request[+0x2D8] using fp_mul (0x19D661A00) and then calls M508237 -> M507308."
     },
     {
       "members": [

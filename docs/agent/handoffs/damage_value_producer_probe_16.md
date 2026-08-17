@@ -30,8 +30,8 @@ Artifact: `data/raw/4.4.54/damage_value_producer_probe_16.json`
 
 ## Writer clusters
 
-1. **PROCESS_STORED_DAMAGE_ACCUMULATOR**
-   - `M508236 OnTaskBegin` reads `[r12+0x2D8]`, adds via `0x19D661A00`, writes back at `0xB3DC80C`, then calls `M508237 -> M507308`.
+1. **PROCESS_STORED_DAMAGE_VALUE_TRANSFORM**
+   - `M508236 OnTaskBegin` reads `[r12+0x2D8]`, applies `fp_mul` via `0x19D661A00`, writes back at `0xB3DC80C`, then calls `M508237 -> M507308`.
 2. **ABILITY_STATIC_POSTPROCESS**
    - `M504557` and `M504598` write `+0x2D8` after the original value exists.
 3. **STACK_LOCAL_OR_OTHER_OBJECT_FAMILY**
@@ -41,7 +41,7 @@ Artifact: `data/raw/4.4.54/damage_value_producer_probe_16.json`
 
 | Rank | Classification | Method / RVA | Instruction | Why |
 | --- | --- | --- | --- | --- |
-| 1 | DAMAGE_VALUE_ACCUMULATOR_CANDIDATE | M508236 `0xB3DC5B0` | `0xB3DC80C` | Only confirmed pre-postprocess writer before M507308 |
+| 1 | STORED_DAMAGE_VALUE_TRANSFORM | M508236 `0xB3DC5B0` | `0xB3DC80C` | Only confirmed pre-postprocess writer before M507308; applies fp_mul via `0x19D661A00` |
 | 2 | REQUEST_INITIALIZER | M507296 `0xC30D850` | `0xC30EC14` | DamageByAttackProperty request materialization site; +0x2D8 source unresolved |
 | 3 | POSTPROCESS_ONLY | M504557 `0xE464D20` | `0xE4650B9` | Shield/post-process writer |
 | 4 | POSTPROCESS_ONLY | M504598 `0xE465660` | `0xE465C77` | Explicit post-process writer |
@@ -60,7 +60,7 @@ Artifact: `data/raw/4.4.54/damage_value_producer_probe_16.json`
 ## Shortest upstream generated-executor path
 
 - ProcessStoredDamage:
-  `M508236 OnTaskBegin -> accumulate request[+0x2D8] -> M508237 -> M507308`
+  `M508236 OnTaskBegin -> transform request[+0x2D8] via fp_mul -> M508237 -> M507308`
 - DamageByAttackProperty:
   `M507296 OnTaskBegin -> materialize request (0xC30EC14) -> M507304 -> M507308`
   - Direct `+0x2D8` write not yet found in this chain.

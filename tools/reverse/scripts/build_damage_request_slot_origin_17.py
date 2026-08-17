@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Build the DamageByAttackProperty request slot origin probe."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[3]
+OUT = REPO / "data" / "raw" / "4.4.54" / "damage_request_slot_origin_17.json"
+
+DATA = {
+    "schema": "damage_request_slot_origin/1",
+    "game_version": "4.4.54",
+    "status": "PREPROCESS_ONLY",
+    "request_materialization": {
+        "m507296_allocation_A": {
+            "rva": "0xC30DBFB",
+            "helper": "0x18B42A0C0",
+            "type_token_global": "0x9788B90",
+            "evidence": "returned object stored in rsi, fields +0x18/+0x20 set, passed as rdx/rdi to M507304",
+        },
+        "later_allocation_0x962F8E0": {
+            "rva": "0xC30EC14",
+            "helper": "0x183C736B0",
+            "type_token_global": "0x962F8E0",
+            "evidence": "occurs after the M507304 calls in M507296; not proven to be the request object consumed by M507308",
+        },
+        "conclusion": "The request object entering M507304/M507308 is allocated at 0xC30DBFB with token 0x9788B90, not at 0xC30EC14 with token 0x962F8E0.",
+    },
+    "alias_chain": [
+        {"step": 1, "description": "M507296 allocates object A via 0x18B42A0C0 (token 0x9788B90) at 0xC30DBFB", "register_or_slot": "rsi"},
+        {"step": 2, "description": "M507296 stores A into local rsi and sets [A+0x18], [A+0x20]", "register_or_slot": "rsi"},
+        {"step": 3, "description": "M507296 calls M507304 with rcx=r12, rdx=A at 0xC30DC87", "register_or_slot": "rdx -> M507304 rdi"},
+        {"step": 4, "description": "M507304 stores A in rdi and reads A+0x18, A+0x10, A+0x20, A+0x38", "register_or_slot": "rdi"},
+        {"step": 5, "description": "M507304 invokes indirect function pointer from [rcx+0x120] at 0xC30F0BC; return value B is stored to [rsp+0x60]", "register_or_slot": "[rsp+0x60]"},
+        {"step": 6, "description": "M507304 loads B into r8 at 0xC30F4FC and calls M507308 at 0xC30F610", "register_or_slot": "r8 = B"},
+    ],
+    "helpers_receiving_request": [
+        {
+            "helper": "M507304 GLDAGCNDCMA",
+            "rva": "0xC30ED00",
+            "request_argument_position": "rdx/rdi (object A)",
+            "alias_transformation": "A -> indirect call [rcx+0x120] -> B -> r8 to M507308",
+            "write_instruction": "none found for +0x2D8 in M507304",
+        },
+        {
+            "helper": "indirect call at 0xC30F0BC",
+            "rva": "0xC30F0BC",
+            "request_argument_position": "rcx for function pointer load; result B stored [rsp+0x60]",
+            "alias_transformation": "unknown; B may be A or a child/request object returned by the indirect helper",
+            "write_instruction": "UNKNOWN; likely inside the indirect helper",
+        },
+    ],
+    "slot_0x2D8_origin": {
+        "result": "UNKNOWN_INDIRECT_HELPER_BOUNDARY",
+        "detail": "M507308 reads request[+0x2D8] from object B, but B is the return value of an indirect call at 0xC30F0BC. No direct +0x2D8 write was found in M507296/M507304/M507308.",
+        "success_class": "SUCCESS_C",
+        "boundary": "Resolve the indirect call target at 0xC30F0BC (function pointer loaded from [rcx+0x120]) to find the exact +0x2D8 producer.",
+    },
+    "damageformula_connection": {
+        "result": "NO_BOUNDED_CONNECTION",
+        "evidence": "M507304 directly calls M504548 (0xE460840) and M504549 (0xE460A80), but does not call M504550 DamageFormula (0xE460BE0). No wrapper path from M507296/M507304 to M504550 was found in this bounded check.",
+    },
+    "type_token_0x962F8E0": {
+        "global_rva": "0x962F8E0",
+        "raw_qword": "0x8BC167FB4108E6C6",
+        "section": ".data",
+        "readable_type_identity": "UNKNOWN (obfuscated/opaque token)",
+        "object_size": "UNKNOWN",
+        "constructor_or_init": "UNKNOWN",
+        "field_0x2D8_membership": "UNKNOWN",
+        "note": "This token is used at M507296 0xC30EC14, but that allocation occurs after the M507304 calls and is not proven to be the request object consumed by M507308.",
+    },
+    "recommended_v4p_entry": {
+        "primary": {
+            "method_index": None,
+            "rva": "0xC30F0BC",
+            "reason": "Indirect call returning object B (r8 to M507308); resolving this target should reveal the exact +0x2D8 writer.",
+        },
+        "alternates": [
+            {"method_index": 507304, "rva": "0xC30ED00", "reason": "Contains the indirect call and the M507308 call site."},
+            {"method_index": 507296, "rva": "0xC30D850", "reason": "Allocates object A (token 0x9788B90) that enters M507304."},
+        ],
+        "minimal_unresolved_contract": "Identify the function pointer loaded from [rcx+0x120] before 0xC30F0BC and trace object B's +0x2D8 initialization.",
+    },
+    "remaining_unknown": [
+        "Whether object B returned by the indirect call is the same as object A allocated at 0xC30DBFB.",
+        "The identity and body of the indirect helper called at 0xC30F0BC.",
+        "The exact +0x2D8 write inside or before that helper.",
+        "The role of the later 0x962F8E0 allocation at 0xC30EC14.",
+    ],
+    "m508236_correction": {
+        "applied": True,
+        "old_wording": "adds r13 via 0x19D661A00",
+        "new_wording": "applies fp_mul via 0x19D661A00",
+        "helper_identity": "0x19D65EF80=fp_add, 0x19D661A00=fp_mul, 0x19D661B60=fp_sub",
+    },
+}
+
+
+def main() -> int:
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump(DATA, f, indent=2, sort_keys=True)
+        f.write("\n")
+    print(f"wrote {OUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
