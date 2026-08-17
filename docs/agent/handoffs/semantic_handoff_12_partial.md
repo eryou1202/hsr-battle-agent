@@ -5,6 +5,9 @@
 This is a checkpoint only. It does **not** publish a generic HP clamp, DirtyHP,
 NegativeHP, damage-intercept, event, or damage-resolution contract.
 
+The CurrentHP bound initial-value contract below is coding-ready; overall
+Handoff 12 remains `PARTIAL`.
+
 ## Proven SetHP config/runtime chain
 
 - Config runtime type: `RPG.GameCore.SetHP`, type index `22351`.
@@ -75,42 +78,45 @@ DirtyHP = fp_add(fp_mul(MaxHP, DirtyHPRatio), DirtyHPDelta)
 ```
 
 - If the CurrentHP candidate is below the checked bound, M506503 reaches the
-  common source-0 write tail. The equal/over-bound policy is UNKNOWN.
+  common source-0 write tail. The equal/over-bound policy uses the confirmed
+  `K = FixPoint(2)` branch below.
 
-## CurrentHP special bound branch — PARTIAL
+## CurrentHP special bound branch — CONFIRMED INITIAL-VALUE CONTRACT
 
-`SUBSECTION_STATUS = PARTIAL_SYMBOLIC_CONTROL_FLOW_CONFIRMED`
+`SUBSECTION_STATUS = CODING_READY_CURRENTHP_BOUND_INITIAL_VALUE`
 
 Definitions for the post-transform candidate at this point in M506503:
 
 ```text
 C = candidate after 0x19CAF14A0
 B = fp_sub(MaxHP, GetDirtyHP(component))
-K = runtime global loaded from data RVA 0x95B1E80
+K = FixPoint(2)  # initialized value; lifetime immutability UNKNOWN
 ```
 
 The single global `K` is loaded at `0xE72E1B9`, `0xE72E1D0`, and
-`0xE72E1E7`. Its runtime semantic value/initializer is not recovered here.
-It must not be named or assumed to be zero.
+`0xE72E1E7`. Its initial value is now confirmed as `FixPoint(2)` through the
+recovered `.cctor` writer. This is an initialized runtime value, not a proven
+compile-time constant: **K lifetime immutability = UNKNOWN**.
 
-### K storage probe — PARTIAL / bounded stop
+### K storage probe — RESOLVED INITIALIZER / bounded stop
 
 - **Storage identity (CONFIRMED):** module data RVA `0x95B1E80`, in PE section
   `.data` (section RVA `0x93BA000`), file offset `0x95AFC80`.
-- **Initial image (CONFIRMED):** the on-disk 64-bit little-endian word is
-  `0x41BC903DBD203697`. This is a storage image only, **not** a decoded
-  CurrentHP threshold value. Its runtime initialization and FixedPoint
-  interpretation remain UNKNOWN.
+- **Initial disk image (CONFIRMED):** the on-disk 64-bit little-endian word is
+  `0x41BC903DBD203697`. This is the pre-initialization storage image, not the
+  post-`.cctor` runtime value.
+- **Writer / initializer (CONFIRMED):** `RPG.GameCore.FixPoint..cctor`,
+  M68145, RVA `0x1D66A320`; direct store at `0x1D66A34E`.
+- **Post-`.cctor` stored raw (CONFIRMED):** `0x0000000200000000`.
+- **Decoded FixPoint value (CONFIRMED):** `FixPoint(2)`.
+- **Classifier census (CONFIRMED):** 759 reads, 1 direct write, 37
+  address/LEA references, 0 indirect writer candidates.
 - **Existing metadata map (CONFIRMED negative):** no `0x95B1E80` entry exists
   in the normalized 4.4.54 JSON artifacts.
-- **Direct xrefs (SUPPORTED):** the already-run target census found 760
-  RIP-relative `mov` references and 37 RIP-relative `lea` references, with no
-  `rel32` or qword-reference result. It does not expose a unique direct writer
-  or initializer without classifying a large static-global consumer set.
-- **Mutation / immutability:** UNKNOWN. `.data` is writable storage; no
-  initializer or runtime writer is proven.
-- **Stop boundary:** resolving a writer would require a new global/static-field
-  initialization foundation, beyond the bounded CurrentHP branch probe.
+- **K initialization/value (CONFIRMED):** `K_INITIALIZED_VALUE = FixPoint(2)`.
+- **K lifetime immutability (UNKNOWN):** `.data` is writable storage; the
+  classifier found no additional direct writer, but absolute lifetime
+  immutability is not proven. Do **not** call `K` a compile-time constant.
 
 | Helper | Native identity | Exact operation |
 | --- | --- | --- |
@@ -135,6 +141,7 @@ max_hp = property[MaxHP /* 1 */].materialized
 dirty_hp = fp_add(fp_mul(max_hp, property[DirtyHPRatio /* 7 */]),
                   property[DirtyHPDelta /* 6 */])
 bound = fp_sub(max_hp, dirty_hp)
+K = FixPoint(2)   # initialized value; lifetime immutability UNKNOWN
 
 if candidate < bound:
     result = candidate
@@ -152,9 +159,11 @@ Malformed component/property-table guards instead enter native error paths.
 After the update, M506503 calls its existing post-change bridge; that edge is
 recorded but not followed.
 
-This is not yet a coding-ready CurrentHP-bound primitive: the value and
-initialization contract of `K` are UNKNOWN. In particular, do **not** simplify
-this code to a conventional `clamp(C, 0, MaxHP - DirtyHP)`.
+This is now a coding-ready CurrentHP-bound initial-value semantic contract for
+the confirmed subset. `K` is an initialized runtime value (`FixPoint(2)`), not
+a proven compile-time constant. Do **not** simplify this code to a conventional
+`clamp(C, 0, MaxHP - DirtyHP)` unless the remaining HP transition closes that
+question.
 
 ## Confirmed subset pseudocode
 
@@ -207,7 +216,8 @@ at `0xE732C6B -> 0xE732C73`; it is not an unconditional HP semantic.
 
 ## UNKNOWN / MUST NOT IMPLEMENT
 
-- HP clamp, full CurrentHP range policy, DirtyHP policy, or NegativeHP policy.
+- Overall HP transition, full CurrentHP range policy outside the confirmed
+  bound initial-value contract, DirtyHP policy, or NegativeHP policy.
 - DirectDamageHP in-method interceptor around `0xE7333E0` and its true/false
   semantic meaning.
 - DirectDamageHP modes 4, 5, 6; all M506500 positive-delta paths.
@@ -215,11 +225,13 @@ at `0xE732C6B -> 0xE732C73`; it is not an unconditional HP semantic.
 - DamageRequest, hit resolution, damage formula, or UI/presentation fields.
 - `ClearNegativeHP`, `AttackType`, `DamageType`, `ShowText`, `DisplayData`,
   `SourceType` semantics outside the reads listed above.
+- `K` lifetime immutability: UNKNOWN; do not treat `K` as a compile-time
+  constant.
 
 ## Exact next native entry points
 
-1. Establish a global-static writer/initializer classifier for writable data
-   RVA `0x95B1E80`; no unique native method/address is currently proven. Do
-   not infer a semantic value from the `.data` image.
-2. Only after that closes `K`, resume M506499 intercept decision `0xE7333E0`
-   and its `0xE73231C -> 0xE7327B4` split; it remains out of scope here.
+1. `K` writer/initializer and initial value are now confirmed
+   (`FixPoint(2)`); absolute lifetime immutability remains UNKNOWN.
+2. Resume `M506499 DirectDamageHP` at RVA `0xE732180`, starting with the
+   intercept entry `0xE7333E0` and the existing split
+   `0xE73231C -> 0xE7327B4 -> 0xE732C6B`. This remains out of scope here.
