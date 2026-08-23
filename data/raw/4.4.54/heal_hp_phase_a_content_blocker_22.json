@@ -1,0 +1,57 @@
+{
+  "schema": "heal_hp_phase_a_content_blocker/1",
+  "game_version": "4.4.54",
+  "phase": "A",
+  "status": "BLOCKED",
+  "blocker": "REAL_ABILITY_CONTENT_REQUIRED",
+  "selected_priority_character": "Natasha",
+  "confirmed_local_evidence": {
+    "ability_path": "Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json",
+    "ability_path_source": "data/extracted/4.4.53/direct_json/TurnBasedAbilityConfig.json",
+    "ability_path_evidence_scope": "PATH_INDEX_ONLY",
+    "config_family": "RPG.GameCore.HealHP",
+    "config_executor_binding": "RPG.GameCore.HealHP -> AAOLFLMHBEK",
+    "binding_source": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+    "generic_executor_chain": "AAOLFLMHBEK M507657 OnTaskBegin -> M507658 -> M506500 DirectChangeHP -> M506499 DirectDamageHP",
+    "chain_scope": "GENERIC_CONFIG_RUNTIME_TOPOLOGY_ONLY"
+  },
+  "missing_required_phase_a_evidence": [
+    "Natasha ability record content",
+    "real ability identifier containing the selected HealHP action",
+    "the selected HealHP action's target config",
+    "the selected HealHP action's populated amount fields",
+    "the actual DynamicValue/property inputs used by that real action"
+  ],
+  "source_input_audit": {
+    "workspace_natasha_ability_file": "NOT_PRESENT",
+    "workspace_full_design_archives": "NOT_PRESENT",
+    "recorded_source_paths": [
+      {
+        "path": "D:/StarRail_4.4.53/StarRail_Data/Persistent/DesignData/Windows/5515caf6ca5446d524d17c5c9da6c3c2.bytes",
+        "expected_length": 125590141,
+        "status": "MISSING"
+      },
+      {
+        "path": "D:/StarRail_4.4.53/StarRail_Data/Persistent/DesignData/Windows/5060c8bc1e02bacbbe300713875cd19c.bytes",
+        "expected_length": 25587217,
+        "status": "MISSING"
+      },
+      {
+        "path": "D:/StarRail_4.4.53/StarRail_Data/StreamingAssets/DesignData/Windows/025d96a23b38b165ac6b81183c96efd7.bytes",
+        "expected_length": 210372,
+        "status": "MISSING"
+      }
+    ],
+    "source_path_manifest": "data/raw/4.4.53/manifest/effective_design_chunks.csv",
+    "hash_manifest": "data/raw/4.4.53/manifest/design_data_hashes.csv"
+  },
+  "reference_schema_boundary": {
+    "path": "tools/reference/DataParser/BinOut/Ability/Temp/ConfigAbilityAction/heal_hp.ksy",
+    "status": "DISCOVERY_ONLY_NOT_VERSIONED_EVIDENCE",
+    "reason": "The reference parser states its definitions target client version 2.2; its field names cannot substitute for the missing real 4.4.54 Natasha record and native consumer proof."
+  },
+  "implementation": "NOT_RUN",
+  "tests": "NOT_RUN",
+  "pgoo_dispatch": "INTENTIONALLY_NOT_ENTERED",
+  "exact_next_frontier": "Restore a hash-matching copy of the recorded 4.4.54 DesignData archive or provide the extracted Avatar_Natasha_00_Ability.json content. Then perform a bounded Natasha-record extraction, identify one concrete HealHP action and its ability ID, target config, and populated amount fields before recovering only those native consumers."
+}
