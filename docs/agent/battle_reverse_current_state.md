@@ -13,6 +13,21 @@
 
 ## Latest semantic frontier
 
+- Stage 1 of the Core Sandbox Closure is **BLOCKED** with
+  `RUNTIME_INSTANCE_OBSERVATION_REQUIRED`. The required live
+  `PGOOHIHKHNJ` executor instance at M507304 cannot be obtained by the
+  approved read-only readers: they follow only known static-derived chains and
+  have neither an executor-instance locator nor execution-context capture.
+  The existing in-process probe requires forbidden DLL injection/remote
+  threading. See
+  `docs/agent/handoffs/pgoo_live_dispatch_observation_stage1_blocker_20.md`
+  and
+  `data/raw/4.4.54/pgoo_live_dispatch_observation_stage1_blocker_20.json`.
+- Therefore the unresolved pointer `F = [[PGOOHIHKHNJ instance]+0x0+0x120]`,
+  its exact target, B identity, and `B[+0x2D8]` producer remain UNKNOWN; do
+  not enter any candidate callee or later Core Sandbox Closure stage until an
+  approved code-guided instance observation is available.
+
 - Completed capabilities: Handoff 09 `MODIFIER_PROPERTY_EFFECT_09_PROOF`,
   Handoff 10 `GENERIC_PROPERTY_SOURCE_SLOT_MATERIALIZATION_10_PROOF`, and
   Handoff 11 `GENERIC_PROPERTY_MUTATION_SOURCE0_11_PROOF`.

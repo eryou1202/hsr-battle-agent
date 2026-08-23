@@ -1,0 +1,60 @@
+{
+  "schema": "pgoo_live_dispatch_observation_stage1_blocker/1",
+  "game_version": "4.4.54",
+  "stage": 1,
+  "status": "BLOCKED",
+  "blocker": "RUNTIME_INSTANCE_OBSERVATION_REQUIRED",
+  "baseline": {
+    "head": "f8757cd",
+    "required_ancestors": {
+      "f8757cd": "PASS", "e3ce3e4": "PASS", "f845655": "PASS",
+      "a705ae2": "PASS", "ffecb01": "PASS", "c2f5746": "PASS",
+      "2bcdc84": "PASS", "bd65c5f": "PASS", "4c62261": "PASS",
+      "04dc482": "PASS", "b62910f": "PASS"
+    }
+  },
+  "required_observation": {
+    "instance": "live PGOOHIHKHNJ executor instance at or immediately around M507304",
+    "read_chain": [
+      "C = qword[instance + 0x0]",
+      "F = qword[C + 0x120]",
+      "normalize F against the actual loaded GameAssembly module base",
+      "resolve F to GameAssembly RVA and method_index, then ABI-check it at 0xC30F0BC"
+    ],
+    "initialization_precondition": "byte[C + 0xCA] & 4 is set before the slot read"
+  },
+  "permitted_tooling_audit": {
+    "runtime_snapshot": {
+      "status": "INSUFFICIENT",
+      "evidence": "tools/runtime_snapshot/runtime_snapshot.py limits ReadProcessMemory to known module ranges and static-derived pointer chains; its optional heap probes dereference only pointers already reached from the Unity proxy descriptor chain.",
+      "missing_capability": "No PGOOHIHKHNJ instance locator, no execution-context/register capture, and no code-proven static chain to a live PGOOHIHKHNJ instance."
+    },
+    "descriptor_snapshots": {
+      "status": "INSUFFICIENT",
+      "evidence": "The descriptor and parser-registry readers inspect explicitly supplied static-derived descriptor chains, not executing task instances."
+    },
+    "runtime_probe": {
+      "status": "FORBIDDEN_AND_UNAVAILABLE",
+      "evidence": "tools/runtime_probe/README.md specifies LoadLibraryW through CreateRemoteThread to load hsr_runtime_health_probe.dll; both injection and remote threading are forbidden by this mission. The recorded HD-2 outcome is BLOCKED_AT_MODULE_LOAD."
+    },
+    "runtime_debugger_or_heap_scan": {
+      "status": "FORBIDDEN",
+      "evidence": "Capturing r15 at M507304 would require runtime instrumentation/debugger-style execution capture; searching heap memory for instances would be a blind memory sweep. Neither is in the allowed Stage 1 scope."
+    }
+  },
+  "local_runtime_check": {
+    "observed_processes": [],
+    "process_names_checked": ["StarRail", "Cultivation", "ppSR"],
+    "result": "No approved local research process was active during this audit. This is secondary: the existing permitted readers still cannot locate the required live instance when such a process is active."
+  },
+  "static_evidence_preserved": {
+    "dispatch_site": "M507304 0xC30F0BC",
+    "owner": "PGOOHIHKHNJ executor instance",
+    "instance_header": "[instance + 0x0] = C, classified RUNTIME_TYPE_HEADER",
+    "unresolved_slot": "F = qword[C + 0x120]",
+    "rejected_candidates": ["M507307", "M507309", "M507328"],
+    "reason_not_to_continue": "The exact target, returned object B, and B[+0x2D8] producer depend on F. Static substitution would violate the published ABI evidence."
+  },
+  "exact_next_frontier": "Provide an approved, read-only, code-guided observation mechanism that yields a live PGOOHIHKHNJ instance address at M507304 (or an equally exact, proven pointer chain to that instance). Then perform only the C/F reads above using the actual GameAssembly base.",
+  "later_stages": "NOT_RUN"
+}
