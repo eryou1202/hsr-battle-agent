@@ -1,0 +1,270 @@
+{
+  "candidate_count_scanned": 10,
+  "character_mapping_note": "The repository contains ability-path indexes but not parsed ability JSON contents; character-to-config links below are representative from known ability paths and are marked SUPPORTED_BY_ABILITY_PATH, not CONFIRMED_BY_CONFIG_CONTENT.",
+  "game_version": "4.4.54",
+  "pgoo_blocker_assessment": {
+    "evidence": "HealHP/LoseHP/LoseHPByRatio/SetHP configs map to executor chains that avoid PGOOHIHKHNJ and use already recovered HP primitives.",
+    "note": "Typical Basic ATK / direct damage skills are expected to use DamageByAttackProperty and therefore hit the PGOOHIHKHNJ runtime dispatch.",
+    "result": "BYPASSABLE_FOR_NON_DAMAGE_OR_DIRECT_HP_SLICE"
+  },
+  "ranked_candidates": [
+    {
+      "blocker_count": 1,
+      "character_identifier": "Natasha / Lynx / Bailu (representative paths)",
+      "damage_path_class": "C.USES_DIRECT_HP_OR_ALREADY_RECOVERED_PATH",
+      "damage_producing_config_or_executor": "HealHP / DirectChangeHP",
+      "design_data_source": "data/extracted/4.4.53/direct_json/TurnBasedAbilityConfig.json",
+      "generated_executor_chain": "AAOLFLMHBEK (M507657 OnTaskBegin) -> M507658 -> M506500 DirectChangeHP -> M506499 DirectDamageHP",
+      "pgoo_appears": false,
+      "rank": 1,
+      "reaches_pgoo_blocker": false,
+      "root_ability_or_task_config": "RPG.GameCore.HealHP",
+      "skill": "HealHP config-level candidate (representative healer skill path: Avatar_Natasha_00_Ability.json / Avatar_Lynx_00_Ability.json / Avatar_Bailu_00_Ability.json)",
+      "skill_identifier": "HealHP",
+      "supported_primitives": [
+        "DynamicValue",
+        "FixPoint",
+        "Target",
+        "DirectChangeHP",
+        "DirectDamageHP mode 0",
+        "HP Runtime"
+      ],
+      "target_config": "Target selector supported by existing target bridge",
+      "unknown_primitives": [
+        "exact HealHP config field mapping in a specific character ability file"
+      ]
+    },
+    {
+      "blocker_count": 1,
+      "character_identifier": "Representative avatar/enemy path using LoseHP",
+      "damage_path_class": "C.USES_DIRECT_HP_OR_ALREADY_RECOVERED_PATH",
+      "damage_producing_config_or_executor": "LoseHP / TargetDamageHP",
+      "design_data_source": "action_config_runtime_bridge_06.json",
+      "generated_executor_chain": "PMIOBHFIGCA (M507899 OnTaskBegin) -> M504579 TargetDamageHP -> M506499 DirectDamageHP",
+      "pgoo_appears": false,
+      "rank": 2,
+      "reaches_pgoo_blocker": false,
+      "root_ability_or_task_config": "RPG.GameCore.LoseHP",
+      "skill": "LoseHP config-level candidate (representative simple HP-loss skill path)",
+      "skill_identifier": "LoseHP",
+      "supported_primitives": [
+        "DynamicValue",
+        "FixPoint",
+        "Target",
+        "TargetDamageHP",
+        "DirectDamageHP mode 0",
+        "HP Runtime"
+      ],
+      "target_config": "Target selector supported",
+      "unknown_primitives": [
+        "exact real character skill using LoseHP in available DesignData"
+      ]
+    },
+    {
+      "blocker_count": 1,
+      "character_identifier": "Representative avatar/enemy path using LoseHPByRatio",
+      "damage_path_class": "C.USES_DIRECT_HP_OR_ALREADY_RECOVERED_PATH",
+      "damage_producing_config_or_executor": "LoseHPByRatio / TargetDamageHP",
+      "design_data_source": "action_config_runtime_bridge_06.json",
+      "generated_executor_chain": "FNJBHDJHIIG (M507897 OnTaskBegin) -> M504579 TargetDamageHP -> M506499 DirectDamageHP",
+      "pgoo_appears": false,
+      "rank": 3,
+      "reaches_pgoo_blocker": false,
+      "root_ability_or_task_config": "RPG.GameCore.LoseHPByRatio",
+      "skill": "LoseHPByRatio config-level candidate",
+      "skill_identifier": "LoseHPByRatio",
+      "supported_primitives": [
+        "DynamicValue",
+        "FixPoint",
+        "Target",
+        "TargetDamageHP",
+        "DirectDamageHP mode 0",
+        "HP Runtime"
+      ],
+      "target_config": "Target selector supported",
+      "unknown_primitives": [
+        "exact real character skill using LoseHPByRatio"
+      ]
+    },
+    {
+      "blocker_count": 1,
+      "character_identifier": "Representative path using SetHP",
+      "damage_path_class": "C.USES_DIRECT_HP_OR_ALREADY_RECOVERED_PATH",
+      "damage_producing_config_or_executor": "SetHP / DirectChangeHP",
+      "design_data_source": "action_config_runtime_bridge_06.json / Handoff 12",
+      "generated_executor_chain": "ONECLKJPNJP (M508871 OnTaskBegin) -> M506500 DirectChangeHP -> M506499 DirectDamageHP",
+      "pgoo_appears": false,
+      "rank": 4,
+      "reaches_pgoo_blocker": false,
+      "root_ability_or_task_config": "RPG.GameCore.SetHP",
+      "skill": "SetHP config-level candidate (representative direct HP set skill)",
+      "skill_identifier": "SetHP",
+      "supported_primitives": [
+        "DynamicValue",
+        "FixPoint",
+        "Target",
+        "DirectChangeHP",
+        "DirectDamageHP mode 0",
+        "HP Runtime"
+      ],
+      "target_config": "Target selector supported",
+      "unknown_primitives": [
+        "exact real character skill using SetHP"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "Asta",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "likely DamageByAttackProperty",
+      "design_data_source": "data/extracted/4.4.53/direct_json/TurnBasedAbilityConfig.json (Avatar_Asta_00_Ability.json)",
+      "generated_executor_chain": "UNKNOWN -> PGOOHIHKHNJ -> M507296 -> M507304 -> runtime dispatch -> M507308",
+      "pgoo_appears": true,
+      "rank": 5,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "UNKNOWN until ability JSON content is parsed; likely DamageByAttackProperty family",
+      "skill": "Asta Basic ATK / simple skill (representative avatar damage path)",
+      "skill_identifier": "Basic ATK / simple damage skill",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "UNKNOWN",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "Herta",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "likely DamageByAttackProperty",
+      "design_data_source": "TurnBasedAbilityConfig.json (Avatar_Herta_00_Ability.json)",
+      "generated_executor_chain": "UNKNOWN -> PGOOHIHKHNJ -> M507296 -> M507304 -> runtime dispatch -> M507308",
+      "pgoo_appears": true,
+      "rank": 6,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "UNKNOWN; likely DamageByAttackProperty family",
+      "skill": "Herta Basic ATK / simple skill",
+      "skill_identifier": "Basic ATK / simple damage skill",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "UNKNOWN",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "Dan Heng",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "likely DamageByAttackProperty",
+      "design_data_source": "TurnBasedAbilityConfig.json (Avatar_DanHeng_00_Ability.json)",
+      "generated_executor_chain": "UNKNOWN -> PGOOHIHKHNJ -> M507296 -> M507304 -> runtime dispatch -> M507308",
+      "pgoo_appears": true,
+      "rank": 7,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "UNKNOWN; likely DamageByAttackProperty family",
+      "skill": "Dan Heng Basic ATK / simple skill",
+      "skill_identifier": "Basic ATK / simple damage skill",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "UNKNOWN",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "March 7th",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "likely DamageByAttackProperty",
+      "design_data_source": "TurnBasedAbilityConfig.json (Avatar_Mar_7th_00_Ability.json)",
+      "generated_executor_chain": "UNKNOWN -> PGOOHIHKHNJ -> M507296 -> M507304 -> runtime dispatch -> M507308",
+      "pgoo_appears": true,
+      "rank": 8,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "UNKNOWN; likely DamageByAttackProperty family",
+      "skill": "March 7th Basic ATK / simple skill",
+      "skill_identifier": "Basic ATK / simple damage skill",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "UNKNOWN",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "Trailblazer (PlayerBoy/PlayerGirl)",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "likely DamageByAttackProperty",
+      "design_data_source": "TurnBasedAbilityConfig.json (Avatar_PlayerBoy_00_Ability.json / Avatar_PlayerGirl_00_Ability.json)",
+      "generated_executor_chain": "UNKNOWN -> PGOOHIHKHNJ -> M507296 -> M507304 -> runtime dispatch -> M507308",
+      "pgoo_appears": true,
+      "rank": 9,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "UNKNOWN; likely DamageByAttackProperty family",
+      "skill": "Trailblazer (Physical) Basic ATK / simple skill",
+      "skill_identifier": "Basic ATK / simple damage skill",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "UNKNOWN",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    },
+    {
+      "blocker_count": 3,
+      "character_identifier": "Representative stored-damage executor path",
+      "damage_path_class": "A.USES_BLOCKED_PGOO_DAMAGEBYATTACKPROPERTY",
+      "damage_producing_config_or_executor": "ProcessStoredDamage / M507308",
+      "design_data_source": "action_config_runtime_bridge_06.json / topology probe 13",
+      "generated_executor_chain": "AABAELPKKGK (M508236 OnTaskBegin) -> M508237 -> M507308 -> M504579",
+      "pgoo_appears": true,
+      "rank": 10,
+      "reaches_pgoo_blocker": true,
+      "root_ability_or_task_config": "RPG.GameCore.ProcessStoredDamage",
+      "skill": "ProcessStoredDamage config-level candidate",
+      "skill_identifier": "ProcessStoredDamage",
+      "supported_primitives": [
+        "Target",
+        "FixPoint",
+        "TargetDamageHP",
+        "DirectDamageHP mode 0"
+      ],
+      "target_config": "Target selector supported",
+      "unknown_primitives": [
+        "PGOOHIHKHNJ +0x120 dispatch target",
+        "B[+0x2D8] producer"
+      ]
+    }
+  ],
+  "recommended_next_step": "Select a real healer skill ability path (Natasha/Lynx/Bailu) and parse its ability JSON content to confirm HealHP instantiation; then build the first E2E Sandbox slice around HealHP -> DirectChangeHP -> DirectDamageHP.",
+  "recommended_primary_skill": {
+    "character_identifier": "Natasha / Lynx / Bailu representative ability paths",
+    "reason": "Uses already recovered DirectChangeHP -> DirectDamageHP mode-0 path and does not reach PGOOHIHKHNJ.",
+    "remaining_semantic_frontier": "Confirm which real character ability file instantiates HealHP and recover its config field mapping.",
+    "skill": "HealHP config-level candidate"
+  },
+  "schema": "simple_skill_candidate_index/1",
+  "status": "CONTENT_TOPOLOGY_SELECTION"
+}
