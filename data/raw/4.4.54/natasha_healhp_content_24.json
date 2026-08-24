@@ -1,0 +1,65 @@
+{
+  "amount_inputs": [
+    {
+      "classification": "UNKNOWN",
+      "field_candidate": "HPByMaxHP",
+      "record_offset": "0xBC9AF5",
+      "status": "DISCOVERY_EVIDENCE_ONLY"
+    },
+    {
+      "classification": "PROPERTY_REFERENCE_CANDIDATE",
+      "field_candidate": "MaxHP",
+      "record_offset": "0xBC9AF9",
+      "status": "DISCOVERY_EVIDENCE_ONLY"
+    },
+    {
+      "classification": "UNKNOWN",
+      "field_candidate": "M_SkillTree_HealRatioUp",
+      "record_offset": "near 0xBCA87D in adjacent Natasha records",
+      "status": "DISCOVERY_EVIDENCE_ONLY"
+    }
+  ],
+  "chosen_ability": "Avatar_Natasha_00_Skill02_Phase02",
+  "game_version": "4.4.54",
+  "healhp_node_identity": {
+    "evidence": "The chosen Skill02_Phase02 record contains Heal prefab reference, SkillTargetEntityList, TargetEntity, HPByMaxHP, and MaxHP tokens.",
+    "exact_polymorphic_config_tag": "UNKNOWN",
+    "status": "SUPPORTED"
+  },
+  "nested_values": [],
+  "recommended_next_step": "Decode the polymorphic config tag inside Avatar_Natasha_00_Skill02_Phase02 that maps to RPG.GameCore.HealHP, then parse its target selector and amount fields.",
+  "record": {
+    "archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "archive_sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+    "bitfield": 51,
+    "header_size": 3,
+    "path_index_evidence": "edd7d527b0962f4ec2e49789746fb0d2.bytes offset 0x8896 contains Avatar_Natasha_00_Ability.json path",
+    "record_end": "0xBC9BC8",
+    "record_length": 617,
+    "record_start": "0xBC995F",
+    "wrapper_type": 0
+  },
+  "schema": "natasha_healhp_content/1",
+  "source": {
+    "archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "record_length": 617,
+    "record_offset": "0xBC995F",
+    "sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B"
+  },
+  "status": "NATASHA_HEALHP_CONTENT_24_PARTIAL",
+  "target_config": {
+    "exact_target_config_object": "UNKNOWN",
+    "note": "Token presence does not prove the exact target selector object; a polymorphic tag decode is required.",
+    "observed_tokens": [
+      "SkillTargetEntityList",
+      "TargetEntity",
+      "AbilityTargetEntity"
+    ],
+    "status": "SUPPORTED"
+  },
+  "unresolved_parser_primitives": [
+    "UNKNOWN_POLYMORPHIC_TAG_FOR_HEALHP",
+    "UNKNOWN_DYNAMICVALUE_ENCODING_FOR_HEAL_AMOUNT",
+    "UNKNOWN_TARGET_SELECTOR_TAG"
+  ]
+}

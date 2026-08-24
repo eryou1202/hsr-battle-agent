@@ -13,15 +13,14 @@
 
 ## Latest semantic frontier
 
-- The HealHP bypass task is blocked in Phase A by
-  `REAL_ABILITY_CONTENT_REQUIRED`, independently of the PGOO dispatch. The
-  repository contains Natasha's ability path and the generic
-  `HealHP -> AAOLFLMHBEK -> M507658 -> M506500 -> M506499` binding, but not
-  the Natasha ability record content needed to prove a real ability ID,
-  target config, or heal amount. The recorded DesignData source archives are
-  absent from their original paths. See
-  `docs/agent/handoffs/heal_hp_phase_a_content_blocker_22.md` and
-  `data/raw/4.4.54/heal_hp_phase_a_content_blocker_22.json`.
+- HealHP content status: `NATASHA_HEALHP_CONTENT_24_PARTIAL`. The local
+  archive contains `Avatar_Natasha_00_Skill02_Phase02`
+  (`0xBC995F`–`0xBC9BC8`) as the bounded Natasha heal-bearing record, with
+  `Heal`, `SkillTargetEntityList`, `TargetEntity`, `HPByMaxHP`, and `MaxHP`
+  tokens present. The exact HealHP polymorphic config tag and amount fields
+  are not yet decoded. See
+  `docs/agent/handoffs/natasha_healhp_content_24.md` and
+  `data/raw/4.4.54/natasha_healhp_content_24.json`.
 
 - Stage 1 of the Core Sandbox Closure is **BLOCKED** with
   `RUNTIME_INSTANCE_OBSERVATION_REQUIRED`. The required live
