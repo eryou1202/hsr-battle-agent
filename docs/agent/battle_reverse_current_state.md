@@ -13,6 +13,19 @@
 
 ## Latest semantic frontier
 
+- Turn / AV status: `TURN_AV_SEMANTICS_29_PROOF`. In the scoped ordinary,
+  eligible action-list path, property `38` is the remaining action delay and
+  property `32` is the speed input. `DoTurnPrepareStartWork` sorts, selects
+  the first eligible actor, then writes every admitted actor's remaining
+  delay as `max(old - selected_delay, 0)` and increments elapsed action delay
+  by `selected_delay`. Native special/immediate/one-more/locked ordering is
+  excluded; equal recovered keys use a documented stable prior-list sandbox
+  policy. Task success alone is not turn completion, and the generic
+  post-action recharge writer/formula remains UNKNOWN, so repeated turns must
+  cross an explicit settled-action boundary with a provenance-bearing next
+  delay. See `docs/agent/handoffs/turn_av_semantics_29.md` and
+  `data/semantics/4.4.54/turn_av_semantics_29.json`.
+
 - HealHP registry status: `HEALHP_REGISTRY_ENTRY_26_PROOF`. The 4.4.54
   serialized selector for `RPG.GameCore.HealHP` is **7** (ULEB/VLQ), proven
   via factory thunk table `0x49392E0` index 7 -> thunk `0x1CC131D0` ->
