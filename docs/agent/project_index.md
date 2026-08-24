@@ -1,7 +1,8 @@
 # HSR Battle Agent — Authoritative Project Index
 
 > **Session entry point.** This is the compact, evidence-first map of the
-> checked local repository as of `main` at `7c5793c` (2026-08-24 audit).
+> checked local repository as of `main` at `31d4ed6` plus the version-locked
+> Nanoka 4.4.54 content-database work (2026-08-24).
 > Read this file, then the linked artifact for the subsystem being changed.
 > Source code, tests, committed artifacts, and Git history take precedence
 > over historical handoffs.  Do not treat uncommitted worktree files as
@@ -24,6 +25,12 @@ method again.
 ## 2. Current Architecture
 
 ```text
+Nanoka 4.4.54 snapshot
+  └─ `game_data/nanoka_content.py` adapter
+       └─ Canonical JSONL + SQLite query database
+            └─ future Scenario / Loadout compiler
+                 └─ Battle IR / battle runtime
+
 Local HSR client / DesignData archive
   └─ tools/unpack_pipeline + tools/reverse/scripts
        ├─ data/parsed/4.4.54       (pipeline reports, structural records)
@@ -49,6 +56,9 @@ working planning product.
 | DesignData/reverse helpers | `tools/reverse/scripts/`, `data/raw/4.4.54/` | PARTIAL; evidence and bounded parsers |
 | Parsed/normalized registries | `data/parsed/4.4.54/`, `data/normalized/4.4.54/` | PASS for metadata registries |
 | Content path indexes | `data/extracted/4.4.53/direct_json/` | PARTIAL; paths, not a content database |
+| External raw content snapshot | `data/external/nanoka/4.4.54/` | Local ignored cache; version-locked oracle evidence |
+| Canonical static content | `data/content/4.4.54/nanoka/` | Local ignored, deterministic JSONL build |
+| Content SQLite/query facade | `data/db/`, `game_data/nanoka_content.py` | PASS for static query/build surface; not a runtime compiler |
 | Battle IR | `src/hsr_battle_agent/battle_ir/` | PARTIAL-to-PASS by primitive |
 | Battle runtime | `src/hsr_battle_agent/battle_runtime/` | PARTIAL; proof-scoped only |
 | Battle state/kernel | `src/hsr_battle_agent/battle_sandbox/` | PASS for deterministic kernel/state boundaries |
@@ -76,6 +86,11 @@ discovered; 80,880 types, 732,328 methods, 555,259 fields, and 655,072
 parameters are normalized.  Optional generated-polymorphic runtime enrichment
 was not run.
 
+The version-locked external static oracle is Nanoka `4.4.54`; Nanoka `4.4.55`
+is a version-delta/schema-discovery input only.  See
+`docs/agent/content_database.md` for raw/canonical/SQLite separation and
+provenance rules.
+
 ## 5. Content Extraction State
 
 Use these levels literally: **L0 NOT_FOUND**, **L1 RAW_PRESENT**, **L2
@@ -94,12 +109,24 @@ INDEXED**, **L3 STRUCTURALLY_DECODED**, **L4 SANDBOX_SEMANTICS_AVAILABLE**.
 | Stage/encounter entities | L1 | 137 raw `Stage*` token candidates; encounter records and waves are not parsed |
 | Stage/mode ability paths | L2 | 323 Stage/Maze/Challenge/GridFight-like paths, which are ability files, not stage encounter configs |
 | Stage buff/modifier family | L2 partial | Modifier file paths include `AdventureModifier_MazeChallenge`, `AdventureModifier_MazeEnvi`, and `GlobalModifier_Level`; no Stage→Buff record join |
+| Versioned external static content | Reconstruction-ready external | Canonical/SQLite content may be C0 external-only but is ID-preserving, provenance-bearing static input; it is not local runtime proof |
 
 The complete audit artifacts are:
 
 - `data/raw/4.4.54/avatar_content_completeness_audit.json`
 - `data/content/4.4.54/audit/black_swan_content_family_manifest.json`
 - `data/raw/4.4.54/monster_stage_content_audit.json`
+
+### Version-locked external static database
+
+The Nanoka 4.4.54 local snapshot is now a reconstruction-ready static layer:
+97 Avatars, 664 Skills, 5,018 Traces, 582 Eidolons, 169 LightCones, 60
+RelicSets, 628 Monsters, 12,873 MonsterSkills, and 160 Boss/Challenge Stage
+records.  Stage→Wave→Monster is preserved (160 waves, 180 placements).  All
+160 Stage→Buff bindings are preserved but their 18 distinct Buff details are
+unavailable from the public detail endpoint, so they stay explicitly PARTIAL.
+Read `docs/agent/content_database.md`; do not mistake static C0/C1 content
+for local runtime semantics.
 
 ## 6. Runtime Capability Matrix
 
@@ -127,6 +154,7 @@ the corresponding game-wide mechanic is complete.
 | Shield, Toughness/Break, Death | BLOCKED | no accepted runtime implementation | Config/type names are not runtime proof |
 | Summon, follow-up, extra action | BLOCKED | no accepted runtime implementation | no generic content compiler or event sequencing |
 | Content compiler | BLOCKED | no module | Next architectural milestone |
+| Static content query database | PASS | `game_data/nanoka_content.py`, `scripts/*content*` | Static only; no BattleInitialState/runtime effect compiler |
 | BattleState | PASS | `battle_sandbox/state.py` (schema v4) | Deliberately does not model full combat state |
 | Clone / hash / snapshot | PASS | `battle_sandbox/{state,hash,snapshot}.py` | Logical state only |
 | Planner API | BLOCKED | `Sandbox.legal_actions/step/is_terminal` | Explicitly raises NOT_IMPLEMENTED |
@@ -162,6 +190,8 @@ a full battle.
   Avatar/Monster/Stage record parsing are absent.
 - No monster entity-to-ability/property/weakness relationship and no
   Stage→wave→monster or Stage→Buff relationship is structurally decoded.
+- External content does not resolve dynamic event ordering or permit a
+  simulator to execute an imported effect without a local Semantic Packet.
 
 ## 9. Tests and Verification Commands
 
@@ -185,6 +215,10 @@ Focused evidence also lives in `data/sandbox/*.json`, especially the real
 skill report, HP transition report, and the artifact-validation tests under
 `tests/reverse/`.
 
+For the static database, run the offline fixture tests under
+`tests/game_data/`; network is never required by those tests.  Fetch/build
+instructions are in `docs/agent/content_database.md`.
+
 ## 10. Important Commits
 
 - `ca98440` — versioned reverse pipeline v1 baseline.
@@ -199,6 +233,7 @@ skill report, HP transition report, and the artifact-validation tests under
 - `4d27854` / `f819cc3` — real Natasha HealHP extraction to event boundary.
 - `dd1a62c` — bounded core E2E status.
 - `7c5793c` — current checked HEAD, normalized reverse disassembly output.
+- `31d4ed6` — authoritative repository/content audit index.
 
 ## 11. Important Artifacts and Handoffs
 
@@ -211,6 +246,8 @@ skill report, HP transition report, and the artifact-validation tests under
 - Current real E2E: `data/semantics/4.4.54/real_skill_heal_boundary_30.json`
   and `data/sandbox/core_real_skill_runtime_30_report.json`.
 - Runtime semantic catalog: `data/semantics/4.4.54/catalog.json`.
+- Static content database guide: `docs/agent/content_database.md`.
+- Ticket impact after oracle adoption: `docs/agent/semantic_ticket_oracle_v2.md`.
 
 Historical handoffs are evidence, not a substitute for this index.  Read a
 handoff only when the linked artifact or source points to it.
@@ -242,6 +279,7 @@ Start the next implementation session with the strategy stated in §1:
 `full content census → generic content compiler → corpus semantic coverage → coverage-driven primitive recovery → standard battle E2E → planner / training APIs`
 
 The immediate architectural gap is not another character’s semantic reverse;
-it is a generic, versioned content compiler that can turn verified DesignData
-records into an explicit content graph and report coverage.  Only then select
-semantic primitives based on corpus coverage and blockers.
+it is a generic Scenario/Loadout compiler that consumes version-locked
+Canonical content plus local Semantic Packets.  Use local DesignData parsing
+to validate and close only database-emitted static gaps, then select dynamic
+primitives by corpus coverage and blockers.

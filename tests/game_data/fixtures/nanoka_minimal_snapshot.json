@@ -1,0 +1,120 @@
+{
+  "manifest": {"game": "hsr", "available": ["4.4.54"]},
+  "collections": {
+    "character": {
+      "1105": {"id": 1105, "name": "Natasha", "rank": 4, "baseType": "Abundance", "damageType": "Physical"},
+      "1303": {"id": 1303, "name": "Bronya", "rank": 5, "baseType": "Harmony", "damageType": "Wind"}
+    },
+    "lightcone": {
+      "21000": {"id": 21000, "name": "Post-Op Conversation"},
+      "21021": {"id": 21021, "name": "But the Battle Isn't Over"}
+    },
+    "relicset": {
+      "101": {"id": 101, "name": "Passerby of Wandering Cloud"},
+      "114": {"id": 114, "name": "Musketeer of Wild Wheat"}
+    },
+    "monster": {
+      "1002020": {"id": 1002020, "name": "Voidranger: Reaver"},
+      "1002030": {"id": 1002030, "name": "Voidranger: Trampler"},
+      "1004014": {"id": 1004014, "name": "Svarog"}
+    },
+    "maze": {"3110001": {"id": 3110001, "name": "Fixture Stage Buff"}},
+    "maze_extra": {"9001": {"id": 9001, "name": "Fixture Extra Mode"}},
+    "maze_boss": {"3001": {"id": 3001, "name": "Fixture Boss Mode"}}
+  },
+  "details": {
+    "character": {
+      "1105": {
+        "id": 1105,
+        "sp_need": 90,
+        "unrecognized_future_field": {"preserved": true},
+        "stats": [{"promotion": 0, "hp": 116, "atk": 41, "def": 47, "speed": 98}],
+        "skills": {
+          "110501": {"id": 110501, "type": "Normal", "level": {"1": {"params": [0.5]}}},
+          "110502": {"id": 110502, "type": "BPSkill", "level": {"1": {"params": [0.07, 0.2]}}},
+          "110503": {"id": 110503, "type": "Ultra", "level": {"1": {"params": [0.09, 0.12]}}},
+          "110504": {"id": 110504, "type": "Talent", "level": {"1": {"params": [0.25]}}},
+          "110505": {"id": 110505, "type": "Maze", "level": {"1": {"params": []}}}
+        },
+        "skill_trees": {"110501": {"1": {"point_id": 11050101, "level": 1}}},
+        "ranks": {
+          "1": {"id": 1105011}, "2": {"id": 1105012}, "3": {"id": 1105013},
+          "4": {"id": 1105014}, "5": {"id": 1105015}, "6": {"id": 1105016}
+        }
+      },
+      "1303": {
+        "id": 1303,
+        "sp_need": 120,
+        "stats": [{"promotion": 0, "hp": 168, "atk": 79, "def": 72, "speed": 99}],
+        "skills": {"130301": {"id": 130301, "type": "Normal", "level": {"1": {"params": [0.5]}}}},
+        "skill_trees": {"130301": {"1": {"point_id": 13030101, "level": 1}}},
+        "ranks": {
+          "1": {"id": 1303011}, "2": {"id": 1303012}, "3": {"id": 1303013},
+          "4": {"id": 1303014}, "5": {"id": 1303015}, "6": {"id": 1303016}
+        }
+      }
+    },
+    "lightcone": {
+      "21000": {
+        "id": 21000,
+        "stats": [{"promotion": 0, "hp": 48, "atk": 19, "def": 15}],
+        "refinements": {"level": {"1": {"params": [0.08]}, "5": {"params": [0.16]}}}
+      },
+      "21021": {
+        "id": 21021,
+        "stats": [{"promotion": 0, "hp": 52, "atk": 24, "def": 21}],
+        "refinements": {"level": {"1": {"params": [0.1]}, "5": {"params": [0.18]}}}
+      }
+    },
+    "relicset": {
+      "101": {
+        "id": 101,
+        "parts": {"31011": {"id": 31011, "slot": "HEAD"}, "31012": {"id": 31012, "slot": "HAND"}},
+        "require_num": {"2": {"desc": "Outgoing Healing +10%"}, "4": {"desc": "Battle start heals"}}
+      },
+      "114": {
+        "id": 114,
+        "parts": {"41111": {"id": 41111, "slot": "HEAD"}, "41112": {"id": 41112, "slot": "HAND"}},
+        "require_num": {"2": {"desc": "ATK +12%"}, "4": {"desc": "SPD +6%"}}
+      }
+    },
+    "monster": {
+      "1002020": {
+        "id": 1002020, "hp_base": 102, "atk_base": 71, "def_base": 54,
+        "child": [{"id": 100202001, "stance": 60, "weakness": ["Fire"], "skill_list": [{"id": 1002020010, "name": "Slash"}]}]
+      },
+      "1002030": {
+        "id": 1002030, "hp_base": 140, "atk_base": 85, "def_base": 62,
+        "child": [{"id": 100203001, "stance": 90, "weakness": ["Lightning"], "skill_list": [{"id": 1002030010, "name": "Charge"}]}]
+      },
+      "1004014": {
+        "id": 1004014, "hp_base": 1000, "atk_base": 120, "def_base": 90,
+        "child": [{"id": 100401401, "stance": 120, "weakness": ["Lightning"], "skill_list": [{"id": 1004014010, "name": "Command"}]}]
+      }
+    },
+    "boss": {
+      "3001": {
+        "id": 3001,
+        "level": [{
+          "id": 30011,
+          "name": "Fixture difficulty",
+          "event_id_list1": [{
+            "stage_id": 420101,
+            "stage_type": "Challenge",
+            "level": 80,
+            "monster_list": [{"monster1": 100202001, "monster2": 100203001}, {"monster1": 100401401}],
+            "stage_config_data": [
+              {"jdkamoanicm": "_Wave", "mojjbfbkbnc": 1},
+              {"jdkamoanicm": "_BindingMazeBuff", "mojjbfbkbnc": 3110001}
+            ],
+            "level_win_condition": ["DefeatAll"],
+            "level_lose_condition": ["AllDead"]
+          }],
+          "event_id_list2": []
+        }]
+      }
+    },
+    "maze": {"3110001": {"id": 3110001, "name": "Fixture Stage Buff", "type": "BattleBuff"}}
+  },
+  "auxiliary": {"item": {}, "EliteGroup": {"1": []}, "HardLevelGroup": {"1": []}}
+}

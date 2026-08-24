@@ -3,6 +3,21 @@
 This summary reflects a local repository audit at `main` / `7c5793c`, not an
 older handoff snapshot.
 
+It now also has a separate static-content route: Nanoka 4.4.54 is captured as
+an immutable local raw snapshot, normalized into Canonical JSON/JSONL, and
+rebuilt into a local SQLite query database.  That makes static Character,
+LightCone, RelicSet, Monster, and supported Stage data usable as future
+reconstruction input without claiming the game client's runtime semantics.
+Nanoka 4.4.55 is not allowed to fill 4.4.54 records.
+
+The completed 4.4.54 database contains 97 characters, 664 skills, 5,018
+trace records, 582 Eidolons, 169 LightCones, 60 RelicSets, 628 Monsters,
+12,873 MonsterSkills, and 160 Boss/Challenge Stage records.  It can export a
+static Stage Package that keeps its real Stage ID, wave, enemy slots, levels,
+rule metadata, and Buff references.  All currently found Stage Buff bindings
+remain explicit **UNKNOWN detail** references because the 18 referenced Buff
+details are absent from the public endpoint.
+
 ## What has been successfully unpacked
 
 The repeatable static 4.4.54 pipeline is working.  It has catalogued local
@@ -35,9 +50,11 @@ TaskConfig discriminator 1481), target reference, FormulaType 4, and two
 serialized DynamicFloat formulas.  The formulas’ operands still require
 external resolution.
 
-Therefore the answer to “can one character already be exported with all
-skills, traces, and six Eidolons?” is **no**.  A generic content compiler and
-full record coverage are still missing.
+The older local-only answer was “no”; the new version-locked content database
+can export whatever the Nanoka 4.4.54 Avatar detail exposes, including skills,
+traces, and six Eidolons when present.  It preserves provenance and unknown
+fields rather than guessing.  A generic runtime Content/Scenario compiler is
+still missing.
 
 ## Monsters, stages, and stage buffs
 
@@ -45,8 +62,10 @@ Monster data is genuinely present, but only at mixed raw/path-index levels.
 The main DesignData archive has 10,168 unique `Monster_*` token candidates,
 and the path index lists 377 core monster ability paths (679 broad
 monster/enemy paths).  Two Monster ComplexSkillAI paths are also indexed.
-There is no parsed monster entity table, no reliable ID-to-name/attributes
-table, no weakness/toughness table, and no proven entity-to-ability join.
+The local archive itself still lacks that generic parser.  Separately, the
+content database imports external version-locked Monster identity/stat/variant
+and skill-list facts and marks any missing/static joins explicitly.  That does
+not establish Monster AI or ability execution order.
 
 Stages also genuinely leave evidence: 137 raw `Stage*` token candidates and
 323 stage/mode-related ability paths.  But the stage encounter records,
@@ -55,10 +74,13 @@ decoded.  A StageAbility file is not proof of a complete stage configuration.
 
 Stage-buff-related config paths are present (`AdventureModifier_MazeChallenge`,
 `AdventureModifier_MazeEnvi`, and level/global modifier files), so stage-buff
-material is present and indexable as file paths.  No real Stage → Buff record
-relationship has been recovered.  The “Aha” request has a low-cost
-**FOUND_CANDIDATE** only: Elation/rogue buff and `StageAbility_Elation` paths
-exist; they are not yet identified as a specific Aha mechanic.
+material is present and indexable as file paths.  No local DesignData Stage →
+Buff record relationship has been recovered.  The external database preserves
+Stage-referenced Buff bindings and represents any unresolved binding in its
+exported Stage Package; it does not approximate or flatten waves.  The “Aha”
+request remains a low-cost **FOUND_CANDIDATE** only: Elation/rogue buff and
+`StageAbility_Elation` paths exist, but are not proven as a specific Aha
+mechanic.
 
 ## What the sandbox can execute
 
@@ -87,7 +109,7 @@ all of its effects, and there is no generic content compiler, encounter
 loader, legal-action generator, terminal-condition model, or stage loader.
 
 Beam Search, MCTS, and policy/value training should **not** begin yet.  First
-build the corpus-oriented content compiler; then measure content/primitive
+build the Scenario/Loadout compiler on the static database; then measure content/primitive
 coverage, recover missing primitives in coverage order, close a standard
 battle E2E, and finally expose legal actions, transitions, terminal rules,
 and training/planner APIs.
