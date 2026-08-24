@@ -1,8 +1,8 @@
 # HSR Battle Agent — Authoritative Project Index
 
 > **Session entry point.** This is the compact, evidence-first map of the
-> checked local repository as of `main` at `31d4ed6` plus the version-locked
-> Nanoka 4.4.54 content-database work (2026-08-24).
+> checked local repository as of the current `main` (2026-08-24), including
+> the version-locked Nanoka 4.4.54 content-database work.
 > Read this file, then the linked artifact for the subsystem being changed.
 > Source code, tests, committed artifacts, and Git history take precedence
 > over historical handoffs.  Do not treat uncommitted worktree files as
@@ -232,8 +232,10 @@ instructions are in `docs/agent/content_database.md`.
 - `2c44428` / `dc35457` — scoped Turn/AV semantics/runtime.
 - `4d27854` / `f819cc3` — real Natasha HealHP extraction to event boundary.
 - `dd1a62c` — bounded core E2E status.
-- `7c5793c` — current checked HEAD, normalized reverse disassembly output.
+- `7c5793c` — normalized reverse disassembly output baseline.
 - `31d4ed6` — authoritative repository/content audit index.
+- `994bc14` — version-locked Nanoka raw snapshot, Canonical/SQLite database,
+  query/export tools, tests, documentation, and 4.4.54→4.4.55 delta report.
 
 ## 11. Important Artifacts and Handoffs
 

@@ -1,7 +1,6 @@
 # Current Project Summary
 
-This summary reflects a local repository audit at `main` / `7c5793c`, not an
-older handoff snapshot.
+This summary reflects the current local `main`, not an older handoff snapshot.
 
 It now also has a separate static-content route: Nanoka 4.4.54 is captured as
 an immutable local raw snapshot, normalized into Canonical JSON/JSONL, and
