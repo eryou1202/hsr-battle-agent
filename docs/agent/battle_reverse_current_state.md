@@ -28,21 +28,34 @@
   `docs/agent/handoffs/turn_av_semantics_29.md` and
   `data/semantics/4.4.54/turn_av_semantics_29.json`.
 
-- HealHP registry status: `HEALHP_REGISTRY_ENTRY_26_PROOF`. The 4.4.54
-  serialized selector for `RPG.GameCore.HealHP` is **7** (ULEB/VLQ), proven
-  via factory thunk table `0x49392E0` index 7 -> thunk `0x1CC131D0` ->
-  `M124665`/`M124666`. The bounded Natasha `Skill02_Phase02` record does not
-  yet contain a standalone type-code-7 HealHP node in this window; the
-  remaining blocker is `NATASHA_RECORD_HEALHP_NODE_INDIRECTION_OR_OTHER_PHASE`.
-  See `docs/agent/handoffs/healhp_polymorphic_registry_entry_26.md` and
-  `data/raw/4.4.54/healhp_polymorphic_registry_entry_26.json`.
-- Direct-HP real content census status: `DIRECT_HP_AVATAR_SLICE_NOT_FOUND`.
-  Selectors are known for SetHP=5, HealHP=7, LoseHPByRatio=8, LoseHP=7, but
-  no structurally valid direct-HP node could be mapped to a real avatar
-  ability in the bounded census. **Natasha Skill02 HealHP assumption =
-  NOT_PROVEN / DEFERRED.** See
-  `docs/agent/handoffs/direct_hp_real_content_census_28.md` and
-  `data/raw/4.4.54/direct_hp_real_content_census_28.json`.
+- HealHP registry/content status:
+  `REAL_SKILL_HEALHP_NODE_AND_FORMULA4_CONFIG_CONFIRMED`. The generated global
+  `TaskConfig` registry has 3,915 ULEB-indexed slots. Its HealHP discriminator
+  is **1481**, mapped to `RPG.GameCore.HealHP` parser M124666 at `0x1D0EBEB0`.
+  The prior Handoff-26 selector-7 conclusion was a file-local factory-table
+  mapping and is **retracted as a global TaskConfig claim**. In Natasha
+  `Avatar_Natasha_00_Skill02_Phase02`, a `PredicateTaskList` at `0xBC9A1C`
+  contains ordered `DispelStatus` then `HealHP`; the HealHP node is exactly
+  `0xBC9A4B..0xBC9A7E`, has bitmap `0xB2`, target
+  `AbilityTargetEntity`, FormulaType 4, and two structurally decoded
+  DynamicFloat formulas. See
+  `docs/agent/handoffs/natasha_skill02_healhp_content_30.md` and
+  `data/raw/4.4.54/natasha_skill02_healhp_content_30.json`.
+
+- Core runtime status: `CORE_RUNTIME_READY_WITH_BOUNDED_EXTERNAL_BLOCKER`.
+  The deterministic E2E selects Natasha through the property-38 Turn/AV
+  timeline, loads and validates the committed real content, accepts explicit
+  provenance-bearing predicate/target/DynamicFloat/ordinary-branch bindings,
+  emits the ordered DispelStatus boundary, evaluates native FormulaType 4
+  from BattleState MaxHP/CurrentHP/HealRatio/HealTakenRatio, and emits a typed
+  Heal request boundary. It intentionally does **not** mutate CurrentHP: the
+  positive HealData event consumer is still UNKNOWN, and the recovered
+  negative DirectDamageHP path is not substituted. The E2E asserts the state
+  hash is unchanged across effect boundaries, then settles the turn using the
+  already-required explicit next-delay provenance. See
+  `docs/agent/handoffs/semantic_handoff_30.md`,
+  `data/semantics/4.4.54/real_skill_heal_boundary_30.json`, and
+  `data/sandbox/core_real_skill_runtime_30_report.json`.
 
 - Stage 1 of the Core Sandbox Closure is **BLOCKED** with
   `RUNTIME_INSTANCE_OBSERVATION_REQUIRED`. The required live
@@ -115,6 +128,12 @@
 - Generic PropertyEntry source-slot lifecycle and materialized-value write boundary.
 - Generic untransformed source-0 Property mutation.
 - Fixed-point Add/Subtract/Multiply helpers used by Property mutation.
+- Ordinary eligible Turn/AV selection, remaining-delay advance, and explicit
+  post-action settlement/recharge boundary.
+- Validated real Natasha Skill02 content loader.
+- Ordinary non-special, non-rally Heal FormulaType 4 arithmetic.
+- Ordered typed DispelStatus and Heal request boundaries with mandatory
+  external-resolution provenance.
 - SetHP-to-CurrentHP source-0 transition evidence.
 - DirectDamageHP HP transition: `TryGetLockHP` intercept, lock threshold,
   DirtyHP-ratio bound, shared source-0 CurrentHP write, bounded NegativeHP
@@ -245,6 +264,16 @@
   `docs/agent/handoffs/semantic_handoff_14.md`.
 - Reusable evidence helpers: `tools/reverse/scripts/semantic_batch_evidence.py`.
 - Reusable bounded xrefs: `tools/reverse/scripts/semantic_method_xrefs.py`.
+- Real Natasha content artifact:
+  `data/raw/4.4.54/natasha_skill02_healhp_content_30.json`.
+- Real Natasha content handoff:
+  `docs/agent/handoffs/natasha_skill02_healhp_content_30.md`.
+- Real-skill boundary semantic artifact:
+  `data/semantics/4.4.54/real_skill_heal_boundary_30.json`.
+- Real-skill runtime handoff:
+  `docs/agent/handoffs/semantic_handoff_30.md`.
+- Real-skill E2E report:
+  `data/sandbox/core_real_skill_runtime_30_report.json`.
 - Global/static writer classifier:
   `tools/reverse/scripts/global_static_writer_classifier.py`.
 - K probe output: `data/raw/4.4.54/current_hp_bound_global_writer_probe.json`.
