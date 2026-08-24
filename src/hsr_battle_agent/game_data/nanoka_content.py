@@ -43,6 +43,7 @@ DETAIL_COLLECTIONS: Mapping[str, str] = {
     "relicset": "relicset",
     "monster": "monster",
     "maze": "maze",
+    "maze_extra": "story",
     "maze_boss": "boss",
 }
 
@@ -528,6 +529,25 @@ class CanonicalBuilder:
         if existing is None:
             bucket.append(record)
             return
+        existing_without_provenance = {
+            key: value
+            for key, value in existing.items()
+            if key not in {"provenance", "canonical_sha256"}
+        }
+        record_without_provenance = {
+            key: value
+            for key, value in record.items()
+            if key not in {"provenance", "canonical_sha256"}
+        }
+        if existing_without_provenance == record_without_provenance:
+            merged_provenance = {
+                stable_hash(reference): reference
+                for reference in [*existing["provenance"], *record["provenance"]]
+            }
+            existing["provenance"] = sorted(merged_provenance.values(), key=stable_bytes)
+            canonical_payload = {key: value for key, value in existing.items() if key != "canonical_sha256"}
+            existing["canonical_sha256"] = stable_hash(canonical_payload)
+            return
         if existing["canonical_sha256"] != record["canonical_sha256"]:
             gap_id = f"CONFLICT:{record['entity_type']}:{identifier}"
             if gap_id not in self._static_gap_ids:
@@ -754,11 +774,24 @@ class CanonicalBuilder:
             collection_path = f"collections/{collection_name}.json"
             collection = _mapping(self._load(collection_path))
             for entity_id, data in sorted(collection.items(), key=lambda item: _numeric_key(str(item[0]))):
+                detail_endpoint = DETAIL_COLLECTIONS.get(collection_name)
+                detail_path = (
+                    f"detail/{detail_endpoint}/{entity_id}.json"
+                    if detail_endpoint is not None
+                    else None
+                )
                 self._add(
                     _entity(
                         "mode_metadata", f"{collection_name}:{entity_id}", version=self.version,
-                        payload={"collection": collection_name, **_mapping(data)},
-                        provenance=self._provenance(collection_path),
+                        payload={
+                            "collection": collection_name,
+                            "collection_entry": _mapping(data),
+                            "detail": self._load(detail_path) if detail_path else None,
+                        },
+                        provenance=self._provenance(
+                            collection_path,
+                            *([detail_path] if detail_path else []),
+                        ),
                         reconstruction_status="RECONSTRUCTION_READY",
                         original_game_id=entity_id,
                     )
@@ -773,28 +806,131 @@ class CanonicalBuilder:
                 for lane_key in ("event_id_list1", "event_id_list2"):
                     for event_index, event in enumerate(_list(difficulty_row.get(lane_key))):
                         event_row = _mapping(event)
-                        raw_stage_id = event_row.get("stage_id")
-                        if raw_stage_id is None:
-                            continue
-                        stage_id = str(raw_stage_id)
-                        stage_payload = {
-                            "source_mode": "boss",
-                            "boss_id": boss_id,
-                            "difficulty_id": difficulty_row.get("id"),
-                            "difficulty_name": difficulty_row.get("name"),
-                            "lane": lane_key,
-                            "event_index": event_index,
-                            **event_row,
-                        }
-                        self._add(
-                            _entity(
-                                "stage", stage_id, version=self.version, payload=stage_payload,
-                                provenance=self._provenance(relative),
-                                reconstruction_status="RECONSTRUCTION_READY" if event_row.get("monster_list") else "PARTIAL",
-                                original_game_id=raw_stage_id,
-                            )
+                        self._register_stage_event(
+                            event_row,
+                            relative,
+                            source_context={
+                                "source_mode": "boss",
+                                "boss_id": boss_id,
+                                "difficulty_id": difficulty_row.get("id"),
+                                "difficulty_name": difficulty_row.get("name"),
+                                "lane": lane_key,
+                                "event_index": event_index,
+                            },
                         )
-                        self._build_stage_wave(stage_id, event_row, relative)
+
+        maze_dir = self.snapshot_root / "detail" / "maze"
+        for detail_path in sorted(maze_dir.glob("*.json"), key=lambda path: _numeric_key(path.stem)) if maze_dir.exists() else []:
+            raw_payload = read_json(detail_path)
+            if not isinstance(raw_payload, list):
+                # Maze records used as binding details are handled only when a
+                # Stage references them; they are not encounter lists.
+                continue
+            maze_id = detail_path.stem
+            relative = str(detail_path.relative_to(self.snapshot_root)).replace("\\", "/")
+            for record_index, record in enumerate(raw_payload):
+                record_row = _mapping(record)
+                record_context = {
+                    key: value
+                    for key, value in record_row.items()
+                    if key not in {"event_id_list1", "event_id_list2"}
+                }
+                for lane_key in ("event_id_list1", "event_id_list2"):
+                    for event_index, event in enumerate(_list(record_row.get(lane_key))):
+                        self._register_stage_event(
+                            _mapping(event),
+                            relative,
+                            source_context={
+                                "source_mode": "maze",
+                                "maze_id": maze_id,
+                                "maze_record_id": record_row.get("id"),
+                                "maze_record_index": record_index,
+                                "maze_context": record_context,
+                                "lane": lane_key,
+                                "event_index": event_index,
+                            },
+                        )
+
+        story_dir = self.snapshot_root / "detail" / "story"
+        for detail_path in sorted(story_dir.glob("*.json"), key=lambda path: _numeric_key(path.stem)) if story_dir.exists() else []:
+            story = _mapping(read_json(detail_path))
+            story_id = detail_path.stem
+            relative = str(detail_path.relative_to(self.snapshot_root)).replace("\\", "/")
+            story_metadata = {key: value for key, value in story.items() if key != "level"}
+            for level_index, level in enumerate(_list(story.get("level"))):
+                level_row = _mapping(level)
+                level_context = {
+                    key: value
+                    for key, value in level_row.items()
+                    if key not in {"event_id_list1", "event_id_list2"}
+                }
+                for lane_key in ("event_id_list1", "event_id_list2"):
+                    for event_index, event in enumerate(_list(level_row.get(lane_key))):
+                        self._register_stage_event(
+                            _mapping(event),
+                            relative,
+                            source_context={
+                                "source_mode": "story",
+                                "story_id": story_id,
+                                "story_name": story.get("name"),
+                                "story_level_id": level_row.get("id"),
+                                "story_level_index": level_index,
+                                "story_metadata": story_metadata,
+                                "story_level_context": level_context,
+                                "lane": lane_key,
+                                "event_index": event_index,
+                            },
+                        )
+
+    def _register_stage_event(
+        self,
+        event: Mapping[str, Any],
+        relative: str,
+        *,
+        source_context: Mapping[str, Any],
+    ) -> None:
+        raw_stage_id = event.get("stage_id")
+        if raw_stage_id is None:
+            return
+        stage_id = str(raw_stage_id)
+        source_mode = str(source_context.get("source_mode", "unknown"))
+        encounter_id = ":".join(
+            str(value)
+            for value in (
+                source_mode,
+                source_context.get(
+                    "boss_id",
+                    source_context.get("maze_id", source_context.get("story_id", "unknown")),
+                ),
+                source_context.get(
+                    "difficulty_id",
+                    source_context.get("maze_record_id", source_context.get("story_level_id", "unknown")),
+                ),
+                source_context.get("lane", "unknown"),
+                source_context.get("event_index", "unknown"),
+            )
+        )
+        encounter_payload = {**source_context, "stage_id": raw_stage_id}
+        self._add(
+            _entity(
+                "encounter", encounter_id, version=self.version,
+                payload=encounter_payload,
+                provenance=self._provenance(relative),
+                reconstruction_status="RECONSTRUCTION_READY",
+                original_game_id=None,
+                game_id_status="DERIVED_FROM_PARENT",
+            )
+        )
+        self._rel("encounter_stage", encounter_id=encounter_id, stage_id=stage_id)
+        self._add(
+            _entity(
+                "stage", stage_id, version=self.version, payload=dict(event),
+                provenance=self._provenance(relative),
+                reconstruction_status="RECONSTRUCTION_READY" if event.get("monster_list") else "PARTIAL",
+                original_game_id=raw_stage_id,
+            )
+        )
+        self._build_stage_wave(stage_id, event, relative)
 
     def _build_stage_wave(self, stage_id: str, event: Mapping[str, Any], relative: str) -> None:
         wave_index = 1
@@ -905,6 +1041,27 @@ class CanonicalBuilder:
                     "detail": "Nanoka item payload does not expose a recognized main/sub-affix schema to the adapter.",
                 }
             )
+        for auxiliary_name in ("EliteGroup", "HardLevelGroup"):
+            if not (self.snapshot_root / "auxiliary" / f"{auxiliary_name}.json").exists():
+                self.static_gaps.append(
+                    {
+                        "gap_id": f"AUXILIARY_{auxiliary_name.upper()}",
+                        "category": "monster_stage_auxiliary",
+                        "status": "EXTERNAL_MISSING",
+                        "detail": f"Nanoka's documented {auxiliary_name}.json endpoint was unavailable for this snapshot.",
+                    }
+                )
+        for monster in self.records.get("monster", []):
+            detail = _mapping(_mapping(monster.get("data")).get("detail"))
+            if detail and not _list(detail.get("child")):
+                self.static_gaps.append(
+                    {
+                        "gap_id": f"MONSTER_VARIANT_LIST:{monster['entity_id']}",
+                        "category": "monster_variant",
+                        "status": "PARTIAL",
+                        "detail": "Monster detail has base stats but no child/variant list to establish its ability relation.",
+                    }
+                )
         stage_buff_relations = self.relations.get("stage_buff", [])
         unresolved = [row for row in stage_buff_relations if not row.get("resolved")]
         if unresolved:
@@ -917,7 +1074,8 @@ class CanonicalBuilder:
                     "affected_count": len(unresolved),
                 }
             )
-        if not (self.snapshot_root / "detail" / "story").exists():
+        story_dir = self.snapshot_root / "detail" / "story"
+        if not story_dir.exists():
             self.static_gaps.append(
                 {
                     "gap_id": "STORY_STAGE_DETAIL",
@@ -926,6 +1084,21 @@ class CanonicalBuilder:
                     "detail": "No story collection endpoint was provided by the fetched 4.4.54 collection set; story detail coverage is unknown.",
                 }
             )
+        else:
+            story_has_stage_link = any(
+                isinstance(node, Mapping) and "stage_id" in node
+                for path in story_dir.glob("*.json")
+                for node in _walk(read_json(path))
+            )
+            if not story_has_stage_link:
+                self.static_gaps.append(
+                    {
+                        "gap_id": "STORY_STAGE_ENCOUNTER_LINK",
+                        "category": "stage",
+                        "status": "NEEDS_STATIC_RECOVERY",
+                        "detail": "Fetched Story detail records expose mode/buff/option metadata but no direct Stage→Wave encounter link.",
+                    }
+                )
 
 
 def _dynamic_gaps(version: str) -> list[dict[str, Any]]:
@@ -982,7 +1155,8 @@ def coverage_report(build: CanonicalBuild) -> dict[str, Any]:
             "relic_set": status_counts("relic_set"),
             "relic_affix": {"total": 0, "reconstruction_ready": 0, "partial": 0, "failed": 0},
             "monster": status_counts("monster"),
-            "monster_skill": status_counts("monster_skill"),
+        "monster_skill": status_counts("monster_skill"),
+            "encounter": status_counts("encounter"),
             "stage": status_counts("stage"),
             "wave": status_counts("wave"),
             "wave_monster": status_counts("wave_monster"),
@@ -1133,6 +1307,7 @@ ENTITY_TABLES: Mapping[str, str] = {
     "monster": "monsters",
     "monster_variant": "monster_variants",
     "monster_skill": "monster_skills",
+    "encounter": "encounters",
     "mode_metadata": "mode_metadata",
     "stage": "stages",
     "wave": "waves",
@@ -1149,6 +1324,7 @@ RELATION_TABLES: Mapping[str, str] = {
     "relic_set_item": "relic_set_items",
     "monster_variant": "monster_relations",
     "monster_variant_skill": "monster_skill_relations",
+    "encounter_stage": "encounter_stage_relations",
     "stage_wave": "stage_waves",
     "wave_monster": "wave_monster_relations",
     "stage_buff": "stage_buff_relations",
@@ -1227,8 +1403,15 @@ def build_sqlite(
                 )
         for relation_type, rows in build.relations.items():
             table = RELATION_TABLES[relation_type]
+            seen_relation_keys: set[str] = set()
             for row in sorted(rows, key=stable_bytes):
                 relation_key = stable_hash(row)
+                if relation_key in seen_relation_keys:
+                    # Identical source rows are collection-level duplicates,
+                    # not separate game relationships.  Health output reports
+                    # their count; SQLite keeps the logical relation once.
+                    continue
+                seen_relation_keys.add(relation_key)
                 connection.execute(
                     f"INSERT INTO {table} VALUES (?, ?, ?)",
                     (build.version, relation_key, json.dumps(row, ensure_ascii=False, sort_keys=True)),
@@ -1310,6 +1493,9 @@ class ContentDatabase:
     def get_monster(self, monster_id: str | int) -> dict[str, Any] | None:
         return self._entity("monsters", monster_id)
 
+    def get_encounter(self, encounter_id: str) -> dict[str, Any] | None:
+        return self._entity("encounters", encounter_id)
+
     def get_stage(self, stage_id: str | int) -> dict[str, Any] | None:
         return self._entity("stages", stage_id)
 
@@ -1325,6 +1511,10 @@ class ContentDatabase:
             ).fetchall()
             buff_rows = connection.execute(
                 "SELECT payload_json FROM stage_buff_relations WHERE game_version=?", (self.game_version,)
+            ).fetchall()
+            encounter_relation_rows = connection.execute(
+                "SELECT payload_json FROM encounter_stage_relations WHERE game_version=? AND json_extract(payload_json, '$.stage_id')=?",
+                (self.game_version, stage_id_text),
             ).fetchall()
         waves: list[dict[str, Any]] = []
         source_refs = list(stage["provenance"])
@@ -1363,6 +1553,21 @@ class ContentDatabase:
             if buff is None or not row.get("resolved"):
                 unresolved.append({"kind": "stage_buff", "buff_id": row["buff_id"], "status": "UNKNOWN"})
             buffs.append({"buff_id": row["buff_id"], "resolution_status": "RESOLVED" if buff and row.get("resolved") else "UNKNOWN"})
+        encounter_contexts: list[dict[str, Any]] = []
+        for (payload_json,) in encounter_relation_rows:
+            relation = json.loads(payload_json)
+            encounter = self.get_encounter(relation["encounter_id"])
+            if encounter is None:
+                unresolved.append({"kind": "encounter", "encounter_id": relation["encounter_id"], "status": "UNKNOWN"})
+                continue
+            source_refs.extend(encounter["provenance"])
+            encounter_contexts.append(
+                {
+                    "encounter_id": encounter["entity_id"],
+                    "source_mode": encounter["data"].get("source_mode"),
+                    "context": encounter["data"],
+                }
+            )
         unique_source_refs = {
             stable_hash(reference): reference for reference in source_refs
         }
@@ -1373,6 +1578,7 @@ class ContentDatabase:
             "mode": stage["data"].get("stage_type"),
             "waves": waves,
             "stage_buffs": buffs,
+            "encounter_contexts": sorted(encounter_contexts, key=lambda row: str(row["encounter_id"])),
             "rule_metadata": {
                 "win_conditions": stage["data"].get("level_win_condition", []),
                 "lose_conditions": stage["data"].get("level_lose_condition", []),

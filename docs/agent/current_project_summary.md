@@ -11,11 +11,12 @@ Nanoka 4.4.55 is not allowed to fill 4.4.54 records.
 
 The completed 4.4.54 database contains 97 characters, 664 skills, 5,018
 trace records, 582 Eidolons, 169 LightCones, 60 RelicSets, 628 Monsters,
-12,873 MonsterSkills, and 160 Boss/Challenge Stage records.  It can export a
-static Stage Package that keeps its real Stage ID, wave, enemy slots, levels,
-rule metadata, and Buff references.  All currently found Stage Buff bindings
-remain explicit **UNKNOWN detail** references because the 18 referenced Buff
-details are absent from the public endpoint.
+12,873 MonsterSkills, 1,543 Encounter contexts, and 1,459
+Maze/Story/Boss Challenge Stage records.  It can export a static Stage Package
+that keeps its real Stage ID, wave, enemy slots, levels, rule metadata,
+encounter context, and Buff references.  The 160 currently found Stage Buff
+bindings remain explicit **UNKNOWN detail** references because the 18
+referenced Buff details are absent from the public endpoint.
 
 ## What has been successfully unpacked
 

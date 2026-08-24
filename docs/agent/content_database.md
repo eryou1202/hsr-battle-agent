@@ -95,12 +95,14 @@ snapshot, validation, and gap tables.  Its logical primary key is
 The public query facade is `ContentDatabase` in
 `src/hsr_battle_agent/game_data/nanoka_content.py`:
 `get_avatar`, `get_skill`, `get_lightcone`, `get_relic_set`, `get_monster`,
-`get_stage`, and `get_stage_package`.
+`get_encounter`, `get_stage`, and `get_stage_package`.
 
 `get_stage_package(stage_id)` preserves wave ordering, group/slot identity,
 monster IDs, levels, Stage Buff links, rule metadata, source references, and
-explicit unresolved references.  It returns static scenario data, not an
-initial battle state.
+explicit unresolved references.  When a Stage appears in multiple Maze,
+Story, or Boss contexts, the package returns each distinct `Encounter` context
+instead of merging them.  It returns static scenario data, not an initial
+battle state.
 
 ## Validation and gaps
 
@@ -132,8 +134,8 @@ package export without making a network request.
 
 ## Current verified 4.4.54 build
 
-The local snapshot build completed with 1,029 indexed raw payloads (about
-21.8 MB) and 20 explicit unavailable endpoints.  The latter consist of the
+The local snapshot build completed with 1,055 indexed raw payloads (about
+22.9 MB) and 20 explicit unavailable endpoints.  The latter consist of the
 two requested global auxiliary endpoints and 18 Stage-referenced
 `_BindingMazeBuff` detail endpoints; they are not silently treated as content.
 
@@ -147,17 +149,23 @@ two requested global auxiliary endpoints and 18 Stage-referenced
 | RelicSet | 60 / 60 |
 | Monster | 627 / 628 |
 | MonsterSkill | 12,873 / 12,873 |
-| Stage / Wave / WaveMonster | 160 / 160, 160 / 160, 180 / 180 |
+| Encounter | 1,543 / 1,543 |
+| Stage / Wave / WaveMonster | 1,459 / 1,459, 1,459 / 1,459, 6,717 / 6,717 |
 | StageBuff | 0 / 18 (details unavailable) |
 | Stage→Buff relation | 0 / 160 (binding preserved, Buff detail unknown) |
 
-The generated SQLite is about 57.5 MB and its two successive rebuilds from
+The generated SQLite is about 76.0 MB and its two successive rebuilds from
 the same raw snapshot had logical SHA-256
-`ecf1977844b93d98d93a1298a36dd35870f7c2d446cc9be22c91be7f87e634d6`.
+`ea45fd588551ccc0543131e16e1379461995c89875d35d491a42fc56a56109eb`.
 The health report has no duplicate IDs, dangling Monster references, missing
 Avatar owners, orphan skills, Stage/Wave inconsistency, or version
-contamination.  The emitted static gaps are Relic affix/roll schema,
-unavailable Stage Buff detail, and unavailable Story-stage collection detail.
+contamination.  Raw Maze input has 84 exact duplicate Stage→Wave rows and
+428 exact duplicate Wave→Monster rows; they are surfaced in health output and
+materialized only once in SQLite.  The emitted static gaps are Relic
+affix/roll schema, the unavailable `EliteGroup` / `HardLevelGroup` auxiliary
+collections, one Monster without a child/variant list, and unavailable Stage
+Buff detail.  Story detail is captured as Encounter→Stage context rather than
+being treated as a missing link.
 
 The collection-only 4.4.54 → 4.4.55 delta has no added or removed IDs and no
 collection schema key changes; only two Monster collection entries differ.

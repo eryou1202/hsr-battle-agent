@@ -18,8 +18,14 @@
       "1002030": {"id": 1002030, "name": "Voidranger: Trampler"},
       "1004014": {"id": 1004014, "name": "Svarog"}
     },
-    "maze": {"3110001": {"id": 3110001, "name": "Fixture Stage Buff"}},
-    "maze_extra": {"9001": {"id": 9001, "name": "Fixture Extra Mode"}},
+    "maze": {
+      "100": {"id": 100, "name": "Fixture Maze"},
+      "3110001": {"id": 3110001, "name": "Fixture Stage Buff"}
+    },
+    "maze_extra": {
+      "2001": {"id": 2001, "name": "Fixture Story Mode"},
+      "9001": {"id": 9001, "name": "Fixture Extra Mode"}
+    },
     "maze_boss": {"3001": {"id": 3001, "name": "Fixture Boss Mode"}}
   },
   "details": {
@@ -92,6 +98,26 @@
         "child": [{"id": 100401401, "stance": 120, "weakness": ["Lightning"], "skill_list": [{"id": 1004014010, "name": "Command"}]}]
       }
     },
+    "story": {
+      "2001": {
+        "id": 2001,
+        "name": "Fixture Story Mode",
+        "buff": {"name": "Fixture option buff"},
+        "level": [{
+          "id": 20011,
+          "event_id_list1": [{
+            "stage_id": 30319011,
+            "stage_type": "Challenge",
+            "level": 55,
+            "monster_list": [{"monster0": 100203001}],
+            "stage_config_data": [{"jdkamoanicm": "_StageInfiniteGroup", "mojjbfbkbnc": "30319011"}],
+            "level_win_condition": [],
+            "level_lose_condition": []
+          }],
+          "event_id_list2": []
+        }]
+      }
+    },
     "boss": {
       "3001": {
         "id": 3001,
@@ -114,7 +140,23 @@
         }]
       }
     },
-    "maze": {"3110001": {"id": 3110001, "name": "Fixture Stage Buff", "type": "BattleBuff"}}
+    "maze": {
+      "100": [{
+        "id": 1,
+        "name": "Fixture Maze Encounter",
+        "event_id_list1": [{
+          "stage_id": 30001011,
+          "stage_type": "Challenge",
+          "level": 32,
+          "monster_list": [{"monster0": 100202001}],
+          "stage_config_data": [{"jdkamoanicm": "_Wave", "mojjbfbkbnc": "1"}],
+          "level_win_condition": [],
+          "level_lose_condition": []
+        }],
+        "event_id_list2": []
+      }],
+      "3110001": {"id": 3110001, "name": "Fixture Stage Buff", "type": "BattleBuff"}
+    }
   },
   "auxiliary": {"item": {}, "EliteGroup": {"1": []}, "HardLevelGroup": {"1": []}}
 }

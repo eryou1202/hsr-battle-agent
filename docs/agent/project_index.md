@@ -121,10 +121,11 @@ The complete audit artifacts are:
 
 The Nanoka 4.4.54 local snapshot is now a reconstruction-ready static layer:
 97 Avatars, 664 Skills, 5,018 Traces, 582 Eidolons, 169 LightCones, 60
-RelicSets, 628 Monsters, 12,873 MonsterSkills, and 160 Boss/Challenge Stage
-records.  Stage→Wave→Monster is preserved (160 waves, 180 placements).  All
-160 Stage→Buff bindings are preserved but their 18 distinct Buff details are
-unavailable from the public detail endpoint, so they stay explicitly PARTIAL.
+RelicSets, 628 Monsters, 12,873 MonsterSkills, 1,543 Encounter contexts, and
+1,459 Maze/Story/Boss Challenge Stage records.  Stage→Wave→Monster is
+preserved (1,459 waves, 6,717 placements).  The 160 discovered Stage→Buff
+bindings are preserved but their 18 distinct Buff details are unavailable from
+the public detail endpoint, so they stay explicitly PARTIAL.
 Read `docs/agent/content_database.md`; do not mistake static C0/C1 content
 for local runtime semantics.
 

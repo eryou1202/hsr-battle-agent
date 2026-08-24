@@ -15,7 +15,7 @@ oracle, never a local dynamic semantic proof.
 | `CT-STAT-01..03` | `DEFER_VALIDATION` | Base/promotion values are imported; local transforms are a later C3 quality task. |
 | Monster entity/stat/weakness tickets | `CLOSED_EXTERNAL_RECONSTRUCTION_READY` or `DEFER_VALIDATION` | Use Monster details and group auxiliary data. |
 | Monster AI / boss sequencing tickets | `NEEDS_DYNAMIC_SEMANTICS` | Static skill lists do not establish decision order. |
-| Static Stage/Wave/Monster/Buff tickets | `CLOSED_EXTERNAL_RECONSTRUCTION_READY` only with a preserved package; otherwise `NEEDS_STATIC_RECOVERY` | Boss/Maze source details are imported without flattening waves. |
+| Static Stage/Wave/Monster/Buff tickets | `CLOSED_EXTERNAL_RECONSTRUCTION_READY` only with a preserved package; otherwise `NEEDS_STATIC_RECOVERY` | Maze/Story/Boss source details are imported without flattening waves. |
 | Stage runtime tickets | `NEEDS_DYNAMIC_SEMANTICS` | Spawn timing, transitions, victory/failure event order stay outside the database. |
 | Damage / Heal / SP / Energy / Turn / Event / Death / Target legality tickets | `NEEDS_DYNAMIC_SEMANTICS` | External values may guide searches but cannot prove runtime mutation order. |
 
