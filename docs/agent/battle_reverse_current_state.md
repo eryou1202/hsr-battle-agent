@@ -13,14 +13,14 @@
 
 ## Latest semantic frontier
 
-- HealHP content status: `NATASHA_HEALHP_CONTENT_24_PARTIAL`. The local
+- HealHP content status: `NATASHA_HEALHP_CONTENT_25_PARTIAL`. The local
   archive contains `Avatar_Natasha_00_Skill02_Phase02`
-  (`0xBC995F`–`0xBC9BC8`) as the bounded Natasha heal-bearing record, with
-  `Heal`, `SkillTargetEntityList`, `TargetEntity`, `HPByMaxHP`, and `MaxHP`
-  tokens present. The exact HealHP polymorphic config tag and amount fields
-  are not yet decoded. See
-  `docs/agent/handoffs/natasha_healhp_content_24.md` and
-  `data/raw/4.4.54/natasha_healhp_content_24.json`.
+  (`0xBC995F`–`0xBC9BC8`) as the bounded Natasha heal-bearing record. The
+  reference `53 -> heal_hp` discriminator is **not present** in this 4.4.54
+  record, so the exact polymorphic action registry entry for HealHP is the
+  smallest missing parser primitive. See
+  `docs/agent/handoffs/natasha_healhp_content_25.md` and
+  `data/raw/4.4.54/natasha_healhp_content_25.json`.
 
 - Stage 1 of the Core Sandbox Closure is **BLOCKED** with
   `RUNTIME_INSTANCE_OBSERVATION_REQUIRED`. The required live

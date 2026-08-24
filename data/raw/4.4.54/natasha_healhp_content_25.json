@@ -1,0 +1,52 @@
+{
+  "amount_field_encoded_types": {
+    "note": "No amount DynamicValue/FixPoint payload was structurally linked to a HealHP node.",
+    "status": "UNKNOWN"
+  },
+  "decoded_dynamicvalue_fixpoint_values": [],
+  "discriminator_to_runtime_type_proof": {
+    "reason": "Reference parser maps 53 -> heal_hp, but it is from an older/other parser family and is not present in this 4.4.54 record. The 4.4.54 polymorphic action registry entry for HealHP is not yet recovered.",
+    "status": "INSUFFICIENT"
+  },
+  "game_version": "4.4.54",
+  "healhp_populated_fields": {
+    "note": "No heal_hp-shaped node could be structurally decoded from the record using the reference format.",
+    "status": "UNKNOWN"
+  },
+  "healhp_serialized_discriminator": {
+    "detail": "The 617-byte Skill02_Phase02 record contains no standalone 0x35 byte that parses as a disp__config_ability_action type_code 53.",
+    "observed_in_record": false,
+    "reference_source": "tools/reference/DataParser/BinOut/Ability/Temp/Common/disp__config_ability_action.ksy case 53 -> heal_hp",
+    "reference_value": 53,
+    "status": "UNKNOWN"
+  },
+  "hp_by_max_hp_maxhp_linkage": {
+    "detail": "HPByMaxHP and MaxHP appear inside the modifier name MAvatar_Natasha_00_HOT_HPByMaxHP and are not proven to be linked to a decoded HealHP action node.",
+    "status": "UNRELATED_NEARBY_RECORD_DATA_OR_UNKNOWN"
+  },
+  "recommended_next_step": "Recover the 4.4.54 polymorphic action registry mapping for RPG.GameCore.HealHP (which serialized type code maps to HealHP in this binary), then re-parse the Skill02_Phase02 record.",
+  "record": {
+    "ability": "Avatar_Natasha_00_Skill02_Phase02",
+    "archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "archive_sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+    "record_end": "0xBC9BC8",
+    "record_length": 617,
+    "record_start": "0xBC995F"
+  },
+  "remaining_parser_unknown": [
+    "POLYMORPHIC_REGISTRY_ENTRY_HEALHP_MISSING",
+    "TARGET_CONFIG_SERIALIZER_TAG_UNKNOWN",
+    "HEALHP_FIELD_BITMAP_UNKNOWN"
+  ],
+  "schema": "natasha_healhp_content/2",
+  "status": "NATASHA_HEALHP_CONTENT_25_PARTIAL",
+  "target_config": {
+    "exact_serialized_tag": "UNKNOWN",
+    "observed_tokens": [
+      "SkillTargetEntityList",
+      "TargetEntity",
+      "AbilityTargetEntity"
+    ],
+    "status": "SUPPORTED_BUT_NOT_DECODED"
+  }
+}
