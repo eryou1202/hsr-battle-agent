@@ -1,0 +1,104 @@
+{
+  "dispatcher": {
+    "factory_thunk_table_rva": "0x49392E0",
+    "healhp_factory_thunk": {
+      "alloc_type_token_global": "0x961AA08",
+      "call_mgmegedlmak": "0x1D0EBEB0",
+      "call_ojnnbejldij": "0x1D0EBBD0"
+    },
+    "healhp_thunk_rva": "0x1CC131D0",
+    "selector_bytes": "0x07",
+    "selector_encoding": "ULEB/VLQ unsigned varint",
+    "selector_value": 7,
+    "table_index": 7
+  },
+  "fields": [
+    {
+      "field_index": 97106,
+      "name": "TargetType"
+    },
+    {
+      "field_index": 97107,
+      "name": "HealerTargetType"
+    },
+    {
+      "field_index": 97108,
+      "name": "AliveOnly"
+    },
+    {
+      "field_index": 97109,
+      "name": "FormulaType"
+    },
+    {
+      "field_index": 97110,
+      "name": "HealPercentage"
+    },
+    {
+      "field_index": 97111,
+      "name": "SPHitRatio"
+    },
+    {
+      "field_index": 97112,
+      "name": "ModifyValue"
+    },
+    {
+      "field_index": 97113,
+      "name": "IsHealRallyHP"
+    },
+    {
+      "field_index": 97114,
+      "name": "ScreenSpaceFloatMsg"
+    },
+    {
+      "field_index": 97115,
+      "name": "DisplayData"
+    },
+    {
+      "field_index": 97116,
+      "name": "PerformanceDelay"
+    }
+  ],
+  "game_version": "4.4.54",
+  "methods": [
+    {
+      "method_index": 124664,
+      "name": ".ctor",
+      "native_rva": "0x1D0EBD50",
+      "role": "CONSTRUCTOR"
+    },
+    {
+      "method_index": 124665,
+      "name": "OJNNBEJLDIJ",
+      "native_rva": "0x1D0EBBD0",
+      "parameter_count": 2,
+      "role": "SERIALIZER_IMPL_OR_INIT"
+    },
+    {
+      "method_index": 124666,
+      "name": "MGMEGEDLMAK",
+      "native_rva": "0x1D0EBEB0",
+      "parameter_count": 2,
+      "role": "DESERIALIZER_IMPL"
+    }
+  ],
+  "natasha_record_status": {
+    "healhp_node_decoded": false,
+    "reason": "The record does not contain a standalone type_code 7 action node that parses as heal_hp in this bounded window; the HealHP config may be reached through an outer table/index or another phase.",
+    "record": "Avatar_Natasha_00_Skill02_Phase02",
+    "record_range": "0xBC995F-0xBC9BC8"
+  },
+  "proof_chain": [
+    "serialized selector 7",
+    "factory thunk table 0x49392E0 index 7",
+    "thunk 0x1CC131D0",
+    "alloc type token 0x961AA08",
+    "call M124665 OJNNBEJLDIJ 0x1D0EBBD0",
+    "call M124666 MGMEGEDLMAK 0x1D0EBEB0",
+    "RPG.GameCore.HealHP type_index 22352"
+  ],
+  "remaining_single_blocker": "NATASHA_RECORD_HEALHP_NODE_INDIRECTION_OR_OTHER_PHASE",
+  "runtime_type": "RPG.GameCore.HealHP",
+  "schema": "config_polymorphic_registry_entry/1",
+  "status": "HEALHP_REGISTRY_ENTRY_26_PROOF",
+  "type_index": 22352
+}
