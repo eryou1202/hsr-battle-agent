@@ -1,0 +1,92 @@
+{
+  "schema": "real_skill_heal_boundary/1",
+  "game_version": "4.4.54",
+  "status": "CORE_RUNTIME_READY_WITH_BOUNDED_EXTERNAL_BLOCKER",
+  "content": {
+    "ability": "Avatar_Natasha_00_Skill02_Phase02",
+    "artifact": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+    "artifact_sha256": "4dcca0baa2474373b20f785d47b853087971d99ae52617e030fe0931d81f5596",
+    "predicate": {
+      "discriminator": 496,
+      "runtime_type": "RPG.GameCore.BySkillPointActivated",
+      "resolution": "EXTERNAL_WITH_REQUIRED_PROVENANCE"
+    },
+    "ordered_success_tasks": [
+      {
+        "ordinal": 0,
+        "discriminator": 1199,
+        "runtime_type": "RPG.GameCore.DispelStatus",
+        "runtime_behavior": "REQUEST_BOUNDARY_ONLY"
+      },
+      {
+        "ordinal": 1,
+        "discriminator": 1481,
+        "runtime_type": "RPG.GameCore.HealHP",
+        "runtime_behavior": "FORMULA_AND_REQUEST_BOUNDARY"
+      }
+    ]
+  },
+  "formula_type_4_ordinary_non_rally": {
+    "native_method": "RPG.GameCore.AbilityStatic.HealFormula M504575 RVA 0xE468720",
+    "setup_method": "RPG.GameCore.AbilityStatic.SetupHealData M504574 RVA 0xE468390",
+    "inputs": [
+      "target MaxHP property 1",
+      "target CurrentHP property 10",
+      "externally evaluated HealPercentage DynamicFloat",
+      "externally evaluated ModifyValue DynamicFloat",
+      "healer HealRatio property 124",
+      "target HealTakenRatio property 127"
+    ],
+    "pseudocode": [
+      "base = target.MaxHP - target.CurrentHP",
+      "configured = base * HealPercentage + ModifyValue",
+      "ordinary_factor = 1 + healer.HealRatio + target.HealTakenRatio",
+      "special_factor = 1 for the explicit ordinary non-225 SetupHealData branch",
+      "amount = max(configured * ordinary_factor * special_factor, 0)"
+    ],
+    "excluded": [
+      "healer component-kind 225 special-property branch",
+      "IsHealRallyHP branch",
+      "FormulaType values other than 4"
+    ]
+  },
+  "external_binding_contract": {
+    "required": [
+      "BySkillPointActivated boolean plus provenance",
+      "AbilityTargetEntity EntityRef plus provenance",
+      "DispelStatus.Numbers value plus provenance",
+      "HealPercentage value plus provenance",
+      "ModifyValue value plus provenance",
+      "ordinary non-225 healer branch boolean plus provenance"
+    ],
+    "serialized_dynamicfloat_operands_are_not_literals": true,
+    "duplicate_or_missing_dynamicfloat_resolutions_are_rejected": true
+  },
+  "persistent_effect_policy": {
+    "dispel_mutation": "NOT_PERFORMED",
+    "current_hp_mutation": "NOT_PERFORMED",
+    "reason": "native effect consumers are not recovered",
+    "forbidden_substitution": "do not reuse negative-delta DirectDamageHP as positive heal"
+  },
+  "runtime_files": [
+    "src/hsr_battle_agent/battle_ir/healing.py",
+    "src/hsr_battle_agent/game_data/real_skill.py",
+    "src/hsr_battle_agent/battle_runtime/healing.py"
+  ],
+  "tests": [
+    "tests/battle_runtime/test_real_skill_heal_boundary_30.py",
+    "tests/battle_sandbox/test_real_skill_turn_e2e_30.py"
+  ],
+  "catalog_registration": {
+    "registered_as_generic_primitive": false,
+    "reason": "content-specific execution still crosses explicit externally resolved semantic boundaries"
+  },
+  "remaining_blockers": [
+    "BySkillPointActivated runtime-context semantics",
+    "DynamicFloat opcode/hashed-operand evaluation",
+    "TargetConfig discriminator 12 selector implementation join",
+    "DispelStatus effect consumer",
+    "positive HealData event consumer and CurrentHP mutation",
+    "generic post-action recharge writer/formula"
+  ]
+}

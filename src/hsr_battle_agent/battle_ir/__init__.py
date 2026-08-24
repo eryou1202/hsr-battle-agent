@@ -160,6 +160,15 @@ from hsr_battle_agent.battle_ir.values import (
     ObjectRef,
 )
 from hsr_battle_agent.battle_ir.actions import TaskExecutionState, TaskState
+from hsr_battle_agent.battle_ir.healing import (
+    DispelStatusRequestBoundary,
+    HealRequestBoundary,
+    NatashaSkill02HealConfig,
+    RealSkillExecutionBoundaryResult,
+    RealSkillExternalBindings,
+    ResolvedDynamicFloat,
+    SerializedDynamicFloatFormula,
+)
 from hsr_battle_agent.battle_ir.modifiers import (
     ModifierConfigRef,
     ModifierContainer,
@@ -294,6 +303,13 @@ __all__ = [
     "TargetSet",
     "TaskExecutionState",
     "TaskState",
+    "DispelStatusRequestBoundary",
+    "HealRequestBoundary",
+    "NatashaSkill02HealConfig",
+    "RealSkillExecutionBoundaryResult",
+    "RealSkillExternalBindings",
+    "ResolvedDynamicFloat",
+    "SerializedDynamicFloatFormula",
     "PrimitiveArgument",
     "PrimitiveCall",
     "PrimitiveInputSpec",

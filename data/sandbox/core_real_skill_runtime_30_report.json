@@ -1,0 +1,54 @@
+{
+  "schema": "core_real_skill_runtime_report/1",
+  "game_version": "4.4.54",
+  "status": "CORE_RUNTIME_READY_WITH_BOUNDED_EXTERNAL_BLOCKER",
+  "e2e_proof": "TURN_REAL_CONTENT_FORMULA_TO_EVENT_BOUNDARY_E2E_PROOF",
+  "scenario": {
+    "turn_participants": [100, 200],
+    "initial_remaining_action_delay": {
+      "100": "FixPoint(10)",
+      "200": "FixPoint(20)"
+    },
+    "selected_actor": 100,
+    "selected_ability": "Avatar_Natasha_00_Skill02_Phase02",
+    "selected_target": 200,
+    "target_properties": {
+      "MaxHP": "FixPoint(1000)",
+      "CurrentHP": "FixPoint(400)",
+      "HealTakenRatio": "FixPoint(0)"
+    },
+    "healer_properties": {
+      "HealRatio": "FixPoint(0)"
+    },
+    "external_dynamic_resolutions": {
+      "DispelStatus.Numbers": "FixPoint(1)",
+      "HealPercentage": "FixPoint(1)",
+      "ModifyValue": "FixPoint(50)"
+    },
+    "formula_amount": {
+      "semantic": "FixPoint(650)",
+      "raw_hex": "0x51400000000"
+    },
+    "ordered_boundaries": [
+      "DispelStatusRequestBoundary",
+      "HealRequestBoundary"
+    ],
+    "current_hp_before": "FixPoint(400)",
+    "current_hp_after": "FixPoint(400)",
+    "state_hash_unchanged_across_effect_boundary": true,
+    "post_action_recharge": "explicit provenance-bearing FixPoint(30)",
+    "next_selected_actor": 200
+  },
+  "verification": {
+    "focused_real_skill_tests": 6,
+    "battle_runtime_tests": 185,
+    "battle_sandbox_tests": 170,
+    "reverse_tests": 8,
+    "result": "PASS"
+  },
+  "bounded_external_blocker": {
+    "boundary": "positive HealData event consumer",
+    "observable_result": "typed HealRequestBoundary with computed amount",
+    "persistent_hp_write": false
+  }
+}

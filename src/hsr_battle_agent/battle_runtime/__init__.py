@@ -124,6 +124,18 @@ from hsr_battle_agent.battle_runtime.turns import (
     initialize_turn_timeline,
     remaining_action_delay,
 )
+from hsr_battle_agent.battle_runtime.healing import (
+    CURRENT_HP_PROPERTY_ID as HEAL_CURRENT_HP_PROPERTY_ID,
+    HEAL_RATIO_PROPERTY_ID,
+    HEAL_TAKEN_RATIO_PROPERTY_ID,
+    MAX_HP_PROPERTY_ID as HEAL_MAX_HP_PROPERTY_ID,
+    HealSemanticError,
+    RealSkillTurnMismatchError,
+    RequiredHealPropertyMissingError,
+    UnsupportedSpecialHealComponentError,
+    execute_natasha_skill02_boundary,
+    heal_formula_type4_ordinary,
+)
 
 __all__ = [
     "dynamic_value_equals",
@@ -227,4 +239,14 @@ __all__ = [
     "current_actor",
     "initialize_turn_timeline",
     "remaining_action_delay",
+    "HEAL_CURRENT_HP_PROPERTY_ID",
+    "HEAL_RATIO_PROPERTY_ID",
+    "HEAL_TAKEN_RATIO_PROPERTY_ID",
+    "HEAL_MAX_HP_PROPERTY_ID",
+    "HealSemanticError",
+    "RealSkillTurnMismatchError",
+    "RequiredHealPropertyMissingError",
+    "UnsupportedSpecialHealComponentError",
+    "execute_natasha_skill02_boundary",
+    "heal_formula_type4_ordinary",
 ]
