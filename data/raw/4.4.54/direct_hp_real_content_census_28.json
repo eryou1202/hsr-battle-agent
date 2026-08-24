@@ -1,0 +1,73 @@
+{
+  "avatar_mapped_hits": [],
+  "direct_hp_type_registry": [
+    {
+      "config_type": "RPG.GameCore.SetHP",
+      "factory_table_base": "0x493C000",
+      "factory_thunk": "0x1CE5D000",
+      "methods": [
+        124661,
+        124662,
+        124663
+      ],
+      "selector_encoding": "ULEB/VLQ unsigned varint",
+      "serialized_selector": 5,
+      "type_index": 22351
+    },
+    {
+      "config_type": "RPG.GameCore.HealHP",
+      "factory_table_base": "0x49392E0",
+      "factory_thunk": "0x1CC131D0",
+      "methods": [
+        124664,
+        124665,
+        124666
+      ],
+      "selector_encoding": "ULEB/VLQ unsigned varint",
+      "serialized_selector": 7,
+      "type_index": 22352
+    },
+    {
+      "config_type": "RPG.GameCore.LoseHPByRatio",
+      "factory_table_base": "0x49398A0",
+      "factory_thunk": "0x1CC16410",
+      "methods": [
+        124874,
+        124875,
+        124876
+      ],
+      "selector_encoding": "ULEB/VLQ unsigned varint",
+      "serialized_selector": 8,
+      "type_index": 22420
+    },
+    {
+      "config_type": "RPG.GameCore.LoseHP",
+      "factory_table_base": "0x49398A0",
+      "factory_thunk": "0x1CC16360",
+      "methods": [
+        124877,
+        124878,
+        124879
+      ],
+      "selector_encoding": "ULEB/VLQ unsigned varint",
+      "serialized_selector": 7,
+      "type_index": 22421
+    }
+  ],
+  "game_version": "4.4.54",
+  "natasha_skill02_status": {
+    "assumption": "NOT_PROVEN / DEFERRED",
+    "detail": "Natasha Skill02 does not currently have a proven HealHP node; do not force it."
+  },
+  "primary_candidate": null,
+  "ranked_candidates": [],
+  "recommended_next_step": "Map the outer ability/action container encoding used by real avatar ability records, then locate structurally valid direct-HP nodes and map them to avatar abilities.",
+  "remaining_parser_unknowns": [
+    "OUTER_ABILITY_ACTION_CONTAINER_ENCODING_UNKNOWN",
+    "REAL_AVATAR_TO_DIRECT_HP_NODE_MAPPING_NOT_FOUND",
+    "TARGET_CONFIG_SERIALIZER_TAG_UNKNOWN"
+  ],
+  "schema": "direct_hp_real_content_census/1",
+  "status": "DIRECT_HP_AVATAR_SLICE_NOT_FOUND",
+  "structural_node_hits": []
+}

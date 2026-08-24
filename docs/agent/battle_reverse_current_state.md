@@ -21,6 +21,13 @@
   remaining blocker is `NATASHA_RECORD_HEALHP_NODE_INDIRECTION_OR_OTHER_PHASE`.
   See `docs/agent/handoffs/healhp_polymorphic_registry_entry_26.md` and
   `data/raw/4.4.54/healhp_polymorphic_registry_entry_26.json`.
+- Direct-HP real content census status: `DIRECT_HP_AVATAR_SLICE_NOT_FOUND`.
+  Selectors are known for SetHP=5, HealHP=7, LoseHPByRatio=8, LoseHP=7, but
+  no structurally valid direct-HP node could be mapped to a real avatar
+  ability in the bounded census. **Natasha Skill02 HealHP assumption =
+  NOT_PROVEN / DEFERRED.** See
+  `docs/agent/handoffs/direct_hp_real_content_census_28.md` and
+  `data/raw/4.4.54/direct_hp_real_content_census_28.json`.
 
 - Stage 1 of the Core Sandbox Closure is **BLOCKED** with
   `RUNTIME_INSTANCE_OBSERVATION_REQUIRED`. The required live
