@@ -58,3 +58,20 @@ used.
 The artifact records exact native RVAs and bounded-body SHA-256 hashes for the
 completion, sorting, selection, advance callback, property, and comparator
 methods.
+
+## Runtime binding
+
+`src/hsr_battle_agent/battle_runtime/turns.py` implements the ordinary-scope
+transition over BattleState schema v4. `turn_timeline` stores ordered runtime
+ids, current actor, elapsed delay, phase, and turn index; property `38` remains
+the only source of truth for per-actor remaining delay. The catalog-backed
+primitive is `battle.ir.turn.advance_to_next_actor`.
+
+`ActionCompletionBoundary` is intentionally not inferred from task success.
+It requires the current actor, an explicit next-delay raw value, and a
+non-empty provenance label before another turn can be selected.
+
+Focused tests cover sorting, selection, AV subtraction, elapsed AV, stable
+equal-key policy, three sequential turns, completion validation, catalog
+provenance, trace output, snapshot roundtrip, clone isolation, and stable
+hashing.

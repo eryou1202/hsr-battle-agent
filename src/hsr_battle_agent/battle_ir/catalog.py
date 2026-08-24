@@ -36,6 +36,10 @@ from hsr_battle_agent.battle_ir.semantic_property import (
     load_property_bridge,
     load_property_capability,
 )
+from hsr_battle_agent.battle_ir.semantic_turn import (
+    TURN_AV_SCHEMA,
+    load_turn_av_semantics,
+)
 
 CATALOG_SCHEMA = "battle_semantics_catalog/1"
 VERTICAL_SLICE_SCHEMA = "battle_semantics_vertical_slice/1"
@@ -46,6 +50,7 @@ _LOADERS = {
     BATCH_SCHEMA: load_battle_semantics_batch,
     PROPERTY_CAPABILITY_SCHEMA: load_property_capability,
     PROPERTY_BRIDGE_SCHEMA: load_property_bridge,
+    TURN_AV_SCHEMA: load_turn_av_semantics,
 }
 
 

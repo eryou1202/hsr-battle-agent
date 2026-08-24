@@ -42,6 +42,7 @@ from hsr_battle_agent.battle_ir.property import (
     StackPropertyTaskResult,
 )
 from hsr_battle_agent.battle_ir.targets import EntityRef, TargetSet
+from hsr_battle_agent.battle_ir.turns import TurnAdvanceResult
 from hsr_battle_agent.battle_ir.values import EvaluatorSpec
 
 TRACE_SCHEMA = "battle_sandbox_trace/1"
@@ -230,6 +231,8 @@ def _trace_result_summary(value: Any) -> Any:
     if isinstance(value, HPTransitionInput):
         return value.trace_summary()
     if isinstance(value, HPTransitionResult):
+        return value.trace_summary()
+    if isinstance(value, TurnAdvanceResult):
         return value.trace_summary()
     _validate_trace_result(value)
     return value

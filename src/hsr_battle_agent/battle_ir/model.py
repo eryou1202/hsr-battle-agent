@@ -199,6 +199,9 @@ DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID = (
     "battle.ir.hp.direct_damage.transition"
 )
 TRY_GET_LOCK_HP_PRIMITIVE_ID = "battle.ir.hp.try_get_lock_hp"
+TURN_ADVANCE_TO_NEXT_ACTOR_PRIMITIVE_ID = (
+    "battle.ir.turn.advance_to_next_actor"
+)
 
 
 @dataclass(frozen=True)

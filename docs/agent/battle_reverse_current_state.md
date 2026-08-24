@@ -23,7 +23,9 @@
   policy. Task success alone is not turn completion, and the generic
   post-action recharge writer/formula remains UNKNOWN, so repeated turns must
   cross an explicit settled-action boundary with a provenance-bearing next
-  delay. See `docs/agent/handoffs/turn_av_semantics_29.md` and
+  delay. The deterministic ordinary-scope runtime is now catalog-backed as
+  `battle.ir.turn.advance_to_next_actor` over BattleState schema v4. See
+  `docs/agent/handoffs/turn_av_semantics_29.md` and
   `data/semantics/4.4.54/turn_av_semantics_29.json`.
 
 - HealHP registry status: `HEALHP_REGISTRY_ENTRY_26_PROOF`. The 4.4.54

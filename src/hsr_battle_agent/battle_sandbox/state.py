@@ -16,6 +16,10 @@ read/write requirement.
 * BattleState v3 also carries ``component_lock_hp_records`` for the Handoff 12
   native component[+0x50] lock-HP list.  It is the smallest persistent
   representation required by TryGetLockHP and DirectDamageHP mode 0.
+* BattleState v4 adds ``turn_timeline`` for Turn/AV Semantics 29. Remaining
+  action delay stays in the existing PropertyEntry source of truth (property
+  38); the timeline stores only ordered entity ids, current actor, elapsed
+  delay, phase, and turn index.
 
 JSON contract (strict):
 
@@ -34,15 +38,17 @@ from typing import Any, Mapping
 from hsr_battle_agent.battle_sandbox.errors import UnsupportedStateVersionError
 from hsr_battle_agent.battle_sandbox.hash import stable_json_hash
 
-BATTLE_STATE_SCHEMA_VERSION = 3
+BATTLE_STATE_SCHEMA_VERSION = 4
 _STATE_SCHEMA_KEY = "schema_version"
 _EXTENSIONS_KEY = "extensions"
 _MODIFIER_STATE_BY_ENTITY_KEY = "modifier_state_by_entity"
 _ENTITY_PROPERTY_ENTRIES_KEY = "entity_property_entries"
 _MODIFIER_PROPERTY_CONTRIBUTIONS_KEY = "modifier_property_contributions"
 _COMPONENT_LOCK_HP_RECORDS_KEY = "component_lock_hp_records"
+_TURN_TIMELINE_KEY = "turn_timeline"
 _LEGACY_V1_SCHEMA_VERSION = 1
 _LEGACY_V2_SCHEMA_VERSION = 2
+_LEGACY_V3_SCHEMA_VERSION = 3
 
 
 @dataclass
@@ -59,6 +65,7 @@ class BattleState:
     component_lock_hp_records: dict[str, list[dict[str, Any]]] = field(
         default_factory=dict
     )
+    turn_timeline: dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if self.schema_version != BATTLE_STATE_SCHEMA_VERSION:
@@ -77,6 +84,8 @@ class BattleState:
             raise TypeError(
                 "BattleState component_lock_hp_records must be a dict"
             )
+        if not isinstance(self.turn_timeline, dict):
+            raise TypeError("BattleState turn_timeline must be a dict")
         # Normalize to private deep copies: caller-owned nested containers can
         # never alias BattleState internals, even on direct construction.
         self.extensions = deep_copy_json_value(self.extensions)
@@ -92,6 +101,7 @@ class BattleState:
         self.component_lock_hp_records = deep_copy_json_value(
             self.component_lock_hp_records
         )
+        self.turn_timeline = deep_copy_json_value(self.turn_timeline)
 
     def clone(self) -> "BattleState":
         return BattleState(
@@ -109,6 +119,7 @@ class BattleState:
             component_lock_hp_records=deep_copy_json_value(
                 self.component_lock_hp_records
             ),
+            turn_timeline=deep_copy_json_value(self.turn_timeline),
         )
 
     def set_extension(self, key: str, value: Any) -> None:
@@ -150,6 +161,7 @@ class BattleState:
             _COMPONENT_LOCK_HP_RECORDS_KEY: deep_copy_json_value(
                 self.component_lock_hp_records
             ),
+            _TURN_TIMELINE_KEY: deep_copy_json_value(self.turn_timeline),
         }
 
     @classmethod
@@ -161,6 +173,7 @@ class BattleState:
             BATTLE_STATE_SCHEMA_VERSION,
             _LEGACY_V1_SCHEMA_VERSION,
             _LEGACY_V2_SCHEMA_VERSION,
+            _LEGACY_V3_SCHEMA_VERSION,
         ):
             raise UnsupportedStateVersionError(schema_version)
 
@@ -202,7 +215,7 @@ class BattleState:
                 modifier_state_by_entity=deep_copy_json_value(modifiers),
             )
 
-        unknown = set(data) - {
+        allowed = {
             _STATE_SCHEMA_KEY,
             _EXTENSIONS_KEY,
             _MODIFIER_STATE_BY_ENTITY_KEY,
@@ -210,6 +223,9 @@ class BattleState:
             _MODIFIER_PROPERTY_CONTRIBUTIONS_KEY,
             _COMPONENT_LOCK_HP_RECORDS_KEY,
         }
+        if schema_version == BATTLE_STATE_SCHEMA_VERSION:
+            allowed.add(_TURN_TIMELINE_KEY)
+        unknown = set(data) - allowed
         if unknown:
             raise ValueError(
                 f"unknown BattleState v{BATTLE_STATE_SCHEMA_VERSION} keys: "
@@ -238,6 +254,9 @@ class BattleState:
             raise TypeError(
                 "BattleState component_lock_hp_records must be a dict"
             )
+        turn_timeline = data.get(_TURN_TIMELINE_KEY, {})
+        if not isinstance(turn_timeline, dict):
+            raise TypeError("BattleState turn_timeline must be a dict")
         return cls(
             schema_version=BATTLE_STATE_SCHEMA_VERSION,
             extensions=deep_copy_json_value(extensions),
@@ -245,6 +264,7 @@ class BattleState:
             entity_property_entries=deep_copy_json_value(properties),
             modifier_property_contributions=deep_copy_json_value(contributions),
             component_lock_hp_records=deep_copy_json_value(lock_records),
+            turn_timeline=deep_copy_json_value(turn_timeline),
         )
 
     def state_hash(self) -> str:

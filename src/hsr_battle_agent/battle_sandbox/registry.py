@@ -112,6 +112,7 @@ from hsr_battle_agent.battle_ir.model import (
     PROPERTY_MODIFY_SOURCE_ZERO_UNTRANSFORMED_PRIMITIVE_ID,
     DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID,
     TRY_GET_LOCK_HP_PRIMITIVE_ID,
+    TURN_ADVANCE_TO_NEXT_ACTOR_PRIMITIVE_ID,
     PrimitiveSpec,
 )
 from hsr_battle_agent.battle_ir.semantic_artifact import (
@@ -123,6 +124,7 @@ from hsr_battle_agent.battle_runtime import modifiers as modifier_runtime
 from hsr_battle_agent.battle_runtime import predicates as predicate_runtime
 from hsr_battle_agent.battle_runtime import property as property_runtime
 from hsr_battle_agent.battle_runtime import targets as target_runtime
+from hsr_battle_agent.battle_runtime import turns as turn_runtime
 from hsr_battle_agent.battle_runtime import values as dynamic_value_runtime
 from hsr_battle_agent.battle_sandbox.errors import (
     DuplicatePrimitiveError,
@@ -331,6 +333,18 @@ def _direct_damage_hp_transition_impl(
         negative_hp_gate=inputs["negative_hp_gate"],
         boundary_sink=context.trace.record_property_change_boundary,
         hp_boundary_sink=context.trace.record_hp_boundary,
+    )
+
+
+def _turn_advance_to_next_actor_impl(
+    context: ExecutionContext,
+    inputs: Mapping[str, Any],
+) -> Any:
+    if inputs:
+        raise ValueError("turn advance primitive takes no explicit inputs")
+    return turn_runtime.advance_to_next_actor(
+        context.state,
+        boundary_sink=context.trace.record_property_change_boundary,
     )
 
 
@@ -662,6 +676,8 @@ DEFAULT_IMPLEMENTATION_BINDINGS: Mapping[str, PrimitiveImplementation] = {
     # Handoff 12 scoped HP transition.
     TRY_GET_LOCK_HP_PRIMITIVE_ID: _try_get_lock_hp_impl,
     DIRECT_DAMAGE_HP_TRANSITION_PRIMITIVE_ID: _direct_damage_hp_transition_impl,
+    # Turn/AV Semantics 29 ordinary eligible action-list scope.
+    TURN_ADVANCE_TO_NEXT_ACTOR_PRIMITIVE_ID: _turn_advance_to_next_actor_impl,
 }
 
 
