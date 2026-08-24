@@ -429,7 +429,7 @@
 0B3F4B3F  01 d1                           add      ecx, edx
 0B3F4B41  48 63 c9                        movsxd   rcx, ecx
 0B3F4B44  48 03 0d 65 3c 94 fe            add      rcx, qword ptr [rip - 0x16bc39b]
-0B3F4B4B  48 98                           cdqe     
+0B3F4B4B  48 98                           cdqe
 0B3F4B4D  8b 0c 81                        mov      ecx, dword ptr [rcx + rax*4]
 0B3F4B50  e8 9b a1 87 f8                  call     0x183c6ecf0
 0B3F4B55  e9 66 fa ff ff                  jmp      0x18b3f45c0
@@ -477,7 +477,7 @@
 0B3F4C1A  01 d1                           add      ecx, edx
 0B3F4C1C  48 63 c9                        movsxd   rcx, ecx
 0B3F4C1F  48 03 0d 8a 3b 94 fe            add      rcx, qword ptr [rip - 0x16bc476]
-0B3F4C26  48 98                           cdqe     
+0B3F4C26  48 98                           cdqe
 0B3F4C28  8b 0c 81                        mov      ecx, dword ptr [rcx + rax*4]
 0B3F4C2B  e8 c0 a0 87 f8                  call     0x183c6ecf0
 0B3F4C30  e9 99 fd ff ff                  jmp      0x18b3f49ce
@@ -492,7 +492,7 @@
 0B3F4C58  01 d1                           add      ecx, edx
 0B3F4C5A  48 63 c9                        movsxd   rcx, ecx
 0B3F4C5D  48 03 0d 4c 3b 94 fe            add      rcx, qword ptr [rip - 0x16bc4b4]
-0B3F4C64  48 98                           cdqe     
+0B3F4C64  48 98                           cdqe
 0B3F4C66  8b 0c 81                        mov      ecx, dword ptr [rcx + rax*4]
 0B3F4C69  e8 82 a0 87 f8                  call     0x183c6ecf0
 0B3F4C6E  e9 92 fd ff ff                  jmp      0x18b3f4a05
@@ -511,7 +511,7 @@
 0B3F4CA7  41 5d                           pop      r13
 0B3F4CA9  41 5e                           pop      r14
 0B3F4CAB  41 5f                           pop      r15
-0B3F4CAD  c3                              ret      
+0B3F4CAD  c3                              ret
 0B3F4CAE  e8 8d d6 80 f8                  call     0x183c02340
 0B3F4CB3  e8 f8 d3 80 f8                  call     0x183c020b0
 0B3F4CB8  e8 83 d6 80 f8                  call     0x183c02340
@@ -583,7 +583,7 @@
 0B3F4DE0  e8 5b d5 80 f8                  call     0x183c02340
 0B3F4DE5  e8 56 d5 80 f8                  call     0x183c02340
 0B3F4DEA  e8 51 d5 80 f8                  call     0x183c02340
-0B3F4DEF  cc                              int3     
+0B3F4DEF  cc                              int3
 0B3F4DF0  41 57                           push     r15
 0B3F4DF2  41 56                           push     r14
 0B3F4DF4  56                              push     rsi
@@ -644,14 +644,14 @@
 0B3F4ED6  49 89 f0                        mov      r8, rsi
 0B3F4ED9  49 89 f9                        mov      r9, rdi
 0B3F4EDC  e8 2f 97 77 0a                  call     0x195b6e610
-0B3F4EE1  90                              nop      
+0B3F4EE1  90                              nop
 0B3F4EE2  48 83 c4 30                     add      rsp, 0x30
 0B3F4EE6  5b                              pop      rbx
 0B3F4EE7  5f                              pop      rdi
 0B3F4EE8  5e                              pop      rsi
 0B3F4EE9  41 5e                           pop      r14
 0B3F4EEB  41 5f                           pop      r15
-0B3F4EED  c3                              ret      
+0B3F4EED  c3                              ret
 0B3F4EEE  e8 4d d4 80 f8                  call     0x183c02340
 0B3F4EF3  e8 48 d4 80 f8                  call     0x183c02340
 0B3F4EF8  b9 06 e1 07 00                  mov      ecx, 0x7e106
@@ -680,7 +680,7 @@
 0B3F4F51  e8 ea d3 80 f8                  call     0x183c02340
 0B3F4F56  e8 e5 d3 80 f8                  call     0x183c02340
 0B3F4F5B  e8 e0 d3 80 f8                  call     0x183c02340
-0B3F4F60  cc                              int3     
+0B3F4F60  cc                              int3
 0B3F4F61  66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
 0B3F4F70  41 56                           push     r14
 0B3F4F72  56                              push     rsi
@@ -735,13 +735,13 @@
 0B3F503E  49 89 f8                        mov      r8, rdi
 0B3F5041  49 89 f1                        mov      r9, rsi
 0B3F5044  e8 c7 95 77 0a                  call     0x195b6e610
-0B3F5049  90                              nop      
+0B3F5049  90                              nop
 0B3F504A  48 83 c4 38                     add      rsp, 0x38
 0B3F504E  5b                              pop      rbx
 0B3F504F  5f                              pop      rdi
 0B3F5050  5e                              pop      rsi
 0B3F5051  41 5e                           pop      r14
-0B3F5053  c3                              ret      
+0B3F5053  c3                              ret
 0B3F5054  e8 e7 d2 80 f8                  call     0x183c02340
 0B3F5059  e8 e2 d2 80 f8                  call     0x183c02340
 0B3F505E  b9 06 e1 07 00                  mov      ecx, 0x7e106
@@ -770,7 +770,7 @@
 0B3F50B7  e8 84 d2 80 f8                  call     0x183c02340
 0B3F50BC  e8 7f d2 80 f8                  call     0x183c02340
 0B3F50C1  e8 7a d2 80 f8                  call     0x183c02340
-0B3F50C6  cc                              int3     
+0B3F50C6  cc                              int3
 0B3F50C7  66 0f 1f 84 00 00 00 00 00      nop      word ptr [rax + rax]
 0B3F50D0  41 57                           push     r15
 0B3F50D2  41 56                           push     r14
@@ -1063,7 +1063,7 @@
 0B3F551C  41 5d                           pop      r13
 0B3F551E  41 5e                           pop      r14
 0B3F5520  41 5f                           pop      r15
-0B3F5522  c3                              ret      
+0B3F5522  c3                              ret
 0B3F5523  e8 18 ce 80 f8                  call     0x183c02340
 0B3F5528  e8 83 cb 80 f8                  call     0x183c020b0
 0B3F552D  e8 0e ce 80 f8                  call     0x183c02340
@@ -1093,8 +1093,8 @@
 0B3F558F  e8 ac cd 80 f8                  call     0x183c02340
 0B3F5594  e8 a7 cd 80 f8                  call     0x183c02340
 0B3F5599  e8 a2 cd 80 f8                  call     0x183c02340
-0B3F559E  cc                              int3     
-0B3F559F  90                              nop      
+0B3F559E  cc                              int3
+0B3F559F  90                              nop
 0B3F55A0  41 57                           push     r15
 0B3F55A2  41 56                           push     r14
 0B3F55A4  41 54                           push     r12
@@ -1230,7 +1230,7 @@
 0B3F57DD  48 8b 15 74 2c 2c fe            mov      rdx, qword ptr [rip - 0x1d3d38c]
 0B3F57E4  48 89 f9                        mov      rcx, rdi
 0B3F57E7  e8 64 47 03 00                  call     0x18b429f50
-0B3F57EC  90                              nop      
+0B3F57EC  90                              nop
 0B3F57ED  48 81 c4 38 01 00 00            add      rsp, 0x138
 0B3F57F4  5b                              pop      rbx
 0B3F57F5  5f                              pop      rdi
@@ -1238,7 +1238,7 @@
 0B3F57F7  41 5c                           pop      r12
 0B3F57F9  41 5e                           pop      r14
 0B3F57FB  41 5f                           pop      r15
-0B3F57FD  c3                              ret      
+0B3F57FD  c3                              ret
 0B3F57FE  b9 0d bf 07 00                  mov      ecx, 0x7bf0d
 0B3F5803  e8 48 1c bf 0a                  call     0x195fe7450
 0B3F5808  48 85 c0                        test     rax, rax
@@ -1292,7 +1292,7 @@
 0B3F58C9  e8 72 ca 80 f8                  call     0x183c02340
 0B3F58CE  e8 6d ca 80 f8                  call     0x183c02340
 0B3F58D3  e8 68 ca 80 f8                  call     0x183c02340
-0B3F58D8  cc                              int3     
+0B3F58D8  cc                              int3
 0B3F58D9  0f 1f 80 00 00 00 00            nop      dword ptr [rax]
 0B3F58E0  41 56                           push     r14
 0B3F58E2  56                              push     rsi
@@ -1347,7 +1347,7 @@
 0B3F59AE  49 89 f8                        mov      r8, rdi
 0B3F59B1  49 89 f1                        mov      r9, rsi
 0B3F59B4  e8 57 8c 77 0a                  call     0x195b6e610
-0B3F59B9  90                              nop      
+0B3F59B9  90                              nop
 0B3F59BA  48 83 c4 38                     add      rsp, 0x38
 0B3F59BE  5b                              pop      rbx
 0B3F59BF  5f                              pop      rdi

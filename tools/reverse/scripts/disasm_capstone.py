@@ -43,8 +43,13 @@ def main():
                         if op.mem.base == 0x29:
                             target = pe.image_base + args.rva + insn.size + op.mem.disp
                             comment = f" ; [rip] -> 0x{target:X} (rva 0x{target - pe.image_base:X})"
-        lines.append(f"{args.rva + insn.address - (pe.image_base + args.rva):08X}  "
-                     f"{insn.bytes.hex(' '):<30}  {insn.mnemonic:8} {insn.op_str}{comment}")
+        lines.append(
+            (
+                f"{args.rva + insn.address - (pe.image_base + args.rva):08X}  "
+                f"{insn.bytes.hex(' '):<30}  "
+                f"{insn.mnemonic:8} {insn.op_str}{comment}"
+            ).rstrip()
+        )
     if args.output:
         with open(args.output, "w", encoding="utf-8") as f:
             f.write("\n".join(lines) + "\n")
