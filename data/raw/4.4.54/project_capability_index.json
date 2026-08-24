@@ -1,0 +1,53 @@
+{
+  "schema": "project_capability_index/1",
+  "audit_date": "2026-08-24",
+  "git_head": "7c5793c",
+  "statuses": ["PASS", "PARTIAL", "BLOCKED", "DEPRECATED", "EXPERIMENTAL"],
+  "capabilities": [
+    {"name":"Unpack Pipeline","status":"PASS","source":"tools/unpack_pipeline/","artifact":"data/parsed/4.4.54/pipeline_report.json","commit":"ca98440","tests":"tests/unpacker/test_pipeline_units.py","limit":"Static pipeline only; optional runtime enrichment NOT_RUN."},
+    {"name":"DesignData extraction","status":"PARTIAL","source":"tools/reverse/scripts/recover_ability_file_container_30.py","artifact":"data/raw/4.4.54/designdata_recovery_audit_23.json","commit":"8f7be79","tests":"tests/unpacker/test_pipeline_units.py","limit":"Paths and selected containers, not corpus record decoding."},
+    {"name":"Ability Content Graph","status":"PARTIAL","source":"tools/reverse/scripts/recover_ability_file_container_30.py","artifact":"data/raw/4.4.54/ability_file_container_black_swan_validation_30.json","commit":"4d27854","tests":"tests/reverse/test_natasha_skill02_healhp_extractor_30.py","limit":"No generic graph/compiler; selected prefixes only."},
+    {"name":"TaskConfig Registry","status":"PASS","source":"tools/reverse/scripts/build_taskconfig_registry_30.py","artifact":"data/raw/4.4.54/taskconfig_registry_30.json","commit":"4d27854","tests":"tests/reverse/test_natasha_skill02_healhp_extractor_30.py","limit":"Registry identity does not decode every payload."},
+    {"name":"DynamicValue","status":"PASS","source":"src/hsr_battle_agent/battle_runtime/values.py","artifact":"data/semantics/4.4.54/dynamic_value_batch_02.json","commit":"c66451f","tests":"tests/battle_runtime/test_dynamic_value_batch_02.py","limit":"Recovered batch scope only."},
+    {"name":"FixPoint","status":"PASS","source":"src/hsr_battle_agent/battle_runtime/predicates.py","artifact":"data/semantics/4.4.54/fixpoint_comparison_batch_03.json","commit":"e1b2668","tests":"tests/battle_runtime/test_fixpoint_comparison_batch_03.py","limit":"Only accepted recovered operations."},
+    {"name":"Predicate","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/predicates.py","artifact":"data/semantics/4.4.54/predicate_evaluation_bridge_04.json","commit":"dc668d7","tests":"tests/battle_runtime/test_predicate_evaluation_bridge_04.py","limit":"Real BySkillPointActivated context semantics external."},
+    {"name":"Target","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/targets.py","artifact":"data/semantics/4.4.54/target_selector_batch_05.json","commit":"74c5a59","tests":"tests/battle_runtime/test_target_selector_batch_05.py","limit":"Natasha target discriminator 12 not joined."},
+    {"name":"Action","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/actions.py","artifact":"data/semantics/4.4.54/action_execution_bridge_06.json","commit":"b62910f","tests":"tests/battle_runtime/test_action_execution_bridge_06.py","limit":"No generic decoded action compiler."},
+    {"name":"Modifier","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/modifiers.py","artifact":"data/semantics/4.4.54/modifier_lifecycle_bridge_08.json","commit":"04dc482","tests":"tests/battle_sandbox/test_modifier_lifecycle_runtime_08.py","limit":"Only proven lifecycle/property paths."},
+    {"name":"Property","status":"PASS","source":"src/hsr_battle_agent/battle_runtime/property.py","artifact":"data/semantics/4.4.54/generic_property_mutation_11.json","commit":"4c62261","tests":"tests/battle_runtime/test_generic_property_mutation_11.py","limit":"Several materialization and post-transform semantics unresolved."},
+    {"name":"HP","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/hp.py","artifact":"data/semantics/4.4.54/direct_damage_hp_transition_12.json","commit":"bd65c5f","tests":"tests/battle_sandbox/test_hp_transition_runtime_12.py","limit":"DirectDamageHP mode 0 only, not general damage."},
+    {"name":"Heal","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/healing.py","artifact":"data/semantics/4.4.54/real_skill_heal_boundary_30.json","commit":"f819cc3","tests":"tests/battle_runtime/test_real_skill_heal_boundary_30.py","limit":"Emits request boundary; positive event consumer/HP write unknown."},
+    {"name":"Damage","status":"BLOCKED","source":"src/hsr_battle_agent/battle_runtime/hp.py","artifact":"docs/agent/handoffs/pgoo_live_dispatch_observation_stage1_blocker_20.md","commit":"b590a06","tests":"tests/battle_sandbox/test_hp_transition_runtime_12.py","limit":"General DamageRequest/formula requires unresolved approved runtime observation."},
+    {"name":"Turn / AV","status":"PARTIAL","source":"src/hsr_battle_agent/battle_runtime/turns.py","artifact":"data/semantics/4.4.54/turn_av_semantics_29.json","commit":"dc35457","tests":"tests/battle_runtime/test_turn_av_runtime_29.py","limit":"Ordinary eligible path; completion/recharge is explicit provenance-bearing input."},
+    {"name":"Event","status":"BLOCKED","source":"src/hsr_battle_agent/battle_ir/healing.py","artifact":"data/sandbox/core_real_skill_runtime_30_report.json","commit":"f819cc3","tests":"tests/battle_sandbox/test_real_skill_turn_e2e_30.py","limit":"Only request/trace boundaries; listeners and consumers unknown."},
+    {"name":"Energy","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"No BattleState/runtime primitive."},
+    {"name":"Skill Point","status":"BLOCKED","source":"src/hsr_battle_agent/battle_runtime/healing.py","artifact":"data/raw/4.4.54/natasha_skill02_healhp_content_30.json","commit":"f819cc3","tests":"tests/battle_sandbox/test_real_skill_turn_e2e_30.py","limit":"Predicate condition supplied externally; no state semantics."},
+    {"name":"Shield","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"No accepted runtime implementation."},
+    {"name":"Toughness / Break","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"No accepted runtime implementation."},
+    {"name":"Death","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"No accepted runtime implementation."},
+    {"name":"Summon","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"No accepted runtime implementation."},
+    {"name":"Follow-up / Extra Action","status":"BLOCKED","source":null,"artifact":null,"commit":null,"tests":null,"limit":"Excluded from ordinary Turn/AV proof."},
+    {"name":"Content Compiler","status":"BLOCKED","source":null,"artifact":"data/raw/4.4.54/avatar_content_completeness_audit.json","commit":null,"tests":null,"limit":"No generic module or corpus output."},
+    {"name":"BattleState","status":"PASS","source":"src/hsr_battle_agent/battle_sandbox/state.py","artifact":"data/sandbox/kernel_01_report.json","commit":"dc35457","tests":"tests/battle_sandbox/test_kernel.py","limit":"Schema v4 is intentionally not full combat state."},
+    {"name":"clone / hash / snapshot","status":"PASS","source":"src/hsr_battle_agent/battle_sandbox/{state,hash,snapshot}.py","artifact":"data/sandbox/kernel_01_report.json","commit":"dc35457","tests":"tests/battle_sandbox/test_kernel.py","limit":"Logical sandbox state only."},
+    {"name":"Planner API","status":"BLOCKED","source":"src/hsr_battle_agent/battle_sandbox/sandbox.py","artifact":null,"commit":null,"tests":"tests/battle_sandbox/test_kernel.py","limit":"legal_actions, step, and is_terminal explicitly NOT_IMPLEMENTED."},
+    {"name":"Real-content E2E","status":"PARTIAL","source":"src/hsr_battle_agent/game_data/real_skill.py","artifact":"data/sandbox/core_real_skill_runtime_30_report.json","commit":"f819cc3","tests":"tests/battle_sandbox/test_real_skill_turn_e2e_30.py","limit":"Natasha only to event boundary; no completed effect/full battle."},
+    {"name":"Frontend","status":"EXPERIMENTAL","source":"apps/","artifact":null,"commit":null,"tests":null,"limit":"Repository skeleton, not audited as a functional client."}
+  ],
+  "verification": {
+    "command": "C:\\Users\\而忧\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m unittest discover -s tests -p test_*.py -v",
+    "result": "PARTIAL",
+    "tests_run": 489,
+    "passed": 486,
+    "failed": 3,
+    "known_failure": "Stale test catalog cardinalities expect 12 artifacts/91 primitives while catalog currently contains 13/92 after Turn/AV registration."
+  },
+  "current_blockers": [
+    "generic DesignData content compiler and corpus graph absent",
+    "general DamageRequest/formula runtime dispatch requires approved live-instance observation",
+    "positive HealData event consumer unknown",
+    "event ordering/listener semantics unknown",
+    "no Monster/Stage entity parser or join graph",
+    "planner transition/legal-action API intentionally absent"
+  ]
+}

@@ -1,0 +1,153 @@
+{
+  "schema": "monster_stage_content_audit/1",
+  "audit_date": "2026-08-24",
+  "game_version": "4.4.54",
+  "levels": {
+    "LEVEL_0": "NOT_FOUND",
+    "LEVEL_1": "RAW_PRESENT",
+    "LEVEL_2": "INDEXED",
+    "LEVEL_3": "STRUCTURALLY_DECODED",
+    "LEVEL_4": "SANDBOX_SEMANTICS_AVAILABLE"
+  },
+  "source_archive": {
+    "path": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "size": 125829538,
+    "sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B"
+  },
+  "method": {
+    "raw_scan": "ASCII token scan of the local archive; token counts are discovery counts, never validated entity counts.",
+    "path_index": "data/extracted/4.4.53/direct_json/design_config_path_index.json; a path is indexed configuration provenance, not a decoded record.",
+    "prohibited_inference": "Client type/field metadata and a string/path name are not used as proof of actual DesignData entity records or gameplay semantics."
+  },
+  "monster": {
+    "real_monster_entity_content_found": "YES_AT_RAW_LEVEL",
+    "raw_token_family": {
+      "level": "LEVEL_1",
+      "pattern": "Monster_[A-Za-z0-9_]+",
+      "unique_token_candidates": 10168,
+      "samples": [
+        "Monster_1002011",
+        "Monster_1002012",
+        "Monster_1002013",
+        "Monster_1002014",
+        "Monster_1002020"
+      ],
+      "boundary": "These are raw internal-name candidates, not a parsable Monster ID table."
+    },
+    "ability_paths": {
+      "level": "LEVEL_2",
+      "turnbased_broad_monster_or_enemy_paths": 679,
+      "core_monster_ability_paths": 377,
+      "samples": [
+        "Config/ConfigAbility/Monster/Monster_AetherDivide_Add_Ability.json",
+        "Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json",
+        "Config/ConfigAbility/Monster/Monster_CocoliaP1_Weapon_1_Ability.json",
+        "Config/ConfigAbility/Monster/Monster_W5_Painter_00_Ability.json",
+        "Config/ConfigAbility/Monster/Monster_XP_Elite01_00_Ability.json"
+      ],
+      "boundary": "No Monster entity record is joined to these ability file paths. Some broad-path entries are camera, event, or mode support files."
+    },
+    "ai_skill_selection": {
+      "level": "LEVEL_2",
+      "indexed_paths": [
+        "Config/ConfigAI/ComplexSkillAIGlobalGroup/Monster/Monster_W5_AsatPramad_00_CommonSkill_ComplexSkillAI.json",
+        "Config/ConfigAI/ComplexSkillAIGlobalGroup/Monster/Monster_W5_Painter_00_CommonSkill_ComplexSkillAI.json"
+      ],
+      "boundary": "The files are indexed but their AI records, priority weights, and selection semantics are not parsed."
+    },
+    "monster_id_enumeration": "NO",
+    "monster_id_to_internal_name_join": "NO",
+    "base_battle_attributes": "UNKNOWN",
+    "weakness_or_toughness_config": "UNKNOWN",
+    "monster_entity_to_ability_link": "NO",
+    "boss_phase_or_special_phase": "UNKNOWN",
+    "structurally_decoded_monster_records": "NO",
+    "sandbox_semantics_available": "NO",
+    "representative_entity_mapping": "NOT_EMITTED: no validated monster entity-to-record mapping exists."
+  },
+  "stage": {
+    "real_stage_content_found": "YES_AT_RAW_LEVEL",
+    "raw_stage_tokens": {
+      "level": "LEVEL_1",
+      "unique_token_candidates": 137,
+      "samples": [
+        "Stage_001",
+        "Stage_002",
+        "Stage_003",
+        "Stage_10441211_Saber",
+        "Stage_40123003"
+      ],
+      "boundary": "Raw stage-like tokens are not indexed encounter records."
+    },
+    "stage_or_mode_ability_paths": {
+      "level": "LEVEL_2",
+      "count": 323,
+      "samples": [
+        "Config/ConfigAbility/Activity/Activity_FateRin_Stage_Ability.json",
+        "Config/ConfigAbility/BattleEvent/StageAbility_Elation.json",
+        "Config/ConfigAbility/Level/Level_RogueBuff_Ability_Elation_S1.json",
+        "Config/ConfigAbility/BattleEvent/Effect/StageAbility_GridFight_Origin_1007_BE_Insert_Effect_Ability.json",
+        "Config/ConfigAbility/BattleEvent/FantasticStory_Wave_Ability.json"
+      ],
+      "boundary": "These are ability/mode file paths, not decoded Stage, Level, BattleStage, Wave, or Encounter tables."
+    },
+    "battle_lineup_config_paths": {
+      "BattleLineupConfig": 0,
+      "BattleLineupAvatarConfig": 0,
+      "boundary": "The indexed config-family keys exist but have no recovered paths in the current direct-json index."
+    },
+    "stage_id_enumeration": "NO",
+    "mode_or_type": "FOUND_RAW_ONLY",
+    "enemy_waves": "UNKNOWN",
+    "monster_ids_and_levels": "UNKNOWN",
+    "wave_ordering_or_spawn_groups": "UNKNOWN",
+    "stage_level_modifiers": "FOUND_RAW_ONLY",
+    "environment_effects": "FOUND_RAW_ONLY",
+    "battle_rules": "UNKNOWN",
+    "round_turn_limits": "UNKNOWN",
+    "victory_failure_conditions": "UNKNOWN",
+    "structurally_decoded_stage_records": "NO",
+    "sandbox_semantics_available": "NO"
+  },
+  "stage_buff": {
+    "STAGE_BUFF_RAW_PRESENT": "YES",
+    "STAGE_BUFF_INDEXABLE": "YES",
+    "STAGE_TO_BUFF_LINK": "NO",
+    "level": "LEVEL_2 for candidate config-file paths; LEVEL_0 for a decoded Stage-to-Buff relationship",
+    "indexed_candidate_paths": [
+      "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json",
+      "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
+      "Config/ConfigGlobalModifier/GlobalModifier_Level.json",
+      "Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_Level.json",
+      "Config/ConfigGlobalModifier/GlobalModifier_WhiteBox_LevelRogueV2.json"
+    ],
+    "battle_lineup_maze_buff_config_paths": 0,
+    "taskconfig_modifier_event_join": "NO",
+    "boundary": "A modifier config path proves discoverable source material only. No stage record, buff record, or TaskConfig/Modifier/Event reference chain has been decoded."
+  },
+  "aha_moment_discovery": {
+    "classification": "FOUND_CANDIDATE",
+    "evidence": [
+      "Config/ConfigAbility/BattleEvent/StageAbility_Elation.json",
+      "Config/ConfigAbility/Level/Level_RogueBuff_Ability_Elation_S1.json",
+      "Config/ConfigAbility/Level/Rogue_S4/Level_RogueBuff_Ability_Elation_S4.json",
+      "Config/ConfigAI/ComplexSkillAIGlobalGroup/ElationBattle/Avatar_ElationBattle_Qingque_00_ComplexSkillAI.json"
+    ],
+    "boundary": "The candidate is based on Elation/Aha-adjacent internal path families only; no specific Aha-moment mechanic is identified."
+  },
+  "summary_by_level": {
+    "RAW_PRESENT": [
+      "Monster token candidates",
+      "Stage token candidates",
+      "stage/mode/buff-related names"
+    ],
+    "INDEXED": [
+      "Monster ability paths",
+      "two Monster ComplexSkillAI paths",
+      "stage/mode ability paths",
+      "candidate environment/level modifier paths"
+    ],
+    "STRUCTURALLY_DECODED": [],
+    "SANDBOX_SEMANTICS_AVAILABLE": []
+  }
+}

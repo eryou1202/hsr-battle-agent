@@ -1,0 +1,47 @@
+{
+  "schema": "avatar_content_family_audit_manifest/1",
+  "status": "PARTIAL_FAMILY_NOT_FULL_CHARACTER_EXPORT",
+  "game_version": "4.4.54",
+  "avatar": {
+    "internal_name": "BlackSwan",
+    "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+    "avatar_id": "UNKNOWN",
+    "base_stat_template": "EXPECTED_BUT_NOT_FOUND"
+  },
+  "provenance": {
+    "archive_sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+    "container": "data/raw/4.4.54/ability_file_container_black_swan_validation_30.json",
+    "record_headers": "data/raw/4.4.54/manifest/black_swan_ability_headers_4.4.54.json",
+    "mixin_prefixes": "data/raw/4.4.54/manifest/black_swan_type2_mixin_prefixes_4.4.54.json"
+  },
+  "records": {
+    "Skill01": {"status":"FOUND_AND_STRUCTURED","phases":["Avatar_BlackSwan_00_Skill01_Phase01","Avatar_BlackSwan_00_Skill01_Phase02"]},
+    "Skill02": {"status":"FOUND_AND_STRUCTURED","phases":["Avatar_BlackSwan_00_Skill02_Phase01","Avatar_BlackSwan_00_Skill02_Phase02"]},
+    "Skill03": {"status":"FOUND_AND_STRUCTURED","phases":["Avatar_BlackSwan_00_Skill03_Cutin","Avatar_BlackSwan_00_Skill03_Phase01","Avatar_BlackSwan_00_Skill03_Phase02"]},
+    "PassiveSkill01": {"status":"FOUND_AND_STRUCTURED","record":"Avatar_BlackSwan_00_PassiveSkill01","named_reference":"M_BlackSwan_P01_ListenAddPoison"},
+    "SkillMazeInLevel": {"status":"FOUND_AND_STRUCTURED","records":["Avatar_BlackSwan_00_SkillMazeInLevel","Avatar_BlackSwan_00_SkillMazeInLevel_Insert"],"named_reference":"StageAbility_Maze_BlackSwan_Modifier"},
+    "SkillTree": {"status":"PARTIAL","records":["Avatar_BlackSwan_00_SkillTree02","Avatar_BlackSwan_00_SkillTree03"],"named_references":["M_BlackSwan_00_SkillTree02","M_BlackSwan_00_SkillTree03"],"complete_tree":"EXPECTED_BUT_NOT_FOUND"},
+    "Rank01": {"status":"FOUND_AND_STRUCTURED","record":"Avatar_BlackSwan_00_Rank01","named_reference":"MAvatar_BlackSwan_00_Rank01"},
+    "Rank02": {"status":"FOUND_AND_STRUCTURED","record":"Avatar_BlackSwan_00_Rank02","named_reference":"MAvatar_BlackSwan_00_Rank02"},
+    "Rank03": {"status":"EXPECTED_BUT_NOT_FOUND"},
+    "Rank04": {"status":"EXPECTED_BUT_NOT_FOUND"},
+    "Rank05": {"status":"EXPECTED_BUT_NOT_FOUND"},
+    "Rank06": {"status":"FOUND_AND_STRUCTURED","record":"Avatar_BlackSwan_00_Rank06","named_reference":"MAvatar_BlackSwan_00_Rank06"}
+  },
+  "associated_modifiers": {
+    "status": "PARTIAL",
+    "meaning": "Named references are structurally recovered from selected mixin prefixes; modifier payloads and effects are not parsed as a full association graph."
+  },
+  "associated_taskconfigs": {
+    "status": "FOUND_RAW_ONLY",
+    "meaning": "The global TaskConfig registry is structurally recovered, but Black Swan task boundaries/payloads are not decoded."
+  },
+  "numerical_config": "FOUND_RAW_ONLY",
+  "sandbox_semantics": "NOT_APPLICABLE_TO_THIS_MANIFEST",
+  "not_a_full_manifest_reason": [
+    "numeric AvatarID and stat template are not linked",
+    "Rank03-Rank05 are missing",
+    "trace-tree denominator and complete node set are missing",
+    "task/action payloads and numeric fields are not generically decoded"
+  ]
+}

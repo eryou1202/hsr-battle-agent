@@ -1,0 +1,171 @@
+{
+  "schema": "avatar_content_completeness_audit/1",
+  "audit_date": "2026-08-24",
+  "game_version": "4.4.54",
+  "levels": {
+    "LEVEL_0": "NOT_FOUND",
+    "LEVEL_1": "RAW_PRESENT",
+    "LEVEL_2": "INDEXED",
+    "LEVEL_3": "STRUCTURALLY_DECODED",
+    "LEVEL_4": "SANDBOX_SEMANTICS_AVAILABLE"
+  },
+  "archive_provenance": {
+    "archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "archive_size": 125829538,
+    "archive_sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+    "path_index_archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\edd7d527b0962f4ec2e49789746fb0d2.bytes",
+    "path_index_archive_sha256": "078AC12FAB39F08401B777D9F7C35BA0B1248CB28F7AF19AFFA1EA900FA731E4"
+  },
+  "repository_indexes": {
+    "turnbased_ability_paths": 1510,
+    "core_avatar_ability_paths": 124,
+    "path_index_level": "LEVEL_2",
+    "path_index_boundary": "A path enumerates a configuration file name; it does not decode its ability/task contents.",
+    "taskconfig_registry": {
+      "status": "LEVEL_3",
+      "artifact": "data/raw/4.4.54/taskconfig_registry_30.json",
+      "global_uleb_slots": 3915,
+      "concrete_parsers_recovered": 3736,
+      "healhp_global_discriminator": 1481
+    }
+  },
+  "selected_character": {
+    "internal_avatar_name": "BlackSwan",
+    "avatar_id": {
+      "status": "UNKNOWN",
+      "reason": "The selected ability-family prefix identifies Avatar_BlackSwan_00, but no numeric AvatarID record is linked by the current extraction."
+    },
+    "selection_reason": "Among the checked locally structured containers, this family has the broadest verified named coverage: Skill01/02/03, PassiveSkill01, SkillMazeInLevel, SkillTree02/03, and Rank01/02/06. Natasha has a deeper single task subtree but only eight named container entries and no trace/rank entries.",
+    "source_path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+    "source_path_status": "FOUND_AND_STRUCTURED",
+    "container_artifact": "data/raw/4.4.54/ability_file_container_black_swan_validation_30.json",
+    "container_status": "GENERIC_OUTER_CONTAINER_CONFIRMED",
+    "container_level": "LEVEL_3",
+    "outer_collection_count": 30,
+    "verified_directory_entry_count": 15,
+    "identity": {
+      "internal_name": "FOUND_AND_STRUCTURED",
+      "numeric_avatar_id": "UNKNOWN",
+      "base_stat_template": "EXPECTED_BUT_NOT_FOUND",
+      "special_resource_config": "UNKNOWN",
+      "ai_autobattle_preference": "FOUND_RAW_ONLY",
+      "ai_evidence": "Config/ConfigAI/ComplexSkillAIGlobalGroup/Avatar/Avatar_BlackSwan_00_ComplexSkillAI.json is an indexed path only."
+    },
+    "abilities": {
+      "skill01": {
+        "expected_role": "Basic Attack convention; role semantics not decoded",
+        "status": "FOUND_AND_STRUCTURED",
+        "records": [
+          "Avatar_BlackSwan_00_Skill01_Phase01",
+          "Avatar_BlackSwan_00_Skill01_Phase02"
+        ]
+      },
+      "skill02": {
+        "expected_role": "Skill convention; role semantics not decoded",
+        "status": "FOUND_AND_STRUCTURED",
+        "records": [
+          "Avatar_BlackSwan_00_Skill02_Phase01",
+          "Avatar_BlackSwan_00_Skill02_Phase02"
+        ]
+      },
+      "skill03": {
+        "expected_role": "Ultimate convention; role semantics not decoded",
+        "status": "FOUND_AND_STRUCTURED",
+        "records": [
+          "Avatar_BlackSwan_00_Skill03_Cutin",
+          "Avatar_BlackSwan_00_Skill03_Phase01",
+          "Avatar_BlackSwan_00_Skill03_Phase02"
+        ]
+      },
+      "talent": {
+        "status": "FOUND_AND_STRUCTURED",
+        "records": ["Avatar_BlackSwan_00_PassiveSkill01"],
+        "associated_named_reference": "M_BlackSwan_P01_ListenAddPoison",
+        "reference_status": "FOUND_AND_STRUCTURED"
+      },
+      "technique": {
+        "status": "FOUND_AND_STRUCTURED",
+        "records": [
+          "Avatar_BlackSwan_00_SkillMazeInLevel",
+          "Avatar_BlackSwan_00_SkillMazeInLevel_Insert"
+        ],
+        "associated_named_reference": "StageAbility_Maze_BlackSwan_Modifier",
+        "reference_status": "FOUND_AND_STRUCTURED"
+      },
+      "additional_passives": "UNKNOWN"
+    },
+    "traces": {
+      "skilltree02": {
+        "status": "FOUND_AND_STRUCTURED",
+        "record": "Avatar_BlackSwan_00_SkillTree02",
+        "associated_named_reference": "M_BlackSwan_00_SkillTree02"
+      },
+      "skilltree03": {
+        "status": "FOUND_AND_STRUCTURED",
+        "record": "Avatar_BlackSwan_00_SkillTree03",
+        "associated_named_reference": "M_BlackSwan_00_SkillTree03"
+      },
+      "complete_trace_tree": "EXPECTED_BUT_NOT_FOUND",
+      "modifier_payloads": "FOUND_RAW_ONLY",
+      "reason": "Names and record/container structure are verified; modifier payload boundaries and all trace nodes are not decoded."
+    },
+    "eidolons": {
+      "Rank01": {
+        "status": "FOUND_AND_STRUCTURED",
+        "record": "Avatar_BlackSwan_00_Rank01",
+        "associated_named_reference": "MAvatar_BlackSwan_00_Rank01"
+      },
+      "Rank02": {
+        "status": "FOUND_AND_STRUCTURED",
+        "record": "Avatar_BlackSwan_00_Rank02",
+        "associated_named_reference": "MAvatar_BlackSwan_00_Rank02"
+      },
+      "Rank03": "EXPECTED_BUT_NOT_FOUND",
+      "Rank04": "EXPECTED_BUT_NOT_FOUND",
+      "Rank05": "EXPECTED_BUT_NOT_FOUND",
+      "Rank06": {
+        "status": "FOUND_AND_STRUCTURED",
+        "record": "Avatar_BlackSwan_00_Rank06",
+        "associated_named_reference": "MAvatar_BlackSwan_00_Rank06"
+      }
+    },
+    "numerical_and_task_decoding": {
+      "record_fields_and_mixin_prefixes": "LEVEL_3",
+      "associated_named_references": "LEVEL_3",
+      "generic_taskconfig_registry": "LEVEL_3",
+      "selected_black_swan_task_payloads": "LEVEL_1",
+      "selected_black_swan_numeric_fields": "LEVEL_1",
+      "selected_black_swan_sandbox_semantics": "LEVEL_0"
+    }
+  },
+  "separate_real_content_slice": {
+    "character": "Natasha",
+    "status": "LEVEL_3 content / LEVEL_4 bounded formula-to-event boundary",
+    "artifact": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+    "ability": "Avatar_Natasha_00_Skill02_Phase02",
+    "recovered_records": [
+      "PredicateTaskList discriminator 1960",
+      "BySkillPointActivated discriminator 496",
+      "DispelStatus discriminator 1199",
+      "HealHP discriminator 1481",
+      "AbilityTargetEntity discriminator 12",
+      "FormulaType 4 and two DynamicFloat formula payloads"
+    ],
+    "boundary": "This does not establish Natasha as a full character export and does not make positive healing a completed state mutation."
+  },
+  "required_answers": {
+    "A_all_major_skills_enumerable_for_one_character": "NO. Black Swan has the Skill01/02/03 families plus passive and maze records, but a complete character family requires identity/stat/traces/eidolons coverage that is absent.",
+    "B_rank01_through_rank06_enumerable": "NO. The strongest checked family has Rank01, Rank02, and Rank06 only; Rank03-05 are expected but not found.",
+    "C_traces_and_eidolons_linked_to_ability_config_modifier_record": "PARTIAL. Named modifier references are structurally present inside selected SkillTree/Rank records, but generic modifier payload parsing and complete character linkage are absent.",
+    "D_numerical_fields_structured": "PARTIAL. Selected record framing/bitmaps and one Natasha FormulaType 4 subtree are structured. Black Swan numeric/task payloads are not decoded; DynamicFloat operands are not semantic numeric values.",
+    "E_missing_for_one_click_full_mechanism_export": [
+      "generic decoding of all ability action containers and child TaskConfig boundaries",
+      "Avatar identity, stat, SkillTree, rank, passive, and modifier record loaders with joins",
+      "complete per-character corpus coverage rather than selected prefixes",
+      "DynamicValue/Target/Predicate payload compilation",
+      "runtime semantic coverage for the compiled configuration"
+    ]
+  },
+  "overall_extraction_level": "LEVEL_3 for selected ability-container structure; LEVEL_0 for a complete one-click character mechanism export",
+  "percentage_statement": "No completeness percentage is reported because the repository does not have a verified denominator for all expected ability, trace, modifier, and identity records."
+}
