@@ -1,0 +1,113 @@
+[
+  {
+    "assumptions": [
+      "amount only",
+      "no runtime order"
+    ],
+    "classification": "GENERAL_RULE",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "ATK",
+      "HP",
+      "DEF",
+      "scalings",
+      "boost",
+      "enemy level/res",
+      "crit"
+    ],
+    "output": "amount",
+    "rule_category": "normal_damage_amount",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+    "symbol": "CritDamageFunction / calculateInitialDamage"
+  },
+  {
+    "assumptions": [
+      "selected code fixes attacker-level constant to 80"
+    ],
+    "classification": "OPTIMIZER_ASSUMPTION",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "enemy level",
+      "def pen",
+      "res",
+      "vulnerability"
+    ],
+    "output": "multipliers",
+    "rule_category": "def_res_vulnerability_final_damage",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+    "symbol": "computeCommonMultipliers / calculateDefMulti"
+  },
+  {
+    "assumptions": [
+      "amount only; no break timeline"
+    ],
+    "classification": "GENERAL_RULE",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "break effect",
+      "toughness",
+      "enemy multipliers"
+    ],
+    "output": "amount",
+    "rule_category": "break_and_super_break_amount",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+    "symbol": "BreakDamageFunction / SuperBreakDamageFunction"
+  },
+  {
+    "assumptions": [
+      "no HealData consumer/timing"
+    ],
+    "classification": "GENERAL_RULE",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "ATK",
+      "HP",
+      "scalings",
+      "flat heal",
+      "outgoing heal boost"
+    ],
+    "output": "amount",
+    "rule_category": "heal_amount",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+    "symbol": "HealDamageFunction"
+  },
+  {
+    "assumptions": [
+      "no shield lifecycle/timing"
+    ],
+    "classification": "GENERAL_RULE",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "DEF",
+      "HP",
+      "ATK",
+      "scalings",
+      "flat shield"
+    ],
+    "output": "amount",
+    "rule_category": "shield_amount",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+    "symbol": "ShieldDamageFunction"
+  },
+  {
+    "assumptions": [
+      "optimizer quality model; not adopted as an exact client table"
+    ],
+    "classification": "OPTIMIZER_ASSUMPTION",
+    "game_version_sensitivity": "ALGORITHM_ONLY",
+    "inputs": [
+      "stat",
+      "quality"
+    ],
+    "output": "maxed display stat",
+    "rule_category": "relic_display_stat_curve",
+    "source_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+    "source_path": "src/lib/relics/statCalculator.ts",
+    "symbol": "StatCalculator"
+  }
+]

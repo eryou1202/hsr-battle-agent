@@ -1,0 +1,45 @@
+[
+  {
+    "detail": "The public source table is preserved. A version-aligned Stage/Mode join has not been claimed by this external-only pass.",
+    "evidence_level": "R1_CLIENT_DUMP_DERIVED",
+    "gap_id": "AUXILIARY_ELITEGROUP",
+    "record_count": 1394,
+    "status": "PARTIAL_EXTERNAL",
+    "version_scope": "CLOSE"
+  },
+  {
+    "detail": "The public source table is preserved. A version-aligned Stage/Mode join has not been claimed by this external-only pass.",
+    "evidence_level": "R1_CLIENT_DUMP_DERIVED",
+    "gap_id": "AUXILIARY_HARDLEVELGROUP",
+    "record_count": 741,
+    "status": "PARTIAL_EXTERNAL",
+    "version_scope": "CLOSE"
+  },
+  {
+    "candidate_record_count": 2,
+    "detail": "Public MonsterConfig/MonsterTemplate candidates are preserved, but no complete parent-to-child variant enumeration is inferred without an explicit join.",
+    "evidence_level": "R1_CLIENT_DUMP_DERIVED",
+    "gap_id": "MONSTER_VARIANT_LIST:4034020",
+    "status": "PARTIAL_EXTERNAL",
+    "version_scope": "CLOSE"
+  },
+  {
+    "detail": "TurnBasedGameData provides RelicConfig plus main/sub Affix config; StarRailRes and HSR-Mapping-DATA provide independently structured/mapping evidence. Exact 4.4.54 local validation remains future work.",
+    "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED",
+    "gap_id": "RELIC_AFFIX_SCHEMA",
+    "status": "CLOSED_EXTERNAL",
+    "version_scope": "CLOSE"
+  },
+  {
+    "detail": "Stage-to-Buff bindings remain from Nanoka; public MazeBuff records supply raw Buff configuration without runtime semantic interpretation.",
+    "evidence_level": "R1_CLIENT_DUMP_DERIVED",
+    "gap_id": "STAGE_BUFF_DETAIL",
+    "missing_ids": [
+      "3110018"
+    ],
+    "required_count": 18,
+    "resolved_count": 17,
+    "status": "PARTIAL_EXTERNAL",
+    "version_scope": "CLOSE"
+  }
+]

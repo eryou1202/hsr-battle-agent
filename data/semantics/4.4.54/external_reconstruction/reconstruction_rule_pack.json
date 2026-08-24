@@ -1,0 +1,305 @@
+[
+  {
+    "assumptions": [],
+    "domain": "stat",
+    "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED",
+    "game_version_scope": "Nanoka 4.4.54 exact input; external schema CLOSE",
+    "inputs": [
+      "promotion row",
+      "level"
+    ],
+    "known_edge_cases": [
+      "promotion must exist"
+    ],
+    "name": "Avatar promotion level stat",
+    "operation": "base + per_level_add * (level - 1)",
+    "outputs": [
+      "HP",
+      "ATK",
+      "DEF",
+      "SPD"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "stat.avatar_promotion.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "245f286185f5274609be264b6ef6dbc15e8a27ad"
+    ],
+    "source_refs": [
+      "TurnBasedGameData AvatarPromotionConfig",
+      "HSR-Mapping-DATA transform_avatar_promotion",
+      "Nanoka avatar.detail.stats"
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": []
+  },
+  {
+    "assumptions": [],
+    "domain": "stat",
+    "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED",
+    "game_version_scope": "Nanoka 4.4.54 exact input; external schema CLOSE",
+    "inputs": [
+      "promotion row",
+      "level"
+    ],
+    "known_edge_cases": [
+      "promotion zero omits field in Nanoka"
+    ],
+    "name": "LightCone promotion level stat",
+    "operation": "base + per_level_add * (level - 1)",
+    "outputs": [
+      "HP",
+      "ATK",
+      "DEF"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "stat.lightcone_promotion.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "b11066beacc4de454b625fafc7ea3dd540c5bbf3"
+    ],
+    "source_refs": [
+      "TurnBasedGameData EquipmentPromotionConfig",
+      "Nanoka lightcone.detail.stats"
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "dynamic LightCone effects"
+    ]
+  },
+  {
+    "assumptions": [],
+    "domain": "stat",
+    "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED",
+    "game_version_scope": "CLOSE; explicit external provenance",
+    "inputs": [
+      "main affix",
+      "relic level"
+    ],
+    "known_edge_cases": [],
+    "name": "Relic main affix level curve",
+    "operation": "base_value + level_add * relic_level",
+    "outputs": [
+      "property contribution"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "stat.relic_main.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "02bdd75e1e3cf4272cea94165275c98a17ff1719",
+      "245f286185f5274609be264b6ef6dbc15e8a27ad"
+    ],
+    "source_refs": [
+      "TurnBasedGameData RelicMainAffixConfig",
+      "StarRailRes relic_main_affixes",
+      "HSR-Mapping-DATA transform_relic_main_affixes"
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": []
+  },
+  {
+    "assumptions": [
+      "caller supplies actual number of rolls"
+    ],
+    "domain": "stat",
+    "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED",
+    "game_version_scope": "CLOSE; explicit external provenance",
+    "inputs": [
+      "sub affix",
+      "roll tier"
+    ],
+    "known_edge_cases": [],
+    "name": "Relic sub affix roll tier",
+    "operation": "base_value + step_value * tier",
+    "outputs": [
+      "property contribution"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "stat.relic_sub.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "02bdd75e1e3cf4272cea94165275c98a17ff1719",
+      "245f286185f5274609be264b6ef6dbc15e8a27ad"
+    ],
+    "source_refs": [
+      "TurnBasedGameData RelicSubAffixConfig",
+      "StarRailRes relic_sub_affixes",
+      "HSR-Mapping-DATA transform_relic_sub_affixes"
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "drop/upgrade roll-distribution process"
+    ]
+  },
+  {
+    "assumptions": [
+      "attacker level fixed at 80",
+      "amount only"
+    ],
+    "domain": "damage",
+    "evidence_level": "R2_MATURE_IMPLEMENTATION",
+    "game_version_scope": "ALGORITHM_ONLY",
+    "inputs": [
+      "ATK/HP/DEF scalings",
+      "enemy level/res",
+      "boosts",
+      "crit"
+    ],
+    "known_edge_cases": [
+      "resistance not clamped by this reference"
+    ],
+    "name": "Normal damage amount at selected optimizer attacker level",
+    "operation": "base × dmg × def × res × vulnerability × final × crit × true",
+    "outputs": [
+      "damage amount"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "damage.amount.level80.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "47ae66d8abac80b1f485a06fc11fe5e54c349c60"
+    ],
+    "source_refs": [
+      {
+        "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+        "path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+        "repository_url": "https://github.com/fribbels/hsr-optimizer"
+      }
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "request construction",
+      "events",
+      "HP mutation"
+    ]
+  },
+  {
+    "assumptions": [
+      "amount only",
+      "level-80 implementation"
+    ],
+    "domain": "break",
+    "evidence_level": "R2_MATURE_IMPLEMENTATION",
+    "game_version_scope": "ALGORITHM_ONLY",
+    "inputs": [
+      "break effect",
+      "toughness",
+      "enemy multipliers"
+    ],
+    "known_edge_cases": [],
+    "name": "Break and Super Break amount",
+    "operation": "selected Fribbels amount model",
+    "outputs": [
+      "amount"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "break.amount.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "47ae66d8abac80b1f485a06fc11fe5e54c349c60"
+    ],
+    "source_refs": [
+      {
+        "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+        "path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+        "repository_url": "https://github.com/fribbels/hsr-optimizer"
+      }
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "break state timing"
+    ]
+  },
+  {
+    "assumptions": [
+      "amount only"
+    ],
+    "domain": "heal",
+    "evidence_level": "R2_MATURE_IMPLEMENTATION",
+    "game_version_scope": "ALGORITHM_ONLY",
+    "inputs": [
+      "ATK/HP scalings",
+      "flat",
+      "heal boosts"
+    ],
+    "known_edge_cases": [],
+    "name": "Heal amount",
+    "operation": "(ATK×a + HP×h + flat) × (1+OHB) × (1+heal boost)",
+    "outputs": [
+      "amount"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "heal.amount.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "47ae66d8abac80b1f485a06fc11fe5e54c349c60"
+    ],
+    "source_refs": [
+      {
+        "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+        "path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+        "repository_url": "https://github.com/fribbels/hsr-optimizer"
+      }
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "HealData consumer",
+      "HP write timing"
+    ]
+  },
+  {
+    "assumptions": [
+      "amount only"
+    ],
+    "domain": "shield",
+    "evidence_level": "R2_MATURE_IMPLEMENTATION",
+    "game_version_scope": "ALGORITHM_ONLY",
+    "inputs": [
+      "DEF/HP/ATK scalings",
+      "flat",
+      "shield boost"
+    ],
+    "known_edge_cases": [],
+    "name": "Shield amount",
+    "operation": "(DEF×d + HP×h + ATK×a + flat) × (1+shield boost)",
+    "outputs": [
+      "amount"
+    ],
+    "reconstruction_status": "RECONSTRUCTION_READY",
+    "rule_id": "shield.amount.v1",
+    "rule_version": 1,
+    "source_commits": [
+      "47ae66d8abac80b1f485a06fc11fe5e54c349c60"
+    ],
+    "source_refs": [
+      {
+        "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+        "path": "src/lib/optimization/engine/damage/damageCalculator.ts",
+        "repository_url": "https://github.com/fribbels/hsr-optimizer"
+      }
+    ],
+    "tests": [
+      "tests/game_data/test_external_reconstruction.py::ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip"
+    ],
+    "unsupported_cases": [
+      "shield replacement/lifecycle"
+    ]
+  }
+]

@@ -1,0 +1,177 @@
+[
+  {
+    "canonical_entity": "Avatar",
+    "canonical_field": "identity_and_base_stats",
+    "fribbels": "consumer only; not an exact-content source",
+    "mapping_data": {
+      "path": "src/transformers/characters_transformer.py",
+      "symbol": "transform_avatar_promotion"
+    },
+    "nanoka_field": "avatar.detail / avatar.collection",
+    "source_confidence": "R1",
+    "starrailres": "index_new/cn/characters.json + character_promotions.json",
+    "turn_based_game_data": {
+      "field": "AvatarID, HPBase, HPAdd, AttackBase, AttackAdd, DefenceBase, DefenceAdd",
+      "table": "ExcelOutput/AvatarConfig.json + AvatarPromotionConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; TBG/StarRailRes CLOSE"
+  },
+  {
+    "canonical_entity": "Skill",
+    "canonical_field": "owner_and_static_parameters",
+    "fribbels": null,
+    "mapping_data": {
+      "path": "src/transformers/characters_transformer.py",
+      "symbol": "transform_avatar_skill"
+    },
+    "nanoka_field": "avatar.detail.skills",
+    "source_confidence": "R1",
+    "starrailres": "index_new/cn/character_skills.json",
+    "turn_based_game_data": {
+      "field": "SkillID, Level, ParamList",
+      "table": "ExcelOutput/AvatarSkillConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; mapping sources CLOSE/SCHEMA_ONLY"
+  },
+  {
+    "canonical_entity": "Trace",
+    "canonical_field": "static_status_add",
+    "fribbels": "stat consumer only",
+    "mapping_data": {
+      "path": "src/transformers/characters_transformer.py",
+      "symbol": "transform_avatar_skill_trees"
+    },
+    "nanoka_field": "trace.status_add_list",
+    "source_confidence": "R1",
+    "starrailres": "index_new/cn/character_skill_trees.json",
+    "turn_based_game_data": {
+      "field": "PointID, StatusAddList",
+      "table": "ExcelOutput/AvatarSkillTreeConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; mapping sources CLOSE/SCHEMA_ONLY"
+  },
+  {
+    "canonical_entity": "Eidolon",
+    "canonical_field": "rank_and_skill_levels",
+    "fribbels": null,
+    "mapping_data": {
+      "path": "src/transformers/characters_transformer.py",
+      "symbol": "transform_avatar_rank"
+    },
+    "nanoka_field": "avatar.detail.ranks",
+    "source_confidence": "R1",
+    "starrailres": "index_new/cn/character_ranks.json",
+    "turn_based_game_data": {
+      "field": "RankID, Rank, SkillAddLevelList",
+      "table": "ExcelOutput/AvatarRankConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; mapping sources CLOSE/SCHEMA_ONLY"
+  },
+  {
+    "canonical_entity": "LightCone",
+    "canonical_field": "promotion_stats",
+    "fribbels": "stat consumer only",
+    "mapping_data": {
+      "path": "src/transformers/light_cone_transformer.py",
+      "symbol": "transform_light_cone_promotion"
+    },
+    "nanoka_field": "lightcone.detail.stats",
+    "source_confidence": "R1",
+    "starrailres": "index_new/cn/light_cones.json + light_cone_promotions.json",
+    "turn_based_game_data": {
+      "field": "EquipmentID, HPBase/AttackBase/DefenceBase and Add fields",
+      "table": "ExcelOutput/EquipmentPromotionConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; mapping sources CLOSE/SCHEMA_ONLY"
+  },
+  {
+    "canonical_entity": "RelicTemplate",
+    "canonical_field": "slot_and_affix_groups",
+    "fribbels": "relic stat consumer",
+    "mapping_data": {
+      "path": "src/transformers/relic_transformer.py",
+      "symbol": "transform_relics"
+    },
+    "nanoka_field": "relic items only; template added externally",
+    "source_confidence": "R3",
+    "starrailres": "index_new/cn/relics.json",
+    "turn_based_game_data": {
+      "field": "ID, SetID, Type, MaxLevel, MainAffixGroup, SubAffixGroup",
+      "table": "ExcelOutput/RelicConfig.json"
+    },
+    "version_scope": "CLOSE/SCHEMA_ONLY"
+  },
+  {
+    "canonical_entity": "RelicAffix",
+    "canonical_field": "main_level_curve_and_sub_roll_tiers",
+    "fribbels": "src/lib/relics/statCalculator.ts",
+    "mapping_data": {
+      "path": "src/transformers/relic_transformer.py",
+      "symbol": "transform_relic_main_affixes / transform_relic_sub_affixes"
+    },
+    "nanoka_field": null,
+    "source_confidence": "R3",
+    "starrailres": "index_new/cn/relic_main_affixes.json + relic_sub_affixes.json",
+    "turn_based_game_data": {
+      "field": "GroupID, AffixID, Property, BaseValue, LevelAdd/StepValue, StepNum",
+      "table": "ExcelOutput/RelicMainAffixConfig.json + RelicSubAffixConfig.json"
+    },
+    "version_scope": "CLOSE/SCHEMA_ONLY/ALGORITHM_ONLY"
+  },
+  {
+    "canonical_entity": "Monster",
+    "canonical_field": "static_config_candidate",
+    "fribbels": "enemy numeric input consumer",
+    "mapping_data": null,
+    "nanoka_field": "monster.detail",
+    "source_confidence": "R1",
+    "starrailres": null,
+    "turn_based_game_data": {
+      "field": "raw record preserved; no inferred variant join",
+      "table": "ExcelOutput/MonsterConfig.json + MonsterTemplateConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; TBG CLOSE"
+  },
+  {
+    "canonical_entity": "MonsterSkill",
+    "canonical_field": "static_config",
+    "fribbels": null,
+    "mapping_data": null,
+    "nanoka_field": "monster skill relations",
+    "source_confidence": "R1",
+    "starrailres": null,
+    "turn_based_game_data": {
+      "field": "SkillID and raw parameters",
+      "table": "ExcelOutput/MonsterSkillConfig.json"
+    },
+    "version_scope": "Nanoka EXACT; TBG CLOSE"
+  },
+  {
+    "canonical_entity": "Stage",
+    "canonical_field": "stage/wave binding",
+    "fribbels": null,
+    "mapping_data": null,
+    "nanoka_field": "stage, wave, wave_monster",
+    "source_confidence": "C0",
+    "starrailres": null,
+    "turn_based_game_data": {
+      "field": "not imported in this narrow pass",
+      "table": "Stages/ plus ExcelOutput Maze tables"
+    },
+    "version_scope": "Nanoka EXACT"
+  },
+  {
+    "canonical_entity": "StageBuff",
+    "canonical_field": "raw_static_config",
+    "fribbels": null,
+    "mapping_data": null,
+    "nanoka_field": "stage_buff_relations binding",
+    "source_confidence": "R1",
+    "starrailres": null,
+    "turn_based_game_data": {
+      "field": "MazeBuffID and raw config",
+      "table": "ExcelOutput/MazeBuff.json"
+    },
+    "version_scope": "Nanoka binding EXACT; TBG detail CLOSE"
+  }
+]

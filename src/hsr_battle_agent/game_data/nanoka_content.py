@@ -1304,6 +1304,10 @@ ENTITY_TABLES: Mapping[str, str] = {
     "lightcone_superimposition": "lightcone_superimpositions",
     "relic_set": "relic_sets",
     "relic_item": "relic_items",
+    # Populated only by the separately-provenanced External Reconstruction
+    # layer.  Empty tables are intentional for a Nanoka-only rebuild.
+    "relic_affix": "relic_affixes",
+    "relic_template": "relic_templates",
     "monster": "monsters",
     "monster_variant": "monster_variants",
     "monster_skill": "monster_skills",
@@ -1478,17 +1482,42 @@ class ContentDatabase:
             "canonical_sha256": row[7],
         }
 
+    def _optional_entity(self, table: str, entity_id: str | int) -> dict[str, Any] | None:
+        """Read an optional external-augmentation table without requiring it."""
+        try:
+            return self._entity(table, entity_id)
+        except sqlite3.OperationalError:
+            return None
+
     def get_avatar(self, avatar_id: str | int) -> dict[str, Any] | None:
         return self._entity("avatars", avatar_id)
 
     def get_skill(self, skill_id: str | int) -> dict[str, Any] | None:
         return self._entity("skills", skill_id)
 
+    def get_trace(self, trace_id: str | int) -> dict[str, Any] | None:
+        return self._entity("traces", trace_id)
+
+    def get_eidolon(self, eidolon_id: str | int) -> dict[str, Any] | None:
+        return self._entity("eidolons", eidolon_id)
+
     def get_lightcone(self, lightcone_id: str | int) -> dict[str, Any] | None:
         return self._entity("lightcones", lightcone_id)
 
     def get_relic_set(self, relic_set_id: str | int) -> dict[str, Any] | None:
         return self._entity("relic_sets", relic_set_id)
+
+    def get_relic_affix(self, affix_id: str) -> dict[str, Any] | None:
+        return self._entity("relic_affixes", affix_id)
+
+    def get_relic_template(self, template_id: str | int) -> dict[str, Any] | None:
+        return self._entity("relic_templates", template_id)
+
+    def get_stage_buff(self, buff_id: str | int) -> dict[str, Any] | None:
+        return self._entity("stage_buffs", buff_id)
+
+    def get_external_stage_buff(self, buff_id: str | int) -> dict[str, Any] | None:
+        return self._optional_entity("external_stage_buffs", buff_id)
 
     def get_monster(self, monster_id: str | int) -> dict[str, Any] | None:
         return self._entity("monsters", monster_id)
@@ -1550,9 +1579,16 @@ class ContentDatabase:
                 continue
             source_refs.extend(row.get("source_refs", []))
             buff = self._entity("stage_buffs", row["buff_id"])
-            if buff is None or not row.get("resolved"):
+            external_buff = self._optional_entity("external_stage_buffs", row["buff_id"])
+            resolved = bool((buff and row.get("resolved")) or external_buff)
+            if external_buff is not None:
+                source_refs.extend(external_buff["provenance"])
+            if not resolved:
                 unresolved.append({"kind": "stage_buff", "buff_id": row["buff_id"], "status": "UNKNOWN"})
-            buffs.append({"buff_id": row["buff_id"], "resolution_status": "RESOLVED" if buff and row.get("resolved") else "UNKNOWN"})
+            buff_entry = {"buff_id": row["buff_id"], "resolution_status": "RESOLVED" if resolved else "UNKNOWN"}
+            if external_buff is not None:
+                buff_entry["detail_source"] = "EXTERNAL_CLOSE"
+            buffs.append(buff_entry)
         encounter_contexts: list[dict[str, Any]] = []
         for (payload_json,) in encounter_relation_rows:
             relation = json.loads(payload_json)
