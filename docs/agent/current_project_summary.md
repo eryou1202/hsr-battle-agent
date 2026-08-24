@@ -14,9 +14,30 @@ trace records, 582 Eidolons, 169 LightCones, 60 RelicSets, 628 Monsters,
 12,873 MonsterSkills, 1,543 Encounter contexts, and 1,459
 Maze/Story/Boss Challenge Stage records.  It can export a static Stage Package
 that keeps its real Stage ID, wave, enemy slots, levels, rule metadata,
-encounter context, and Buff references.  The 160 currently found Stage Buff
-bindings remain explicit **UNKNOWN detail** references because the 18
-referenced Buff details are absent from the public endpoint.
+encounter context, and Buff references. The 160 bindings remain exact-version
+Nanoka facts; a separate external reconstruction layer has attached raw
+close-version MazeBuff detail to 17 of the 18 referenced Buff IDs. The missing
+ID `3110018` remains explicit **UNKNOWN** rather than approximated.
+
+## What the external reconstruction layer adds
+
+Four pinned public references now add a strictly separated static layer. It
+contains 165 relic main/sub-affix records with level/roll data, 742 relic
+templates with slot and affix-group constraints, 1,394 EliteGroup records,
+741 HardLevelGroup records, 17 close-version Stage Buff raw configs, and two
+raw candidates for the unresolved Monster `4034020` variant family.
+
+It can materialize a static Loadout from real IDs: Avatar level/promotion,
+compatible LightCone, selected trace stat additions, Eidolon rank metadata,
+and template-validated six-slot relic input. It intentionally reports
+LightCone, RelicSet, and Eidolon effects as unapplied contextual effects until
+their dynamic semantics are proven. A narrow external formula helper evaluates
+damage, Break, Super Break, heal, and shield **amounts only**; it has no event
+ordering, targeting, or HP-writing authority.
+
+All imported facts retain source pin, raw hash, and a separate external
+evidence level. They do not overwrite Nanoka 4.4.54 records or prove local
+client runtime behavior. See `docs/agent/external_reconstruction.md`.
 
 ## What has been successfully unpacked
 
@@ -62,10 +83,11 @@ Monster data is genuinely present, but only at mixed raw/path-index levels.
 The main DesignData archive has 10,168 unique `Monster_*` token candidates,
 and the path index lists 377 core monster ability paths (679 broad
 monster/enemy paths).  Two Monster ComplexSkillAI paths are also indexed.
-The local archive itself still lacks that generic parser.  Separately, the
-content database imports external version-locked Monster identity/stat/variant
-and skill-list facts and marks any missing/static joins explicitly.  That does
-not establish Monster AI or ability execution order.
+The local archive itself still lacks that generic parser. Separately, the
+Nanoka 4.4.54 content database imports version-locked Monster
+identity/stat/variant and skill-list facts; the new external layer preserves
+only two raw candidates for the remaining `4034020` variant gap. Neither layer
+establishes Monster AI or ability execution order.
 
 Stages also genuinely leave evidence: 137 raw `Stage*` token candidates and
 323 stage/mode-related ability paths.  But the stage encounter records,
@@ -75,9 +97,10 @@ decoded.  A StageAbility file is not proof of a complete stage configuration.
 Stage-buff-related config paths are present (`AdventureModifier_MazeChallenge`,
 `AdventureModifier_MazeEnvi`, and level/global modifier files), so stage-buff
 material is present and indexable as file paths.  No local DesignData Stage →
-Buff record relationship has been recovered.  The external database preserves
-Stage-referenced Buff bindings and represents any unresolved binding in its
-exported Stage Package; it does not approximate or flatten waves.  The “Aha”
+Buff record relationship has been recovered. The external database preserves
+Stage-referenced Buff bindings, supplies separate raw detail for 17 IDs, and
+represents `3110018` as unresolved in its exported Stage Package; it does not
+approximate or flatten waves. The “Aha”
 request remains a low-cost **FOUND_CANDIDATE** only: Elation/rogue buff and
 `StageAbility_Elation` paths exist, but are not proven as a specific Aha
 mechanic.

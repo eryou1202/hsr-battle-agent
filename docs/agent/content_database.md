@@ -8,6 +8,7 @@ from both raw local DesignData and the battle runtime:
 
 ```text
 Nanoka raw snapshot → adapter → Canonical JSON/JSONL → SQLite query layer
+Pinned external references → independent adapter ───────┘
 Local DesignData evidence ────────────────────────────→ validation metadata
                                                       ↓
                                           future Scenario / Loadout compiler
@@ -45,6 +46,12 @@ Confidence and usability are independent:
 future compiler even when its confidence is C0.  It does not make a runtime
 effect executable.
 
+The external reconstruction layer has a separate evidence scale (`R1` client
+dump-derived, `R2` mature implementation reference, `R3` cross-source
+reconstructed). It never upgrades a local semantic confidence level and does
+not overwrite an exact Nanoka record with a close-version source. Its source
+law, pins, and limitations are in `docs/agent/external_reconstruction.md`.
+
 ## On-disk layers
 
 | Layer | Location | Git policy |
@@ -52,6 +59,9 @@ effect executable.
 | Immutable raw snapshot | `data/external/nanoka/4.4.54/` | ignored except README |
 | Canonical content | `data/content/4.4.54/nanoka/` | ignored except README |
 | SQLite query database | `data/db/hsr_content_4.4.54.sqlite` | ignored |
+| Pinned external snapshot | `.external_refs/` | ignored; minimal commit-addressed cache |
+| External Canonical additions | `data/content/4.4.54/external_reconstruction/` | ignored |
+| External mapping/rule/gap artifacts | `data/semantics/4.4.54/external_reconstruction/` | committed |
 | Small offline fixture | `tests/game_data/fixtures/` | committed |
 
 Raw data is never edited by the adapter.  Deleting Canonical and SQLite
@@ -67,6 +77,8 @@ Run these from the repository root with a Python 3.11+ environment and
 $env:PYTHONPATH = "src"
 python scripts/fetch_nanoka_snapshot.py 4.4.54 --workers 3
 python scripts/build_content_db.py 4.4.54
+python scripts/fetch_external_references.py
+python scripts/build_external_reconstruction.py 4.4.54
 python scripts/export_stage_package.py 4.4.54 <stage-id>
 ```
 
@@ -95,14 +107,18 @@ snapshot, validation, and gap tables.  Its logical primary key is
 The public query facade is `ContentDatabase` in
 `src/hsr_battle_agent/game_data/nanoka_content.py`:
 `get_avatar`, `get_skill`, `get_lightcone`, `get_relic_set`, `get_monster`,
-`get_encounter`, `get_stage`, and `get_stage_package`.
+`get_encounter`, `get_stage`, and `get_stage_package`. When the external
+augmentation is built it additionally offers `get_relic_affix`,
+`get_relic_template`, `get_stage_buff`, and `get_external_stage_buff`.
 
 `get_stage_package(stage_id)` preserves wave ordering, group/slot identity,
 monster IDs, levels, Stage Buff links, rule metadata, source references, and
 explicit unresolved references.  When a Stage appears in multiple Maze,
 Story, or Boss contexts, the package returns each distinct `Encounter` context
 instead of merging them.  It returns static scenario data, not an initial
-battle state.
+battle state. The exact Nanoka Stage→Buff relation remains the package
+authority; a separate close-version MazeBuff record is surfaced only as
+`detail_source: EXTERNAL_CLOSE` and never replaces that binding.
 
 ## Validation and gaps
 
@@ -151,8 +167,8 @@ two requested global auxiliary endpoints and 18 Stage-referenced
 | MonsterSkill | 12,873 / 12,873 |
 | Encounter | 1,543 / 1,543 |
 | Stage / Wave / WaveMonster | 1,459 / 1,459, 1,459 / 1,459, 6,717 / 6,717 |
-| StageBuff | 0 / 18 (details unavailable) |
-| Stage→Buff relation | 0 / 160 (binding preserved, Buff detail unknown) |
+| StageBuff | exact binding 18 / 18; 17 close-version raw detail records; 1 explicit unknown (`3110018`) |
+| Stage→Buff relation | 160 bindings preserved; raw Buff configuration is not runtime semantics |
 
 The generated SQLite is about 76.0 MB and its two successive rebuilds from
 the same raw snapshot had logical SHA-256
@@ -161,10 +177,12 @@ The health report has no duplicate IDs, dangling Monster references, missing
 Avatar owners, orphan skills, Stage/Wave inconsistency, or version
 contamination.  Raw Maze input has 84 exact duplicate Stage→Wave rows and
 428 exact duplicate Wave→Monster rows; they are surfaced in health output and
-materialized only once in SQLite.  The emitted static gaps are Relic
-affix/roll schema, the unavailable `EliteGroup` / `HardLevelGroup` auxiliary
-collections, one Monster without a child/variant list, and unavailable Stage
-Buff detail.  Story detail is captured as Encounter→Stage context rather than
+materialized only once in SQLite. The original Nanoka-only static gaps are now
+narrowed by the external layer: the Relic affix/roll schema is reconstructed
+as 165 ID-preserving records; the `EliteGroup` / `HardLevelGroup` raw tables
+are present but lack a claimed exact Stage/Mode join; Monster `4034020` still
+lacks a complete variant list; and Stage Buff `3110018` still has no external
+raw detail. Story detail is captured as Encounter→Stage context rather than
 being treated as a missing link.
 
 The collection-only 4.4.54 → 4.4.55 delta has no added or removed IDs and no

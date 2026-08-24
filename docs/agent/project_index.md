@@ -28,8 +28,15 @@ method again.
 Nanoka 4.4.54 snapshot
   └─ `game_data/nanoka_content.py` adapter
        └─ Canonical JSONL + SQLite query database
-            └─ future Scenario / Loadout compiler
-                 └─ Battle IR / battle runtime
+
+Pinned external reference snapshots
+  └─ `game_data/external_reconstruction.py` independent adapter
+       └─ external Canonical additions + SQLite augmentation
+
+Canonical content + static external additions
+  └─ static Loadout materializer / amount-only reference evaluator
+       └─ future Scenario / Loadout compiler
+            └─ Battle IR / battle runtime
 
 Local HSR client / DesignData archive
   └─ tools/unpack_pipeline + tools/reverse/scripts
@@ -58,7 +65,9 @@ working planning product.
 | Content path indexes | `data/extracted/4.4.53/direct_json/` | PARTIAL; paths, not a content database |
 | External raw content snapshot | `data/external/nanoka/4.4.54/` | Local ignored cache; version-locked oracle evidence |
 | Canonical static content | `data/content/4.4.54/nanoka/` | Local ignored, deterministic JSONL build |
-| Content SQLite/query facade | `data/db/`, `game_data/nanoka_content.py` | PASS for static query/build surface; not a runtime compiler |
+| Pinned external references | `.external_refs/`, `scripts/fetch_external_references.py` | PASS; minimal commit-addressed cache, ignored by Git |
+| External reconstruction | `game_data/external_reconstruction.py`, `data/semantics/4.4.54/external_reconstruction/` | PASS for bounded static gaps and amount-only reference rules; no local runtime proof |
+| Content SQLite/query facade | `data/db/`, `game_data/nanoka_content.py` | PASS for static query/build surface; external augmentation is separately provenanced, not a runtime compiler |
 | Battle IR | `src/hsr_battle_agent/battle_ir/` | PARTIAL-to-PASS by primitive |
 | Battle runtime | `src/hsr_battle_agent/battle_runtime/` | PARTIAL; proof-scoped only |
 | Battle state/kernel | `src/hsr_battle_agent/battle_sandbox/` | PASS for deterministic kernel/state boundaries |
@@ -91,6 +100,12 @@ is a version-delta/schema-discovery input only.  See
 `docs/agent/content_database.md` for raw/canonical/SQLite separation and
 provenance rules.
 
+An additional external reconstruction layer is pinned to four public
+references: TurnBasedGameData and StarRailRes are CLOSE, HSR-Mapping-DATA is
+SCHEMA_ONLY, and hsr-optimizer is ALGORITHM_ONLY. It cannot fill 4.4.54 with
+4.4.55, overwrite a Nanoka record, or serve as local semantic proof. See
+`docs/agent/external_reconstruction.md`.
+
 ## 5. Content Extraction State
 
 Use these levels literally: **L0 NOT_FOUND**, **L1 RAW_PRESENT**, **L2
@@ -108,7 +123,7 @@ INDEXED**, **L3 STRUCTURALLY_DECODED**, **L4 SANDBOX_SEMANTICS_AVAILABLE**.
 | Monster AI paths | L2 | Two explicitly indexed Monster ComplexSkillAI config paths; no parsed selection policy |
 | Stage/encounter entities | L1 | 137 raw `Stage*` token candidates; encounter records and waves are not parsed |
 | Stage/mode ability paths | L2 | 323 Stage/Maze/Challenge/GridFight-like paths, which are ability files, not stage encounter configs |
-| Stage buff/modifier family | L2 partial | Modifier file paths include `AdventureModifier_MazeChallenge`, `AdventureModifier_MazeEnvi`, and `GlobalModifier_Level`; no Stage→Buff record join |
+| Stage buff/modifier family | L2 external-static partial | 160 exact-version Nanoka bindings are preserved; 17/18 raw config details are separately attached from a CLOSE source, while `3110018` remains unknown |
 | Versioned external static content | Reconstruction-ready external | Canonical/SQLite content may be C0 external-only but is ID-preserving, provenance-bearing static input; it is not local runtime proof |
 
 The complete audit artifacts are:
@@ -122,10 +137,11 @@ The complete audit artifacts are:
 The Nanoka 4.4.54 local snapshot is now a reconstruction-ready static layer:
 97 Avatars, 664 Skills, 5,018 Traces, 582 Eidolons, 169 LightCones, 60
 RelicSets, 628 Monsters, 12,873 MonsterSkills, 1,543 Encounter contexts, and
-1,459 Maze/Story/Boss Challenge Stage records.  Stage→Wave→Monster is
-preserved (1,459 waves, 6,717 placements).  The 160 discovered Stage→Buff
-bindings are preserved but their 18 distinct Buff details are unavailable from
-the public detail endpoint, so they stay explicitly PARTIAL.
+1,459 Maze/Story/Boss Challenge Stage records. Stage→Wave→Monster is
+preserved (1,459 waves, 6,717 placements). The 160 discovered Stage→Buff
+bindings stay exact-version Nanoka records; 17 of their 18 raw Buff details
+are now separately available as CLOSE-version external records, with
+`3110018` explicitly unresolved.
 Read `docs/agent/content_database.md`; do not mistake static C0/C1 content
 for local runtime semantics.
 
@@ -156,6 +172,8 @@ the corresponding game-wide mechanic is complete.
 | Summon, follow-up, extra action | BLOCKED | no accepted runtime implementation | no generic content compiler or event sequencing |
 | Content compiler | BLOCKED | no module | Next architectural milestone |
 | Static content query database | PASS | `game_data/nanoka_content.py`, `scripts/*content*` | Static only; no BattleInitialState/runtime effect compiler |
+| External static reconstruction | PASS (bounded) | `game_data/external_reconstruction.py` | 165 relic affixes, 742 templates, 17 external Stage Buff details; exact local validation deferred |
+| Reference evaluator | EXPERIMENTAL | `ReferenceEvaluator` | Amount-only external algorithms; not a Battle Runtime or semantic proof |
 | BattleState | PASS | `battle_sandbox/state.py` (schema v4) | Deliberately does not model full combat state |
 | Clone / hash / snapshot | PASS | `battle_sandbox/{state,hash,snapshot}.py` | Logical state only |
 | Planner API | BLOCKED | `Sandbox.legal_actions/step/is_terminal` | Explicitly raises NOT_IMPLEMENTED |
@@ -237,6 +255,9 @@ instructions are in `docs/agent/content_database.md`.
 - `31d4ed6` — authoritative repository/content audit index.
 - `994bc14` — version-locked Nanoka raw snapshot, Canonical/SQLite database,
   query/export tools, tests, documentation, and 4.4.54→4.4.55 delta report.
+- `69c1cff` — pinned external reconstruction adapter, static Loadout
+  materializer, amount-only reference evaluator, offline tests, and compact
+  source/mapping/rule/gap artifacts.
 
 ## 11. Important Artifacts and Handoffs
 
@@ -250,6 +271,11 @@ instructions are in `docs/agent/content_database.md`.
   and `data/sandbox/core_real_skill_runtime_30_report.json`.
 - Runtime semantic catalog: `data/semantics/4.4.54/catalog.json`.
 - Static content database guide: `docs/agent/content_database.md`.
+- External reconstruction entry point: `docs/agent/external_reconstruction.md`.
+- External-source license/use audit: `docs/agent/external_reference_licenses.md`.
+- External rule boundary: `docs/agent/reconstruction_rule_pack.md`.
+- Machine mapping/rule/gap artifacts:
+  `data/semantics/4.4.54/external_reconstruction/`.
 - Ticket impact after oracle adoption: `docs/agent/semantic_ticket_oracle_v2.md`.
 
 Historical handoffs are evidence, not a substitute for this index.  Read a
