@@ -1,0 +1,270 @@
+{
+  "schema": "natasha_skill02_healhp_content/2",
+  "game_version": "4.4.54",
+  "status": "REAL_SKILL_HEALHP_NODE_AND_FORMULA4_CONFIG_CONFIRMED",
+  "source": {
+    "archive": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+    "archive_size": 125829538,
+    "archive_sha256": "098ec31c5c03a0f6fbf030d6b2579a5e60c03639ce7060f68fa52371a03dc64b",
+    "ability_container_artifact": "data\\raw\\4.4.54\\ability_file_container_natasha_30.json",
+    "task_registry_artifact": "data\\raw\\4.4.54\\taskconfig_registry_slice_30.json",
+    "predicate_registry_artifact": "data\\raw\\4.4.54\\predicateconfig_registry_slice_30.json"
+  },
+  "ability": {
+    "name": "Avatar_Natasha_00_Skill02_Phase02",
+    "start": "0xBC9960",
+    "end_exclusive": "0xBC9BC9",
+    "field_presence_bitmap": 51,
+    "field_presence_bitmap_range": [
+      "0xBC9960",
+      "0xBC9961"
+    ],
+    "present_fields": [
+      "Name",
+      "TargetInfo",
+      "OnStart",
+      "DynamicValues"
+    ],
+    "target_info": {
+      "start": "0xBC9983",
+      "end_exclusive": "0xBC9985",
+      "field_presence_bitmap": 1,
+      "selector": 16
+    },
+    "on_start": {
+      "count": 22,
+      "count_range": [
+        "0xBC9985",
+        "0xBC9986"
+      ],
+      "first_task": {
+        "discriminator": 3726,
+        "range": [
+          "0xBC9986",
+          "0xBC9988"
+        ],
+        "registry_mapping": {
+          "discriminator": 3726,
+          "runtime_type_name": "RPG.GameCore.WaitAnimState",
+          "parser_method_index": 125403,
+          "parser_native_rva": "0x1D60D750",
+          "mapping_status": "CONCRETE_PARSER_RECOVERED"
+        }
+      }
+    }
+  },
+  "recovered_subtree": {
+    "placement": "unique recovered PredicateTaskList subtree after the validated OnStart list header and before the next ability anchor",
+    "start": "0xBC9A1C",
+    "end_exclusive": "0xBC9A7E",
+    "source_window_through_next_selector_hex": "A8 0F 06 F0 03 08 0C 02 AF 09 C2 01 0C 01 13 41 62 69 6C 69 74 79 54 61 72 67 65 74 45 6E 74 69 74 79 01 03 01 00 11 00 01 91 8A E7 E9 0F 02 C9 0B B2 01 0C 01 13 41 62 69 6C 69 74 79 54 61 72 67 65 74 45 6E 74 69 74 79 04 01 03 01 00 11 00 01 8D EA C5 C0 0B 01 03 01 00 11 00 01 A9 BA 99 C2 01 A8 0F",
+    "parent": {
+      "discriminator": 1960,
+      "field_presence_bitmap": 6,
+      "present_fields": [
+        "Predicate",
+        "SuccessTaskList"
+      ],
+      "registry_mapping": {
+        "discriminator": 1960,
+        "runtime_type_name": "RPG.GameCore.PredicateTaskList",
+        "parser_method_index": 133406,
+        "parser_native_rva": "0x1D2CA1A0",
+        "mapping_status": "CONCRETE_PARSER_RECOVERED"
+      }
+    },
+    "predicate": {
+      "start": "0xBC9A1F",
+      "end_exclusive": "0xBC9A23",
+      "discriminator": 496,
+      "field_presence_bitmap": 8,
+      "trigger_key": 12,
+      "registry_mapping": {
+        "discriminator": 496,
+        "runtime_type_name": "RPG.GameCore.BySkillPointActivated",
+        "parser_method_index": 127710,
+        "parser_native_rva": "0x1CECDE70",
+        "mapping_status": "CONCRETE_PARSER_RECOVERED"
+      },
+      "evaluation_status": "RUNTIME_CONTEXT_SEMANTICS_NOT_RECOVERED"
+    },
+    "success_task_count": 2,
+    "success_tasks": [
+      {
+        "ordinal": 0,
+        "start": "0xBC9A24",
+        "end_exclusive": "0xBC9A4B",
+        "discriminator": 1199,
+        "field_presence_bitmap": 194,
+        "present_fields": [
+          "TargetType",
+          "Numbers",
+          "Order"
+        ],
+        "registry_mapping": {
+          "discriminator": 1199,
+          "runtime_type_name": "RPG.GameCore.DispelStatus",
+          "parser_method_index": 124838,
+          "parser_native_rva": "0x1CFAB680",
+          "mapping_status": "CONCRETE_PARSER_RECOVERED"
+        },
+        "target_type": {
+          "start": "0xBC9A28",
+          "end_exclusive": "0xBC9A3E",
+          "discriminator": 12,
+          "field_presence_bitmap": 1,
+          "name": "AbilityTargetEntity",
+          "runtime_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"
+        },
+        "numbers": {
+          "serialized_type": "RPG.GameCore.DynamicFloat.formula",
+          "start": "0xBC9A3E",
+          "end_exclusive": "0xBC9A4A",
+          "field_presence_bitmap": 1,
+          "opcodes_hex": "01 00 11",
+          "opcodes": [
+            1,
+            0,
+            17
+          ],
+          "qword_operands": [],
+          "int32_operands": [
+            {
+              "encoded_uleb": 4248421649,
+              "signed_value": -2124210825,
+              "start": "0xBC9A45",
+              "end_exclusive": "0xBC9A4A"
+            }
+          ],
+          "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"
+        },
+        "order": 2
+      },
+      {
+        "ordinal": 1,
+        "start": "0xBC9A4B",
+        "end_exclusive": "0xBC9A7E",
+        "discriminator": 1481,
+        "field_presence_bitmap": 178,
+        "present_fields": [
+          "TargetType",
+          "FormulaType",
+          "HealPercentage",
+          "ModifyValue"
+        ],
+        "absent_default_fields": [
+          "HealerTargetType",
+          "AliveOnly",
+          "SPHitRatio",
+          "IsHealRallyHP",
+          "ScreenSpaceFloatMsg",
+          "DisplayData",
+          "PerformanceDelay"
+        ],
+        "registry_mapping": {
+          "discriminator": 1481,
+          "runtime_type_name": "RPG.GameCore.HealHP",
+          "parser_method_index": 124666,
+          "parser_native_rva": "0x1D0EBEB0",
+          "mapping_status": "CONCRETE_PARSER_RECOVERED"
+        },
+        "target_type": {
+          "start": "0xBC9A4F",
+          "end_exclusive": "0xBC9A65",
+          "discriminator": 12,
+          "field_presence_bitmap": 1,
+          "name": "AbilityTargetEntity",
+          "runtime_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"
+        },
+        "formula_type": {
+          "value": 4,
+          "range": [
+            "0xBC9A65",
+            "0xBC9A66"
+          ]
+        },
+        "heal_percentage": {
+          "serialized_type": "RPG.GameCore.DynamicFloat.formula",
+          "start": "0xBC9A66",
+          "end_exclusive": "0xBC9A72",
+          "field_presence_bitmap": 1,
+          "opcodes_hex": "01 00 11",
+          "opcodes": [
+            1,
+            0,
+            17
+          ],
+          "qword_operands": [],
+          "int32_operands": [
+            {
+              "encoded_uleb": 3088151821,
+              "signed_value": -1544075911,
+              "start": "0xBC9A6D",
+              "end_exclusive": "0xBC9A72"
+            }
+          ],
+          "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"
+        },
+        "modify_value": {
+          "serialized_type": "RPG.GameCore.DynamicFloat.formula",
+          "start": "0xBC9A72",
+          "end_exclusive": "0xBC9A7E",
+          "field_presence_bitmap": 1,
+          "opcodes_hex": "01 00 11",
+          "opcodes": [
+            1,
+            0,
+            17
+          ],
+          "qword_operands": [],
+          "int32_operands": [
+            {
+              "encoded_uleb": 407264553,
+              "signed_value": -203632277,
+              "start": "0xBC9A79",
+              "end_exclusive": "0xBC9A7E"
+            }
+          ],
+          "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"
+        }
+      }
+    ],
+    "boundary_proof": {
+      "heal_end_exclusive": "0xBC9A7E",
+      "next_outer_task_start": "0xBC9A7E",
+      "next_outer_task_discriminator": 1960,
+      "next_outer_task_discriminator_end": "0xBC9A80"
+    }
+  },
+  "native_formula_provenance": {
+    "executor": "AAOLFLMHBEK.OnTaskBegin M507657 RVA 0xB3F43C0",
+    "setup": "RPG.GameCore.AbilityStatic.SetupHealData M504574 RVA 0xE468390",
+    "formula": "RPG.GameCore.AbilityStatic.HealFormula M504575 RVA 0xE468720",
+    "formula_type_4_base": "target.MaxHP(property 1) - target.CurrentHP(property 10)",
+    "ordinary_multiplier_properties": [
+      "healer.HealRatio (property 124)",
+      "target.HealTakenRatio (property 127)"
+    ],
+    "special_healer_properties": [
+      "ExtraHealAddedRatio (property 179)",
+      "ExtraHealBase (property 208)",
+      "ExtraHealConvert (property 220)"
+    ],
+    "fixedpoint_constants": {
+      "one_raw": "0x200000000",
+      "hundred_raw": "0xC800000000"
+    }
+  },
+  "bounded_external_dependencies": [
+    "BySkillPointActivated runtime-context evaluation",
+    "DynamicFloat opcode and hashed-operand evaluation",
+    "TargetConfig discriminator 12 runtime selector join",
+    "positive HealData event consumer and CurrentHP mutation"
+  ],
+  "claims_not_made": [
+    "the trigger_key value is a SkillPoint count",
+    "DynamicFloat int32 operands are literal numeric amounts",
+    "the HealHP executor directly mutates CurrentHP",
+    "the positive-heal event consumer is equivalent to DirectChangeHP mode 1"
+  ]
+}
