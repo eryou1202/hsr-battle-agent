@@ -1,0 +1,104 @@
+{
+  "concrete_json_config_extraction": "PENDING_BINARY_ABILITY_PARSE",
+  "game_version": "4.4.54",
+  "hash_validation": {
+    "classification": "VERSION_MATCH_WITHOUT_HASH",
+    "current_8625_hash": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+    "current_edd7_hash": "078AC12FAB39F08401B777D9F7C35BA0B1248CB28F7AF19AFFA1EA900FA731E4",
+    "historical_persistent_hashes": "not recorded in repo CSVs; historical filenames are not present in the current local Persistent directory",
+    "recorded_csv_match": false
+  },
+  "historical_expected_archives": {
+    "persistent_historical_examples": [
+      "5515caf6ca5446d524d17c5c9da6c3c2.bytes",
+      "9e6e90bbead9c7873c31e4a8e644f1c9.bytes",
+      "464d61cd0304f6d80227c9daad855e42.bytes",
+      "5060c8bc1e02bacbbe300713875cd19c.bytes",
+      "dbef39a4802332d1eaa116b8831ce964.bytes",
+      "1f0ec04a11f323b36c8369cbf0c905e1.bytes"
+    ],
+    "streaming_assets": [
+      "025d96a23b38b165ac6b81183c96efd7.bytes 210372 644EE13956C6CAA647AA01A5E005D9FFC663ECCDF34AEFFF3B5A0CEA1CA712D8",
+      "264da6d7fc597d81d3d3668561853bb6.bytes 73850 7C368D174CC0846229A1BD0CCC8FC382767D2412EBB2679501762ADFD23AE6B8",
+      "568be8a890f00f6dbc419045f1c8ab63.bytes 71241 5997128EA41CD5B419739A7876EF4A4F123E8B32C15608857DBA5214A734427F",
+      "96da02a55ec4d58012713ac3506330a6.bytes 80021 9B2A300DCD5217EFFE5A15BE9DD6091B237968B005B79300BD1577E39FB86BB6",
+      "c55c9c8212dde2f3dd5ce4612ca85378.bytes 89772 75EC4FABBDB7FE57729E15B9E8C5D37DEC94050F5694C5417E07D89277C12328",
+      "c9cf5ad44b49974030eb5e736e73c3c6.bytes 94639 736CE9CE7E8AF51401B54BF076EBD8AFA6DEB70A007B8FE57C311068CAD22F47",
+      "DesignV_60abaa707bf6885978f8dd5a156d03c8.bytes 714 55946F50C20385D4EC4E0841ED1CAE8C52D2F7396A794095A6652EBE959094BB",
+      "M_DesignV.bytes 66 50CFF01052119FB69CD5C367089B187D6A4EB0DA519FA5F63A47B328D73D7F16",
+      "M_Design_ArchiveV.bytes 428 C00E66CCA4C177388EA66B5F1EAD09BD6E6C837B142BD414871F8B3FE2687C68"
+    ]
+  },
+  "local_matches": [
+    {
+      "path": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\edd7d527b0962f4ec2e49789746fb0d2.bytes",
+      "role": "path-index/small archive containing Avatar_Natasha_00_Ability.json path",
+      "sha256": "078AC12FAB39F08401B777D9F7C35BA0B1248CB28F7AF19AFFA1EA900FA731E4",
+      "size": 184370
+    },
+    {
+      "path": "D:\\StarRail_4.4.53\\StarRail_Data\\Persistent\\DesignData\\Windows\\8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+      "role": "large persistent archive containing Natasha ability/effect records and HealHP-related fields",
+      "sha256": "098EC31C5C03A0F6FBF030D6B2579A5E60C03639CE7060F68FA52371A03DC64B",
+      "size": 125829538
+    }
+  ],
+  "minimum_missing_inputs": "No external archive is required if the local 8625 archive is accepted. A binary ability-format parser is needed to emit the concrete Avatar_Natasha_00_Ability.json HealHP config.",
+  "natasha_hits": [
+    {
+      "archive": "edd7d527b0962f4ec2e49789746fb0d2.bytes",
+      "offset": 34966,
+      "text": "Avatar_Natasha_00_Ability.json",
+      "type": "path_index"
+    },
+    {
+      "archive": "8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+      "offset": 12361281,
+      "text": "Avatar_Natasha_00_HOT_HPByMaxHP / Skill02 / AllTeammate",
+      "type": "ability_record"
+    },
+    {
+      "archive": "8625dd99e13b0dfe6b45f47f9bfe3e36.bytes",
+      "offset": 15614487,
+      "text": "BattleEvent_GridFight_Natasha_00_Skill03 / AllTeamMember / _Heal_Percentage",
+      "type": "ability_record"
+    }
+  ],
+  "recommended_next_step": "Parse the encoded ability records in 8625dd99e13b0dfe6b45f47f9bfe3e36.bytes around offsets 12361281 and 15614487 to produce the concrete Natasha HealHP action (ability ID, target config, heal amount expression, executor binding).",
+  "recovery_status": "CONTENT_RECOVERED",
+  "repo_preserved_content": {
+    "ability_path_index": {
+      "evidence": "path-only; not ability content",
+      "offset": 34966,
+      "source": "edd7d527b0962f4ec2e49789746fb0d2.bytes",
+      "text": "Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json"
+    },
+    "natasha_ability_binary_evidence": {
+      "assessment": "The archive contains real Natasha ability records with heal-related fields, but they are in the game's encoded ability format, not raw JSON.",
+      "observed_tokens": [
+        "Avatar_Natasha_00_HOT_HPByMaxHP",
+        "Skill02",
+        "SkillTargetEntityList",
+        "AllTeammate",
+        "Avatar_Natasha_00_Skill03_EnterReady",
+        "Avatar_Natasha_SkillTree02",
+        "M_SkillTree_HealRatioUp",
+        "BattleEvent_GridFight_Natasha_00_Skill03",
+        "AllTeamMember",
+        "_Heal_Percentage",
+        "Eff_Avatar_Natasha_00_Skill02_Heal.prefab",
+        "Eff_Common_Heal.prefab"
+      ],
+      "offsets": [
+        12361281,
+        12361405,
+        12363901,
+        12364611,
+        15614487
+      ],
+      "source": "8625dd99e13b0dfe6b45f47f9bfe3e36.bytes"
+    }
+  },
+  "schema": "designdata_recovery_audit/1",
+  "status": "LOCAL_ARCHIVE_FOUND_AND_NATASHA_HEALHP_EVIDENCE_PRESENT"
+}
