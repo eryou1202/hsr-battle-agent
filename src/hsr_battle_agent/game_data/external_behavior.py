@@ -67,6 +67,9 @@ OPERATION_MAP: Mapping[str, tuple[str, str, str, str]] = {
     "RPG.GameCore.SkillExecutionStart": ("ACTION_START_MARKER", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
     "RPG.GameCore.LoopExecuteTaskListWithInterval": ("LOOP", "REQUIRES_PACKET", "UNKNOWN", "UNKNOWN"),
     "RPG.GameCore.ConditionLoopExecuteTaskListWithInterval": ("CONDITIONAL_LOOP", "REQUIRES_PACKET", "UNKNOWN", "UNKNOWN"),
+    "RPG.GameCore.IncludeTaskListTemplate": ("INCLUDE_TASK_TEMPLATE", "REQUIRES_PACKET", "UNKNOWN", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.TriggerSkipDeadHandler": ("DEATH_HANDLER", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.FireProjectile": ("PROJECTILE_DISPATCH", "REQUIRES_PACKET", "UNKNOWN", "POSSIBLE_STATE_COMMIT"),
 }
 
 
@@ -94,21 +97,69 @@ def _owner(path: str) -> str:
     return "ExternalBehavior"
 
 
-def _operation(task: Any, *, behavior_id: str, entrypoint: str, index: int, raw_ref: Mapping[str, Any]) -> dict[str, Any]:
+def _nested_operation_groups(value: Any, path: tuple[str, ...] = ()) -> list[tuple[str, list[Any]]]:
+    """Find direct nested task arrays while leaving non-task AST payload intact."""
+    groups: list[tuple[str, list[Any]]] = []
+    if isinstance(value, Mapping):
+        for key, child in value.items():
+            child_path = path + (str(key),)
+            if isinstance(child, list) and any(isinstance(item, Mapping) and "$type" in item for item in child):
+                groups.append((".".join(child_path), list(child)))
+                continue
+            groups.extend(_nested_operation_groups(child, child_path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            groups.extend(_nested_operation_groups(child, path + (str(index),)))
+    return groups
+
+
+def _callback_entrypoints(value: Any, prefix: str = "") -> list[tuple[str, list[Any], dict[str, Any]]]:
+    """Lift modifier/callback task lists without assuming a single schema."""
+    found: list[tuple[str, list[Any], dict[str, Any]]] = []
+    if isinstance(value, Mapping):
+        for key, child in value.items():
+            path = f"{prefix}.{key}" if prefix else str(key)
+            if key == "_CallbackList" and isinstance(child, list):
+                for callback_index, callback in enumerate(child):
+                    callback_map = _mapping(callback)
+                    tasks = callback_map.get("CallbackConfig")
+                    if isinstance(tasks, list):
+                        event = str(callback_map.get("Event", "UNKNOWN"))
+                        found.append((f"{path}[{callback_index}]:{event}", list(tasks), {"event": event, "priority": callback_map.get("Priority"), "callback_index": callback_index}))
+                continue
+            if str(key).startswith("On") and isinstance(child, list):
+                found.append((path, list(child), {}))
+            else:
+                found.extend(_callback_entrypoints(child, path))
+    elif isinstance(value, list):
+        for index, child in enumerate(value):
+            found.extend(_callback_entrypoints(child, f"{prefix}[{index}]"))
+    return found
+
+
+def _operation(task: Any, *, behavior_id: str, entrypoint: str, index: int, raw_ref: Mapping[str, Any], parent_operation_id: str | None = None, child_path: str | None = None) -> dict[str, Any]:
     payload = _mapping(task)
     source_type = payload.get("$type") if isinstance(payload.get("$type"), str) else None
     kind, status, scope, risk = OPERATION_MAP.get(source_type or "", ("OPAQUE", "OPAQUE", "UNKNOWN", "UNKNOWN"))
+    node_role = "PREDICATE_AST" if source_type and ".By" in source_type else "OPERATION"
     arguments = {key: value for key, value in payload.items() if key not in {"$type", "TargetType"}}
+    operation_id = f"{behavior_id}:{entrypoint}:{index}" if parent_operation_id is None else f"{parent_operation_id}/{child_path or 'child'}:{index}"
+    children = []
+    for group_index, (group_path, tasks) in enumerate(_nested_operation_groups(payload)):
+        children.append({"group_id": f"{operation_id}:group:{group_index}", "field_path": group_path, "operations": [_operation(child, behavior_id=behavior_id, entrypoint=entrypoint, index=child_index, raw_ref=raw_ref, parent_operation_id=operation_id, child_path=group_path) for child_index, child in enumerate(tasks)]})
     return {
-        "operation_id": f"{behavior_id}:{entrypoint}:{index}",
+        "operation_id": operation_id,
+        "parent_operation_id": parent_operation_id,
+        "parent_child_path": child_path,
         "source_type": source_type,
+        "node_role": node_role,
         "kind": kind,
         "semantic_status": status,
         "scope": scope,
         "gating_risk": risk,
         "target": payload.get("TargetType"),
         "arguments": arguments,
-        "children": [],
+        "children": children,
         "phase": "UNKNOWN",
         "state_reads": ["UNKNOWN"],
         "state_writes": ["UNKNOWN"],
@@ -157,6 +208,11 @@ def build_external_behavior_corpus(
                 if not str(field).startswith("On") or not isinstance(value, list):
                     continue
                 entrypoints.append({"event": str(field).upper(), "source_event": field, "operations": [_operation(task, behavior_id=behavior_id, entrypoint=str(field).upper(), index=index, raw_ref=raw_ref) for index, task in enumerate(value)]})
+            modifier_callbacks = []
+            for callback_name, tasks, callback_metadata in _callback_entrypoints(payload.get("Modifiers")):
+                event = f"MODIFIER_CALLBACK:{callback_name}"
+                modifier_callbacks.append({"event":event, "source_event":callback_name, "callback_metadata":callback_metadata, "operations":[_operation(task, behavior_id=behavior_id, entrypoint=event, index=index, raw_ref=raw_ref) for index, task in enumerate(tasks)]})
+            entrypoints.extend(modifier_callbacks)
             records.append({"behavior_id":behavior_id, "owner_kind":_owner(relative_path), "owner_ref":name, "source_refs":[raw_ref], "entrypoints":entrypoints, "modifier_payload":payload.get("Modifiers"), "raw_unknown":{key:value for key,value in payload.items() if key not in {"Name", "Modifiers"} and not str(key).startswith("On")}, "reconstruction_status":"CANONICALIZED"})
     records.sort(key=lambda record: record["behavior_id"])
     corpus = {"schema":"hsr_battle_agent.external_behavior_corpus/1", "game_version":version, "source":"TurnBasedGameData", "source_commit":manifest["selected_commit"], "records":records}

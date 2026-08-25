@@ -1,0 +1,25 @@
+{
+  "packet_id": "KERNEL-EVENT-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_EXISTING_MVP_ANCHORS",
+  "scope": "Generic ordered execution of captured BehaviorRecord entrypoints and Modifier _CallbackList callbacks; not a claim of complete native event-bus equivalence.",
+  "evidence": [
+    {"source":"TurnBasedGameData","commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3","records":["Avatar_BlackSwan_00_PassiveSkill01 Modifier _CallbackList","Level_MazeBuff_Ability OnAdd","Monster_AML_Minion01_00 Skill01 OnStart"],"support":"source task arrays preserve sibling order; Black Swan callbacks include explicit Event and Priority values -11 and 200"},
+    {"source":"dynamic_mvp_v1","support":"ordinary action completion, HP/resource/AV boundaries are already documented as deterministic packet boundaries"}
+  ],
+  "selected_model": {
+    "registration":"Each active behavior/modifier contributes callbacks keyed by source Event. Registration identity is {owner_instance, behavior_id, modifier_id?, callback_index}; duplicate registration is rejected unless a modifier lifecycle packet explicitly replaces it.",
+    "dispatch_order":"For one emitted Event, select currently active registrations, sort by numeric Priority ascending (missing Priority = 0), then stable registration sequence ascending. This is selected because Black Swan -11 setup precedes priority 200 cleanup in the same OnPhase1 family; it is R3, not local runtime proof.",
+    "entrypoint_order":"Within an entrypoint or CallbackConfig, execute source operation order depth-first. Nested SuccessTaskList/FailedTaskList/TaskList/Retarget.TaskList/template children retain their explicit parent-child field path and order.",
+    "state_visibility":"A state-mutating compiled primitive commits before the following sibling operation and before the next callback registration is evaluated. State visibility between operations is therefore deterministic; atomic multi-write rules remain primitive-packet responsibilities.",
+    "nested_dispatch":"An operation may emit a nested Event. It is appended to a FIFO event queue after the currently executing operation; the current entrypoint completes before the next queued event begins. Immediate-vs-deferred native differences remain an explicit ambiguity whenever they affect a published observable.",
+    "cancellation":"No global cancellation model is accepted yet. A future primitive may return CANCEL_CURRENT_EVENT or CANCEL_REMAINING_CALLBACKS only with an explicit source/semantic packet; otherwise no cancellation is inferred.",
+    "completion_markers":"ACTION_START_MARKER, DAMAGE_COMPLETION_MARKER and ACTION_COMPLETION_MARKER are ordered event boundaries, not presentation no-ops. Their scheduler effects remain dependent on action/timeline packets."
+  },
+  "state_reads": ["active modifier registrations","callback priority","current BattleState at each operation boundary","event queue"],
+  "state_writes": ["event queue","trace","primitive-owned state mutations","callback registration changes only through modifier lifecycle"],
+  "unsupported": ["native listener priority proof beyond the selected model","listener cancellation flags","reentrant immediate dispatch","event exception/retry semantics","all event names and special mode dispatch phases"],
+  "acceptance": "A compiler/kernel test must register Black Swan-style callbacks with priorities -11/0/200, execute ordered nested child task traces, preserve source order for Monster and StageBuff entrypoints, and reject behavior-affecting OPAQUE nodes rather than skipping them.",
+  "dsh_implementation_contract": "Implement a deterministic EventQueue with stable registration sequence, priority ascending, FIFO nested events, depth-first entrypoint children, explicit trace records and no implicit cancellation. Keep this packet scoped until coverage tests prove wider source families."
+}

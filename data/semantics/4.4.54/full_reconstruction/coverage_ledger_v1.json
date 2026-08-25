@@ -20,9 +20,9 @@
     "date": "2026-08-25",
     "tickets_completed_or_advanced": ["RECON-STATE-REPAIR-001 COMPLETE", "EXT-PROFILE-001 INITIAL_CORPUS_CAPTURED", "IR-CORE-001 CANONICAL_NORMALIZER_IMPLEMENTED", "COVERAGE-BASELINE-001 INITIAL_EXTERNAL_BASELINE"],
     "outputs": ["external_behavior_corpus_v1.json", "coverage_baseline_001.json", "effect_ir_contract_v1.json", "free_scenario_assembly_contract_v1.json"],
-    "measured_coverage": {"behavior_records_captured_and_canonicalized":541,"operation_instances":279,"operation_status":{"MODELLED":20,"REQUIRES_PACKET":122,"PRESENTATION":115,"OPAQUE":22},"compiled":0,"golden_tested":0},
+    "measured_coverage": {"behavior_records_captured_and_canonicalized":541,"root_entrypoint_operations":279,"recursive_semantic_nodes":829,"operation_nodes":784,"predicate_ast_nodes":45,"modifier_callback_entrypoints":148,"semantic_status":{"MODELLED":27,"REQUIRES_PACKET":490,"PRESENTATION":148,"OPAQUE":164},"compiled":0,"golden_tested":0},
     "current_ticket": "KERNEL-EVENT-001",
-    "exact_resume": "Read coverage_baseline_001.json and effect_ir_contract_v1.json. Define a deterministic event/effect queue packet whose acceptance compiles a subset of external_behavior_corpus_v1.json containing only MODELLED/PRESENTATION/REQUIRES_PACKET operations; do not treat OPAQUE as a no-op. First command: bundled Python scripts/build_external_behavior_corpus.py, then inspect operations with semantic_status=REQUIRES_PACKET grouped by source_type.",
+    "exact_resume": "Read coverage_baseline_001.json and effect_ir_contract_v1.json. Recursive normalization is complete for current raw samples: Modifier _CallbackList/CallbackConfig, nested task lists, predicate AST and task templates retain parent-child/order links. Define a deterministic event/effect queue packet against the 490 REQUIRES_PACKET nodes; do not treat 164 OPAQUE nodes as no-op. First command: bundled Python scripts/build_external_behavior_corpus.py, then inspect REQUIRES_PACKET nodes grouped by source_type and callback priority.",
     "blocked_by": "No environment blocker. The remaining work is semantic reconstruction, not an unavailable source or local-unpack prerequisite."
   },
   "tracks": [
@@ -37,7 +37,7 @@
     {"ticket_id":"EXT-DISC-001","status":"PARTIAL_INITIAL_VERTICAL_SLICE_COMPLETE","priority":"P0","remaining":"resolve only exact retrieval paths required by a coverage failure; recursive tree was truncated, so its omissions are non-authoritative"},
     {"ticket_id":"EXT-PROFILE-001","status":"PARTIAL_INITIAL_CORPUS_CAPTURED","priority":"P0","completed":"four source discovery artifacts, ten reviewed payloads and 541-record initial canonical corpus","remaining":"expand reviewed retrieval manifest by mechanism family and retain hash/provenance"},
     {"ticket_id":"IR-CORE-001","status":"PARTIAL_CANONICAL_NORMALIZER_IMPLEMENTED","priority":"P0","completed":"lossless behavior/entrypoint/operation schema, initial type map and deterministic 541-record normalizer","remaining":"wider mechanism-family validation and nested source-operation normalization"},
-    {"ticket_id":"KERNEL-EVENT-001","status":"ACTIVE_NEXT","priority":"P0","depends_on":["IR-CORE-001 canonical normalizer"]},
+    {"ticket_id":"KERNEL-EVENT-001","status":"PARTIAL_R3_PACKET_001","priority":"P0","completed":"ordered registration/priority/depth-first/FIFO selected model and Black Swan/StageBuff/Monster acceptance contract","remaining":"trace harness, cancellation/reentrancy boundaries and compilation against no-opaque subset","depends_on":["IR-CORE-001 recursive normalizer"]},
     {"ticket_id":"SCENARIO-FREE-001","status":"CONTRACT_SPECIFIED_NOT_IMPLEMENTED","priority":"P0","depends_on":["canonical Scenario compiler implementation"]},
     {"ticket_id":"COMPILER-VERTICAL-001","status":"NOT_STARTED","priority":"P0","depends_on":["EXT-PROFILE-001", "IR-CORE-001", "KERNEL-EVENT-001", "SCENARIO-FREE-001"]},
     {"ticket_id":"COVERAGE-BASELINE-001","status":"INITIAL_EXTERNAL_BASELINE_COMPLETE","priority":"P0","completed":"541 captured/canonicalized behavior records and operation/opaque-cluster counts","remaining":"compiler/golden coverage baseline after KERNEL-EVENT-001 and COMPILER-VERTICAL-001","depends_on":["canonical normalizer", "COMPILER-VERTICAL-001"]}
@@ -45,6 +45,6 @@
   "handoff_checkpoint": {
     "next_api_must_read": ["program_v1.json", "external_source_expansion_profile_v1.json", "effect_ir_contract_v1.json", "free_scenario_assembly_contract_v1.json", "coverage_ledger_v1.json", "docs/agent/full_simulation_reconstruction_plan.md", "docs/agent/dynamic_mvp_blocker_closure_v1.md", "docs/agent/content_database.md", "docs/agent/external_reconstruction.md"],
     "do_not_resume": ["blind local DesignData reverse", "unbounded external repository mirrors", "DSH production runtime before semantic/compiler contracts", "claiming full game coverage from current Standard MVP closure"],
-    "safe_stop_state": "RECON-STATE-REPAIR-001 completed; initial discovery must not be replayed. Next action is EXT-PROFILE-001 followed by the canonical normalizer portion of IR-CORE-001."
+    "safe_stop_state": "Initial discovery and entrypoint-level corpus normalization are complete. Current ticket is KERNEL-EVENT-001 together with recursive nested-source normalization; do not replay EXT-DISC-001, EXT-PROFILE initial capture, or entrypoint-only normalization."
   }
 }
