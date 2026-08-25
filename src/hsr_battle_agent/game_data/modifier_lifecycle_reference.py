@@ -68,6 +68,7 @@ class ModifierTransition:
     affected_instance_id: str
     deregistered_callback_keys: tuple[str, ...] = ()
     removed_property_contribution_keys: tuple[str, ...] = ()
+    affected_instance_ids: tuple[str, ...] = ()
 
 
 def _matches(existing: ModifierInstance, incoming: ModifierInstance) -> bool:
@@ -142,6 +143,35 @@ def active_callback_keys(instances: Iterable[ModifierInstance]) -> tuple[str, ..
         for instance in instances
         if instance.state == ModifierState.ALIVE
         for key in instance.callback_registration_keys
+    )
+
+
+def tick_lifetime(instances: Iterable[ModifierInstance]) -> ModifierTransition:
+    """Selected R3 lifetime tick: each ALIVE instance with an explicit
+    current_life decrements by one; reaching zero marks it TO_BE_REMOVED.
+
+    Instances without current_life are permanent within this packet and do
+    not tick.  The transition preserves order; actual cleanup still happens
+    at ``remove_dirty``.
+    """
+    current = tuple(instances)
+    updated: list[ModifierInstance] = []
+    affected: list[str] = []
+    for instance in current:
+        if instance.state != ModifierState.ALIVE or instance.current_life is None:
+            updated.append(instance)
+            continue
+        remaining = instance.current_life - 1
+        affected.append(instance.instance_id)
+        if remaining <= 0:
+            updated.append(replace(instance, current_life=0, state=ModifierState.TO_BE_REMOVED, destroy_reason=1))
+        else:
+            updated.append(replace(instance, current_life=remaining))
+    return ModifierTransition(
+        tuple(updated),
+        "TICK_LIFETIME",
+        affected[0] if affected else "NONE",
+        affected_instance_ids=tuple(affected),
     )
 
 

@@ -12,6 +12,7 @@ from hsr_battle_agent.game_data.modifier_lifecycle_reference import (
     add_or_refresh,
     mark_destroy,
     remove_dirty,
+    tick_lifetime,
 )
 
 
@@ -80,6 +81,16 @@ class ModifierLifecycleReferenceTest(unittest.TestCase):
         self.assertEqual(cleaned.deregistered_callback_keys, ("cb:b",))
         self.assertEqual(cleaned.removed_property_contribution_keys, ("prop:b",))
         self.assertEqual(active_callback_keys(cleaned.instances), ("cb:a", "cb:c"))
+
+    def test_lifetime_tick_decrements_and_marks_expired(self) -> None:
+        first = instance("one", StackingPolicy.MULTIPLE, life=2)
+        second = instance("two", StackingPolicy.MULTIPLE, life=1)
+        ticked = tick_lifetime((first, second))
+        self.assertEqual(ticked.action, "TICK_LIFETIME")
+        self.assertEqual(ticked.instances[0].current_life, 1)
+        self.assertEqual(ticked.instances[1].state, ModifierState.TO_BE_REMOVED)
+        cleaned = remove_dirty(ticked.instances)
+        self.assertEqual([item.instance_id for item in cleaned.instances], ["one"])
 
     def test_global_policy_is_explicitly_not_approximated(self) -> None:
         with self.assertRaises(NotImplementedError):

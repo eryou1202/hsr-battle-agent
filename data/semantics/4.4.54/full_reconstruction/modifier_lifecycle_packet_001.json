@@ -25,6 +25,7 @@
     "refresh_keep_lifetime_10":"retain existing current life and set Count.",
     "destroy":"if state is ALIVE or TO_BE_ADDED, set TO_BE_REMOVED and record reason; cleanup callbacks are KERNEL-EVENT work, not implicit deletion.",
     "dirty_removal":"at explicit cleanup, remove non-ALIVE items with no destroy guard; preserve relative order of all survivors. The reference transition returns deregistered callback registration keys and removed property-contribution keys so the same lifecycle boundary performs deregistration and property cleanup atomically.",
+    "lifetime_tick":"each ALIVE instance with an explicit current_life decrements by one per tick; reaching zero marks it TO_BE_REMOVED with destroy_reason 1. Instances without current_life are permanent within this packet. Actual removal still waits for dirty_removal.",
     "property_contribution":"keep a modifier-owned stable source index/key across refresh; do not shift neighbouring sources on removal. Materialization itself delegates to the existing property packets."
   },
   "event_contract": {
@@ -32,7 +33,7 @@
     "ordering":"callback priority and source task order delegate to KERNEL-EVENT-001; lifecycle transitions commit before the next compiled sibling observes modifier state.",
     "unsupported":"OnAdded/OnActivate/OnReplace callback bodies, delayed-add queue trigger timing and global manager ordering are not silently modeled."
   },
-  "unsupported_cases":["stacking flags 0,1,9 and any unlisted flag","RetainGlobalLatest 11 and RetainGlobalLatestUnique 13 global resolution","formula/target evaluation","duration/count decrement timing","callback effect bodies","dispel policy beyond a separately compiled DispelStatus operation","source-specific modifier special state"],
-  "acceptance_fixture":"tests/game_data/test_modifier_lifecycle_reference.py proves pending append -> ACTIVATE_ALIVE, Multiple append, Replace, Prolong, Merge, Keep-Lifetime, mark-destroy, ordered dirty removal, and callback/property-key cleanup on the removal transition. external operation risk triage retains source Add/Remove/Stack nodes as compiler blockers until compiled.",
+  "unsupported_cases":["stacking flags 0,1,9 and any unlisted flag","RetainGlobalLatest 11 and RetainGlobalLatestUnique 13 global resolution","formula/target evaluation","tick scheduling owner and tick phase boundary","callback effect bodies","dispel policy beyond a separately compiled DispelStatus operation","source-specific modifier special state"],
+  "acceptance_fixture":"tests/game_data/test_modifier_lifecycle_reference.py proves pending append -> ACTIVATE_ALIVE, Multiple append, Replace, Prolong, Merge, Keep-Lifetime, mark-destroy, ordered dirty removal, callback/property-key cleanup, and lifetime tick expiry transitions. external operation risk triage retains source Add/Remove/Stack nodes as compiler blockers until compiled.",
   "dsh_implementation_contract":"Implement immutable ModifierState/ModifierInstance records with the stated ordered lookup and explicit transitions. Do not delete on Destroy immediately, do not reorder survivors, do not represent property contribution as final-value +/- arithmetic, and reject unsupported stacking/global policies until their packets are provided."
 }
