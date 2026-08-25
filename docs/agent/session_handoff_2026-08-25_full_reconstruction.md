@@ -58,6 +58,9 @@
   `MAvatar_Natasha_00_HOT_HPByMaxHP` OnPhase1 callback with explicit fixture
   state and DynamicHash resolutions; status is
   `SOURCE_BACKED_REFERENCE_NOT_GOLDEN`.
+- `source_backed_property_reference_001.json` executes the real canonical
+  `MCommon_AttackRatioUp` OnStack StackProperty callback into a stable
+  property-contribution slot; status is `SOURCE_BACKED_REFERENCE_NOT_GOLDEN`.
 - Strict compiler report rebuilt: 201/249 structural-only records;
   failure clusters are recorded in `behavior_compiler_report_001.json` and
   `behavior_coverage_census_001.json`.

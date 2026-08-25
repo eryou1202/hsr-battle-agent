@@ -23,7 +23,9 @@ selection, stable modifier property-contribution slots, one
 cross-family interaction fixture (explicitly
 `REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`), and one source-backed HOT
 reference trace for the real canonical `MAvatar_Natasha_00_HOT_HPByMaxHP`
-record (`SOURCE_BACKED_REFERENCE_NOT_GOLDEN`). Corpus hash:
+record (`SOURCE_BACKED_REFERENCE_NOT_GOLDEN`), and a source-backed
+StackProperty trace for `MCommon_AttackRatioUp` writing a stable
+modifier-owned property slot. Corpus hash:
 `4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5`.
 Authoritative state lives in `coverage_ledger_v1.json`.
 

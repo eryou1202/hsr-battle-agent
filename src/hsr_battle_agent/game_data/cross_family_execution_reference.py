@@ -18,6 +18,7 @@ from typing import Any, Callable, Mapping, Sequence
 from .damage_survival_reference import DamageMultiplierContext, SurvivalState
 from .dynamic_value_reference import DynamicValueStore, dynamic_key_from_payload, value_spec_from_payload
 from .predicate_semantics_reference import PredicateContext, evaluate_predicate
+from .property_contribution_reference import PropertyState
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, alias_from_payload, resolve_target_alias
 
 
@@ -42,6 +43,7 @@ class ReferenceBattleState:
     rng: Callable[[], Decimal]
     trace: list[dict[str, Any]] = field(default_factory=list)
     dynamic_values: dict[str, str] = field(default_factory=dict)
+    property_state: PropertyState = field(default_factory=PropertyState.empty)
 
     def clone(self) -> "ReferenceBattleState":
         return ReferenceBattleState(
@@ -51,6 +53,7 @@ class ReferenceBattleState:
             rng=self.rng,
             trace=list(self.trace),
             dynamic_values=dict(self.dynamic_values),
+            property_state=self.property_state,
         )
 
     def resolve_dynamic_hash(self, dynamic_hash: int) -> Decimal:
@@ -64,6 +67,7 @@ class ReferenceBattleState:
             "entities": {key: value.as_json() for key, value in sorted(self.entities.items())},
             "dynamic_store": self.dynamic_store.snapshot(),
             "dynamic_values": dict(sorted(self.dynamic_values.items())),
+            "property_state": self.property_state.as_json(),
             "modifier_names": {entity: sorted(names) for entity, names in sorted(self.modifier_names.items())},
         }
 
@@ -114,6 +118,7 @@ def execute_operations(
     caster_id: str,
     ability_target_id: str | None,
     depth: int = 0,
+    modifier_context_id: str = "fixture-modifier",
 ) -> ReferenceBattleState:
     if depth > 64:
         raise CrossFamilyExecutionError("reference execution recursion limit exceeded")
@@ -157,7 +162,17 @@ def execute_operations(
             state.trace.append({"operation_id": operation.get("operation_id"), "disposition": f"BRANCH_{'SUCCESS' if result else 'FAILED'}"})
             for group in operation.get("children", []):
                 if isinstance(group, Mapping) and group.get("field_path") == branch_field:
-                    execute_operations(state, group.get("operations", []), caster_id=caster_id, ability_target_id=ability_target_id, depth=depth + 1)
+                    execute_operations(state, group.get("operations", []), caster_id=caster_id, ability_target_id=ability_target_id, depth=depth + 1, modifier_context_id=modifier_context_id)
+            continue
+        if kind == "MODIFY_PROPERTY_STACK":
+            arguments = operation.get("arguments", {})
+            property_name = str(arguments.get("Property", ""))
+            if not property_name:
+                raise CrossFamilyExecutionError(f"StackProperty without Property: {operation.get('operation_id')}")
+            property_value = value_spec_from_payload(arguments.get("PropertyValue", {"IsDynamic": False, "FixedValue": {"Value": 0}})).evaluate(state.resolve_dynamic_hash)
+            transition = state.property_state.set_contribution(modifier_context_id, property_name, property_value)
+            state.property_state = transition.state
+            state.trace.append({"operation_id": operation.get("operation_id"), "disposition": "PROPERTY_CONTRIBUTION_SET", "modifier_id": modifier_context_id, "property": property_name, "value": str(property_value)})
             continue
         if kind == "HEAL_REQUEST":
             arguments = operation.get("arguments", {})
