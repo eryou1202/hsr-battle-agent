@@ -1,0 +1,35 @@
+{
+  "packet_id": "SCHEDULER-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_R4_LOCAL_ANCHORS",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R4_LOCAL_ANCHORS",
+  "scope": "Behavior-level scheduling operations: task state transitions for action start/completion/damage completion markers, IncludeTaskListTemplate expansion, fixed and conditional loops, action delay set/add/reset, and inserted-action configuration records. Global AV recomputation and candidate arbitration are a later global scheduler packet.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/action_execution_bridge_06.json", "support": "E4 TaskState enum with Ready 0x7777 / Executing 0x8888 / Success 0x9999 / Fail 0xAAAA and generated task-executor transition evidence."},
+    {"artifact": "data/semantics/4.4.54/turn_av_semantics_29.json", "support": "E4 ordinary turn prepare / AV advance anchor; not extended here."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "marker, template, loop, delay and inserted-action argument shapes used to select each model."}
+  ],
+  "selected_model": {
+    "task_state": "TaskState uses the recovered raw values READY=0x7777, EXECUTING=0x8888, SUCCESS=0x9999, FAIL=0xAAAA.",
+    "action_start_marker": "SkillExecutionStart transitions the owning task to EXECUTING and opens the action phase boundary.",
+    "action_completion_marker": "SkillPerformFinish transitions the owning task to SUCCESS at the action completion boundary; following behavior is a nested event under KERNEL-EVENT-001 ordering.",
+    "damage_completion_marker": "DamagePerformFinish is an ordered damage-completion boundary, not presentation; HP/absorption commits are owned by PRIM-DAMAGE-001 and PRIM-SURVIVAL-001.",
+    "template_invocation": "IncludeTaskListTemplate resolves its Name against the record's canonical template_definitions and expands the template operations in place in source order. Invocation arguments are preserved losslessly on each expanded node; formula/dynamic-value substitution is deferred to the formula resolver.",
+    "fixed_loop": "LoopExecuteTaskListWithInterval executes its TaskList children exactly MaxLoopCount times in order; only non-dynamic non-negative integer MaxLoopCount is accepted.",
+    "conditional_loop": "ConditionLoopExecuteTaskListWithInterval evaluates its Predicate before every iteration and stops on the first false; a selected recursion guard of 1000 iterations raises instead of looping forever.",
+    "delay_set": "SetActionDelay.Value sets the normalized action delay (clamped at zero).",
+    "delay_add": "ModifyActionDelay.AddNormalizedValue adds to the current normalized delay and clamps at zero.",
+    "delay_reset": "ResetActionDelay sets zero and preserves SkipTargetTurn.",
+    "inserted_action": "TurnInsertAbility/TurnInsertAction produce immutable InsertedActionSpec records with ability/target/priority/tags preserved; queue arbitration, AV cost and legal-action recomputation remain separate packets."
+  },
+  "unsupported_cases": [
+    "dynamic MaxLoopCount for fixed loops",
+    "predicate evaluator internals (COMPILER-PREDICATE-001 work)",
+    "global AV recomputation and speed mutation",
+    "interrupt semantics and action queue arbitration",
+    "Ultimate insertion and follow-up legality beyond InsertedActionSpec",
+    "summon/memosprite action ownership"
+  ],
+  "acceptance_fixture": "tests/game_data/test_scheduler_semantics_reference.py proves marker task states, delay set/add/reset/clamp, fixed loop expansion, conditional loop guard, template expansion with invocation arguments, and inserted-action parsing.",
+  "dsh_implementation_contract": "Implement task states and boundaries with the recovered raw values; never guess MaxLoopCount, never loop forever, and never treat markers as presentation no-ops. Unsupported scheduler operations reject the containing behavior."
+}

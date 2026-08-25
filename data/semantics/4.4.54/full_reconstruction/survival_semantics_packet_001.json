@@ -1,0 +1,30 @@
+{
+  "packet_id": "PRIM-SURVIVAL-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_R4_LOCAL_ANCHORS",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R4_LOCAL_ANCHORS",
+  "scope": "HP/shield/lock-HP/death reference transitions for shield absorb, heal clamp, forced kill and damage commitment. Revive, prevent-death, caster-death cleanup ordering and special death events remain separate packets.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/dynamic_mvp_v1/blocker_closure_packets_v1.json", "support": "ordinary positive-heal clamp at MaxHP and ordinary death/terminal boundaries are frozen in the standard MVP."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/modifier_lifecycle_packet_001.json", "support": "modifier dirty-removal and callback deregistration are the caster-death cleanup boundary inputs."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "LockHP, ForceKill, InitShield, RemoveShield, SetResilience, TriggerBreak/ResetStance and death-handler operation families are classified and structurally bound."}
+  ],
+  "selected_model": {
+    "damage_commit": "Damage first consumes the current shield value, then reduces HP by the remainder; the transition returns absorbed-shield and hp-lost amounts separately.",
+    "heal": "Positive heal adds to HP and clamps at MaxHP; healing an already-dead entity is a no-op.",
+    "shield": "Shield apply adds deterministically; shield removal sets shield to zero at the modifier cleanup boundary.",
+    "lock_hp": "LockHP blocks HP changes from damage and blocks forced kill; healing and shield transitions remain allowed unless a later packet says otherwise.",
+    "force_kill": "ForceKill sets HP to zero and alive=false at the next primitive commit boundary unless HP is locked.",
+    "death": "alive becomes false exactly when HP reaches zero; the caster-death modifier cleanup (callback deregistration and property-contribution removal) uses PRIM-MODIFIER-001 dirty-removal at the same lifecycle boundary.",
+    "ordering": "All survival writes commit before the following sibling operation and before the next queued event under KERNEL-EVENT-001."
+  },
+  "unsupported_cases": [
+    "revive and prevent-death",
+    "fake death / limbo states",
+    "death event ordering for bosses and summons",
+    "special shield stacking policies beyond additive shield value",
+    "toughness/break state transitions beyond PRIM-DAMAGE-001 amount formulas"
+  ],
+  "acceptance_fixture": "tests/game_data/test_damage_survival_reference.py proves shield-before-HP absorption, heal clamp, lock-HP damage/force-kill blocking, and force-kill death transition.",
+  "dsh_implementation_contract": "Implement immutable SurvivalState transitions with exact Decimal arithmetic and explicit shield-absorb ordering. Never let locked HP drop from damage; never delete callbacks implicitly at death."
+}

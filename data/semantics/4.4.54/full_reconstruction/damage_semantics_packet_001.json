@@ -1,0 +1,29 @@
+{
+  "packet_id": "PRIM-DAMAGE-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R2_SELECTED_FORMULAS_WITH_R4_ORDERING_ANCHORS",
+  "evidence_level": "R2_MATURE_IMPLEMENTATION_WITH_R4_LOCAL_ANCHORS",
+  "scope": "Deterministic damage amount formulas for normal, Break and Super Break damage plus DoT chance, and the ordered damage request -> completion-marker -> HP/shield-commit boundary. Target selection, damage-type weakness resolution and specific skill damage tags remain separate packets.",
+  "evidence": [
+    {"source": "hsr-optimizer", "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60", "path": "src/lib/optimization/engine/damage/damageCalculator.ts", "support": "initial damage = atkScaling*ATK + hpScaling*HP + defScaling*DEF; DEF multiplier = 100/((level+20)*max(0,1-defPen)+100); crit multiplier = min(1,CR)*(1+CD)+(1-min(1,CR)); Break base = 3767.5533*elementalBreakScaling*(0.5+maxToughness/120)*specialScaling; SuperBreak base = (3767.5533/10)*(breakEfficiency*toughnessDmg+fixedToughnessDmg); DoT chance multiplier formula."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/kernel_event_packet_001.json", "support": "damage completion markers are ordered boundaries; state writes commit before the following sibling."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "DamageByAttackProperty/DamagePerformFinish/ModifyDamageData operation families are classified and structurally bound."}
+  ],
+  "selected_model": {
+    "request": "A DamageByAttackProperty operation emits a damage request whose target list is resolved by TARGET-001 and whose amount is evaluated by the DynamicValue/formula packet.",
+    "completion": "DamagePerformFinish is the ordered damage-completion boundary; absorption/HP writes commit before the next sibling and before the next queued event under KERNEL-EVENT-001.",
+    "normal_formula": "damage = initial * baseUniversal * defMulti * resMulti * vulnMulti * finalDmgMulti * dmgBoostMulti * critMulti",
+    "break_formula": "breakDamage = baseUniversal * defMulti * resMulti * vulnMulti * finalDmgMulti * dmgBoostMulti * 3767.5533 * elementalBreakScaling * (0.5 + maxToughness/120) * specialScaling * (1 + breakEffect)",
+    "super_break_formula": "superBreakDamage = baseUniversal * defMulti * resMulti * vulnMulti * finalDmgMulti * dmgBoostMulti * (3767.5533/10) * (breakEfficiency*toughnessDmg + fixedToughnessDmg) * (1 + breakEffect) * superBreakModifier",
+    "dot_chance": "effectiveChance = min(1, dotBaseChance*(1+EHR)*(1-enemyEffectRes+effectResPen)); with dotSplit > 0 the multiplier is (1+split*effectiveChance*(stacks-1))/(1+split*(stacks-1)).",
+    "arithmetic": "Decimal with 38 significant digits; all rounding/truncation decisions are documented by the caller before golden use."
+  },
+  "unsupported_cases": [
+    "damage-type weakness and elemental-break-scaling table",
+    "split/adjacent/AOE application order",
+    "damage reflection and counters",
+    "native damage dispatch variance beyond the selected request/completion model"
+  ],
+  "acceptance_fixture": "tests/game_data/test_damage_survival_reference.py proves initial damage, defense multiplier, crit multiplier, normal damage, Break/SuperBreak bases and DoT chance.",
+  "dsh_implementation_contract": "Implement the selected formulas with arbitrary-precision decimal arithmetic and keep request/completion ordering explicit. Unknown damage tags reject the behavior; they are never estimated from level alone."
+}
