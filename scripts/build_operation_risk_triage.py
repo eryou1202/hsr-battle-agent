@@ -39,6 +39,21 @@ def main(corpus_path: Path, output: Path) -> None:
                 bucket["gating_risks"].add(risk)
                 if len(bucket["sample_operation_ids"]) < 3:
                     bucket["sample_operation_ids"].append(operation["operation_id"])
+        for template in record.get("template_definitions", []):
+            if not isinstance(template, Mapping):
+                continue
+            for operation in walk(item for item in template.get("operations", []) if isinstance(item, Mapping)):
+                status = str(operation.get("semantic_status", "OPAQUE"))
+                risk = str(operation.get("gating_risk", "UNKNOWN"))
+                if status == "MODELLED" or (status == "PRESENTATION" and risk == "NONE"):
+                    continue
+                key = (str(operation.get("source_type", "UNKNOWN")), str(operation.get("kind", "OPAQUE")), str(operation.get("semantic_importance", "P1_UNCLASSIFIED_SEMANTIC")))
+                bucket = grouped.setdefault(key, {"source_type": key[0], "canonical_kind": key[1], "importance": key[2], "count": 0, "semantic_statuses": set(), "gating_risks": set(), "sample_operation_ids": []})
+                bucket["count"] += 1
+                bucket["semantic_statuses"].add(status)
+                bucket["gating_risks"].add(risk)
+                if len(bucket["sample_operation_ids"]) < 3:
+                    bucket["sample_operation_ids"].append(operation["operation_id"])
     entries = []
     for bucket in grouped.values():
         bucket["semantic_statuses"] = sorted(bucket["semantic_statuses"])
@@ -52,9 +67,9 @@ def main(corpus_path: Path, output: Path) -> None:
         "report_id": "OPERATION-RISK-TRIAGE-001",
         "game_version": "4.4.54",
         "input_corpus_sha256": corpus["corpus_sha256"],
-        "status": "RECURSIVE_INITIAL_CORPUS_TRIAGED",
-        "counting_rule": "Counts are recursively lifted operation/predicate nodes in the current reviewed external slice, not a complete game denominator.",
-        "historical_note": "The original entrypoint-only scan reported 22 OPAQUE nodes. Recursive lifting replaces that misleading count; every behavior-affecting OPAQUE/REQUIRES_PACKET node is classified here and remains non-executable.",
+        "status": "RECURSIVE_CORPUS_V2_TRIAGED",
+        "counting_rule": "Counts are recursively lifted operation/predicate nodes across all reviewed entrypoints, Modifier _CallbackList sources, GlobalModifiers and TaskListTemplate definitions. This is not a complete game denominator.",
+        "historical_note": "The original entrypoint-only scan reported 22 OPAQUE nodes and the first recursive lift reported 2 OPAQUE nodes; both omitted Modifier records' own _CallbackList and GlobalModifiers. The v2 recursive lift covers those sources; every behavior-affecting OPAQUE/REQUIRES_PACKET node is classified here and remains non-executable.",
         "compiler_policy": {"OPAQUE": "hard compile failure; never a no-op", "REQUIRES_PACKET": "hard compile failure until its named packet/primitive exists", "PRESENTATION_GATING_RISK": "hard compile failure until proven non-gating", "PRESENTATION_ONLY": "may be headlessly omitted only with explicit compiler trace"},
         "by_importance": dict(sorted(by_importance.items())),
         "entries": entries,

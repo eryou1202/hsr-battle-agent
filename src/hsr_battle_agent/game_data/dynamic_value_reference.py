@@ -330,7 +330,18 @@ class DynamicValueStore:
         bucket = buckets.setdefault(owner_id, {})
         if key in bucket:
             return DynamicValueTransition(self, "DEFINE_ALREADY_PRESENT", owner_id, key)
-        reset = _decimal(reset_value.get("Value")) if isinstance(reset_value, Mapping) and "Value" in reset_value else _decimal(reset_value) if reset_value is not None else Decimal("0")
+        reset = None
+        if isinstance(reset_value, Mapping) and ("IsDynamic" in reset_value or "FixedValue" in reset_value or "PostfixExpr" in reset_value):
+            reset_spec = value_spec_from_payload(reset_value)
+            if reset_spec.is_dynamic:
+                raise DynamicValueSemanticError("DefineDynamicValue ResetValue must be fixed in the selected model")
+            reset = reset_spec.fixed_value
+        elif isinstance(reset_value, Mapping) and "Value" in reset_value:
+            reset = _decimal(reset_value.get("Value"))
+        elif reset_value is not None:
+            reset = _decimal(reset_value)
+        if reset is None:
+            reset = Decimal("0")
         bucket[key] = str(reset)
         return DynamicValueTransition(DynamicValueStore(values=buckets), "DEFINE_INITIALIZED", owner_id, key, reset)
 
