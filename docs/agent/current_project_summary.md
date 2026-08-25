@@ -119,11 +119,42 @@ FormulaType 4 heal amount, and emits ordered DispelStatus and Heal request
 boundaries.  It deliberately does not change CurrentHP: the positive heal
 event consumer is unknown.
 
+## Dynamic-core closure result
+
+Dynamic Core Closure v1 made the boundary explicit rather than silently
+filling it with game knowledge.  A real 4.4.54 no-Buff Stage fixture is now
+recorded (Stage `30113121`, one wave, Monster `4014030`), alongside Natasha,
+Black Swan, an ordinary one-skill Monster probe, and a semantic E2E trace.
+The result is **DYNAMIC_CORE_RECONSTRUCTION_PARTIAL**, not a playable battle.
+
+The strongest new composable path is ordinary Damage: a separately
+provenanced external amount evaluator can feed the locally supported
+`TargetDamageHP`/`DirectDamageHP` transition.  That is reconstruction-ready
+for the stated scope and does not reopen PGOO.  It is still not a local damage
+formula proof.
+
+The real Natasha heal does not yet close: it emits a real amount and ordered
+requests, but the positive `HealData -> CurrentHP` consumer has not been
+identified.  Skill Point and Energy numbers are static facts, but their
+holders and write timing are not proven.  Turn selection/advance is recovered
+while the generic post-action delay recharge is not.  Target legality,
+death, victory/wave progression, Break state, event listener order, and
+general Monster AI are likewise not ready.  These are recorded as candidate
+sets with specific observations rather than guessed runtime behavior.
+
+Therefore DSH should **not** yet build a full legal, terminating simulator or
+planner API.  The only MVP-blocking research questions are the positive heal
+consumer, SP/Energy boundaries, generic Turn/AV recharge, TargetConfig-12
+ordinary legality, and zero-HP-to-terminal chain.  Everything else in the
+new dynamic-core guide is post-MVP or explicitly unsupported.
+
 ## What remains partial or blocked
 
-Ordinary damage is blocked by the unresolved runtime-dispatch observation
-needed for the general DamageRequest path, and the general damage formula is
-not recovered.  Event listeners/consumers, energy, skill points, shields,
+The native general DamageRequest path and formula remain blocked by the
+unresolved runtime-dispatch observation.  That does not block the narrower
+reconstruction boundary: an explicit external amount can feed the locally
+supported TargetDamageHP/DirectDamageHP mode-0 path with both provenances
+preserved. Event listeners/consumers, energy, skill points, shields,
 toughness/break, death, summons, follow-ups, extra actions, Monster AI, and
 Stage runtime are not implemented.
 

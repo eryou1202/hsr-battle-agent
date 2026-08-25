@@ -1,0 +1,29 @@
+{
+  "schema": "dynamic_core_closure/1",
+  "game_version": "4.4.54",
+  "overall_status": "DYNAMIC_CORE_RECONSTRUCTION_PARTIAL",
+  "freeze_mvp_candidate": false,
+  "packet_statuses": {
+    "DYN-SP-CORE-01": "PARTIAL",
+    "DYN-ENERGY-CORE-01": "PARTIAL",
+    "DYN-HEAL-STATE-01": "PARTIAL",
+    "DYN-LEGAL-ACTION-01": "PARTIAL",
+    "DYN-ORDINARY-ACTION-TURN-01": "PARTIAL",
+    "DYN-DAMAGE-CORE-01": "RECONSTRUCTION_READY",
+    "DYN-DEATH-CORE-01": "BLOCKED",
+    "DYN-TERMINAL-CORE-01": "BLOCKED",
+    "DYN-BREAK-CORE-01": "PARTIAL",
+    "DYN-MINIMAL-EVENT-ORDER-01": "PARTIAL",
+    "DYN-ORDINARY-MONSTER-AI-01": "PARTIAL"
+  },
+  "mvp_blocking_dynamic_gaps": [
+    {"gap_id": "HEAL_POSITIVE_CONSUMER", "required_observation": "HealData consumer -> clamped CurrentHP write and ordering"},
+    {"gap_id": "SP_ENERGY_BOUNDARIES", "required_observation": "holder plus gate/write phases for ordinary Skill and Ultimate"},
+    {"gap_id": "ORDINARY_RECHARGE", "required_observation": "post-action property-38 recharge writer/formula"},
+    {"gap_id": "DEATH_TERMINAL", "required_observation": "zero-HP -> alive-domain cleanup -> wave/victory/defeat writes"},
+    {"gap_id": "LEGAL_TARGET_JOIN", "required_observation": "TargetConfig 12 and ordinary faction/alive/count checks"}
+  ],
+  "post_mvp_gaps": ["generic Monster AI", "Break state/lifecycle", "Ult interruption", "follow-up", "extra action", "summon", "boss phase", "mode-specific stage rules", "shield lifecycle"],
+  "explicit_non_blocker": "Ordinary damage amount is EXTERNAL_RECONSTRUCTED and may use the local HP bridge without reopening the PGOO blocker.",
+  "do_not_reopen": ["PGOO live-instance blocker without new lawful runtime observation", "blind static DesignData/metadata sweeps", "large static-content expansion"]
+}

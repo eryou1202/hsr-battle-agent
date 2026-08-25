@@ -49,6 +49,7 @@ Local HSR client / DesignData archive
                            └─ src/hsr_battle_agent/battle_runtime
                                 └─ src/hsr_battle_agent/battle_sandbox
                                      └─ tests + data/sandbox reports
+                                          └─ dynamic_core semantic-packet contracts
                                           └─ future planning/ and models/
 ```
 
@@ -67,6 +68,7 @@ working planning product.
 | Canonical static content | `data/content/4.4.54/nanoka/` | Local ignored, deterministic JSONL build |
 | Pinned external references | `.external_refs/`, `scripts/fetch_external_references.py` | PASS; minimal commit-addressed cache, ignored by Git |
 | External reconstruction | `game_data/external_reconstruction.py`, `data/semantics/4.4.54/external_reconstruction/` | PASS for bounded static gaps and amount-only reference rules; no local runtime proof |
+| Dynamic-core reconstruction contracts | `data/semantics/4.4.54/dynamic_core/`, `docs/agent/dynamic_core_reconstruction.md` | PARTIAL; auditable candidate/stop boundaries, not a runtime |
 | Content SQLite/query facade | `data/db/`, `game_data/nanoka_content.py` | PASS for static query/build surface; external augmentation is separately provenanced, not a runtime compiler |
 | Battle IR | `src/hsr_battle_agent/battle_ir/` | PARTIAL-to-PASS by primitive |
 | Battle runtime | `src/hsr_battle_agent/battle_runtime/` | PARTIAL; proof-scoped only |
@@ -164,7 +166,7 @@ the corresponding game-wide mechanic is complete.
 | Property | PASS (scoped) | `battle_runtime/property.py` | Materialization kinds 3–7 formulas unresolved |
 | HP | PARTIAL | `battle_runtime/hp.py` | DirectDamageHP mode 0 only; not a general damage system |
 | Heal | PARTIAL | `battle_runtime/healing.py` | Request boundary only; positive HealData consumer unknown |
-| Damage | BLOCKED | `direct_damage_hp_transition_12.json` | General DamageRequest/formula blocked at runtime dispatch observation |
+| Damage | PARTIAL | `damage_value_to_hp_bridge_13.json`, external reference evaluator | Explicit external amount → local TargetDamageHP/DirectDamageHP mode-0 is reconstruction-ready; native general DamageRequest/formula remains unknown |
 | Turn / AV | PARTIAL | `battle_runtime/turns.py` | Ordinary eligible actions only; recharge is explicit input |
 | Event dispatch | BLOCKED | boundary objects/traces only | Listener registration/order/consumers unknown |
 | Energy / Skill Point | BLOCKED | no state/runtime primitive | Skill-point predicate is externally resolved in the one E2E |
@@ -178,6 +180,7 @@ the corresponding game-wide mechanic is complete.
 | Clone / hash / snapshot | PASS | `battle_sandbox/{state,hash,snapshot}.py` | Logical state only |
 | Planner API | BLOCKED | `Sandbox.legal_actions/step/is_terminal` | Explicitly raises NOT_IMPLEMENTED |
 | Real-content E2E | PARTIAL | Natasha test/report 30 | Turn → formula → ordered event boundary, no HP mutation |
+| Dynamic Core Closure v1 | PARTIAL | `dynamic_core/packets_v1.json` | Damage amount→HP is reconstruction-ready; Heal consumer, resources, recharge, death/terminal and target legality remain MVP blockers |
 
 ## 7. Real Content and E2E State
 
@@ -211,6 +214,11 @@ a full battle.
   Stage→wave→monster or Stage→Buff relationship is structurally decoded.
 - External content does not resolve dynamic event ordering or permit a
   simulator to execute an imported effect without a local Semantic Packet.
+- Dynamic Core Closure v1 does **not** close the positive HealData consumer,
+  SP/Energy write phases, generic action-delay recharge, TargetConfig 12,
+  death, or terminal transitions.  Its packet bundle is deliberately
+  `DYNAMIC_CORE_RECONSTRUCTION_PARTIAL`; see the dynamic-core guide before
+  scheduling a new reverse task.
 
 ## 9. Tests and Verification Commands
 
@@ -274,6 +282,10 @@ instructions are in `docs/agent/content_database.md`.
 - External reconstruction entry point: `docs/agent/external_reconstruction.md`.
 - External-source license/use audit: `docs/agent/external_reference_licenses.md`.
 - External rule boundary: `docs/agent/reconstruction_rule_pack.md`.
+- Dynamic-core closure / freeze decision:
+  `docs/agent/dynamic_core_reconstruction.md`.
+- Dynamic machine packets and partial E2E:
+  `data/semantics/4.4.54/dynamic_core/`.
 - Machine mapping/rule/gap artifacts:
   `data/semantics/4.4.54/external_reconstruction/`.
 - Ticket impact after oracle adoption: `docs/agent/semantic_ticket_oracle_v2.md`.
@@ -307,8 +319,10 @@ Start the next implementation session with the strategy stated in §1:
 
 `full content census → generic content compiler → corpus semantic coverage → coverage-driven primitive recovery → standard battle E2E → planner / training APIs`
 
-The immediate architectural gap is not another character’s semantic reverse;
-it is a generic Scenario/Loadout compiler that consumes version-locked
-Canonical content plus local Semantic Packets.  Use local DesignData parsing
-to validate and close only database-emitted static gaps, then select dynamic
-primitives by corpus coverage and blockers.
+The immediate research gap is a small set of Dynamic Core packets, not another
+character inventory: positive HealData consumption, SP/Energy boundaries,
+ordinary action-delay recharge, target legality, and death/terminal.  Each
+must start with the distinguishing observation in
+`dynamic_core/packets_v1.json`; do not reopen PGOO or run blind sweeps.  A
+generic Scenario/Loadout compiler remains the first DSH implementation step
+after the freeze gate, not before it.

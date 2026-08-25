@@ -1,0 +1,25 @@
+{
+  "schema": "standard_dynamic_fixture/1",
+  "fixture_id": "STANDARD_DYNAMIC_FIXTURE_V1",
+  "game_version": "4.4.54",
+  "purpose": "A version-locked static scenario and bounded dynamic probes. It is an acceptance fixture, not a claim that a full battle can currently run.",
+  "static_scenario": {
+    "stage_id": "30113121",
+    "stage_type": "Challenge",
+    "wave_count": 1,
+    "waves": [{"wave_id": "30113121:1", "wave_index": 1, "monster_ids": ["4014030"], "level": 95}],
+    "stage_buffs": [],
+    "source": "Nanoka 4.4.54 local SQLite Stage->Wave->Monster relations",
+    "selection_reason": "one real wave, one real monster, and no Stage->Buff relation; monster behavior itself is intentionally unsupported"
+  },
+  "avatars": [
+    {"avatar_id": "1105", "name": "Natasha", "energy_max": 90, "skills": {"basic": "110501", "skill": "110502", "ultimate": "110503"}},
+    {"avatar_id": "1307", "name": "Black Swan", "energy_max": 120, "skills": {"basic": "130701", "skill": "130702", "ultimate": "130703"}}
+  ],
+  "atomic_probes": {
+    "real_heal": {"ability": "Avatar_Natasha_00_Skill02_Phase02", "target_runtime_id": 200, "expected_request_order": ["DispelStatusRequestBoundary", "HealRequestBoundary"], "expected_current_hp_before_raw": "FixPoint(400)", "expected_current_hp_after_raw": "FixPoint(400)", "reason": "positive HealData consumer is unresolved"},
+    "ordinary_monster_singleton": {"monster_id": "8011010", "skill_ids": ["801101001"], "reason": "one static candidate proves only a singleton selection, not generic AI"},
+    "turn_av": {"participants": [100, 200], "remaining_delay_raw": {"100": "FixPoint(10)", "200": "FixPoint(20)"}, "selected_actor": 100, "post_action_recharge": "explicit provenance-bearing FixPoint(30)", "next_actor": 200}
+  },
+  "explicit_exclusions": ["4014030 boss behavior", "all Stage rules beyond static packaging", "Stage Buff runtime", "full Black Swan mechanics", "generic Monster AI", "death/terminal semantics"]
+}

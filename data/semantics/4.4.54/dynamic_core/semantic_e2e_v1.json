@@ -1,0 +1,23 @@
+{
+  "schema": "semantic_e2e/1",
+  "e2e_id": "SEMANTIC_E2E_V1",
+  "game_version": "4.4.54",
+  "fixture_id": "STANDARD_DYNAMIC_FIXTURE_V1",
+  "status": "PARTIAL",
+  "purpose": "Deterministic state-diff replay specification. It does not execute a formal Battle Runtime and it records unresolved transitions as stop boundaries.",
+  "trace": [
+    {"order": 1, "boundary": "initial_static_scenario", "state_diff": "Stage 30113121 / wave 30113121:1 / Monster 4014030 resolve from exact-version content; no Stage Buff binding.", "provenance": "Nanoka 4.4.54"},
+    {"order": 2, "boundary": "turn_prepare", "state_diff": "R4 local ordinary Turn/AV: actor 100 wins delays 10 vs 20; all admitted delays subtract 10; timeline becomes active.", "provenance": "DYN-ORDINARY-ACTION-TURN-01"},
+    {"order": 3, "boundary": "action_legality", "state_diff": "No persistent diff. Basic/Skill/Ultimate metadata is available, but SP/Energy gate mutation timing and TargetConfig-12 join remain PARTIAL.", "provenance": "DYN-LEGAL-ACTION-01, DYN-SP-CORE-01, DYN-ENERGY-CORE-01"},
+    {"order": 4, "boundary": "real_natasha_heal_request", "state_diff": "R4 local: FormulaType 4 emits DispelStatus then Heal request with FixPoint(650); CurrentHP remains FixPoint(400).", "provenance": "real_skill_heal_boundary_30.json"},
+    {"order": 5, "boundary": "positive_heal_consumer", "state_diff": "STOP: no positive HealData -> CurrentHP mutation is asserted.", "provenance": "DYN-HEAL-STATE-01"},
+    {"order": 6, "boundary": "ordinary_damage_hp", "state_diff": "Available separately: R2 external amount may feed R4 local TargetDamageHP/DirectDamageHP and write CurrentHP property 10. Death handoff remains unresolved.", "provenance": "DYN-DAMAGE-CORE-01"},
+    {"order": 7, "boundary": "action_completion", "state_diff": "R4 completion requires cleanup and caller-supplied next delay; a generic recharge writer is not asserted.", "provenance": "DYN-ORDINARY-ACTION-TURN-01"},
+    {"order": 8, "boundary": "next_actor", "state_diff": "With the explicit provenanced delay FixPoint(30), actor 200 is selected by recovered ordinary Turn/AV.", "provenance": "turn_av_semantics_29.json"},
+    {"order": 9, "boundary": "ordinary_monster_probe", "state_diff": "Monster 8011010 has singleton static skill 801101001; selection policy and target selection remain STOP boundaries.", "provenance": "DYN-ORDINARY-MONSTER-AI-01"},
+    {"order": 10, "boundary": "terminal", "state_diff": "STOP: death, wave advancement, victory, and defeat writes are not recovered.", "provenance": "DYN-DEATH-CORE-01, DYN-TERMINAL-CORE-01"}
+  ],
+  "closed_transitions": ["static Stage->Wave->Monster resolution", "ordinary Turn/AV selection and advance", "Natasha real Heal request emission", "external amount to local ordinary Damage HP bridge"],
+  "stop_boundaries": ["SP mutation timing", "Energy gate/write timing", "positive HealData consumer", "generic recharge", "Death", "Terminal", "generic Monster AI", "Break state transition"],
+  "result": "The packets compose into an auditable partial trace, but not a standard playable battle."
+}
