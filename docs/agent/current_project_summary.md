@@ -18,7 +18,8 @@ golden-tested. Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,
 normal/Break/SuperBreak/DoT damage formulas, shield/lock-HP/death survival
-transitions, Predicate AST evaluation, weighted RNG selection, one
+transitions, Predicate AST evaluation with provider hooks, weighted RNG
+selection, stable modifier property-contribution slots, one
 cross-family interaction fixture (explicitly
 `REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`), and one source-backed HOT
 reference trace for the real canonical `MAvatar_Natasha_00_HOT_HPByMaxHP`

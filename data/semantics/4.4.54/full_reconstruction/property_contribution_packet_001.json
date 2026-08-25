@@ -1,0 +1,24 @@
+{
+  "packet_id": "PROPERTY-CONTRIBUTION-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R4_LOCAL_STRUCTURAL_SUPPORTED",
+  "evidence_level": "R4_LOCAL_STRUCTURAL_SUPPORTED_WITH_R3_EXTERNAL_CORPUS",
+  "scope": "Stable modifier-owned property contribution slots: set/refresh updates the slot value, removal deletes exactly that slot, observable property value is base plus ordered sum of contributions. Final stat materialization formulas remain PRIM-DAMAGE/stat packets.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/modifier_property_effect_09.json", "support": "E4 local evidence for contribution add/update/remove ownership and stable source slots across refresh/remove."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "StackProperty/SetModifierValue/ModifySkillPropertyByType families are classified and structurally bound."}
+  ],
+  "selected_model": {
+    "slot_identity": "contribution slot = (modifier identity, property name); refreshing updates that slot and never shifts neighbouring slots.",
+    "observable_read": "property = base + sum(contribution slots for that property) in deterministic slot order.",
+    "removal": "removing a modifier deletes only its own slots and returns the removed values; missing removal is an explicit no-op transition.",
+    "arithmetic": "Decimal with 38 significant digits."
+  },
+  "unsupported_cases": [
+    "final stat fold semantics and property-kind formulas",
+    "non-additive property domains",
+    "global modifier manager ordering"
+  ],
+  "acceptance_fixture": "tests/game_data/test_property_contribution_reference.py proves stable slots, refresh, exact removal and missing-removal behavior.",
+  "dsh_implementation_contract": "Represent contributions as an immutable slot map; never flatten contributions into a final base value, and never reorder or merge slots."
+}

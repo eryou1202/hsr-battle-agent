@@ -29,6 +29,10 @@ EntityAliveGetter = Callable[[str], bool]
 EntityCharacterGetter = Callable[[str], int | None]
 ModifierPresenceGetter = Callable[[str, str, bool, bool], bool]
 RandomGetter = Callable[[], Decimal]
+WeaknessGetter = Callable[[str, str], bool]
+SummonRelationGetter = Callable[[str, str], bool]
+SomatoTypeGetter = Callable[[str], str | None]
+ParamStringGetter = Callable[[str], str | None]
 
 
 @dataclass(frozen=True)
@@ -65,6 +69,12 @@ class PredicateContext:
     current_turn_action_entity_id: str | None = None
     change_value_1: Decimal | None = None
     change_value_2: Decimal | None = None
+    has_stance_weak: WeaknessGetter | None = None
+    has_summon_relation: SummonRelationGetter | None = None
+    entity_somato_type: SomatoTypeGetter | None = None
+    param_string: ParamStringGetter | None = None
+    modifier_callback_name: str = ""
+    npc_monster_purpose_type: str = ""
 
     def targets(self, payload: Mapping[str, Any], default_alias: str = "Caster") -> tuple[str, ...]:
         raw = payload.get("TargetType")
@@ -296,9 +306,44 @@ def _evaluate_named(key: str, payload: Mapping[str, Any], context: PredicateCont
     if key == "ByCompareRedStanceCount":
         return _compare(context.current_red_stance_count, payload.get("CompareType", "Equal"), _value_of(payload.get("CompareValue", {}), context))
     if key == "ByHasStanceWeak":
-        # Weakness resolution is PRIM-DAMAGE-001; the hook is supplied by the
-        # entity/weakness provider and not guessed here.
-        raise UnsupportedPredicate("ByHasStanceWeak requires weakness hook")
+        if context.has_stance_weak is None:
+            raise UnsupportedPredicate("ByHasStanceWeak requires has_stance_weak hook")
+        weak_type = payload.get("WeakType")
+        damage_type = weak_type.get("DamageType") if isinstance(weak_type, Mapping) else weak_type
+        if not damage_type:
+            raise UnsupportedPredicate("ByHasStanceWeak missing WeakType.DamageType")
+        target_alias = payload.get("TargetType", {"Alias": "ModifierOwnerEntity"})
+        return any(context.has_stance_weak(entity, str(damage_type)) for entity in context.targets({"TargetType": target_alias}, "ModifierOwnerEntity"))
+    if key == "ByHasSummonRelation":
+        if context.has_summon_relation is None:
+            raise UnsupportedPredicate("ByHasSummonRelation requires has_summon_relation hook")
+        servant = context.targets({"TargetType": payload.get("ServantType")}, "ModifierOwnerEntity")
+        summoner = context.targets({"TargetType": payload.get("SummonerType")}, "ParamEntity")
+        if not servant or not summoner:
+            return False
+        return context.has_summon_relation(servant[0], summoner[0])
+    if key == "ByCompareSomatoType":
+        if context.entity_somato_type is None:
+            raise UnsupportedPredicate("ByCompareSomatoType requires entity_somato_type hook")
+        expected = {str(item) for item in payload.get("SomatoTypes", [])}
+        return any(context.entity_somato_type(entity) in expected for entity in context.targets({"TargetType": payload.get("Target")}, "ModifierOwnerEntity"))
+    if key == "ByCompareParamString":
+        if context.param_string is None:
+            raise UnsupportedPredicate("ByCompareParamString requires param_string hook")
+        expected = payload.get("CompareValue")
+        expected = expected.get("Value") if isinstance(expected, Mapping) else expected
+        return context.param_string(str(payload.get("ParamKey", ""))) == str(expected)
+    if key == "ByCheckModifierCallBackName":
+        expected = payload.get("ModifierName")
+        expected = expected.get("Value") if isinstance(expected, Mapping) else expected
+        return context.modifier_callback_name == str(expected)
+    if key == "ByCheckModifierCallBackBehaviorFlag":
+        if context.has_behavior_flag is None:
+            raise UnsupportedPredicate("ByCheckModifierCallBackBehaviorFlag requires has_behavior_flag hook")
+        flag = str(payload.get("Flag", ""))
+        return any(context.has_behavior_flag(entity, flag) for entity in context.targets(payload, "ModifierOwnerEntity"))
+    if key == "AdventureByNPCMonsterPurposeType":
+        return context.npc_monster_purpose_type == str(payload.get("PurposeType", ""))
     if key == "ByIsDamageType":
         expected = tuple(str(item) for item in payload.get("DamageTypeList", []))
         return any(item in expected for item in context.attack_types)

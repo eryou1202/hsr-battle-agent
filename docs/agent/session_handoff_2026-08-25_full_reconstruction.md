@@ -46,10 +46,11 @@
 - TargetAlias resolution reference (`target_semantics_reference.py`) covers
   the direct/collection/adjoin/center alias families observed in the corpus
   and rejects special/unknown aliases explicitly.
-- Scheduler, damage/survival, predicate and RNG references exist with tests:
-  markers/templates/loops/delay, normal/Break/SuperBreak/DoT formulas,
-  shield/lock-HP/death transitions, Predicate AST evaluation and weighted
-  RandomConfig selection.
+- Scheduler, damage/survival, predicate, RNG and property-contribution
+  references exist with tests: markers/templates/loops/delay,
+  normal/Break/SuperBreak/DoT formulas, shield/lock-HP/death transitions,
+  Predicate AST evaluation with provider hooks, weighted RandomConfig
+  selection, and stable modifier-owned contribution slots.
 - `cross_family_interaction_fixture_001.json` composes real corpus predicate
   and formula payloads with the references in one deterministic trace and is
   explicitly `REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`.

@@ -20,13 +20,9 @@
     "ordering": "Predicate evaluation happens at its containing task boundary; any RNG consumption is recorded in the deterministic trace."
   },
   "unsupported_cases": [
-    "ByHasStanceWeak weakness provider",
-    "ByHasSummonRelation summon relation provider",
-    "ByCompareSomatoType body-type provider",
-    "AdventureByNPCMonsterPurposeType adventure NPC provider",
-    "ByIsMazeSkillAffectCurrentWave maze wave provider",
-    "ByCompareParamString param-string provider",
-    "ByCheckModifierCallBackName behavior-flag callback matching"
+    "weakness/somato-type/summon/param-string facts are supplied by explicit provider hooks; provider implementations themselves remain separate packets",
+    "special NPC purpose provider data",
+    "callback-name/flag matching uses explicit context fields, not a global dispatcher"
   ],
   "acceptance_fixture": "tests/game_data/test_predicate_semantics_reference.py proves boolean composition, dynamic/modifier/flag checks, target/HP checks, and explicit unsupported rejection.",
   "dsh_implementation_contract": "Implement predicates as immutable AST evaluation with short-circuit order and Decimal comparisons. Unsupported predicate types reject the containing behavior; no predicate may silently evaluate to false."
