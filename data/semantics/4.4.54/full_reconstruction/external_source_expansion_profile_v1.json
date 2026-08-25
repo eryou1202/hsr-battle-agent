@@ -13,16 +13,19 @@
   "sources": [
     {
       "source_id": "turn_based_game_data",
+      "fetcher_source_name": "TurnBasedGameData",
       "pinned_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
       "role": "CLIENT_DUMP_REFERENCE",
       "version_relation": "CLOSE_4.4.0_TO_4.4.54",
       "already_captured": ["RelicConfig", "RelicMainAffixConfig", "RelicSubAffixConfig", "EliteGroup", "HardLevelGroup", "MazeBuff", "MonsterConfig", "MonsterTemplateConfig", "AvatarPromotionConfig", "EquipmentPromotionConfig"],
-      "tree_discovery_queries": ["AvatarConfig", "AvatarSkillConfig", "AvatarSkillTreeConfig", "AvatarRankConfig", "EquipmentConfig", "EquipmentSkillConfig", "RelicSetConfig", "MonsterSkillConfig", "MonsterAbility", "MonsterAI", "Maze", "BattleEvent", "TargetConfig", "TaskConfig", "Buff", "Modifier", "DynamicValue"],
+      "approved_vertical_slice_capture_paths": ["Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json", "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json", "Config/ConfigCharacter/Avatar/Avatar_Natasha_00_Config.json", "Config/ConfigCharacter/Avatar/Avatar_BlackSwan_00_Config.json", "Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json", "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json", "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json", "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json", "Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json", "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json"],
+      "tree_discovery_queries": ["Config/ConfigAbility/Avatar/", "Config/ConfigCharacter/Avatar/", "Config/ConfigAbility/Monster/", "Config/ConfigAI/ComplexSkillAIGlobalGroup/Monster/", "Config/ConfigAbility/Level/Level_MazeBuff_Ability", "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge", "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi", "Config/ConfigGlobalModifier/GlobalModifier_"],
       "intended_use": ["external schema and behavior-bearing config candidates", "ID/reference topology", "formula/condition parameter provenance"],
       "not_evidence_for": ["4.4.54 static overwrite", "native event ordering proof"]
     },
     {
       "source_id": "star_rail_res",
+      "fetcher_source_name": "StarRailRes",
       "pinned_commit": "02bdd75e1e3cf4272cea94165275c98a17ff1719",
       "role": "CLIENT_DUMP_DERIVED",
       "version_relation": "CLOSE_4.4_TO_4.4.54",
@@ -33,6 +36,7 @@
     },
     {
       "source_id": "hsr_mapping_data",
+      "fetcher_source_name": "HSR-Mapping-DATA",
       "pinned_commit": "245f286185f5274609be264b6ef6dbc15e8a27ad",
       "role": "AUDITABLE_MAPPING",
       "version_relation": "SCHEMA_ONLY_4.0",
@@ -43,6 +47,7 @@
     },
     {
       "source_id": "hsr_optimizer",
+      "fetcher_source_name": "hsr-optimizer",
       "pinned_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
       "role": "MATURE_IMPLEMENTATION",
       "version_relation": "ALGORITHM_REFERENCE_4.4v5",
@@ -59,5 +64,20 @@
     {"family":"stage_behavior","priority":"P1","minimum":"stage buff/rule/encounter references, wave and terminal metadata"},
     {"family":"global_effect_schema","priority":"P0","minimum":"task/effect, target, condition, formula, modifier, event and action/timeline candidate schemas"}
   ],
+  "discovery_observation_001": {
+    "source": "TurnBasedGameData",
+    "selected_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "method": "read-only GitHub recursive-tree query on 2026-08-25",
+    "tree_entries_returned": 58332,
+    "tree_truncated": true,
+    "positive_results_only": {
+      "avatar_ability_paths": 266,
+      "monster_ability_json_paths_excluding_camera": 255,
+      "monster_complex_skill_ai_paths": 4,
+      "known_avatar_fixture_paths": ["Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json", "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json", "Config/ConfigCharacter/Avatar/Avatar_Natasha_00_Config.json", "Config/ConfigCharacter/Avatar/Avatar_BlackSwan_00_Config.json"],
+      "buff_modifier_fixture_paths": ["Config/ConfigAbility/Level/Level_MazeBuff_Ability.json", "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json", "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json", "Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json", "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json"]
+    },
+    "interpretation": "These are positive discovery results only. Because GitHub marked the recursive response truncated, absence from this discovery is not evidence a file family does not exist."
+  },
   "output_contract": ["raw immutable file", "source URL/path", "source commit", "source hash", "version relation", "schema observation", "canonical mapping status", "conflict record if applicable"]
 }

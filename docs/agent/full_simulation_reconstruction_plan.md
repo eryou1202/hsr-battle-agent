@@ -146,15 +146,18 @@ Static entity counts (e.g. 97 avatars or 628 monsters) are never used as a
 surrogate for behavior coverage.  Keep every game/source ID and every phase;
 do not merge variants for convenience.
 
-### 5. Encounter, enemy and mode reconstruction
+### 5. Free scenario, encounter, enemy and mode reconstruction
 
 **Start:** stage package topology plus generic death/scheduling behavior.
 
-**Finish:** normal wave spawn/clear behavior, AI policy model, boss phase and
-body-part model, Stage Buff activation, and explicit rules for every declared
-mode.  Standard, MoC, Pure Fiction, Apocalyptic Shadow and roguelike/event
-modes are separate rule families; they cannot be collapsed into a generic
-“win when enemies die” rule.
+**Finish:** a free Scenario Package can select player loadouts, enemy
+instances, ordered waves and Buff bindings without any Stage ID. A real Stage
+Package may optionally seed that request, but **exhaustive one-to-one
+reconstruction of all Stage records is not a completion gate**. Normal wave
+spawn/clear behavior, AI policy model, boss phase/body-part model, Stage Buff
+activation, and explicit rules for every declared mode remain separate rule
+families; they cannot be collapsed into a generic “win when enemies die”
+rule.
 
 ### 6. Differential verification and planner gate
 
@@ -175,9 +178,12 @@ Beam Search, MCTS or training a valid DSH implementation target.
    current MVP packets and one external record.
 4. `KERNEL-EVENT-001` — make event/effect/commit ordering a first-class,
    deterministic DSH contract.
-5. `COMPILER-VERTICAL-001` — compile two avatars, an equipment effect, a
-   monster ability and a stage Buff into one replayable scenario.
-6. `COVERAGE-BASELINE-001` — calculate denominators and generate the first
+5. `SCENARIO-FREE-001` — establish free player/enemy/wave/Buff assembly;
+   Stage Packages become optional templates.
+6. `COMPILER-VERTICAL-001` — compile that freely assembled scenario with two
+   avatars, an equipment effect, a monster ability and a Buff into one
+   replayable trace.
+7. `COVERAGE-BASELINE-001` — calculate denominators and generate the first
    real semantic coverage report.
 
 The next session must not jump from static imports directly to a production

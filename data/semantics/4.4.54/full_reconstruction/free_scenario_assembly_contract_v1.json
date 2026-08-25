@@ -1,0 +1,30 @@
+{
+  "contract_id": "FREE-SCENARIO-ASSEMBLY-4.4.54-V1",
+  "game_version": "4.4.54",
+  "status": "SPECIFIED_NOT_IMPLEMENTED",
+  "purpose": "Construct a deterministic battle Scenario Package from freely selected canonical entities. A real Stage Package is an optional template, never a requirement or a complete-stage-coverage gate.",
+  "input": {
+    "scenario_id": "caller-owned stable identifier",
+    "source_stage_id": "optional 4.4.54 Stage ID used only as provenance/template input",
+    "mode": "standard/free or an explicitly implemented mode-rule ID",
+    "player_team": [{"slot": "0..3", "avatar_id": "original game ID", "loadout": "lightcone/relic/trace/eidolon selection by original IDs", "initial_state_overrides": "explicit optional values only"}],
+    "enemy_waves": [{"wave_index": "ordered integer", "enemies": [{"instance_id": "caller-owned unique ID", "monster_id": "original game ID", "level": "explicit integer", "initial_state_overrides": "explicit optional values only"}]}],
+    "buff_bindings": [{"binding_id": "caller-owned unique ID", "buff_id": "original/source ID", "scope": "battle|player_team|enemy_team|entity|wave", "owner_or_target": "explicit selector", "activation": "battle_start|wave_start|explicit trigger", "parameter_overrides": "explicit optional values only"}],
+    "rules": {"victory_rule_id": "explicit rule", "defeat_rule_id": "explicit rule", "rng_seed": "required deterministic seed", "unsupported_policy": "reject|opaque-disabled"}
+  },
+  "compiler_requirements": [
+    "Resolve every Avatar, LightCone, RelicSet, Monster and Buff reference through canonical/SQLite data by original ID and game version.",
+    "Preserve player/enemy slot, instance, wave and Buff-binding identities; never flatten waves or merge duplicate monster variants.",
+    "Resolve a Stage template before caller overrides, then retain both template provenance and override provenance.",
+    "Reject dangling, cross-version, unavailable or semantically unsupported references unless the request explicitly selects opaque-disabled behavior.",
+    "Compile entity behavior through the generic behavior IR; Scenario assembly must not read Nanoka or external raw JSON at runtime.",
+    "Emit a self-contained Scenario Package with resolved static records, behavior IDs, rules, provenance and explicit unsupported records."
+  ],
+  "acceptance": {
+    "minimum_fixture": "Two arbitrary valid avatars with loadouts, two arbitrary monsters in two ordered waves, and one Battle/Team/Enemy Buff binding compile to a self-contained deterministic package.",
+    "stage_independence": "The same fixture compiles with source_stage_id absent.",
+    "template_compatibility": "A supported Stage Package may be imported then modified by adding/removing enemies or Buffs without losing wave ordering/provenance.",
+    "not_yet_claimed": ["generic behavior compiler", "Buff runtime semantics", "mode semantics", "production Scenario compiler"]
+  },
+  "dsh_implementation_contract": "Implement a pure ScenarioCompiler that validates this input, resolves canonical records, produces an immutable ScenarioPackage, and reports unresolved behavior IDs before BattleState construction. Do not encode a hard dependency on a fully enumerated Stage database."
+}

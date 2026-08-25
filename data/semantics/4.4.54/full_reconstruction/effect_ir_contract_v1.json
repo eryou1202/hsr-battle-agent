@@ -1,0 +1,73 @@
+{
+  "contract_id": "EFFECT-IR-4.4.54-V1",
+  "game_version": "4.4.54",
+  "status": "SPECIFIED_FROM_EXTERNAL_VERTICAL_SLICE",
+  "scope": "A source-independent, ID-preserving representation for behavior-bearing content. This contract does not assert that every listed external operation already has reconstructed runtime semantics.",
+  "source_observation": {
+    "source": "TurnBasedGameData",
+    "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "captured_examples": {
+      "avatar_abilities": {"Natasha": 14, "BlackSwan": 15},
+      "monster_abilities": {"Monster_AML_Minion01_00": 3},
+      "stage_buff_abilities": {"Level_MazeBuff_Ability": 54},
+      "raw_containers": ["AbilityList", "ModifierMap"],
+      "observed_lifecycle_fields": ["OnAdd", "OnStart", "Modifiers"],
+      "observed_operation_types": ["RPG.GameCore.TriggerAbility", "RPG.GameCore.PredicateTaskList", "RPG.GameCore.LoopExecuteTaskListWithInterval", "RPG.GameCore.ConditionLoopExecuteTaskListWithInterval", "RPG.GameCore.AddModifier", "RPG.GameCore.RemoveModifier", "RPG.GameCore.DamageByAttackProperty", "RPG.GameCore.HealHP", "RPG.GameCore.ModifySPNew", "RPG.GameCore.Retarget", "RPG.GameCore.SetDynamicValue", "RPG.GameCore.SetStageBattleEvents", "RPG.GameCore.CreateBattleEvent"]
+    }
+  },
+  "behavior_record": {
+    "behavior_id": "stable canonical ID; preserves source path plus named record when no game ID is available",
+    "owner_ref": "Avatar|LightCone|RelicSet|Monster|StageBuff|ModeRule or explicit external source owner",
+    "source_refs": "one or more immutable raw source references with version relation and hash",
+    "entrypoints": [{"event": "ON_ADD|ON_START|named canonical lifecycle event", "operations": "ordered operation IDs"}],
+    "modifiers": "ordered modifier definitions/references",
+    "raw_unknown": "lossless JSON fallback for unclassified fields",
+    "reconstruction_status": "SOURCE_CAPTURED|SEMANTIC_MODELLED|COMPILED|GOLDEN_TESTED|EXPLICITLY_UNSUPPORTED"
+  },
+  "operation": {
+    "operation_id": "stable per behavior/entrypoint/index ID",
+    "source_type": "verbatim external/local type discriminator when available",
+    "kind": "canonical operation kind from the mapping below, otherwise OPAQUE",
+    "target": "canonical target expression plus lossless source payload",
+    "arguments": "lossless normalized argument object",
+    "children": "ordered nested operation IDs for conditional/loop/container operations",
+    "phase": "PRE_ACTION|ACTION|EFFECT|POST_EFFECT|COMPLETION|EVENT or explicit unknown",
+    "semantic_status": "MODELLED|OPAQUE|PRESENTATION_ONLY|REQUIRES_PACKET",
+    "source_payload": "unaltered operation object or content-addressed reference"
+  },
+  "initial_type_mapping": {
+    "RPG.GameCore.TriggerAbility": {"kind":"INVOKE_BEHAVIOR", "semantic_status":"MODELLED", "runtime_dependency":"action/event scheduler"},
+    "RPG.GameCore.PredicateTaskList": {"kind":"CONDITIONAL", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"predicate evaluator"},
+    "RPG.GameCore.LoopExecuteTaskListWithInterval": {"kind":"LOOP", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"scheduler"},
+    "RPG.GameCore.ConditionLoopExecuteTaskListWithInterval": {"kind":"CONDITIONAL_LOOP", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"predicate evaluator and scheduler"},
+    "RPG.GameCore.AddModifier": {"kind":"ADD_MODIFIER", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"modifier lifecycle"},
+    "RPG.GameCore.RemoveModifier": {"kind":"REMOVE_MODIFIER", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"modifier lifecycle"},
+    "RPG.GameCore.DamageByAttackProperty": {"kind":"DAMAGE_REQUEST", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"damage formula and event order"},
+    "RPG.GameCore.HealHP": {"kind":"HEAL_REQUEST", "semantic_status":"MODELLED_FOR_ORDINARY_MVP_ONLY", "runtime_dependency":"heal packet"},
+    "RPG.GameCore.ModifySPNew": {"kind":"MODIFY_TEAM_SP", "semantic_status":"MODELLED_FOR_ORDINARY_MVP_ONLY", "runtime_dependency":"team SP packet"},
+    "RPG.GameCore.Retarget": {"kind":"RETARGET", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"target model"},
+    "RPG.GameCore.SetDynamicValue": {"kind":"SET_DYNAMIC_VALUE", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"dynamic value store"},
+    "RPG.GameCore.SetStageBattleEvents": {"kind":"REGISTER_STAGE_EVENTS", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"event scheduler"},
+    "RPG.GameCore.CreateBattleEvent": {"kind":"CREATE_STAGE_EVENT", "semantic_status":"REQUIRES_PACKET", "runtime_dependency":"event scheduler"},
+    "RPG.GameCore.TriggerAnimState": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION_ONLY", "runtime_dependency":"none for headless simulation"},
+    "RPG.GameCore.TriggerEffect": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION_ONLY", "runtime_dependency":"none for headless simulation"},
+    "RPG.GameCore.WaitAnimState": {"kind":"PRESENTATION_WAIT", "semantic_status":"PRESENTATION_ONLY_UNLESS_IT_GATES_A_STATE_COMMIT", "runtime_dependency":"explicit compiler gate"},
+    "RPG.GameCore.VCameraConfigChange": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION_ONLY", "runtime_dependency":"none for headless simulation"},
+    "RPG.GameCore.LookAt": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION_ONLY", "runtime_dependency":"none for headless simulation"}
+  },
+  "headless_rule": "Presentation-only operations are retained in provenance/order but may be omitted only after the compiler establishes they do not gate an effect, action completion, legal action, target, resource, or scheduler transition. They must never be silently deleted from raw evidence.",
+  "compiler_contract": [
+    "Read canonical behavior records only; never read external raw JSON at runtime.",
+    "Compile ordered operations recursively and preserve unknown types as opaque compile failures or explicit disabled operations according to Scenario unsupported_policy.",
+    "Bind every operation to an explicit target context, state read/write set, event/phase boundary and semantic packet dependency before marking it COMPILED.",
+    "Use the Dynamic MVP packet set only for its documented ordinary scopes; do not extend its closure claim to arbitrary source operation types.",
+    "Expose behavior/operation IDs in trace output so a mismatch is attributable to source content, IR mapping or kernel packet."
+  ],
+  "acceptance": {
+    "schema_acceptance": "Natasha, Black Swan, one Monster ability and one Stage Buff raw file all normalize into behavior records with named entrypoints and ordered operations without losing unclassified payload.",
+    "vertical_slice_acceptance": "One free Scenario Package can reference compiled Avatar, Monster and Buff behavior IDs while rejecting any operation whose required semantic packet is missing.",
+    "full_coverage_gate": "No content family is called complete until every behavior denominator is either GOLDEN_TESTED or explicitly outside the published supported corpus."
+  },
+  "dsh_implementation_contract": "Implement this IR as typed immutable records plus an opaque JSON fallback; make compiler coverage and failure reports first-class. Do not turn unrecognized source types into no-ops."
+}

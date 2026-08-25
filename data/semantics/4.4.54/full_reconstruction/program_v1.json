@@ -69,10 +69,10 @@
     },
     {
       "id": "WS5",
-      "name": "Mode, encounter, and enemy reconstruction",
+      "name": "Scenario assembly, encounter, and mode reconstruction",
       "start_condition": "Stage packages and baseline death/timeline contracts are available.",
-      "finish_condition": "Wave spawning, enemy action policy, boss phases, standard/MoC/PF/AS/Simulated-Universe-like mode rules and stage buff activation each have explicit supported scopes and trace fixtures.",
-      "dsh_output": "Scenario compiler and mode-rule packets."
+      "finish_condition": "A free Scenario Package can select player loadouts, enemy instances, ordered waves and Buff/rule bindings without relying on a one-to-one Stage record. Wave spawning, enemy action policy, boss phases, standard/MoC/PF/AS/Simulated-Universe-like mode rules and stage buff activation each have explicit supported scopes and trace fixtures.",
+      "dsh_output": "Free Scenario compiler, optional real-Stage adapter, and mode-rule packets."
     },
     {
       "id": "WS6",
@@ -116,7 +116,7 @@
       "name": "Mode and special-mechanic closure",
       "status": "NOT_STARTED",
       "requires": ["M3", "WS5"],
-      "exit": "Each declared game mode and special scheduling family has a compiler path and trace suite, or remains an explicit unsupported denominator."
+      "exit": "Free Scenario assembly and each declared game mode/special scheduling family have a compiler path and trace suite, or remain explicit unsupported denominators. Full one-to-one coverage of every Stage ID is not a gate."
     },
     {
       "id": "M5",
@@ -148,5 +148,5 @@
     "stop_safely_when": "Before a context/token budget cannot finish a coherent ticket, write the current evidence, rejected models, exact next distinguishing question and no-op rebuild/test commands to the coverage ledger; never leave knowledge only in chat.",
     "forbidden_shortcuts": ["remote JSON read directly by runtime", "CLOSE-version value silently treated as 4.4.54", "identity/static coverage counted as behavior coverage", "source-specific if/else implementation without canonical behavior record", "unrecorded semantic approximation"]
   },
-  "next_execution_order": ["EXT-DISC-001", "EXT-PROFILE-001", "IR-CORE-001", "KERNEL-EVENT-001", "COMPILER-VERTICAL-001", "COVERAGE-BASELINE-001"]
+  "next_execution_order": ["EXT-DISC-001", "EXT-PROFILE-001", "IR-CORE-001", "SCENARIO-FREE-001", "KERNEL-EVENT-001", "COMPILER-VERTICAL-001", "COVERAGE-BASELINE-001"]
 }

@@ -152,6 +152,19 @@ SOURCE_FILES: Mapping[str, tuple[str, ...]] = {
         "ExcelOutput/MonsterTemplateConfig.json",
         "ExcelOutput/AvatarPromotionConfig.json",
         "ExcelOutput/EquipmentPromotionConfig.json",
+        # Semantic-corpus vertical-slice inputs. These are exact, reviewed
+        # paths at the pinned CLOSE 4.4.0 commit and remain isolated from the
+        # exact-version Nanoka records. They are not a repository mirror.
+        "Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json",
+        "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+        "Config/ConfigCharacter/Avatar/Avatar_Natasha_00_Config.json",
+        "Config/ConfigCharacter/Avatar/Avatar_BlackSwan_00_Config.json",
+        "Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json",
+        "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
+        "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json",
+        "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
+        "Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json",
+        "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json",
     ),
     "StarRailRes": (
         "index_new/cn/relic_main_affixes.json",
@@ -349,6 +362,59 @@ class ExternalReferenceFetcher:
             current_manifest = _mapping(read_json(previous_path))
             results[source.name] = {"files": len(files), "snapshot": str(base), "manifest_sha256": current_manifest.get("manifest_sha256")}
         return {"schema": "hsr_battle_agent.external_reference_fetch/1", "sources": results}
+
+    def discover_paths(self, source_name: str, query_terms: Iterable[str]) -> dict[str, Any]:
+        """Record a bounded, commit-addressed search of one repository tree.
+
+        Discovery is intentionally separate from ``fetch``: it obtains only
+        Git tree metadata and writes the matched paths plus their Git blob
+        identities.  A later reviewed retrieval profile decides which payloads
+        to cache.  This avoids both filename guesswork and broad repository
+        mirroring.
+        """
+        source = _source_by_name(source_name)
+        repo = self._repository_path(source)
+        tree_url = f"{GITHUB_API}/repos/{repo}/git/trees/{source.selected_commit}?recursive=1"
+        response = self._request_json(tree_url)
+        entries = [
+            {
+                "path": str(raw.get("path")),
+                "type": raw.get("type"),
+                "git_blob_sha": raw.get("sha"),
+                "size": raw.get("size"),
+            }
+            for raw in _list(response.get("tree"))
+            if isinstance(raw, Mapping) and raw.get("type") == "blob" and isinstance(raw.get("path"), str)
+        ]
+        normalized_terms = [str(term) for term in query_terms if str(term).strip()]
+        query_matches: dict[str, list[dict[str, Any]]] = {}
+        for term in normalized_terms:
+            # A query such as ``AvatarSkillConfig`` stays a literal substring;
+            # whitespace-delimited terms use an all-token search to remain
+            # useful across underscore/camel-case file naming.
+            tokens = [token.casefold() for token in term.replace("_", " ").replace("-", " ").split()]
+            needle = term.casefold()
+            matches = [
+                entry for entry in entries
+                if needle in str(entry["path"]).casefold()
+                or (tokens and all(token in str(entry["path"]).casefold() for token in tokens))
+            ]
+            query_matches[term] = sorted(matches, key=lambda item: str(item["path"]))
+        artifact = {
+            "schema": "hsr_battle_agent.external_reference_discovery/1",
+            "source": source.name,
+            "repository_url": source.repository_url,
+            "selected_commit": source.selected_commit,
+            "tree_url": tree_url,
+            "fetched_at": _utc_now(),
+            "tree_truncated": bool(response.get("truncated")),
+            "tree_blob_count": len(entries),
+            "queries": normalized_terms,
+            "matches": query_matches,
+        }
+        artifact["artifact_sha256"] = stable_hash(artifact)
+        write_json(self.root / source.name / "semantic_discovery_v1.json", artifact)
+        return artifact
 
 
 def _source_manifest(root: Path, source: ExternalSource) -> Mapping[str, Any]:
