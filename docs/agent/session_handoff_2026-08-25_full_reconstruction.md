@@ -46,6 +46,13 @@
 - TargetAlias resolution reference (`target_semantics_reference.py`) covers
   the direct/collection/adjoin/center alias families observed in the corpus
   and rejects special/unknown aliases explicitly.
+- Scheduler, damage/survival, predicate and RNG references exist with tests:
+  markers/templates/loops/delay, normal/Break/SuperBreak/DoT formulas,
+  shield/lock-HP/death transitions, Predicate AST evaluation and weighted
+  RandomConfig selection.
+- `cross_family_interaction_fixture_001.json` composes real corpus predicate
+  and formula payloads with the references in one deterministic trace and is
+  explicitly `REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`.
 - Strict compiler report rebuilt: 201/249 structural-only records;
   failure clusters are recorded in `behavior_compiler_report_001.json` and
   `behavior_coverage_census_001.json`.
@@ -59,21 +66,18 @@ External raw files are build-time-only and must not be read by runtime.
 
 ## Exact resume point
 
-After corpus/SSOT repair and the KERNEL/MODIFIER/DynamicValue/Target
-references above, continue with:
+After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `SCHEDULER-001`: selected semantics for action start/completion/damage
-   completion markers, IncludeTaskListTemplate expansion, fixed loops,
-   conditional loops, delay/insert/extra action ordering; reference tests and
-   packet. This unlocks the last 48 rejected behavior-bearing records'
-   remaining scheduling families.
-2. `PRIM-DAMAGE-001` + `PRIM-SURVIVAL-001`: damage request/completion,
-   toughness/break, shield, lock-HP/force-kill/death-handler references from
-   hsr-optimizer cached formulas plus existing local Damage/Heal anchors.
-3. Wire the references into a small cross-family execution reference and
-   golden trace; only then can structural bindings become executable.
-4. Coverage-driven content expansion (LightCone/RelicSet/wider Monster) using
-   the pinned StarRailRes / HSR-Mapping-DATA / hsr-optimizer caches.
+1. `COVERAGE-BASELINE-002`: regenerate all census artifacts and record the
+   249 behavior-bearing denominator as the current authority.
+2. `EXT-PROFILE-001` coverage-driven expansion: add LightCone / RelicSet /
+   wider MonsterSkill behavior families from the already pinned StarRailRes,
+   HSR-Mapping-DATA and hsr-optimizer caches, with exact path/hash/canonical
+   provenance; do not mirror repositories.
+3. Provider hooks for the remaining unsupported predicate/special families
+   (weakness, summon, somato-type, param-string, callback-name).
+4. Real-content execution reference and source-backed golden traces; only
+   then may executable/golden coverage move above zero.
 
 ## Mandatory reads
 

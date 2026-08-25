@@ -1,0 +1,76 @@
+{
+  "fixture_id": "CROSS-FAMILY-INTERACTION-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5",
+  "purpose": "Compose DynamicValue formula evaluation, Predicate branching, TargetAlias resolution, Damage/Survival commit, marker ordering and seeded RNG in one deterministic reference trace. The operation payloads are real corpus payloads; the battle state is an explicit synthetic fixture.",
+  "selected_state": {
+    "dynamic_store": {
+      "p1": {
+        "-77764014": "500",
+        "Max_DOT_Layer": "500"
+      }
+    },
+    "entities": {
+      "e1": {
+        "entity_id": "e1",
+        "survival": {
+          "alive": true,
+          "hp": "800",
+          "lock_hp": false,
+          "max_hp": "1000",
+          "shield": "0"
+        }
+      },
+      "p1": {
+        "entity_id": "p1",
+        "survival": {
+          "alive": true,
+          "hp": "1000",
+          "lock_hp": false,
+          "max_hp": "1000",
+          "shield": "0"
+        }
+      }
+    },
+    "modifier_names": {
+      "e1": [],
+      "p1": []
+    }
+  },
+  "sources": {
+    "formula_dynamic_hash": -77764014,
+    "formula_operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:ONSTART:1",
+    "predicate_operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001211:MODIFIER_CALLBACK:StageAbility_3001211_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate:0"
+  },
+  "state_sha256": "94e5708263f366bfc81847338eb03b16d37623024fd327f78982a45db1e6e805",
+  "status": "REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN",
+  "trace": [
+    {
+      "disposition": "DEFINE_INITIALIZED",
+      "key": "Max_DOT_Layer",
+      "operation_id": "fixture:define-layer"
+    },
+    {
+      "disposition": "SET_DYNAMIC_VALUE",
+      "key": "Max_DOT_Layer",
+      "operation_id": "fixture:set-layer",
+      "value": "500"
+    },
+    {
+      "disposition": "BRANCH_SUCCESS",
+      "operation_id": "fixture:branch"
+    },
+    {
+      "disposition": "DAMAGE_COMMITTED",
+      "hp_lost": "200",
+      "operation_id": "fixture:damage",
+      "shield_absorbed": "100",
+      "target_id": "e1"
+    },
+    {
+      "disposition": "DAMAGE_COMPLETION_MARKER",
+      "operation_id": "fixture:damage-complete"
+    }
+  ],
+  "trace_sha256": "5ddf681ea3f78d375a350344572295c60e35811d075c19820cf75caf7db348ae"
+}

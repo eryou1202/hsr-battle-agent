@@ -1,0 +1,26 @@
+{
+  "packet_id": "KERNEL-RNG-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_FROZEN_SANDBOX_RNG",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_EXISTING_SANDBOX_RNG",
+  "scope": "Deterministic weighted RandomConfig selection. The client PRNG remains explicitly unknown; the sandbox RNG is the frozen deterministic MT19937 abstraction with clone/snapshot/hash.",
+  "evidence": [
+    {"artifact": "src/hsr_battle_agent/battle_sandbox/rng.py", "support": "frozen SandboxRng: PYTHON_RANDOM_MT19937, 64-bit draws, state export/import, client algorithm UNKNOWN."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "five RandomConfig instances use odds lists of two or three fixed values whose sums are exactly 1.0 within the serialized precision."}
+  ],
+  "selected_model": {
+    "draw": "one uniform [0,1) draw per RandomConfig evaluation; the draw is recorded in the deterministic trace.",
+    "normalization": "odds are normalized by their sum before selection, preserving non-unit serialized totals exactly.",
+    "selection": "the selected index is the first index whose cumulative normalized odds exceeds the draw; the last index covers draw==1 only through the [0,1] boundary rule.",
+    "ordering": "RNG consumption happens at the operation boundary in source order; clone/snapshot/hash include the full RNG state.",
+    "client_algorithm": "UNKNOWN; this packet does not claim client PRNG reproduction."
+  },
+  "unsupported_cases": [
+    "empty or all-zero odds",
+    "negative odds",
+    "draw outside [0,1]",
+    "client PRNG sequence reproduction"
+  ],
+  "acceptance_fixture": "tests/game_data/test_rng_semantics_reference.py proves boundary selection, normalization, invalid-odds rejection and seeded reproducibility.",
+  "dsh_implementation_contract": "Route every battle random decision through the frozen sandbox RNG and record each draw. Never use process-global random and never guess the client PRNG."
+}
