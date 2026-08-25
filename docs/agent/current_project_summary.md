@@ -2,6 +2,17 @@
 
 This summary reflects the current local `main`, not an older handoff snapshot.
 
+## Full reconstruction program — current phase
+
+The highest target is `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`; DSH
+production implementation remains frozen until that gate. An initial external
+behavior corpus now contains 541 provenance-bearing Behavior Records and 279
+ordered operation instances, but none are yet compiled or golden-tested. The
+active ticket is the generic deterministic event/effect queue contract needed
+by its 122 `REQUIRES_PACKET` operations. Read
+`data/semantics/4.4.54/full_reconstruction/coverage_baseline_001.json` and
+`coverage_ledger_v1.json` for exact measurable state.
+
 It now also has a separate static-content route: Nanoka 4.4.54 is captured as
 an immutable local raw snapshot, normalized into Canonical JSON/JSONL, and
 rebuilt into a local SQLite query database.  That makes static Character,

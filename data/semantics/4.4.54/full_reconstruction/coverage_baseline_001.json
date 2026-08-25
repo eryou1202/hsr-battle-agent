@@ -1,0 +1,21 @@
+{
+  "report_id": "COVERAGE-BASELINE-001",
+  "game_version": "4.4.54",
+  "status": "INITIAL_EXTERNAL_BEHAVIOR_BASELINE",
+  "input_corpus": {"path":"data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "corpus_sha256":"bcbb48b16e879af0615a50a245880220f7891167e9dac3f5d0e812a349fb1fe8", "source":"TurnBasedGameData", "source_commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3", "version_relation":"CLOSE_4.4.0_TO_4.4.54"},
+  "counting_rule": "These are captured external behavior records, not the total 4.4.54 game denominator. Compiled/golden values are deliberately zero until a generic compiler/kernel executes them without behavior-affecting opaque operations.",
+  "behavior_records": {"captured":541,"canonicalized":541,"semantic_modelled":0,"compiled":0,"golden_tested":0,"explicitly_unsupported":0,"total_game_denominator":"UNKNOWN"},
+  "by_owner_kind": {
+    "Avatar":{"captured":29,"canonicalized":29,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "Monster":{"captured":3,"canonicalized":3,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "StageBuff":{"captured":54,"canonicalized":54,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "Modifier":{"captured":455,"canonicalized":455,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "Trace":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "Eidolon":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "LightCone":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
+    "RelicSet":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"}
+  },
+  "operation_instances": {"captured":279,"semantic_status":{"MODELLED":20,"REQUIRES_PACKET":122,"PRESENTATION":115,"OPAQUE":22},"compiled":0,"golden_tested":0},
+  "unsupported_clusters": ["modifier lifecycle and event subscription ordering","action completion and scheduler markers","predicate/loop expansion","target retarget semantics","damage/break event ordering","formation/special resource effects","remaining 22 opaque source operation types"],
+  "next_coverage_gain_target": "KERNEL-EVENT-001: define and test the generic ordered effect/event execution contract required by the 122 REQUIRES_PACKET operation instances; then compile a behavior subset that contains no behavior-affecting opaque operations."
+}

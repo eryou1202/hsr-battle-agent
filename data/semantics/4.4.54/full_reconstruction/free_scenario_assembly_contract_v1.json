@@ -7,7 +7,7 @@
     "scenario_id": "caller-owned stable identifier",
     "source_stage_id": "optional 4.4.54 Stage ID used only as provenance/template input",
     "mode": "standard/free or an explicitly implemented mode-rule ID",
-    "player_team": [{"slot": "0..3", "avatar_id": "original game ID", "loadout": "lightcone/relic/trace/eidolon selection by original IDs", "initial_state_overrides": "explicit optional values only"}],
+    "player_team": [{"slot": "0..3", "avatar":{"avatar_id":"original game ID","level":"1..80","promotion":"canonical ascension index","eidolon":"0..6","skill_levels":{"basic":"explicit level","skill":"explicit level","ultimate":"explicit level","talent":"explicit level"},"trace_state":{"unlocked_trace_ids":"canonical Trace IDs","rank_state":"explicit optional rank map"}},"lightcone":{"lightcone_id":"original game ID","level":"1..80","promotion":"canonical ascension index","superimposition":"1..5"},"relics":[{"slot":"HEAD|HAND|BODY|FOOT|PLANAR_SPHERE|LINK_ROPE","template_or_piece_id":"canonical original ID","set_id":"original game ID","level":"0..15","main_affix_id":"canonical affix ID","sub_affixes":[{"affix_id":"canonical affix ID","roll_tiers":"explicit roll list"}]}],"initial_state":{"hp":"optional explicit value","energy":"optional explicit value","special_resources":"explicit supported resource map only","other_supported_overrides":"explicit named map only"}}],
     "enemy_waves": [{"wave_index": "ordered integer", "enemies": [{"instance_id": "caller-owned unique ID", "monster_id": "original game ID", "level": "explicit integer", "initial_state_overrides": "explicit optional values only"}]}],
     "buff_bindings": [{"binding_id": "caller-owned unique ID", "buff_id": "original/source ID", "scope": "battle|player_team|enemy_team|entity|wave", "owner_or_target": "explicit selector", "activation": "battle_start|wave_start|explicit trigger", "parameter_overrides": "explicit optional values only"}],
     "rules": {"victory_rule_id": "explicit rule", "defeat_rule_id": "explicit rule", "rng_seed": "required deterministic seed", "unsupported_policy": "reject|opaque-disabled"}
@@ -26,5 +26,6 @@
     "template_compatibility": "A supported Stage Package may be imported then modified by adding/removing enemies or Buffs without losing wave ordering/provenance.",
     "not_yet_claimed": ["generic behavior compiler", "Buff runtime semantics", "mode semantics", "production Scenario compiler"]
   },
+  "opaque_disabled_rule": "opaque-disabled is restricted to debug, inspection and partial-reconstruction diagnostics. A ScenarioPackage containing a behavior-affecting disabled operation is invalid for GOLDEN_TESTED, executable coverage success, full-freeze coverage, planner validation or training corpus use.",
   "dsh_implementation_contract": "Implement a pure ScenarioCompiler that validates this input, resolves canonical records, produces an immutable ScenarioPackage, and reports unresolved behavior IDs before BattleState construction. Do not encode a hard dependency on a fully enumerated Stage database."
 }

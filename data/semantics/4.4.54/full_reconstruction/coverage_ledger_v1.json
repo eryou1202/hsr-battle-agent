@@ -1,7 +1,7 @@
 {
   "ledger_id": "FULL-SIM-COVERAGE-4.4.54-V1",
   "game_version": "4.4.54",
-  "status": "INITIALIZED",
+  "status": "ACTIVE_CONTINUOUS_RECONSTRUCTION",
   "counting_rule": "A behavior denominator is an ID-preserved effect-bearing record or an explicit global rule, never merely an entity, name, stat record, or file path.",
   "baseline": {
     "static_content": "Nanoka 4.4.54 database is reconstruction-ready for its documented fields.",
@@ -11,10 +11,19 @@
   "progress_checkpoint_001": {
     "date": "2026-08-25",
     "ticket": "EXT-DISC-001",
-    "status": "CLOSED_FOR_INITIAL_VERTICAL_SLICE",
+    "status": "INITIAL_VERTICAL_SLICE_COMPLETE_PARTIAL",
     "result": "All four pinned repositories were inspected through commit-addressed tree metadata. TurnBasedGameData supplied positive Ability/Modifier/Stage-Buff family paths and ten reviewed raw payloads were cached; tree truncation means this is not a complete corpus census.",
     "evidence": [".external_refs/*/semantic_discovery_v1.json", ".external_refs/TurnBasedGameData/manifest.json", "data/semantics/4.4.54/full_reconstruction/effect_ir_contract_v1.json"],
     "next_distinguishing_work": "EXT-PROFILE-001 must grow from the reviewed vertical slice to an explicit behavior corpus without using absence from a truncated tree as evidence."
+  },
+  "progress_checkpoint_002": {
+    "date": "2026-08-25",
+    "tickets_completed_or_advanced": ["RECON-STATE-REPAIR-001 COMPLETE", "EXT-PROFILE-001 INITIAL_CORPUS_CAPTURED", "IR-CORE-001 CANONICAL_NORMALIZER_IMPLEMENTED", "COVERAGE-BASELINE-001 INITIAL_EXTERNAL_BASELINE"],
+    "outputs": ["external_behavior_corpus_v1.json", "coverage_baseline_001.json", "effect_ir_contract_v1.json", "free_scenario_assembly_contract_v1.json"],
+    "measured_coverage": {"behavior_records_captured_and_canonicalized":541,"operation_instances":279,"operation_status":{"MODELLED":20,"REQUIRES_PACKET":122,"PRESENTATION":115,"OPAQUE":22},"compiled":0,"golden_tested":0},
+    "current_ticket": "KERNEL-EVENT-001",
+    "exact_resume": "Read coverage_baseline_001.json and effect_ir_contract_v1.json. Define a deterministic event/effect queue packet whose acceptance compiles a subset of external_behavior_corpus_v1.json containing only MODELLED/PRESENTATION/REQUIRES_PACKET operations; do not treat OPAQUE as a no-op. First command: bundled Python scripts/build_external_behavior_corpus.py, then inspect operations with semantic_status=REQUIRES_PACKET grouped by source_type.",
+    "blocked_by": "No environment blocker. The remaining work is semantic reconstruction, not an unavailable source or local-unpack prerequisite."
   },
   "tracks": [
     {"track":"global_kernel","denominator":"global semantic rule IDs","known_ready":["ordinary SP", "ordinary Energy", "ordinary AV", "ordinary Heal clamp", "ordinary Death", "ordinary terminal"],"missing":["generic event system", "modifier trigger/order", "break", "follow-up", "extra action", "summon scheduling", "revive/prevent death"],"status":"PARTIAL"},
@@ -25,17 +34,17 @@
     {"track":"verification","denominator":"all published semantic packet IDs and declared behavior records","known_ready":["Dynamic MVP packet tests"],"missing":["source integrity tests", "compiler determinism", "golden trace corpus", "coverage report generator"],"status":"PARTIAL"}
   ],
   "active_queue": [
-    {"ticket_id":"EXT-DISC-001","priority":"P0","classification":"EXTERNAL_DISCOVERY","goal":"Enumerate only pinned-tree paths needed to discover behavior-bearing config families; produce reviewed explicit retrieval manifest.","start":"external profile v1 exists","end":"all profile candidates are classified FOUND/NOT_FOUND/AMBIGUOUS with pinned paths; no payload import yet","dsh_dependency":"none"},
-    {"ticket_id":"EXT-PROFILE-001","priority":"P0","classification":"EXTERNAL_CAPTURE","goal":"Fetch the reviewed minimal behavior corpus with raw hashes, source provenance and version-relation tags.","start":"EXT-DISC-001 approved manifest","end":"raw snapshots are reproducible from commits and every captured file has provenance","dsh_dependency":"WS1"},
-    {"ticket_id":"IR-CORE-001","priority":"P0","classification":"SEMANTIC_MODEL","goal":"Specify canonical behavior IR and opaque fallback preservation, independent of any one external source schema.","start":"existing Dynamic MVP packets plus source profile","end":"schema validates ordinary MVP packets and one external effect-bearing record","dsh_dependency":"WS2"},
-    {"ticket_id":"KERNEL-EVENT-001","priority":"P0","classification":"RECONSTRUCTION","goal":"Define deterministic event/effect phase contract covering subscriptions, nested effects, cancellation and state-commit boundaries.","start":"IR-CORE-001","end":"at least damage/heal/modifier/timeline interaction traces use the same event contract","dsh_dependency":"WS3"},
-    {"ticket_id":"COMPILER-VERTICAL-001","priority":"P0","classification":"VERTICAL_SLICE","goal":"Compile a freely assembled player team, enemy lineup, ordered waves and one Buff into a single multistep scenario trace. A real Stage Package may seed this request but is not required.","start":"EXT-PROFILE-001 + IR-CORE-001 + KERNEL-EVENT-001 + SCENARIO-FREE-001","end":"canonical inputs compile with no direct source JSON runtime reads and the replay is deterministic","dsh_dependency":"WS4/WS5"},
-    {"ticket_id":"SCENARIO-FREE-001","priority":"P0","classification":"SCENARIO_CONTRACT","goal":"Specify ID-preserving free Scenario Package assembly for player loadouts, enemies, waves, Buffs and mode/rule overrides.","start":"Nanoka canonical entity query surface exists","end":"each reference resolves or is explicitly unknown; a Stage ID is optional provenance/template metadata rather than a required source","dsh_dependency":"WS5"},
-    {"ticket_id":"COVERAGE-BASELINE-001","priority":"P0","classification":"VERIFICATION","goal":"Measure behavior denominators from captured corpus and emit per-family modeled/compiled/tested/unsupported counts.","start":"EXT-PROFILE-001","end":"no future completion statement lacks an actual denominator","dsh_dependency":"WS6"}
+    {"ticket_id":"EXT-DISC-001","status":"PARTIAL_INITIAL_VERTICAL_SLICE_COMPLETE","priority":"P0","remaining":"resolve only exact retrieval paths required by a coverage failure; recursive tree was truncated, so its omissions are non-authoritative"},
+    {"ticket_id":"EXT-PROFILE-001","status":"PARTIAL_INITIAL_CORPUS_CAPTURED","priority":"P0","completed":"four source discovery artifacts, ten reviewed payloads and 541-record initial canonical corpus","remaining":"expand reviewed retrieval manifest by mechanism family and retain hash/provenance"},
+    {"ticket_id":"IR-CORE-001","status":"PARTIAL_CANONICAL_NORMALIZER_IMPLEMENTED","priority":"P0","completed":"lossless behavior/entrypoint/operation schema, initial type map and deterministic 541-record normalizer","remaining":"wider mechanism-family validation and nested source-operation normalization"},
+    {"ticket_id":"KERNEL-EVENT-001","status":"ACTIVE_NEXT","priority":"P0","depends_on":["IR-CORE-001 canonical normalizer"]},
+    {"ticket_id":"SCENARIO-FREE-001","status":"CONTRACT_SPECIFIED_NOT_IMPLEMENTED","priority":"P0","depends_on":["canonical Scenario compiler implementation"]},
+    {"ticket_id":"COMPILER-VERTICAL-001","status":"NOT_STARTED","priority":"P0","depends_on":["EXT-PROFILE-001", "IR-CORE-001", "KERNEL-EVENT-001", "SCENARIO-FREE-001"]},
+    {"ticket_id":"COVERAGE-BASELINE-001","status":"INITIAL_EXTERNAL_BASELINE_COMPLETE","priority":"P0","completed":"541 captured/canonicalized behavior records and operation/opaque-cluster counts","remaining":"compiler/golden coverage baseline after KERNEL-EVENT-001 and COMPILER-VERTICAL-001","depends_on":["canonical normalizer", "COMPILER-VERTICAL-001"]}
   ],
   "handoff_checkpoint": {
-    "next_api_must_read": ["program_v1.json", "external_source_expansion_profile_v1.json", "coverage_ledger_v1.json", "docs/agent/full_simulation_reconstruction_plan.md", "docs/agent/dynamic_mvp_blocker_closure_v1.md", "docs/agent/content_database.md", "docs/agent/external_reconstruction.md"],
+    "next_api_must_read": ["program_v1.json", "external_source_expansion_profile_v1.json", "effect_ir_contract_v1.json", "free_scenario_assembly_contract_v1.json", "coverage_ledger_v1.json", "docs/agent/full_simulation_reconstruction_plan.md", "docs/agent/dynamic_mvp_blocker_closure_v1.md", "docs/agent/content_database.md", "docs/agent/external_reconstruction.md"],
     "do_not_resume": ["blind local DesignData reverse", "unbounded external repository mirrors", "DSH production runtime before semantic/compiler contracts", "claiming full game coverage from current Standard MVP closure"],
-    "safe_stop_state": "All planning decisions through program v1 are persisted; next action is EXT-DISC-001."
+    "safe_stop_state": "RECON-STATE-REPAIR-001 completed; initial discovery must not be replayed. Next action is EXT-PROFILE-001 followed by the canonical normalizer portion of IR-CORE-001."
   }
 }
