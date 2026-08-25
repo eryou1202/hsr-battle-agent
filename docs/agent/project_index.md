@@ -22,6 +22,17 @@ The current strategy is deliberately corpus-first:
 Do not make character-by-character semantic reverse the primary development
 method again.
 
+### Current scope correction — full reconstruction program
+
+`dynamic_mvp_v1` is a **P0 standard-battle baseline**, not the final DSH
+handoff.  The active long-range goal is a complete, version-locked 4.4.54
+simulation reconstruction package: canonical behavior/effect records, global
+kernel semantics, content compiler mappings, mode rules, and golden traces
+for the declared corpus.  The external-corpus-first plan and its resumable
+coverage ledger are [full_simulation_reconstruction_plan.md](full_simulation_reconstruction_plan.md)
+and `data/semantics/4.4.54/full_reconstruction/`.  New work under that plan
+must not restart broad local unpack/native reverse.
+
 ## 2. Current Architecture
 
 ```text

@@ -1,0 +1,152 @@
+{
+  "program_id": "FULL-SIM-RECONSTRUCTION-4.4.54-V1",
+  "game_version": "4.4.54",
+  "status": "PLANNED_ACTIVE",
+  "updated_at": "2026-08-25",
+  "objective": "Produce version-locked, provenance-aware semantic packets and compilation contracts from which DSH can implement a deterministic high-fidelity HSR 4.4.54 combat simulator. This is broader than the frozen standard-MVP packet set.",
+  "non_goal": "Binary-identical client reconstruction, client UI/animation/performance reproduction, or a claim that external static data by itself proves native runtime order.",
+  "evidence_policy": {
+    "primary_static": "Nanoka 4.4.54 local content database",
+    "external_reconstruction": [
+      "DimbreathBot/TurnBasedGameData pinned snapshot",
+      "Mar-7th/StarRailRes pinned snapshot",
+      "nathacks/HSR-Mapping-DATA pinned snapshot",
+      "Fribbels/hsr-optimizer pinned snapshot"
+    ],
+    "local_reverse_policy": "DEFERRED_BY_THIS_PROGRAM; existing local artifacts may be cited but no new unpack/native work is a prerequisite for a reconstructed packet.",
+    "version_rule": "4.4.54 values remain isolated. CLOSE-version sources may supply schema, algorithms, or candidates only and must never silently overwrite exact-version data."
+  },
+  "completion_standard": {
+    "full_simulation_reconstruction": "Every supported 4.4.54 content behavior compiles to an explicit deterministic effect graph; all global state transitions, target/action legality, timeline/event order, mode rules, and terminal rules used by that graph have a versioned packet and golden scenarios.",
+    "per_behavior_exit": "ID-preserved source record -> canonical behavior record -> compiled IR/effect graph -> deterministic golden trace. Unsupported or ambiguous behavior is explicit and blocks the relevant coverage denominator rather than being silently approximated.",
+    "dsh_ready": "The DSH handoff contains stable schemas, a compiler contract, semantic packets, external/canonical provenance, coverage ledger, golden traces, and a bounded unsupported list. DSH does not have to infer a gameplay rule from prose or from a third-party JSON file."
+  },
+  "coverage_states": [
+    "NOT_DISCOVERED",
+    "SOURCE_CAPTURED",
+    "CANONICALIZED",
+    "SEMANTIC_MODELLED",
+    "COMPILED",
+    "GOLDEN_TESTED",
+    "OPTIONALLY_LOCAL_VALIDATED",
+    "EXPLICITLY_UNSUPPORTED"
+  ],
+  "workstreams": [
+    {
+      "id": "WS0",
+      "name": "Program control and reproducibility",
+      "start_condition": "This program and the 4.4.54 canonical database exist.",
+      "finish_condition": "Every packet, source capture, compiler output, trace and coverage numerator has a stable ID, source hash/version, owner, and deterministic rebuild command.",
+      "dsh_output": "Version manifest, provenance schema, coverage ledger, compatibility gate."
+    },
+    {
+      "id": "WS1",
+      "name": "External behavior corpus capture",
+      "start_condition": "Pinned source commit and declared retrieval profile are available.",
+      "finish_condition": "Required source families are captured at low concurrency from explicit pinned paths; raw files, hashes, schema observations and exact/close-version status are recorded. No unbounded repository mirror is required.",
+      "dsh_output": "Auditable raw external snapshot and source-family registry."
+    },
+    {
+      "id": "WS2",
+      "name": "Canonical effect and behavior IR",
+      "start_condition": "At least one source family with effect-bearing records is captured.",
+      "finish_condition": "A stable, ID-preserving behavior model represents effect phases, target intent, formulas, conditions, modifiers, action/timeline operations, event subscriptions, and opaque fallback fields without source-schema leakage.",
+      "dsh_output": "Canonical schemas and compiler input contracts."
+    },
+    {
+      "id": "WS3",
+      "name": "Global deterministic battle kernel specification",
+      "start_condition": "Dynamic MVP packets are imported as the ordinary-action base.",
+      "finish_condition": "State model, event queue/order, action legality, resources, AV, damage/heal/shield, death/revive, modifiers, break, extra-action and follow-up scheduling have packet-level contracts and interaction golden tests.",
+      "dsh_output": "BattleState, scheduler, event, legality and primitive implementation contracts."
+    },
+    {
+      "id": "WS4",
+      "name": "Content-family compiler coverage",
+      "start_condition": "WS1 source registry and WS2 IR are stable enough for a vertical slice.",
+      "finish_condition": "Avatars, LightCones, RelicSets, monsters, stage buffs and stage rules are independently compiled with a measured behavior denominator; no type is declared complete from identity/stat coverage alone.",
+      "dsh_output": "Content compiler mappings, fallback policy, corpus coverage reports."
+    },
+    {
+      "id": "WS5",
+      "name": "Mode, encounter, and enemy reconstruction",
+      "start_condition": "Stage packages and baseline death/timeline contracts are available.",
+      "finish_condition": "Wave spawning, enemy action policy, boss phases, standard/MoC/PF/AS/Simulated-Universe-like mode rules and stage buff activation each have explicit supported scopes and trace fixtures.",
+      "dsh_output": "Scenario compiler and mode-rule packets."
+    },
+    {
+      "id": "WS6",
+      "name": "Differential verification and planner-ready interface",
+      "start_condition": "At least one multi-mechanic scenario compiles end to end.",
+      "finish_condition": "Golden traces cover cross-family interactions; clone/hash determinism, legal-action enumeration, replay and terminal outcomes are verified before exposing planner/training APIs.",
+      "dsh_output": "Regression corpus plus Sandbox API acceptance contract."
+    }
+  ],
+  "milestones": [
+    {
+      "id": "M0",
+      "name": "Standard MVP preservation",
+      "status": "COMPLETE_BASELINE",
+      "evidence": "data/semantics/4.4.54/dynamic_mvp_v1/",
+      "scope": "ordinary Basic/Skill/Ultimate, team SP, energy, normal AV, ordinary targets, death and standard terminal rules"
+    },
+    {
+      "id": "M1",
+      "name": "External semantic corpus ready",
+      "status": "NOT_STARTED",
+      "requires": ["WS0", "WS1"],
+      "exit": "Explicit source profile has captured schema/behavior-bearing families and preserves source gaps."
+    },
+    {
+      "id": "M2",
+      "name": "Compiler vertical slice",
+      "status": "NOT_STARTED",
+      "requires": ["M1", "WS2", "WS3"],
+      "exit": "Two avatars, their loadouts, one monster family and one stage buff compile and replay through a multi-turn golden scenario."
+    },
+    {
+      "id": "M3",
+      "name": "Core-family closure",
+      "status": "NOT_STARTED",
+      "requires": ["M2", "WS4"],
+      "exit": "Coverage is measured and all core primitive families below are GOLDEN_TESTED for every behavior in the declared standard corpus."
+    },
+    {
+      "id": "M4",
+      "name": "Mode and special-mechanic closure",
+      "status": "NOT_STARTED",
+      "requires": ["M3", "WS5"],
+      "exit": "Each declared game mode and special scheduling family has a compiler path and trace suite, or remains an explicit unsupported denominator."
+    },
+    {
+      "id": "M5",
+      "name": "DSH full reconstruction handoff",
+      "status": "NOT_STARTED",
+      "requires": ["M4", "WS6"],
+      "exit": "No silent semantic gaps remain within the published supported corpus; DSH can implement without reading remote data or guessing behavior."
+    }
+  ],
+  "semantic_families": [
+    {"id":"KERNEL-STATE","priority":"P0","scope":"combatants, teams, properties, resources, statuses, summons, wave/mode state, RNG and provenance","start":"M0 packet import","end":"all writes have a deterministic owner and clone/hash representation"},
+    {"id":"KERNEL-EVENT","priority":"P0","scope":"event subscription, ordering, nested dispatch, cancellation, deferred work and phase boundaries","start":"event taxonomy captured","end":"event-order golden traces pass for all primitive families"},
+    {"id":"KERNEL-ACTION","priority":"P0","scope":"action lifecycle, legal targets, Basic/Skill/Ultimate, interrupts, extra actions and follow-ups","start":"ordinary model retained","end":"all declared action sources share one legality/scheduling contract"},
+    {"id":"KERNEL-RESOURCE","priority":"P0","scope":"SP, energy, technique/special resources, costs, gains, clamps and gates","start":"ordinary SP/energy packet import","end":"all resource operations are compiled and trace-tested"},
+    {"id":"PRIM-DAMAGE","priority":"P0","scope":"damage types, mitigation, crit, DoT, break/super-break, split/adjacent damage and HP application","start":"amount evaluator baseline","end":"formula and ordered state effects are separate and fully compiled"},
+    {"id":"PRIM-SURVIVAL","priority":"P0","scope":"heal, shield, max-HP changes, death, revive, prevent-death and lifecycle cleanup","start":"ordinary heal/death packet import","end":"all survival state transitions and exceptions have tests"},
+    {"id":"PRIM-MODIFIER","priority":"P0","scope":"buff/debuff/status stacks, durations, dispel, stat layers, triggers and ownership","start":"existing modifier lifecycle evidence","end":"modifier graph compiles without source-specific runtime code"},
+    {"id":"PRIM-TIMELINE","priority":"P0","scope":"AV, speed changes, advance/delay, action gauge, summon timeline, turn start/end and charge windows","start":"ordinary AV packet import","end":"all scheduling operators replay deterministically"},
+    {"id":"PRIM-TARGET","priority":"P0","scope":"faction, alive/dead, single/blast/AOE, random, taunt, body parts, summon/special objects and retargeting","start":"ordinary target packet import","end":"target selection is explicit and legal-action enumeration is complete"},
+    {"id":"CONTENT-AVATAR","priority":"P1","scope":"all active/passive/technique/trace/eidolon behavior graphs","start":"Avatar skill schemas captured","end":"every supported avatar behavior has an ID-preserved compiled record"},
+    {"id":"CONTENT-EQUIPMENT","priority":"P1","scope":"LightCone, RelicSet, relic affix and loadout effects","start":"static loadout materializer baseline","end":"all effect-bearing equipment records compile; static stats never imply effect coverage"},
+    {"id":"CONTENT-MONSTER","priority":"P1","scope":"monster skills/passives, AI candidates, phases, body parts and scaling","start":"MonsterSkill schemas captured","end":"each monster ability and phase relation compiles or is explicit unsupported"},
+    {"id":"CONTENT-STAGE","priority":"P1","scope":"waves, spawn groups, buffs, environment/rules, victory/failure and mode metadata","start":"Nanoka Stage Package baseline","end":"all referenced behavior IDs resolve to compiler records or explicit gaps"},
+    {"id":"MODE-RULES","priority":"P2","scope":"standard, MoC, Pure Fiction, Apocalyptic Shadow, roguelike/event and special challenge rules","start":"stage/mode source families captured","end":"each mode has an explicit scenario rule model and terminal semantics"},
+    {"id":"VERIFY-CORPUS","priority":"P0","scope":"source-to-canonical integrity, compiler determinism, golden state traces, differential scenarios and coverage denominators","start":"first canonical behavior record","end":"published coverage report contains no untracked failure/unknown"}
+  ],
+  "handoff_protocol": {
+    "required_per_ticket": ["ticket_id", "version", "source_refs", "source_hashes", "canonical_ids", "selected_model", "state_reads", "state_writes", "ordering", "legality", "unsupported_cases", "golden_fixture", "dsh_contract", "coverage_delta"],
+    "stop_safely_when": "Before a context/token budget cannot finish a coherent ticket, write the current evidence, rejected models, exact next distinguishing question and no-op rebuild/test commands to the coverage ledger; never leave knowledge only in chat.",
+    "forbidden_shortcuts": ["remote JSON read directly by runtime", "CLOSE-version value silently treated as 4.4.54", "identity/static coverage counted as behavior coverage", "source-specific if/else implementation without canonical behavior record", "unrecorded semantic approximation"]
+  },
+  "next_execution_order": ["EXT-DISC-001", "EXT-PROFILE-001", "IR-CORE-001", "KERNEL-EVENT-001", "COMPILER-VERTICAL-001", "COVERAGE-BASELINE-001"]
+}

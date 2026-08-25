@@ -1,0 +1,63 @@
+{
+  "profile_id": "EXTERNAL-SEMANTIC-CORPUS-4.4.54-V1",
+  "game_version": "4.4.54",
+  "status": "DISCOVERY_REQUIRED",
+  "purpose": "A bounded, commit-pinned retrieval profile for external reconstruction. Candidate names are discovery queries, not claims that a path or field exists.",
+  "rules": {
+    "fetch_order": ["pinned tree discovery", "explicit path manifest review", "low-concurrency raw fetch", "hash/provenance write", "adapter/canonical conversion"],
+    "no_unbounded_mirror": true,
+    "exact_version_precedence": "Nanoka 4.4.54 remains authoritative for static identity/value conflicts.",
+    "close_version_handling": "TurnBasedGameData/StarRailRes records are tagged CLOSE_SCHEMA_OR_ALGORITHM unless independently established as exact-version compatible.",
+    "runtime_isolation": "The future simulator consumes canonical records only; it never fetches or parses an external repository at run time."
+  },
+  "sources": [
+    {
+      "source_id": "turn_based_game_data",
+      "pinned_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "role": "CLIENT_DUMP_REFERENCE",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "already_captured": ["RelicConfig", "RelicMainAffixConfig", "RelicSubAffixConfig", "EliteGroup", "HardLevelGroup", "MazeBuff", "MonsterConfig", "MonsterTemplateConfig", "AvatarPromotionConfig", "EquipmentPromotionConfig"],
+      "tree_discovery_queries": ["AvatarConfig", "AvatarSkillConfig", "AvatarSkillTreeConfig", "AvatarRankConfig", "EquipmentConfig", "EquipmentSkillConfig", "RelicSetConfig", "MonsterSkillConfig", "MonsterAbility", "MonsterAI", "Maze", "BattleEvent", "TargetConfig", "TaskConfig", "Buff", "Modifier", "DynamicValue"],
+      "intended_use": ["external schema and behavior-bearing config candidates", "ID/reference topology", "formula/condition parameter provenance"],
+      "not_evidence_for": ["4.4.54 static overwrite", "native event ordering proof"]
+    },
+    {
+      "source_id": "star_rail_res",
+      "pinned_commit": "02bdd75e1e3cf4272cea94165275c98a17ff1719",
+      "role": "CLIENT_DUMP_DERIVED",
+      "version_relation": "CLOSE_4.4_TO_4.4.54",
+      "already_captured": ["characters", "character_promotions", "light_cones", "light_cone_promotions", "relic_main_affixes", "relic_sub_affixes", "relics", "relic_sets"],
+      "tree_discovery_queries": ["character skill", "character trace", "eidolon", "monster", "maze", "buff", "battle", "avatar", "light cone effect"],
+      "intended_use": ["independent schema/value cross-check", "human-readable asset/effect text as labeled hints"],
+      "not_evidence_for": ["dynamic implementation order"]
+    },
+    {
+      "source_id": "hsr_mapping_data",
+      "pinned_commit": "245f286185f5274609be264b6ef6dbc15e8a27ad",
+      "role": "AUDITABLE_MAPPING",
+      "version_relation": "SCHEMA_ONLY_4.0",
+      "already_captured": ["README", "relic loader", "relic transformers", "field mapping"],
+      "tree_discovery_queries": ["character mapping", "skill mapping", "monster mapping", "maze mapping", "effect mapping"],
+      "intended_use": ["source-to-canonical field-name mapping hypotheses"],
+      "not_evidence_for": ["version-specific data", "behavior semantics"]
+    },
+    {
+      "source_id": "hsr_optimizer",
+      "pinned_commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60",
+      "role": "MATURE_IMPLEMENTATION",
+      "version_relation": "ALGORITHM_REFERENCE_4.4v5",
+      "already_captured": ["damageCalculator", "statCalculator", "constants"],
+      "tree_discovery_queries": ["combat", "simulation", "turn", "speed", "damage", "break", "shield", "heal", "effects"],
+      "intended_use": ["equation and rounding hypotheses", "test-vector candidates"],
+      "not_evidence_for": ["client event order", "complete skill behavior corpus"]
+    }
+  ],
+  "required_capture_families": [
+    {"family":"avatar_behavior","priority":"P0","minimum":"active skill/phase, passive, technique, trace and eidolon IDs plus opaque parameters"},
+    {"family":"equipment_behavior","priority":"P1","minimum":"LightCone/RelicSet effect IDs, triggers and opaque parameters"},
+    {"family":"monster_behavior","priority":"P1","minimum":"skill/passive/phase/AI candidate references and opaque parameters"},
+    {"family":"stage_behavior","priority":"P1","minimum":"stage buff/rule/encounter references, wave and terminal metadata"},
+    {"family":"global_effect_schema","priority":"P0","minimum":"task/effect, target, condition, formula, modifier, event and action/timeline candidate schemas"}
+  ],
+  "output_contract": ["raw immutable file", "source URL/path", "source commit", "source hash", "version relation", "schema observation", "canonical mapping status", "conflict record if applicable"]
+}

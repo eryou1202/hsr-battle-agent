@@ -1,0 +1,32 @@
+{
+  "ledger_id": "FULL-SIM-COVERAGE-4.4.54-V1",
+  "game_version": "4.4.54",
+  "status": "INITIALIZED",
+  "counting_rule": "A behavior denominator is an ID-preserved effect-bearing record or an explicit global rule, never merely an entity, name, stat record, or file path.",
+  "baseline": {
+    "static_content": "Nanoka 4.4.54 database is reconstruction-ready for its documented fields.",
+    "dynamic_mvp": "Ordinary-action semantic packets are frozen at data/semantics/4.4.54/dynamic_mvp_v1/.",
+    "full_recreation": "NOT_STARTED"
+  },
+  "tracks": [
+    {"track":"global_kernel","denominator":"global semantic rule IDs","known_ready":["ordinary SP", "ordinary Energy", "ordinary AV", "ordinary Heal clamp", "ordinary Death", "ordinary terminal"],"missing":["generic event system", "modifier trigger/order", "break", "follow-up", "extra action", "summon scheduling", "revive/prevent death"],"status":"PARTIAL"},
+    {"track":"avatar_behaviors","denominator":"all 4.4.54 Avatar active/passive/trace/eidolon/technique behavior records","known_ready":["Natasha Skill02 bounded slice"],"missing":["external corpus capture", "canonical behavior records", "compiler", "golden scenarios"],"status":"NOT_STARTED"},
+    {"track":"equipment_behaviors","denominator":"all LightCone and RelicSet effect-bearing records plus applicable affix behavior","known_ready":["static materialization and amount inputs"],"missing":["effect corpus", "trigger/compiler rules", "interaction tests"],"status":"NOT_STARTED"},
+    {"track":"monster_behaviors","denominator":"all 4.4.54 Monster skill/passive/phase behavior records","known_ready":["identity/stat/skill-list static data"],"missing":["skill behavior corpus", "AI/phase policies", "compiler", "traces"],"status":"NOT_STARTED"},
+    {"track":"stage_mode_behaviors","denominator":"all stage Buff/rule/terminal/mode behavior records in declared modes","known_ready":["wave topology and partial Buff bindings"],"missing":["Buff/rule corpus", "mode packets", "spawning and special terminal traces"],"status":"NOT_STARTED"},
+    {"track":"verification","denominator":"all published semantic packet IDs and declared behavior records","known_ready":["Dynamic MVP packet tests"],"missing":["source integrity tests", "compiler determinism", "golden trace corpus", "coverage report generator"],"status":"PARTIAL"}
+  ],
+  "active_queue": [
+    {"ticket_id":"EXT-DISC-001","priority":"P0","classification":"EXTERNAL_DISCOVERY","goal":"Enumerate only pinned-tree paths needed to discover behavior-bearing config families; produce reviewed explicit retrieval manifest.","start":"external profile v1 exists","end":"all profile candidates are classified FOUND/NOT_FOUND/AMBIGUOUS with pinned paths; no payload import yet","dsh_dependency":"none"},
+    {"ticket_id":"EXT-PROFILE-001","priority":"P0","classification":"EXTERNAL_CAPTURE","goal":"Fetch the reviewed minimal behavior corpus with raw hashes, source provenance and version-relation tags.","start":"EXT-DISC-001 approved manifest","end":"raw snapshots are reproducible from commits and every captured file has provenance","dsh_dependency":"WS1"},
+    {"ticket_id":"IR-CORE-001","priority":"P0","classification":"SEMANTIC_MODEL","goal":"Specify canonical behavior IR and opaque fallback preservation, independent of any one external source schema.","start":"existing Dynamic MVP packets plus source profile","end":"schema validates ordinary MVP packets and one external effect-bearing record","dsh_dependency":"WS2"},
+    {"ticket_id":"KERNEL-EVENT-001","priority":"P0","classification":"RECONSTRUCTION","goal":"Define deterministic event/effect phase contract covering subscriptions, nested effects, cancellation and state-commit boundaries.","start":"IR-CORE-001","end":"at least damage/heal/modifier/timeline interaction traces use the same event contract","dsh_dependency":"WS3"},
+    {"ticket_id":"COMPILER-VERTICAL-001","priority":"P0","classification":"VERTICAL_SLICE","goal":"Compile two avatars, one LightCone or RelicSet effect, one monster ability and one Stage Buff into a single multistep scenario trace.","start":"EXT-PROFILE-001 + IR-CORE-001 + KERNEL-EVENT-001","end":"canonical inputs compile with no direct source JSON runtime reads and the replay is deterministic","dsh_dependency":"WS4/WS5"},
+    {"ticket_id":"COVERAGE-BASELINE-001","priority":"P0","classification":"VERIFICATION","goal":"Measure behavior denominators from captured corpus and emit per-family modeled/compiled/tested/unsupported counts.","start":"EXT-PROFILE-001","end":"no future completion statement lacks an actual denominator","dsh_dependency":"WS6"}
+  ],
+  "handoff_checkpoint": {
+    "next_api_must_read": ["program_v1.json", "external_source_expansion_profile_v1.json", "coverage_ledger_v1.json", "docs/agent/full_simulation_reconstruction_plan.md", "docs/agent/dynamic_mvp_blocker_closure_v1.md", "docs/agent/content_database.md", "docs/agent/external_reconstruction.md"],
+    "do_not_resume": ["blind local DesignData reverse", "unbounded external repository mirrors", "DSH production runtime before semantic/compiler contracts", "claiming full game coverage from current Standard MVP closure"],
+    "safe_stop_state": "All planning decisions through program v1 are persisted; next action is EXT-DISC-001."
+  }
+}
