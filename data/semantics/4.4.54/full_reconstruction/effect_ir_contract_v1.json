@@ -35,6 +35,7 @@
     "children": "ordered child groups with field_path and nested operation/predicate IDs for conditional/loop/template/container operations",
     "phase": "PRE_ACTION|ACTION|EFFECT|POST_EFFECT|COMPLETION|EVENT|UNKNOWN",
     "semantic_status": "MODELLED|OPAQUE|PRESENTATION|REQUIRES_PACKET",
+    "semantic_importance": "P0_SCHEDULER_OR_TERMINAL|P0_MODIFIER_OR_DAMAGE_PIPELINE|P1_LEGALITY_OR_RESOURCE|P1_UNCLASSIFIED_SEMANTIC|P2_PRESENTATION_GATING_RISK|P3_PRESENTATION_ONLY; a conservative triage tag, never proof of executable semantics",
     "scope": "GLOBAL|ORDINARY_MVP|PRESENTATION|UNKNOWN",
     "gating_risk": "NONE|POSSIBLE_STATE_COMMIT|KNOWN_STATE_COMMIT|UNKNOWN",
     "state_reads": "explicit canonical state paths or UNKNOWN",
@@ -63,7 +64,6 @@
     "RPG.GameCore.VCameraConfigChange": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION", "scope":"PRESENTATION", "gating_risk":"NONE", "runtime_dependency":"none for headless simulation"},
     "RPG.GameCore.LookAt": {"kind":"PRESENTATION", "semantic_status":"PRESENTATION", "scope":"PRESENTATION", "gating_risk":"NONE", "runtime_dependency":"none for headless simulation"}
   },
-  "mapping_defaults": {"semantic_status":"OPAQUE","scope":"UNKNOWN","gating_risk":"UNKNOWN","state_reads":["UNKNOWN"],"state_writes":["UNKNOWN"],"event_boundary":"UNKNOWN","dependencies":[]},
   "mapping_defaults": {"semantic_status":"OPAQUE","scope":"UNKNOWN","gating_risk":"UNKNOWN","state_reads":["UNKNOWN"],"state_writes":["UNKNOWN"],"event_boundary":"UNKNOWN","dependencies":[]},
   "headless_rule": "Presentation-only operations are retained in provenance/order but may be omitted only after the compiler establishes they do not gate an effect, action completion, legal action, target, resource, or scheduler transition. They must never be silently deleted from raw evidence.",
   "compiler_contract": [

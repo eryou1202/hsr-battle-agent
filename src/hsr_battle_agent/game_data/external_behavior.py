@@ -70,6 +70,41 @@ OPERATION_MAP: Mapping[str, tuple[str, str, str, str]] = {
     "RPG.GameCore.IncludeTaskListTemplate": ("INCLUDE_TASK_TEMPLATE", "REQUIRES_PACKET", "UNKNOWN", "POSSIBLE_STATE_COMMIT"),
     "RPG.GameCore.TriggerSkipDeadHandler": ("DEATH_HANDLER", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
     "RPG.GameCore.FireProjectile": ("PROJECTILE_DISPATCH", "REQUIRES_PACKET", "UNKNOWN", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.StackProperty": ("MODIFY_PROPERTY_STACK", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.ModifyDamageData": ("MODIFY_DAMAGE_DATA", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetDynamicValueByModifierValue": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetDynamicValueByStatisticCustomValue": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetDynamicValueByProperty": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetDynamicValueByStatusCount": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetModifierDynamicValue": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.SetAdventureDynamicValue": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.DefineDynamicValue": ("DEFINE_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.RandomConfig": ("RANDOM_SELECTION", "REQUIRES_PACKET", "UNKNOWN", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.ModifyActionDelay": ("DELAY_ACTION", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.TurnInsertAbility": ("INSERT_ACTION", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.TriggerBreak": ("TRIGGER_BREAK", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.ResetStance": ("RESET_TOUGHNESS", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.ChangeMechanismBarValue": ("MODIFY_SPECIAL_RESOURCE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.ModifyHealData": ("MODIFY_HEAL_DATA", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.DispelStatus": ("DISPEL_STATUS", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.AddAdventureModifier": ("ADD_MODIFIER", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.RemoveAdventureModifier": ("REMOVE_MODIFIER", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.AddClientMazeBuff": ("ADD_STAGE_BUFF", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.AdventureModifyTeamPlayerHP": ("MODIFY_TEAM_HP", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.AdvChangeSkillTreeLevel": ("MODIFY_SKILL_TREE_LEVEL", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.ModifierAttachEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.ModifierDetachEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.ModifierReattachEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.SetAttachEffectTimeSlow": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.DebugLog": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.ShowUIPage": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.ShowBonusUIEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.CharacterPlayVO": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.TriggerSound": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.ToastPile": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
+    "RPG.GameCore.TutorialTaskUnlock": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.ModifierOverrideOnHitEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "POSSIBLE_STATE_COMMIT"),
+    "RPG.GameCore.ModifyAdventureCharacterRunSpeedRatio": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
 }
 
 
@@ -140,7 +175,7 @@ def _callback_entrypoints(value: Any, prefix: str = "") -> list[tuple[str, list[
 def _operation(task: Any, *, behavior_id: str, entrypoint: str, index: int, raw_ref: Mapping[str, Any], parent_operation_id: str | None = None, child_path: str | None = None) -> dict[str, Any]:
     payload = _mapping(task)
     source_type = payload.get("$type") if isinstance(payload.get("$type"), str) else None
-    kind, status, scope, risk = OPERATION_MAP.get(source_type or "", ("OPAQUE", "OPAQUE", "UNKNOWN", "UNKNOWN"))
+    kind, status, scope, risk = _classify_operation(source_type)
     node_role = "PREDICATE_AST" if source_type and ".By" in source_type else "OPERATION"
     arguments = {key: value for key, value in payload.items() if key not in {"$type", "TargetType"}}
     operation_id = f"{behavior_id}:{entrypoint}:{index}" if parent_operation_id is None else f"{parent_operation_id}/{child_path or 'child'}:{index}"
@@ -157,6 +192,7 @@ def _operation(task: Any, *, behavior_id: str, entrypoint: str, index: int, raw_
         "semantic_status": status,
         "scope": scope,
         "gating_risk": risk,
+        "semantic_importance": _semantic_importance(kind, status, risk),
         "target": payload.get("TargetType"),
         "arguments": arguments,
         "children": children,
@@ -167,6 +203,36 @@ def _operation(task: Any, *, behavior_id: str, entrypoint: str, index: int, raw_
         "dependencies": [],
         "source_payload_ref": {**raw_ref, "entrypoint": entrypoint, "operation_index": index},
     }
+
+
+def _classify_operation(source_type: str | None) -> tuple[str, str, str, str]:
+    """Classify structural families without claiming they are executable.
+
+    External type names can safely identify a predicate AST as a predicate, or
+    an action-delay task as scheduler-relevant.  This reduces opaque *schema*
+    loss while retaining ``REQUIRES_PACKET`` until the actual state transition
+    is reconstructed and compiled.
+    """
+    if source_type in OPERATION_MAP:
+        return OPERATION_MAP[source_type]
+    if source_type and source_type.startswith("RPG.GameCore.By"):
+        return ("PREDICATE", "REQUIRES_PACKET", "UNKNOWN", "UNKNOWN")
+    return ("OPAQUE", "OPAQUE", "UNKNOWN", "UNKNOWN")
+
+
+def _semantic_importance(kind: str, status: str, risk: str) -> str:
+    """Conservative priority for corpus triage, not a support claim."""
+    if kind in {"DEATH_HANDLER", "ACTION_COMPLETION_MARKER", "DAMAGE_COMPLETION_MARKER", "ACTION_START_MARKER", "INCLUDE_TASK_TEMPLATE", "LOOP", "CONDITIONAL_LOOP", "INSERT_ACTION", "DELAY_ACTION", "TRIGGER_BREAK", "PROJECTILE_DISPATCH"}:
+        return "P0_SCHEDULER_OR_TERMINAL"
+    if kind in {"ADD_MODIFIER", "REMOVE_MODIFIER", "MODIFY_PROPERTY_STACK", "DISPEL_STATUS", "MODIFY_DAMAGE_DATA", "MODIFY_HEAL_DATA"}:
+        return "P0_MODIFIER_OR_DAMAGE_PIPELINE"
+    if kind in {"PREDICATE", "CONDITIONAL", "RETARGET", "RANDOM_SELECTION", "MODIFY_TEAM_SP", "MODIFY_SPECIAL_RESOURCE"}:
+        return "P1_LEGALITY_OR_RESOURCE"
+    if status == "PRESENTATION" and risk == "NONE":
+        return "P3_PRESENTATION_ONLY"
+    if status == "PRESENTATION":
+        return "P2_PRESENTATION_GATING_RISK"
+    return "P1_UNCLASSIFIED_SEMANTIC"
 
 
 def build_external_behavior_corpus(

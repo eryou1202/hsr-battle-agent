@@ -1,12 +1,13 @@
 {
   "packet_id": "KERNEL-EVENT-001",
   "game_version": "4.4.54",
-  "status": "PARTIAL_R3_SELECTED_MODEL",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_DIAGNOSTIC_TRACE",
   "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_EXISTING_MVP_ANCHORS",
   "scope": "Generic ordered execution of captured BehaviorRecord entrypoints and Modifier _CallbackList callbacks; not a claim of complete native event-bus equivalence.",
   "evidence": [
     {"source":"TurnBasedGameData","commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3","records":["Avatar_BlackSwan_00_PassiveSkill01 Modifier _CallbackList","Level_MazeBuff_Ability OnAdd","Monster_AML_Minion01_00 Skill01 OnStart"],"support":"source task arrays preserve sibling order; Black Swan callbacks include explicit Event and Priority values -11 and 200"},
     {"source":"dynamic_mvp_v1","support":"ordinary action completion, HP/resource/AV boundaries are already documented as deterministic packet boundaries"}
+    ,{"artifact":"data/semantics/4.4.54/full_reconstruction/kernel_event_trace_fixture_001.json","support":"offline reference tracer verifies Black Swan -11/0/200 ordering plus StageBuff/Monster source-order retention, and labels uncompiled/opaque operations non-executable"}
   ],
   "selected_model": {
     "registration":"Each active behavior/modifier contributes callbacks keyed by source Event. Registration identity is {owner_instance, behavior_id, modifier_id?, callback_index}; duplicate registration is rejected unless a modifier lifecycle packet explicitly replaces it.",
@@ -20,6 +21,6 @@
   "state_reads": ["active modifier registrations","callback priority","current BattleState at each operation boundary","event queue"],
   "state_writes": ["event queue","trace","primitive-owned state mutations","callback registration changes only through modifier lifecycle"],
   "unsupported": ["native listener priority proof beyond the selected model","listener cancellation flags","reentrant immediate dispatch","event exception/retry semantics","all event names and special mode dispatch phases"],
-  "acceptance": "A compiler/kernel test must register Black Swan-style callbacks with priorities -11/0/200, execute ordered nested child task traces, preserve source order for Monster and StageBuff entrypoints, and reject behavior-affecting OPAQUE nodes rather than skipping them.",
+  "acceptance": "Satisfied diagnostically by kernel_event_trace_fixture_001.json and tests/game_data/test_semantic_event_trace.py: Black Swan-style callbacks register at -11/0/200, source order is retained for Monster and StageBuff entrypoints, and behavior-affecting OPAQUE/REQUIRES_PACKET nodes cannot become executable no-ops. A compiled semantic execution trace remains required for closure.",
   "dsh_implementation_contract": "Implement a deterministic EventQueue with stable registration sequence, priority ascending, FIFO nested events, depth-first entrypoint children, explicit trace records and no implicit cancellation. Keep this packet scoped until coverage tests prove wider source families."
 }

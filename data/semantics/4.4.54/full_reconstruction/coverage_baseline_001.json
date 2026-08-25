@@ -1,8 +1,8 @@
 {
   "report_id": "COVERAGE-BASELINE-001",
   "game_version": "4.4.54",
-  "status": "INITIAL_EXTERNAL_BEHAVIOR_BASELINE",
-  "input_corpus": {"path":"data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "corpus_sha256":"c1fa2d9151de778dbe2494fa61b6f713f0b8df4084684618053e0c1a8399fc29", "source":"TurnBasedGameData", "source_commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3", "version_relation":"CLOSE_4.4.0_TO_4.4.54"},
+  "status": "RECURSIVE_EXTERNAL_BEHAVIOR_BASELINE",
+  "input_corpus": {"path":"data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "corpus_sha256":"4723b06c1ef4a87d9854ec02e84f6df5fa45456402e7b589a4550e9567b9f5cb", "source":"TurnBasedGameData", "source_commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3", "version_relation":"CLOSE_4.4.0_TO_4.4.54"},
   "counting_rule": "These are captured external behavior records, not the total 4.4.54 game denominator. Recursive semantic nodes include 784 operation nodes and 45 Predicate AST nodes; neither compiled nor golden coverage is implied until a generic compiler/kernel executes them without behavior-affecting opaque nodes.",
   "behavior_records": {"captured":541,"canonicalized":541,"semantic_modelled":0,"compiled":0,"golden_tested":0,"explicitly_unsupported":0,"total_game_denominator":"UNKNOWN"},
   "by_owner_kind": {
@@ -15,7 +15,8 @@
     "LightCone":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
     "RelicSet":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"}
   },
-  "semantic_nodes": {"recursive_total":829,"operation_nodes":784,"predicate_ast_nodes":45,"root_entrypoint_operations":279,"entrypoints":252,"modifier_callback_entrypoints":148,"semantic_status":{"MODELLED":27,"REQUIRES_PACKET":490,"PRESENTATION":148,"OPAQUE":164},"compiled":0,"golden_tested":0},
-  "unsupported_clusters": ["modifier lifecycle/callback subscription and priority","action completion and scheduler markers","predicate AST and loop expansion","target retarget semantics","damage/break event ordering","property stacks and modifier dynamic values","IncludeTaskListTemplate/death/projectile scheduling","remaining 164 opaque recursive nodes"],
-  "next_coverage_gain_target": "KERNEL-EVENT-001: define and test the generic ordered effect/event execution contract required by the 122 REQUIRES_PACKET operation instances; then compile a behavior subset that contains no behavior-affecting opaque operations."
+  "semantic_nodes": {"recursive_total":829,"operation_nodes":784,"predicate_ast_nodes":45,"root_entrypoint_operations":279,"entrypoints":252,"modifier_callback_entrypoints":148,"semantic_status":{"MODELLED":27,"REQUIRES_PACKET":619,"PRESENTATION":181,"OPAQUE":2},"diagnostic_order_traced":29,"compiled":0,"golden_tested":0},
+  "triage_artifact":"data/semantics/4.4.54/full_reconstruction/operation_risk_triage_001.json",
+  "unsupported_clusters": ["modifier lifecycle/callback subscription and priority","action completion and scheduler markers","predicate AST and loop expansion","target retarget semantics","damage/break event ordering","property stacks and modifier dynamic values","IncludeTaskListTemplate/death/projectile scheduling","2 opaque recursive nodes (untyped callback payload and TaskConfig)"],
+  "next_coverage_gain_target": "COMPILER-VERTICAL-001: compile a strictly no-blocker subset through the static ScenarioCompiler and reference event/Modifier contracts. The old 122 count was entrypoint-only and is not a semantic denominator; all 619 REQUIRES_PACKET and 2 OPAQUE nodes remain non-executable until their named primitive packet is implemented."
 }

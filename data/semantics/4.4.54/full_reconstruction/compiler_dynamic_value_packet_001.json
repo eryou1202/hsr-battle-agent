@@ -1,0 +1,15 @@
+{
+  "packet_id": "COMPILER-DYNAMIC-VALUE-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_NOT_IMPLEMENTED_SAVE_POINT",
+  "scope": "Planned structural compiler binding for DefineDynamicValue and SetDynamicValue family nodes only. This artifact is a resume marker, not an accepted implementation.",
+  "existing_evidence": [
+    {"artifact":"data/semantics/4.4.54/dynamic_value_batch_02.json","confidence":"R4 local structural evidence for DynamicValue representation/primitives; it does not by itself establish source-variable scope or task timing."},
+    {"artifact":"data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json","confidence":"current strict compiler failure cluster contains at least 56 DynamicValue-family unbound nodes, including SetDynamicValue, SetDynamicValueByModifierValue, DefineDynamicValue and statistic/status variants."}
+  ],
+  "current_code_location": {"file":"src/hsr_battle_agent/game_data/behavior_compiler.py","symbol":"PRIMITIVE_BINDINGS","required_change":"Add structural-only bindings for DEFINE_DYNAMIC_VALUE and SET_DYNAMIC_VALUE to this packet, preserving source arguments/children and marking execution_scope STRUCTURAL_PACKET_ONLY."},
+  "known_good":"The compiler already rejects unbound REQUIRES_PACKET operations rather than treating them as no-ops, and has structural-only bindings for Modifier and Predicate nodes.",
+  "not_implemented":["DynamicValue variable scope/ownership","read-after-write visibility beyond KERNEL-EVENT selected generic boundary","formula/DynamicValue evaluation","target/context binding","runtime execution or Golden eligibility"],
+  "next_commands":["$env:PYTHONPATH='src'; & 'C:\\Users\\而忧\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe' scripts/build_behavior_ir.py","$env:PYTHONPATH='src'; & 'C:\\Users\\而忧\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe' scripts/build_behavior_coverage_census.py","$env:PYTHONPATH='src'; & 'C:\\Users\\而忧\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe' -m unittest tests.game_data.test_behavior_compiler"],
+  "expected_result":"Structural compilation may increase only for records whose remaining nodes are all packet-bound/non-gating presentation. executable and golden_tested must remain zero unless separate semantics are supplied."
+}

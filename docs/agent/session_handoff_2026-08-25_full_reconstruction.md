@@ -18,12 +18,14 @@
 - Ten reviewed TurnBasedGameData behavior files are cached and hash-recorded
   in `.external_refs/TurnBasedGameData/manifest.json`.
 - `external_behavior.py` normalizes the reviewed files without runtime network
-  access. Its generated corpus has 541 Behavior Records and 279 operation
-  instances; corpus hash:
-  `bcbb48b16e879af0615a50a245880220f7891167e9dac3f5d0e812a349fb1fe8`.
-- `coverage_baseline_001.json`: MODELLED 20, REQUIRES_PACKET 122,
-  PRESENTATION 115, OPAQUE 22; compiled/golden-tested behavior counts remain
-  zero.
+  access. Its generated corpus has 541 Behavior Records, 252 entrypoints
+  (including 148 Modifier callbacks), and 829 recursively lifted semantic
+  nodes (784 operations and 45 Predicate AST nodes); corpus hash:
+  `c1fa2d9151de778dbe2494fa61b6f713f0b8df4084684618053e0c1a8399fc29`.
+- `coverage_baseline_001.json`: MODELLED 27, REQUIRES_PACKET 490,
+  PRESENTATION 148, OPAQUE 164; compiled/golden-tested behavior counts remain
+  zero. The old 279/122 figures were root-entrypoint-only and must not be used
+  as a semantic denominator.
 
 ## Source state
 
@@ -37,11 +39,12 @@ External raw files are build-time-only and must not be read by runtime.
 `NEXT TICKET = KERNEL-EVENT-001`.
 
 Input: `effect_ir_contract_v1.json`, `external_behavior_corpus_v1.json`, and
-`dynamic_mvp_v1`. Group the 122 `REQUIRES_PACKET` operations by canonical kind
-and source type. Produce an R3 deterministic event/effect queue packet with
+`dynamic_mvp_v1`. Use the 829 recursively normalized nodes (not the retired
+entrypoint-only denominator), particularly the 490 `REQUIRES_PACKET` nodes,
+to produce and test an R3 deterministic event/effect queue packet with
 registration, listener ordering, nested invoke, commit visibility,
-cancellation and ordered trace contracts. Record ambiguity; do not turn the 22
-OPAQUE operations into no-ops and do not start local reverse.
+cancellation and ordered trace contracts. Record ambiguity; do not turn the
+164 OPAQUE nodes into no-ops and do not start local reverse.
 
 Acceptance: a selected no-opaque behavior subset schedules to an ordered trace
 with explicit state writes/dependencies. Then implement `SCENARIO-FREE-001`

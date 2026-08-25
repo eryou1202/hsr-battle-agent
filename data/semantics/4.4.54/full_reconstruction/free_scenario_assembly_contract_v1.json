@@ -1,7 +1,7 @@
 {
   "contract_id": "FREE-SCENARIO-ASSEMBLY-4.4.54-V1",
   "game_version": "4.4.54",
-  "status": "SPECIFIED_NOT_IMPLEMENTED",
+  "status": "STATIC_ASSEMBLY_IMPLEMENTED_BEHAVIOR_COMPILATION_PENDING",
   "purpose": "Construct a deterministic battle Scenario Package from freely selected canonical entities. A real Stage Package is an optional template, never a requirement or a complete-stage-coverage gate.",
   "input": {
     "scenario_id": "caller-owned stable identifier",
@@ -24,7 +24,8 @@
     "minimum_fixture": "Two arbitrary valid avatars with loadouts, two arbitrary monsters in two ordered waves, and one Battle/Team/Enemy Buff binding compile to a self-contained deterministic package.",
     "stage_independence": "The same fixture compiles with source_stage_id absent.",
     "template_compatibility": "A supported Stage Package may be imported then modified by adding/removing enemies or Buffs without losing wave ordering/provenance.",
-    "not_yet_claimed": ["generic behavior compiler", "Buff runtime semantics", "mode semantics", "production Scenario compiler"]
+    "implemented_static_assembly": "src/hsr_battle_agent/game_data/scenario_compiler.py validates and resolves the specified static entities, waves, Stage template provenance and Buff bindings with deterministic package hashes.",
+    "not_yet_claimed": ["generic behavior compiler", "Buff runtime semantics", "mode semantics", "production BattleState construction"]
   },
   "opaque_disabled_rule": "opaque-disabled is restricted to debug, inspection and partial-reconstruction diagnostics. A ScenarioPackage containing a behavior-affecting disabled operation is invalid for GOLDEN_TESTED, executable coverage success, full-freeze coverage, planner validation or training corpus use.",
   "dsh_implementation_contract": "Implement a pure ScenarioCompiler that validates this input, resolves canonical records, produces an immutable ScenarioPackage, and reports unresolved behavior IDs before BattleState construction. Do not encode a hard dependency on a fully enumerated Stage database."

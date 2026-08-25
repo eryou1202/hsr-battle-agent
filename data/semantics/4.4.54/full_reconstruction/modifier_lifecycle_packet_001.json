@@ -1,0 +1,38 @@
+{
+  "packet_id": "PRIM-MODIFIER-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R4_LOCAL_STRUCTURAL_SUPPORTED",
+  "evidence_level": "R4_LOCAL_STRUCTURAL_SUPPORTED_WITH_R3_EXTERNAL_CORPUS",
+  "scope": "Generic local Modifier instance lookup/add/refresh/activation/destroy/dirty-removal boundaries and their integration point with KERNEL-EVENT-001. It does not claim generic callback bodies, source formulas, global lookup or every stacking flag.",
+  "local_evidence": [
+    {"artifact":"data/semantics/4.4.54/modifier_application_bridge_07.json","support":"AddModifier task evaluates ordered targets, calls TryAddModifierInstance, then completes its task boundary."},
+    {"artifact":"data/semantics/4.4.54/modifier_lifecycle_bridge_08.json","support":"ordered local lookup, Multiple/refresh branch families, OnAdded/OnActivate alive transition, destroy ToBeRemoved transition and backwards dirty removal preserving survivor order."},
+    {"artifact":"data/semantics/4.4.54/modifier_property_effect_09.json","support":"stable property-contribution source slots across add/refresh/remove."}
+  ],
+  "external_evidence": {"artifact":"data/semantics/4.4.54/full_reconstruction/operation_risk_triage_001.json","support":"current recursive external slice contains 203 AddModifier, 18 RemoveModifier, 29 StackProperty and 148 Modifier callback entrypoints; all are retained as non-compiled behavior."},
+  "state_model": {
+    "instance_identity":"instance_id plus name, stacking flag, optional caster runtime ID and optional source-provider identity; lookup is ordered front-to-back and returns its first match.",
+    "lifecycle_states":{"0":"TO_BE_ADDED","1":"ALIVE","2":"TO_BE_REMOVED","3":"REMOVED/OUTSIDE_CONTAINER"},
+    "required_fields":["instance_id","name","owner","caster_runtime_id","source_provider_id","stacking","current_life","count","state","destroy_guard","destroy_reason","callback registrations","property contribution keys"]
+  },
+  "selected_transitions": {
+    "add_new":"target selection is a dependency; append identity-preserved instance, invoke OnAdded boundary, then OnActivate sets ALIVE before its callbacks are dispatchable.",
+    "duplicate_lookup":"search local ModifierList front-to-back using name, stacking, optional active-state, optional caster runtime ID and source-provider identity; do not use general object equality.",
+    "multiple_4":"append a duplicate instance.",
+    "refresh_replace_2_5_7_8_12":"retain existing identity and set CurrentLife plus Count from incoming config/runtime data.",
+    "refresh_prolong_3":"retain existing identity and add current life; exact count/UI callback behavior is outside this packet.",
+    "refresh_merge_6":"retain existing identity and use max current life; exact count/UI callback behavior is outside this packet.",
+    "refresh_keep_lifetime_10":"retain existing current life and set Count.",
+    "destroy":"if state is ALIVE or TO_BE_ADDED, set TO_BE_REMOVED and record reason; cleanup callbacks are KERNEL-EVENT work, not implicit deletion.",
+    "dirty_removal":"at explicit cleanup, remove non-ALIVE items with no destroy guard; preserve relative order of all survivors. Deregister callbacks and remove property-contribution keys at this lifecycle boundary.",
+    "property_contribution":"keep a modifier-owned stable source index/key across refresh; do not shift neighbouring sources on removal. Materialization itself delegates to the existing property packets."
+  },
+  "event_contract": {
+    "registration":"only ALIVE modifiers contribute callbacks; callback identity is supplied to KERNEL-EVENT-001.",
+    "ordering":"callback priority and source task order delegate to KERNEL-EVENT-001; lifecycle transitions commit before the next compiled sibling observes modifier state.",
+    "unsupported":"OnAdded/OnActivate/OnReplace callback bodies, delayed-add queue trigger timing and global manager ordering are not silently modeled."
+  },
+  "unsupported_cases":["stacking flags 0,1,9 and any unlisted flag","RetainGlobalLatest 11 and RetainGlobalLatestUnique 13 global resolution","formula/target evaluation","duration/count decrement timing","callback effect bodies","dispel policy beyond a separately compiled DispelStatus operation","source-specific modifier special state"],
+  "acceptance_fixture":"tests/game_data/test_modifier_lifecycle_reference.py proves Multiple append, Replace, Prolong, Merge, Keep-Lifetime, mark-destroy and ordered dirty removal. external operation risk triage retains source Add/Remove/Stack nodes as compiler blockers until compiled.",
+  "dsh_implementation_contract":"Implement immutable ModifierState/ModifierInstance records with the stated ordered lookup and explicit transitions. Do not delete on Destroy immediately, do not reorder survivors, do not represent property contribution as final-value +/- arithmetic, and reject unsupported stacking/global policies until their packets are provided."
+}

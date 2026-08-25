@@ -1,0 +1,17 @@
+{
+  "packet_id": "COMPILER-PREDICATE-001",
+  "game_version": "4.4.54",
+  "status": "STRUCTURAL_COMPILER_BINDING_ONLY",
+  "scope": "Lower canonical PredicateTaskList and recursively lifted RPG.GameCore.By* predicate AST nodes into ordered branch IR while preserving SuccessTaskList, FailedTaskList and all raw predicate arguments.",
+  "selected_model": {
+    "binding":"A conditional node compiles to a condition AST reference plus explicitly ordered true/false child groups. Each By* node compiles to an opaque-to-evaluation predicate AST node with original source type and arguments.",
+    "execution":"No predicate evaluator is claimed. Target-dependent, modifier-dependent, wave-dependent, stance-dependent and random-dependent conditions remain non-executable until a typed evaluator packet covers them.",
+    "ordering":"Only the selected child branch may execute at runtime; both child lists stay in IR for provenance and compiler diagnostics. KERNEL-EVENT-001 supplies the source-order rule after evaluation."
+  },
+  "evidence":[
+    {"artifact":"data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json","support":"45 predicate-AST nodes and 111 PredicateTaskList nodes are recursively lifted with source field paths and child order."},
+    {"artifact":"data/semantics/4.4.54/dynamic_core/packets_v1.json","support":"existing predicate/fixpoint foundations are reusable only within their documented scope."}
+  ],
+  "unsupported_cases":["truth evaluation of any individual By* type","short-circuit/side-effect behavior beyond explicit child ordering","random condition sampling","target context construction","predicate-related event timing"],
+  "dsh_implementation_contract":"Store predicates as typed AST records with verbatim source type and raw arguments. Never choose SuccessTaskList or FailedTaskList in production until a matching evaluator implementation is supplied."
+}

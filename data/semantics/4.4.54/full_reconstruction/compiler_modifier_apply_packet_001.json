@@ -1,0 +1,19 @@
+{
+  "packet_id": "COMPILER-MODIFIER-APPLY-001",
+  "game_version": "4.4.54",
+  "status": "STRUCTURAL_COMPILER_BINDING_ONLY",
+  "scope": "Lower AddModifier, RemoveModifier, StackProperty, ModifyDamageData, ModifyHealData and DispelStatus source-independent operation nodes to IR nodes that explicitly depend on PRIM-MODIFIER-001.",
+  "selected_model": {
+    "binding":"Each listed canonical operation emits a typed IR node with semantic packet dependency PRIM-MODIFIER-001 and retains target/arguments/children/source operation ID.",
+    "execution":"The binding is non-executable until target selection, DynamicValue/formula evaluation, callback-body handling and the relevant event boundary are compiled. Structural compilation never authorizes a no-op or Golden trace.",
+    "ordering":"Operation order and nested child groups remain KERNEL-EVENT-001 responsibility; lifecycle transitions use PRIM-MODIFIER-001 only at the selected primitive boundary."
+  },
+  "evidence":[
+    {"artifact":"data/semantics/4.4.54/modifier_application_bridge_07.json","support":"AddModifier task/application boundary and ordered target iteration."},
+    {"artifact":"data/semantics/4.4.54/modifier_lifecycle_bridge_08.json","support":"instance lookup/add/refresh/destroy state transitions."},
+    {"artifact":"data/semantics/4.4.54/modifier_property_effect_09.json","support":"stable property contribution source-slot lifecycle."},
+    {"artifact":"data/semantics/4.4.54/full_reconstruction/operation_risk_triage_001.json","support":"203 AddModifier plus related modifier pipeline nodes in current captured corpus."}
+  ],
+  "unsupported_cases":["target resolution","predicate/branch evaluation","formula values","duration/count tick scheduling","callback side effects","global modifier policy","actual Damage/Heal request mutation order"],
+  "dsh_implementation_contract":"Represent these nodes as typed IR with the stated dependency and source linkage. Refuse executable compilation while any listed unsupported dependency remains unresolved."
+}

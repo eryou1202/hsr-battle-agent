@@ -1,0 +1,124 @@
+{
+  "compiled_structure_only": {
+    "avatar": {
+      "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01",
+      "ir_sha256": "20c51e0d4759960ac9d29a9f01c635e867c069d4c677ed487578c9cd257f7177",
+      "owner_ref": "Avatar_BlackSwan_00_Rank01"
+    },
+    "environment_modifier": {
+      "behavior_id": "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2020011",
+      "ir_sha256": "ae877418dcd68848c5548b294da3fdf8826068d2c1ae844418927637faad588f",
+      "owner_ref": "ADV_LevelAbilityModifier_MazeEnviProp_2020011"
+    },
+    "monster": {
+      "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase01",
+      "ir_sha256": "051a522f62aa1adfa291c53982f268e68f77ee65ad74bc043cda6496d30483d3",
+      "owner_ref": "Monster_AML_Minion01_00_Skill01_Phase01"
+    }
+  },
+  "coverage_interpretation": "The vertical slice proves canonical-to-IR compilation and explicit blocking across Avatar, Monster and environment Modifier. It does not claim a StageBuff behavior is compiled, nor that the assembled ScenarioPackage can run.",
+  "explicit_stage_buff_blocker": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100",
+    "blockers": [
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION_WAIT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:2",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.WaitSecond"
+      },
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:3",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.ShowBonusUIEffect"
+      },
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION_WAIT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:5",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.WaitSecond"
+      },
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:6",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.ShowUIPage"
+      },
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION_WAIT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:7",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.WaitSecond"
+      },
+      {
+        "gating_risk": "KNOWN_STATE_COMMIT",
+        "kind": "DELAY_ACTION",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:8",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "REQUIRES_PACKET_HAS_NO_COMPILER_BINDING",
+        "semantic_importance": "P0_SCHEDULER_OR_TERMINAL",
+        "semantic_status": "REQUIRES_PACKET",
+        "source_type": "RPG.GameCore.ModifyActionDelay"
+      },
+      {
+        "gating_risk": "KNOWN_STATE_COMMIT",
+        "kind": "DAMAGE_REQUEST",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:9",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "REQUIRES_PACKET_HAS_NO_COMPILER_BINDING",
+        "semantic_importance": "P1_UNCLASSIFIED_SEMANTIC",
+        "semantic_status": "REQUIRES_PACKET",
+        "source_type": "RPG.GameCore.DamageByAttackProperty"
+      },
+      {
+        "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "kind": "PRESENTATION_WAIT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:10",
+        "policy": "REJECT_NOT_NOOP",
+        "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+        "semantic_importance": "P2_PRESENTATION_GATING_RISK",
+        "semantic_status": "PRESENTATION",
+        "source_type": "RPG.GameCore.WaitSecond"
+      }
+    ],
+    "compile_status": "REJECTED",
+    "owner_ref": "BattleEventAbility_900100"
+  },
+  "fixture_id": "COMPILER-VERTICAL-001",
+  "game_version": "4.4.54",
+  "input_report_sha256": "a67a39705ee371df9dce6ec402f7e8a1ef679e0e0aed27db34968233681766e3",
+  "pipeline": [
+    "canonical BehaviorRecord",
+    "strict BehaviorCompiler",
+    "source-independent Behavior IR",
+    "KERNEL-EVENT / PRIM-MODIFIER packet dependencies",
+    "ScenarioCompiler static assembly"
+  ],
+  "status": "PARTIAL_STRICT_CROSS_FAMILY_IR_ONLY",
+  "verification": {
+    "event_trace": "tests/game_data/test_semantic_event_trace.py validates source callback ordering only",
+    "modifier_reference": "tests/game_data/test_modifier_lifecycle_reference.py validates bounded instance transitions",
+    "semantic_execution": "NOT_AVAILABLE; no compiled record is golden/executable",
+    "static_scenario_compiler": "tests/game_data/test_scenario_compiler.py validates free player/enemy/wave/Buff assembly and Stage template overrides"
+  }
+}

@@ -6,10 +6,13 @@ This summary reflects the current local `main`, not an older handoff snapshot.
 
 The highest target is `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`; DSH
 production implementation remains frozen until that gate. An initial external
-behavior corpus now contains 541 provenance-bearing Behavior Records and 279
-ordered operation instances, but none are yet compiled or golden-tested. The
-active ticket is the generic deterministic event/effect queue contract needed
-by its 122 `REQUIRES_PACKET` operations. Read
+behavior corpus now contains 541 provenance-bearing Behavior Records, 252
+entrypoints (including 148 Modifier callbacks), and 829 recursively
+normalized semantic nodes (784 operations and 45 Predicate AST nodes). Its
+current slice has 490 `REQUIRES_PACKET` nodes and 164 explicit `OPAQUE` nodes;
+the former 279/122 figures were entrypoint-only counts, not a semantic
+denominator. None are yet compiled or golden-tested. The active ticket is the
+generic deterministic event/effect queue contract. Read
 `data/semantics/4.4.54/full_reconstruction/coverage_baseline_001.json` and
 `coverage_ledger_v1.json` for exact measurable state.
 
