@@ -1,0 +1,31 @@
+{
+  "packet_id": "TARGET-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_R4_LOCAL_ANCHORS",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R4_LOCAL_ANCHORS",
+  "scope": "TargetAlias resolution for the 37 alias families observed in the repaired external corpus, anchored by TaskContext target primitives from target_selector_batch_05.json. Filter masks, forced-target/taunt priority and legal-action enumeration remain separate packets.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/target_selector_batch_05.json", "support": "E4 local evidence for TaskActionTarget, OwnerEntity, Caster, TargetFetchTaskActionTarget/Caster/None evaluators, collapse-single-target and GameEntity runtime identity."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "1901 ModifierOwnerEntity, 754 ParamEntity, 192 Caster, 57 AllEnemy and 33 further alias families were enumerated from the repaired corpus."}
+  ],
+  "selected_model": {
+    "entity_identity": "GameEntity.RuntimeID is the stable signed int32 entity identity; EntitySnapshot {entity_id, team light/dark/neutral, alive, selectable, position(row,column)} is the selected canonical view.",
+    "direct_aliases": "Caster, AbilityTargetEntity, DamageAttackerEntity, DamageDefenderEntity, CurrentTurnActionEntity, CurrentTurnOwnerEntity, ModifierOwnerEntity, SnapshotPropertyEntity, SnapshotEntityActualOwner, LevelEntity and SkillPointEntity resolve to the corresponding explicit context slot or empty.",
+    "collection_aliases": "AllEnemy and AllDarkTeam select enemy-team entities; AllLightTeam/AllTeammate select light-team entities; the WithUnselectable variants include non-selectable entities; alive filtering is always applied except where a packet explicitly says otherwise.",
+    "list_aliases": "ParamEntity/ParamEntity2/ParamEntityList, AbilityTargetList, AttackTargetList and SkillTargetEntityList preserve caller order and identity.",
+    "adjacency": "Adjoin aliases select same-team alive entities in the same row whose column differs by one from the center entity; diagonal adjacency is not selected.",
+    "center": "DarkTeamCenter resolves to the first dark-team entity in (row, column) order.",
+    "ordering": "Collection results are ordered by (position.row, position.column, entity_id). Direct aliases preserve exactly the source slot order; no random or floating order is introduced.",
+    "unsupported": "HimekoNova_00_AssistTarget, TeamFormation and any unseen alias reject explicitly until their special-mechanic packet exists."
+  },
+  "unsupported_cases": [
+    "HimekoNova_00_AssistTarget special assist target",
+    "TeamFormation pseudo-target",
+    "filter masks and TargetFilter/TargetMapDynamicEntityParam operation semantics",
+    "taunt / forced-target priority",
+    "legal-action enumeration",
+    "summon / special-object aliases not present in the reviewed corpus"
+  ],
+  "acceptance_fixture": "tests/game_data/test_target_semantics_reference.py proves direct, collection, WithUnselectable, adjoin, center, payload extraction and explicit unsupported-alias rejection.",
+  "dsh_implementation_contract": "Implement TargetAlias resolution with immutable entity snapshots and deterministic ordering. Unsupported aliases must reject the containing behavior, never resolve to empty or random targets."
+}

@@ -42,6 +42,14 @@ class SemanticEventTraceTest(unittest.TestCase):
         self.assertEqual([step.operation_id for step in result.trace], ["a-emit", "a-after", "b"])
         self.assertEqual(result.queued_events, ("A", "B"))
 
+    def test_nested_event_waits_for_all_registrations_of_current_event(self) -> None:
+        tracer = DeterministicEventTracer()
+        tracer.register(event="A", owner_instance_id="a", behavior_id="a", entrypoint_id="first", operations=[operation("a-first-emit")])
+        tracer.register(event="A", owner_instance_id="a", behavior_id="a", entrypoint_id="second", operations=[operation("a-second")])
+        tracer.register(event="B", owner_instance_id="b", behavior_id="b", entrypoint_id="b", operations=[operation("b")])
+        result = tracer.trace(["A"], nested_events_after_operation={"a-first-emit":["B"]})
+        self.assertEqual([step.operation_id for step in result.trace], ["a-first-emit", "a-second", "b"])
+
     def test_opaque_or_uncompiled_operation_never_becomes_noop(self) -> None:
         tracer = DeterministicEventTracer()
         tracer.register(event="A", owner_instance_id="a", behavior_id="a", entrypoint_id="a", operations=[operation("opaque", status="OPAQUE")])

@@ -23,11 +23,51 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "ADD_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "REMOVE_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_PROPERTY_STACK": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "MODIFY_DAMAGE_DATA": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "MODIFY_HEAL_DATA": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_DAMAGE_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_HEAL_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "DISPEL_STATUS": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "CONDITIONAL": {"packet": "COMPILER-PREDICATE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "PREDICATE": {"packet": "COMPILER-PREDICATE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "SET_DYNAMIC_VALUE": {"packet": "COMPILER-DYNAMIC-VALUE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DEFINE_DYNAMIC_VALUE": {"packet": "COMPILER-DYNAMIC-VALUE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DAMAGE_COMPLETION_MARKER": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "FORMATION_CHANGE": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "INSERT_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DELAY_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_ACTION_STATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_ACTION_COST": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ACTION_START_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ACTION_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "INCLUDE_TASK_TEMPLATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "LOOP": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "CONDITIONAL_LOOP": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "PROJECTILE_DISPATCH": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "SWITCH_CASE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "CHARM_USE_SKILL": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "GRANT_ABILITY": {"packet": "KERNEL-ACTION-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "SET_MODIFIER_VALUE": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_MODIFIER_FLAG": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_SKILL_PROPERTY": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_SKILL_TREE_LEVEL": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ADD_STAGE_BUFF": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_TOUGHNESS": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "TRIGGER_BREAK": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "RESET_TOUGHNESS": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "SET_RESILIENCE": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "INIT_SHIELD": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "REMOVE_SHIELD": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "LOCK_HP": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "FORCE_KILL": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DEATH_HANDLER": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_TEAM_HP": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "REGISTER_STAGE_EVENTS": {"packet": "KERNEL-EVENT-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "CREATE_STAGE_EVENT": {"packet": "KERNEL-EVENT-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_SPECIAL_RESOURCE": {"packet": "KERNEL-RESOURCE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "RANDOM_SELECTION": {"packet": "KERNEL-RNG-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "SET_DYNAMIC_ENTITY_PARAM": {"packet": "KERNEL-STATE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
 }
 
 
@@ -40,6 +80,7 @@ class BehaviorCompiler:
 
     def compile_record(self, record: Mapping[str, Any]) -> dict[str, Any]:
         entrypoints: list[dict[str, Any]] = []
+        templates: list[dict[str, Any]] = []
         diagnostics: list[dict[str, Any]] = []
         structural_only = False
         source_operation_count = 0
@@ -55,17 +96,37 @@ class BehaviorCompiler:
                 "callback_metadata": entry.get("callback_metadata"),
                 "operations": operations,
             })
-        if source_operation_count == 0:
-            diagnostics.append({
-                "operation_id": None,
-                "source_type": None,
-                "kind": None,
-                "semantic_status": None,
-                "semantic_importance": "P1_UNCLASSIFIED_SEMANTIC",
-                "gating_risk": "UNKNOWN",
-                "reason": "NO_OPERATIONAL_ENTRYPOINTS",
-                "policy": "REJECT_NOT_NOOP",
+        for template in record.get("template_definitions", []):
+            raw_template = _mapping(template)
+            source_operation_count += len(raw_template.get("operations", []))
+            operations, template_diagnostics, template_structural = self._compile_operations(raw_template.get("operations", []))
+            diagnostics.extend(template_diagnostics)
+            structural_only = structural_only or template_structural
+            templates.append({
+                "template_id": raw_template.get("template_id"),
+                "name": raw_template.get("name"),
+                "source_field_path": raw_template.get("source_field_path"),
+                "operations": operations,
             })
+        if source_operation_count == 0:
+            compiled = {
+                "schema": "hsr_battle_agent.behavior_ir/1",
+                "game_version": "4.4.54",
+                "behavior_id": record.get("behavior_id"),
+                "owner_kind": record.get("owner_kind"),
+                "owner_ref": record.get("owner_ref"),
+                "source_refs": record.get("source_refs", []),
+                "entrypoints": entrypoints,
+                "template_definitions": templates,
+                "dynamic_value_definitions": list(record.get("dynamic_value_definitions", [])),
+                "compile_status": "STATIC_DEFINITION_ONLY",
+                "behavior_bearing": False,
+                "executable": False,
+                "execution_blockers": [],
+                "structural_only": False,
+            }
+            compiled["ir_sha256"] = stable_hash(compiled)
+            return compiled
         compiled = {
             "schema": "hsr_battle_agent.behavior_ir/1",
             "game_version": "4.4.54",
@@ -74,7 +135,10 @@ class BehaviorCompiler:
             "owner_ref": record.get("owner_ref"),
             "source_refs": record.get("source_refs", []),
             "entrypoints": entrypoints,
+            "template_definitions": templates,
+            "dynamic_value_definitions": list(record.get("dynamic_value_definitions", [])),
             "compile_status": "COMPILED_STRUCTURE_ONLY" if not diagnostics else "REJECTED",
+            "behavior_bearing": True,
             "executable": False,
             "execution_blockers": diagnostics,
             "structural_only": structural_only,
@@ -153,18 +217,36 @@ class BehaviorCompiler:
         compiled = [self.compile_record(record) for record in corpus.get("records", [])]
         compiled.sort(key=lambda record: str(record["behavior_id"]))
         successful = [record for record in compiled if record["compile_status"] == "COMPILED_STRUCTURE_ONLY"]
+        behavior_bearing = [record for record in compiled if record.get("behavior_bearing")]
+        static_only = [record for record in compiled if record["compile_status"] == "STATIC_DEFINITION_ONLY"]
         failure_reasons = Counter(diagnostic["reason"] for record in compiled for diagnostic in record["execution_blockers"])
         by_owner = {}
         for owner in sorted({str(record["owner_kind"]) for record in compiled}):
             owner_records = [record for record in compiled if record["owner_kind"] == owner]
-            by_owner[owner] = {"captured": len(owner_records), "structural_compiled": sum(record["compile_status"] == "COMPILED_STRUCTURE_ONLY" for record in owner_records), "golden_tested": 0}
+            by_owner[owner] = {
+                "captured": len(owner_records),
+                "behavior_bearing": sum(bool(record.get("behavior_bearing")) for record in owner_records),
+                "static_definition_only": sum(record["compile_status"] == "STATIC_DEFINITION_ONLY" for record in owner_records),
+                "structural_compiled": sum(record["compile_status"] == "COMPILED_STRUCTURE_ONLY" for record in owner_records),
+                "golden_tested": 0,
+            }
         result = {
             "schema": "hsr_battle_agent.behavior_compiler_report/1",
             "game_version": corpus.get("game_version"),
             "input_corpus_sha256": corpus.get("corpus_sha256"),
-            "compiler_policy": "canonical-only strict compiler; behavior-affecting uncompiled nodes reject the record and never become no-ops",
+            "compiler_policy": "canonical-only strict compiler; behavior-affecting uncompiled nodes reject the record and never become no-ops; records without operational entrypoints/templates are STATIC_DEFINITION_ONLY and are not part of the behavior denominator",
             "records": compiled,
-            "coverage": {"captured": len(compiled), "canonicalized": len(compiled), "structural_compiled": len(successful), "executable": 0, "golden_tested": 0, "by_owner_kind": by_owner, "failure_reasons": dict(sorted(failure_reasons.items()))},
+            "coverage": {
+                "captured": len(compiled),
+                "canonicalized": len(compiled),
+                "behavior_bearing": len(behavior_bearing),
+                "static_definition_only": len(static_only),
+                "structural_compiled": len(successful),
+                "executable": 0,
+                "golden_tested": 0,
+                "by_owner_kind": by_owner,
+                "failure_reasons": dict(sorted(failure_reasons.items())),
+            },
         }
         result["report_sha256"] = stable_hash(result)
         return result

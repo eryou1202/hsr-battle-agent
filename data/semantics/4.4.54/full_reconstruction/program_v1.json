@@ -2,8 +2,8 @@
   "program_id": "FULL-SIM-RECONSTRUCTION-4.4.54-V1",
   "game_version": "4.4.54",
   "status": "PLANNED_ACTIVE",
-  "execution_state": {"last_completed_ticket":"COVERAGE-BASELINE-001 recursive strict compiler census","current_ticket":"COMPILER-DYNAMIC-VALUE-001 PARTIAL_NOT_IMPLEMENTED_SAVE_POINT","next_ticket":"COMPILER-DYNAMIC-VALUE-001 structural-only DynamicValue compiler bindings","next_dependency":"data/semantics/4.4.54/dynamic_value_batch_02.json plus BehaviorCompiler.PRIMITIVE_BINDINGS","next_high_value_cluster":"DynamicValue-family structural bindings (at least 56 current unbound nodes); then choose by coverage gain / implementation cost","full_4_4_54_sandbox_reconstruction_freeze":"NO","dsh_production_build":"FROZEN_UNTIL_FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE"},
-  "updated_at": "2026-08-25",
+  "execution_state": {"last_completed_ticket":"IR-CORE-001-RECURSIVE-LIFT-REPAIR + KERNEL-EVENT timing correction + PRIM-MODIFIER lifecycle alignment + DynamicValue/Target references + full compiler binding pass","current_ticket":"SCHEDULER-001 marker/template/loop/delay reference semantics","next_ticket":"PRIM-DAMAGE-001 + PRIM-SURVIVAL-001 damage/shield/toughness/death references","next_dependency":"cross-source evidence from hsr-optimizer damageCalculator/statCalculator plus local Damage/Heal/Turn-AV anchors","next_high_value_cluster":"48 rejected behavior-bearing records remain: 122 presentation-gating nodes, 7 OPAQUE, and scheduler families already structurally bound","full_4_4_54_sandbox_reconstruction_freeze":"NO","dsh_production_build":"FROZEN_UNTIL_FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE"},
+  "updated_at": "2026-08-25T21:00:00+08:00",
   "objective": "Produce version-locked, provenance-aware semantic packets and compilation contracts from which DSH can implement a deterministic high-fidelity HSR 4.4.54 combat simulator. This is broader than the frozen standard-MVP packet set.",
   "non_goal": "Binary-identical client reconstruction, client UI/animation/performance reproduction, or a claim that external static data by itself proves native runtime order.",
   "evidence_policy": {
@@ -149,5 +149,5 @@
     "stop_safely_when": "Before a context/token budget cannot finish a coherent ticket, write the current evidence, rejected models, exact next distinguishing question and no-op rebuild/test commands to the coverage ledger; never leave knowledge only in chat.",
     "forbidden_shortcuts": ["remote JSON read directly by runtime", "CLOSE-version value silently treated as 4.4.54", "identity/static coverage counted as behavior coverage", "source-specific if/else implementation without canonical behavior record", "unrecorded semantic approximation"]
   },
-  "next_execution_order": ["KERNEL-EVENT-001", "PRIM-MODIFIER-001", "SCENARIO-FREE-001", "COMPILER-VERTICAL-001", "COVERAGE-BASELINE-001", "EXT-PROFILE-001 coverage-driven expansion"]
+  "next_execution_order": ["SCHEDULER-001 markers/templates/loops/delay", "PRIM-DAMAGE-001 damage request/completion", "PRIM-SURVIVAL-001 shield/toughness/death", "KERNEL-RNG-001 random selection", "COMPILER-PREDICATE-001 evaluator", "cross-family execution reference + golden trace", "COVERAGE-BASELINE-002 rebuild", "EXT-PROFILE-001 coverage-driven expansion"]
 }

@@ -5,16 +5,20 @@ This summary reflects the current local `main`, not an older handoff snapshot.
 ## Full reconstruction program — current phase
 
 The highest target is `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`; DSH
-production implementation remains frozen until that gate. An initial external
-behavior corpus now contains 541 provenance-bearing Behavior Records, 252
-entrypoints (including 148 Modifier callbacks), and 829 recursively
-normalized semantic nodes (784 operations and 45 Predicate AST nodes). Its
-current slice has 490 `REQUIRES_PACKET` nodes and 164 explicit `OPAQUE` nodes;
-the former 279/122 figures were entrypoint-only counts, not a semantic
-denominator. None are yet compiled or golden-tested. The active ticket is the
-generic deterministic event/effect queue contract. Read
-`data/semantics/4.4.54/full_reconstruction/coverage_baseline_001.json` and
-`coverage_ledger_v1.json` for exact measurable state.
+production implementation remains frozen until that gate. The canonical
+external behavior corpus v2 contains 553 records: 508 entrypoints (404
+Modifier callbacks), 2 TaskListTemplate definitions, 287 DynamicValue
+definitions, and 2295 recursive semantic nodes (1780 operations, 515
+Predicate AST). 249 records are behavior-bearing and 304 are
+static-definition-only references, which no longer deflate the behavior
+denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler structurally
+compiles 201 of 249 behavior-bearing records; zero are executable or
+golden-tested. DynamicValue structural binding plus PostfixExpr
+decoder/evaluator and TargetAlias resolution references now exist; KERNEL-EVENT
+and Modifier lifecycle packet/code mismatches are corrected. Corpus hash:
+`4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5`.
+Authoritative state lives in `coverage_ledger_v1.json`.
 
 It now also has a separate static-content route: Nanoka 4.4.54 is captured as
 an immutable local raw snapshot, normalized into Canonical JSON/JSONL, and

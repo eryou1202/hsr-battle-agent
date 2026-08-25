@@ -1,97 +1,113 @@
 {
-  "counting_rule": "The reviewed captured corpus (541 BehaviorRecords) is the only declared denominator in this report. It is not a substitute for the full 4.4.54 behavior corpus, whose denominator remains UNKNOWN.",
+  "counting_rule": "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
   "failure_clusters": {
-    "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 64,
-    "NO_OPERATIONAL_ENTRYPOINTS": 446,
-    "REQUIRES_PACKET_HAS_NO_COMPILER_BINDING": 133
+    "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 129
   },
   "families": {
     "Avatar": {
+      "behavior_bearing_denominator": 29,
       "canonicalized": 29,
-      "captured_behavior_denominator": 29,
+      "captured_records": 29,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
-      "structural_compiled": 7,
-      "unsupported_or_uncompiled": 22
+      "static_definition_only": 0,
+      "structural_compiled": 14,
+      "unsupported_or_uncompiled": 15
     },
     "Eidolon": {
+      "behavior_bearing_denominator": 0,
       "canonicalized": 0,
-      "captured_behavior_denominator": 0,
+      "captured_records": 0,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
+      "static_definition_only": 0,
       "structural_compiled": 0,
       "unsupported_or_uncompiled": 0
     },
     "LightCone": {
+      "behavior_bearing_denominator": 0,
       "canonicalized": 0,
-      "captured_behavior_denominator": 0,
+      "captured_records": 0,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
+      "static_definition_only": 0,
       "structural_compiled": 0,
       "unsupported_or_uncompiled": 0
     },
     "Modifier": {
-      "canonicalized": 455,
-      "captured_behavior_denominator": 455,
+      "behavior_bearing_denominator": 164,
+      "canonicalized": 467,
+      "captured_records": 467,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
-      "structural_compiled": 3,
-      "unsupported_or_uncompiled": 452
+      "static_definition_only": 303,
+      "structural_compiled": 141,
+      "unsupported_or_uncompiled": 23
     },
     "Monster": {
+      "behavior_bearing_denominator": 3,
       "canonicalized": 3,
-      "captured_behavior_denominator": 3,
+      "captured_records": 3,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
-      "structural_compiled": 1,
-      "unsupported_or_uncompiled": 2
+      "static_definition_only": 0,
+      "structural_compiled": 2,
+      "unsupported_or_uncompiled": 1
     },
     "RelicSet": {
+      "behavior_bearing_denominator": 0,
       "canonicalized": 0,
-      "captured_behavior_denominator": 0,
+      "captured_records": 0,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
+      "static_definition_only": 0,
       "structural_compiled": 0,
       "unsupported_or_uncompiled": 0
     },
     "StageBuff": {
+      "behavior_bearing_denominator": 53,
       "canonicalized": 54,
-      "captured_behavior_denominator": 54,
+      "captured_records": 54,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
-      "structural_compiled": 33,
-      "unsupported_or_uncompiled": 21
+      "static_definition_only": 1,
+      "structural_compiled": 44,
+      "unsupported_or_uncompiled": 9
     },
     "Trace": {
+      "behavior_bearing_denominator": 0,
       "canonicalized": 0,
-      "captured_behavior_denominator": 0,
+      "captured_records": 0,
       "executable": 0,
       "full_game_behavior_denominator": "UNKNOWN",
       "golden_tested": 0,
+      "static_definition_only": 0,
       "structural_compiled": 0,
       "unsupported_or_uncompiled": 0
     }
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "a67a39705ee371df9dce6ec402f7e8a1ef679e0e0aed27db34968233681766e3",
+  "input_compiler_report_sha256": "1d9d4933a1401e13d7e760e75a617f7a5a205f4012272a507486dfb9565635a7",
   "next_high_leverage": {
-    "reason": "The risk triage contains 203 AddModifier nodes and 29 StackProperty nodes. PRIM-MODIFIER-001 already fixes bounded instance transitions, so compiler binding/target and condition dependencies should be recovered before widening the corpus.",
-    "ticket_id": "COMPILER-MODIFIER-APPLY-001"
+    "reason": "The repaired census shows 41 unbound DamageRequest, 19 Retarget, 15 InsertAction, 14 ModifyActionState, 13 DelayAction and 87 gating PresentationWait nodes. DynamicValue structural binding and formula decoding are already implemented; the next executable gain is target resolution plus scheduler/action markers.",
+    "ticket_id": "TARGET-001 + FORMULA-001 + SCHEDULER-001"
   },
   "overall": {
-    "canonicalized": 541,
-    "captured_behavior_denominator": 541,
+    "behavior_bearing_denominator": 249,
+    "canonicalized": 553,
+    "captured_records": 553,
     "executable": 0,
     "golden_tested": 0,
-    "structural_compiled": 44,
-    "uncompiled": 497
+    "static_definition_only": 304,
+    "structural_compiled": 201,
+    "uncompiled": 48
   },
   "report_id": "BEHAVIOR-COVERAGE-CENSUS-001",
   "status": "STRICT_REVIEWED_CORPUS_BASELINE"

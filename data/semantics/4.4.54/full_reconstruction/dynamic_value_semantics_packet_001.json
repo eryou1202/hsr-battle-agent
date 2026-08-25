@@ -1,0 +1,31 @@
+{
+  "packet_id": "DYNAMIC-VALUE-SEMANTICS-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_R4_REPRESENTATION_ANCHORS",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R4_LOCAL_ANCHORS",
+  "scope": "DynamicValue storage, DefineDynamicValue/SetDynamicValue canonical transitions, and PostfixExpr decoding/evaluation for the reviewed TurnBasedGameData formula bytecode. Target-context construction remains a separate Target packet.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "1347 PostfixExpr instances in the v2 canonical corpus; all 18 distinct opcode programs decode with the selected token grammar."},
+    {"artifact": "data/semantics/4.4.54/dynamic_value_batch_02.json", "support": "R4 local evidence for DynamicValue ValueType tags and tag-aware coercion primitives."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "DynamicValue definitions and operation argument payloads are preserved losslessly."}
+  ],
+  "selected_model": {
+    "postfix_encoding": "OpCodes is a base64 byte stream. 0x00/0x01 start two-byte operand tokens (FIXED index / DYNAMIC hash index); 0x11 is END; every other byte is an operation.",
+    "operation_semantics": {"0x02": "ADD", "0x03": "SUB", "0x04": "MUL", "0x05": "DIV", "0x0e": "NEG", "0x11": "END"},
+    "evaluation": "Decimal arithmetic with 38 significant digits; division by zero is an explicit semantic error, never a silent zero.",
+    "store_scope": "ContextCaster, ContextOwner, ContextModifier, TargetEntity and ContextAbility are recognized scope labels. When ContextScope is absent the selected default is ContextCaster; this default remains an explicit R3 ambiguity.",
+    "define_dynamic_value": "If the selected owner does not already hold DynamicKey, create it with ResetValue when present, otherwise 0. If the key exists, no transition is recorded. ResetValue evaluation uses the same value-spec decoder.",
+    "set_dynamic_value": "Evaluate Value (fixed or PostfixExpr) in the operation context, then overwrite DynamicKey on the selected scope owner. The write commits before the following sibling operation per KERNEL-EVENT-001 state visibility.",
+    "write_visibility": "A SetDynamicValue write is visible to every later operation in the same behavior record and to nested events dispatched after the committing primitive boundary. It is not visible to earlier siblings.",
+    "record_definitions": "record-level DynamicValues definitions are static metadata; runtime DynamicHashes that are not resolvable from those definitions must be supplied by an explicit DynamicValue resolver packet and are never guessed."
+  },
+  "unsupported_cases": [
+    "operation bytes 0x06..0x0d and 0x0f (not observed in the reviewed corpus)",
+    "array/map DynamicValue cells as arithmetic operands",
+    "target/context construction and TargetAlias resolution",
+    "modifier-owned DynamicValue namespace merge rules",
+    "read-after-write across immediate native dispatch modes beyond the KERNEL-EVENT selected model"
+  ],
+  "acceptance_fixture": "tests/game_data/test_dynamic_value_reference.py proves direct load, ADD/SUB/MUL/DIV/NEG programs, malformed-program rejection, deterministic define/set/read store transitions, and fixed/formula value-spec extraction.",
+  "dsh_implementation_contract": "Implement the PostfixProgram decoder exactly as specified, use arbitrary-precision decimal arithmetic with explicit division-by-zero errors, and keep the dynamic store immutable/deterministic. Any unsupported opcode or unresolved DynamicHash must reject the behavior record rather than approximate."
+}

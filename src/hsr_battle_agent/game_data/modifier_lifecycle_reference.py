@@ -4,6 +4,18 @@ This module is a semantic executable specification for
 PRIM-MODIFIER-001.  It intentionally excludes callback execution, source
 formula resolution and global modifier lookup; those require their own
 compiler/kernel packets.  It must not be mistaken for a production runtime.
+
+The v2 reference aligns with the packet boundary model:
+
+- an appended instance enters ``TO_BE_ADDED`` and is not dispatchable;
+- ``activate`` represents the OnAdded -> OnActivate boundary and moves the
+  instance to ``ALIVE`` (callback registration keys become eligible for the
+  event kernel only from this point);
+- ``mark_destroy`` moves to ``TO_BE_REMOVED`` but keeps the registration keys
+  attached until the explicit dirty-removal boundary;
+- ``remove_dirty`` removes non-ALIVE instances without a destroy guard,
+  preserves survivor order, and returns the callback/property-contribution
+  keys that must be deregistered at the same boundary.
 """
 from __future__ import annotations
 
@@ -45,6 +57,8 @@ class ModifierInstance:
     state: ModifierState = ModifierState.TO_BE_ADDED
     destroy_guard: int = 0
     destroy_reason: int | None = None
+    callback_registration_keys: tuple[str, ...] = ()
+    property_contribution_keys: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -52,6 +66,8 @@ class ModifierTransition:
     instances: tuple[ModifierInstance, ...]
     action: str
     affected_instance_id: str
+    deregistered_callback_keys: tuple[str, ...] = ()
+    removed_property_contribution_keys: tuple[str, ...] = ()
 
 
 def _matches(existing: ModifierInstance, incoming: ModifierInstance) -> bool:
@@ -68,18 +84,20 @@ def _matches(existing: ModifierInstance, incoming: ModifierInstance) -> bool:
 def add_or_refresh(instances: Iterable[ModifierInstance], incoming: ModifierInstance) -> ModifierTransition:
     """Apply the bounded E4 add/refresh state transition.
 
-    Policies without a complete local/global resolution contract are rejected,
-    rather than silently approximated.
+    Appended instances remain ``TO_BE_ADDED`` until ``activate`` is called at
+    the OnAdded -> OnActivate boundary.  Policies without a complete
+    local/global resolution contract are rejected, rather than silently
+    approximated.
     """
     current = tuple(instances)
     policy = int(incoming.stacking)
     if policy == StackingPolicy.MULTIPLE:
-        activated = replace(incoming, state=ModifierState.ALIVE)
-        return ModifierTransition(current + (activated,), "APPEND_MULTIPLE", activated.instance_id)
+        pending = replace(incoming, state=ModifierState.TO_BE_ADDED)
+        return ModifierTransition(current + (pending,), "APPEND_MULTIPLE_PENDING", pending.instance_id)
     existing_index = next((index for index, existing in enumerate(current) if _matches(existing, incoming)), None)
     if existing_index is None:
-        activated = replace(incoming, state=ModifierState.ALIVE)
-        return ModifierTransition(current + (activated,), "APPEND_NEW", activated.instance_id)
+        pending = replace(incoming, state=ModifierState.TO_BE_ADDED)
+        return ModifierTransition(current + (pending,), "APPEND_NEW_PENDING", pending.instance_id)
     existing = current[existing_index]
     if policy in {2, 5, 7, 8, 12}:
         updated = replace(existing, current_life=incoming.current_life, count=incoming.count)
@@ -104,6 +122,29 @@ def add_or_refresh(instances: Iterable[ModifierInstance], incoming: ModifierInst
     return ModifierTransition(current[:existing_index] + (updated,) + current[existing_index + 1 :], action, updated.instance_id)
 
 
+def activate(instances: Iterable[ModifierInstance], instance_id: str) -> ModifierTransition:
+    """OnAdded has completed; OnActivate makes exactly one pending instance ALIVE."""
+    current = tuple(instances)
+    index = next((index for index, item in enumerate(current) if item.instance_id == instance_id), None)
+    if index is None:
+        raise KeyError(instance_id)
+    pending = current[index]
+    if pending.state != ModifierState.TO_BE_ADDED:
+        raise ValueError(f"instance {instance_id} is not TO_BE_ADDED: {pending.state.name}")
+    activated = replace(pending, state=ModifierState.ALIVE)
+    return ModifierTransition(current[:index] + (activated,) + current[index + 1 :], "ACTIVATE_ALIVE", instance_id)
+
+
+def active_callback_keys(instances: Iterable[ModifierInstance]) -> tuple[str, ...]:
+    """Only ALIVE modifiers contribute callbacks to KERNEL-EVENT-001."""
+    return tuple(
+        key
+        for instance in instances
+        if instance.state == ModifierState.ALIVE
+        for key in instance.callback_registration_keys
+    )
+
+
 def mark_destroy(instances: Iterable[ModifierInstance], instance_id: str, *, reason: int) -> ModifierTransition:
     current = tuple(instances)
     index = next((index for index, item in enumerate(current) if item.instance_id == instance_id), None)
@@ -117,8 +158,19 @@ def mark_destroy(instances: Iterable[ModifierInstance], instance_id: str, *, rea
 
 
 def remove_dirty(instances: Iterable[ModifierInstance]) -> ModifierTransition:
-    """Commit native dirty removal while preserving the survivors' order."""
+    """Commit native dirty removal while preserving the survivors' order.
+
+    Callback registrations and property-contribution keys of removed
+    instances are returned on the transition so the same lifecycle boundary
+    deregisters them atomically.
+    """
     current = tuple(instances)
     survivors = tuple(item for item in current if item.state == ModifierState.ALIVE or item.destroy_guard > 0)
-    removed = next((item for item in current if item not in survivors), None)
-    return ModifierTransition(survivors, "REMOVE_DIRTY", removed.instance_id if removed else "NONE")
+    removed = tuple(item for item in current if item not in survivors)
+    return ModifierTransition(
+        survivors,
+        "REMOVE_DIRTY",
+        removed[0].instance_id if removed else "NONE",
+        deregistered_callback_keys=tuple(key for item in removed for key in item.callback_registration_keys),
+        removed_property_contribution_keys=tuple(key for item in removed for key in item.property_contribution_keys),
+    )

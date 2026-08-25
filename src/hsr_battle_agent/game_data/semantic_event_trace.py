@@ -73,8 +73,13 @@ class DeterministicEventTracer:
 
     Event registrations are stable by activation order.  A dispatch uses
     numeric priority ascending followed by registration sequence.  Children
-    are emitted depth-first, while an event requested by an operation enters a
-    FIFO queue after the current entrypoint completes.
+    are emitted depth-first.  An event requested by an operation is appended
+    to the FIFO queue immediately in emission order, but dispatch of queued
+    events only begins after every matching registration of the currently
+    dispatching event has completed.  This selected model prevents reentrant
+    listener mutation of an in-progress dispatch; the native immediate-vs-
+    deferred distinction remains an explicit ambiguity until a local packet
+    resolves it.
     """
 
     def __init__(self) -> None:
@@ -155,9 +160,10 @@ class DeterministicEventTracer:
         """Trace dispatch order without pretending to execute uncompiled ops.
 
         ``nested_events_after_operation`` is an explicit probe hook.  It
-        models an already-compiled operation emitting an event; this reference
-        tracer queues that event FIFO only after the current entrypoint's
-        source-order traversal has completed.
+        models an already-compiled operation emitting an event; the emitted
+        events enter the FIFO queue in emission order, but the queue is not
+        drained until the current event's entire registration pass has
+        completed.
         """
         pending = deque(canonical_event_name(event) for event in emitted_events)
         trace: list[EventTraceStep] = []

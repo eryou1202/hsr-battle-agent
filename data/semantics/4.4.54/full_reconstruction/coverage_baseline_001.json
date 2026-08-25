@@ -1,22 +1,119 @@
 {
-  "report_id": "COVERAGE-BASELINE-001",
-  "game_version": "4.4.54",
-  "status": "RECURSIVE_EXTERNAL_BEHAVIOR_BASELINE",
-  "input_corpus": {"path":"data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "corpus_sha256":"4723b06c1ef4a87d9854ec02e84f6df5fa45456402e7b589a4550e9567b9f5cb", "source":"TurnBasedGameData", "source_commit":"b11066beacc4de454b625fafc7ea3dd540c5bbf3", "version_relation":"CLOSE_4.4.0_TO_4.4.54"},
-  "counting_rule": "These are captured external behavior records, not the total 4.4.54 game denominator. Recursive semantic nodes include 784 operation nodes and 45 Predicate AST nodes; neither compiled nor golden coverage is implied until a generic compiler/kernel executes them without behavior-affecting opaque nodes.",
-  "behavior_records": {"captured":541,"canonicalized":541,"semantic_modelled":0,"compiled":0,"golden_tested":0,"explicitly_unsupported":0,"total_game_denominator":"UNKNOWN"},
-  "by_owner_kind": {
-    "Avatar":{"captured":29,"canonicalized":29,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "Monster":{"captured":3,"canonicalized":3,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "StageBuff":{"captured":54,"canonicalized":54,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "Modifier":{"captured":455,"canonicalized":455,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "Trace":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "Eidolon":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "LightCone":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"},
-    "RelicSet":{"captured":0,"canonicalized":0,"compiled":0,"golden_tested":0,"total_game_denominator":"UNKNOWN"}
+  "behavior_records": {
+    "behavior_bearing": 249,
+    "canonicalized": 553,
+    "captured": 553,
+    "compiled": 0,
+    "explicitly_unsupported": 0,
+    "golden_tested": 0,
+    "semantic_modelled": 0,
+    "static_definition_only": 304,
+    "total_game_denominator": "UNKNOWN"
   },
-  "semantic_nodes": {"recursive_total":829,"operation_nodes":784,"predicate_ast_nodes":45,"root_entrypoint_operations":279,"entrypoints":252,"modifier_callback_entrypoints":148,"semantic_status":{"MODELLED":27,"REQUIRES_PACKET":619,"PRESENTATION":181,"OPAQUE":2},"diagnostic_order_traced":29,"compiled":0,"golden_tested":0},
-  "triage_artifact":"data/semantics/4.4.54/full_reconstruction/operation_risk_triage_001.json",
-  "unsupported_clusters": ["modifier lifecycle/callback subscription and priority","action completion and scheduler markers","predicate AST and loop expansion","target retarget semantics","damage/break event ordering","property stacks and modifier dynamic values","IncludeTaskListTemplate/death/projectile scheduling","2 opaque recursive nodes (untyped callback payload and TaskConfig)"],
-  "next_coverage_gain_target": "COMPILER-VERTICAL-001: compile a strictly no-blocker subset through the static ScenarioCompiler and reference event/Modifier contracts. The old 122 count was entrypoint-only and is not a semantic denominator; all 619 REQUIRES_PACKET and 2 OPAQUE nodes remain non-executable until their named primitive packet is implemented."
+  "by_owner_kind": {
+    "Avatar": {
+      "behavior_bearing": 29,
+      "canonicalized": 29,
+      "captured": 29,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "Eidolon": {
+      "behavior_bearing": 0,
+      "canonicalized": 0,
+      "captured": 0,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "LightCone": {
+      "behavior_bearing": 0,
+      "canonicalized": 0,
+      "captured": 0,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "Modifier": {
+      "behavior_bearing": 164,
+      "canonicalized": 467,
+      "captured": 467,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 303,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "Monster": {
+      "behavior_bearing": 3,
+      "canonicalized": 3,
+      "captured": 3,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "RelicSet": {
+      "behavior_bearing": 0,
+      "canonicalized": 0,
+      "captured": 0,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "StageBuff": {
+      "behavior_bearing": 53,
+      "canonicalized": 54,
+      "captured": 54,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 1,
+      "total_game_denominator": "UNKNOWN"
+    },
+    "Trace": {
+      "behavior_bearing": 0,
+      "canonicalized": 0,
+      "captured": 0,
+      "compiled": 0,
+      "golden_tested": 0,
+      "static_definition_only": 0,
+      "total_game_denominator": "UNKNOWN"
+    }
+  },
+  "counting_rule": "These are captured external behavior records, not the total 4.4.54 game denominator. behavior_bearing records contain at least one operational entrypoint or TaskListTemplate; static_definition_only records are canonicalized reference/configuration records without operational behavior and are not part of the behavior denominator. Recursive semantic nodes include entrypoint operations, predicate AST nodes and TaskListTemplate definitions; DynamicValues definitions are preserved as definition records, not operation nodes. Neither compiled nor golden coverage is implied until a generic compiler/kernel executes them without behavior-affecting opaque nodes.",
+  "game_version": "4.4.54",
+  "input_corpus": {
+    "corpus_sha256": "4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5",
+    "path": "data\\semantics\\4.4.54\\full_reconstruction\\external_behavior_corpus_v1.json",
+    "source": "TurnBasedGameData",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+  },
+  "next_coverage_gain_target": "COMPILER-VERTICAL-001: compile a strictly no-blocker subset through the static ScenarioCompiler and reference event/Modifier contracts. The 619/122/490 counts were superseded by this generator output and must not be used.",
+  "report_id": "COVERAGE-BASELINE-001",
+  "semantic_nodes": {
+    "compiled": 0,
+    "dynamic_value_definitions": 287,
+    "entrypoints": 508,
+    "golden_tested": 0,
+    "modifier_callback_entrypoints": 404,
+    "operation_nodes": 1780,
+    "predicate_ast_nodes": 515,
+    "recursive_total": 2295,
+    "root_entrypoint_operations": 942,
+    "root_template_operations": 4,
+    "semantic_status": {
+      "MODELLED": 32,
+      "OPAQUE": 7,
+      "PRESENTATION": 430,
+      "REQUIRES_PACKET": 1826
+    },
+    "template_definitions": 2
+  },
+  "status": "RECURSIVE_EXTERNAL_BEHAVIOR_BASELINE",
+  "triage_artifact": "data/semantics/4.4.54/full_reconstruction/operation_risk_triage_001.json"
 }

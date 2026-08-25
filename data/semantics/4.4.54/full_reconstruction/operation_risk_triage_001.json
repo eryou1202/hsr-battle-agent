@@ -1,10 +1,10 @@
 {
   "by_importance": {
-    "P0_MODIFIER_OR_DAMAGE_PIPELINE": 264,
-    "P0_SCHEDULER_OR_TERMINAL": 35,
-    "P1_LEGALITY_OR_RESOURCE": 216,
-    "P1_UNCLASSIFIED_SEMANTIC": 106,
-    "P2_PRESENTATION_GATING_RISK": 70
+    "P0_MODIFIER_OR_DAMAGE_PIPELINE": 513,
+    "P0_SCHEDULER_OR_TERMINAL": 87,
+    "P1_LEGALITY_OR_RESOURCE": 912,
+    "P1_UNCLASSIFIED_SEMANTIC": 321,
+    "P2_PRESENTATION_GATING_RISK": 122
   },
   "compiler_policy": {
     "OPAQUE": "hard compile failure; never a no-op",
@@ -12,11 +12,11 @@
     "PRESENTATION_ONLY": "may be headlessly omitted only with explicit compiler trace",
     "REQUIRES_PACKET": "hard compile failure until its named packet/primitive exists"
   },
-  "counting_rule": "Counts are recursively lifted operation/predicate nodes in the current reviewed external slice, not a complete game denominator.",
+  "counting_rule": "Counts are recursively lifted operation/predicate nodes across all reviewed entrypoints, Modifier _CallbackList sources, GlobalModifiers and TaskListTemplate definitions. This is not a complete game denominator.",
   "entries": [
     {
       "canonical_kind": "ADD_MODIFIER",
-      "count": 203,
+      "count": 238,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -33,7 +33,7 @@
     },
     {
       "canonical_kind": "MODIFY_PROPERTY_STACK",
-      "count": 29,
+      "count": 158,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -50,7 +50,7 @@
     },
     {
       "canonical_kind": "REMOVE_MODIFIER",
-      "count": 18,
+      "count": 48,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -66,8 +66,25 @@
       "source_type": "RPG.GameCore.RemoveModifier"
     },
     {
+      "canonical_kind": "REMOVE_MODIFIER",
+      "count": 22,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_00_DOT_Rank04_AddSP:MODIFIER_CALLBACK:M_BlackSwan_00_DOT_Rank04_AddSP._CallbackList[0]:OnPhase1:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOTFlag:MODIFIER_CALLBACK:M_BlackSwan_DOTFlag._CallbackList[0]:OnStack:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOTFlag:MODIFIER_CALLBACK:M_BlackSwan_DOTFlag._CallbackList[1]:OnModifierRemove:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.RemoveSelfModifier"
+    },
+    {
       "canonical_kind": "MODIFY_DAMAGE_DATA",
-      "count": 8,
+      "count": 10,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -81,6 +98,74 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.ModifyDamageData"
+    },
+    {
+      "canonical_kind": "SET_MODIFIER_VALUE",
+      "count": 9,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:2/SuccessTaskList:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:BlockDamage_Count:MODIFIER_CALLBACK:BlockDamage_Count._CallbackList[1]:OnAfterBeingAttacked:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Entangle:MODIFIER_CALLBACK:MCommon_Element_Entangle._CallbackList[2]:OnStack:4/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetModifierValue"
+    },
+    {
+      "canonical_kind": "MODIFY_TOUGHNESS",
+      "count": 7,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire:MODIFIER_CALLBACK:MCommon_WeakType_Fire._CallbackList[0]:OnStack:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Ice:MODIFIER_CALLBACK:MCommon_WeakType_Ice._CallbackList[0]:OnStack:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Imaginary:MODIFIER_CALLBACK:MCommon_WeakType_Imaginary._CallbackList[0]:OnStack:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.StackWeakness"
+    },
+    {
+      "canonical_kind": "MODIFY_MODIFIER_FLAG",
+      "count": 4,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/SuccessTaskList:7/SuccessTaskList:1/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[2]:OnStack:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[2]:OnStack:2/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.AddBehaviorFlagForModifier"
+    },
+    {
+      "canonical_kind": "MODIFY_SKILL_PROPERTY",
+      "count": 4,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_ModifySkillPropertyByType_Normal:MODIFIER_CALLBACK:MCommon_Windfury_ModifySkillPropertyByType_Normal._CallbackList[0]:OnStack:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_ModifySkillPropertyByType_Skill:MODIFIER_CALLBACK:MCommon_Windfury_ModifySkillPropertyByType_Skill._CallbackList[0]:OnStack:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:0/SuccessTaskList:2"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ModifySkillPropertyByType"
     },
     {
       "canonical_kind": "ADD_MODIFIER",
@@ -115,6 +200,38 @@
       "source_type": "RPG.GameCore.ModifyHealData"
     },
     {
+      "canonical_kind": "MODIFY_MODIFIER_FLAG",
+      "count": 2,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/SuccessTaskList:7/SuccessTaskList:1/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT_Enhance:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT_Enhance._CallbackList[0]:OnDestroy:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.RemoveBehaviorFlagForModifier"
+    },
+    {
+      "canonical_kind": "SET_RESILIENCE",
+      "count": 2,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Protect_Shield:MODIFIER_CALLBACK:MCommon_Protect_Shield._CallbackList[1]:OnDestroy:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Protect_Shield:MODIFIER_CALLBACK:MCommon_Protect_Shield._CallbackList[2]:OnStack:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetResilience"
+    },
+    {
       "canonical_kind": "DISPEL_STATUS",
       "count": 1,
       "gating_risks": [
@@ -130,6 +247,21 @@
       "source_type": "RPG.GameCore.DispelStatus"
     },
     {
+      "canonical_kind": "INIT_SHIELD",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Protect_Shield:MODIFIER_CALLBACK:MCommon_Protect_Shield._CallbackList[2]:OnStack:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.InitShield"
+    },
+    {
       "canonical_kind": "REMOVE_MODIFIER",
       "count": 1,
       "gating_risks": [
@@ -143,6 +275,70 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.RemoveAdventureModifier"
+    },
+    {
+      "canonical_kind": "REMOVE_SHIELD",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Protect_Shield:MODIFIER_CALLBACK:MCommon_Protect_Shield._CallbackList[1]:OnDestroy:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.RemoveShield"
+    },
+    {
+      "canonical_kind": "MODIFY_TOUGHNESS",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_MODIFIER_OR_DAMAGE_PIPELINE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:StanceBreakState:MODIFIER_CALLBACK:StanceBreakState._CallbackList[1]:OnDestroy:2"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetStanceCount"
+    },
+    {
+      "canonical_kind": "INSERT_ACTION",
+      "count": 13,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/FailedTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.TurnInsertAction"
+    },
+    {
+      "canonical_kind": "DELAY_ACTION",
+      "count": 12,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:8",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900101:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900101._CallbackList[0]:OnPhase1:8",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999027_Modifier_Sub._CallbackList[0]:OnAfterAttack:0/TaskList:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ModifyActionDelay"
     },
     {
       "canonical_kind": "INCLUDE_TASK_TEMPLATE",
@@ -162,6 +358,40 @@
       "source_type": "RPG.GameCore.IncludeTaskListTemplate"
     },
     {
+      "canonical_kind": "MODIFY_ACTION_STATE",
+      "count": 9,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_BAN_Silence:MODIFIER_CALLBACK:MCommon_BAN_Silence._CallbackList[0]:OnStack:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Crazy:MODIFIER_CALLBACK:MCommon_CTRL_Crazy._CallbackList[1]:OnStack:2",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Frozen:MODIFIER_CALLBACK:MCommon_CTRL_Frozen._CallbackList[3]:OnStack:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.AttachSkillTypeDisable"
+    },
+    {
+      "canonical_kind": "DAMAGE_COMPLETION_MARKER",
+      "count": 7,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02:ONSTART:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02:ONSTART:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Phase02:ONSTART:7"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.DamagePerformFinish"
+    },
+    {
       "canonical_kind": "ACTION_COMPLETION_MARKER",
       "count": 7,
       "gating_risks": [
@@ -179,49 +409,67 @@
       "source_type": "RPG.GameCore.SkillPerformFinish"
     },
     {
-      "canonical_kind": "DAMAGE_COMPLETION_MARKER",
-      "count": 6,
+      "canonical_kind": "INSERT_ACTION",
+      "count": 4,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
       "importance": "P0_SCHEDULER_OR_TERMINAL",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02:ONSTART:2",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02:ONSTART:3",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Phase02:ONSTART:7"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Rank01:MODIFIER_CALLBACK:MAvatar_Natasha_00_Rank01_Check._CallbackList[0]:OnAfterBeingAttacked:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_GM_Revive:MODIFIER_CALLBACK:MCommon_GM_Revive._CallbackList[1]:OnLimboWaitHeal:0/SuccessTaskList:1"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.DamagePerformFinish"
+      "source_type": "RPG.GameCore.TurnInsertAbility"
     },
     {
-      "canonical_kind": "DELAY_ACTION",
+      "canonical_kind": "MODIFY_ACTION_COST",
       "count": 3,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
       "importance": "P0_SCHEDULER_OR_TERMINAL",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:8",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900101:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900101._CallbackList[0]:OnPhase1:8",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999027_Modifier_Sub._CallbackList[0]:OnAfterAttack:0/TaskList:1"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Frozen:MODIFIER_CALLBACK:MCommon_CTRL_Frozen._CallbackList[2]:OnPhase1:5",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Stun:MODIFIER_CALLBACK:MCommon_CTRL_Stun._CallbackList[2]:OnPhase1:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Frozen:MODIFIER_CALLBACK:MCommon_Element_Frozen._CallbackList[2]:OnPhase1:5"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ModifyActionDelay"
+      "source_type": "RPG.GameCore.ModifyCurrentSkillDelayCost"
+    },
+    {
+      "canonical_kind": "MODIFY_ACTION_STATE",
+      "count": 3,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[0]:OnDestroy:4",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[3]:OnActionEnd:3",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[5]:OnListenInsertAbilityStart:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ResetTeammateAttackPerform"
     },
     {
       "canonical_kind": "TRIGGER_BREAK",
-      "count": 2,
+      "count": 3,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
       "importance": "P0_SCHEDULER_OR_TERMINAL",
       "sample_operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/TaskList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[1]:OnEnterBattle:1/TaskList:1"
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[1]:OnEnterBattle:1/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:StanceBreakState:MODIFIER_CALLBACK:StanceBreakState._CallbackList[0]:OnCreate:2"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
@@ -229,20 +477,83 @@
       "source_type": "RPG.GameCore.TriggerBreak"
     },
     {
-      "canonical_kind": "INSERT_ACTION",
+      "canonical_kind": "MODIFY_ACTION_STATE",
       "count": 2,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
       "importance": "P0_SCHEDULER_OR_TERMINAL",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Rank01:MODIFIER_CALLBACK:MAvatar_Natasha_00_Rank01_Check._CallbackList[0]:OnAfterBeingAttacked:0/SuccessTaskList:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Stun:MODIFIER_CALLBACK:MCommon_CTRL_Stun._CallbackList[2]:OnPhase1:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Shake_IgnoreImmune:MODIFIER_CALLBACK:MCommon_Shake_IgnoreImmune._CallbackList[2]:OnPhase1:0/SuccessTaskList:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.TurnInsertAbility"
+      "source_type": "RPG.GameCore.AbortModifierPhasePerform"
+    },
+    {
+      "canonical_kind": "LOCK_HP",
+      "count": 2,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_LockHP:MODIFIER_CALLBACK:MCommon_LockHP._CallbackList[0]:OnCreate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_LockHP:MODIFIER_CALLBACK:MCommon_MindControl_LockHP._CallbackList[0]:OnCreate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.LockHP"
+    },
+    {
+      "canonical_kind": "GRANT_ABILITY",
+      "count": 2,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_GM_Revive:MODIFIER_CALLBACK:MCommon_GM_Revive._CallbackList[0]:OnStack:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Servant:MODIFIER_CALLBACK:MCommon_Servant._CallbackList[0]:OnCreate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.OwnerEntityAddAbility"
+    },
+    {
+      "canonical_kind": "DEATH_HANDLER",
+      "count": 2,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Phase02:ONSTART:8",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[2]:OnCharmAction:0/FailedTaskList:0/TaskList:6"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.TriggerSkipDeadHandler"
+    },
+    {
+      "canonical_kind": "CHARM_USE_SKILL",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[2]:OnCharmAction:0/FailedTaskList:0/TaskList:5"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.CharmUseSkill"
     },
     {
       "canonical_kind": "CONDITIONAL_LOOP",
@@ -275,6 +586,21 @@
       "source_type": "RPG.GameCore.FireProjectile"
     },
     {
+      "canonical_kind": "FORCE_KILL",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:1/FailedTaskList:2/FailedTaskList:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ForceKill"
+    },
+    {
       "canonical_kind": "LOOP",
       "count": 1,
       "gating_risks": [
@@ -288,6 +614,36 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.LoopExecuteTaskListWithInterval"
+    },
+    {
+      "canonical_kind": "DELAY_ACTION",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[1]:OnPhase1:0/FailedTaskList:1/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ResetActionDelay"
+    },
+    {
+      "canonical_kind": "DELAY_ACTION",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P0_SCHEDULER_OR_TERMINAL",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_SetActionDelayOnTurnEnd:MODIFIER_CALLBACK:MCommon_SetActionDelayOnTurnEnd._CallbackList[0]:OnListenTurnEnd:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetActionDelay"
     },
     {
       "canonical_kind": "ACTION_START_MARKER",
@@ -305,23 +661,8 @@
       "source_type": "RPG.GameCore.SkillExecutionStart"
     },
     {
-      "canonical_kind": "DEATH_HANDLER",
-      "count": 1,
-      "gating_risks": [
-        "KNOWN_STATE_COMMIT"
-      ],
-      "importance": "P0_SCHEDULER_OR_TERMINAL",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Phase02:ONSTART:8"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.TriggerSkipDeadHandler"
-    },
-    {
       "canonical_kind": "CONDITIONAL",
-      "count": 148,
+      "count": 364,
       "gating_risks": [
         "UNKNOWN"
       ],
@@ -337,8 +678,110 @@
       "source_type": "RPG.GameCore.PredicateTaskList"
     },
     {
+      "canonical_kind": "PREDICATE",
+      "count": 105,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank06:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank06_SubOnEnemy._CallbackList[1]:OnBeforeBeingAttacked:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel_Insert:ONSTART:12/TaskList:5/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareDynamicValue"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 56,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison._CallbackList[0]:OnListenCharacterCreate:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0/PredicateList:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByTargetTeam"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 49,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison._CallbackList[1]:OnListenModifierOnStack:0/SuccessTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate:0/PredicateList:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0/PredicateList:2"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsContainModifier"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 47,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByAnd"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 30,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[1]:OnDestroy:7/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:4/SuccessTaskList:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareCharacterID"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 29,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[0]:OnCreate:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[0]:OnCreate:2/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[0]:OnCreate:3/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByContainBehaviorFlag"
+    },
+    {
       "canonical_kind": "RETARGET",
-      "count": 16,
+      "count": 19,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -355,20 +798,190 @@
     },
     {
       "canonical_kind": "PREDICATE",
-      "count": 12,
+      "count": 18,
       "gating_risks": [
         "UNKNOWN"
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate.PredicateList:0/PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:2",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:3"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:2/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[2]:OnStack:4/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[2]:OnStack:4/SuccessTaskList:0/SuccessTaskList:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByIsContainModifier"
+      "source_type": "RPG.GameCore.ByCompareModifierValue"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 15,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:0/Predicate:0/PredicateList:1/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:0/Predicate:0/PredicateList:1/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:4/Predicate:0/PredicateList:0/PredicateList:0/PredicateList:0/PredicateList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCurrentSkillType"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 14,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0/PredicateList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_PassiveSkillInitiate:MODIFIER_CALLBACK:MMonster_AML_Minion01_00_EffectController._CallbackList[3]:OnModifierRemove:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByAny"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 14,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate:0/PredicateList:2",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/SuccessTaskList:0/OnInsertAbort:0/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/OnInsertAbort:0/SuccessTaskList:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByHaveEnemyAlive"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 13,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/SuccessTaskList:0/OnInsertAbort:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/OnInsertAbort:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/SuccessTaskList:0/FailedTaskList:0/FailedTaskList:0/OnInsertAbort:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCasterAliveOrLimbo"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 11,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:StageAbility_3999017_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate:0/PredicateList:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByHasStanceWeak"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 10,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/Predicate:0/PredicateList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsTargetValid"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 10,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison._CallbackList[1]:OnListenModifierOnStack:0/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/SuccessTaskList:0/TaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank06:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank06._CallbackList[0]:OnListenModifierAdd:0/SuccessTaskList:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByRandomChance"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 8,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank06:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank06_SubOnEnemy._CallbackList[1]:OnBeforeBeingAttacked:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnListenBeforeSkillUse:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[4]:OnListenInsertAbilityStart:0/Predicate:0/PredicateList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByTargetListIntersects"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 7,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/SuccessTaskList:3/FailedTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/SuccessTaskList:3/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/SuccessTaskList:3/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCurrentSkillName"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 7,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[4]:OnModifierRemove:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[4]:OnModifierRemove:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByNot"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -378,14 +991,31 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:StageAbility_3999017_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:1/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:1/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:1/FailedTaskList:2/FailedTaskList:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByTargetTeam"
+      "source_type": "RPG.GameCore.ByCompareChallengeLeft"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 6,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Frozen:MODIFIER_CALLBACK:MCommon_CTRL_Frozen._CallbackList[0]:OnCreate:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Burn:MODIFIER_CALLBACK:MCommon_DOT_Burn._CallbackList[0]:OnCreate:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Electric:MODIFIER_CALLBACK:MCommon_DOT_Electric._CallbackList[0]:OnCreate:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByInTurnBasedGameModeState"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -395,14 +1025,48 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank06:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank06_SubOnEnemy._CallbackList[1]:OnBeforeBeingAttacked:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel_Insert:ONSTART:12/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison._CallbackList[1]:OnListenModifierOnStack:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[3]:OnModifierAdd:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[5]:OnModifierDotAdd:0/Predicate:0/PredicateList:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByCompareDynamicValue"
+      "source_type": "RPG.GameCore.ByCheckModifierCallBackName"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 5,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree02._CallbackList[1]:OnEnterBattle:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_SkillMazeInLevel:MODIFIER_CALLBACK:SkillMaze_Natasha_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010:MODIFIER_CALLBACK:StageAbility_3999010_Modifier._CallbackList[1]:OnEnterBattle:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareWaveCount"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 5,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:ONSTART:2/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:ONSTART:3/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT_Enhance:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT_Enhance._CallbackList[2]:OnStack:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByRankActivated"
     },
     {
       "canonical_kind": "RANDOM_SELECTION",
@@ -423,48 +1087,15 @@
     },
     {
       "canonical_kind": "PREDICATE",
-      "count": 3,
+      "count": 4,
       "gating_risks": [
         "UNKNOWN"
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:StageAbility_3999017_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[0]:OnListenCharacterCreate:0/Predicate.PredicateList:1"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.ByHasStanceWeak"
-    },
-    {
-      "canonical_kind": "PREDICATE",
-      "count": 3,
-      "gating_risks": [
-        "UNKNOWN"
-      ],
-      "importance": "P1_LEGALITY_OR_RESOURCE",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank06:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank06_SubOnEnemy._CallbackList[1]:OnBeforeBeingAttacked:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[4]:OnListenInsertAbilityStart:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[4]:OnListenInsertAbilityStart:0/Predicate.PredicateList:1"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.ByTargetListIntersects"
-    },
-    {
-      "canonical_kind": "PREDICATE",
-      "count": 2,
-      "gating_risks": [
-        "UNKNOWN"
-      ],
-      "importance": "P1_LEGALITY_OR_RESOURCE",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[1]:OnBeforeBeingHitAll:0/Predicate.PredicateList:1"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_Tree02_ListenAddPoison_SubOnEnemy._CallbackList[1]:OnBeforeBeingHitAll:0/Predicate:0/PredicateList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOT_DefenceIgnore:MODIFIER_CALLBACK:M_BlackSwan_DOT_DefenceIgnore._CallbackList[0]:OnBeforeBeingHitAll:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
@@ -473,19 +1104,122 @@
     },
     {
       "canonical_kind": "PREDICATE",
-      "count": 2,
+      "count": 4,
       "gating_risks": [
         "UNKNOWN"
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[3]:OnModifierAdd:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[5]:OnModifierDotAdd:0/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[5]:OnModifierDotAdd:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[5]:OnModifierDotAdd:2/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank01:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank01_SubOnEnemy._CallbackList[5]:OnModifierDotAdd:3/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByCheckModifierCallBackName"
+      "source_type": "RPG.GameCore.ByCheckModifierCallBackBehaviorFlag"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 4,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_PassiveSkill01:MODIFIER_CALLBACK:Fuka_Beginner_PassiveSkill_Buff_1._CallbackList[0]:OnBeforeDealHeal:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_PassiveSkill01:MODIFIER_CALLBACK:Fuka_Beginner_PassiveSkill_Buff_1_ForSnapshitEntity._CallbackList[0]:OnBeforeDealHeal:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Rank01:MODIFIER_CALLBACK:MAvatar_Natasha_00_Rank01_Check._CallbackList[0]:OnAfterBeingAttacked:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareHPRatio"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 4,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate:0/PredicateList:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill02_Phase02:ONSTART:9/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill03_Phase02:ONSTART:8/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareTarget"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 3,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill03_Phase02:MODIFIER_CALLBACK:MAvatar_Natasha_00_Rank02_HOT_HPByMaxHP._CallbackList[0]:OnPhase1:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP:MODIFIER_CALLBACK:MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_GM_Revive:MODIFIER_CALLBACK:MCommon_GM_Revive._CallbackList[1]:OnLimboWaitHeal:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareHP"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 3,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[0]:OnCreate:2/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[1]:OnPhase1:3/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[3]:OnCustomEvent:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareMonsterRank"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 3,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02:ONSTART:5/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill02_Phase02:ONSTART:3/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill02_Phase02:ONSTART:5/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.BySkillPointActivated"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_ENTITY_PARAM",
+      "count": 3,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[6]:OnInsertActionStart:0/SuccessTaskList:1/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:2/SuccessTaskList:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:2/SuccessTaskList:0/FailedTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicEntityParam"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -495,13 +1229,13 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_SkillMazeInLevel:MODIFIER_CALLBACK:SkillMaze_Natasha_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_2013202:ONCREATE:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_2013202:ONNPCMONSTERCREATE:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByCompareWaveCount"
+      "source_type": "RPG.GameCore.AdventureByNPCMonsterPurposeType"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -511,13 +1245,13 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_PassiveSkillInitiate:MODIFIER_CALLBACK:MMonster_AML_Minion01_00_EffectController._CallbackList[3]:OnModifierRemove:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_PassiveSkillInitiate:MODIFIER_CALLBACK:MMonster_AML_Minion01_00_EffectController._CallbackList[3]:OnModifierRemove:0/Predicate.PredicateList:1"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[6]:OnInsertActionStart:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[7]:OnInsertActionFinish:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByContainBehaviorFlag"
+      "source_type": "RPG.GameCore.ByCompareParamString"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -527,29 +1261,45 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate.PredicateList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_SkillMazeInLevel:MODIFIER_CALLBACK:SkillMaze_Natasha_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/SuccessTaskList:3/FailedTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/SuccessTaskList:3/FailedTaskList:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByCompareSomatoType"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 2,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999022:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999022_Modifier_Sub._CallbackList[0]:OnBeforeBeingHitAll:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999022:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999022_Modifier_Sub._CallbackList[1]:OnAfterBeingHitAll:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsDamageType"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 2,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_SkillMazeInLevel:MODIFIER_CALLBACK:SkillMaze_Natasha_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate:0/PredicateList:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.ByIsMazeSkillAffectCurrentWave"
-    },
-    {
-      "canonical_kind": "PREDICATE",
-      "count": 2,
-      "gating_risks": [
-        "UNKNOWN"
-      ],
-      "importance": "P1_LEGALITY_OR_RESOURCE",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_Rank04_Listener._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:1",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:1"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.ByNot"
     },
     {
       "canonical_kind": "MODIFY_SPECIAL_RESOURCE",
@@ -575,12 +1325,12 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate.PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_Property_Config:MODIFIER_CALLBACK:MCommon_Property_Config._CallbackList[0]:OnStack:0/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByAnd"
+      "source_type": "RPG.GameCore.ByCompareAbilityProperty"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -590,12 +1340,12 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Rank02:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_Rank02._CallbackList[0]:OnListenCharacterDie:0/SuccessTaskList:0/Predicate.PredicateList:2"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[9]:OnBeforeEnergyPointChange:0/Predicate:0/PredicateList:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByAny"
+      "source_type": "RPG.GameCore.ByCompareChangeValue"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -605,12 +1355,12 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01:MODIFIER_CALLBACK:M_BlackSwan_P01_ListenAddPoison_SubOnEnemy._CallbackList[2]:OnBeforeBeingHitAll:0/Predicate.PredicateList:0/PredicateList:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[1]:OnPhase1:0/FailedTaskList:1/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByCompareTarget"
+      "source_type": "RPG.GameCore.ByCompareCharacterNumber"
     },
     {
       "canonical_kind": "PREDICATE",
@@ -620,16 +1370,166 @@
       ],
       "importance": "P1_LEGALITY_OR_RESOURCE",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/Predicate.PredicateList:2"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:RedStanceState:MODIFIER_CALLBACK:RedStanceState._CallbackList[0]:OnRedStanceBeingBreak:2/Predicate:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.ByHaveEnemyAlive"
+      "source_type": "RPG.GameCore.ByCompareRedStanceCount"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Servant:MODIFIER_CALLBACK:MCommon_Servant._CallbackList[1]:OnListenCharacterDie:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByHasSummonRelation"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[2]:OnCharmAction:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsControlSkillDisable"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2010011:ONAFTERBATTLE:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsLastBattleWin"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:BlockDamage_Count:MODIFIER_CALLBACK:BlockDamage_Count._CallbackList[1]:OnAfterBeingAttacked:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsTriggeredBlockDamage"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill02_Phase01:ONSTART:1/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsTurnActionEntity"
+    },
+    {
+      "canonical_kind": "PREDICATE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT_Enhance:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT_Enhance._CallbackList[1]:OnBeforeBeingHitAll:0/Predicate:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ByIsTurnOwnerEntity"
+    },
+    {
+      "canonical_kind": "MODIFY_SPECIAL_RESOURCE",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.LevelChallengeTurnAcc"
+    },
+    {
+      "canonical_kind": "RETARGET",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Protect_SkillRetarget:MODIFIER_CALLBACK:MCommon_Protect_SkillRetarget._CallbackList[0]:OnStack:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.StackRedirectSkillTarget"
+    },
+    {
+      "canonical_kind": "SWITCH_CASE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:StanceBreakState_Effect:MODIFIER_CALLBACK:StanceBreakState_Effect._CallbackList[0]:OnCreate:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SwitchCaseByAttackDamageType"
+    },
+    {
+      "canonical_kind": "SWITCH_CASE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_LEGALITY_OR_RESOURCE",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[8]:OnWaveMonster:0/SuccessTaskList:0/FailedTaskList:0/FailedTaskList:0/FailedTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SwitchCaseByDynamicValue"
     },
     {
       "canonical_kind": "SET_DYNAMIC_VALUE",
-      "count": 53,
+      "count": 174,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -646,7 +1546,7 @@
     },
     {
       "canonical_kind": "DAMAGE_REQUEST",
-      "count": 10,
+      "count": 44,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -660,6 +1560,40 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.DamageByAttackProperty"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_VALUE",
+      "count": 26,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:2/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:2/FailedTaskList:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicValueByModifierValue"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_VALUE",
+      "count": 18,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03.OnAbilityPropertyChange:0/Ranges.0.OnChange:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear:MODIFIER_CALLBACK:MCommon_DOT_Tear._CallbackList[0]:OnCreate:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicValueByProperty"
     },
     {
       "canonical_kind": "FORMATION_CHANGE",
@@ -679,25 +1613,8 @@
       "source_type": "RPG.GameCore.SetTeamFormation"
     },
     {
-      "canonical_kind": "SET_DYNAMIC_VALUE",
-      "count": 7,
-      "gating_risks": [
-        "KNOWN_STATE_COMMIT"
-      ],
-      "importance": "P1_UNCLASSIFIED_SEMANTIC",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999017_Modifier_AttackUp_Sub._CallbackList[0]:OnStack:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999017_Modifier_DefenseUp_Sub._CallbackList[0]:OnStack:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999017:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999017_Modifier_SpeedUp_Sub._CallbackList[0]:OnStack:0"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.SetDynamicValueByModifierValue"
-    },
-    {
       "canonical_kind": "DEFINE_DYNAMIC_VALUE",
-      "count": 5,
+      "count": 7,
       "gating_risks": [
         "KNOWN_STATE_COMMIT"
       ],
@@ -711,6 +1628,57 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.DefineDynamicValue"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_VALUE",
+      "count": 6,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree02._CallbackList[2]:OnListenModifierOnStack:0/SuccessTaskList:1/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:2/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:0/SuccessTaskList:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetModifierDynamicValue"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_VALUE",
+      "count": 5,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ChallengeTurnLimit:MODIFIER_CALLBACK:MCommon_ChallengeTurnLimit._CallbackList[0]:OnPhase1:1/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[5]:OnAfterSkillUse:0/SuccessTaskList:3/SuccessTaskList:0/FailedTaskList:0/FailedTaskList:0/SuccessTaskList:0/FailedTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicValueByVariateType"
+    },
+    {
+      "canonical_kind": "OPAQUE",
+      "count": 4,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[6]:OnInsertActionStart:0/SuccessTaskList:1/SuccessTaskList:1/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[7]:OnInsertActionFinish:0/SuccessTaskList:3/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[0]:OnDestroy:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "OPAQUE"
+      ],
+      "source_type": "MBIADGFPAGK"
     },
     {
       "canonical_kind": "REGISTER_STAGE_EVENTS",
@@ -728,6 +1696,40 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.SetStageBattleEvents"
+    },
+    {
+      "canonical_kind": "RESET_TOUGHNESS",
+      "count": 3,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[1]:OnEnterBattle:1/TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:StanceBreakState:MODIFIER_CALLBACK:StanceBreakState._CallbackList[1]:OnDestroy:1"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.ResetStance"
+    },
+    {
+      "canonical_kind": "SET_DYNAMIC_VALUE",
+      "count": 3,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/SuccessTaskList:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[3]:OnBeforeSkillCost:3/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[4]:OnBeforeSkillUse:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicValueByCopying"
     },
     {
       "canonical_kind": "ADD_STAGE_BUFF",
@@ -794,22 +1796,6 @@
       "source_type": "RPG.GameCore.CreateBattleEvent"
     },
     {
-      "canonical_kind": "RESET_TOUGHNESS",
-      "count": 2,
-      "gating_risks": [
-        "KNOWN_STATE_COMMIT"
-      ],
-      "importance": "P1_UNCLASSIFIED_SEMANTIC",
-      "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999011:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999011_Modifier._CallbackList[0]:OnEnterBattle:1/TaskList:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999018:MODIFIER_CALLBACK:StageAbility_3999018_Modifier._CallbackList[1]:OnEnterBattle:1/TaskList:0"
-      ],
-      "semantic_statuses": [
-        "REQUIRES_PACKET"
-      ],
-      "source_type": "RPG.GameCore.ResetStance"
-    },
-    {
       "canonical_kind": "SET_DYNAMIC_VALUE",
       "count": 2,
       "gating_risks": [
@@ -817,13 +1803,13 @@
       ],
       "importance": "P1_UNCLASSIFIED_SEMANTIC",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03.OnAbilityPropertyChange:0/Ranges.0.OnChange:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03._CallbackList[0]:OnEnterBattle:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:1/SuccessTaskList:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.SetDynamicValueByProperty"
+      "source_type": "RPG.GameCore.SetDynamicValueByChangeValue"
     },
     {
       "canonical_kind": "SET_DYNAMIC_VALUE",
@@ -840,6 +1826,21 @@
         "REQUIRES_PACKET"
       ],
       "source_type": "RPG.GameCore.SetDynamicValueByStatisticCustomValue"
+    },
+    {
+      "canonical_kind": "OPAQUE",
+      "count": 1,
+      "gating_risks": [
+        "UNKNOWN"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[9]:OnBeforeEnergyPointChange:0/SuccessTaskList:0"
+      ],
+      "semantic_statuses": [
+        "OPAQUE"
+      ],
+      "source_type": "JBELCFCEKAN"
     },
     {
       "canonical_kind": "OPAQUE",
@@ -879,12 +1880,12 @@
       ],
       "importance": "P1_UNCLASSIFIED_SEMANTIC",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999023:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999023_Modifier_Sub._CallbackList[1]:OnAfterHitAll:0"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage:MODIFIER_CALLBACK:MCommon_MindControl_Damage._CallbackList[0]:OnListenCharmMakeDamage:8"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.SetDynamicValueByStatusCount"
+      "source_type": "RPG.GameCore.SetDynamicValueBySkillMaxHitSplitCount"
     },
     {
       "canonical_kind": "SET_DYNAMIC_VALUE",
@@ -894,12 +1895,27 @@
       ],
       "importance": "P1_UNCLASSIFIED_SEMANTIC",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree02:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree02._CallbackList[2]:OnListenModifierOnStack:0/SuccessTaskList:1/SuccessTaskList:0"
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999023:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999023_Modifier_Sub._CallbackList[1]:OnAfterHitAll:0"
       ],
       "semantic_statuses": [
         "REQUIRES_PACKET"
       ],
-      "source_type": "RPG.GameCore.SetModifierDynamicValue"
+      "source_type": "RPG.GameCore.SetDynamicValueByStatusCount"
+    },
+    {
+      "canonical_kind": "FORMATION_CHANGE",
+      "count": 1,
+      "gating_risks": [
+        "KNOWN_STATE_COMMIT"
+      ],
+      "importance": "P1_UNCLASSIFIED_SEMANTIC",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[2]:OnCharmAction:0/FailedTaskList:0/TaskList:0"
+      ],
+      "semantic_statuses": [
+        "REQUIRES_PACKET"
+      ],
+      "source_type": "RPG.GameCore.SetTeammateAttackFormation"
     },
     {
       "canonical_kind": "OPAQUE",
@@ -915,6 +1931,23 @@
         "OPAQUE"
       ],
       "source_type": "RPG.GameCore.TaskConfig"
+    },
+    {
+      "canonical_kind": "PRESENTATION_WAIT",
+      "count": 59,
+      "gating_risks": [
+        "POSSIBLE_STATE_COMMIT"
+      ],
+      "importance": "P2_PRESENTATION_GATING_RISK",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:7"
+      ],
+      "semantic_statuses": [
+        "PRESENTATION"
+      ],
+      "source_type": "RPG.GameCore.WaitSecond"
     },
     {
       "canonical_kind": "PRESENTATION_WAIT",
@@ -934,25 +1967,25 @@
       "source_type": "RPG.GameCore.WaitAnimState"
     },
     {
-      "canonical_kind": "PRESENTATION_WAIT",
-      "count": 24,
+      "canonical_kind": "PRESENTATION",
+      "count": 10,
       "gating_risks": [
         "POSSIBLE_STATE_COMMIT"
       ],
       "importance": "P2_PRESENTATION_GATING_RISK",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:0",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:2",
-        "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill03_Cutin:ONSTART:7"
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_BlackBlood_Stackable:MODIFIER_CALLBACK:MCommon_BlackBlood_Stackable._CallbackList[0]:OnCreate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Bleed:MODIFIER_CALLBACK:MCommon_DOT_Bleed._CallbackList[0]:OnCreate:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Burn:MODIFIER_CALLBACK:MCommon_DOT_Burn._CallbackList[0]:OnCreate:0/FailedTaskList:0"
       ],
       "semantic_statuses": [
         "PRESENTATION"
       ],
-      "source_type": "RPG.GameCore.WaitSecond"
+      "source_type": "RPG.GameCore.AddBuffPerform"
     },
     {
       "canonical_kind": "PRESENTATION",
-      "count": 6,
+      "count": 10,
       "gating_risks": [
         "POSSIBLE_STATE_COMMIT"
       ],
@@ -966,6 +1999,23 @@
         "PRESENTATION"
       ],
       "source_type": "RPG.GameCore.ShowUIPage"
+    },
+    {
+      "canonical_kind": "PRESENTATION",
+      "count": 4,
+      "gating_risks": [
+        "POSSIBLE_STATE_COMMIT"
+      ],
+      "importance": "P2_PRESENTATION_GATING_RISK",
+      "sample_operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_StageAbility_2051102:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_CTRL_Frozen:MODIFIER_CALLBACK:MCommon_CTRL_Frozen._CallbackList[0]:OnCreate:1",
+        "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Frozen:MODIFIER_CALLBACK:MCommon_Element_Frozen._CallbackList[0]:OnCreate:1"
+      ],
+      "semantic_statuses": [
+        "PRESENTATION"
+      ],
+      "source_type": "RPG.GameCore.ModifierOverrideOnHitEffect"
     },
     {
       "canonical_kind": "PRESENTATION",
@@ -1007,21 +2057,6 @@
       ],
       "importance": "P2_PRESENTATION_GATING_RISK",
       "sample_operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_StageAbility_2051102:ONCREATE:0"
-      ],
-      "semantic_statuses": [
-        "PRESENTATION"
-      ],
-      "source_type": "RPG.GameCore.ModifierOverrideOnHitEffect"
-    },
-    {
-      "canonical_kind": "PRESENTATION",
-      "count": 1,
-      "gating_risks": [
-        "POSSIBLE_STATE_COMMIT"
-      ],
-      "importance": "P2_PRESENTATION_GATING_RISK",
-      "sample_operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONSTACK:1"
       ],
       "semantic_statuses": [
@@ -1031,8 +2066,8 @@
     }
   ],
   "game_version": "4.4.54",
-  "historical_note": "The original entrypoint-only scan reported 22 OPAQUE nodes. Recursive lifting replaces that misleading count; every behavior-affecting OPAQUE/REQUIRES_PACKET node is classified here and remains non-executable.",
-  "input_corpus_sha256": "4723b06c1ef4a87d9854ec02e84f6df5fa45456402e7b589a4550e9567b9f5cb",
+  "historical_note": "The original entrypoint-only scan reported 22 OPAQUE nodes and the first recursive lift reported 2 OPAQUE nodes; both omitted Modifier records' own _CallbackList and GlobalModifiers. The v2 recursive lift covers those sources; every behavior-affecting OPAQUE/REQUIRES_PACKET node is classified here and remains non-executable.",
+  "input_corpus_sha256": "4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5",
   "report_id": "OPERATION-RISK-TRIAGE-001",
-  "status": "RECURSIVE_INITIAL_CORPUS_TRIAGED"
+  "status": "RECURSIVE_CORPUS_V2_TRIAGED"
 }

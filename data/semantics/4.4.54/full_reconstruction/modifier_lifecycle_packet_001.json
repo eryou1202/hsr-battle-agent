@@ -16,15 +16,15 @@
     "required_fields":["instance_id","name","owner","caster_runtime_id","source_provider_id","stacking","current_life","count","state","destroy_guard","destroy_reason","callback registrations","property contribution keys"]
   },
   "selected_transitions": {
-    "add_new":"target selection is a dependency; append identity-preserved instance, invoke OnAdded boundary, then OnActivate sets ALIVE before its callbacks are dispatchable.",
+    "add_new":"target selection is a dependency; append identity-preserved instance in TO_BE_ADDED (reference action APPEND_NEW_PENDING / APPEND_MULTIPLE_PENDING), invoke the OnAdded boundary, then OnActivate sets ALIVE (reference action ACTIVATE_ALIVE) before its callbacks are dispatchable.",
     "duplicate_lookup":"search local ModifierList front-to-back using name, stacking, optional active-state, optional caster runtime ID and source-provider identity; do not use general object equality.",
-    "multiple_4":"append a duplicate instance.",
+    "multiple_4":"append a duplicate pending instance and activate it at the same OnAdded->OnActivate boundary.",
     "refresh_replace_2_5_7_8_12":"retain existing identity and set CurrentLife plus Count from incoming config/runtime data.",
     "refresh_prolong_3":"retain existing identity and add current life; exact count/UI callback behavior is outside this packet.",
     "refresh_merge_6":"retain existing identity and use max current life; exact count/UI callback behavior is outside this packet.",
     "refresh_keep_lifetime_10":"retain existing current life and set Count.",
     "destroy":"if state is ALIVE or TO_BE_ADDED, set TO_BE_REMOVED and record reason; cleanup callbacks are KERNEL-EVENT work, not implicit deletion.",
-    "dirty_removal":"at explicit cleanup, remove non-ALIVE items with no destroy guard; preserve relative order of all survivors. Deregister callbacks and remove property-contribution keys at this lifecycle boundary.",
+    "dirty_removal":"at explicit cleanup, remove non-ALIVE items with no destroy guard; preserve relative order of all survivors. The reference transition returns deregistered callback registration keys and removed property-contribution keys so the same lifecycle boundary performs deregistration and property cleanup atomically.",
     "property_contribution":"keep a modifier-owned stable source index/key across refresh; do not shift neighbouring sources on removal. Materialization itself delegates to the existing property packets."
   },
   "event_contract": {
@@ -33,6 +33,6 @@
     "unsupported":"OnAdded/OnActivate/OnReplace callback bodies, delayed-add queue trigger timing and global manager ordering are not silently modeled."
   },
   "unsupported_cases":["stacking flags 0,1,9 and any unlisted flag","RetainGlobalLatest 11 and RetainGlobalLatestUnique 13 global resolution","formula/target evaluation","duration/count decrement timing","callback effect bodies","dispel policy beyond a separately compiled DispelStatus operation","source-specific modifier special state"],
-  "acceptance_fixture":"tests/game_data/test_modifier_lifecycle_reference.py proves Multiple append, Replace, Prolong, Merge, Keep-Lifetime, mark-destroy and ordered dirty removal. external operation risk triage retains source Add/Remove/Stack nodes as compiler blockers until compiled.",
+  "acceptance_fixture":"tests/game_data/test_modifier_lifecycle_reference.py proves pending append -> ACTIVATE_ALIVE, Multiple append, Replace, Prolong, Merge, Keep-Lifetime, mark-destroy, ordered dirty removal, and callback/property-key cleanup on the removal transition. external operation risk triage retains source Add/Remove/Stack nodes as compiler blockers until compiled.",
   "dsh_implementation_contract":"Implement immutable ModifierState/ModifierInstance records with the stated ordered lookup and explicit transitions. Do not delete on Destroy immediately, do not reorder survivors, do not represent property contribution as final-value +/- arithmetic, and reject unsupported stacking/global policies until their packets are provided."
 }
