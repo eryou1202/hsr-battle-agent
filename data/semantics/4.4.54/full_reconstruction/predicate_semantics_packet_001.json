@@ -1,0 +1,33 @@
+{
+  "packet_id": "COMPILER-PREDICATE-001-SEMANTICS",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_EVALUATOR",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R4_LOCAL_ANCHORS",
+  "scope": "Deterministic evaluation of the reviewed corpus' PredicateTaskList and By* AST families: boolean composition, target/team checks, modifier/flag presence, dynamic-value comparisons, random chance, HP/HP-ratio comparisons, wave/challenge/rank checks and turn identity checks. Weakness, summon-relation and other special hooks reject until their provider packets exist.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/predicate_evaluation_bridge_04.json", "support": "E4 EvaluatorSpec/FixPoint comparison leaf primitives and the deferred TaskContext.Evaluate(bool) dispatcher boundary."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "44 distinct predicate source types and 515 lifted Predicate AST nodes supply the argument shapes for the selected evaluator."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/target_semantics_packet_001.json", "support": "target aliases used inside predicates resolve through TARGET-001."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/dynamic_value_semantics_packet_001.json", "support": "CompareValue and Chance expressions evaluate through the PostfixExpr decoder."}
+  ],
+  "selected_model": {
+    "composition": "ByAnd/ByAny evaluate their PredicateList children in order with short-circuit; ByNot evaluates exactly one singular Predicate child and inverts it.",
+    "comparison": "Equal/NotEqual/Less/LessEqual/Greater/GreaterEqual operate on Decimal values with exact comparison.",
+    "inverse": "A top-level Inverse field on any predicate inverts its result after evaluation.",
+    "target_facts": "ByTargetTeam, ByIsContainModifier, ByContainBehaviorFlag and ByIsTargetValid resolve their TargetType via TARGET-001; missing target lists are false, never guessed.",
+    "dynamic_facts": "ByCompareDynamicValue uses ContextScope and DynamicKey with the DynamicValue store; missing keys reject.",
+    "random": "ByRandomChance samples the kernel RNG exactly once per evaluation; chance is clamped to [0,1].",
+    "ordering": "Predicate evaluation happens at its containing task boundary; any RNG consumption is recorded in the deterministic trace."
+  },
+  "unsupported_cases": [
+    "ByHasStanceWeak weakness provider",
+    "ByHasSummonRelation summon relation provider",
+    "ByCompareSomatoType body-type provider",
+    "AdventureByNPCMonsterPurposeType adventure NPC provider",
+    "ByIsMazeSkillAffectCurrentWave maze wave provider",
+    "ByCompareParamString param-string provider",
+    "ByCheckModifierCallBackName behavior-flag callback matching"
+  ],
+  "acceptance_fixture": "tests/game_data/test_predicate_semantics_reference.py proves boolean composition, dynamic/modifier/flag checks, target/HP checks, and explicit unsupported rejection.",
+  "dsh_implementation_contract": "Implement predicates as immutable AST evaluation with short-circuit order and Decimal comparisons. Unsupported predicate types reject the containing behavior; no predicate may silently evaluate to false."
+}
