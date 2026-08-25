@@ -53,6 +53,10 @@
 - `cross_family_interaction_fixture_001.json` composes real corpus predicate
   and formula payloads with the references in one deterministic trace and is
   explicitly `REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`.
+- `source_backed_hot_reference_001.json` executes the real canonical
+  `MAvatar_Natasha_00_HOT_HPByMaxHP` OnPhase1 callback with explicit fixture
+  state and DynamicHash resolutions; status is
+  `SOURCE_BACKED_REFERENCE_NOT_GOLDEN`.
 - Strict compiler report rebuilt: 201/249 structural-only records;
   failure clusters are recorded in `behavior_compiler_report_001.json` and
   `behavior_coverage_census_001.json`.

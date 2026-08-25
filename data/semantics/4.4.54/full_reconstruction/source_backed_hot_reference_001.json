@@ -1,0 +1,77 @@
+{
+  "fixture_id": "SOURCE-BACKED-HOT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5",
+  "purpose": "Execute the real canonical MAvatar_Natasha_00_HOT_HPByMaxHP OnPhase1 callback against an explicit fixture state. DynamicHash resolutions, healer stats and target state are fixture inputs; the operation payloads and source provenance are real.",
+  "selected_state": {
+    "dynamic_store": {},
+    "dynamic_values": {
+      "1733325153": "0.05",
+      "2136609680": "0"
+    },
+    "entities": {
+      "e1": {
+        "entity_id": "e1",
+        "survival": {
+          "alive": true,
+          "hp": "900",
+          "lock_hp": false,
+          "max_hp": "900",
+          "shield": "0"
+        }
+      },
+      "p1": {
+        "entity_id": "p1",
+        "survival": {
+          "alive": true,
+          "hp": "850.00",
+          "lock_hp": false,
+          "max_hp": "1000",
+          "shield": "0"
+        }
+      }
+    },
+    "modifier_names": {
+      "e1": [],
+      "p1": []
+    }
+  },
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
+    "entrypoint_event": "MODIFIER_CALLBACK:MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1",
+    "entrypoint_source_event": "MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1",
+    "source_refs": [
+      {
+        "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "path": "Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json",
+        "raw_sha256": "edc9fe58b25d082662ac07b6180df0c1bc3ab5d4cbcc43495aa577381564f10d",
+        "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+        "source": "TurnBasedGameData",
+        "source_container": "GlobalModifiers",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+      }
+    ]
+  },
+  "state_sha256": "243cad7f49e52625d12fcccca4e38ad5644669ab0a4c9bc2bc20e49d045b352e",
+  "status": "SOURCE_BACKED_REFERENCE_NOT_GOLDEN",
+  "trace": [
+    {
+      "disposition": "BRANCH_SUCCESS",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP:MODIFIER_CALLBACK:MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1:0"
+    },
+    {
+      "disposition": "HEADLESS_PRESENTATION_OMITTED",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP:MODIFIER_CALLBACK:MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1:0/SuccessTaskList:0"
+    },
+    {
+      "amount": "50.00",
+      "disposition": "HEAL_COMMITTED",
+      "formula_type": "HealByHealerMaxHP",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP:MODIFIER_CALLBACK:MAvatar_Natasha_00_HOT_HPByMaxHP._CallbackList[0]:OnPhase1:0/SuccessTaskList:1",
+      "target_ids": [
+        "p1"
+      ]
+    }
+  ],
+  "trace_sha256": "8acd93e357e608b99f928fe37da554be526434d3ef666783519ea96de7e1942d"
+}

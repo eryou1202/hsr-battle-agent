@@ -18,9 +18,11 @@ golden-tested. Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,
 normal/Break/SuperBreak/DoT damage formulas, shield/lock-HP/death survival
-transitions, Predicate AST evaluation, weighted RNG selection, and one
+transitions, Predicate AST evaluation, weighted RNG selection, one
 cross-family interaction fixture (explicitly
-`REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`). Corpus hash:
+`REFERENCE_INTERACTION_NOT_SOURCE_GOLDEN`), and one source-backed HOT
+reference trace for the real canonical `MAvatar_Natasha_00_HOT_HPByMaxHP`
+record (`SOURCE_BACKED_REFERENCE_NOT_GOLDEN`). Corpus hash:
 `4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5`.
 Authoritative state lives in `coverage_ledger_v1.json`.
 

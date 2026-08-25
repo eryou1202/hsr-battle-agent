@@ -18,7 +18,7 @@ from typing import Any, Callable, Mapping, Sequence
 from .damage_survival_reference import DamageMultiplierContext, SurvivalState
 from .dynamic_value_reference import DynamicValueStore, dynamic_key_from_payload, value_spec_from_payload
 from .predicate_semantics_reference import PredicateContext, evaluate_predicate
-from .target_semantics_reference import BattleTargetContext, EntitySnapshot
+from .target_semantics_reference import BattleTargetContext, EntitySnapshot, alias_from_payload, resolve_target_alias
 
 
 class CrossFamilyExecutionError(RuntimeError):
@@ -41,6 +41,7 @@ class ReferenceBattleState:
     modifier_names: dict[str, set[str]]
     rng: Callable[[], Decimal]
     trace: list[dict[str, Any]] = field(default_factory=list)
+    dynamic_values: dict[str, str] = field(default_factory=dict)
 
     def clone(self) -> "ReferenceBattleState":
         return ReferenceBattleState(
@@ -49,12 +50,20 @@ class ReferenceBattleState:
             modifier_names={entity: set(names) for entity, names in self.modifier_names.items()},
             rng=self.rng,
             trace=list(self.trace),
+            dynamic_values=dict(self.dynamic_values),
         )
+
+    def resolve_dynamic_hash(self, dynamic_hash: int) -> Decimal:
+        key = str(dynamic_hash)
+        if key in self.dynamic_values:
+            return Decimal(self.dynamic_values[key])
+        return self.dynamic_store.read("p1", key)
 
     def as_json(self) -> dict[str, Any]:
         return {
             "entities": {key: value.as_json() for key, value in sorted(self.entities.items())},
             "dynamic_store": self.dynamic_store.snapshot(),
+            "dynamic_values": dict(sorted(self.dynamic_values.items())),
             "modifier_names": {entity: sorted(names) for entity, names in sorted(self.modifier_names.items())},
         }
 
@@ -78,9 +87,12 @@ def target_context(state: ReferenceBattleState, caster_id: str, ability_target_i
 
 
 def predicate_context(state: ReferenceBattleState, target_context_value: BattleTargetContext) -> PredicateContext:
+    caster_entity = state.entities.get("p1")
+    current_hp = caster_entity.survival.hp if caster_entity else None
+    current_max_hp = caster_entity.survival.max_hp if caster_entity else None
     return PredicateContext(
         resolve_target=lambda alias: __import__("hsr_battle_agent.game_data.target_semantics_reference", fromlist=["resolve_target_alias"]).resolve_target_alias(alias, target_context_value),
-        dynamic_get=lambda _scope, key: state.dynamic_store.read("p1", key),
+        dynamic_get=lambda _scope, key: state.resolve_dynamic_hash(int(key)),
         has_modifier=lambda entity, name, _added_or_alive, _caster_matches: name in state.modifier_names.get(entity, set()),
         has_behavior_flag=lambda _entity, _flag: False,
         entity_team=lambda entity: target_context_value.snapshot(entity).team if target_context_value.snapshot(entity) else "neutral",
@@ -90,6 +102,8 @@ def predicate_context(state: ReferenceBattleState, target_context_value: BattleT
         skill_name="Skill01",
         wave_count=1,
         challenge_left=1,
+        current_hp=current_hp,
+        current_max_hp=current_max_hp,
     )
 
 
@@ -117,7 +131,7 @@ def execute_operations(
             arguments = operation.get("arguments", {})
             key = dynamic_key_from_payload(arguments.get("DynamicKey"))
             value = value_spec_from_payload(arguments.get("Value"))
-            evaluated = value.evaluate(lambda dynamic_hash: state.dynamic_store.read("p1", str(dynamic_hash)))
+            evaluated = value.evaluate(state.resolve_dynamic_hash)
             transition = state.dynamic_store.set_value("p1", key, evaluated)
             state.dynamic_store = transition.store
             state.trace.append({"operation_id": operation.get("operation_id"), "disposition": "SET_DYNAMIC_VALUE", "key": key, "value": str(evaluated)})
@@ -144,6 +158,31 @@ def execute_operations(
             for group in operation.get("children", []):
                 if isinstance(group, Mapping) and group.get("field_path") == branch_field:
                     execute_operations(state, group.get("operations", []), caster_id=caster_id, ability_target_id=ability_target_id, depth=depth + 1)
+            continue
+        if kind == "HEAL_REQUEST":
+            arguments = operation.get("arguments", {})
+            target_raw = operation.get("target")
+            if isinstance(target_raw, Mapping):
+                target_ids = resolve_target_alias(alias_from_payload(target_raw), target_ctx)
+            else:
+                target_ids = (caster_id,)
+            if not target_ids:
+                raise CrossFamilyExecutionError(f"HEAL_REQUEST without target: {operation.get('operation_id')}")
+            formula_type = str(arguments.get("FormulaType", "HealByHealerMaxHP"))
+            if formula_type != "HealByHealerMaxHP":
+                raise CrossFamilyExecutionError(f"unsupported heal formula type {formula_type}")
+            caster = state.entities.get(caster_id)
+            if caster is None:
+                raise CrossFamilyExecutionError(f"unknown healer {caster_id}")
+            heal_pct = value_spec_from_payload(arguments.get("HealPercentage", {"IsDynamic": False, "FixedValue": {"Value": 0}})).evaluate(state.resolve_dynamic_hash)
+            modify = value_spec_from_payload(arguments.get("ModifyValue", {"IsDynamic": False, "FixedValue": {"Value": 0}})).evaluate(state.resolve_dynamic_hash)
+            amount = caster.survival.max_hp * heal_pct + modify
+            for target_id in target_ids:
+                entity = state.entities.get(target_id)
+                if entity is None:
+                    raise CrossFamilyExecutionError(f"unknown heal target {target_id}")
+                state.entities[target_id] = replace(entity, survival=entity.survival.heal(amount))
+            state.trace.append({"operation_id": operation.get("operation_id"), "disposition": "HEAL_COMMITTED", "formula_type": formula_type, "target_ids": list(target_ids), "amount": str(amount)})
             continue
         if kind == "DAMAGE_REQUEST":
             amount = Decimal(str(operation.get("arguments", {}).get("amount", 0)))
