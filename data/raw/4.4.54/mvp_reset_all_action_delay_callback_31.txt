@@ -1,0 +1,95 @@
+0E764A90  41 57                           push     r15
+0E764A92  41 56                           push     r14
+0E764A94  41 54                           push     r12
+0E764A96  56                              push     rsi
+0E764A97  57                              push     rdi
+0E764A98  55                              push     rbp
+0E764A99  53                              push     rbx
+0E764A9A  48 83 ec 40                     sub      rsp, 0x40
+0E764A9E  48 89 d6                        mov      rsi, rdx
+0E764AA1  80 3d cc a4 e0 fa 00            cmp      byte ptr [rip - 0x51f5b34], 0
+0E764AA8  0f 85 74 03 00 00               jne      0x18e764e22
+0E764AAE  48 85 f6                        test     rsi, rsi
+0E764AB1  0f 84 56 04 00 00               je       0x18e764f0d
+0E764AB7  4c 8b 05 aa b8 e6 fa            mov      r8, qword ptr [rip - 0x5194756]
+0E764ABE  48 8b 0e                        mov      rcx, qword ptr [rsi]
+0E764AC1  0f b7 81 c2 00 00 00            movzx    eax, word ptr [rcx + 0xc2]
+0E764AC8  48 85 c0                        test     rax, rax
+0E764ACB  74 22                           je       0x18e764aef
+0E764ACD  48 8b 51 58                     mov      rdx, qword ptr [rcx + 0x58]
+0E764AD1  48 c1 e0 04                     shl      rax, 4
+0E764AD5  31 ed                           xor      ebp, ebp
+0E764AD7  66 0f 1f 84 00 00 00 00 00      nop      word ptr [rax + rax]
+0E764AE0  4c 39 04 2a                     cmp      qword ptr [rdx + rbp], r8
+0E764AE4  74 31                           je       0x18e764b17
+0E764AE6  48 83 c5 10                     add      rbp, 0x10
+0E764AEA  48 39 e8                        cmp      rax, rbp
+0E764AED  75 f1                           jne      0x18e764ae0
+0E764AEF  48 8d 4c 24 30                  lea      rcx, [rsp + 0x30]
+0E764AF4  48 89 f2                        mov      rdx, rsi
+0E764AF7  45 31 c9                        xor      r9d, r9d
+0E764AFA  e8 71 eb 4f f5                  call     0x183c63670
+0E764AFF  48 8b 54 24 30                  mov      rdx, qword ptr [rsp + 0x30]
+0E764B04  48 8b 7c 24 38                  mov      rdi, qword ptr [rsp + 0x38]
+0E764B09  48 89 f1                        mov      rcx, rsi
+0E764B0C  ff d7                           call     rdi
+0E764B0E  85 c0                           test     eax, eax
+0E764B10  75 46                           jne      0x18e764b58
+0E764B12  e9 f6 03 00 00                  jmp      0x18e764f0d
+0E764B17  8b 54 2a 08                     mov      edx, dword ptr [rdx + rbp + 8]
+0E764B1B  48 8b bc d1 d0 00 00 00         mov      rdi, qword ptr [rcx + rdx*8 + 0xd0]
+0E764B23  48 89 7c 24 38                  mov      qword ptr [rsp + 0x38], rdi
+0E764B28  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+0E764B2F  0f 84 1f 03 00 00               je       0x18e764e54
+0E764B35  0f b7 81 c0 00 00 00            movzx    eax, word ptr [rcx + 0xc0]
+0E764B3C  01 d0                           add      eax, edx
+0E764B3E  48 8b 94 c1 d0 00 00 00         mov      rdx, qword ptr [rcx + rax*8 + 0xd0]
+0E764B46  48 89 54 24 30                  mov      qword ptr [rsp + 0x30], rdx
+0E764B4B  48 89 f1                        mov      rcx, rsi
+0E764B4E  ff d7                           call     rdi
+0E764B50  85 c0                           test     eax, eax
+0E764B52  0f 84 b5 03 00 00               je       0x18e764f0d
+0E764B58  4c 8b 05 09 b8 e6 fa            mov      r8, qword ptr [rip - 0x51947f7]
+0E764B5F  48 8b 0e                        mov      rcx, qword ptr [rsi]
+0E764B62  0f b7 81 c2 00 00 00            movzx    eax, word ptr [rcx + 0xc2]
+0E764B69  48 85 c0                        test     rax, rax
+0E764B6C  74 21                           je       0x18e764b8f
+0E764B6E  48 8b 51 58                     mov      rdx, qword ptr [rcx + 0x58]
+0E764B72  48 c1 e0 04                     shl      rax, 4
+0E764B76  31 ed                           xor      ebp, ebp
+0E764B78  0f 1f 84 00 00 00 00 00         nop      dword ptr [rax + rax]
+0E764B80  4c 39 04 2a                     cmp      qword ptr [rdx + rbp], r8
+0E764B84  74 31                           je       0x18e764bb7
+0E764B86  48 83 c5 10                     add      rbp, 0x10
+0E764B8A  48 39 e8                        cmp      rax, rbp
+0E764B8D  75 f1                           jne      0x18e764b80
+0E764B8F  48 8d 4c 24 30                  lea      rcx, [rsp + 0x30]
+0E764B94  48 89 f2                        mov      rdx, rsi
+0E764B97  45 31 c9                        xor      r9d, r9d
+0E764B9A  e8 d1 ea 4f f5                  call     0x183c63670
+0E764B9F  48 8b 54 24 30                  mov      rdx, qword ptr [rsp + 0x30]
+0E764BA4  48 8b 7c 24 38                  mov      rdi, qword ptr [rsp + 0x38]
+0E764BA9  48 89 f1                        mov      rcx, rsi
+0E764BAC  ff d7                           call     rdi
+0E764BAE  85 c0                           test     eax, eax
+0E764BB0  7f 46                           jg       0x18e764bf8
+0E764BB2  e9 56 03 00 00                  jmp      0x18e764f0d
+0E764BB7  8b 54 2a 08                     mov      edx, dword ptr [rdx + rbp + 8]
+0E764BBB  48 8b bc d1 d0 00 00 00         mov      rdi, qword ptr [rcx + rdx*8 + 0xd0]
+0E764BC3  48 89 7c 24 38                  mov      qword ptr [rsp + 0x38], rdi
+0E764BC8  f6 81 ca 00 00 00 04            test     byte ptr [rcx + 0xca], 4
+0E764BCF  0f 84 8f 02 00 00               je       0x18e764e64
+0E764BD5  0f b7 81 c0 00 00 00            movzx    eax, word ptr [rcx + 0xc0]
+0E764BDC  01 d0                           add      eax, edx
+0E764BDE  48 8b 94 c1 d0 00 00 00         mov      rdx, qword ptr [rcx + rax*8 + 0xd0]
+0E764BE6  48 89 54 24 30                  mov      qword ptr [rsp + 0x30], rdx
+0E764BEB  48 89 f1                        mov      rcx, rsi
+0E764BEE  ff d7                           call     rdi
+0E764BF0  85 c0                           test     eax, eax
+0E764BF2  0f 8e 15 03 00 00               jle      0x18e764f0d
+0E764BF8  89 c7                           mov      edi, eax
+0E764BFA  4c 8d 64 24 30                  lea      r12, [rsp + 0x30]
+0E764BFF  41 be 23 5f 4c 4b               mov      r14d, 0x4b4c5f23
+0E764C05  41 bf 52 cd 69 c7               mov      r15d, 0xc769cd52
+0E764C0B  eb 2e                           jmp      0x18e764c3b
+0E764C0D  0f 1f 00                        nop      dword ptr [rax]

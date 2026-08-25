@@ -1,0 +1,77 @@
+{
+  "schema": "hsr_battle_agent.semantic_e2e_mvp/1",
+  "game_version": "4.4.54",
+  "status": "SEMANTIC_E2E_MVP_V1_READY",
+  "fixture_kind": "minimal semantic state-diff harness; real 4.4.54 content IDs with normalized HP/AV inputs solely to exercise transitions",
+  "content_provenance": {
+    "stage_id": "30113121",
+    "stage_package_fact": "Challenge level 95, one configured active-wave monster 4014030, no stage_ability_config entries",
+    "player_avatar_ids": ["1105", "1307"],
+    "selected_real_skill_ids": ["110502", "110501"],
+    "source_refs": [
+      "data/db/hsr_content_4.4.54.sqlite",
+      "data/external/nanoka/4.4.54/detail/character/1105.json",
+      "data/content/4.4.54/nanoka/stage.jsonl"
+    ]
+  },
+  "profile": {
+    "team_skill_point_max": 5,
+    "action_delay_distance": 10000,
+    "unsupported_rule_switches": ["break", "insert_ultimate", "extra_action", "follow_up", "stage_buff", "special_monster_ai", "boss_replacement"]
+  },
+  "initial_state": {
+    "battle_result": "RUNNING",
+    "active_wave_index": 1,
+    "team_skill_points": 1,
+    "actors": {
+      "p1105": {"avatar_id": "1105", "faction": "PLAYER", "life_state": "ALIVE", "current_hp": 400, "max_hp": 1000, "energy": 60, "energy_max": 90, "speed": 100, "remaining_action_delay": 0, "unit_action_delay": 100},
+      "p1307": {"avatar_id": "1307", "faction": "PLAYER", "life_state": "ALIVE", "current_hp": 1000, "max_hp": 1000, "energy": 80, "energy_max": 120, "speed": 100, "remaining_action_delay": 20, "unit_action_delay": 120},
+      "m4014030": {"monster_id": "4014030", "faction": "ENEMY", "life_state": "ALIVE", "current_hp": 100, "max_hp": 100, "speed": 100, "remaining_action_delay": 30, "unit_action_delay": 80, "ai_fixture": "SINGLE_CANDIDATE_MONSTER_AI_FIXTURE"}
+    }
+  },
+  "trace": [
+    {
+      "id": "NATASHA-SKILL02-HEAL",
+      "selected_actor": "p1105",
+      "action": {"skill_id": "110502", "type": "BPSkill", "target_ids": ["p1105"]},
+      "legal_action": {"result": "LEGAL", "reason": "ALIVE + team_skill_points=1 >= bp_need=1 + living allied Restore target"},
+      "resource_pre_commit": {"team_skill_points": [1, 0]},
+      "effect": {"kind": "HealData", "real_task_anchor": "Avatar_Natasha_00_Skill02_Phase02", "settled_amount": 650, "hp": [400, 1000], "overflow": 50},
+      "resource_post_commit": {"energy": [60, 90], "reason": "110502 sp_base=30 and max clamp"},
+      "action_completion": {"recharge": {"p1105": 100}, "ordered_remaining_delay": [["p1307", 20], ["m4014030", 30], ["p1105", 100]], "next_actor": "p1307"}
+    },
+    {
+      "id": "BLACK-SWAN-BASIC",
+      "selected_actor": "p1307",
+      "action": {"type": "Normal", "target_ids": ["m4014030"]},
+      "legal_action": {"result": "LEGAL", "reason": "living enemy target; no positive BP cost"},
+      "resource_pre_commit": {"team_skill_points": [0, 0]},
+      "effect": {"kind": "ExternalDamage", "amount": 0, "reason": "non-lethal ordering probe"},
+      "resource_post_commit": {"team_skill_points": [0, 1], "energy": [80, 100]},
+      "action_completion": {"advance_by": 20, "recharge": {"p1307": 120}, "ordered_remaining_delay": [["m4014030", 10], ["p1105", 80], ["p1307", 120]], "next_actor": "m4014030"}
+    },
+    {
+      "id": "MONSTER-SINGLE-CANDIDATE",
+      "selected_actor": "m4014030",
+      "action": {"type": "MonsterFixture", "target_ids": ["p1307"]},
+      "legal_action": {"result": "LEGAL", "reason": "single available fixture action against living player"},
+      "effect": {"kind": "ExternalDamage", "amount": 100, "hp": {"p1307": [1000, 900]}},
+      "action_completion": {"advance_by": 10, "recharge": {"m4014030": 80}, "ordered_remaining_delay": [["p1105", 70], ["m4014030", 80], ["p1307", 110]], "next_actor": "p1105"}
+    },
+    {
+      "id": "NATASHA-BASIC-LETHAL-TERMINAL",
+      "selected_actor": "p1105",
+      "action": {"skill_id": "110501", "type": "Normal", "target_ids": ["m4014030"]},
+      "legal_action": {"result": "LEGAL", "reason": "living enemy target; no positive BP cost"},
+      "effect": {"kind": "ExternalDamage via local TargetDamageHP/DirectDamageHP mode 0 bridge", "amount": 100, "hp": {"m4014030": [100, 0]}},
+      "death_commit": {"m4014030": "DEAD", "action_domain": "removed", "target_domain": "removed"},
+      "terminal_check": {"active_wave_all_enemies_dead": true, "is_last_wave": true, "battle_result": "VICTORY"},
+      "action_completion": {"skipped_next_selection": true, "reason": "terminal state"}
+    }
+  ],
+  "acceptance": {
+    "required_chain": ["Initial State", "legal action", "resources", "Damage/Heal", "HP", "completion", "AV", "enemy", "death", "terminal"],
+    "result": "PASS",
+    "notes": ["This is a semantic transition fixture, not a claim that HP=100 is the literal level-95 4014030 instance HP.", "All listed static entity/skill/stage identifiers are real 4.4.54 content identifiers."]
+  }
+}

@@ -1,7 +1,7 @@
 # HSR Battle Agent — Authoritative Project Index
 
 > **Session entry point.** This is the compact, evidence-first map of the
-> checked local repository as of the current `main` (2026-08-24), including
+> checked local repository as of the current `main` (2026-08-25), including
 > the version-locked Nanoka 4.4.54 content-database work.
 > Read this file, then the linked artifact for the subsystem being changed.
 > Source code, tests, committed artifacts, and Git history take precedence
@@ -49,7 +49,8 @@ Local HSR client / DesignData archive
                            └─ src/hsr_battle_agent/battle_runtime
                                 └─ src/hsr_battle_agent/battle_sandbox
                                      └─ tests + data/sandbox reports
-                                          └─ dynamic_core semantic-packet contracts
+                                          ├─ dynamic_core historical packets
+                                          ├─ dynamic_mvp_v1 freeze packets
                                           └─ future planning/ and models/
 ```
 
@@ -68,7 +69,7 @@ working planning product.
 | Canonical static content | `data/content/4.4.54/nanoka/` | Local ignored, deterministic JSONL build |
 | Pinned external references | `.external_refs/`, `scripts/fetch_external_references.py` | PASS; minimal commit-addressed cache, ignored by Git |
 | External reconstruction | `game_data/external_reconstruction.py`, `data/semantics/4.4.54/external_reconstruction/` | PASS for bounded static gaps and amount-only reference rules; no local runtime proof |
-| Dynamic-core reconstruction contracts | `data/semantics/4.4.54/dynamic_core/`, `docs/agent/dynamic_core_reconstruction.md` | PARTIAL; auditable candidate/stop boundaries, not a runtime |
+| Dynamic MVP freeze contracts | `data/semantics/4.4.54/dynamic_mvp_v1/`, `docs/agent/dynamic_mvp_blocker_closure_v1.md` | PASS for the strict standard-MVP handoff; not a production runtime |
 | Content SQLite/query facade | `data/db/`, `game_data/nanoka_content.py` | PASS for static query/build surface; external augmentation is separately provenanced, not a runtime compiler |
 | Battle IR | `src/hsr_battle_agent/battle_ir/` | PARTIAL-to-PASS by primitive |
 | Battle runtime | `src/hsr_battle_agent/battle_runtime/` | PARTIAL; proof-scoped only |
@@ -165,12 +166,12 @@ the corresponding game-wide mechanic is complete.
 | Modifier and lifecycle | PARTIAL | `battle_runtime/modifiers.py` | Recovered lifecycle/property routes only |
 | Property | PASS (scoped) | `battle_runtime/property.py` | Materialization kinds 3–7 formulas unresolved |
 | HP | PARTIAL | `battle_runtime/hp.py` | DirectDamageHP mode 0 only; not a general damage system |
-| Heal | PARTIAL | `battle_runtime/healing.py` | Request boundary only; positive HealData consumer unknown |
+| Heal | PARTIAL implementation / CLOSED_RECONSTRUCTED MVP packet | `battle_runtime/healing.py`, `dynamic_mvp_v1/DYN-MVP-HEAL-001` | Existing runtime remains request-only; DSH packet defines the ordinary settled clamp boundary |
 | Damage | PARTIAL | `damage_value_to_hp_bridge_13.json`, external reference evaluator | Explicit external amount → local TargetDamageHP/DirectDamageHP mode-0 is reconstruction-ready; native general DamageRequest/formula remains unknown |
-| Turn / AV | PARTIAL | `battle_runtime/turns.py` | Ordinary eligible actions only; recharge is explicit input |
+| Turn / AV | PARTIAL implementation / CLOSED_RECONSTRUCTED MVP packet | `battle_runtime/turns.py`, `dynamic_mvp_v1/DYN-MVP-AV-001` | Standard profile uses ActionDelayDistance=10000; special AV remains unsupported |
 | Event dispatch | BLOCKED | boundary objects/traces only | Listener registration/order/consumers unknown |
-| Energy / Skill Point | BLOCKED | no state/runtime primitive | Skill-point predicate is externally resolved in the one E2E |
-| Shield, Toughness/Break, Death | BLOCKED | no accepted runtime implementation | Config/type names are not runtime proof |
+| Energy / Skill Point | CLOSED_LOCAL MVP packet | `dynamic_mvp_v1/DYN-MVP-{TEAM-SP,ENERGY}-001` | Production primitive remains for DSH implementation; special resources excluded |
+| Shield, Toughness/Break, Death | Death CLOSED_LOCAL MVP packet; other mechanisms BLOCKED | `dynamic_mvp_v1/DYN-MVP-DEATH-001` | No shield/break implementation claim |
 | Summon, follow-up, extra action | BLOCKED | no accepted runtime implementation | no generic content compiler or event sequencing |
 | Content compiler | BLOCKED | no module | Next architectural milestone |
 | Static content query database | PASS | `game_data/nanoka_content.py`, `scripts/*content*` | Static only; no BattleInitialState/runtime effect compiler |
@@ -179,8 +180,8 @@ the corresponding game-wide mechanic is complete.
 | BattleState | PASS | `battle_sandbox/state.py` (schema v4) | Deliberately does not model full combat state |
 | Clone / hash / snapshot | PASS | `battle_sandbox/{state,hash,snapshot}.py` | Logical state only |
 | Planner API | BLOCKED | `Sandbox.legal_actions/step/is_terminal` | Explicitly raises NOT_IMPLEMENTED |
-| Real-content E2E | PARTIAL | Natasha test/report 30 | Turn → formula → ordered event boundary, no HP mutation |
-| Dynamic Core Closure v1 | PARTIAL | `dynamic_core/packets_v1.json` | Damage amount→HP is reconstruction-ready; Heal consumer, resources, recharge, death/terminal and target legality remain MVP blockers |
+| Real-content E2E | Semantic MVP fixture READY | `dynamic_mvp_v1/semantic_e2e_mvp_v1.json` | State-diff contract with real 4.4.54 IDs; not a live-client replay |
+| Dynamic MVP Blocker Closure v1 | PASS | `dynamic_mvp_v1/`, `dynamic_mvp_blocker_closure_v1.md` | `FREEZE_MVP_CANDIDATE=YES`; implementation is deliberately delegated to DSH |
 
 ## 7. Real Content and E2E State
 
@@ -194,11 +195,13 @@ The strongest current E2E is
    target, and DynamicFloat operands;
 4. FormulaType 4 returns the amount and emits ordered DispelStatus then Heal
    request boundaries; and
-5. CurrentHP remains unchanged because the positive HealData consumer is not
-   recovered.
+5. it stops at the historical Heal request boundary.
 
 This is real-content boundary execution, **not** a complete playable skill or
-a full battle.
+a full battle. The newer semantic handoff is
+`data/semantics/4.4.54/dynamic_mvp_v1/semantic_e2e_mvp_v1.json`: it specifies
+the missing settled HP/resource/AV/death/terminal transitions for DSH without
+claiming that the existing runtime already implements them.
 
 ## 8. Known External Blockers and UNKNOWN Semantics
 
@@ -206,19 +209,20 @@ a full battle.
   `PGOOHIHKHNJ` executor instance / dispatch target.  No injection, write,
   hook, or protection bypass is allowed.
 - General DamageRequest resolution and formula are therefore unknown.
-- Positive heal event consumption, event listener ordering, and action
-  completion/recharge discovery are unknown.
+- The exact positive-heal event listener and every native completion callback
+  remain unknown, but their standard-MVP observable boundaries are frozen in
+  `dynamic_mvp_v1`; do not reopen them unless an unsupported case needs them.
 - Full DesignData ability-action container decoding and corpus-level
   Avatar/Monster/Stage record parsing are absent.
 - No monster entity-to-ability/property/weakness relationship and no
   Stage→wave→monster or Stage→Buff relationship is structurally decoded.
 - External content does not resolve dynamic event ordering or permit a
   simulator to execute an imported effect without a local Semantic Packet.
-- Dynamic Core Closure v1 does **not** close the positive HealData consumer,
-  SP/Energy write phases, generic action-delay recharge, TargetConfig 12,
-  death, or terminal transitions.  Its packet bundle is deliberately
-  `DYNAMIC_CORE_RECONSTRUCTION_PARTIAL`; see the dynamic-core guide before
-  scheduling a new reverse task.
+- **SUPERSEDED FOR STRICT STANDARD MVP:** the older `dynamic_core` packet
+  bundle is historical. `dynamic_mvp_v1` closes Heal, resources, ordinary AV,
+  death, legality, and finite-wave terminal behavior at explicit canonical
+  boundaries. It does not close special event ordering or TargetConfig 12's
+  general decoder.
 
 ## 9. Tests and Verification Commands
 
@@ -266,6 +270,9 @@ instructions are in `docs/agent/content_database.md`.
 - `69c1cff` — pinned external reconstruction adapter, static Loadout
   materializer, amount-only reference evaluator, offline tests, and compact
   source/mapping/rule/gap artifacts.
+- `reverse: close dynamic MVP blocker contracts` — Dynamic MVP blocker closure
+  packets, targeted local proof artifacts, semantic E2E fixture, validator,
+  tests, and DSH handoff.
 
 ## 11. Important Artifacts and Handoffs
 
@@ -282,9 +289,11 @@ instructions are in `docs/agent/content_database.md`.
 - External reconstruction entry point: `docs/agent/external_reconstruction.md`.
 - External-source license/use audit: `docs/agent/external_reference_licenses.md`.
 - External rule boundary: `docs/agent/reconstruction_rule_pack.md`.
-- Dynamic-core closure / freeze decision:
-  `docs/agent/dynamic_core_reconstruction.md`.
-- Dynamic machine packets and partial E2E:
+- Active Dynamic MVP closure/freeze decision:
+  `docs/agent/dynamic_mvp_blocker_closure_v1.md`.
+- Active Dynamic MVP packets, legal-action spec, and semantic E2E:
+  `data/semantics/4.4.54/dynamic_mvp_v1/`.
+- Historical dynamic-core candidate packets:
   `data/semantics/4.4.54/dynamic_core/`.
 - Machine mapping/rule/gap artifacts:
   `data/semantics/4.4.54/external_reconstruction/`.
@@ -319,10 +328,9 @@ Start the next implementation session with the strategy stated in §1:
 
 `full content census → generic content compiler → corpus semantic coverage → coverage-driven primitive recovery → standard battle E2E → planner / training APIs`
 
-The immediate research gap is a small set of Dynamic Core packets, not another
-character inventory: positive HealData consumption, SP/Energy boundaries,
-ordinary action-delay recharge, target legality, and death/terminal.  Each
-must start with the distinguishing observation in
-`dynamic_core/packets_v1.json`; do not reopen PGOO or run blind sweeps.  A
-generic Scenario/Loadout compiler remains the first DSH implementation step
-after the freeze gate, not before it.
+`FREEZE_MVP_CANDIDATE=YES` for the strict standard profile. The immediate DSH
+task is a generic Scenario/Loadout compiler followed by a deterministic
+BattleSession that implements the frozen packets and their state-diff fixture.
+Do not reopen PGOO or conduct blind reverse before that implementation exposes
+a concrete mismatch. Coverage-driven semantic work resumes only for content
+that reaches an explicitly unsupported case.

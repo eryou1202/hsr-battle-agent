@@ -1,0 +1,55 @@
+{
+  "schema": "hsr_battle_agent.ordinary_legal_action_spec/1",
+  "game_version": "4.4.54",
+  "status": "ORDINARY_LEGAL_ACTION_MODEL_READY",
+  "preconditions": [
+    "battle_result is RUNNING",
+    "actor is current ordinary actor",
+    "actor.life_state is ALIVE"
+  ],
+  "action_rules": {
+    "Normal": {
+      "legal_when": ["preconditions", "at least one living enemy target"],
+      "team_skill_point_cost": 0,
+      "team_skill_point_gain": "max(0, skill.bp_add)",
+      "energy_cost": 0,
+      "energy_gain": "max(0, skill.sp_base)",
+      "target_policy": "living enemy targets selected from the static skill tag; SingleAttack requires exactly one"
+    },
+    "BPSkill": {
+      "legal_when": ["preconditions", "team_skill_points >= max(0, skill.bp_need)", "at least one matching living target"],
+      "team_skill_point_cost": "max(0, skill.bp_need)",
+      "team_skill_point_gain": "max(0, skill.bp_add)",
+      "energy_cost": 0,
+      "energy_gain": "max(0, skill.sp_base)",
+      "target_policy": "faction and ordinary target shape come from static skill tag; Restore selects living allies"
+    },
+    "Ultra": {
+      "legal_when": ["preconditions", "actor.energy >= actor.energy_max", "at least one matching living target"],
+      "team_skill_point_cost": 0,
+      "team_skill_point_gain": 0,
+      "energy_cost": "actor.energy_max",
+      "energy_gain": "max(0, skill.sp_base)",
+      "target_policy": "living targets in the static Ultimate tag scope; no manual insert timing is modeled"
+    }
+  },
+  "target_filter_order": [
+    "candidate universe for stage/player roster",
+    "faction map (enemy or ally)",
+    "ordinary entity-type filter",
+    "alive-state filter",
+    "static skill tag/shape filter",
+    "MinTargetCount check"
+  ],
+  "result_descriptor": {
+    "required_fields": ["actor_entity_id", "skill_id", "skill_type", "legal_target_ids", "team_skill_point_cost", "team_skill_point_gain", "energy_cost", "energy_gain", "target_policy"],
+    "illegal_action_result": "omit descriptor; never begin its ability/tasks"
+  },
+  "local_proof_refs": [
+    "data/raw/4.4.54/mvp_skill_character_component_type_31.json",
+    "data/raw/4.4.54/mvp_target_filter_type_inspection_31.json",
+    "data/raw/4.4.54/mvp_target_alive_filter_evaluate_31.txt",
+    "data/raw/4.4.54/targetconfig_type_inspection_30.json"
+  ],
+  "unsupported": ["TargetConfig 12 generic decoder", "special target object", "summon", "boss body part", "taunt/restriction modifier", "manual mid-action Ultimate insertion"]
+}

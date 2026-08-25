@@ -1,0 +1,64 @@
+0E77B510  48 83 ec 28                     sub      rsp, 0x28
+0E77B514  48 85 d2                        test     rdx, rdx
+0E77B517  74 23                           je       0x18e77b53c
+0E77B519  48 8b 05 c8 bd f3 fa            mov      rax, qword ptr [rip - 0x50c4238]
+0E77B520  48 89 d1                        mov      rcx, rdx
+0E77B523  48 89 c2                        mov      rdx, rax
+0E77B526  e8 15 e8 ca fc                  call     0x18b429d40
+0E77B52B  48 85 c0                        test     rax, rax
+0E77B52E  74 11                           je       0x18e77b541
+0E77B530  48 89 c1                        mov      rcx, rax
+0E77B533  48 83 c4 28                     add      rsp, 0x28
+0E77B537  e9 44 5b fd ff                  jmp      0x18e751080
+0E77B53C  e8 ff 6d 48 f5                  call     0x183c02340
+0E77B541  e8 fa 6d 48 f5                  call     0x183c02340
+0E77B546  cc                              int3
+0E77B547  66 0f 1f 84 00 00 00 00 00      nop      word ptr [rax + rax]
+0E77B550  48 83 ec 28                     sub      rsp, 0x28
+0E77B554  48 85 d2                        test     rdx, rdx
+0E77B557  74 23                           je       0x18e77b57c
+0E77B559  48 8b 05 88 bd f3 fa            mov      rax, qword ptr [rip - 0x50c4278]
+0E77B560  48 89 d1                        mov      rcx, rdx
+0E77B563  48 89 c2                        mov      rdx, rax
+0E77B566  e8 d5 e7 ca fc                  call     0x18b429d40
+0E77B56B  48 85 c0                        test     rax, rax
+0E77B56E  74 11                           je       0x18e77b581
+0E77B570  48 89 c1                        mov      rcx, rax
+0E77B573  48 83 c4 28                     add      rsp, 0x28
+0E77B577  e9 04 5b fd ff                  jmp      0x18e751080
+0E77B57C  e8 bf 6d 48 f5                  call     0x183c02340
+0E77B581  e8 ba 6d 48 f5                  call     0x183c02340
+0E77B586  cc                              int3
+0E77B587  66 0f 1f 84 00 00 00 00 00      nop      word ptr [rax + rax]
+0E77B590  31 c0                           xor      eax, eax
+0E77B592  c3                              ret
+0E77B593  66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]
+0E77B5A0  56                              push     rsi
+0E77B5A1  48 83 ec 20                     sub      rsp, 0x20
+0E77B5A5  48 85 d2                        test     rdx, rdx
+0E77B5A8  74 4c                           je       0x18e77b5f6
+0E77B5AA  48 89 ce                        mov      rsi, rcx
+0E77B5AD  48 8b 05 34 bd f3 fa            mov      rax, qword ptr [rip - 0x50c42cc]
+0E77B5B4  48 89 d1                        mov      rcx, rdx
+0E77B5B7  48 89 c2                        mov      rdx, rax
+0E77B5BA  e8 81 e7 ca fc                  call     0x18b429d40
+0E77B5BF  48 85 c0                        test     rax, rax
+0E77B5C2  74 37                           je       0x18e77b5fb
+0E77B5C4  48 89 c1                        mov      rcx, rax
+0E77B5C7  ba 26 00 00 00                  mov      edx, 0x26
+0E77B5CC  e8 1f 11 fb ff                  call     0x18e72c6f0
+0E77B5D1  48 8b 56 10                     mov      rdx, qword ptr [rsi + 0x10]
+0E77B5D5  48 89 c1                        mov      rcx, rax
+0E77B5D8  e8 83 65 ee 0e                  call     0x19d661b60
+0E77B5DD  31 c9                           xor      ecx, ecx
+0E77B5DF  48 85 c0                        test     rax, rax
+0E77B5E2  48 0f 49 c8                     cmovns   rcx, rax
+0E77B5E6  48 a9 fe ff ff ff               test     rax, -2
+0E77B5EC  48 0f 4e c1                     cmovle   rax, rcx
+0E77B5F0  48 83 c4 20                     add      rsp, 0x20
+0E77B5F4  5e                              pop      rsi
+0E77B5F5  c3                              ret
+0E77B5F6  e8 45 6d 48 f5                  call     0x183c02340
+0E77B5FB  e8 40 6d 48 f5                  call     0x183c02340
+0E77B600  cc                              int3
+0E77B601  66 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00  nop      word ptr cs:[rax + rax]

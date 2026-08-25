@@ -119,13 +119,16 @@ FormulaType 4 heal amount, and emits ordered DispelStatus and Heal request
 boundaries.  It deliberately does not change CurrentHP: the positive heal
 event consumer is unknown.
 
-## Dynamic-core closure result
+## Dynamic MVP closure result
 
-Dynamic Core Closure v1 made the boundary explicit rather than silently
-filling it with game knowledge.  A real 4.4.54 no-Buff Stage fixture is now
-recorded (Stage `30113121`, one wave, Monster `4014030`), alongside Natasha,
+Dynamic MVP Blocker Closure v1 freezes the smallest standard battle model for
+implementation. A real 4.4.54 no-Buff Stage fixture is recorded (Stage
+`30113121`, one configured active-wave Monster `4014030`), alongside Natasha,
 Black Swan, an ordinary one-skill Monster probe, and a semantic E2E trace.
-The result is **DYNAMIC_CORE_RECONSTRUCTION_PARTIAL**, not a playable battle.
+The result is **DYNAMIC_MVP_BLOCKERS_CLOSED** and
+**FREEZE_MVP_CANDIDATE = YES**. This is a DSH implementation handoff, not a
+claim that the existing proof-scoped runtime has already become a full battle
+engine.
 
 The strongest new composable path is ordinary Damage: a separately
 provenanced external amount evaluator can feed the locally supported
@@ -133,20 +136,19 @@ provenanced external amount evaluator can feed the locally supported
 for the stated scope and does not reopen PGOO.  It is still not a local damage
 formula proof.
 
-The real Natasha heal does not yet close: it emits a real amount and ordered
-requests, but the positive `HealData -> CurrentHP` consumer has not been
-identified.  Skill Point and Energy numbers are static facts, but their
-holders and write timing are not proven.  Turn selection/advance is recovered
-while the generic post-action delay recharge is not.  Target legality,
-death, victory/wave progression, Break state, event listener order, and
-general Monster AI are likewise not ready.  These are recorded as candidate
-sets with specific observations rather than guessed runtime behavior.
+The real Natasha heal consumer is still not named, but its normal living-target
+state transition is frozen at a settled action boundary: add positive HealData
+to CurrentHP and clamp at MaxHP. The local resource component identifies the
+holders and before/after `UseSkill` hooks for team skill points and actor
+energy. Local scheduler/death/target structures identify the ordinary AV
+reset, alive filtering, entity-death, wave, and result boundaries. Their
+standard-MVP transitions are therefore explicit packets rather than silent
+guesses.
 
-Therefore DSH should **not** yet build a full legal, terminating simulator or
-planner API.  The only MVP-blocking research questions are the positive heal
-consumer, SP/Energy boundaries, generic Turn/AV recharge, TargetConfig-12
-ordinary legality, and zero-HP-to-terminal chain.  Everything else in the
-new dynamic-core guide is post-MVP or explicitly unsupported.
+DSH may now build a **strict standard**, legal, terminating simulator from the
+frozen packets. It must keep special resources, insert Ultimates, follow-ups,
+extra actions, Break, revive, advanced target rules, generic Monster AI,
+special boss death, and score/mode rules outside the supported model.
 
 ## What remains partial or blocked
 
@@ -158,15 +160,16 @@ preserved. Event listeners/consumers, energy, skill points, shields,
 toughness/break, death, summons, follow-ups, extra actions, Monster AI, and
 Stage runtime are not implemented.
 
-So a complete battle cannot run yet.  The current real skill does not complete
-all of its effects, and there is no generic content compiler, encounter
-loader, legal-action generator, terminal-condition model, or stage loader.
+The existing proof runtime still cannot run a complete battle: DSH has not yet
+implemented the generic content compiler, encounter loader, legal-action
+generator, terminal model, or production BattleSession. The required semantic
+contracts are now frozen, however.
 
-Beam Search, MCTS, and policy/value training should **not** begin yet.  First
-build the Scenario/Loadout compiler on the static database; then measure content/primitive
-coverage, recover missing primitives in coverage order, close a standard
-battle E2E, and finally expose legal actions, transitions, terminal rules,
-and training/planner APIs.
+Beam Search, MCTS, and policy/value training should still wait. First DSH must
+build the Scenario/Loadout compiler and deterministic BattleSession, validate
+the supplied standard E2E state diff, then expose `legal_actions`, transition,
+terminal, cloning, and hash APIs. Only after that production implementation is
+stable should planner/training work begin.
 
 ## Verification note
 

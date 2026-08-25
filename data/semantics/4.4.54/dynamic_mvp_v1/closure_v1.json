@@ -1,0 +1,25 @@
+{
+  "schema": "hsr_battle_agent.dynamic_mvp_closure/1",
+  "game_version": "4.4.54",
+  "blocker_status": {
+    "positive_healdata_to_currenthp": "CLOSED_RECONSTRUCTED",
+    "team_skill_points": "CLOSED_LOCAL",
+    "energy": "CLOSED_LOCAL",
+    "ordinary_av_recharge": "CLOSED_RECONSTRUCTED",
+    "death_state": "CLOSED_LOCAL",
+    "ordinary_target_and_action_legality": "CLOSED_LOCAL",
+    "standard_wave_terminal": "CLOSED_LOCAL"
+  },
+  "hard_blockers": [],
+  "freeze_mvp_candidate": true,
+  "freeze_contract": [
+    "Use the exact 4.4.54 Content DB and Stage Package IDs.",
+    "Use the external static amount evaluators only as content/amount input, not as proof of runtime ordering.",
+    "Implement packets in blocker_closure_packets_v1.json at their named canonical MVP boundaries.",
+    "Keep every listed unsupported case outside standard-MVP legal action generation."
+  ],
+  "supersedes_for_standard_mvp_only": [
+    "data/semantics/4.4.54/dynamic_core/closure_v1.json: old FREEZE=false was correct before targeted resource/death/scheduler structural evidence; it remains historical evidence, not the active freeze decision.",
+    "docs/agent/handoffs/turn_av_semantics_29.md: its statement that generic recharge was unclosed is superseded only by DYN-MVP-AV-001's explicit standard-profile reconstruction; it is not a claim that all AV mechanics are recovered."
+  ]
+}

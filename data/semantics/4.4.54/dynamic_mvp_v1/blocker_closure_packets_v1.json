@@ -1,0 +1,172 @@
+{
+  "schema": "hsr_battle_agent.dynamic_mvp_blocker_packets/1",
+  "game_version": "4.4.54",
+  "scope": "standard ordinary battle MVP only; no insert Ultimate, extra action, follow-up, summon, revive, Limbo, Break, scripted terminal, boss replacement, or special resource",
+  "evidence_scale": {
+    "R2": "mature external reconstruction",
+    "R3": "cross-source reconstructed static rule",
+    "R4": "local structural support",
+    "R5": "local runtime observation"
+  },
+  "packets": [
+    {
+      "packet_id": "DYN-MVP-HEAL-001",
+      "game_version": "4.4.54",
+      "scope": "positive ordinary HealData for a living, valid target",
+      "selected_model": "At HEAL_COMMIT_BOUNDARY, apply the already-calculated non-negative heal amount to CurrentHP (property 10), bounded by MaxHP (property 1): new_hp = min(max_hp, old_hp + heal_amount); overflow = max(0, old_hp + heal_amount - max_hp).",
+      "inputs": ["target.current_hp", "target.max_hp", "HealData.Result_HealRealAmount"],
+      "state_reads": ["TurnBasedAbilityComponent.GetProperty(10)", "TurnBasedAbilityComponent.GetProperty(1)", "HealData property result"],
+      "state_writes": ["target.CurrentHP/property 10", "optional overflow-heal accounting"],
+      "ordering_constraints": ["Natasha Skill02 builds HealData after its FormulaType 4 calculation.", "HealHP calls EventManager.FireEvent after SetupHealData/HealFormula.", "The canonical write occurs after this request event has settled and before ordinary action completion."],
+      "external_evidence": ["External 4.4.54 reconstruction provides the amount and target facts; it is not treated as a local proof of listener order."],
+      "local_evidence": [
+        "real_skill_heal_boundary_30.json: real Natasha Avatar_Natasha_00_Skill02_Phase02 contains HealHP after DispelStatus; HealHP produces HealData and fires the event.",
+        "healdata_type_inspection_30.json: HealData exposes Result_HealAmount, Result_HealRealAmount, Result_OverflowHealAmount and healing ratios.",
+        "mvp_ability_component_type_31.json: TurnBasedAbilityComponent.DirectChangeHP has a positive branch; GetProperty, CheckPropertyBoundary and CurrentHP event paths are local objects."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_RECONSTRUCTED",
+      "assumptions": ["No heal listener in the supported fixture changes HP again between request dispatch and settled action.", "Target is alive and is not protected by an unsupported no-heal/death/revive rule."],
+      "unknowns": ["The exact EventManager listener/consumer that commits positive HealData has not been named."],
+      "unsupported_cases": ["revive healing", "limbo wait heal", "overheal conversion", "healing listeners whose result is observable before action settlement"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / NATASHA-SKILL02-HEAL",
+      "DSH_implementation_contract": "Do not route this through DirectDamageHP. Once the content evaluator emits a positive settled HealData amount, update the target HP with the stated clamp at HEAL_COMMIT_BOUNDARY and expose overflow separately."
+    },
+    {
+      "packet_id": "DYN-MVP-TEAM-SP-001",
+      "game_version": "4.4.54",
+      "scope": "ordinary player shared skill-point resource (the client calls this BP in SkillCharacterComponent)",
+      "selected_model": "A Basic/Normal action is legal without a positive BP cost and contributes its positive bp_add after use. A BPSkill is legal iff team_skill_points >= its positive bp_need. At RESOURCE_PRE_COMMIT deduct positive bp_need; at RESOURCE_POST_COMMIT add positive bp_add; clamp to [0, team_skill_point_max].",
+      "inputs": ["team_skill_points", "team_skill_point_max", "skill.bp_need", "skill.bp_add", "actor ordinary-action eligibility"],
+      "state_reads": ["SkillCharacterComponent.IsSelfAllowUseSkill", "SkillCharacterComponent.GetSPNeedBySkillIndex", "SkillCharacterComponent.SkillPointEntity"],
+      "state_writes": ["shared team_skill_points"],
+      "ordering_constraints": ["SkillCharacterComponent.UseSkill calls _DecBPBeforeSkillUse before ability execution and _AddBPAfterSkillUse after it.", "Legality is tested before RESOURCE_PRE_COMMIT."],
+      "external_evidence": ["Nanoka 4.4.54 Natasha 110501 has bp_add=1; 110502 has bp_need=1."],
+      "local_evidence": [
+        "mvp_skill_character_component_type_31.json: IsSelfAllowUseSkill, GetAllAllowSkillIdxList, GetSPNeedBySkillIndex, SkillPointEntity, _DecBPBeforeSkillUse and _AddBPAfterSkillUse are recovered local methods/holder.",
+        "mvp_bp_pre_writer_xrefs_31.json and mvp_bp_post_writer_xrefs_31.json: both helpers are direct calls from UseSkill, with the decrement before and addition after the ability path."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_LOCAL",
+      "assumptions": ["The standard MVP team skill-point cap is supplied by the BattleInitialState/content profile; no special BP source or cap modifier is enabled."],
+      "unknowns": ["UI failure-code taxonomy and special BP exceptions are not modeled."],
+      "unsupported_cases": ["NoSpCost modifiers", "special BP caps", "charm/forced actions", "sim-point and special-mode resources"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / NATASHA-SKILL02-SP and BLACK-SWAN-BASIC-SP",
+      "DSH_implementation_contract": "Keep one shared team_skill_points field. Reject a BPSkill before it starts when positive bp_need exceeds it; commit cost before effects and gain after effects; negative/null Nanoka BP values mean no positive cost/gain, not a signed mutation."
+    },
+    {
+      "packet_id": "DYN-MVP-ENERGY-001",
+      "game_version": "4.4.54",
+      "scope": "ordinary actor energy (the local component calls this SP)",
+      "selected_model": "An Ultimate is legal iff actor.energy >= actor.energy_max. At RESOURCE_PRE_COMMIT deduct its energy_max. At RESOURCE_POST_COMMIT add the skill's positive sp_base energy gain and clamp to [0, energy_max]. Basic and Skill have zero energy cost in the standard scope and gain their positive sp_base after use.",
+      "inputs": ["actor.energy", "actor.energy_max", "skill.type", "skill.sp_base"],
+      "state_reads": ["TurnBasedAbilityComponent.get_CurrentSPValue", "TurnBasedAbilityComponent.get_MaxSPValue", "SkillCharacterComponent.IsSelfAllowUseSkill"],
+      "state_writes": ["actor.energy"],
+      "ordering_constraints": ["SkillCharacterComponent.UseSkill calls _DecSPBeforeSkillUse before ability execution and _AddSPAfterSkillUse after it.", "The standard MVP only observes state after the action effect settles; it does not permit mid-action Ultimate insertion."],
+      "external_evidence": ["Nanoka 4.4.54 gives Natasha sp_need=90 and skill sp_base values 20/30/5 for Basic/Skill/Ultimate."],
+      "local_evidence": [
+        "mvp_ability_component_type_31.json: get_CurrentSPValue, get_MaxSPValue, get_CurrentSPFull, RegisterEnergyPoint and ChangeEnergyPoint exist on TurnBasedAbilityComponent.",
+        "mvp_skill_character_component_type_31.json plus mvp_sp_pre_writer_xrefs_31.json/mvp_sp_post_writer_xrefs_31.json: UseSkill calls _DecSPBeforeSkillUse before its ability path and _AddSPAfterSkillUse after it."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_LOCAL",
+      "assumptions": ["No special energy type, extra max energy, energy lock, or on-hit energy listener is enabled."],
+      "unknowns": ["Exact listener timing inside an action is intentionally not claimed."],
+      "unsupported_cases": ["mid-action Ultimate insertion", "special character energy", "energy from damage/hit/kill listeners", "energy lock or overflow modifiers"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / NATASHA-SKILL02-ENERGY and NATASHA-ULTIMATE-GATE",
+      "DSH_implementation_contract": "Store energy per actor, never in team_skill_points. Apply the pre/post boundary above, then expose only the settled result to the next ordinary actor."
+    },
+    {
+      "packet_id": "DYN-MVP-AV-001",
+      "game_version": "4.4.54",
+      "scope": "ordinary eligible action list; no AV modification or insert action",
+      "selected_model": "At ORDINARY_ACTION_COMPLETED, set the acting entity's property 38 to UnitActionDelay(actor), advance every eligible actor by the selected pre-reset delay, stably order by remaining delay then deterministic entity key, and select the first eligible actor. UnitActionDelay is the local fixed-point ActionDelayDistance / speed(property 32) result; the standard MVP profile fixes ActionDelayDistance to 10000.",
+      "inputs": ["eligible actors", "property 38", "property 32", "ActionDelayDistance=10000", "deterministic entity key"],
+      "state_reads": ["TurnBasedAbilityComponent.get_UnitActionDelay", "TurnBasedAbilityComponent.GetProperty(32)", "TurnBasedAbilityComponent.GetProperty(38)"],
+      "state_writes": ["acting entity property 38", "all eligible property 38 values after elapsed-delay advance", "ordered ordinary action list", "next ordinary actor"],
+      "ordering_constraints": ["Action effects and resource post-commit must settle first.", "The recharge/reset is applied before the next ordinary actor is selected.", "No supported listener may insert or advance an actor between these two MVP boundaries."],
+      "external_evidence": ["The standard HSR ordinary action-value convention uses ActionDelayDistance 10000; it is a reconstruction constant, not asserted to be a DesignData field."],
+      "local_evidence": [
+        "turn_av_semantics_29.json: property 32 is speed, property 38 is remaining action delay; local ordering/advance and completion gates are recovered.",
+        "mvp_turn_based_game_mode_type_31.json: ShouldResetActionDelay, ResetAllEntityActionDelay and ResetEntityListActionDelay are real local scheduler methods.",
+        "mvp_reset_all_entity_delay_callback_31.txt: scheduler reset callback invokes TurnBasedAbilityComponent.get_UnitActionDelay for each entity.",
+        "mvp_get_unit_action_delay_31.txt: get_UnitActionDelay reads property 32 and divides ActionDelayDistance by it using FixPoint.op_Division."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_RECONSTRUCTED",
+      "assumptions": ["ActionDelayDistance is exactly 10000 for the fixed standard MVP profile.", "No unsupported action-delay modifier changes the selected actor's reset delay."],
+      "unknowns": ["The complete native callback chain from every ordinary action completion to ResetEntityListActionDelay is not named."],
+      "unsupported_cases": ["advance forward", "delay", "extra action", "follow-up", "summon timeline", "all-equal native List.Sort stability", "dynamic ActionDelayDistance modifiers"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / FOUR-ORDINARY-ACTIONS",
+      "DSH_implementation_contract": "Use fixed-point arithmetic. The standard profile must set action_delay_distance=10000. Do not select the next actor until effects, resource post-commit and this recharge/advance/order step are complete."
+    },
+    {
+      "packet_id": "DYN-MVP-DEATH-001",
+      "game_version": "4.4.54",
+      "scope": "ordinary combatant death; no revive, fake death, escape, boss replacement or limbo",
+      "selected_model": "At DEATH_COMMIT_BOUNDARY after an HP mutation settles, an ordinary entity with CurrentHP <= 0 receives life_state=DEAD. DEAD entities are removed from ordinary action eligibility and ordinary target candidates.",
+      "inputs": ["entity.CurrentHP", "entity faction", "ordinary combatant flag"],
+      "state_reads": ["CurrentHP/property 10", "TargetQuery.AliveStateMask", "TurnBasedAbilityComponent action state"],
+      "state_writes": ["derived life_state", "ordinary action-domain membership", "ordinary target-domain membership"],
+      "ordering_constraints": ["HP write settles before life-state classification.", "Life-state filtering happens before a subsequent ordinary action selection or terminal check."],
+      "external_evidence": ["Standard battle reconstruction treats zero HP ordinary combatants as dead; special death replacement is excluded."],
+      "local_evidence": [
+        "mvp_target_filter_type_inspection_31.json: TargetQuery carries AliveStateMask and TargetFilterAliveState carries Mask.",
+        "mvp_target_alive_filter_evaluate_31.txt: TargetFilterAliveState evaluator removes candidates that fail its configured alive-state mask.",
+        "mvp_ability_component_type_31.json: _OnAbilityCurrentHPChangeEvent, _OnAbilityBeforeDying, CommonProcessOnLevelEntityDieOrEscape, DeathVersion, DeathSource and DeactiveActionStateKey_Die are local members."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_LOCAL",
+      "assumptions": ["The entity is an ordinary combatant and no local special-death flag intercepts the zero-HP path."],
+      "unknowns": ["Exact native enum values/bitmasks for every AliveState are not needed by the MVP-derived life_state representation."],
+      "unsupported_cases": ["revive", "immortality", "fake death", "limbo", "boss phase replacement", "summon-specific death"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / MONSTER-4014030-DEATH",
+      "DSH_implementation_contract": "Represent ordinary life_state explicitly but derive it from settled CurrentHP in this scope. Immediately exclude DEAD actors from ordinary action and target enumeration; retain the entity record for replay/provenance."
+    },
+    {
+      "packet_id": "DYN-MVP-LEGAL-001",
+      "game_version": "4.4.54",
+      "scope": "Basic, Skill and Ultimate legality for ordinary player actors and ordinary targets",
+      "selected_model": "An action is legal iff actor life_state=ALIVE, it is actor's ordinary turn, the resource gate for its type passes, and its target set is nonempty after faction/alive/type filtering. Basic targets living enemies; healing/restoration Skill targets living allies; Ultimate target metadata selects living targets in its declared ordinary scope.",
+      "inputs": ["actor life_state", "ordinary-turn actor", "skill.type/tag", "team_skill_points", "actor.energy/max", "candidate faction/type/life_state"],
+      "state_reads": ["SkillCharacterComponent.IsSelfAllowUseSkill", "SkillCharacterComponent.GetAllAllowSkillIdxList", "TargetQuery", "TargetFilterAliveState", "TargetFilterTargetType", "TargetConfig.TargetType/AllowUnselectableTarget/MinTargetCount"],
+      "state_writes": ["none; returns legal action descriptors and legal target lists"],
+      "ordering_constraints": ["Target filtering and resource gate run before RESOURCE_PRE_COMMIT.", "Terminal state is checked before legal action enumeration; terminal battle has no legal ordinary actions."],
+      "external_evidence": ["Nanoka 4.4.54 skill type/tag supplies the static ordinary targeting intent, for example Natasha Basic SingleAttack and Skill/Ultimate Restore."],
+      "local_evidence": [
+        "mvp_skill_character_component_type_31.json: IsSelfAllowUseSkill and GetAllAllowSkillIdxList are local legality entrypoints.",
+        "mvp_target_filter_type_inspection_31.json and targetconfig_type_inspection_30.json: target query, faction maps, alive/type filters, TargetType and MinTargetCount are local structures.",
+        "mvp_target_alive_filter_evaluate_31.txt: configured alive filtering removes invalid target candidates."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_LOCAL",
+      "assumptions": ["Only canonical ordinary skill tags are compiled; no special-object, summon, body-part or forced-target policy is requested."],
+      "unknowns": ["TargetConfig discriminator 12's full generic join is not required for the supported normal tag set and is not claimed closed."],
+      "unsupported_cases": ["special object targets", "summon targets", "boss body parts", "dynamic taunt/restrict-target modifiers", "manual Ultimate insertion"],
+      "acceptance_fixture": "legal_action_semantic_spec_v1.json",
+      "DSH_implementation_contract": "Compile a stable LegalAction descriptor containing actor, skill, cost/gain, target policy and explicit legal target IDs. Never infer target eligibility from UI text; use static tag plus faction/alive/type filters."
+    },
+    {
+      "packet_id": "DYN-MVP-TERMINAL-001",
+      "game_version": "4.4.54",
+      "scope": "standard finite Stage Package; ordinary player and enemy combatants",
+      "selected_model": "At TERMINAL_CHECK_BOUNDARY after all HP/death changes from an action settle: if all player combatants are DEAD, result=DEFEAT; else if all active-wave enemies are DEAD, append the next exact Stage Package wave when one exists, otherwise result=VICTORY; else continue. Simultaneous player/enemy elimination is unsupported.",
+      "inputs": ["stage waves in order", "active_wave_index", "ordinary player life states", "active-wave enemy life states"],
+      "state_reads": ["Stage Package wave roster", "life_state of combatants"],
+      "state_writes": ["active_wave_index", "active enemy roster", "battle_result"],
+      "ordering_constraints": ["DEATH_COMMIT_BOUNDARY precedes TERMINAL_CHECK_BOUNDARY.", "Wave spawn occurs only after the current active wave is fully dead.", "Victory/defeat produces a terminal state before another ordinary actor is selected."],
+      "external_evidence": ["The exact 4.4.54 Stage Package provides stage/wave/monster ordering; 30113121 contains one configured monster entry 4014030."],
+      "local_evidence": [
+        "mvp_turn_based_game_mode_type_31.json: IsAllDarkTeamDie, WaveMonsterBegin, WaveMonsterFinish, UpdateCurrentWaveCount, _OnEntityDied, get_IsLastMonsterWave, BattleResultState, CurrentWaveIndexInStage and WinFlag are local scheduler/result members.",
+        "mvp_ability_component_type_31.json: CommonProcessOnLevelEntityDieOrEscape establishes the local entity-side death boundary."
+      ],
+      "evidence_level": ["R4", "R3"],
+      "closure_status": "CLOSED_LOCAL",
+      "assumptions": ["Finite standard stage with no special score, scripted win/loss, infinite-wave or boss replacement rule."],
+      "unknowns": ["Exact client presentation/last-kill event timing is not modeled because it does not alter the supported terminal BattleState."],
+      "unsupported_cases": ["MoC/PF/AS scoring", "turn-star checks", "scripted terminal", "infinite wave", "simultaneous terminal", "special boss death"],
+      "acceptance_fixture": "SEMANTIC-E2E-MVP-V1 / STAGE-30113121-TERMINAL",
+      "DSH_implementation_contract": "Stage compilation must preserve wave ordering. After each settled action, derive death first, then execute this terminal decision exactly; do not flatten all stage enemies into one roster."
+    }
+  ]
+}
