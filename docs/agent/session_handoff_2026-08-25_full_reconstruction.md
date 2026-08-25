@@ -61,6 +61,8 @@
 - `source_backed_property_reference_001.json` executes the real canonical
   `MCommon_AttackRatioUp` OnStack StackProperty callback into a stable
   property-contribution slot; status is `SOURCE_BACKED_REFERENCE_NOT_GOLDEN`.
+- `toughness_break_reference.py` implements toughness reduction,
+  zero-crossing Break transition, Break damage and recovery with tests.
 - Strict compiler report rebuilt: 201/249 structural-only records;
   failure clusters are recorded in `behavior_compiler_report_001.json` and
   `behavior_coverage_census_001.json`.

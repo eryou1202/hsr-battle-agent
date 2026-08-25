@@ -1,0 +1,26 @@
+{
+  "packet_id": "TOUGHNESS-BREAK-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_SELECTED_MODEL_WITH_R2_DAMAGE_FORMULA",
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_R2_FORMULA",
+  "scope": "Toughness damage, zero-crossing Break transition, Break damage amount and recovery. Weakness-provider inputs, native break delay values and action-delay insertion remain separate packets.",
+  "evidence": [
+    {"source": "hsr-optimizer", "commit": "47ae66d8abac80b1f485a06fc11fe5e54c349c60", "path": "src/lib/optimization/engine/damage/damageCalculator.ts", "support": "Break base damage = 3767.5533 * elementalBreakScaling * (0.5 + maxToughness/120) * specialScaling."},
+    {"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "TriggerBreak, ResetStance, StackWeakness and SetStanceCount families are classified and structurally bound."}
+  ],
+  "selected_model": {
+    "reduction": "toughness damage subtracts from current toughness; damage while broken is a no-op transition.",
+    "zero_transition": "crossing zero sets current_toughness=0 and broken=true at the same primitive boundary and emits the Break damage amount.",
+    "break_damage": "break_damage uses PRIM-DAMAGE-001 with the attacker's break effect and the target's max toughness.",
+    "recovery": "recovery restores max toughness and clears broken; already-recovered state is an explicit no-op transition.",
+    "ordering": "toughness transition and Break damage commit before the following sibling operation under KERNEL-EVENT-001."
+  },
+  "unsupported_cases": [
+    "elemental weakness table",
+    "native break delay / action delay insertion",
+    "super-break application ordering",
+    "boss toughness phases and body-part toughness"
+  ],
+  "acceptance_fixture": "tests/game_data/test_toughness_break_reference.py proves reduction, zero transition, broken no-op and recovery.",
+  "dsh_implementation_contract": "Implement immutable ToughnessState with exact Decimal transitions; never apply toughness damage while broken and never skip the Break damage on zero-crossing."
+}
