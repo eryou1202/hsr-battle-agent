@@ -24,6 +24,8 @@ from .dynamic_value_reference import (
 )
 from .predicate_semantics_reference import PredicateContext, evaluate_predicate
 from .property_contribution_reference import PropertyState
+from .modifier_catalog import ModifierDefinition
+from .modifier_lifecycle_reference import ModifierInstance, add_or_refresh, mark_destroy
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
 
 
@@ -82,6 +84,7 @@ class ReferenceBattleState:
     entities: Mapping[str, RuntimeEntity]
     dynamic_store: DynamicValueStore = DynamicValueStore.empty()
     property_states: Mapping[str, PropertyState] = field(default_factory=dict)
+    modifier_instances: Mapping[str, tuple[ModifierInstance, ...]] = field(default_factory=dict)
     special_resources: Mapping[str, Decimal] = field(default_factory=dict)
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
@@ -109,6 +112,14 @@ class ReferenceBattleState:
         states = dict(self.property_states)
         states[entity_id] = property_state
         return replace(self, property_states=states)
+
+    def modifiers(self, entity_id: str) -> tuple[ModifierInstance, ...]:
+        return tuple(self.modifier_instances.get(entity_id, ()))
+
+    def replace_modifiers(self, entity_id: str, instances: Iterable[ModifierInstance]) -> "ReferenceBattleState":
+        states = dict(self.modifier_instances)
+        states[entity_id] = tuple(instances)
+        return replace(self, modifier_instances=states)
 
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
@@ -139,6 +150,14 @@ class ReferenceBattleState:
             },
             "dynamic_store": self.dynamic_store.snapshot(),
             "property_states": {key: value.as_json() for key, value in sorted(self.property_states.items())},
+            "modifier_instances": {
+                key: [
+                    {"instance_id": item.instance_id, "name": item.name, "stacking": item.stacking, "state": item.state.name,
+                     "current_life": item.current_life, "count": item.count, "caster_runtime_id": item.caster_runtime_id}
+                    for item in values
+                ]
+                for key, values in sorted(self.modifier_instances.items())
+            },
             "special_resources": {key: str(value) for key, value in sorted(self.special_resources.items())},
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
@@ -164,6 +183,8 @@ class ExecutionContext:
     skill_type: str = ""
     skill_name: str = ""
     modifier_callback_name: str = ""
+    caster_runtime_id: int | None = None
+    modifier_catalog: Mapping[str, ModifierDefinition] = field(default_factory=dict)
 
     def default_owner_id(self) -> str:
         for candidate in (self.caster_id, self.modifier_owner_id, self.ability_target_id):
@@ -255,6 +276,10 @@ class SemanticExecutor:
             return self._execute_set_dynamic_value(operation, state, context)
         if kind == "DEFINE_DYNAMIC_VALUE":
             return self._execute_define_dynamic_value(operation, state, context)
+        if kind == "ADD_MODIFIER":
+            return self._execute_add_modifier(operation, state, context)
+        if kind == "REMOVE_MODIFIER":
+            return self._execute_remove_modifier(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -410,6 +435,79 @@ class SemanticExecutor:
             "key": key,
             "value": None if transition.value is None else str(transition.value),
         },))
+
+    def _execute_add_modifier(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        arguments = operation.get("arguments", {})
+        modifier = arguments.get("ModifierName", {})
+        name = modifier.get("Value") if isinstance(modifier, Mapping) else None
+        definition = context.modifier_catalog.get(str(name))
+        if definition is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: Modifier definition {name!r} is not in ExecutionContext")
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        for target_id in targets:
+            instances = current.modifiers(target_id)
+            instance_id = f"{target_id}:{definition.name}:{len(instances) + 1}"
+            incoming = ModifierInstance(
+                instance_id=instance_id,
+                name=definition.name,
+                stacking=definition.stacking,
+                caster_runtime_id=context.caster_runtime_id,
+                source_provider_id=context.caster_id,
+                current_life=None,
+                count=None,
+            )
+            transition = add_or_refresh(instances, incoming)
+            current = current.replace_modifiers(target_id, transition.instances)
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "MODIFIER_APPEND_OR_REFRESH_PENDING",
+                "target_id": target_id,
+                "modifier_name": definition.name,
+                "instance_id": transition.affected_instance_id,
+                "lifecycle_action": transition.action,
+            })
+        return ExecutionResult(current, tuple(trace))
+
+    def _execute_remove_modifier(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Mark all named target instances for later dirty cleanup.
+
+        The selected local lifecycle model keeps callback/property ownership
+        until ``remove_dirty``.  Therefore this handler must not shortcut the
+        boundary by deleting entries from the state map.
+        """
+        arguments = operation.get("arguments", {})
+        modifier = arguments.get("ModifierName", {})
+        name = modifier.get("Value") if isinstance(modifier, Mapping) else None
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        for target_id in targets:
+            transition_instances = current.modifiers(target_id)
+            affected = [item.instance_id for item in transition_instances if item.name == name]
+            for instance_id in affected:
+                transition = mark_destroy(transition_instances, instance_id, reason=0)
+                transition_instances = transition.instances
+            current = current.replace_modifiers(target_id, transition_instances)
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "MODIFIER_MARKED_FOR_DIRTY_REMOVAL",
+                "target_id": target_id,
+                "modifier_name": name,
+                "instance_ids": affected,
+            })
+        return ExecutionResult(current, tuple(trace))
 
     def _predicate_context(self, state: ReferenceBattleState, context: ExecutionContext) -> PredicateContext:
         target_context = state.target_context(context)

@@ -86,9 +86,9 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `PRIM-MODIFIER-CATALOG-001`: join canonical Modifier definitions to
-   `ADD_MODIFIER` without inferring stacking/lifetime from a name. This is the
-   highest current record-level executable blocker (38 structural records).
+1. `DAMAGE-EXECUTION-BRIDGE-001`: lower only DamageRequest forms with explicit
+   attacker stats, selected multiplier context and resolved targets through
+   the existing damage/survival reference contracts.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`; retain separate record, entrypoint,
    source-backed-executable and Golden counts.

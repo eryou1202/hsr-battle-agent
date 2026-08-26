@@ -60,6 +60,24 @@
     "evidence": ["executable_bridge_packet_001.json", "behavior_compiler_report_002.json", "behavior_coverage_census_002.json", "tests/game_data/test_reference_execution.py"],
     "next_distinguishing_work": "Build a canonical Modifier definition/catalog join before promoting ADD_MODIFIER; do not mark a source modifier executable solely because its name is known."
   },
+  "progress_checkpoint_005": {
+    "date": "2026-08-26",
+    "ticket": "PRIM-MODIFIER-CATALOG-001",
+    "status": "PARTIAL_CANONICAL_CATALOG_COMPLETE",
+    "result": "Built a 144-definition catalog from canonical Modifier records carrying explicit source Stacking values. ADD_MODIFIER is executable only for a simple name+target call whose named definition exists in this catalog; append/refresh remains TO_BE_ADDED until a later lifecycle activation boundary.",
+    "measured_coverage": {"structural_compiled_records": 99, "executable_reference_records": 102, "executable_reference_entrypoints": 176, "source_backed_executable_records": 2, "executable_bound_operations": 1227, "golden_tested": 0},
+    "evidence": ["modifier_catalog_001.json", "modifier_catalog.py", "tests/game_data/test_modifier_catalog.py", "tests/game_data/test_reference_execution.py"],
+    "next_distinguishing_work": "Promote REMOVE_MODIFIER only if the selected mark-destroy boundary can retain its cleanup/event ordering as explicit pending state; do not immediately erase an instance."
+  },
+  "progress_checkpoint_006": {
+    "date": "2026-08-26",
+    "ticket": "REMOVE-MODIFIER-REFERENCE-001",
+    "status": "PARTIAL_MARK_DESTROY_BOUNDARY_COMPLETE",
+    "result": "REMOVE_MODIFIER with an explicit name and target lowers to named mark-destroy transitions. It intentionally does not call dirty removal, so callback/property cleanup ownership remains observable for later lifecycle/event integration.",
+    "measured_coverage": {"structural_compiled_records": 99, "executable_reference_records": 102, "executable_reference_entrypoints": 181, "source_backed_executable_records": 2, "executable_bound_operations": 1275, "golden_tested": 0},
+    "evidence": ["executable_bridge_packet_001.json", "tests/game_data/test_reference_execution.py", "modifier_lifecycle_reference.py"],
+    "next_distinguishing_work": "Build generic DAMAGE_REQUEST reference execution using the selected damage/survival packets while requiring explicit attacker stats and multiplier context; do not infer a damage formula from the request shape alone."
+  },
   "tracks": [
     {"track":"global_kernel","denominator":"global semantic rule IDs","known_ready":["ordinary SP", "ordinary Energy", "ordinary AV", "ordinary Heal clamp", "ordinary Death", "ordinary terminal", "R3 event registration/priority/FIFO diagnostic trace contract", "R4 bounded Modifier lifecycle transitions", "partial generic compiler-to-reference-executor bridge"],"missing":["full compiled event system", "cancellation/reentrancy/queue-mutation/recursion contracts", "modifier callback bodies/duration", "follow-up", "extra action", "summon scheduling", "revive/prevent death"],"status":"PARTIAL_EXECUTABLE_REFERENCE"},
     {"track":"avatar_behaviors","denominator":"all 4.4.54 Avatar active/passive/trace/eidolon/technique behavior records","known_ready":["Natasha Skill02 bounded slice", "29 close-version Avatar BehaviorRecords captured/canonicalized", "Ability GlobalModifiers lifted", "one real Natasha HOT GlobalModifier source-backed executable reference"],"missing":["exact-version full behavior denominator", "wider Avatar corpus capture", "Golden scenarios"],"status":"PARTIAL_CAPTURED_CANONICALIZED_EXECUTABLE_REFERENCE"},

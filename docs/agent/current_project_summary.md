@@ -13,7 +13,7 @@ Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 100
-structural-only records plus 101 `EXECUTABLE_REFERENCE` records (173
+structural-only records plus 102 `EXECUTABLE_REFERENCE` records (181
 independently closed executable entrypoints); exactly two records have been
 run through the generic bridge with real canonical payloads. Golden-tested
 coverage remains zero. The generic bridge consumes compiled IR,

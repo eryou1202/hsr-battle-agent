@@ -71,6 +71,21 @@ class ModifierTransition:
     affected_instance_ids: tuple[str, ...] = ()
 
 
+def _policy(value: int | str) -> StackingPolicy:
+    """Accept selected canonical source names without guessing unknown ones."""
+    if isinstance(value, str):
+        mapping = {
+            "ReplaceByCaster": StackingPolicy.REPLACE,
+            "Replace": StackingPolicy.REPLACE,
+            "Merge": StackingPolicy.MERGE,
+            "Multiple": StackingPolicy.MULTIPLE,
+        }
+        if value not in mapping:
+            raise NotImplementedError(f"unsupported canonical stacking policy {value!r}")
+        return mapping[value]
+    return StackingPolicy(int(value))
+
+
 def _matches(existing: ModifierInstance, incoming: ModifierInstance) -> bool:
     """The proven local lookup identity, with no implicit Python equality."""
     if existing.name != incoming.name or existing.stacking != incoming.stacking:
@@ -91,7 +106,7 @@ def add_or_refresh(instances: Iterable[ModifierInstance], incoming: ModifierInst
     approximated.
     """
     current = tuple(instances)
-    policy = int(incoming.stacking)
+    policy = _policy(incoming.stacking)
     if policy == StackingPolicy.MULTIPLE:
         pending = replace(incoming, state=ModifierState.TO_BE_ADDED)
         return ModifierTransition(current + (pending,), "APPEND_MULTIPLE_PENDING", pending.instance_id)

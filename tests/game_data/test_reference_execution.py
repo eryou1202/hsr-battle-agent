@@ -8,6 +8,8 @@ import unittest
 
 from hsr_battle_agent.game_data.behavior_compiler import BehaviorCompiler
 from hsr_battle_agent.game_data.damage_survival_reference import SurvivalState
+from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition
+from hsr_battle_agent.game_data.modifier_lifecycle_reference import ModifierInstance, ModifierState
 from hsr_battle_agent.game_data.reference_execution import (
     ExecutionContext,
     ReferenceBattleState,
@@ -82,6 +84,42 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONSTACK", state, ExecutionContext(caster_id="p1"))
         self.assertEqual(result.state.dynamic_store.read("p1", "stacks"), Decimal("3"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET")
+
+    def test_add_modifier_requires_catalog_and_preserves_pending_lifecycle_boundary(self) -> None:
+        record = {
+            "behavior_id": "modifier-fixture", "owner_kind": "Avatar", "owner_ref": "modifier-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"},
+                "arguments": {"ModifierName": {"Value": "MFixture"}}, "children": [],
+            }]}],
+        }
+        catalog = {"MFixture": ModifierDefinition("MFixture", "ReplaceByCaster", "fixture:modifier")}
+        compiled = BehaviorCompiler(modifier_catalog=catalog).compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONSTART", state, ExecutionContext(caster_id="p1", caster_runtime_id=7, modifier_catalog=catalog))
+        instance = result.state.modifiers("p1")[0]
+        self.assertEqual(instance.name, "MFixture")
+        self.assertEqual(instance.state, ModifierState.TO_BE_ADDED)
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_APPEND_OR_REFRESH_PENDING")
+
+    def test_remove_modifier_marks_instances_but_does_not_clean_them_early(self) -> None:
+        record = {
+            "behavior_id": "remove-fixture", "owner_kind": "Avatar", "owner_ref": "remove-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONEND", "operations": [{
+                "operation_id": "remove", "source_type": "RPG.GameCore.RemoveModifier", "kind": "REMOVE_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"},
+                "arguments": {"ModifierName": {"Value": "MFixture"}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        pending = ModifierDefinition("MFixture", "Replace", "fixture:modifier")
+        original = ModifierInstance("p1:MFixture:1", "MFixture", "Replace", 7, "p1", None, None, ModifierState.ALIVE)
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"p1": (original,)})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONEND", state, ExecutionContext(caster_id="p1", modifier_catalog={"MFixture": pending}))
+        self.assertEqual(result.state.modifiers("p1")[0].state, ModifierState.TO_BE_REMOVED)
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_MARKED_FOR_DIRTY_REMOVAL")
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

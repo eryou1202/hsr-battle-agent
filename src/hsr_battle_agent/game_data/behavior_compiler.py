@@ -10,6 +10,7 @@ from collections import Counter
 from typing import Any, Iterable, Mapping
 
 from .nanoka_content import stable_hash
+from .modifier_catalog import ModifierDefinition, modifier_catalog_from_corpus
 
 
 class BehaviorCompileError(ValueError):
@@ -24,8 +25,8 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "HEAL_REQUEST": {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_TEAM_SP": {"packet": "dynamic_mvp_v1:SP_CORE", "execution_scope": "ORDINARY_MVP"},
     "INVOKE_BEHAVIOR": {"packet": "KERNEL-EVENT-001", "execution_scope": "STRUCTURAL_CALL_ONLY"},
-    "ADD_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "REMOVE_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ADD_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
+    "REMOVE_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_PROPERTY_STACK": {"packet": "PROPERTY-CONTRIBUTION-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_DAMAGE_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_HEAL_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -81,6 +82,9 @@ def _mapping(value: Any) -> Mapping[str, Any]:
 
 class BehaviorCompiler:
     """Compile only canonical IR; raw external payload is never consulted."""
+
+    def __init__(self, modifier_catalog: Mapping[str, ModifierDefinition] | None = None) -> None:
+        self._modifier_catalog = dict(modifier_catalog or {})
 
     def compile_record(self, record: Mapping[str, Any]) -> dict[str, Any]:
         entrypoints: list[dict[str, Any]] = []
@@ -212,8 +216,7 @@ class BehaviorCompiler:
             })
         return operations, diagnostics, structural_only
 
-    @staticmethod
-    def _reference_payload_problem(operation: Mapping[str, Any]) -> str | None:
+    def _reference_payload_problem(self, operation: Mapping[str, Any]) -> str | None:
         """Reject an underspecified executable-reference operation early.
 
         The bridge deliberately does not turn a nominally known operation
@@ -247,6 +250,26 @@ class BehaviorCompiler:
         elif kind == "DEFINE_DYNAMIC_VALUE":
             if not isinstance(arguments.get("DynamicKey"), Mapping):
                 return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+        elif kind == "ADD_MODIFIER":
+            modifier = _mapping(arguments.get("ModifierName"))
+            name = modifier.get("Value")
+            if not isinstance(name, str) or not name:
+                return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
+            if set(arguments) != {"ModifierName"}:
+                return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED"
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            if name not in self._modifier_catalog:
+                return "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED"
+        elif kind == "REMOVE_MODIFIER":
+            modifier = _mapping(arguments.get("ModifierName"))
+            name = modifier.get("Value")
+            if not isinstance(name, str) or not name:
+                return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
+            if set(arguments) != {"ModifierName"}:
+                return "EXECUTABLE_REFERENCE_REMOVE_MODIFIER_ARGUMENTS_UNSUPPORTED"
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
@@ -275,7 +298,13 @@ class BehaviorCompiler:
         }
 
     def compile_corpus(self, corpus: Mapping[str, Any]) -> dict[str, Any]:
-        compiled = [self.compile_record(record) for record in corpus.get("records", [])]
+        previous_catalog = self._modifier_catalog
+        if not self._modifier_catalog:
+            self._modifier_catalog = modifier_catalog_from_corpus(corpus)
+        try:
+            compiled = [self.compile_record(record) for record in corpus.get("records", [])]
+        finally:
+            self._modifier_catalog = previous_catalog
         compiled.sort(key=lambda record: str(record["behavior_id"]))
         successful = [record for record in compiled if record["compile_status"] == "COMPILED_STRUCTURE_ONLY"]
         executable = [record for record in compiled if record["compile_status"] == "EXECUTABLE_REFERENCE"]
