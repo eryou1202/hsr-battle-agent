@@ -66,6 +66,14 @@
 - Strict compiler report rebuilt: 201/249 structural-only records;
   failure clusters are recorded in `behavior_compiler_report_001.json` and
   `behavior_coverage_census_001.json`.
+- `EXECUTABLE-BRIDGE-001` now provides a strict generic path from compiled
+  canonical IR to immutable `ReferenceBattleState` transitions.  It supports
+  conditional/predicate branching, the selected heal formulas, StackProperty,
+  and DynamicValue define/set; unknown operations remain hard rejections.
+  The current v2 compiler report has 101 `EXECUTABLE_REFERENCE` records and
+  173 independently executable entrypoints, with two real source-backed
+  records run through that path (Natasha HOT and `MCommon_AttackRatioUp`).
+  These are still reference execution, not Golden game traces.
 
 ## Source state
 
@@ -78,16 +86,15 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `COVERAGE-BASELINE-002`: regenerate all census artifacts and record the
-   249 behavior-bearing denominator as the current authority.
-2. `EXT-PROFILE-001` coverage-driven expansion: add LightCone / RelicSet /
-   wider MonsterSkill behavior families from the already pinned StarRailRes,
-   HSR-Mapping-DATA and hsr-optimizer caches, with exact path/hash/canonical
-   provenance; do not mirror repositories.
-3. Provider hooks for the remaining unsupported predicate/special families
-   (weakness, summon, somato-type, param-string, callback-name).
-4. Real-content execution reference and source-backed golden traces; only
-   then may executable/golden coverage move above zero.
+1. `PRIM-MODIFIER-CATALOG-001`: join canonical Modifier definitions to
+   `ADD_MODIFIER` without inferring stacking/lifetime from a name. This is the
+   highest current record-level executable blocker (38 structural records).
+2. Rebuild `behavior_compiler_report_002.json` and
+   `behavior_coverage_census_002.json`; retain separate record, entrypoint,
+   source-backed-executable and Golden counts.
+3. Continue coverage-driven capture only from already pinned caches, starting
+   with LightCone/RelicSet/wider MonsterSkill families after the generic bridge
+   can consume their closed operations.
 
 ## Mandatory reads
 

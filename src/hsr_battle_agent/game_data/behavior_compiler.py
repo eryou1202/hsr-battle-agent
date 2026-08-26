@@ -17,19 +17,23 @@ class BehaviorCompileError(ValueError):
 
 
 PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
-    "HEAL_REQUEST": {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "execution_scope": "ORDINARY_MVP"},
+    # These bindings have an independently tested reference executor.  This
+    # is deliberately narrower than a production runtime: an operation only
+    # becomes executable when *every* behavior-affecting node in its record
+    # has an executable-reference binding (or is safe headless presentation).
+    "HEAL_REQUEST": {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_TEAM_SP": {"packet": "dynamic_mvp_v1:SP_CORE", "execution_scope": "ORDINARY_MVP"},
     "INVOKE_BEHAVIOR": {"packet": "KERNEL-EVENT-001", "execution_scope": "STRUCTURAL_CALL_ONLY"},
     "ADD_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "REMOVE_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "MODIFY_PROPERTY_STACK": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_PROPERTY_STACK": {"packet": "PROPERTY-CONTRIBUTION-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_DAMAGE_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_HEAL_DATA": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "DISPEL_STATUS": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "CONDITIONAL": {"packet": "COMPILER-PREDICATE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "PREDICATE": {"packet": "COMPILER-PREDICATE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "SET_DYNAMIC_VALUE": {"packet": "COMPILER-DYNAMIC-VALUE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "DEFINE_DYNAMIC_VALUE": {"packet": "COMPILER-DYNAMIC-VALUE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "CONDITIONAL": {"packet": "COMPILER-PREDICATE-001-SEMANTICS", "execution_scope": "EXECUTABLE_REFERENCE"},
+    "PREDICATE": {"packet": "COMPILER-PREDICATE-001-SEMANTICS", "execution_scope": "EXECUTABLE_REFERENCE"},
+    "SET_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
+    "DEFINE_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "DAMAGE_COMPLETION_MARKER": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -95,6 +99,8 @@ class BehaviorCompiler:
                 "source_event": entry.get("source_event"),
                 "callback_metadata": entry.get("callback_metadata"),
                 "operations": operations,
+                "execution_blockers": entry_diagnostics,
+                "executable_reference": bool(entry.get("operations")) and not entry_diagnostics and not entry_structural,
             })
         for template in record.get("template_definitions", []):
             raw_template = _mapping(template)
@@ -107,6 +113,8 @@ class BehaviorCompiler:
                 "name": raw_template.get("name"),
                 "source_field_path": raw_template.get("source_field_path"),
                 "operations": operations,
+                "execution_blockers": template_diagnostics,
+                "executable_reference": bool(raw_template.get("operations")) and not template_diagnostics and not template_structural,
             })
         if source_operation_count == 0:
             compiled = {
@@ -137,9 +145,13 @@ class BehaviorCompiler:
             "entrypoints": entrypoints,
             "template_definitions": templates,
             "dynamic_value_definitions": list(record.get("dynamic_value_definitions", [])),
-            "compile_status": "COMPILED_STRUCTURE_ONLY" if not diagnostics else "REJECTED",
+            "compile_status": (
+                "EXECUTABLE_REFERENCE"
+                if not diagnostics and not structural_only
+                else "COMPILED_STRUCTURE_ONLY" if not diagnostics else "REJECTED"
+            ),
             "behavior_bearing": True,
-            "executable": False,
+            "executable": not diagnostics and not structural_only,
             "execution_blockers": diagnostics,
             "structural_only": structural_only,
         }
@@ -156,6 +168,7 @@ class BehaviorCompiler:
             status = str(operation.get("semantic_status", "OPAQUE"))
             risk = str(operation.get("gating_risk", "UNKNOWN"))
             kind = str(operation.get("kind", "OPAQUE"))
+            reference_payload_problem = None
             if status == "PRESENTATION" and risk == "NONE":
                 disposition = "HEADLESS_PRESENTATION_OMITTED"
                 binding = None
@@ -164,8 +177,16 @@ class BehaviorCompiler:
                 if binding is None:
                     diagnostics.append(self._diagnostic(operation, "REQUIRES_PACKET_HAS_NO_COMPILER_BINDING" if status == "REQUIRES_PACKET" else "MODELLED_TYPE_HAS_NO_COMPILER_BINDING"))
                     continue
-                disposition = "BOUND_UNEXECUTABLE_PACKET" if status == "REQUIRES_PACKET" else "BOUND_PRIMITIVE"
-                structural_only = structural_only or binding["execution_scope"] in {"STRUCTURAL_CALL_ONLY", "STRUCTURAL_PACKET_ONLY"}
+                reference_payload_problem = (
+                    self._reference_payload_problem(operation)
+                    if binding["execution_scope"] == "EXECUTABLE_REFERENCE"
+                    else None
+                )
+                if binding["execution_scope"] == "EXECUTABLE_REFERENCE" and reference_payload_problem is None:
+                    disposition = "EXECUTABLE_REFERENCE"
+                else:
+                    disposition = "BOUND_UNEXECUTABLE_PACKET" if status == "REQUIRES_PACKET" else "BOUND_PRIMITIVE"
+                structural_only = structural_only or binding["execution_scope"] in {"STRUCTURAL_CALL_ONLY", "STRUCTURAL_PACKET_ONLY"} or reference_payload_problem is not None
             else:
                 diagnostics.append(self._diagnostic(operation, "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED"))
                 continue
@@ -175,6 +196,8 @@ class BehaviorCompiler:
             operations.append({
                 "operation_id": operation_id,
                 "kind": kind,
+                "source_type": operation.get("source_type"),
+                "semantic_status": status,
                 "node_role": operation.get("node_role"),
                 "target": operation.get("target"),
                 "arguments": operation.get("arguments"),
@@ -183,10 +206,48 @@ class BehaviorCompiler:
                 "event_boundary": operation.get("event_boundary"),
                 "dependencies": list(operation.get("dependencies", [])) + ([binding["packet"]] if binding else []),
                 "disposition": disposition,
+                "reference_execution_blocker": reference_payload_problem,
                 "children": children,
                 "source_operation_id": operation_id,
             })
         return operations, diagnostics, structural_only
+
+    @staticmethod
+    def _reference_payload_problem(operation: Mapping[str, Any]) -> str | None:
+        """Reject an underspecified executable-reference operation early.
+
+        The bridge deliberately does not turn a nominally known operation
+        type into executable coverage unless the canonical payload contains
+        the inputs required by the selected semantic adapter.
+        """
+        kind = str(operation.get("kind", ""))
+        arguments = _mapping(operation.get("arguments"))
+        if kind == "HEAL_REQUEST":
+            formula = str(arguments.get("FormulaType", ""))
+            if formula not in {"HealByHealerMaxHP", "HealByTargetMaxHP"}:
+                return "EXECUTABLE_REFERENCE_UNSUPPORTED_HEAL_FORMULA"
+            if not isinstance(arguments.get("HealPercentage"), Mapping) or not isinstance(arguments.get("ModifyValue"), Mapping):
+                return "EXECUTABLE_REFERENCE_HEAL_VALUE_MISSING"
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+        elif kind == "MODIFY_PROPERTY_STACK":
+            if not arguments.get("Property") or not isinstance(arguments.get("PropertyValue"), Mapping):
+                return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_MISSING"
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+        elif kind == "CONDITIONAL":
+            if not isinstance(arguments.get("Predicate"), Mapping):
+                return "EXECUTABLE_REFERENCE_PREDICATE_MISSING"
+        elif kind == "PREDICATE":
+            if not str(operation.get("source_type", "")).startswith("RPG.GameCore.By"):
+                return "EXECUTABLE_REFERENCE_PREDICATE_TYPE_MISSING"
+        elif kind == "SET_DYNAMIC_VALUE":
+            if not isinstance(arguments.get("DynamicKey"), Mapping) or not isinstance(arguments.get("Value"), Mapping):
+                return "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING"
+        elif kind == "DEFINE_DYNAMIC_VALUE":
+            if not isinstance(arguments.get("DynamicKey"), Mapping):
+                return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+        return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
         groups: list[dict[str, Any]] = []
@@ -217,9 +278,19 @@ class BehaviorCompiler:
         compiled = [self.compile_record(record) for record in corpus.get("records", [])]
         compiled.sort(key=lambda record: str(record["behavior_id"]))
         successful = [record for record in compiled if record["compile_status"] == "COMPILED_STRUCTURE_ONLY"]
+        executable = [record for record in compiled if record["compile_status"] == "EXECUTABLE_REFERENCE"]
         behavior_bearing = [record for record in compiled if record.get("behavior_bearing")]
         static_only = [record for record in compiled if record["compile_status"] == "STATIC_DEFINITION_ONLY"]
         failure_reasons = Counter(diagnostic["reason"] for record in compiled for diagnostic in record["execution_blockers"])
+        operation_statuses: Counter[str] = Counter()
+        operation_dispositions: Counter[str] = Counter()
+        executable_entrypoints = 0
+        for record in compiled:
+            for operation in self._walk_compiled_operations(record):
+                operation_statuses[str(operation.get("semantic_status", "OPAQUE"))] += 1
+                operation_dispositions[str(operation.get("disposition", "UNBOUND"))] += 1
+            executable_entrypoints += sum(bool(entrypoint.get("executable_reference")) for entrypoint in record.get("entrypoints", []))
+            executable_entrypoints += sum(bool(template.get("executable_reference")) for template in record.get("template_definitions", []))
         by_owner = {}
         for owner in sorted({str(record["owner_kind"]) for record in compiled}):
             owner_records = [record for record in compiled if record["owner_kind"] == owner]
@@ -228,6 +299,7 @@ class BehaviorCompiler:
                 "behavior_bearing": sum(bool(record.get("behavior_bearing")) for record in owner_records),
                 "static_definition_only": sum(record["compile_status"] == "STATIC_DEFINITION_ONLY" for record in owner_records),
                 "structural_compiled": sum(record["compile_status"] == "COMPILED_STRUCTURE_ONLY" for record in owner_records),
+                "executable_reference": sum(record["compile_status"] == "EXECUTABLE_REFERENCE" for record in owner_records),
                 "golden_tested": 0,
             }
         result = {
@@ -242,11 +314,35 @@ class BehaviorCompiler:
                 "behavior_bearing": len(behavior_bearing),
                 "static_definition_only": len(static_only),
                 "structural_compiled": len(successful),
-                "executable": 0,
+                "executable": len(executable),
                 "golden_tested": 0,
                 "by_owner_kind": by_owner,
                 "failure_reasons": dict(sorted(failure_reasons.items())),
+                "operation_level": {
+                    "source_semantic_status": dict(sorted(operation_statuses.items())),
+                    "compiled_disposition": dict(sorted(operation_dispositions.items())),
+                    "executable_bound": operation_dispositions["EXECUTABLE_REFERENCE"],
+                    "executable_entrypoints": executable_entrypoints,
+                },
             },
         }
         result["report_sha256"] = stable_hash(result)
         return result
+
+    @staticmethod
+    def _walk_compiled_operations(record: Mapping[str, Any]) -> Iterable[Mapping[str, Any]]:
+        def walk(operations: Iterable[Any]) -> Iterable[Mapping[str, Any]]:
+            for operation in operations:
+                if not isinstance(operation, Mapping):
+                    continue
+                yield operation
+                for group in operation.get("children", []):
+                    if isinstance(group, Mapping):
+                        yield from walk(group.get("operations", []))
+
+        for entrypoint in record.get("entrypoints", []):
+            if isinstance(entrypoint, Mapping):
+                yield from walk(entrypoint.get("operations", []))
+        for template in record.get("template_definitions", []):
+            if isinstance(template, Mapping):
+                yield from walk(template.get("operations", []))

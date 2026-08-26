@@ -9,28 +9,64 @@ from hsr_battle_agent.game_data.nanoka_content import write_json
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--report", type=Path, default=Path("data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json"))
-parser.add_argument("--output", type=Path, default=Path("data/semantics/4.4.54/full_reconstruction/behavior_coverage_census_001.json"))
+parser.add_argument("--report", type=Path, default=Path("data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_002.json"))
+parser.add_argument("--output", type=Path, default=Path("data/semantics/4.4.54/full_reconstruction/behavior_coverage_census_002.json"))
+parser.add_argument("--corpus", type=Path, default=Path("data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json"))
 arguments = parser.parse_args()
 report = json.loads(arguments.report.read_text(encoding="utf-8"))
+corpus = json.loads(arguments.corpus.read_text(encoding="utf-8"))
 coverage = report["coverage"]
+SOURCE_BACKED_EXECUTABLE_BEHAVIORS = {
+    "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
+    "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp",
+}
+
+
+def walk(operations):
+    for operation in operations:
+        if not isinstance(operation, dict):
+            continue
+        yield operation
+        for group in operation.get("children", []):
+            if isinstance(group, dict):
+                yield from walk(group.get("operations", []))
+
+
+canonical_statuses = {}
+for record in corpus.get("records", []):
+    for entrypoint in record.get("entrypoints", []):
+        for operation in walk(entrypoint.get("operations", [])):
+            status = str(operation.get("semantic_status", "OPAQUE"))
+            canonical_statuses[status] = canonical_statuses.get(status, 0) + 1
+    for template in record.get("template_definitions", []):
+        for operation in walk(template.get("operations", [])):
+            status = str(operation.get("semantic_status", "OPAQUE"))
+            canonical_statuses[status] = canonical_statuses.get(status, 0) + 1
+
+owner_source_backed = {}
+for record in report["records"]:
+    if record.get("behavior_id") in SOURCE_BACKED_EXECUTABLE_BEHAVIORS and record.get("compile_status") == "EXECUTABLE_REFERENCE":
+        owner = str(record.get("owner_kind"))
+        owner_source_backed[owner] = owner_source_backed.get(owner, 0) + 1
 families = {owner: {
     "captured_records": values["captured"],
     "behavior_bearing_denominator": values["behavior_bearing"],
     "static_definition_only": values["static_definition_only"],
     "canonicalized": values["captured"],
     "structural_compiled": values["structural_compiled"],
-    "executable": 0,
+    "executable_reference": values.get("executable_reference", 0),
+    "source_backed_executable": owner_source_backed.get(owner, 0),
+    "executable": values.get("executable_reference", 0),
     "golden_tested": 0,
-    "unsupported_or_uncompiled": values["behavior_bearing"] - values["structural_compiled"],
+    "unsupported_or_uncompiled": values["behavior_bearing"] - values["structural_compiled"] - values.get("executable_reference", 0),
     "full_game_behavior_denominator": "UNKNOWN",
 } for owner, values in coverage["by_owner_kind"].items()}
 for absent in ("Trace", "Eidolon", "LightCone", "RelicSet"):
-    families[absent] = {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"}
+    families[absent] = {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable_reference": 0, "source_backed_executable": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"}
 payload = {
-    "report_id": "BEHAVIOR-COVERAGE-CENSUS-001",
+    "report_id": "BEHAVIOR-COVERAGE-CENSUS-002",
     "game_version": "4.4.54",
-    "status": "STRICT_REVIEWED_CORPUS_BASELINE",
+    "status": "EXECUTABLE_REFERENCE_REVIEWED_CORPUS_BASELINE",
     "input_compiler_report_sha256": report["report_sha256"],
     "counting_rule": "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
     "families": dict(sorted(families.items())),
@@ -40,12 +76,20 @@ payload = {
         "behavior_bearing_denominator": coverage["behavior_bearing"],
         "static_definition_only": coverage["static_definition_only"],
         "structural_compiled": coverage["structural_compiled"],
-        "executable": 0,
+        "executable_reference": coverage.get("executable", 0),
+        "source_backed_executable": sum(owner_source_backed.values()),
+        "executable": coverage.get("executable", 0),
         "golden_tested": 0,
-        "uncompiled": coverage["behavior_bearing"] - coverage["structural_compiled"],
+        "uncompiled": coverage["behavior_bearing"] - coverage["structural_compiled"] - coverage.get("executable", 0),
+    },
+    "operation_level": {
+        "canonical_semantic_status": dict(sorted(canonical_statuses.items())),
+        "compiled_disposition": coverage.get("operation_level", {}).get("compiled_disposition", {}),
+        "executable_bound": coverage.get("operation_level", {}).get("executable_bound", 0),
+        "executable_entrypoints": coverage.get("operation_level", {}).get("executable_entrypoints", 0),
     },
     "failure_clusters": coverage["failure_reasons"],
-    "next_high_leverage": {"ticket_id": "TARGET-001 + FORMULA-001 + SCHEDULER-001", "reason": "The repaired census shows 41 unbound DamageRequest, 19 Retarget, 15 InsertAction, 14 ModifyActionState, 13 DelayAction and 87 gating PresentationWait nodes. DynamicValue structural binding and formula decoding are already implemented; the next executable gain is target resolution plus scheduler/action markers."},
+    "next_high_leverage": {"ticket_id": "EXECUTABLE-BRIDGE-EXPANSION-001", "reason": "The first generic bridge executes only fully closed conditional/heal and StackProperty records. Select the next operation family by executable-reference gain after this report's strict disposition counts, never by static entity count."},
 }
 write_json(arguments.output, payload)
 print(json.dumps({"output_path": str(arguments.output), "overall": payload["overall"]}, sort_keys=True))

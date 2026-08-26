@@ -1,0 +1,45 @@
+{
+  "packet_id": "EXECUTABLE-BRIDGE-001",
+  "game_version": "4.4.54",
+  "scope": "Generic reference execution bridge from canonical Behavior IR entrypoints to immutable ReferenceBattleState transitions. This is not the production Battle Runtime and does not claim full client event/scheduler equivalence.",
+  "closure_status": "PARTIAL_R3_GENERIC_EXECUTABLE_REFERENCE",
+  "selected_model": {
+    "compiler": "A record is EXECUTABLE_REFERENCE only when every behavior-affecting operation is either EXECUTABLE_REFERENCE or safe headless presentation. A structurally partial record may still expose an independently closed executable entrypoint.",
+    "runtime": "SemanticExecutor consumes only compiled IR, ReferenceBattleState, ExecutionContext and SandboxRng. It rejects non-executable dispositions and missing resolver inputs; it never reads raw source payloads at execution time.",
+    "implemented_operation_handlers": [
+      "CONDITIONAL / PREDICATE",
+      "HEAL_REQUEST: HealByHealerMaxHP, HealByTargetMaxHP",
+      "MODIFY_PROPERTY_STACK",
+      "SET_DYNAMIC_VALUE",
+      "DEFINE_DYNAMIC_VALUE",
+      "HEADLESS_PRESENTATION_OMITTED"
+    ]
+  },
+  "state_reads": ["entities.survival", "dynamic_store", "property_states", "target context", "execution context dynamic hashes/scopes", "deterministic RNG"],
+  "state_writes": ["entities.survival.hp", "dynamic_store", "property_states"],
+  "ordering": "Entrypoint operations execute in canonical sibling order. Conditional selects exactly SuccessTaskList or FailedTaskList and then executes that child list in order. Presentation operations are omitted only when the compiler marked gating_risk=NONE.",
+  "evidence": [
+    {"packet": "KERNEL-EVENT-001", "support": "canonical ordered entrypoint/task execution boundary"},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "PostfixExpr evaluation plus immutable define/set/read store"},
+    {"packet": "TARGET-001", "support": "TargetAlias resolver"},
+    {"packet": "COMPILER-PREDICATE-001-SEMANTICS", "support": "Predicate evaluator"},
+    {"packet": "PROPERTY-CONTRIBUTION-001", "support": "stable modifier-owned property contribution slots"},
+    {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "support": "bounded heal clamp transition"}
+  ],
+  "acceptance": {
+    "source_backed_executable_records": [
+      "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
+      "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
+    ],
+    "tests": ["tests/game_data/test_reference_execution.py", "tests/game_data/test_behavior_compiler.py"],
+    "coverage_artifacts": ["behavior_compiler_report_002.json", "behavior_coverage_census_002.json"]
+  },
+  "unsupported_boundary": [
+    "Any BOUND_UNEXECUTABLE_PACKET or rejected operation",
+    "missing DynamicHash, target alias or predicate provider input",
+    "unimplemented heal formula types",
+    "global event dispatch, action scheduling, modifier callback registration and native reentrancy",
+    "production BattleState, legality API, clone/hash contract and Golden game trace claim"
+  ],
+  "coverage_policy": "EXECUTABLE_REFERENCE means the canonical operation graph has selected generic handlers and may execute only with all declared context inputs. SOURCE_BACKED_EXECUTABLE is narrower and counts only records run through the bridge with real canonical source payloads. Neither category is Golden-tested."
+}

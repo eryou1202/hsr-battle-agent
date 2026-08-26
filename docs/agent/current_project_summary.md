@@ -12,9 +12,15 @@ definitions, and 2295 recursive semantic nodes (1780 operations, 515
 Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
-`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler structurally
-compiles 201 of 249 behavior-bearing records; zero are executable or
-golden-tested. Reference semantics now exist and are tested for: KERNEL-EVENT
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 100
+structural-only records plus 101 `EXECUTABLE_REFERENCE` records (173
+independently closed executable entrypoints); exactly two records have been
+run through the generic bridge with real canonical payloads. Golden-tested
+coverage remains zero. The generic bridge consumes compiled IR,
+`ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
+it handles closed conditional/predicate, heal, StackProperty, and DynamicValue
+define/set routes and rejects all other behavior-affecting operations.
+Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,
 normal/Break/SuperBreak/DoT damage formulas, shield/lock-HP/death survival
