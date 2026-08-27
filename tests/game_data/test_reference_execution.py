@@ -8,6 +8,7 @@ import unittest
 
 from hsr_battle_agent.game_data.behavior_compiler import BehaviorCompiler
 from hsr_battle_agent.game_data.damage_survival_reference import SurvivalState
+from hsr_battle_agent.game_data.damage_survival_reference import DamageMultiplierContext
 from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition
 from hsr_battle_agent.game_data.modifier_lifecycle_reference import ModifierInstance, ModifierState
 from hsr_battle_agent.game_data.reference_execution import (
@@ -120,6 +121,43 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONEND", state, ExecutionContext(caster_id="p1", modifier_catalog={"MFixture": pending}))
         self.assertEqual(result.state.modifiers("p1")[0].state, ModifierState.TO_BE_REMOVED)
         self.assertEqual(result.trace[0]["disposition"], "MODIFIER_MARKED_FOR_DIRTY_REMOVAL")
+
+    def test_damage_request_uses_explicit_context_and_commits_shield_before_hp(self) -> None:
+        record = {
+            "behavior_id": "damage-fixture", "owner_kind": "Avatar", "owner_ref": "damage-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "damage", "source_type": "RPG.GameCore.TargetDamage", "kind": "DAMAGE_REQUEST",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "AbilityTargetEntity"},
+                "arguments": {"AttackProperty": {"AttackType": "Normal", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "DamageType": {"DamageType": "Physical"}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("100"), Decimal("100"), shield=Decimal("50"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTART", state,
+            ExecutionContext(caster_id="p1", ability_target_id="e1", damage_multiplier_contexts={"e1": DamageMultiplierContext(enemy_level=80)}),
+        )
+        self.assertEqual(result.state.entity("e1").survival.shield, Decimal("0"))
+        self.assertLess(result.state.entity("e1").survival.hp, Decimal("100"))
+        self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMMITTED")
+
+    def test_mixed_damage_request_is_not_marked_executable(self) -> None:
+        record = {
+            "behavior_id": "mixed-damage", "owner_kind": "Avatar", "owner_ref": "mixed-damage", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "mixed", "source_type": "RPG.GameCore.TargetDamage", "kind": "DAMAGE_REQUEST",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "AbilityTargetEntity"},
+                "arguments": {"AttackProperty": {"AttackType": "Normal", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "StanceValue": {"IsDynamic": False, "FixedValue": {"Value": 30}}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        operation = compiled["entrypoints"][0]["operations"][0]
+        self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
+        self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS")
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

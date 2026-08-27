@@ -35,7 +35,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "PREDICATE": {"packet": "COMPILER-PREDICATE-001-SEMANTICS", "execution_scope": "EXECUTABLE_REFERENCE"},
     "SET_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DEFINE_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
-    "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DAMAGE_COMPLETION_MARKER": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -270,6 +270,36 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_REMOVE_MODIFIER_ARGUMENTS_UNSUPPORTED"
             if not isinstance(operation.get("target"), Mapping):
                 return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+        elif kind == "DAMAGE_REQUEST":
+            attack = _mapping(arguments.get("AttackProperty"))
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            if not isinstance(attack.get("DamagePercentage"), Mapping):
+                return "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING"
+            # A TargetDamage payload can combine ordinary HP damage with
+            # stance/toughness damage, DoT, inheritance and direct-value
+            # paths.  The initial adapter handles *only* standalone ordinary
+            # HP damage.  Rejecting a mixed request is intentional: dropping
+            # a state-affecting sibling would turn an incomplete transition
+            # into false executable coverage.
+            if attack.get("AttackType") not in {None, "", "Normal"}:
+                return "EXECUTABLE_REFERENCE_DAMAGE_ATTACK_TYPE_UNSUPPORTED"
+            if "DamageValue" in attack or "BreakDamagePercentage" in attack:
+                return "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED"
+            formula = str(attack.get("FormulaType") or "ByAttack")
+            if formula not in {"ByAttack", "ByMaxHP", "ByDefence"}:
+                return "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED"
+            allowed_attack_fields = {
+                "$type", "AttackType", "DamagePercentage", "DamageType", "FormulaType",
+                # These fields only describe a visual presentation and do
+                # not alter the selected normal HP calculation.
+                "HitAnimation", "HitEffect", "HitAngleVertical", "HitEffectHeight",
+                "HitPosHeight", "HitTimeSlowIntensity",
+            }
+            if any(key not in allowed_attack_fields for key in attack):
+                return "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS"
+            if any(key not in {"AttackProperty", "DisplayData", "CanTriggerLastKill", "SpecialHitSoundEvent"} for key in arguments):
+                return "EXECUTABLE_REFERENCE_DAMAGE_ARGUMENTS_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:

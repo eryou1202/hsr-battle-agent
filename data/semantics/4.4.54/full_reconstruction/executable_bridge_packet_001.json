@@ -14,11 +14,12 @@
       "DEFINE_DYNAMIC_VALUE",
       "ADD_MODIFIER with an explicit canonical Modifier catalog definition",
       "REMOVE_MODIFIER: named instance mark-destroy only; dirty cleanup remains separate",
+      "DAMAGE_REQUEST: selected normal ByAttack/ByMaxHP/ByDefence formula with explicit multiplier context and shield-before-HP commit",
       "HEADLESS_PRESENTATION_OMITTED"
     ]
   },
   "state_reads": ["entities.survival", "dynamic_store", "property_states", "target context", "execution context dynamic hashes/scopes", "deterministic RNG"],
-  "state_writes": ["entities.survival.hp", "dynamic_store", "property_states", "modifier_instances pending append/refresh/mark-destroy"],
+  "state_writes": ["entities.survival.hp/shield/alive", "dynamic_store", "property_states", "modifier_instances pending append/refresh/mark-destroy"],
   "ordering": "Entrypoint operations execute in canonical sibling order. Conditional selects exactly SuccessTaskList or FailedTaskList and then executes that child list in order. Presentation operations are omitted only when the compiler marked gating_risk=NONE.",
   "evidence": [
     {"packet": "KERNEL-EVENT-001", "support": "canonical ordered entrypoint/task execution boundary"},
@@ -28,6 +29,7 @@
     {"packet": "PROPERTY-CONTRIBUTION-001", "support": "stable modifier-owned property contribution slots"},
     {"artifact": "modifier_catalog_001.json", "support": "explicit source Stacking definition required before ADD_MODIFIER lowering"},
     {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "support": "bounded heal clamp transition"}
+    ,{"packet": "PRIM-DAMAGE-001", "support": "selected normal damage formula and ordered shield-before-HP survival commit"}
   ],
   "acceptance": {
     "source_backed_executable_records": [
@@ -42,6 +44,7 @@
     "missing DynamicHash, target alias or predicate provider input",
     "AddModifier with missing/unsupported/conflicting canonical Stacking, dynamic injection, chance, lifetime or layer parameters",
     "RemoveModifier with no explicit name, caster/global filters, or immediate dirty cleanup semantics",
+    "DamageValue/direct-damage, Break/SuperBreak, weakness/toughness, split/AOE sequencing, damage tags, inherited attack fields and non-selected formula types",
     "unimplemented heal formula types",
     "global event dispatch, action scheduling, modifier callback registration and native reentrancy",
     "production BattleState, legality API, clone/hash contract and Golden game trace claim"

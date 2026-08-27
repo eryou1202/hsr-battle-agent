@@ -19,7 +19,11 @@ run through the generic bridge with real canonical payloads. Golden-tested
 coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
 it handles closed conditional/predicate, heal, StackProperty, and DynamicValue
-define/set routes and rejects all other behavior-affecting operations.
+define/set routes and rejects all other behavior-affecting operations. A strict
+standalone normal-HP `DamageRequest` bridge now commits through shield then HP
+only with explicit attacker and multiplier context; mixed HP+toughness,
+DirectDamageValue, Break/SuperBreak and non-normal forms remain rejected until
+their complete state transitions are integrated.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

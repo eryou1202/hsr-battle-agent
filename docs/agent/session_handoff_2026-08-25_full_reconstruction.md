@@ -31,9 +31,10 @@
   OPAQUE 7.
 - Corpus hash:
   `4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5`.
-- Coverage split: 249 behavior-bearing records (201 structural-only
-  compiled) and 304 static-definition-only records; 0 executable,
-  0 golden-tested.
+- Current coverage split: 249 behavior-bearing records (99 structural-only
+  compiled), 102 `EXECUTABLE_REFERENCE` records / 181 independently closed
+  entrypoints, and 304 static-definition-only records. Two records are
+  source-backed executed; Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
 - Modifier lifecycle reference now implements pending append ->
@@ -70,10 +71,16 @@
   canonical IR to immutable `ReferenceBattleState` transitions.  It supports
   conditional/predicate branching, the selected heal formulas, StackProperty,
   and DynamicValue define/set; unknown operations remain hard rejections.
-  The current v2 compiler report has 101 `EXECUTABLE_REFERENCE` records and
-  173 independently executable entrypoints, with two real source-backed
+  The current v2 compiler report has 102 `EXECUTABLE_REFERENCE` records and
+  181 independently executable entrypoints, with two real source-backed
   records run through that path (Natasha HOT and `MCommon_AttackRatioUp`).
   These are still reference execution, not Golden game traces.
+- `DAMAGE-EXECUTION-BRIDGE-001` adds strict standalone normal-HP request
+  lowering: explicit attacker stats and target multiplier contexts produce a
+  selected formula and shield-before-HP commit. It deliberately rejects
+  mixed `StanceValue`/toughness, `SPHitRatio`, direct-value, Break/SuperBreak,
+  DoT and inheritance payloads, so no mixed real canonical record was falsely
+  promoted.
 
 ## Source state
 
@@ -86,9 +93,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DAMAGE-EXECUTION-BRIDGE-001`: lower only DamageRequest forms with explicit
-   attacker stats, selected multiplier context and resolved targets through
-   the existing damage/survival reference contracts.
+1. `DAMAGE-TOUGHNESS-INTEGRATION-001`: bind a normal HP request and its
+   `StanceValue` component as one explicit target transition using the
+   existing toughness/break reference. Require supplied per-target weakness,
+   toughness and break inputs; never omit a component to gain coverage.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`; retain separate record, entrypoint,
    source-backed-executable and Golden counts.

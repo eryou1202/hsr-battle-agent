@@ -14,7 +14,7 @@ from decimal import Decimal
 import random
 from typing import Any, Iterable, Mapping, Sequence
 
-from .damage_survival_reference import SurvivalState
+from .damage_survival_reference import DamageMultiplierContext, SurvivalState, initial_damage, normal_damage
 from .dynamic_value_reference import (
     DynamicValueSemanticError,
     DynamicValueStore,
@@ -51,6 +51,8 @@ class RuntimeEntity:
     position: tuple[int, int] = (0, 0)
     character_id: int | None = None
     modifier_names: tuple[str, ...] = ()
+    attack: Decimal = Decimal("0")
+    defense: Decimal = Decimal("0")
 
     def snapshot(self) -> EntitySnapshot:
         return EntitySnapshot(
@@ -145,6 +147,8 @@ class ReferenceBattleState:
                     "position": list(entity.position),
                     "character_id": entity.character_id,
                     "modifier_names": list(entity.modifier_names),
+                    "attack": str(entity.attack),
+                    "defense": str(entity.defense),
                 }
                 for key, entity in sorted(self.entities.items())
             },
@@ -185,6 +189,10 @@ class ExecutionContext:
     modifier_callback_name: str = ""
     caster_runtime_id: int | None = None
     modifier_catalog: Mapping[str, ModifierDefinition] = field(default_factory=dict)
+    damage_source_id: str | None = None
+    damage_multiplier_contexts: Mapping[str, DamageMultiplierContext] = field(default_factory=dict)
+    crit_rate: Decimal = Decimal("0")
+    crit_damage: Decimal = Decimal("0")
 
     def default_owner_id(self) -> str:
         for candidate in (self.caster_id, self.modifier_owner_id, self.ability_target_id):
@@ -280,6 +288,8 @@ class SemanticExecutor:
             return self._execute_add_modifier(operation, state, context)
         if kind == "REMOVE_MODIFIER":
             return self._execute_remove_modifier(operation, state, context)
+        if kind == "DAMAGE_REQUEST":
+            return self._execute_damage(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -506,6 +516,64 @@ class SemanticExecutor:
                 "target_id": target_id,
                 "modifier_name": name,
                 "instance_ids": affected,
+            })
+        return ExecutionResult(current, tuple(trace))
+
+    def _execute_damage(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit the selected ordinary damage model through shield then HP.
+
+        A request is intentionally executable only when the caller supplies
+        the target multiplier context.  This avoids silently importing level,
+        resistance, vulnerability or crit assumptions from a fixture.
+        """
+        arguments = operation.get("arguments", {})
+        attack_property = arguments.get("AttackProperty", {})
+        if not isinstance(attack_property, Mapping):
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: missing AttackProperty")
+        source_id = context.damage_source_id or context.caster_id
+        if not source_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: damage source is required")
+        source = state.entity(source_id)
+        formula = str(attack_property.get("FormulaType") or "ByAttack")
+        percentage = self._evaluate_value(attack_property.get("DamagePercentage"), state, context)
+        scaling = {"ByAttack": (percentage, Decimal("0"), Decimal("0")), "ByMaxHP": (Decimal("0"), percentage, Decimal("0")), "ByDefence": (Decimal("0"), Decimal("0"), percentage)}.get(formula)
+        if scaling is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: unsupported damage formula {formula!r}")
+        ability_amount = initial_damage(
+            atk=source.attack,
+            hp=source.survival.max_hp,
+            defense=source.defense,
+            atk_scaling=scaling[0],
+            hp_scaling=scaling[1],
+            def_scaling=scaling[2],
+        )
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        for target_id in targets:
+            multiplier_context = context.damage_multiplier_contexts.get(target_id)
+            if multiplier_context is None:
+                raise SemanticExecutionError(f"{operation.get('operation_id')}: missing DamageMultiplierContext for {target_id!r}")
+            amount = normal_damage(ability_amount, multiplier_context, crit_rate=context.crit_rate, crit_damage=context.crit_damage)
+            target = current.entity(target_id)
+            survival, shield_absorbed, hp_lost = target.survival.absorb(amount)
+            current = current.replace_entity(replace(target, survival=survival))
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "DAMAGE_COMMITTED",
+                "formula_type": formula,
+                "source_id": source_id,
+                "target_id": target_id,
+                "ability_amount": str(ability_amount),
+                "amount": str(amount),
+                "shield_absorbed": str(shield_absorbed),
+                "hp_lost": str(hp_lost),
+                "target_alive": survival.alive,
             })
         return ExecutionResult(current, tuple(trace))
 
