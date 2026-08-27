@@ -29,12 +29,13 @@
   recursive semantic nodes (1780 operations, 515 Predicate AST).
 - Node statuses: REQUIRES_PACKET 1826, PRESENTATION 430, MODELLED 32,
   OPAQUE 7.
-- Corpus hash:
-  `4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5`.
-- Current coverage split: 249 behavior-bearing records (99 structural-only
-  compiled), 102 `EXECUTABLE_REFERENCE` records / 181 independently closed
-  entrypoints, and 304 static-definition-only records. Two records are
-  source-backed executed; Golden-tested remains zero.
+- Current corpus hash:
+  `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
+- Current coverage split: 249 behavior-bearing records (92 structural-only
+  compiled), 109 `EXECUTABLE_REFERENCE` records / 188 independently closed
+  entrypoints, and 304 static-definition-only records. Three complete records
+  are source-backed executed plus one explicitly separate operation component;
+  Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
 - Modifier lifecycle reference now implements pending append ->
@@ -86,6 +87,11 @@
   real Black Swan Skill02 adjoining damage operation runs as a separately
   labeled source-backed component fixture; its complete Skill entrypoint is
   still not executable and it is not Golden.
+- `WEAKNESS-STATE-BRIDGE-001` corrects `StackWeakness` from the misleading
+  `MODIFY_TOUGHNESS` family to `MODIFY_WEAKNESS(Attach)`. It writes the shared
+  entity weakness state and supplies the existing `ByHasStanceWeak` predicate
+  hook. The complete `MCommon_WeakType_Fire` OnStack callback now executes as
+  a third source-backed record.
 
 ## Source state
 
@@ -98,9 +104,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `TOUGHNESS-OPERATION-BRIDGE-001`: classify and lower only complete
-   canonical `MODIFY_TOUGHNESS` shapes through the same explicit target
-   toughness/weakness/Break context. Do not infer unavailable inputs.
+1. `WEAKNESS-DAMAGE-CONTEXT-INTEGRATION-001`: allow selected `StanceValue`
+   damage to use the explicit entity weakness state when requested, while
+   retaining required target toughness and Break inputs. Do not infer default
+   weakness or elemental scaling.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`; retain separate record, entrypoint,
    source-backed-executable and Golden counts.

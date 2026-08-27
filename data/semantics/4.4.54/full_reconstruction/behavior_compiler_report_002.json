@@ -14,10 +14,10 @@
       "Modifier": {
         "behavior_bearing": 164,
         "captured": 467,
-        "executable_reference": 102,
+        "executable_reference": 109,
         "golden_tested": 0,
         "static_definition_only": 303,
-        "structural_compiled": 39
+        "structural_compiled": 32
       },
       "Monster": {
         "behavior_bearing": 3,
@@ -38,7 +38,7 @@
     },
     "canonicalized": 553,
     "captured": 553,
-    "executable": 102,
+    "executable": 109,
     "failure_reasons": {
       "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 129
     },
@@ -46,12 +46,12 @@
     "operation_level": {
       "compiled_disposition": {
         "BOUND_PRIMITIVE": 26,
-        "BOUND_UNEXECUTABLE_PACKET": 553,
-        "EXECUTABLE_REFERENCE": 1277,
+        "BOUND_UNEXECUTABLE_PACKET": 546,
+        "EXECUTABLE_REFERENCE": 1284,
         "HEADLESS_PRESENTATION_OMITTED": 298
       },
-      "executable_bound": 1277,
-      "executable_entrypoints": 181,
+      "executable_bound": 1284,
+      "executable_entrypoints": 188,
       "source_semantic_status": {
         "MODELLED": 32,
         "PRESENTATION": 298,
@@ -59,10 +59,10 @@
       }
     },
     "static_definition_only": 304,
-    "structural_compiled": 99
+    "structural_compiled": 92
   },
   "game_version": "4.4.54",
-  "input_corpus_sha256": "4fac2724182b31cb903fb96e56aa9b1c583b588fbf075615b93277b57c570ff5",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
   "records": [
     {
       "behavior_bearing": true,
@@ -105031,7 +105031,7 @@
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -105054,7 +105054,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Fire._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -105376,11 +105376,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire:MODIFIER_CALLBACK:MCommon_WeakType_Fire._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -105402,10 +105402,10 @@
           "source_event": "MCommon_WeakType_Fire._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "62228f08732cc7035889426acf76b5882ac08df28f2db5250c31e761d870ad3a",
+      "ir_sha256": "3abcfdc2b3bce62641f9e47ee6250fdc688b9031205b2f693067ad58f2128c0f",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Fire",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -105420,13 +105420,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Ice",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -105449,7 +105449,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Ice._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -105771,11 +105771,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Ice:MODIFIER_CALLBACK:MCommon_WeakType_Ice._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -105797,10 +105797,10 @@
           "source_event": "MCommon_WeakType_Ice._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "223b2ebf918bbb23e645e962f339bdb2e766e669571e0a5d149d02ec64ca4cd8",
+      "ir_sha256": "7e16391f86374f4771dd34a573b62219e37c4d5299a837dad41d0e2f705d893c",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Ice",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -105815,13 +105815,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Imaginary",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -105844,7 +105844,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Imaginary._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -106166,11 +106166,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Imaginary:MODIFIER_CALLBACK:MCommon_WeakType_Imaginary._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -106192,10 +106192,10 @@
           "source_event": "MCommon_WeakType_Imaginary._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "a34eb2086259a326be325ee9e554718afaac2fd61c81bb3694d2cf509cf0954b",
+      "ir_sha256": "2b65ea5eec0edb2e69c34a5c1c485a71a13c433a49f34cf124213b8555d4dab5",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Imaginary",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -106210,13 +106210,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Physical",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -106239,7 +106239,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Physical._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -106561,11 +106561,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Physical:MODIFIER_CALLBACK:MCommon_WeakType_Physical._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -106587,10 +106587,10 @@
           "source_event": "MCommon_WeakType_Physical._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "639c2575382521676fbb7bf29670fa6f37ebedf64e4fffd066844a384e7515c1",
+      "ir_sha256": "4431a68dbe15e47c8a5c2c3d7ac8b3f6f24f2165d019e01543b72eba6d72018e",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Physical",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -106605,13 +106605,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Quantum",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -106634,7 +106634,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Quantum._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -106956,11 +106956,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Quantum:MODIFIER_CALLBACK:MCommon_WeakType_Quantum._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -106982,10 +106982,10 @@
           "source_event": "MCommon_WeakType_Quantum._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "ebbacf4215904f6ebbe5c81f40f820b060199c6ad3192f9efe89a626a732a6e6",
+      "ir_sha256": "90fd810b4822a8310e11f5007e1a608688d176f1f589485e3b61f7890533d8df",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Quantum",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -107000,13 +107000,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Thunder",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -107029,7 +107029,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Thunder._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -107351,11 +107351,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Thunder:MODIFIER_CALLBACK:MCommon_WeakType_Thunder._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -107377,10 +107377,10 @@
           "source_event": "MCommon_WeakType_Thunder._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "f4921171ae97e243a43d25c3e0c75651f7598a8b5287d12e54586f8c6bc3cddf",
+      "ir_sha256": "313030951c65931e865fe7bfc9fa2ea3438cd6fb0031c416b90b26055ad8af8e",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Thunder",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -107395,13 +107395,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Wind",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -107424,7 +107424,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MCommon_WeakType_Wind._CallbackList[0]:OnStack",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -107746,11 +107746,11 @@
               },
               "children": [],
               "dependencies": [
-                "PRIM-SURVIVAL-001"
+                "TOUGHNESS-BREAK-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
-              "kind": "MODIFY_TOUGHNESS",
+              "kind": "MODIFY_WEAKNESS",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Wind:MODIFIER_CALLBACK:MCommon_WeakType_Wind._CallbackList[0]:OnStack:1",
               "reference_execution_blocker": null,
@@ -107772,10 +107772,10 @@
           "source_event": "MCommon_WeakType_Wind._CallbackList[0]:OnStack"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "6edccf433e731076f365da6fdbc83febe2195636da49caa2a7e92d75a891e0fb",
+      "ir_sha256": "db6f6bc9a1fefd6ea52dbfc6299ea012191c052e6b72a2c2bd61852e8eb60b6e",
       "owner_kind": "Modifier",
       "owner_ref": "MCommon_WeakType_Wind",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -107790,7 +107790,7 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
@@ -143232,6 +143232,6 @@
       "template_definitions": []
     }
   ],
-  "report_sha256": "ade6fc5c6f0c597d333f507b6fff7d3aa6ed13d0dd0fc1480a4d888c607e1c46",
+  "report_sha256": "e11cfd80b102f519f3e560a6fb6c569d1e37d139e9878c8774899142021fb597",
   "schema": "hsr_battle_agent.behavior_compiler_report/1"
 }

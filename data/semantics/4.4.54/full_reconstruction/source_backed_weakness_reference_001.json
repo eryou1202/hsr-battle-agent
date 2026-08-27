@@ -1,0 +1,35 @@
+{
+  "fixture_id": "SOURCE-BACKED-WEAKNESS-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute the complete real canonical MCommon_WeakType_Fire OnStack callback through the generic compiler/executor. It composes ByHasStanceWeak, dynamic comparison, modifier-owned property contribution, presentation omission and StackWeakness(Attach).",
+  "status": "SOURCE_BACKED_REFERENCE_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire",
+    "entrypoint_event": "MODIFIER_CALLBACK:MCommon_WeakType_Fire._CallbackList[0]:OnStack",
+    "source_refs": [{
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json",
+      "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe",
+      "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+      "source": "TurnBasedGameData",
+      "source_container": "ModifierMap",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    }]
+  },
+  "selected_context": {
+    "caster_id": "e1",
+    "modifier_owner_id": "e1",
+    "modifier_id": "MCommon_WeakType_Fire",
+    "dynamic_store": {"e1": {"MDF_PropertyValue": "1"}},
+    "dynamic_hash_values": {"2128130574": "0.2"}
+  },
+  "selected_initial_state": {"e1": {"team": "dark", "hp": "100", "max_hp": "100", "weaknesses": []}},
+  "expected_transition": {
+    "weaknesses": ["Fire"],
+    "property_contribution": {"FireResistanceDelta@MCommon_WeakType_Fire": "-0.2"},
+    "ordered_dispositions": ["BRANCH_SUCCESS", "BRANCH_SUCCESS", "PROPERTY_CONTRIBUTION_SET", "HEADLESS_PRESENTATION_OMITTED", "WEAKNESS_ATTACHED"]
+  },
+  "assumptions": ["MDF_PropertyValue and the DynamicHash source value are explicit fixture inputs.", "Attach is the only StackWeakness OPType accepted by this reference bridge."],
+  "unsupported_boundary": ["Detach/replace weakness policy, base/default weakness categories, weakness display metadata and complete battle action timing remain outside this fixture.", "This is not a Golden game trace."]
+}

@@ -19,6 +19,7 @@ coverage = report["coverage"]
 SOURCE_BACKED_EXECUTABLE_BEHAVIORS = {
     "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
     "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp",
+    "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire",
 }
 SOURCE_BACKED_EXECUTED_COMPONENTS = (
     {

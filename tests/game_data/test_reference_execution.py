@@ -9,6 +9,7 @@ import unittest
 from hsr_battle_agent.game_data.behavior_compiler import BehaviorCompiler
 from hsr_battle_agent.game_data.damage_survival_reference import SurvivalState
 from hsr_battle_agent.game_data.damage_survival_reference import DamageMultiplierContext
+from hsr_battle_agent.game_data.dynamic_value_reference import DynamicValueStore
 from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition
 from hsr_battle_agent.game_data.modifier_lifecycle_reference import ModifierInstance, ModifierState
 from hsr_battle_agent.game_data.reference_execution import (
@@ -25,6 +26,7 @@ CORPUS_PATH = Path("data/semantics/4.4.54/full_reconstruction/external_behavior_
 HOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP"
 PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
 BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
+WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
 
 
 def _record(behavior_id: str) -> dict:
@@ -188,6 +190,42 @@ class ReferenceExecutionTest(unittest.TestCase):
         operation = compiled["entrypoints"][0]["operations"][0]
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
         self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS")
+
+    def test_attach_weakness_uses_shared_entity_state(self) -> None:
+        record = {
+            "behavior_id": "weakness-fixture", "owner_kind": "Modifier", "owner_ref": "weakness-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTACK", "operations": [{
+                "operation_id": "weak", "source_type": "RPG.GameCore.StackWeakness", "kind": "MODIFY_WEAKNESS",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"OPType": "Attach", "WeakList": ["Fire", "Wind", "Fire"]}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("100"), Decimal("100")), weaknesses=("Physical",))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONSTACK", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
+        self.assertEqual(result.state.entity("e1").weaknesses, ("Physical", "Fire", "Wind"))
+        self.assertEqual(result.trace[0]["disposition"], "WEAKNESS_ATTACHED")
+
+    def test_source_backed_fire_weakness_callback_executes_through_generic_bridge(self) -> None:
+        compiled = BehaviorCompiler().compile_record(_record(WEAKNESS_FIRE_ID))
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("100"), Decimal("100")))},
+            dynamic_store=DynamicValueStore.empty().set_value("e1", "MDF_PropertyValue", Decimal("1")).store,
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled,
+            "MODIFIER_CALLBACK:MCommon_WeakType_Fire._CallbackList[0]:OnStack",
+            state,
+            ExecutionContext(caster_id="e1", modifier_owner_id="e1", modifier_id="MCommon_WeakType_Fire", dynamic_hash_values={"2128130574": "0.2"}),
+        )
+        self.assertEqual(result.state.entity("e1").weaknesses, ("Fire",))
+        self.assertEqual(result.state.property_state("e1").read("FireResistanceDelta"), Decimal("-0.2"))
+        self.assertEqual(
+            [item["disposition"] for item in result.trace],
+            ["BRANCH_SUCCESS", "BRANCH_SUCCESS", "PROPERTY_CONTRIBUTION_SET", "HEADLESS_PRESENTATION_OMITTED", "WEAKNESS_ATTACHED"],
+        )
 
     def test_source_backed_black_swan_damage_component_executes_with_explicit_context(self) -> None:
         source = _record(BLACK_SWAN_SKILL02_ID)

@@ -55,6 +55,7 @@ class RuntimeEntity:
     attack: Decimal = Decimal("0")
     defense: Decimal = Decimal("0")
     toughness: ToughnessState | None = None
+    weaknesses: tuple[str, ...] = ()
 
     def snapshot(self) -> EntitySnapshot:
         return EntitySnapshot(
@@ -152,6 +153,7 @@ class ReferenceBattleState:
                     "attack": str(entity.attack),
                     "defense": str(entity.defense),
                     "toughness": None if entity.toughness is None else dict(entity.toughness.as_json()),
+                    "weaknesses": list(entity.weaknesses),
                 }
                 for key, entity in sorted(self.entities.items())
             },
@@ -310,6 +312,8 @@ class SemanticExecutor:
             return self._execute_remove_modifier(operation, state, context)
         if kind == "DAMAGE_REQUEST":
             return self._execute_damage(operation, state, context)
+        if kind == "MODIFY_WEAKNESS":
+            return self._execute_attach_weakness(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -643,6 +647,34 @@ class SemanticExecutor:
             current = current.replace_entity(replace(target, survival=survival, toughness=toughness))
         return ExecutionResult(current, tuple(trace))
 
+    def _execute_attach_weakness(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Attach explicitly named weakness types with stable de-duplication."""
+        arguments = operation.get("arguments", {})
+        if arguments.get("OPType") != "Attach":
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: unsupported weakness operation")
+        weak_list = arguments.get("WeakList")
+        if not isinstance(weak_list, list) or not all(isinstance(item, str) and item for item in weak_list):
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: invalid WeakList")
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        for target_id in targets:
+            entity = current.entity(target_id)
+            weaknesses = tuple(dict.fromkeys((*entity.weaknesses, *weak_list)))
+            current = current.replace_entity(replace(entity, weaknesses=weaknesses))
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "WEAKNESS_ATTACHED",
+                "target_id": target_id,
+                "weaknesses": list(weaknesses),
+            })
+        return ExecutionResult(current, tuple(trace))
+
     def _predicate_context(self, state: ReferenceBattleState, context: ExecutionContext) -> PredicateContext:
         target_context = state.target_context(context)
 
@@ -676,4 +708,5 @@ class SemanticExecutor:
             current_hp=(state.entity(context.modifier_owner_id).survival.hp if context.modifier_owner_id else None),
             current_max_hp=(state.entity(context.modifier_owner_id).survival.max_hp if context.modifier_owner_id else None),
             modifier_callback_name=context.modifier_callback_name,
+            has_stance_weak=lambda entity, damage_type: damage_type in state.entity(entity).weaknesses,
         )

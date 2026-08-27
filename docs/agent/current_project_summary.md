@@ -12,11 +12,11 @@ definitions, and 2295 recursive semantic nodes (1780 operations, 515
 Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
-`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 100
-structural-only records plus 102 `EXECUTABLE_REFERENCE` records (181
-independently closed executable entrypoints); exactly two records have been
-run through the generic bridge with real canonical payloads. Golden-tested
-coverage remains zero. The generic bridge consumes compiled IR,
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
+structural-only records plus 109 `EXECUTABLE_REFERENCE` records (188
+independently closed executable entrypoints); three complete records and one
+separately labeled operation component have run through the generic bridge
+with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
 it handles closed conditional/predicate, heal, StackProperty, and DynamicValue
 define/set routes and rejects all other behavior-affecting operations. A strict
@@ -28,6 +28,10 @@ an explicit `StanceValue` transition only when target toughness and weakness/
 Break inputs are supplied; a real Black Swan Skill02 adjoining-target
 component is source-backed executed under that scope, but it is not a complete
 Skill entrypoint and does not increase the full-record source-backed count.
+`StackWeakness` is now correctly represented as a weakness-state Attach, not
+as toughness damage; the complete real `MCommon_WeakType_Fire` callback is a
+third source-backed executed record. Corpus hash:
+`fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

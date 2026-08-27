@@ -127,7 +127,7 @@ OPERATION_MAP: Mapping[str, tuple[str, str, str, str]] = {
     "RPG.GameCore.SetSkillTextDialogType": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
     "RPG.GameCore.StackStatusDesc": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
     "RPG.GameCore.ShowEntityFloatMessage": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
-    "RPG.GameCore.StackWeakness": ("MODIFY_TOUGHNESS", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
+    "RPG.GameCore.StackWeakness": ("MODIFY_WEAKNESS", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
     "RPG.GameCore.HideCharacterFilteredEffect": ("PRESENTATION", "PRESENTATION", "PRESENTATION", "NONE"),
     "RPG.GameCore.SetDynamicValueByVariateType": ("SET_DYNAMIC_VALUE", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
     "RPG.GameCore.AddBehaviorFlagForModifier": ("MODIFY_MODIFIER_FLAG", "REQUIRES_PACKET", "UNKNOWN", "KNOWN_STATE_COMMIT"),
@@ -466,6 +466,7 @@ def _semantic_importance(kind: str, status: str, risk: str) -> str:
         "REMOVE_SHIELD",
         "SET_RESILIENCE",
         "MODIFY_TOUGHNESS",
+        "MODIFY_WEAKNESS",
     }:
         return "P0_MODIFIER_OR_DAMAGE_PIPELINE"
     if kind in {

@@ -59,6 +59,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "MODIFY_SKILL_TREE_LEVEL": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "ADD_STAGE_BUFF": {"packet": "PRIM-MODIFIER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_TOUGHNESS": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "MODIFY_WEAKNESS": {"packet": "TOUGHNESS-BREAK-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "TRIGGER_BREAK": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "RESET_TOUGHNESS": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "SET_RESILIENCE": {"packet": "PRIM-SURVIVAL-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -306,6 +307,14 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS"
             if any(key not in {"AttackProperty", "DisplayData", "CanTriggerLastKill", "SpecialHitSoundEvent"} for key in arguments):
                 return "EXECUTABLE_REFERENCE_DAMAGE_ARGUMENTS_UNSUPPORTED"
+        elif kind == "MODIFY_WEAKNESS":
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            weak_list = arguments.get("WeakList")
+            if arguments.get("OPType") != "Attach" or not isinstance(weak_list, list) or not weak_list or not all(isinstance(item, str) and item for item in weak_list):
+                return "EXECUTABLE_REFERENCE_WEAKNESS_PAYLOAD_UNSUPPORTED"
+            if set(arguments) != {"OPType", "WeakList"}:
+                return "EXECUTABLE_REFERENCE_WEAKNESS_ARGUMENTS_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
