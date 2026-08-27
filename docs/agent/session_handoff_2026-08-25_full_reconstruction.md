@@ -81,6 +81,11 @@
   mixed `StanceValue`/toughness, `SPHitRatio`, direct-value, Break/SuperBreak,
   DoT and inheritance payloads, so no mixed real canonical record was falsely
   promoted.
+- `DAMAGE-TOUGHNESS-INTEGRATION-001` then bound the selected HP+`StanceValue`
+  transition with explicit per-target toughness/weakness/Break inputs. The
+  real Black Swan Skill02 adjoining damage operation runs as a separately
+  labeled source-backed component fixture; its complete Skill entrypoint is
+  still not executable and it is not Golden.
 
 ## Source state
 
@@ -93,10 +98,9 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DAMAGE-TOUGHNESS-INTEGRATION-001`: bind a normal HP request and its
-   `StanceValue` component as one explicit target transition using the
-   existing toughness/break reference. Require supplied per-target weakness,
-   toughness and break inputs; never omit a component to gain coverage.
+1. `TOUGHNESS-OPERATION-BRIDGE-001`: classify and lower only complete
+   canonical `MODIFY_TOUGHNESS` shapes through the same explicit target
+   toughness/weakness/Break context. Do not infer unavailable inputs.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`; retain separate record, entrypoint,
    source-backed-executable and Golden counts.

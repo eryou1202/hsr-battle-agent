@@ -16,12 +16,15 @@ from hsr_battle_agent.game_data.reference_execution import (
     ReferenceBattleState,
     RuntimeEntity,
     SemanticExecutor,
+    ToughnessCommitContext,
 )
+from hsr_battle_agent.game_data.toughness_break_reference import ToughnessState
 
 
 CORPUS_PATH = Path("data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json")
 HOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP"
 PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
+BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
 
 
 def _record(behavior_id: str) -> dict:
@@ -145,7 +148,7 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertLess(result.state.entity("e1").survival.hp, Decimal("100"))
         self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMMITTED")
 
-    def test_mixed_damage_request_is_not_marked_executable(self) -> None:
+    def test_normal_damage_with_stance_commits_hp_then_toughness(self) -> None:
         record = {
             "behavior_id": "mixed-damage", "owner_kind": "Avatar", "owner_ref": "mixed-damage", "source_refs": [],
             "entrypoints": [{"event": "ONSTART", "operations": [{
@@ -155,9 +158,71 @@ class ReferenceExecutionTest(unittest.TestCase):
             }]}],
         }
         compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500")), toughness=ToughnessState(Decimal("50"), Decimal("50"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTART", state,
+            ExecutionContext(
+                caster_id="p1", ability_target_id="e1",
+                damage_multiplier_contexts={"e1": DamageMultiplierContext(enemy_level=80)},
+                toughness_contexts={"e1": ToughnessCommitContext(weakness_active=True)},
+            ),
+        )
+        self.assertLess(result.state.entity("e1").survival.hp, Decimal("500"))
+        self.assertEqual(result.state.entity("e1").toughness.current_toughness, Decimal("20"))
+        self.assertEqual([item["disposition"] for item in result.trace], ["DAMAGE_COMMITTED", "TOUGHNESS_REDUCED"])
+
+    def test_damage_request_with_unknown_state_field_is_not_marked_executable(self) -> None:
+        record = {
+            "behavior_id": "unsupported-damage", "owner_kind": "Avatar", "owner_ref": "unsupported-damage", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "mixed", "source_type": "RPG.GameCore.TargetDamage", "kind": "DAMAGE_REQUEST",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "AbilityTargetEntity"},
+                "arguments": {"AttackProperty": {"AttackType": "Normal", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "SPHitRatio": {"IsDynamic": False, "FixedValue": {"Value": 1}}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
         operation = compiled["entrypoints"][0]["operations"][0]
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
         self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS")
+
+    def test_source_backed_black_swan_damage_component_executes_with_explicit_context(self) -> None:
+        source = _record(BLACK_SWAN_SKILL02_ID)
+        # The primary hit has SPHitRatio, whose runtime meaning is not closed.
+        # The adjoining hit is otherwise the same selected normal+stance
+        # family and has no unmodelled state field.
+        damage = source["entrypoints"][0]["operations"][2]
+        # The complete Skill02 entrypoint has retarget, chance and action
+        # completion operations that remain outside this bridge.  This slice
+        # preserves the real canonical operation and provenance while testing
+        # only its independently closed DamageRequest component.
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-damage-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_DAMAGE_COMPONENT", "operations": [damage]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500")), position=(0, 0)),
+            "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("500"), Decimal("500")), position=(0, 1), toughness=ToughnessState(Decimal("100"), Decimal("100"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_DAMAGE_COMPONENT", state,
+            ExecutionContext(
+                caster_id="p1", ability_target_id="e1",
+                dynamic_hash_values={"-1847083384": "1", "-1315627076": "30"},
+                damage_multiplier_contexts={"e2": DamageMultiplierContext(enemy_level=80)},
+                toughness_contexts={"e2": ToughnessCommitContext(weakness_active=True)},
+            ),
+        )
+        self.assertLess(result.state.entity("e2").survival.hp, Decimal("500"))
+        self.assertEqual(result.state.entity("e2").toughness.current_toughness, Decimal("70"))
+        self.assertEqual([item["disposition"] for item in result.trace], ["DAMAGE_COMMITTED", "TOUGHNESS_REDUCED"])
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

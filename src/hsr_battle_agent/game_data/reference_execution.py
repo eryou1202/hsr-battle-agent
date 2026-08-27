@@ -27,6 +27,7 @@ from .property_contribution_reference import PropertyState
 from .modifier_catalog import ModifierDefinition
 from .modifier_lifecycle_reference import ModifierInstance, add_or_refresh, mark_destroy
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
+from .toughness_break_reference import ToughnessState, apply_toughness_damage
 
 
 class SemanticExecutionError(DynamicValueSemanticError):
@@ -53,6 +54,7 @@ class RuntimeEntity:
     modifier_names: tuple[str, ...] = ()
     attack: Decimal = Decimal("0")
     defense: Decimal = Decimal("0")
+    toughness: ToughnessState | None = None
 
     def snapshot(self) -> EntitySnapshot:
         return EntitySnapshot(
@@ -149,6 +151,7 @@ class ReferenceBattleState:
                     "modifier_names": list(entity.modifier_names),
                     "attack": str(entity.attack),
                     "defense": str(entity.defense),
+                    "toughness": None if entity.toughness is None else dict(entity.toughness.as_json()),
                 }
                 for key, entity in sorted(self.entities.items())
             },
@@ -191,6 +194,7 @@ class ExecutionContext:
     modifier_catalog: Mapping[str, ModifierDefinition] = field(default_factory=dict)
     damage_source_id: str | None = None
     damage_multiplier_contexts: Mapping[str, DamageMultiplierContext] = field(default_factory=dict)
+    toughness_contexts: Mapping[str, "ToughnessCommitContext"] = field(default_factory=dict)
     crit_rate: Decimal = Decimal("0")
     crit_damage: Decimal = Decimal("0")
 
@@ -199,6 +203,22 @@ class ExecutionContext:
             if candidate:
                 return candidate
         raise SemanticExecutionError("context has no caster, modifier owner or ability target")
+
+
+@dataclass(frozen=True)
+class ToughnessCommitContext:
+    """Explicit inputs for the stance part of a mixed normal request.
+
+    Weakness, Break Effect and elemental-break scaling are not inferred from
+    a target alias or from an external fixture.  The behavior adapter may
+    execute a StanceValue only when the scenario/reference context supplies
+    them for the particular target.
+    """
+
+    weakness_active: bool
+    elemental_break_scaling: Decimal = Decimal("1")
+    special_scaling: Decimal = Decimal("1")
+    break_effect: Decimal = Decimal("0")
 
 
 @dataclass(frozen=True)
@@ -552,6 +572,9 @@ class SemanticExecutor:
             hp_scaling=scaling[1],
             def_scaling=scaling[2],
         )
+        stance_value = attack_property.get("StanceValue")
+        has_stance = stance_value is not None
+        stance_amount = self._evaluate_value(stance_value, state, context) if has_stance else None
         targets = self._resolve_targets(operation.get("target"), state, context)
         current = state
         trace: list[Mapping[str, Any]] = []
@@ -562,7 +585,7 @@ class SemanticExecutor:
             amount = normal_damage(ability_amount, multiplier_context, crit_rate=context.crit_rate, crit_damage=context.crit_damage)
             target = current.entity(target_id)
             survival, shield_absorbed, hp_lost = target.survival.absorb(amount)
-            current = current.replace_entity(replace(target, survival=survival))
+            toughness = target.toughness
             trace.append({
                 "operation_id": operation.get("operation_id"),
                 "disposition": "DAMAGE_COMMITTED",
@@ -575,6 +598,49 @@ class SemanticExecutor:
                 "hp_lost": str(hp_lost),
                 "target_alive": survival.alive,
             })
+            if has_stance:
+                toughness_context = context.toughness_contexts.get(target_id)
+                if toughness_context is None:
+                    raise SemanticExecutionError(f"{operation.get('operation_id')}: missing ToughnessCommitContext for {target_id!r}")
+                if toughness is None:
+                    raise SemanticExecutionError(f"{operation.get('operation_id')}: target {target_id!r} has no toughness state")
+                if not toughness_context.weakness_active or not survival.alive:
+                    trace.append({
+                        "operation_id": operation.get("operation_id"),
+                        "disposition": "TOUGHNESS_SKIPPED",
+                        "target_id": target_id,
+                        "reason": "WEAKNESS_INACTIVE" if not toughness_context.weakness_active else "TARGET_DEAD",
+                    })
+                else:
+                    transition = apply_toughness_damage(
+                        toughness,
+                        stance_amount,
+                        elemental_break_scaling=toughness_context.elemental_break_scaling,
+                        special_scaling=toughness_context.special_scaling,
+                        break_effect=toughness_context.break_effect,
+                        damage_context=multiplier_context,
+                    )
+                    toughness = transition.state
+                    if transition.break_damage is not None:
+                        survival, break_shield_absorbed, break_hp_lost = survival.absorb(transition.break_damage)
+                        trace.append({
+                            "operation_id": operation.get("operation_id"),
+                            "disposition": "BREAK_DAMAGE_COMMITTED",
+                            "target_id": target_id,
+                            "amount": str(transition.break_damage),
+                            "shield_absorbed": str(break_shield_absorbed),
+                            "hp_lost": str(break_hp_lost),
+                            "target_alive": survival.alive,
+                        })
+                    trace.append({
+                        "operation_id": operation.get("operation_id"),
+                        "disposition": transition.action,
+                        "target_id": target_id,
+                        "stance_amount": str(stance_amount),
+                        "current_toughness": str(toughness.current_toughness),
+                        "broken": toughness.broken,
+                    })
+            current = current.replace_entity(replace(target, survival=survival, toughness=toughness))
         return ExecutionResult(current, tuple(trace))
 
     def _predicate_context(self, state: ReferenceBattleState, context: ExecutionContext) -> PredicateContext:

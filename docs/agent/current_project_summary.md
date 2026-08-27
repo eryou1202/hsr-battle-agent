@@ -23,7 +23,11 @@ define/set routes and rejects all other behavior-affecting operations. A strict
 standalone normal-HP `DamageRequest` bridge now commits through shield then HP
 only with explicit attacker and multiplier context; mixed HP+toughness,
 DirectDamageValue, Break/SuperBreak and non-normal forms remain rejected until
-their complete state transitions are integrated.
+their complete state transitions are integrated. The same bridge now handles
+an explicit `StanceValue` transition only when target toughness and weakness/
+Break inputs are supplied; a real Black Swan Skill02 adjoining-target
+component is source-backed executed under that scope, but it is not a complete
+Skill entrypoint and does not increase the full-record source-backed count.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

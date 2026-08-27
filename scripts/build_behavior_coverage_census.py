@@ -20,6 +20,14 @@ SOURCE_BACKED_EXECUTABLE_BEHAVIORS = {
     "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
     "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp",
 }
+SOURCE_BACKED_EXECUTED_COMPONENTS = (
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02:ONSTART:2",
+        "owner_kind": "Avatar",
+        "fixture": "source_backed_normal_damage_component_reference_001.json",
+    },
+)
 
 
 def walk(operations):
@@ -30,6 +38,13 @@ def walk(operations):
         for group in operation.get("children", []):
             if isinstance(group, dict):
                 yield from walk(group.get("operations", []))
+
+
+def compiled_operations(record):
+    for entrypoint in record.get("entrypoints", []):
+        yield from walk(entrypoint.get("operations", []))
+    for template in record.get("template_definitions", []):
+        yield from walk(template.get("operations", []))
 
 
 canonical_statuses = {}
@@ -48,6 +63,16 @@ for record in report["records"]:
     if record.get("behavior_id") in SOURCE_BACKED_EXECUTABLE_BEHAVIORS and record.get("compile_status") == "EXECUTABLE_REFERENCE":
         owner = str(record.get("owner_kind"))
         owner_source_backed[owner] = owner_source_backed.get(owner, 0) + 1
+source_backed_components_by_owner = {}
+for component in SOURCE_BACKED_EXECUTED_COMPONENTS:
+    record = next((item for item in report["records"] if item.get("behavior_id") == component["behavior_id"]), None)
+    if record and any(
+        operation.get("operation_id") == component["operation_id"]
+        and operation.get("disposition") == "EXECUTABLE_REFERENCE"
+        for operation in compiled_operations(record)
+    ):
+        owner = str(component["owner_kind"])
+        source_backed_components_by_owner[owner] = source_backed_components_by_owner.get(owner, 0) + 1
 families = {owner: {
     "captured_records": values["captured"],
     "behavior_bearing_denominator": values["behavior_bearing"],
@@ -56,19 +81,20 @@ families = {owner: {
     "structural_compiled": values["structural_compiled"],
     "executable_reference": values.get("executable_reference", 0),
     "source_backed_executable": owner_source_backed.get(owner, 0),
+    "source_backed_executed_components": source_backed_components_by_owner.get(owner, 0),
     "executable": values.get("executable_reference", 0),
     "golden_tested": 0,
     "unsupported_or_uncompiled": values["behavior_bearing"] - values["structural_compiled"] - values.get("executable_reference", 0),
     "full_game_behavior_denominator": "UNKNOWN",
 } for owner, values in coverage["by_owner_kind"].items()}
 for absent in ("Trace", "Eidolon", "LightCone", "RelicSet"):
-    families[absent] = {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable_reference": 0, "source_backed_executable": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"}
+    families[absent] = {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable_reference": 0, "source_backed_executable": 0, "source_backed_executed_components": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"}
 payload = {
     "report_id": "BEHAVIOR-COVERAGE-CENSUS-002",
     "game_version": "4.4.54",
     "status": "EXECUTABLE_REFERENCE_REVIEWED_CORPUS_BASELINE",
     "input_compiler_report_sha256": report["report_sha256"],
-    "counting_rule": "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
+    "counting_rule": "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. source_backed_executable counts complete BehaviorRecords executed through the bridge; source_backed_executed_components counts explicit provenance fixtures for independently executable canonical operations from records whose full entrypoint remains incomplete. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
     "families": dict(sorted(families.items())),
     "overall": {
         "captured_records": coverage["captured"],
@@ -78,6 +104,7 @@ payload = {
         "structural_compiled": coverage["structural_compiled"],
         "executable_reference": coverage.get("executable", 0),
         "source_backed_executable": sum(owner_source_backed.values()),
+        "source_backed_executed_components": sum(source_backed_components_by_owner.values()),
         "executable": coverage.get("executable", 0),
         "golden_tested": 0,
         "uncompiled": coverage["behavior_bearing"] - coverage["structural_compiled"] - coverage.get("executable", 0),

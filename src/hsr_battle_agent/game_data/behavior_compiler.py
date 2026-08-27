@@ -278,10 +278,10 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING"
             # A TargetDamage payload can combine ordinary HP damage with
             # stance/toughness damage, DoT, inheritance and direct-value
-            # paths.  The initial adapter handles *only* standalone ordinary
-            # HP damage.  Rejecting a mixed request is intentional: dropping
-            # a state-affecting sibling would turn an incomplete transition
-            # into false executable coverage.
+            # paths.  The selected adapter supports the ordinary HP component
+            # and an explicit StanceValue transition together.  Other mixed
+            # paths remain rejected: dropping a state-affecting sibling would
+            # turn an incomplete transition into false executable coverage.
             if attack.get("AttackType") not in {None, "", "Normal"}:
                 return "EXECUTABLE_REFERENCE_DAMAGE_ATTACK_TYPE_UNSUPPORTED"
             if "DamageValue" in attack or "BreakDamagePercentage" in attack:
@@ -289,12 +289,18 @@ class BehaviorCompiler:
             formula = str(attack.get("FormulaType") or "ByAttack")
             if formula not in {"ByAttack", "ByMaxHP", "ByDefence"}:
                 return "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED"
+            has_stance = "StanceValue" in attack or "StanceDamageType" in attack
+            if has_stance and not isinstance(attack.get("StanceValue"), Mapping):
+                return "EXECUTABLE_REFERENCE_STANCE_VALUE_MISSING"
             allowed_attack_fields = {
                 "$type", "AttackType", "DamagePercentage", "DamageType", "FormulaType",
                 # These fields only describe a visual presentation and do
                 # not alter the selected normal HP calculation.
                 "HitAnimation", "HitEffect", "HitAngleVertical", "HitEffectHeight",
                 "HitPosHeight", "HitTimeSlowIntensity",
+                # Stance is a second state transition, executed only through
+                # the explicit per-target toughness context at runtime.
+                "StanceValue", "StanceDamageType",
             }
             if any(key not in allowed_attack_fields for key in attack):
                 return "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS"
