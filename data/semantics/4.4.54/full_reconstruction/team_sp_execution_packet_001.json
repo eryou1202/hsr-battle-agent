@@ -1,0 +1,31 @@
+{
+  "packet_id": "RESOURCE-EXECUTION-BRIDGE-001",
+  "game_version": "4.4.54",
+  "scope": "Selected canonical RPG.GameCore.ModifySPNew post-commit BP contributions only. This is a generic reference bridge, not the complete SkillCharacterComponent action/resource runtime.",
+  "closure_status": "PARTIAL_R4_ORDINARY_TEAM_SP_POST_COMMIT_REFERENCE",
+  "selected_model": {
+    "holder": "The ModifySPNew target alias identifies an entity whose team owns the shared SkillPointEntity-equivalent TeamSkillPointState.",
+    "accepted_payloads": ["exactly one AddRatio value payload", "exactly one AddValue value payload"],
+    "transition": "Evaluate the payload with the unified DynamicValue resolver, discard a non-positive evaluated contribution, otherwise add it to the team holder and clamp to [0, maximum].",
+    "ordering": "This is RESOURCE_POST_COMMIT only. BP cost/gate and action scheduling are deliberately not smuggled into a modifier callback operation."
+  },
+  "state_reads": ["target entity team", "team_skill_points.current", "team_skill_points.maximum", "DynamicValue scope/hash context"],
+  "state_writes": ["team_skill_points.current"],
+  "accepted_source_shapes": {
+    "AddRatio": ["Avatar_Natasha_00_Skill02_Phase02", "Avatar_Natasha_00_Skill03_Phase02"],
+    "AddValue": ["MCommon_HOT_SP", "M_BlackSwan_00_DOT_Rank04_AddSP", "MAvatar_Natasha_00_Rank04_Check"]
+  },
+  "evidence": [
+    {"packet": "DYN-MVP-TEAM-SP-001", "level": ["R4", "R3"], "support": "shared holder, legality/cost/gain model and before/after-use boundaries"},
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "real ModifySPNew AddRatio/AddValue canonical payloads"},
+    {"fixture": "source_backed_team_sp_reference_001.json", "support": "complete MCommon_HOT_SP callback execution and cap clamp"}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_source_backed_hot_sp_callback_commits_shared_team_holder", "tests/game_data/test_reference_execution.py::test_team_sp_negative_dynamic_value_does_not_become_a_signed_mutation"],
+    "trace_disposition": "TEAM_SP_COMMITTED",
+    "source_backed_status": "SOURCE_BACKED_REFERENCE_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing target alias", "both AddRatio and AddValue", "unknown ModifySPNew arguments", "missing team holder", "missing DynamicValue input"],
+  "unsupported_boundary": ["BPSkill legality/cost pre-commit", "NoSpCost and cap modifiers", "special-mode resources", "complete action resource ordering", "Golden client trace claim"],
+  "dsh_implementation_contract": "Maintain one bounded shared BP holder per team. Resolve operation target aliases only to locate that holder. Never create an entity-local BP field and never interpret a negative ModifySPNew contribution as an SP spend. Implement skill cost/gate at the action boundary separately."
+}

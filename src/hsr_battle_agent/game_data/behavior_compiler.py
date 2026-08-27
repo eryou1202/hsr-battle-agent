@@ -23,7 +23,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     # becomes executable when *every* behavior-affecting node in its record
     # has an executable-reference binding (or is safe headless presentation).
     "HEAL_REQUEST": {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "execution_scope": "EXECUTABLE_REFERENCE"},
-    "MODIFY_TEAM_SP": {"packet": "dynamic_mvp_v1:SP_CORE", "execution_scope": "ORDINARY_MVP"},
+    "MODIFY_TEAM_SP": {"packet": "dynamic_mvp_v1:SP_CORE", "execution_scope": "EXECUTABLE_REFERENCE"},
     "INVOKE_BEHAVIOR": {"packet": "KERNEL-EVENT-001", "execution_scope": "STRUCTURAL_CALL_ONLY"},
     "ADD_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "REMOVE_MODIFIER": {"packet": "PRIM-MODIFIER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
@@ -315,6 +315,20 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_WEAKNESS_PAYLOAD_UNSUPPORTED"
             if set(arguments) != {"OPType", "WeakList"}:
                 return "EXECUTABLE_REFERENCE_WEAKNESS_ARGUMENTS_UNSUPPORTED"
+        elif kind == "MODIFY_TEAM_SP":
+            # ModifySPNew changes the shared BP/skill-point holder, not an
+            # entity-local resource.  The ordinary-MVP packet supports only
+            # one positive post-commit contribution at a time.  A dynamic
+            # expression is acceptable here because the reference executor
+            # resolves it through the same unified DynamicValue context used
+            # by the other executable primitives.
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            if set(arguments) not in ({"AddRatio"}, {"AddValue"}):
+                return "EXECUTABLE_REFERENCE_TEAM_SP_ARGUMENTS_UNSUPPORTED"
+            value = arguments.get("AddRatio", arguments.get("AddValue"))
+            if not isinstance(value, Mapping):
+                return "EXECUTABLE_REFERENCE_TEAM_SP_VALUE_MISSING"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:

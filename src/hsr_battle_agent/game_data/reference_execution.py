@@ -68,6 +68,30 @@ class RuntimeEntity:
 
 
 @dataclass(frozen=True)
+class TeamSkillPointState:
+    """Immutable shared BP/skill-point holder for one battle team.
+
+    ``ModifySPNew`` is targeted at an entity alias in content, but the local
+    MVP evidence identifies its write holder as ``SkillPointEntity``.  The
+    selected reference model therefore resolves the target to its team and
+    commits the positive contribution to this shared holder.
+    """
+
+    current: Decimal
+    maximum: Decimal
+
+    def __post_init__(self) -> None:
+        if self.maximum < 0:
+            raise SemanticExecutionError("team skill-point maximum cannot be negative")
+        if not Decimal("0") <= self.current <= self.maximum:
+            raise SemanticExecutionError("team skill points must be within [0, maximum]")
+
+    def add_positive(self, delta: Decimal) -> "TeamSkillPointState":
+        """Apply only the positive post-commit contribution and clamp it."""
+        return replace(self, current=min(self.maximum, self.current + max(Decimal("0"), delta)))
+
+
+@dataclass(frozen=True)
 class SandboxRng:
     """Frozen deterministic MT19937 wrapper with explicit replay state."""
 
@@ -90,6 +114,7 @@ class ReferenceBattleState:
     dynamic_store: DynamicValueStore = DynamicValueStore.empty()
     property_states: Mapping[str, PropertyState] = field(default_factory=dict)
     modifier_instances: Mapping[str, tuple[ModifierInstance, ...]] = field(default_factory=dict)
+    team_skill_points: Mapping[str, TeamSkillPointState] = field(default_factory=dict)
     special_resources: Mapping[str, Decimal] = field(default_factory=dict)
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
@@ -125,6 +150,17 @@ class ReferenceBattleState:
         states = dict(self.modifier_instances)
         states[entity_id] = tuple(instances)
         return replace(self, modifier_instances=states)
+
+    def team_skill_point_state(self, team: str) -> TeamSkillPointState:
+        try:
+            return self.team_skill_points[team]
+        except KeyError as error:
+            raise SemanticExecutionError(f"team {team!r} has no shared skill-point holder") from error
+
+    def replace_team_skill_point_state(self, team: str, value: TeamSkillPointState) -> "ReferenceBattleState":
+        states = dict(self.team_skill_points)
+        states[team] = value
+        return replace(self, team_skill_points=states)
 
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
@@ -166,6 +202,10 @@ class ReferenceBattleState:
                     for item in values
                 ]
                 for key, values in sorted(self.modifier_instances.items())
+            },
+            "team_skill_points": {
+                key: {"current": str(value.current), "maximum": str(value.maximum)}
+                for key, value in sorted(self.team_skill_points.items())
             },
             "special_resources": {key: str(value) for key, value in sorted(self.special_resources.items())},
             "rng_seed": self.rng.seed,
@@ -315,6 +355,8 @@ class SemanticExecutor:
             return self._execute_damage(operation, state, context)
         if kind == "MODIFY_WEAKNESS":
             return self._execute_attach_weakness(operation, state, context)
+        if kind == "MODIFY_TEAM_SP":
+            return self._execute_modify_team_sp(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -682,6 +724,61 @@ class SemanticExecutor:
                 "disposition": "WEAKNESS_ATTACHED",
                 "target_id": target_id,
                 "weaknesses": list(weaknesses),
+            })
+        return ExecutionResult(current, tuple(trace))
+
+    def _execute_modify_team_sp(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit the selected positive ``ModifySPNew`` post-action gain.
+
+        In the ordinary MVP packet an entity alias identifies the team whose
+        shared ``SkillPointEntity`` changes.  It never means that the target
+        entity carries a private SP pool.  Both observed source spellings,
+        ``AddRatio`` and ``AddValue``, provide the positive BP contribution;
+        zero or negative evaluated values deliberately make no signed write.
+        Cost/pre-commit semantics remain action-level scheduler work.
+        """
+        arguments = operation.get("arguments", {})
+        if not isinstance(arguments, Mapping):
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: invalid ModifySPNew arguments")
+        if set(arguments) == {"AddRatio"}:
+            value_payload = arguments["AddRatio"]
+            source_field = "AddRatio"
+        elif set(arguments) == {"AddValue"}:
+            value_payload = arguments["AddValue"]
+            source_field = "AddValue"
+        else:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: unsupported ModifySPNew payload")
+        delta = self._evaluate_value(value_payload, state, context)
+        target_ids = self._resolve_targets(operation.get("target"), state, context)
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        committed_teams: set[str] = set()
+        for target_id in target_ids:
+            team = current.entity(target_id).team
+            # A collection target can include multiple units on one team;
+            # ModifySPNew still writes one shared holder only once.
+            if team in committed_teams:
+                continue
+            committed_teams.add(team)
+            holder = current.team_skill_point_state(team)
+            updated = holder.add_positive(delta)
+            current = current.replace_team_skill_point_state(team, updated)
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "TEAM_SP_COMMITTED",
+                "target_id": target_id,
+                "team": team,
+                "source_field": source_field,
+                "requested_delta": str(delta),
+                "committed_delta": str(updated.current - holder.current),
+                "before": str(holder.current),
+                "after": str(updated.current),
+                "maximum": str(holder.maximum),
             })
         return ExecutionResult(current, tuple(trace))
 

@@ -1,0 +1,36 @@
+{
+  "fixture_id": "SOURCE-BACKED-TEAM-SP-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute the complete real canonical MCommon_HOT_SP OnPhase1 Modifier callback through BehaviorCompiler and SemanticExecutor. It proves that ModifySPNew resolves an entity alias to the shared team BP holder and applies a bounded positive post-commit contribution.",
+  "status": "SOURCE_BACKED_REFERENCE_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP",
+    "entrypoint_event": "MODIFIER_CALLBACK:MCommon_HOT_SP._CallbackList[0]:OnPhase1",
+    "source_refs": [{
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json",
+      "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe",
+      "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+      "source": "TurnBasedGameData",
+      "source_container": "ModifierMap",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    }]
+  },
+  "selected_context": {
+    "caster_id": "p1",
+    "modifier_owner_id": "p1",
+    "modifier_id": "MCommon_HOT_SP",
+    "dynamic_hash_values": {"-295141034": "2"}
+  },
+  "selected_initial_state": {
+    "p1": {"team": "light", "hp": "100", "max_hp": "100"},
+    "team_skill_points": {"light": {"current": "4", "maximum": "5"}}
+  },
+  "expected_transition": {
+    "team_skill_points": {"light": {"current": "5", "maximum": "5"}},
+    "ordered_dispositions": ["TEAM_SP_COMMITTED"]
+  },
+  "assumptions": ["The fixture supplies the selected DynamicHash value and the standard shared-team skill-point maximum.", "The selected ordinary-MVP model treats AddValue/AddRatio as positive post-commit BP contribution; non-positive values do not become signed mutations."],
+  "unsupported_boundary": ["Pre-action BPSkill cost/gate, NoSpCost/cap modifiers, special-mode resources and complete action timing remain outside this callback fixture.", "This is not a Golden game trace."]
+}

@@ -17,6 +17,7 @@ from hsr_battle_agent.game_data.reference_execution import (
     ReferenceBattleState,
     RuntimeEntity,
     SemanticExecutor,
+    TeamSkillPointState,
     ToughnessCommitContext,
 )
 from hsr_battle_agent.game_data.toughness_break_reference import ToughnessState
@@ -27,6 +28,7 @@ HOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_
 PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
 BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
 WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
+HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
 
 
 def _record(behavior_id: str) -> dict:
@@ -226,6 +228,42 @@ class ReferenceExecutionTest(unittest.TestCase):
             [item["disposition"] for item in result.trace],
             ["BRANCH_SUCCESS", "BRANCH_SUCCESS", "PROPERTY_CONTRIBUTION_SET", "HEADLESS_PRESENTATION_OMITTED", "WEAKNESS_ATTACHED"],
         )
+
+    def test_source_backed_hot_sp_callback_commits_shared_team_holder(self) -> None:
+        compiled = BehaviorCompiler().compile_record(_record(HOT_SP_ID))
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("100"), Decimal("100")))},
+            team_skill_points={"light": TeamSkillPointState(Decimal("4"), Decimal("5"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled,
+            "MODIFIER_CALLBACK:MCommon_HOT_SP._CallbackList[0]:OnPhase1",
+            state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="p1", modifier_id="MCommon_HOT_SP", dynamic_hash_values={"-295141034": "2"}),
+        )
+        self.assertEqual(result.state.team_skill_point_state("light").current, Decimal("5"))
+        self.assertEqual(result.trace[0]["disposition"], "TEAM_SP_COMMITTED")
+        self.assertEqual(result.trace[0]["committed_delta"], "1")
+
+    def test_team_sp_negative_dynamic_value_does_not_become_a_signed_mutation(self) -> None:
+        record = {
+            "behavior_id": "team-sp-fixture", "owner_kind": "Modifier", "owner_ref": "team-sp-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE1", "operations": [{
+                "operation_id": "sp", "source_type": "RPG.GameCore.ModifySPNew", "kind": "MODIFY_TEAM_SP",
+                "semantic_status": "MODELLED", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"},
+                "arguments": {"AddValue": {"IsDynamic": False, "FixedValue": {"Value": -2}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            team_skill_points={"light": TeamSkillPointState(Decimal("3"), Decimal("5"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE1", state, ExecutionContext(caster_id="p1"))
+        self.assertEqual(result.state.team_skill_point_state("light").current, Decimal("3"))
+        self.assertEqual(result.trace[0]["committed_delta"], "0")
 
     def test_source_backed_black_swan_damage_component_executes_with_explicit_context(self) -> None:
         source = _record(BLACK_SWAN_SKILL02_ID)

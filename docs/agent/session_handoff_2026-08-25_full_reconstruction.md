@@ -33,7 +33,7 @@
   `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 - Current coverage split: 249 behavior-bearing records (92 structural-only
   compiled), 109 `EXECUTABLE_REFERENCE` records / 188 independently closed
-  entrypoints, and 304 static-definition-only records. Three complete records
+  entrypoints, and 304 static-definition-only records. Four complete records
   are source-backed executed plus one explicitly separate operation component;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
@@ -96,6 +96,10 @@
   request read that immutable weakness state when its context does not supply
   an explicit boolean. Missing weakness deterministically skips stance; no
   default weakness, target toughness or Break factor is inferred.
+- `RESOURCE-EXECUTION-BRIDGE-001` lowers selected `ModifySPNew` AddRatio and
+  AddValue payloads to a bounded shared team skill-point holder. The complete
+  `MCommon_HOT_SP` callback is a fourth source-backed record; pre-action cost
+  and legality remain separate action-level semantics.
 
 ## Source state
 
@@ -108,15 +112,14 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `RESOURCE-EXECUTION-BRIDGE-001`: lower selected `ModifySPNew` AddRatio and
-   AddValue forms through an explicit team-SP holder, legal clamp and
-   deterministic commit trace. Do not mistake a target alias for the holder.
+1. `EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001`: mechanically compare every
+   `EXECUTABLE_REFERENCE` compiler disposition against an actual executor
+   handler and required context; correct drift before crediting coverage.
 2. Rebuild `behavior_compiler_report_002.json` and
-   `behavior_coverage_census_002.json`; retain separate record, entrypoint,
-   source-backed-executable and Golden counts.
-3. Continue coverage-driven capture only from already pinned caches, starting
-   with LightCone/RelicSet/wider MonsterSkill families after the generic bridge
-   can consume their closed operations.
+   `behavior_coverage_census_002.json`, retaining separate full-record,
+   component, entrypoint and Golden counts.
+3. Choose the next strict family from the measured
+   `BOUND_UNEXECUTABLE_PACKET` distribution, not an old primitive todo.
 
 ## Mandatory reads
 

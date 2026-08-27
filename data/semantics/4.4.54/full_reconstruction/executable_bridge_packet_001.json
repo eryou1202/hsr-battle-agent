@@ -15,11 +15,13 @@
       "ADD_MODIFIER with an explicit canonical Modifier catalog definition",
       "REMOVE_MODIFIER: named instance mark-destroy only; dirty cleanup remains separate",
       "DAMAGE_REQUEST: selected normal ByAttack/ByMaxHP/ByDefence formula with explicit multiplier context, shield-before-HP commit, and optional explicit StanceValue/toughness transition",
+      "MODIFY_WEAKNESS: selected StackWeakness Attach/WeakList transition with stable entity-state de-duplication",
+      "MODIFY_TEAM_SP: selected ModifySPNew AddRatio/AddValue positive post-commit contribution to a bounded shared team SkillPointEntity holder",
       "HEADLESS_PRESENTATION_OMITTED"
     ]
   },
-  "state_reads": ["entities.survival", "entities.toughness", "entities.weaknesses", "dynamic_store", "property_states", "target context", "execution context dynamic hashes/scopes", "deterministic RNG"],
-  "state_writes": ["entities.survival.hp/shield/alive", "entities.toughness current/broken", "dynamic_store", "property_states", "modifier_instances pending append/refresh/mark-destroy"],
+  "state_reads": ["entities.survival", "entities.toughness", "entities.weaknesses", "team_skill_points", "dynamic_store", "property_states", "target context", "execution context dynamic hashes/scopes", "deterministic RNG"],
+  "state_writes": ["entities.survival.hp/shield/alive", "entities.toughness current/broken", "entities.weaknesses", "team_skill_points current", "dynamic_store", "property_states", "modifier_instances pending append/refresh/mark-destroy"],
   "ordering": "Entrypoint operations execute in canonical sibling order. Conditional selects exactly SuccessTaskList or FailedTaskList and then executes that child list in order. Presentation operations are omitted only when the compiler marked gating_risk=NONE.",
   "evidence": [
     {"packet": "KERNEL-EVENT-001", "support": "canonical ordered entrypoint/task execution boundary"},
@@ -28,13 +30,17 @@
     {"packet": "COMPILER-PREDICATE-001-SEMANTICS", "support": "Predicate evaluator"},
     {"packet": "PROPERTY-CONTRIBUTION-001", "support": "stable modifier-owned property contribution slots"},
     {"artifact": "modifier_catalog_001.json", "support": "explicit source Stacking definition required before ADD_MODIFIER lowering"},
-    {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "support": "bounded heal clamp transition"}
-    ,{"packet": "PRIM-DAMAGE-001", "support": "selected normal damage formula and ordered shield-before-HP survival commit"}
+    {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "support": "bounded heal clamp transition"},
+    {"packet": "dynamic_mvp_v1:SP_CORE", "support": "local SkillPointEntity holder plus _AddBPAfterSkillUse ordinary post-commit model"},
+    {"packet": "TOUGHNESS-BREAK-001", "support": "selected weakness attachment and state-derived stance eligibility"},
+    {"packet": "PRIM-DAMAGE-001", "support": "selected normal damage formula and ordered shield-before-HP survival commit"}
   ],
   "acceptance": {
     "source_backed_executable_records": [
       "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP",
-      "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
+      "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp",
+      "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire",
+      "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
     ],
     "tests": ["tests/game_data/test_reference_execution.py", "tests/game_data/test_behavior_compiler.py"],
     "coverage_artifacts": ["behavior_compiler_report_002.json", "behavior_coverage_census_002.json"]
@@ -45,6 +51,7 @@
     "AddModifier with missing/unsupported/conflicting canonical Stacking, dynamic injection, chance, lifetime or layer parameters",
     "RemoveModifier with no explicit name, caster/global filters, or immediate dirty cleanup semantics",
     "DamageValue/direct-damage, Break/SuperBreak request families, SPHitRatio, split/AOE sequencing, damage tags, inherited attack fields, missing explicit toughness/Break runtime inputs and non-selected formula types",
+    "ModifySPNew pre-action cost/gate, NoSpCost/cap modifiers, special-mode resource holders and scheduler timing",
     "unimplemented heal formula types",
     "global event dispatch, action scheduling, modifier callback registration and native reentrancy",
     "production BattleState, legality API, clone/hash contract and Golden game trace claim"
