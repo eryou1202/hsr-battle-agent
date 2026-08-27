@@ -1,0 +1,28 @@
+{
+  "fixture_id": "SOURCE-BACKED-MODIFIER-DYNAMIC-ENTRYPOINT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute the real StageAbility_3001213 OnListenCharacterCreate callback through compiled canonical IR. It composes ByTargetTeam, ParamEntity target resolution, nested SuccessTaskList ordering, AddModifier and modifier-local DynamicValues initialization.",
+  "status": "SOURCE_BACKED_ENTRYPOINT_COMPONENT_REFERENCE_NOT_FULL_RECORD_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213",
+    "entrypoint_event": "MODIFIER_CALLBACK:StageAbility_3001213_Modifier._CallbackList[0]:OnListenCharacterCreate",
+    "source_refs": [{
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
+      "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da",
+      "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+      "source": "TurnBasedGameData",
+      "source_container": "AbilityList",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    }]
+  },
+  "selected_context": {"caster_id": "stage", "param_entity_ids": ["p1"], "modifier_catalog": "canonical explicit Stacking catalog"},
+  "selected_initial_state": {"p1": {"team": "light", "hp": "100", "max_hp": "100"}},
+  "expected_transition": {
+    "p1_pending_modifier": {"name": "MCommon_LevelAllDamageAddedRatio", "state": "TO_BE_ADDED", "dynamic_values": {"MDF_PropertyValue": "0.35"}},
+    "ordered_dispositions": ["BRANCH_SUCCESS", "MODIFIER_APPEND_OR_REFRESH_PENDING"]
+  },
+  "assumptions": ["ParamEntity is supplied by the listener dispatch context.", "The canonical catalog's explicit Stacking definition is required before execution."],
+  "unsupported_boundary": ["The full StageAbility record also has ONADD behavior whose Modifier definition is not closed in the reviewed corpus.", "This is not a Golden game trace."]
+}

@@ -123,6 +123,23 @@
     "evidence": ["team_sp_execution_packet_001.json", "source_backed_team_sp_reference_001.json", "tests/game_data/test_reference_execution.py", "behavior_compiler_report_002.json", "behavior_coverage_census_002.json"],
     "next_distinguishing_work": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001: mechanically compare every EXECUTABLE_REFERENCE IR kind with SemanticExecutor dispatch and required context. Only then choose the highest eligible BOUND_UNEXECUTABLE_PACKET family by coverage gain and evidence closure."
   },
+  "progress_checkpoint_012": {
+    "date": "2026-08-27",
+    "ticket": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
+    "status": "COMPLETE_FOR_CURRENT_REVIEWED_CORPUS",
+    "result": "A generated audit compares every compiled EXECUTABLE_REFERENCE operation kind to SemanticExecutor's declared handler/context contract. All 1,290 operations before the next modifier expansion passed; the former ModifySPNew eligibility/handler drift is no longer possible under the audit test.",
+    "evidence": ["executor_handler_eligibility_audit_001.json", "scripts/audit_executable_handler_eligibility.py", "tests/game_data/test_executable_handler_eligibility.py"],
+    "next_distinguishing_work": "MODIFIER-DYNAMIC-INITIALIZATION-001: admit only explicit catalog-backed AddModifier DynamicValues and preserve rather than discard their per-instance values."
+  },
+  "progress_checkpoint_013": {
+    "date": "2026-08-27",
+    "ticket": "MODIFIER-DYNAMIC-INITIALIZATION-001",
+    "status": "PARTIAL_R3_GENERIC_REFERENCE_COMPLETE",
+    "result": "Selected AddModifier {ModifierName, DynamicValues} payloads evaluate all values through the unified resolver and persist named Decimal values on pending/refresh ModifierInstance state. ExecutionContext now carries ParamEntity dispatch context, proving a real StageAbility_3001213 listener's nested predicate/add transition. Chance, lifetime, layer overrides and later instance-identity lookup remain explicit blockers.",
+    "measured_coverage": {"corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a", "structural_compiled_records": 92, "executable_reference_records": 109, "executable_reference_entrypoints": 192, "source_backed_executable_records": 4, "source_backed_executed_components": 2, "executable_bound_operations": 1306, "golden_tested": 0},
+    "evidence": ["modifier_dynamic_initialization_packet_001.json", "source_backed_modifier_dynamic_entrypoint_reference_001.json", "tests/game_data/test_reference_execution.py", "tests/game_data/test_modifier_lifecycle_reference.py", "behavior_compiler_report_002.json", "behavior_coverage_census_002.json"],
+    "next_distinguishing_work": "DOT-DAMAGE-EXECUTION-BRIDGE-001: lower only explicit AttackType=DOT DamagePercentage forms to a separate no-crit tick commit; direct value, Break, inheritance, apply/refresh/expiry remain excluded."
+  },
   "tracks": [
     {"track":"global_kernel","denominator":"global semantic rule IDs","known_ready":["ordinary SP", "ordinary Energy", "ordinary AV", "ordinary Heal clamp", "ordinary Death", "ordinary terminal", "R3 event registration/priority/FIFO diagnostic trace contract", "R4 bounded Modifier lifecycle transitions", "partial generic compiler-to-reference-executor bridge"],"missing":["full compiled event system", "cancellation/reentrancy/queue-mutation/recursion contracts", "modifier callback bodies/duration", "follow-up", "extra action", "summon scheduling", "revive/prevent death"],"status":"PARTIAL_EXECUTABLE_REFERENCE"},
     {"track":"avatar_behaviors","denominator":"all 4.4.54 Avatar active/passive/trace/eidolon/technique behavior records","known_ready":["Natasha Skill02 bounded slice", "29 close-version Avatar BehaviorRecords captured/canonicalized", "Ability GlobalModifiers lifted", "one real Natasha HOT GlobalModifier source-backed executable reference"],"missing":["exact-version full behavior denominator", "wider Avatar corpus capture", "Golden scenarios"],"status":"PARTIAL_CAPTURED_CANONICALIZED_EXECUTABLE_REFERENCE"},
@@ -160,6 +177,6 @@
     "next_api_must_read": ["program_v1.json", "external_source_expansion_profile_v1.json", "effect_ir_contract_v1.json", "free_scenario_assembly_contract_v1.json", "coverage_ledger_v1.json", "external_behavior_corpus_v1.json", "coverage_baseline_001.json", "behavior_compiler_report_001.json", "behavior_coverage_census_001.json", "docs/agent/full_simulation_reconstruction_plan.md", "docs/agent/dynamic_mvp_blocker_closure_v1.md", "docs/agent/content_database.md", "docs/agent/external_reconstruction.md"],
     "do_not_resume": ["blind local DesignData reverse", "unbounded external repository mirrors", "DSH production runtime before semantic/compiler contracts", "claiming full game coverage from current Standard MVP closure", "reusing pre-v2 541/829/279/122/490 coverage figures"],
     "environment_notes": "A bounded GitHub tree discovery attempt for additional TurnBasedGameData behavior paths timed out; no new external files were cached. Continue using the four already cached pinned snapshots until a network path is available.",
-    "safe_stop_state": "Corpus v2 semantic mapping is current at fea0ab0e...: 553 records, 2295 nodes, 249 behavior-bearing and 7 OPAQUE. The generic bridge has 109 executable-reference records / 188 entrypoints, four complete source-backed executed records, one explicitly separate source-backed operation component, and zero Golden traces. ModifySPNew now resolves to a bounded shared team holder; Weakness Attach feeds ByHasStanceWeak and StanceValue eligibility; target toughness/Break inputs remain explicit. Next: EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001."
+    "safe_stop_state": "Corpus v2 semantic mapping is current at fea0ab0e...: 553 records, 2295 nodes, 249 behavior-bearing and 7 OPAQUE. The generic bridge has 109 executable-reference records / 192 entrypoints, four complete source-backed executed records, two separately labeled source-backed entrypoint/operation components, and zero Golden traces. All 1306 executable-bound operations pass the handler/context audit. ModifySPNew resolves to a bounded shared team holder; selected AddModifier DynamicValues persist on modifier state; Weakness Attach feeds ByHasStanceWeak and StanceValue eligibility. Next: DOT-DAMAGE-EXECUTION-BRIDGE-001."
   }
 }

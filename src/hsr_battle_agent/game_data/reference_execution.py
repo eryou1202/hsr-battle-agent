@@ -34,6 +34,21 @@ class SemanticExecutionError(DynamicValueSemanticError):
     """A compiled behavior cannot execute under the declared reference scope."""
 
 
+EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
+    "CONDITIONAL": ("Predicate payload", "PredicateContext providers", "compiled child operation contexts"),
+    "PREDICATE": ("Predicate payload", "PredicateContext providers"),
+    "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
+    "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
+    "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
+    "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
+    "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
+    "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext"),
+    "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
+    "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
+}
+
+
 def _decimal(value: Any) -> Decimal:
     try:
         return Decimal(str(value))
@@ -168,6 +183,10 @@ class ReferenceBattleState:
             caster_id=context.caster_id,
             ability_target_id=context.ability_target_id,
             modifier_owner_id=context.modifier_owner_id,
+            param_entity_ids=context.param_entity_ids,
+            param_entity2_ids=context.param_entity2_ids,
+            damage_attacker_id=context.damage_attacker_id,
+            damage_defender_id=context.damage_defender_id,
             current_turn_action_entity_id=context.current_turn_action_entity_id,
             current_turn_owner_id=context.current_turn_owner_id,
             ability_target_list=context.ability_target_ids,
@@ -198,7 +217,8 @@ class ReferenceBattleState:
             "modifier_instances": {
                 key: [
                     {"instance_id": item.instance_id, "name": item.name, "stacking": item.stacking, "state": item.state.name,
-                     "current_life": item.current_life, "count": item.count, "caster_runtime_id": item.caster_runtime_id}
+                     "current_life": item.current_life, "count": item.count, "caster_runtime_id": item.caster_runtime_id,
+                     "dynamic_values": {key: str(value) for key, value in sorted(item.dynamic_values.items())}}
                     for item in values
                 ]
                 for key, values in sorted(self.modifier_instances.items())
@@ -221,6 +241,10 @@ class ExecutionContext:
     caster_id: str | None = None
     modifier_owner_id: str | None = None
     modifier_id: str | None = None
+    param_entity_ids: tuple[str, ...] = ()
+    param_entity2_ids: tuple[str, ...] = ()
+    damage_attacker_id: str | None = None
+    damage_defender_id: str | None = None
     ability_target_id: str | None = None
     ability_target_ids: tuple[str, ...] = ()
     skill_target_ids: tuple[str, ...] = ()
@@ -272,6 +296,11 @@ class ExecutionResult:
 
 class SemanticExecutor:
     """Execute ``EXECUTABLE_REFERENCE`` operations in deterministic order."""
+
+    @classmethod
+    def executable_operation_contract(cls) -> Mapping[str, tuple[str, ...]]:
+        """Expose the exact handler/context surface for compiler audits."""
+        return EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS
 
     def execute_entrypoint(
         self,
@@ -526,6 +555,16 @@ class SemanticExecutor:
         if definition is None:
             raise SemanticExecutionError(f"{operation.get('operation_id')}: Modifier definition {name!r} is not in ExecutionContext")
         targets = self._resolve_targets(operation.get("target"), state, context)
+        raw_dynamic_values = arguments.get("DynamicValues", {})
+        if not isinstance(raw_dynamic_values, Mapping):
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: DynamicValues is not a mapping")
+        dynamic_values = {
+            str(key): self._evaluate_value(value, state, context)
+            for key, value in raw_dynamic_values.items()
+            if isinstance(key, str) and key and isinstance(value, Mapping)
+        }
+        if len(dynamic_values) != len(raw_dynamic_values):
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: invalid modifier DynamicValues payload")
         current = state
         trace: list[Mapping[str, Any]] = []
         for target_id in targets:
@@ -539,6 +578,7 @@ class SemanticExecutor:
                 source_provider_id=context.caster_id,
                 current_life=None,
                 count=None,
+                dynamic_values=dynamic_values,
             )
             transition = add_or_refresh(instances, incoming)
             current = current.replace_modifiers(target_id, transition.instances)
@@ -549,6 +589,7 @@ class SemanticExecutor:
                 "modifier_name": definition.name,
                 "instance_id": transition.affected_instance_id,
                 "lifecycle_action": transition.action,
+                "dynamic_value_keys": sorted(dynamic_values),
             })
         return ExecutionResult(current, tuple(trace))
 

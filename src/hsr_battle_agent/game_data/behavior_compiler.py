@@ -256,12 +256,19 @@ class BehaviorCompiler:
             name = modifier.get("Value")
             if not isinstance(name, str) or not name:
                 return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
-            if set(arguments) != {"ModifierName"}:
+            if set(arguments) not in ({"ModifierName"}, {"ModifierName", "DynamicValues"}):
                 return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED"
             if not isinstance(operation.get("target"), Mapping):
                 return "EXECUTABLE_REFERENCE_TARGET_MISSING"
             if name not in self._modifier_catalog:
                 return "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED"
+            dynamic_values = arguments.get("DynamicValues")
+            if dynamic_values is not None and (
+                not isinstance(dynamic_values, Mapping)
+                or not dynamic_values
+                or not all(isinstance(key, str) and key and isinstance(value, Mapping) for key, value in dynamic_values.items())
+            ):
+                return "EXECUTABLE_REFERENCE_MODIFIER_DYNAMIC_VALUES_UNSUPPORTED"
         elif kind == "REMOVE_MODIFIER":
             modifier = _mapping(arguments.get("ModifierName"))
             name = modifier.get("Value")

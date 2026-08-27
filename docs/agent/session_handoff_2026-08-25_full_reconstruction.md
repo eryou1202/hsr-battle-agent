@@ -100,6 +100,11 @@
   AddValue payloads to a bounded shared team skill-point holder. The complete
   `MCommon_HOT_SP` callback is a fourth source-backed record; pre-action cost
   and legality remain separate action-level semantics.
+- `EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001` confirms every current executable
+  kind has a real executor handler and declared context contract.
+  `MODIFIER-DYNAMIC-INITIALIZATION-001` preserves selected AddModifier
+  DynamicValues on immutable pending/refresh instances and executes a real
+  StageAbility_3001213 ParamEntity listener component.
 
 ## Source state
 
@@ -112,9 +117,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001`: mechanically compare every
-   `EXECUTABLE_REFERENCE` compiler disposition against an actual executor
-   handler and required context; correct drift before crediting coverage.
+1. `DOT-DAMAGE-EXECUTION-BRIDGE-001`: bind only explicit DOT
+   DamagePercentage source shapes to a separate no-crit HP/shield commit.
+   Do not conflate direct-value, Break, inheritance, application or expiry
+   with a DOT tick.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

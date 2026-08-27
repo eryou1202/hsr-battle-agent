@@ -1,0 +1,79 @@
+{
+  "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
+  "audit_sha256": "65aeea33279e07567bae235ea1085c0c50aa37e83f977721ec8faa613794cc9b",
+  "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
+  "executable_operation_counts": {
+    "ADD_MODIFIER": 21,
+    "CONDITIONAL": 364,
+    "DAMAGE_REQUEST": 2,
+    "DEFINE_DYNAMIC_VALUE": 7,
+    "HEAL_REQUEST": 6,
+    "MODIFY_PROPERTY_STACK": 158,
+    "MODIFY_TEAM_SP": 6,
+    "MODIFY_WEAKNESS": 7,
+    "PREDICATE": 513,
+    "REMOVE_MODIFIER": 48,
+    "SET_DYNAMIC_VALUE": 174
+  },
+  "executor_context_contract": {
+    "ADD_MODIFIER": [
+      "target resolution",
+      "explicit ModifierDefinition catalog",
+      "caster runtime id",
+      "optional modifier-local DynamicValues"
+    ],
+    "CONDITIONAL": [
+      "Predicate payload",
+      "PredicateContext providers",
+      "compiled child operation contexts"
+    ],
+    "DAMAGE_REQUEST": [
+      "damage source stats",
+      "target resolution",
+      "DamageMultiplierContext",
+      "optional ToughnessCommitContext"
+    ],
+    "DEFINE_DYNAMIC_VALUE": [
+      "scope owner resolution",
+      "DynamicValue key/value inputs",
+      "DynamicValueStore"
+    ],
+    "HEAL_REQUEST": [
+      "target resolution",
+      "DynamicValue scope/hash inputs",
+      "target SurvivalState"
+    ],
+    "MODIFY_PROPERTY_STACK": [
+      "target resolution",
+      "DynamicValue scope/hash inputs",
+      "PropertyState"
+    ],
+    "MODIFY_TEAM_SP": [
+      "target resolution",
+      "shared TeamSkillPointState",
+      "DynamicValue scope/hash inputs"
+    ],
+    "MODIFY_WEAKNESS": [
+      "target resolution",
+      "entity weakness state"
+    ],
+    "PREDICATE": [
+      "Predicate payload",
+      "PredicateContext providers"
+    ],
+    "REMOVE_MODIFIER": [
+      "target resolution",
+      "ModifierInstance state"
+    ],
+    "SET_DYNAMIC_VALUE": [
+      "scope owner resolution",
+      "DynamicValue key/value inputs",
+      "DynamicValueStore"
+    ]
+  },
+  "game_version": "4.4.54",
+  "input_compiler_report_sha256": "a783f68a325574eb75ac49d63010eb25393ccceee699ff2ff53792fa494bb786",
+  "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
+  "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
+  "unhandled_kinds": []
+}

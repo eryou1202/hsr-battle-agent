@@ -10,7 +10,7 @@ from hsr_battle_agent.game_data.behavior_compiler import BehaviorCompiler
 from hsr_battle_agent.game_data.damage_survival_reference import SurvivalState
 from hsr_battle_agent.game_data.damage_survival_reference import DamageMultiplierContext
 from hsr_battle_agent.game_data.dynamic_value_reference import DynamicValueStore
-from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition
+from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition, modifier_catalog_from_corpus
 from hsr_battle_agent.game_data.modifier_lifecycle_reference import ModifierInstance, ModifierState
 from hsr_battle_agent.game_data.reference_execution import (
     ExecutionContext,
@@ -29,6 +29,7 @@ PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModi
 BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
 WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
 HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
+STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
 
 
 def _record(behavior_id: str) -> dict:
@@ -111,6 +112,41 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(instance.name, "MFixture")
         self.assertEqual(instance.state, ModifierState.TO_BE_ADDED)
         self.assertEqual(result.trace[0]["disposition"], "MODIFIER_APPEND_OR_REFRESH_PENDING")
+
+    def test_add_modifier_evaluates_and_persists_modifier_local_dynamic_values(self) -> None:
+        record = {
+            "behavior_id": "modifier-dynamic-fixture", "owner_kind": "Avatar", "owner_ref": "modifier-dynamic-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"},
+                "arguments": {"ModifierName": {"Value": "MFixture"}, "DynamicValues": {"MDF_Ratio": {"IsDynamic": True, "PostfixExpr": {"DynamicHashes": [123], "FixedValues": [], "OpCodes": "AQAR"}}}}, "children": [],
+            }]}],
+        }
+        catalog = {"MFixture": ModifierDefinition("MFixture", "ReplaceByCaster", "fixture:modifier")}
+        compiled = BehaviorCompiler(modifier_catalog=catalog).compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONSTART", state, ExecutionContext(caster_id="p1", caster_runtime_id=7, modifier_catalog=catalog, dynamic_hash_values={"123": "0.25"}))
+        self.assertEqual(result.state.modifiers("p1")[0].dynamic_values, {"MDF_Ratio": Decimal("0.25")})
+        self.assertEqual(result.trace[0]["dynamic_value_keys"], ["MDF_Ratio"])
+
+    def test_source_backed_stage_callback_adds_modifier_with_local_dynamic_values(self) -> None:
+        corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        compiled = BehaviorCompiler(modifier_catalog=modifier_catalog_from_corpus(corpus)).compile_record(_record(STAGE_ADD_DAMAGE_ID))
+        event = "MODIFIER_CALLBACK:StageAbility_3001213_Modifier._CallbackList[0]:OnListenCharacterCreate"
+        entry = next(item for item in compiled["entrypoints"] if item["event"] == event)
+        self.assertTrue(entry["executable_reference"])
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("100"), Decimal("100")))})
+        result = SemanticExecutor().execute_entrypoint(
+            compiled,
+            event,
+            state,
+            ExecutionContext(caster_id="stage", param_entity_ids=("p1",), modifier_catalog=modifier_catalog_from_corpus(corpus)),
+        )
+        instance = result.state.modifiers("p1")[0]
+        self.assertEqual(instance.name, "MCommon_LevelAllDamageAddedRatio")
+        self.assertEqual(instance.dynamic_values, {"MDF_PropertyValue": Decimal("0.35")})
+        self.assertEqual([item["disposition"] for item in result.trace], ["BRANCH_SUCCESS", "MODIFIER_APPEND_OR_REFRESH_PENDING"])
 
     def test_remove_modifier_marks_instances_but_does_not_clean_them_early(self) -> None:
         record = {

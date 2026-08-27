@@ -29,6 +29,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Avatar",
         "fixture": "source_backed_normal_damage_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213:MODIFIER_CALLBACK:StageAbility_3001213_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "owner_kind": "StageBuff",
+        "fixture": "source_backed_modifier_dynamic_entrypoint_reference_001.json",
+    },
 )
 
 

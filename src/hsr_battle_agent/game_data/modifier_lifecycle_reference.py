@@ -19,9 +19,10 @@ The v2 reference aligns with the packet boundary model:
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
+from decimal import Decimal
 from enum import IntEnum
-from typing import Iterable
+from typing import Iterable, Mapping
 
 
 class ModifierState(IntEnum):
@@ -59,6 +60,7 @@ class ModifierInstance:
     destroy_reason: int | None = None
     callback_registration_keys: tuple[str, ...] = ()
     property_contribution_keys: tuple[str, ...] = ()
+    dynamic_values: Mapping[str, Decimal] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -116,20 +118,20 @@ def add_or_refresh(instances: Iterable[ModifierInstance], incoming: ModifierInst
         return ModifierTransition(current + (pending,), "APPEND_NEW_PENDING", pending.instance_id)
     existing = current[existing_index]
     if policy in {2, 5, 7, 8, 12}:
-        updated = replace(existing, current_life=incoming.current_life, count=incoming.count)
+        updated = replace(existing, current_life=incoming.current_life, count=incoming.count, dynamic_values=incoming.dynamic_values)
         action = "REFRESH_REPLACE"
     elif policy == StackingPolicy.PROLONG:
         if existing.current_life is None or incoming.current_life is None:
             raise ValueError("PROLONG requires explicit current_life values")
-        updated = replace(existing, current_life=existing.current_life + incoming.current_life)
+        updated = replace(existing, current_life=existing.current_life + incoming.current_life, dynamic_values=incoming.dynamic_values)
         action = "REFRESH_PROLONG"
     elif policy == StackingPolicy.MERGE:
         if existing.current_life is None or incoming.current_life is None:
             raise ValueError("MERGE requires explicit current_life values")
-        updated = replace(existing, current_life=max(existing.current_life, incoming.current_life))
+        updated = replace(existing, current_life=max(existing.current_life, incoming.current_life), dynamic_values=incoming.dynamic_values)
         action = "REFRESH_MERGE"
     elif policy == StackingPolicy.REPLACE_KEEP_LIFETIME:
-        updated = replace(existing, count=incoming.count)
+        updated = replace(existing, count=incoming.count, dynamic_values=incoming.dynamic_values)
         action = "REFRESH_KEEP_LIFETIME"
     elif policy in {StackingPolicy.RETAIN_GLOBAL_LATEST, StackingPolicy.RETAIN_GLOBAL_LATEST_UNIQUE}:
         raise NotImplementedError("global modifier lookup is explicitly outside PRIM-MODIFIER-001")

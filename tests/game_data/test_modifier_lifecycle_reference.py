@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from decimal import Decimal
 
 from hsr_battle_agent.game_data.modifier_lifecycle_reference import (
     ModifierInstance,
@@ -60,6 +61,13 @@ class ModifierLifecycleReferenceTest(unittest.TestCase):
         self.assertEqual(replace_result.action, "REFRESH_REPLACE")
         self.assertEqual(replace_result.instances[0].instance_id, "one")
         self.assertEqual((replace_result.instances[0].current_life, replace_result.instances[0].count), (7, 3))
+
+    def test_refresh_replaces_modifier_local_dynamic_values(self) -> None:
+        existing = ModifierInstance("one", "M_Test", StackingPolicy.REPLACE, 100, "provider", 2, 1, dynamic_values={"MDF_Value": Decimal("0.1")})
+        incoming = ModifierInstance("incoming", "M_Test", StackingPolicy.REPLACE, 100, "provider", 7, 3, dynamic_values={"MDF_Value": Decimal("0.2")})
+        result = add_or_refresh((existing,), incoming)
+        self.assertEqual(result.action, "REFRESH_REPLACE")
+        self.assertEqual(result.instances[0].dynamic_values, {"MDF_Value": Decimal("0.2")})
 
     def test_prolong_merge_and_keep_lifetime_are_distinct(self) -> None:
         prolong = add_or_refresh((instance("one", StackingPolicy.PROLONG, life=2),), instance("incoming", StackingPolicy.PROLONG, life=3))

@@ -35,7 +35,11 @@ immutable state as their weakness gate, but still require explicit target
 toughness and Break inputs. Selected `ModifySPNew` AddRatio/AddValue callbacks
 now execute through a bounded shared team skill-point holder; no target alias
 is mistaken for a private entity resource. The complete `MCommon_HOT_SP`
-callback is the fourth source-backed executed record. Corpus hash:
+callback is the fourth source-backed executed record. Compiler/executor
+eligibility is now mechanically audited for all executable kinds. Selected
+AddModifier `DynamicValues` persist on pending Modifier state; a real
+StageAbility listener executes its ParamEntity predicate and nested add as a
+separately labeled source-backed component. Corpus hash:
 `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr

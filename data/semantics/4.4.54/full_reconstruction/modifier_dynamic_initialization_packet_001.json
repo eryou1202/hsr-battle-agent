@@ -1,0 +1,23 @@
+{
+  "packet_id": "MODIFIER-DYNAMIC-INITIALIZATION-001",
+  "game_version": "4.4.54",
+  "scope": "Selected AddModifier payloads containing only ModifierName plus a non-empty DynamicValues mapping, where the target Modifier has an explicit canonical supported Stacking definition.",
+  "closure_status": "PARTIAL_R3_GENERIC_REFERENCE",
+  "selected_model": "At modifier-add evaluation, evaluate each DynamicValues entry through the existing unified DynamicValue resolver and persist the named Decimal values on the immutable pending ModifierInstance. On selected Replace/Merge/Prolong refresh, the incoming mapping replaces the stored mapping together with the selected lifecycle refresh transition. No DynamicValues input is silently discarded.",
+  "state_reads": ["AddModifier DynamicValues expressions", "DynamicValue scope/hash context", "explicit ModifierDefinition catalog", "target modifier instances"],
+  "state_writes": ["pending ModifierInstance.dynamic_values", "selected refresh ModifierInstance.dynamic_values"],
+  "ordering": "Values are evaluated before add_or_refresh. The instance remains TO_BE_ADDED until the pre-existing activation boundary; this packet does not dispatch its callback body.",
+  "evidence": [
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "selected PostfixExpr and immutable value representation"},
+    {"packet": "PRIM-MODIFIER-001", "support": "append/refresh/pending lifecycle transition"},
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "StageAbility_3001213 passes MDF_PropertyValue=0.35 through AddModifier"}
+  ],
+  "acceptance": {
+    "fixture": "source_backed_modifier_dynamic_entrypoint_reference_001.json",
+    "tests": ["tests/game_data/test_reference_execution.py::test_source_backed_stage_callback_adds_modifier_with_local_dynamic_values", "tests/game_data/test_modifier_lifecycle_reference.py::test_refresh_replaces_modifier_local_dynamic_values"],
+    "status": "SOURCE_BACKED_ENTRYPOINT_COMPONENT_REFERENCE_NOT_FULL_RECORD_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing/conflicting ModifierDefinition", "missing/non-mapping DynamicValues", "unsupported AddModifier arguments", "unknown DynamicValue expression input"],
+  "unsupported_boundary": ["chance, lifetime, layer/stack overrides, caster inheritance, custom offsets, callback registration/activation, and dynamic-value lookup by a later modifier callback instance are separate tickets.", "This packet does not claim a Golden game trace."],
+  "dsh_implementation_contract": "Store modifier-local dynamic values on the modifier instance, not on a global owner key. Preserve the source names exactly. When a selected stacking policy refreshes an instance, update this mapping atomically with its lifecycle data; do not drop it."
+}
