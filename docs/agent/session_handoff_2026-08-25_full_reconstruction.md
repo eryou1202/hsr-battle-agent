@@ -32,9 +32,9 @@
 - Current corpus hash:
   `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 - Current coverage split: 249 behavior-bearing records (92 structural-only
-  compiled), 109 `EXECUTABLE_REFERENCE` records / 188 independently closed
+  compiled), 109 `EXECUTABLE_REFERENCE` records / 192 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus one explicitly separate operation component;
+  are source-backed executed plus three explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -105,6 +105,11 @@
   `MODIFIER-DYNAMIC-INITIALIZATION-001` preserves selected AddModifier
   DynamicValues on immutable pending/refresh instances and executes a real
   StageAbility_3001213 ParamEntity listener component.
+- `DOT-DAMAGE-EXECUTION-BRIDGE-001` admits only selected explicit
+  `AttackType=DOT` / `DamagePercentage` operations through a separate no-crit
+  shield-before-HP tick transition. A real Black Swan
+  `MAvatar_BlackSwan_00_DOT` OnPhase1 component is source-backed executed;
+  its enclosing application/lifecycle callback is deliberately not promoted.
 
 ## Source state
 
@@ -117,14 +122,14 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DOT-DAMAGE-EXECUTION-BRIDGE-001`: bind only explicit DOT
-   DamagePercentage source shapes to a separate no-crit HP/shield commit.
-   Do not conflate direct-value, Break, inheritance, application or expiry
-   with a DOT tick.
+1. `SET-DYNAMIC-VALUE-CROSS-TARGET-001`: aggregate only remaining
+   unexecutable `SET_DYNAMIC_VALUE` payload shapes. Admit a single exact
+   read/write target resolver model only if it preserves source scope and is
+   supported by real canonical evidence.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.
-3. Choose the next strict family from the measured
+3. Choose the following strict family from the measured
    `BOUND_UNEXECUTABLE_PACKET` distribution, not an old primitive todo.
 
 ## Mandatory reads

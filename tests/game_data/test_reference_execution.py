@@ -27,6 +27,7 @@ CORPUS_PATH = Path("data/semantics/4.4.54/full_reconstruction/external_behavior_
 HOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP"
 PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
 BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
+BLACK_SWAN_DOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
 WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
 HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
 STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
@@ -188,6 +189,30 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertLess(result.state.entity("e1").survival.hp, Decimal("100"))
         self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMMITTED")
 
+    def test_dot_damage_request_commits_without_crit_through_shield_then_hp(self) -> None:
+        record = {
+            "behavior_id": "dot-fixture", "owner_kind": "Modifier", "owner_ref": "dot-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE1", "operations": [{
+                "operation_id": "dot", "source_type": "RPG.GameCore.DamageByAttackProperty", "kind": "DAMAGE_REQUEST",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"AttackProperty": {"AttackType": "DOT", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "DamageType": {"DamageType": "Wind"}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("100"), Decimal("100"), shield=Decimal("50"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONPHASE1", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="e1", damage_multiplier_contexts={"e1": DamageMultiplierContext(enemy_level=80)}, crit_rate=Decimal("1"), crit_damage=Decimal("99")),
+        )
+        self.assertEqual(result.state.entity("e1").survival.shield, Decimal("0"))
+        self.assertEqual(result.state.entity("e1").survival.hp, Decimal("90"))
+        self.assertEqual(result.trace[0]["disposition"], "DOT_DAMAGE_COMMITTED")
+        self.assertFalse(result.trace[0]["crit_applied"])
+
     def test_normal_damage_with_stance_commits_hp_then_toughness(self) -> None:
         record = {
             "behavior_id": "mixed-damage", "owner_kind": "Avatar", "owner_ref": "mixed-damage", "source_refs": [],
@@ -335,6 +360,45 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertLess(result.state.entity("e2").survival.hp, Decimal("500"))
         self.assertEqual(result.state.entity("e2").toughness.current_toughness, Decimal("70"))
         self.assertEqual([item["disposition"] for item in result.trace], ["DAMAGE_COMMITTED", "TOUGHNESS_REDUCED"])
+
+    def test_source_backed_black_swan_dot_component_executes_without_crit(self) -> None:
+        source = _record(BLACK_SWAN_DOT_ID)
+
+        def walk(values):
+            for operation in values:
+                if operation.get("kind") == "DAMAGE_REQUEST" and operation.get("arguments", {}).get("AttackProperty", {}).get("AttackType") == "DOT":
+                    return operation
+                for group in operation.get("children", []):
+                    found = walk(group.get("operations", []))
+                    if found is not None:
+                        return found
+            return None
+
+        damage = next((walk(entrypoint.get("operations", [])) for entrypoint in source["entrypoints"] if walk(entrypoint.get("operations", [])) is not None), None)
+        self.assertIsNotNone(damage)
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-dot-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_DOT_COMPONENT", "operations": [damage]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_DOT_COMPONENT", state,
+            ExecutionContext(
+                caster_id="p1", modifier_owner_id="e1",
+                dynamic_hash_values={"-949914540": "1", "-692968543": "1", "-1865831589": "1"},
+                damage_multiplier_contexts={"e1": DamageMultiplierContext(enemy_level=80)},
+                crit_rate=Decimal("1"), crit_damage=Decimal("99"),
+            ),
+        )
+        self.assertEqual(result.state.entity("e1").survival.hp, Decimal("380.0"))
+        self.assertEqual(result.trace[0]["disposition"], "DOT_DAMAGE_COMMITTED")
+        self.assertFalse(result.trace[0]["crit_applied"])
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

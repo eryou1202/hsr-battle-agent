@@ -1,0 +1,19 @@
+{
+  "packet_id": "DOT-DAMAGE-EXECUTION-BRIDGE-001",
+  "game_version": "4.4.54",
+  "scope": "Selected canonical DamageByAttackProperty requests with AttackType=DOT, a DamagePercentage payload, an allowed ByAttack/ByMaxHP/ByDefence initial formula, and no direct value, Break, inheritance, stance, split or special state fields.",
+  "closure_status": "PARTIAL_R2_R3_DOT_TICK_REFERENCE",
+  "selected_model": "A selected DOT request is a periodic damage tick only: calculate the existing initial damage formula, apply the existing universal/DEF/RES/vulnerability/final-damage chain with crit rate fixed to zero, then commit through shield before CurrentHP. It neither applies nor refreshes a DoT modifier, rolls application chance, changes toughness, nor expires a modifier.",
+  "state_reads": ["source ATK/HP/DEF", "target resolution", "DamagePercentage DynamicValue context", "DamageMultiplierContext", "target SurvivalState"],
+  "state_writes": ["target shield", "target CurrentHP/alive"],
+  "ordering": "This selected tick creates DOT_DAMAGE_COMMITTED in canonical sibling order. Its survival commit completes before the next sibling. DoT lifecycle scheduling is explicitly outside this packet.",
+  "evidence": [
+    {"packet": "PRIM-DAMAGE-001", "level": "R2/R4", "support": "initial/mitigation formula chain and ordered shield-before-HP boundary"},
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "real MAvatar_BlackSwan_00_DOT OnPhase1 AttackType=DOT/DamagePercentage requests"},
+    {"fixture": "source_backed_dot_damage_component_reference_001.json", "support": "real canonical DOT component reaches an independently specified no-crit transition"}
+  ],
+  "acceptance": {"tests": ["tests/game_data/test_damage_survival_reference.py::test_dot_damage_never_receives_a_critical_multiplier", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_dot_component_executes_without_crit"], "trace_disposition": "DOT_DAMAGE_COMMITTED", "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"},
+  "strict_rejection": ["DamageValue/direct damage", "BreakDamagePercentage", "StanceValue/StanceDamageType", "non-DOT/non-selected AttackType", "unsupported formula", "missing target multiplier context"],
+  "unsupported_boundary": ["DoT application chance, application/refresh/stack/expiry lifecycle", "Break/SuperBreak and toughness", "damage tags, inheritance, reflection, split/AOE sequencing", "Golden client trace claim"],
+  "dsh_implementation_contract": "Keep DOT ticks separate from ordinary direct damage and modifier lifecycle. Apply no crit factor. Reuse shield-before-HP only after the DOT tick amount is selected. Reject all non-selected mixed payloads rather than treating them as ordinary DOT."
+}

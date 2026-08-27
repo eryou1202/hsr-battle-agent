@@ -81,6 +81,16 @@ def normal_damage(ability_amount: Decimal, context: DamageMultiplierContext, *, 
         return ability_amount * context.base_universal_multiplier * defense_multiplier(context.enemy_level, context.def_pen) * resistance_multiplier(context.damage_resistance, context.res_pen) * (Decimal("1") + _d(context.vulnerability)) * (Decimal("1") + _d(context.final_dmg_boost)) * (Decimal("1") + _d(context.dmg_boost)) * crit_multiplier(crit_rate, crit_damage)
 
 
+def dot_damage(ability_amount: Decimal, context: DamageMultiplierContext) -> Decimal:
+    """Selected periodic DamageByAttackProperty amount without crit.
+
+    DoT application, chance, stacks and expiry stay outside this tick-only
+    helper.  The selected request uses the existing initial/DEF/RES/
+    vulnerability multiplier chain but cannot roll or receive a crit factor.
+    """
+    return normal_damage(ability_amount, context, crit_rate=Decimal("0"), crit_damage=Decimal("0"))
+
+
 def break_damage(*, elemental_break_scaling: Any, enemy_max_toughness: Any, special_scaling: Any = 1, break_effect: Any = 0, context: DamageMultiplierContext) -> Decimal:
     base = Decimal("3767.5533") * _d(elemental_break_scaling) * (Decimal("0.5") + _d(enemy_max_toughness) / Decimal("120")) * _d(special_scaling)
     with localcontext() as ctx:

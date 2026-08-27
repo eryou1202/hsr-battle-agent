@@ -14,7 +14,7 @@
       "DEFINE_DYNAMIC_VALUE",
       "ADD_MODIFIER with an explicit canonical Modifier catalog definition and optional selected modifier-local DynamicValues initialization",
       "REMOVE_MODIFIER: named instance mark-destroy only; dirty cleanup remains separate",
-      "DAMAGE_REQUEST: selected normal ByAttack/ByMaxHP/ByDefence formula with explicit multiplier context, shield-before-HP commit, and optional explicit StanceValue/toughness transition",
+      "DAMAGE_REQUEST: selected normal ByAttack/ByMaxHP/ByDefence formula with explicit multiplier context, shield-before-HP commit, optional explicit StanceValue/toughness transition, plus selected AttackType=DOT no-crit ticks",
       "MODIFY_WEAKNESS: selected StackWeakness Attach/WeakList transition with stable entity-state de-duplication",
       "MODIFY_TEAM_SP: selected ModifySPNew AddRatio/AddValue positive post-commit contribution to a bounded shared team SkillPointEntity holder",
       "HEADLESS_PRESENTATION_OMITTED"
@@ -51,7 +51,7 @@
     "AddModifier with missing/unsupported/conflicting canonical Stacking, chance, lifetime or layer parameters",
     "later callback lookup of modifier-local DynamicValues by instance identity",
     "RemoveModifier with no explicit name, caster/global filters, or immediate dirty cleanup semantics",
-    "DamageValue/direct-damage, Break/SuperBreak request families, SPHitRatio, split/AOE sequencing, damage tags, inherited attack fields, missing explicit toughness/Break runtime inputs and non-selected formula types",
+    "DamageValue/direct-damage, Break/SuperBreak request families, SPHitRatio, split/AOE sequencing, damage tags, inherited attack fields, missing explicit toughness/Break runtime inputs and non-selected formula types; DOT application/chance/refresh/stack/expiry scheduling remains separate from selected no-crit DOT ticks",
     "ModifySPNew pre-action cost/gate, NoSpCost/cap modifiers, special-mode resource holders and scheduler timing",
     "unimplemented heal formula types",
     "global event dispatch, action scheduling, modifier callback registration and native reentrancy",

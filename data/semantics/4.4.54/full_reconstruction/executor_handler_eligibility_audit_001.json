@@ -1,11 +1,11 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "65aeea33279e07567bae235ea1085c0c50aa37e83f977721ec8faa613794cc9b",
+  "audit_sha256": "027a0ad77560c0db7cf9afcc7242dfb13ee167f0aca00e62b7976f03621c37d0",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ADD_MODIFIER": 21,
     "CONDITIONAL": 364,
-    "DAMAGE_REQUEST": 2,
+    "DAMAGE_REQUEST": 15,
     "DEFINE_DYNAMIC_VALUE": 7,
     "HEAL_REQUEST": 6,
     "MODIFY_PROPERTY_STACK": 158,
@@ -31,7 +31,7 @@
       "damage source stats",
       "target resolution",
       "DamageMultiplierContext",
-      "optional ToughnessCommitContext"
+      "optional ToughnessCommitContext for selected normal stance only"
     ],
     "DEFINE_DYNAMIC_VALUE": [
       "scope owner resolution",
@@ -72,7 +72,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "a783f68a325574eb75ac49d63010eb25393ccceee699ff2ff53792fa494bb786",
+  "input_compiler_report_sha256": "c6fc3c2f31c3f826852ea432b1c5ebc87824ba4b491dd45ab9d20ba841b73548",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

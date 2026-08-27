@@ -290,7 +290,8 @@ class BehaviorCompiler:
             # and an explicit StanceValue transition together.  Other mixed
             # paths remain rejected: dropping a state-affecting sibling would
             # turn an incomplete transition into false executable coverage.
-            if attack.get("AttackType") not in {None, "", "Normal"}:
+            attack_type = attack.get("AttackType")
+            if attack_type not in {None, "", "Normal", "DOT"}:
                 return "EXECUTABLE_REFERENCE_DAMAGE_ATTACK_TYPE_UNSUPPORTED"
             if "DamageValue" in attack or "BreakDamagePercentage" in attack:
                 return "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED"
@@ -298,6 +299,8 @@ class BehaviorCompiler:
             if formula not in {"ByAttack", "ByMaxHP", "ByDefence"}:
                 return "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED"
             has_stance = "StanceValue" in attack or "StanceDamageType" in attack
+            if attack_type == "DOT" and has_stance:
+                return "EXECUTABLE_REFERENCE_DOT_MIXED_STATE_FIELDS"
             if has_stance and not isinstance(attack.get("StanceValue"), Mapping):
                 return "EXECUTABLE_REFERENCE_STANCE_VALUE_MISSING"
             allowed_attack_fields = {
@@ -308,7 +311,7 @@ class BehaviorCompiler:
                 "HitPosHeight", "HitTimeSlowIntensity",
                 # Stance is a second state transition, executed only through
                 # the explicit per-target toughness context at runtime.
-                "StanceValue", "StanceDamageType",
+                "StanceValue", "StanceDamageType", "HitTimeSlowType",
             }
             if any(key not in allowed_attack_fields for key in attack):
                 return "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS"

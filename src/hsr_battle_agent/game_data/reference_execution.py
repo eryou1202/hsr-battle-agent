@@ -14,7 +14,7 @@ from decimal import Decimal
 import random
 from typing import Any, Iterable, Mapping, Sequence
 
-from .damage_survival_reference import DamageMultiplierContext, SurvivalState, initial_damage, normal_damage
+from .damage_survival_reference import DamageMultiplierContext, SurvivalState, dot_damage, initial_damage, normal_damage
 from .dynamic_value_reference import (
     DynamicValueSemanticError,
     DynamicValueStore,
@@ -43,7 +43,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
-    "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext"),
+    "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext for selected normal stance only"),
     "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
 }
@@ -660,6 +660,7 @@ class SemanticExecutor:
             hp_scaling=scaling[1],
             def_scaling=scaling[2],
         )
+        attack_type = str(attack_property.get("AttackType") or "Normal")
         stance_value = attack_property.get("StanceValue")
         has_stance = stance_value is not None
         stance_amount = self._evaluate_value(stance_value, state, context) if has_stance else None
@@ -670,13 +671,19 @@ class SemanticExecutor:
             multiplier_context = context.damage_multiplier_contexts.get(target_id)
             if multiplier_context is None:
                 raise SemanticExecutionError(f"{operation.get('operation_id')}: missing DamageMultiplierContext for {target_id!r}")
-            amount = normal_damage(ability_amount, multiplier_context, crit_rate=context.crit_rate, crit_damage=context.crit_damage)
+            if attack_type == "DOT":
+                amount = dot_damage(ability_amount, multiplier_context)
+                disposition = "DOT_DAMAGE_COMMITTED"
+            else:
+                amount = normal_damage(ability_amount, multiplier_context, crit_rate=context.crit_rate, crit_damage=context.crit_damage)
+                disposition = "DAMAGE_COMMITTED"
             target = current.entity(target_id)
             survival, shield_absorbed, hp_lost = target.survival.absorb(amount)
             toughness = target.toughness
             trace.append({
                 "operation_id": operation.get("operation_id"),
-                "disposition": "DAMAGE_COMMITTED",
+                "disposition": disposition,
+                "attack_type": attack_type,
                 "formula_type": formula,
                 "source_id": source_id,
                 "target_id": target_id,
@@ -685,6 +692,7 @@ class SemanticExecutor:
                 "shield_absorbed": str(shield_absorbed),
                 "hp_lost": str(hp_lost),
                 "target_alive": survival.alive,
+                "crit_applied": attack_type != "DOT",
             })
             if has_stance:
                 toughness_context = context.toughness_contexts.get(target_id)

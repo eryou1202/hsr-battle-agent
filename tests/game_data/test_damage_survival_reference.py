@@ -11,6 +11,7 @@ from hsr_battle_agent.game_data.damage_survival_reference import (
     crit_multiplier,
     defense_multiplier,
     dot_chance_multiplier,
+    dot_damage,
     initial_damage,
     normal_damage,
     super_break_damage,
@@ -39,6 +40,11 @@ class DamageReferenceTest(unittest.TestCase):
     def test_dot_chance(self) -> None:
         self.assertEqual(dot_chance_multiplier(dot_base_chance=1, enemy_effect_res=0), Decimal("1"))
         self.assertEqual(dot_chance_multiplier(dot_base_chance=0, dot_split=0), Decimal("0"))
+
+    def test_dot_damage_never_receives_a_critical_multiplier(self) -> None:
+        context = DamageMultiplierContext()
+        self.assertEqual(dot_damage(Decimal("1000"), context), Decimal("500"))
+        self.assertEqual(dot_damage(Decimal("1000"), context), normal_damage(Decimal("1000"), context, crit_rate=0, crit_damage=0))
 
 
 class SurvivalReferenceTest(unittest.TestCase):
