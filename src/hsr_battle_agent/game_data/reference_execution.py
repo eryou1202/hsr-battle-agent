@@ -211,13 +211,14 @@ class ExecutionContext:
 class ToughnessCommitContext:
     """Explicit inputs for the stance part of a mixed normal request.
 
-    Weakness, Break Effect and elemental-break scaling are not inferred from
-    a target alias or from an external fixture.  The behavior adapter may
-    execute a StanceValue only when the scenario/reference context supplies
-    them for the particular target.
+    Break Effect and elemental-break scaling are not inferred from a target
+    alias or an external fixture.  Weakness may be explicitly supplied, or
+    derived from the immutable entity weakness state when this field is
+    ``None``. The behavior adapter may execute a StanceValue only when the
+    scenario/reference context supplies the remaining target inputs.
     """
 
-    weakness_active: bool
+    weakness_active: bool | None = None
     elemental_break_scaling: Decimal = Decimal("1")
     special_scaling: Decimal = Decimal("1")
     break_effect: Decimal = Decimal("0")
@@ -608,12 +609,21 @@ class SemanticExecutor:
                     raise SemanticExecutionError(f"{operation.get('operation_id')}: missing ToughnessCommitContext for {target_id!r}")
                 if toughness is None:
                     raise SemanticExecutionError(f"{operation.get('operation_id')}: target {target_id!r} has no toughness state")
-                if not toughness_context.weakness_active or not survival.alive:
+                weakness_active = toughness_context.weakness_active
+                if weakness_active is None:
+                    stance_type = attack_property.get("StanceDamageType")
+                    stance_type = stance_type.get("DamageType") if isinstance(stance_type, Mapping) else None
+                    damage_data = attack_property.get("DamageType")
+                    damage_type = stance_type or (damage_data.get("DamageType") if isinstance(damage_data, Mapping) else None)
+                    if not isinstance(damage_type, str) or not damage_type:
+                        raise SemanticExecutionError(f"{operation.get('operation_id')}: state-derived weakness requires DamageType")
+                    weakness_active = damage_type in target.weaknesses
+                if not weakness_active or not survival.alive:
                     trace.append({
                         "operation_id": operation.get("operation_id"),
                         "disposition": "TOUGHNESS_SKIPPED",
                         "target_id": target_id,
-                        "reason": "WEAKNESS_INACTIVE" if not toughness_context.weakness_active else "TARGET_DEAD",
+                        "reason": "WEAKNESS_INACTIVE" if not weakness_active else "TARGET_DEAD",
                     })
                 else:
                     transition = apply_toughness_damage(

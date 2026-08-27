@@ -92,6 +92,10 @@
   entity weakness state and supplies the existing `ByHasStanceWeak` predicate
   hook. The complete `MCommon_WeakType_Fire` OnStack callback now executes as
   a third source-backed record.
+- `WEAKNESS-DAMAGE-CONTEXT-INTEGRATION-001` lets a selected StanceValue
+  request read that immutable weakness state when its context does not supply
+  an explicit boolean. Missing weakness deterministically skips stance; no
+  default weakness, target toughness or Break factor is inferred.
 
 ## Source state
 
@@ -104,10 +108,9 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `WEAKNESS-DAMAGE-CONTEXT-INTEGRATION-001`: allow selected `StanceValue`
-   damage to use the explicit entity weakness state when requested, while
-   retaining required target toughness and Break inputs. Do not infer default
-   weakness or elemental scaling.
+1. `RESOURCE-EXECUTION-BRIDGE-001`: lower selected `ModifySPNew` AddRatio and
+   AddValue forms through an explicit team-SP holder, legal clamp and
+   deterministic commit trace. Do not mistake a target alias for the holder.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`; retain separate record, entrypoint,
    source-backed-executable and Golden counts.

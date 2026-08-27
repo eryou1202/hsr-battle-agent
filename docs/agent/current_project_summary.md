@@ -30,7 +30,9 @@ component is source-backed executed under that scope, but it is not a complete
 Skill entrypoint and does not increase the full-record source-backed count.
 `StackWeakness` is now correctly represented as a weakness-state Attach, not
 as toughness damage; the complete real `MCommon_WeakType_Fire` callback is a
-third source-backed executed record. Corpus hash:
+third source-backed executed record. Selected StanceValue requests can use that
+immutable state as their weakness gate, but still require explicit target
+toughness and Break inputs. Corpus hash:
 `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr

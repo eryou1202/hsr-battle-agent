@@ -23,18 +23,18 @@
     "ability_target_id": "e1",
     "dynamic_hash_values": {"-1847083384": "1", "-1315627076": "30"},
     "damage_multiplier_context": {"target_id": "e2", "enemy_level": 80},
-    "toughness_context": {"target_id": "e2", "weakness_active": true, "elemental_break_scaling": "1", "special_scaling": "1", "break_effect": "0"}
+    "toughness_context": {"target_id": "e2", "weakness_active": "STATE_DERIVED", "elemental_break_scaling": "1", "special_scaling": "1", "break_effect": "0"}
   },
   "selected_initial_state": {
     "p1": {"team": "light", "attack": "120", "hp": "1000", "max_hp": "1000"},
     "e1": {"team": "dark", "position": [0, 0], "hp": "500", "max_hp": "500"},
-    "e2": {"team": "dark", "position": [0, 1], "hp": "500", "max_hp": "500", "max_toughness": "100", "current_toughness": "100"}
+    "e2": {"team": "dark", "position": [0, 1], "hp": "500", "max_hp": "500", "max_toughness": "100", "current_toughness": "100", "weaknesses": ["Wind"]}
   },
   "expected_transition": {
     "e2_hp": "500 -> 440.0",
     "e2_toughness": "100 -> 70",
     "ordered_dispositions": ["DAMAGE_COMMITTED", "TOUGHNESS_REDUCED"]
   },
-  "assumptions": ["The selected default FormulaType is ByAttack when absent in this canonical AttackData payload.", "Fixture-supplied DynamicHash values and multiplier inputs are explicit reference inputs, not independently game-observed values."],
+  "assumptions": ["The selected default FormulaType is ByAttack when absent in this canonical AttackData payload.", "The StanceValue path derives its active weakness from the explicit entity weakness state; DynamicHash values and multiplier inputs remain fixture inputs, not independently game-observed values."],
   "unsupported_boundary": ["The primary Skill02 hit carries SPHitRatio and remains uncompiled.", "The complete Skill02 entrypoint includes template, condition, retarget, chance modifier and completion operations that remain uncompiled.", "This fixture is not a Golden game trace."]
 }

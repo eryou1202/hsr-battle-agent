@@ -156,21 +156,21 @@ class ReferenceExecutionTest(unittest.TestCase):
             "entrypoints": [{"event": "ONSTART", "operations": [{
                 "operation_id": "mixed", "source_type": "RPG.GameCore.TargetDamage", "kind": "DAMAGE_REQUEST",
                 "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "AbilityTargetEntity"},
-                "arguments": {"AttackProperty": {"AttackType": "Normal", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "StanceValue": {"IsDynamic": False, "FixedValue": {"Value": 30}}}}, "children": [],
+                "arguments": {"AttackProperty": {"AttackType": "Normal", "DamagePercentage": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "DamageType": {"DamageType": "Physical"}, "StanceValue": {"IsDynamic": False, "FixedValue": {"Value": 30}}}}, "children": [],
             }]}],
         }
         compiled = BehaviorCompiler().compile_record(record)
         self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
         state = ReferenceBattleState(entities={
             "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
-            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500")), toughness=ToughnessState(Decimal("50"), Decimal("50"))),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500")), toughness=ToughnessState(Decimal("50"), Decimal("50")), weaknesses=("Physical",)),
         })
         result = SemanticExecutor().execute_entrypoint(
             compiled, "ONSTART", state,
             ExecutionContext(
                 caster_id="p1", ability_target_id="e1",
                 damage_multiplier_contexts={"e1": DamageMultiplierContext(enemy_level=80)},
-                toughness_contexts={"e1": ToughnessCommitContext(weakness_active=True)},
+                toughness_contexts={"e1": ToughnessCommitContext()},
             ),
         )
         self.assertLess(result.state.entity("e1").survival.hp, Decimal("500"))
@@ -247,7 +247,7 @@ class ReferenceExecutionTest(unittest.TestCase):
         state = ReferenceBattleState(entities={
             "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1000"), Decimal("1000")), attack=Decimal("120")),
             "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500")), position=(0, 0)),
-            "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("500"), Decimal("500")), position=(0, 1), toughness=ToughnessState(Decimal("100"), Decimal("100"))),
+            "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("500"), Decimal("500")), position=(0, 1), toughness=ToughnessState(Decimal("100"), Decimal("100")), weaknesses=("Wind",)),
         })
         result = SemanticExecutor().execute_entrypoint(
             compiled, "SOURCE_DAMAGE_COMPONENT", state,
@@ -255,7 +255,7 @@ class ReferenceExecutionTest(unittest.TestCase):
                 caster_id="p1", ability_target_id="e1",
                 dynamic_hash_values={"-1847083384": "1", "-1315627076": "30"},
                 damage_multiplier_contexts={"e2": DamageMultiplierContext(enemy_level=80)},
-                toughness_contexts={"e2": ToughnessCommitContext(weakness_active=True)},
+                toughness_contexts={"e2": ToughnessCommitContext()},
             ),
         )
         self.assertLess(result.state.entity("e2").survival.hp, Decimal("500"))
