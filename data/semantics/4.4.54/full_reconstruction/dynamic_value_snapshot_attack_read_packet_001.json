@@ -1,0 +1,24 @@
+{
+  "packet_id": "DYNAMICVALUE-PROPERTY-SNAPSHOT-ATTACK-READ-001",
+  "game_version": "4.4.54",
+  "scope": "RPG.GameCore.SetDynamicValueByProperty payloads with exactly DynamicKey, ReadTargetType=SnapshotPropertyEntity, and Value=Attack.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve exactly one caller-supplied SnapshotPropertyEntity through TargetAlias, then copy that runtime entity's already-materialized attack leaf into the existing selected DynamicValue scope/key. Snapshot capture, source ownership and property materialization are outside this read-only bridge and are never inferred from the current caster.",
+  "state_reads": ["SnapshotPropertyEntity target context", "snapshot RuntimeEntity.attack", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The caller-provided snapshot attack is copied synchronously at this callback sibling and is visible to later siblings. This packet intentionally establishes neither snapshot creation timing nor snapshot lifetime.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_DOT_Tear reads SnapshotPropertyEntity Attack into MDF_CasterAttack in OnCreate, OnPhase1 and OnCustomEvent callbacks."},
+    {"packet": "TARGET-001", "support": "Existing TargetAlias resolver identifies SnapshotPropertyEntity only from an explicit context field."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "Existing selected scope/key DynamicValueStore transition."},
+    {"fixture": "source_backed_snapshot_property_attack_dynamic_value_component_reference_001.json", "support": "A real canonical MCommon_DOT_Tear OnCreate operation executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_snapshot_property_entity_attack_projection_requires_explicit_snapshot_context", "tests/game_data/test_reference_execution.py::test_source_backed_dot_tear_snapshot_attack_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing or multiple SnapshotPropertyEntity targets", "Param/Caster/ModifierOwnerEntity through this snapshot branch", "Value other than Attack", "extra source arguments", "unmaterialized snapshot attack"],
+  "unsupported_boundary": ["snapshot capture timing", "snapshot invalidation/lifetime", "BreakDamageAddedRatio and StatusProbabilityBase reads", "full MCommon_DOT_Tear behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Snapshot aliases must resolve through explicit immutable scenario/callback snapshot state, never by falling back to current caster properties. For this selected branch only, copy the snapshot entity's materialized Attack into the normal DynamicValue scope and reject all other snapshot properties until their state/time contracts exist."
+}

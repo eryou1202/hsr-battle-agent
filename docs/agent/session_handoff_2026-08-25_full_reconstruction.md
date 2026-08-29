@@ -34,7 +34,7 @@
 - Current coverage split: 249 behavior-bearing records (89 structural-only
   compiled), 112 `EXECUTABLE_REFERENCE` records / 213 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus nine explicitly separate operation components;
+  are source-backed executed plus ten explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -147,11 +147,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DYNAMICVALUE-COPY-MODIFIER-OWNER-001`: lower only the three
-   `MCommon_Windfury` `SetDynamicValueByCopying` payloads whose source and
-   destination aliases are `ModifierOwnerEntity` and scope is
-   `ContextModifier`; preserve strict rejection for cross-target copies,
-   other scopes and missing source values.
+1. `DYNAMICVALUE-PROPERTY-BREAK-DAMAGE-READ-001`: lower only Caster or
+   SnapshotPropertyEntity `BreakDamageAddedRatio` reads using an explicit
+   materialized state leaf. Do not infer snapshot capture, materialize general
+   property contributions, or include `StatusProbabilityBase`.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

@@ -286,7 +286,7 @@ class BehaviorCompiler:
                 value_kind = arguments.get("Value")
                 if not (
                     (alias == "ModifierOwnerEntity" and value_kind == "MaxHP")
-                    or (alias in {"ParamEntity", "ParamEntity2"} and value_kind == "Attack")
+                    or (alias in {"ParamEntity", "ParamEntity2", "SnapshotPropertyEntity"} and value_kind == "Attack")
                 ):
                     return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED" if value_kind == "Attack" else "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED"
                 if value_kind not in {"MaxHP", "Attack"}:

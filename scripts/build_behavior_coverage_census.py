@@ -77,6 +77,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_param_entity_attack_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear:MODIFIER_CALLBACK:MCommon_DOT_Tear._CallbackList[0]:OnCreate:2",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_snapshot_property_attack_dynamic_value_component_reference_001.json",
+    },
 )
 
 

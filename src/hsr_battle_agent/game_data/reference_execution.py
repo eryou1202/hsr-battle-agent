@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2 RuntimeEntity.attack for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution or explicit callback ModifierInstance identity", "ModifierInstance state", "dirty-removal lifecycle boundary"),
@@ -189,6 +189,7 @@ class ReferenceBattleState:
             damage_defender_id=context.damage_defender_id,
             current_turn_action_entity_id=context.current_turn_action_entity_id,
             current_turn_owner_id=context.current_turn_owner_id,
+            snapshot_property_entity_id=context.snapshot_property_entity_id,
             ability_target_list=context.ability_target_ids,
             skill_target_list=context.skill_target_ids,
             attack_target_list=context.attack_target_ids,
@@ -252,6 +253,7 @@ class ExecutionContext:
     attack_target_ids: tuple[str, ...] = ()
     current_turn_action_entity_id: str | None = None
     current_turn_owner_id: str | None = None
+    snapshot_property_entity_id: str | None = None
     dynamic_hash_values: Mapping[str, Any] = field(default_factory=dict)
     dynamic_scope_owners: Mapping[str, str] = field(default_factory=dict)
     skill_type: str = ""
@@ -665,18 +667,20 @@ class SemanticExecutor:
         state: ReferenceBattleState,
         context: ExecutionContext,
     ) -> ExecutionResult:
-        """Store one selected ParamEntity/ParamEntity2 immutable Attack read.
+        """Store one selected immutable Attack read from an explicit alias.
 
         This packet does not materialize property contributions or resolve the
-        broader SnapshotPropertyEntity family.  It copies only the explicitly
-        supplied runtime entity's already-materialized ``attack`` leaf into
-        the existing selected DynamicValue scope.
+        broader property system.  It copies only the explicitly supplied
+        ParamEntity/ParamEntity2/SnapshotPropertyEntity runtime entity's
+        already-materialized ``attack`` leaf into the existing selected
+        DynamicValue scope.  Snapshot creation/timing stays outside this
+        read-only bridge and must be provided by the caller.
         """
         arguments = operation.get("arguments", {})
         read_target = arguments.get("ReadTargetType")
         alias = read_target.get("Alias") if isinstance(read_target, Mapping) else None
-        if alias not in {"ParamEntity", "ParamEntity2"}:
-            raise SemanticExecutionError(f"{operation.get('operation_id')}: Attack read requires ParamEntity or ParamEntity2")
+        if alias not in {"ParamEntity", "ParamEntity2", "SnapshotPropertyEntity"}:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: Attack read requires ParamEntity, ParamEntity2 or SnapshotPropertyEntity")
         read_targets = self._resolve_targets(read_target, state, context)
         if len(read_targets) != 1:
             raise SemanticExecutionError(f"{operation.get('operation_id')}: Attack read requires one source entity")

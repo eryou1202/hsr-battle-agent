@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "c801b6d0eb8b7fd55cdd447df2ad50c80b33e34dc2064472ffccb45bd8c5b611",
+  "audit_sha256": "f99c19d1c7523bd68afb4dffae16112e35778a1b96f6a3b9b8116ab722a4e69c",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ADD_MODIFIER": 24,
@@ -13,7 +13,7 @@
     "MODIFY_WEAKNESS": 7,
     "PREDICATE": 513,
     "REMOVE_MODIFIER": 70,
-    "SET_DYNAMIC_VALUE": 209
+    "SET_DYNAMIC_VALUE": 212
   },
   "executor_context_contract": {
     "ADD_MODIFIER": [
@@ -71,12 +71,12 @@
       "DynamicValue key/value inputs or selected state read",
       "DynamicValueStore",
       "explicit ModifierInstance identity for SetDynamicValueByModifierValue",
-      "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2 RuntimeEntity.attack for SetDynamicValueByProperty",
+      "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack for SetDynamicValueByProperty",
       "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "878545ab213d12593d6d2653dfba97c4f69e41003078ab7bee0b07bff6342751",
+  "input_compiler_report_sha256": "f90fac4ec074996b0ced6c91b3ab7a67811bfb20e51701eb105bbd252db4adbe",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []
