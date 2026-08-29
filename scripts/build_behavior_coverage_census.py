@@ -53,6 +53,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_max_hp_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:2/SuccessTaskList:0/SuccessTaskList:1",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_modifier_dynamic_value_mutation_component_reference_001.json",
+    },
 )
 
 

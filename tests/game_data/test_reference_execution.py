@@ -32,11 +32,19 @@ WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/Globa
 HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
 BLEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed"
 STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
+WINDFURY_SKILL_NO_NEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed"
 
 
 def _record(behavior_id: str) -> dict:
     corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
     return next(record for record in corpus["records"] if record["behavior_id"] == behavior_id)
+
+
+def _walk_operations(operations):
+    for operation in operations:
+        yield operation
+        for group in operation.get("children", []):
+            yield from _walk_operations(group.get("operations", []))
 
 
 class ReferenceExecutionTest(unittest.TestCase):
@@ -134,6 +142,38 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
         self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("125"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
+
+    def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
+        record = {
+            "behavior_id": "modifier-local-write-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-local-write-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "write", "source_type": "RPG.GameCore.SetModifierDynamicValue", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": {"Value": "MDF_Count"}, "ModifierName": {"Value": "MFixture"}, "NewValue": {"IsDynamic": False, "FixedValue": {"Value": 4}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        existing = ModifierInstance("e1:fixture:1", "MFixture", "Replace", 7, "e1", None, None, ModifierState.ALIVE, dynamic_values={"MDF_Count": Decimal("1"), "MDF_Keep": Decimal("2")})
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"e1": (existing,)})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
+        self.assertEqual(result.state.modifiers("e1")[0].dynamic_values, {"MDF_Count": Decimal("4"), "MDF_Keep": Decimal("2")})
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_LOCAL_DYNAMIC_VALUE_SET")
+
+    def test_set_modifier_dynamic_value_rejects_missing_or_non_alive_named_instance(self) -> None:
+        record = {
+            "behavior_id": "modifier-local-write-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-local-write-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "write", "source_type": "RPG.GameCore.SetModifierDynamicValue", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": {"Value": "MDF_Count"}, "ModifierName": {"Value": "MFixture"}, "NewValue": {"IsDynamic": False, "FixedValue": {"Value": 4}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        pending = ModifierInstance("e1:fixture:1", "MFixture", "Replace", 7, "e1", None, None, ModifierState.TO_BE_ADDED)
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"e1": (pending,)})
+        with self.assertRaisesRegex(Exception, "exactly one ALIVE"):
+            SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
 
     def test_add_modifier_requires_catalog_and_preserves_pending_lifecycle_boundary(self) -> None:
         record = {
@@ -495,6 +535,32 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("750"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
+
+    def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
+        source = _record(WINDFURY_SKILL_NO_NEED_ID)
+        write = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetModifierDynamicValue"
+            and operation["arguments"]["DynamicKey"]["Value"] == "_AssistEnergyNeedOnce"
+            and operation["arguments"]["NewValue"]["FixedValue"]["Value"] == 0
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-modifier-local-dynamic-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_MODIFIER_LOCAL_DYNAMIC_COMPONENT", "operations": [write]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        windfury = ModifierInstance("p1:windfury:1", "MCommon_Windfury", "Replace", 7, "p1", None, None, ModifierState.ALIVE, dynamic_values={"_AssistEnergyNeedOnce": Decimal("1")})
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"p1": (windfury,)})
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_MODIFIER_LOCAL_DYNAMIC_COMPONENT", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="p1", modifier_id="MCommon_Windfury"),
+        )
+        self.assertEqual(result.state.modifiers("p1")[0].dynamic_values["_AssistEnergyNeedOnce"], Decimal("0"))
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_LOCAL_DYNAMIC_VALUE_SET")
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

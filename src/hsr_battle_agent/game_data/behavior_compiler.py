@@ -247,7 +247,21 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_PREDICATE_TYPE_MISSING"
         elif kind == "SET_DYNAMIC_VALUE":
             source_type = str(operation.get("source_type", ""))
-            if source_type == "RPG.GameCore.SetDynamicValueByModifierValue":
+            if source_type == "RPG.GameCore.SetModifierDynamicValue":
+                if set(arguments) != {"DynamicKey", "ModifierName", "NewValue"}:
+                    return "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_ARGUMENTS_UNSUPPORTED"
+                if operation.get("target") is not None:
+                    return "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_TARGET_UNSUPPORTED"
+                modifier = _mapping(arguments.get("ModifierName"))
+                name = modifier.get("Value")
+                if not isinstance(name, str) or not name:
+                    return "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_NAME_MISSING"
+                dynamic_key = arguments.get("DynamicKey")
+                if not (isinstance(dynamic_key, str) and dynamic_key) and not (isinstance(dynamic_key, Mapping) and isinstance(dynamic_key.get("Value"), str) and dynamic_key.get("Value")):
+                    return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+                if not isinstance(arguments.get("NewValue"), Mapping):
+                    return "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_VALUE_MISSING"
+            elif source_type == "RPG.GameCore.SetDynamicValueByModifierValue":
                 allowed = {"DynamicKey", "ReadTargetType", "ValueType", "Multiplier", "ContextScope"}
                 if not set(arguments).issubset(allowed):
                     return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_ARGUMENTS_UNSUPPORTED"

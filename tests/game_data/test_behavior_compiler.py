@@ -68,3 +68,14 @@ class BehaviorCompilerTest(unittest.TestCase):
         operation = result["entrypoints"][0]["operations"][0]
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
         self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED")
+
+    def test_set_modifier_dynamic_value_accepts_only_targetless_overwrite_shape(self) -> None:
+        base = {"operation_id": "write", "source_type": "RPG.GameCore.SetModifierDynamicValue", "kind": "SET_DYNAMIC_VALUE", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {"DynamicKey": {"Value": "MDF_Count"}, "ModifierName": {"Value": "MFixture"}, "NewValue": {"IsDynamic": False, "FixedValue": {"Value": 1}}}, "children": []}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [base]}]}
+        self.assertEqual(BehaviorCompiler().compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        add_form = dict(base)
+        add_form["arguments"] = dict(base["arguments"], ModifyFunction="Add")
+        rejected = BehaviorCompiler().compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [add_form]}]))
+        operation = rejected["entrypoints"][0]["operations"][0]
+        self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
+        self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_ARGUMENTS_UNSUPPORTED")

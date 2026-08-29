@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-MODIFIER-LOCAL-DYNAMIC-VALUE-MUTATION-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute a real MCommon_Windfury_SkillNoNeed targetless SetModifierDynamicValue component through BehaviorCompiler and SemanticExecutor, isolating the named ALIVE ModifierInstance local-value overwrite from the surrounding callback branches.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed:MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost:2/SuccessTaskList:0/SuccessTaskList:1",
+    "entrypoint_event": "MODIFIER_CALLBACK:MCommon_Windfury_SkillNoNeed._CallbackList[1]:OnBeforeSkillCost",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json", "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "ModifierMap", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "p1", "modifier_owner_id": "p1", "modifier_id": "MCommon_Windfury"},
+  "selected_initial_state": {"p1": {"team": "light", "hp": "1", "max_hp": "1", "modifiers": [{"instance_id": "p1:windfury:1", "name": "MCommon_Windfury", "state": "ALIVE", "dynamic_values": {"_AssistEnergyNeedOnce": "1"}}]}},
+  "expected_transition": {"modifier_instance": "p1:windfury:1", "dynamic_values": {"_AssistEnergyNeedOnce": "0"}, "ordered_dispositions": ["MODIFIER_LOCAL_DYNAMIC_VALUE_SET"]},
+  "assumptions": ["The fixture selects an ALIVE instance explicitly; the surrounding callback controls and Windfury lifecycle remain outside this component.", "The source is CLOSE_4.4.0_TO_4.4.54 reconstruction evidence and does not overwrite Nanoka 4.4.54 static data."],
+  "unsupported_boundary": ["This is not full MCommon_Windfury execution or a Golden game trace."]
+}

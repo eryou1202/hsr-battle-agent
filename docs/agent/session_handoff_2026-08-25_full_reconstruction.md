@@ -32,9 +32,9 @@
 - Current corpus hash:
   `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 - Current coverage split: 249 behavior-bearing records (92 structural-only
-  compiled), 109 `EXECUTABLE_REFERENCE` records / 192 independently closed
+  compiled), 109 `EXECUTABLE_REFERENCE` records / 208 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus three explicitly separate operation components;
+  are source-backed executed plus six explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -119,6 +119,12 @@
   `ModifierOwnerEntity.MaxHP` reads from immutable survival state. A real
   Element Bleed component is source-backed executed; general property reads
   remain explicitly rejected.
+- `MODIFIER-LOCAL-DYNAMIC-VALUE-MUTATION-001` admits only targetless
+  `SetModifierDynamicValue {DynamicKey, ModifierName, NewValue}` overwrites.
+  It requires exactly one ALIVE named ModifierInstance on ModifierOwnerEntity
+  and preserves all its other local values. A real MCommon_Windfury component
+  executes through the generic bridge; Add/targeted/ambiguous forms are still
+  rejected.
 
 ## Source state
 
@@ -131,10 +137,11 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `MODIFIER-LOCAL-DYNAMIC-VALUE-MUTATION-001`: lower only targetless
-   `SetModifierDynamicValue {DynamicKey, ModifierName, NewValue}` overwrites
-   when the callback ModifierOwnerEntity has exactly one live modifier with
-   that source name. Keep target/ModifyFunction forms rejected.
+1. `ADD-MODIFIER-CATALOG-CLOSURE-001`: partition the 218 remaining
+   `AddModifier` blocks by catalog resolvability, exact target alias and
+   argument shape. Admit only a measured high-frequency branch that has a
+   concrete canonical ModifierDefinition and the existing pending lifecycle
+   contract; never guess stacking/default/global lookup.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

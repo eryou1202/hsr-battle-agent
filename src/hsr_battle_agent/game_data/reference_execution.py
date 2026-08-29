@@ -25,7 +25,7 @@ from .dynamic_value_reference import (
 from .predicate_semantics_reference import PredicateContext, evaluate_predicate
 from .property_contribution_reference import PropertyState
 from .modifier_catalog import ModifierDefinition
-from .modifier_lifecycle_reference import ModifierInstance, add_or_refresh, mark_destroy
+from .modifier_lifecycle_reference import ModifierInstance, ModifierState, add_or_refresh, mark_destroy
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
 from .toughness_break_reference import ToughnessState, apply_toughness_damage
 
@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
@@ -513,6 +513,8 @@ class SemanticExecutor:
         context: ExecutionContext,
     ) -> ExecutionResult:
         arguments = operation.get("arguments", {})
+        if operation.get("source_type") == "RPG.GameCore.SetModifierDynamicValue":
+            return self._execute_set_modifier_dynamic_value(operation, state, context)
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByModifierValue":
             return self._execute_set_dynamic_value_from_modifier_layer(operation, state, context)
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByProperty":
@@ -525,6 +527,56 @@ class SemanticExecutor:
             "operation_id": operation.get("operation_id"),
             "disposition": "DYNAMIC_VALUE_SET",
             "owner_id": owner_id,
+            "key": key,
+            "value": str(value),
+        },))
+
+    def _execute_set_modifier_dynamic_value(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Overwrite one named, live modifier-local DynamicValue.
+
+        The selected source form carries neither a target selector nor a
+        mutation function.  It is therefore deliberately narrower than a
+        general cross-modifier API: the callback ModifierOwnerEntity must be
+        explicit, and exactly one ``ALIVE`` instance with ``ModifierName``
+        must exist on it.  Pending, removed, missing, and ambiguous instances
+        remain hard failures rather than guessed lifecycle behavior.
+        """
+        arguments = operation.get("arguments", {})
+        owner_id = context.modifier_owner_id
+        if not owner_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: SetModifierDynamicValue requires modifier_owner_id")
+        state.entity(owner_id)
+        modifier = arguments.get("ModifierName", {})
+        name = modifier.get("Value") if isinstance(modifier, Mapping) else None
+        if not isinstance(name, str) or not name:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: SetModifierDynamicValue has no ModifierName")
+        matches = tuple(
+            item
+            for item in state.modifiers(owner_id)
+            if item.name == name and item.state == ModifierState.ALIVE
+        )
+        if len(matches) != 1:
+            raise SemanticExecutionError(
+                f"{operation.get('operation_id')}: SetModifierDynamicValue requires exactly one ALIVE {name!r} on {owner_id!r}, got {len(matches)}"
+            )
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = self._evaluate_value(arguments.get("NewValue"), state, context)
+        instance = matches[0]
+        values = dict(instance.dynamic_values)
+        values[key] = value
+        replacement = replace(instance, dynamic_values=values)
+        updated = tuple(replacement if item.instance_id == instance.instance_id else item for item in state.modifiers(owner_id))
+        return ExecutionResult(state.replace_modifiers(owner_id, updated), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "MODIFIER_LOCAL_DYNAMIC_VALUE_SET",
+            "owner_id": owner_id,
+            "modifier_instance_id": instance.instance_id,
+            "modifier_name": name,
             "key": key,
             "value": str(value),
         },))

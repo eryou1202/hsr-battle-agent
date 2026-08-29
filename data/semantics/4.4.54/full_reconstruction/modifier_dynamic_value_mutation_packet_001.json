@@ -1,0 +1,25 @@
+{
+  "packet_id": "MODIFIER-LOCAL-DYNAMIC-VALUE-MUTATION-001",
+  "game_version": "4.4.54",
+  "scope": "Targetless RPG.GameCore.SetModifierDynamicValue payloads with exactly DynamicKey, ModifierName and NewValue.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve the callback ModifierOwnerEntity, require exactly one ALIVE ModifierInstance whose name equals ModifierName, evaluate NewValue through the existing DynamicValue evaluator, then immutably overwrite only that instance's dynamic_values[DynamicKey]. Preserve all other local values and instance order. The operation does not write DynamicValueStore.",
+  "state_reads": ["ExecutionContext.modifier_owner_id", "ReferenceBattleState entity ownership", "ModifierInstance name/state/dynamic_values", "NewValue DynamicValue inputs"],
+  "state_writes": ["one ALIVE ModifierInstance.dynamic_values key"],
+  "ordering": "The local overwrite is visible to the next sequential sibling after this operation. Pending and dirty-removed instances are not candidates, so the selected model does not cross the lifecycle activation/removal boundary.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_Windfury_SkillNoNeed OnBeforeSkillCost mutates MCommon_Windfury._AssistEnergyNeedOnce through a targetless ModifierName/DynamicKey/NewValue payload."},
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MAvatar_BlackSwan_00_DOT OnPhase1 uses the same targetless overwrite shape for MAvatar_BlackSwan_00_DOT_Enhance.MDF_Count."},
+    {"packet": "PRIM-MODIFIER-001", "support": "Modifier lifecycle distinguishes ALIVE from pending and dirty-removal states."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "NewValue is evaluated by the selected immutable DynamicValue reference evaluator."},
+    {"fixture": "source_backed_modifier_dynamic_value_mutation_component_reference_001.json", "support": "A real MCommon_Windfury component executes through BehaviorCompiler and SemanticExecutor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value", "tests/game_data/test_reference_execution.py::test_set_modifier_dynamic_value_rejects_missing_or_non_alive_named_instance", "tests/game_data/test_reference_execution.py::test_source_backed_windfury_modifier_local_dynamic_value_component_executes"],
+    "trace_disposition": "MODIFIER_LOCAL_DYNAMIC_VALUE_SET",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["ModifyFunction=Add or any extra source argument", "explicit operation target", "missing DynamicKey/ModifierName/NewValue", "zero or multiple matching ALIVE instances", "pending/removed instances", "general cross-entity lookup or merge semantics"],
+  "unsupported_boundary": ["SetModifierDynamicValue Add/other mutation functions", "targeted variants", "ambiguous multiple instances", "native lookup identity beyond selected owner/name/ALIVE model", "full Windfury and Black Swan callback semantics", "Golden trace claim"],
+  "dsh_implementation_contract": "Keep ModifierInstance-local DynamicValues separate from the battle-level DynamicValueStore. For the selected targetless overwrite shape, resolve the owning entity from callback context and update only an unambiguous active named instance. Do not auto-activate pending instances, select a stack by position, or infer Add/merge behavior."
+}
