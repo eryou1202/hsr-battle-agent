@@ -37,6 +37,7 @@ BLACK_SWAN_DOT_FLAG_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar
 BLACK_SWAN_DOT_FLAG_PARENT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
 MIND_CONTROL_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage"
 DOT_TEAR_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear"
+WINDFURY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury"
 
 
 def _record(behavior_id: str) -> dict:
@@ -225,6 +226,26 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="p1"))
         self.assertEqual(result.state.dynamic_store.read("p1", "CasterStatusProbability"), Decimal("0.36"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE")
+
+    def test_targetless_own_modifier_layer_projection_requires_live_callback_instance(self) -> None:
+        record = {
+            "behavior_id": "own-layer-read-fixture", "owner_kind": "Modifier", "owner_ref": "own-layer-read-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTACK", "operations": [{
+                "operation_id": "read-layer", "source_type": "RPG.GameCore.SetDynamicValueByModifierValue", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": "MDF_Layer", "ValueType": "Layer", "Multiplier": {"IsDynamic": False, "FixedValue": {"Value": 2}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        own = ModifierInstance("p1:windfury:1", "MCommon_Windfury", "Replace", 7, "p1", None, None, ModifierState.ALIVE, layer=3)
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"p1": (own,)})
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTACK", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="p1", modifier_id="MCommon_Windfury", modifier_instance_id="p1:windfury:1"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("p1", "MDF_Layer"), Decimal("6"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER")
 
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
@@ -801,6 +822,32 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_STATUS_PROBABILITY_COMPONENT", state, ExecutionContext(caster_id="p1", modifier_owner_id="p1"))
         self.assertEqual(result.state.dynamic_store.read("p1", "CasterStatusProbability"), Decimal("0.41"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE")
+
+    def test_source_backed_windfury_own_modifier_layer_component_executes(self) -> None:
+        source = _record(WINDFURY_ID)
+        layer = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByModifierValue"
+            and operation["arguments"].get("ValueType") == "Layer"
+            and "ReadTargetType" not in operation["arguments"]
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-own-layer-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_OWN_LAYER_COMPONENT", "operations": [layer]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        own = ModifierInstance("p1:windfury:1", "MCommon_Windfury", "Replace", 7, "p1", None, None, ModifierState.ALIVE, layer=4)
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"p1": (own,)})
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_OWN_LAYER_COMPONENT", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="p1", modifier_id="MCommon_Windfury", modifier_instance_id="p1:windfury:1"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("p1", "MDF_WindfuryCount"), Decimal("4"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

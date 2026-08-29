@@ -95,6 +95,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Avatar",
         "fixture": "source_backed_status_probability_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[2]:OnStack:2",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_own_modifier_layer_dynamic_value_component_reference_001.json",
+    },
 )
 
 

@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio; or Caster RuntimeEntity.status_probability_base for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ALIVE callback ModifierInstance identity for SetDynamicValueByModifierValue Layer reads", "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio; or Caster RuntimeEntity.status_probability_base for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution or explicit callback ModifierInstance identity", "ModifierInstance state", "dirty-removal lifecycle boundary"),
@@ -522,6 +522,8 @@ class SemanticExecutor:
         if operation.get("source_type") == "RPG.GameCore.SetModifierDynamicValue":
             return self._execute_set_modifier_dynamic_value(operation, state, context)
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByModifierValue":
+            if "ReadTargetType" not in operation.get("arguments", {}):
+                return self._execute_set_dynamic_value_from_own_modifier_layer(operation, state, context)
             return self._execute_set_dynamic_value_from_modifier_layer(operation, state, context)
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByProperty":
             if operation.get("arguments", {}).get("Value") == "Attack":
@@ -634,6 +636,51 @@ class SemanticExecutor:
             "key": key,
             "value": str(value),
             "read_target_id": read_targets[0],
+            "modifier_instance_id": instance.instance_id,
+            "modifier_layer": instance.layer,
+        },))
+
+    def _execute_set_dynamic_value_from_own_modifier_layer(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Store a targetless callback modifier's own explicit Layer.
+
+        The one selected source payload carries no ``ReadTargetType``.  It is
+        therefore not safely equivalent to a named/targeted modifier lookup:
+        the bridge binds it exclusively to the current callback instance on
+        the explicit ModifierOwnerEntity.  The write owner still follows the
+        selected DynamicValue scope (the source's default ContextCaster).
+        """
+        owner_id = context.modifier_owner_id
+        instance_id = context.modifier_instance_id
+        if not owner_id or not instance_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: targetless modifier Layer read requires modifier_owner_id and modifier_instance_id")
+        state.entity(owner_id)
+        instance = next((item for item in state.modifiers(owner_id) if item.instance_id == instance_id), None)
+        if instance is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: callback modifier instance is not owned by modifier_owner_id")
+        if context.modifier_id and instance.name != context.modifier_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: callback modifier instance name does not match modifier_id")
+        if instance.state != ModifierState.ALIVE:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: targetless modifier Layer read requires an ALIVE callback instance")
+        if instance.layer is None or isinstance(instance.layer, bool) or not isinstance(instance.layer, int) or instance.layer < 0:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: callback modifier Layer must be a non-negative integer")
+        arguments = operation.get("arguments", {})
+        multiplier = self._evaluate_value(arguments.get("Multiplier"), state, context)
+        write_owner_id = self._scope_owner(operation, state, context)
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = Decimal(instance.layer) * multiplier
+        transition = state.dynamic_store.set_value(write_owner_id, key, value)
+        return ExecutionResult(replace(state, dynamic_store=transition.store), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER",
+            "owner_id": write_owner_id,
+            "key": key,
+            "value": str(value),
+            "modifier_owner_id": owner_id,
             "modifier_instance_id": instance.instance_id,
             "modifier_layer": instance.layer,
         },))

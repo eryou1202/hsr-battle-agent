@@ -13,8 +13,8 @@ Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
-structural-only records plus 112 `EXECUTABLE_REFERENCE` records (213
-independently closed executable entrypoints); four complete records and twelve
+structural-only records plus 112 `EXECUTABLE_REFERENCE` records (214
+independently closed executable entrypoints); four complete records and thirteen
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -69,6 +69,9 @@ snapshot form; property materialization and Break lifecycle remain separate.
 The sole `Caster → StatusProbabilityBase` read now copies an explicit
 materialized effect-hit-rate leaf; a Black Swan SkillTree component covers it.
 It does not calculate property contributions or broaden other statistic reads.
+The sole targetless Windfury `ValueType=Layer` form now binds exclusively to an
+explicit ALIVE callback ModifierInstance, preserving its distinction from
+`Count` and `MaxLayer`; it is also source-backed executed.
 Selected targetless `SetModifierDynamicValue` writes now separately update one
 uniquely named **ALIVE** ModifierInstance-local value, rather than using the
 battle DynamicValue store. A real `MCommon_Windfury` component resets its

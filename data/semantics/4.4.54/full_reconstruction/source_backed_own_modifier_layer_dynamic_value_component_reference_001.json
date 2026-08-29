@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-OWN-MODIFIER-LAYER-DYNAMIC-VALUE-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute the real targetless MCommon_Windfury Layer SetDynamicValueByModifierValue operation through BehaviorCompiler and SemanticExecutor with an explicit live callback ModifierInstance.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury:MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[2]:OnStack:2",
+    "entrypoint_event": "MODIFIER_CALLBACK:MCommon_Windfury._CallbackList[2]:OnStack",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json", "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "ModifierMap", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "p1", "modifier_owner_id": "p1", "modifier_id": "MCommon_Windfury", "modifier_instance_id": "p1:windfury:1"},
+  "selected_initial_state": {"p1": {"team": "light", "hp": "1", "max_hp": "1", "modifiers": [{"instance_id": "p1:windfury:1", "name": "MCommon_Windfury", "state": "ALIVE", "layer": 4}]}},
+  "expected_transition": {"dynamic_value_store": {"p1": {"MDF_WindfuryCount": "4"}}, "ordered_dispositions": ["DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER"]},
+  "assumptions": ["The callback ModifierInstance is supplied explicitly and is ALIVE.", "The source's absent ContextScope uses the selected default caster scope for this reference bridge."],
+  "unsupported_boundary": ["This is not full MCommon_Windfury behavior, a native default-scope proof, or a Golden game trace."]
+}

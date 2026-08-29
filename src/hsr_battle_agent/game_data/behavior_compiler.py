@@ -265,6 +265,17 @@ class BehaviorCompiler:
                 allowed = {"DynamicKey", "ReadTargetType", "ValueType", "Multiplier", "ContextScope"}
                 if not set(arguments).issubset(allowed):
                     return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_ARGUMENTS_UNSUPPORTED"
+                if set(arguments) == {"DynamicKey", "ValueType", "Multiplier"}:
+                    if operation.get("target") is not None:
+                        return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TARGET_UNSUPPORTED"
+                    if arguments.get("ValueType") != "Layer":
+                        return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TYPE_UNSUPPORTED"
+                    if not isinstance(arguments.get("Multiplier"), Mapping):
+                        return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_MULTIPLIER_MISSING"
+                    dynamic_key = arguments.get("DynamicKey")
+                    if not (isinstance(dynamic_key, str) and dynamic_key) and not (isinstance(dynamic_key, Mapping) and isinstance(dynamic_key.get("Value"), str) and dynamic_key.get("Value")):
+                        return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+                    return None
                 read_target = _mapping(arguments.get("ReadTargetType"))
                 if read_target.get("Alias") != "ModifierOwnerEntity":
                     return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TARGET_UNSUPPORTED"

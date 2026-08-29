@@ -1,0 +1,23 @@
+{
+  "packet_id": "DYNAMICVALUE-MODIFIER-OWN-LAYER-READ-001",
+  "game_version": "4.4.54",
+  "scope": "The single lifted MCommon_Windfury RPG.GameCore.SetDynamicValueByModifierValue payload with exactly DynamicKey, ValueType=Layer and Multiplier; it has no ReadTargetType.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Bind this targetless source shape only to the explicit ALIVE callback ModifierInstance on ExecutionContext.modifier_owner_id. Read that instance's supplied Layer, apply the fixed/dynamic multiplier, and write through the source's default DynamicValue scope. Do not infer a target from modifier name or use Count/MaxLayer as Layer.",
+  "state_reads": ["ExecutionContext.modifier_owner_id", "ExecutionContext.modifier_instance_id", "ALIVE ModifierInstance.layer", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The callback instance Layer is read synchronously at this sibling. The selected DynamicValue write is immediately visible to later siblings; lifecycle cleanup stays outside this read bridge.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_Windfury OnStack contains one targetless ValueType=Layer payload for MDF_WindfuryCount."},
+    {"packet": "MODIFIER-LIFECYCLE-001", "support": "Existing reference lifecycle exposes explicit modifier instance identity and ALIVE state."},
+    {"fixture": "source_backed_own_modifier_layer_dynamic_value_component_reference_001.json", "support": "The real canonical MCommon_Windfury operation executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_targetless_own_modifier_layer_projection_requires_live_callback_instance", "tests/game_data/test_reference_execution.py::test_source_backed_windfury_own_modifier_layer_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing callback owner/instance", "instance not owned by owner", "non-ALIVE instance", "modifier-id mismatch", "missing/negative/non-integer Layer", "extra arguments", "non-Layer ValueType"],
+  "unsupported_boundary": ["MaxLayer", "Count", "named modifier lookup", "cross-modifier reads", "default native context construction", "full MCommon_Windfury behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Represent callback modifier instance identity explicitly. For this exact no-target Layer payload, read only that live instance's Layer and multiply it before the normal DynamicValue store write. Never select another same-named instance or silently substitute Count/MaxLayer."
+}
