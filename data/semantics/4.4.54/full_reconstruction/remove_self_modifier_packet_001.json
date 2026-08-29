@@ -1,0 +1,24 @@
+{
+  "packet_id": "REMOVE-SELF-MODIFIER-001",
+  "game_version": "4.4.54",
+  "scope": "Targetless, argument-free RPG.GameCore.RemoveSelfModifier callbacks executed with explicit callback ModifierInstance identity.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve the explicit callback ModifierInstance on ModifierOwnerEntity, require it to be ALIVE and (when supplied) match the callback Modifier name, then transition only that instance to TO_BE_REMOVED via the existing delayed Modifier lifecycle. Do not physically delete it until dirty cleanup.",
+  "state_reads": ["ExecutionContext.modifier_owner_id", "ExecutionContext.modifier_instance_id", "optional callback modifier name", "ModifierInstance lifecycle state"],
+  "state_writes": ["one ModifierInstance state=TO_BE_REMOVED and destroy reason"],
+  "ordering": "The delayed-removal mark is synchronously visible to later callback siblings. Callback registrations and property contribution keys remain attached until the separate dirty-removal boundary.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "Twenty-two canonical source operations are targetless/argument-free RemoveSelfModifier callbacks, including M_BlackSwan_DOTFlag OnStack."},
+    {"packet": "PRIM-MODIFIER-001", "support": "Existing reference lifecycle defines mark-destroy as TO_BE_REMOVED and later dirty cleanup."},
+    {"packet": "KERNEL-EVENT-001", "support": "Callback state writes are visible before the next sequential sibling in the selected deterministic reference model."},
+    {"fixture": "source_backed_remove_self_modifier_component_reference_001.json", "support": "A real canonical Black Swan DOT flag component executes through BehaviorCompiler and SemanticExecutor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_remove_self_modifier_marks_callback_instance_for_later_cleanup", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_dot_flag_remove_self_component_executes"],
+    "trace_disposition": "MODIFIER_SELF_MARKED_FOR_DIRTY_REMOVAL",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["arguments or explicit target", "missing callback owner/instance identity", "instance not owned by ModifierOwnerEntity", "mismatched callback modifier name", "pending or already-removing instance"],
+  "unsupported_boundary": ["RemoveAdventureModifier", "named multi-target removal", "native double-destroy behavior", "dirty cleanup scheduling, cancellation/reentrancy, and Golden trace claim"],
+  "dsh_implementation_contract": "Bind self-removal to the exact callback instance, not a name search or all same-named instances. Keep it pending for the shared cleanup phase so registration/property ownership has the same lifetime boundary as other removal paths."
+}

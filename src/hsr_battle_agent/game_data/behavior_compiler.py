@@ -313,14 +313,21 @@ class BehaviorCompiler:
             ):
                 return "EXECUTABLE_REFERENCE_MODIFIER_DYNAMIC_VALUES_UNSUPPORTED"
         elif kind == "REMOVE_MODIFIER":
-            modifier = _mapping(arguments.get("ModifierName"))
-            name = modifier.get("Value")
-            if not isinstance(name, str) or not name:
-                return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
-            if set(arguments) != {"ModifierName"}:
-                return "EXECUTABLE_REFERENCE_REMOVE_MODIFIER_ARGUMENTS_UNSUPPORTED"
-            if not isinstance(operation.get("target"), Mapping):
-                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            source_type = str(operation.get("source_type", ""))
+            if source_type == "RPG.GameCore.RemoveSelfModifier":
+                if arguments:
+                    return "EXECUTABLE_REFERENCE_REMOVE_SELF_ARGUMENTS_UNSUPPORTED"
+                if operation.get("target") is not None:
+                    return "EXECUTABLE_REFERENCE_REMOVE_SELF_TARGET_UNSUPPORTED"
+            else:
+                modifier = _mapping(arguments.get("ModifierName"))
+                name = modifier.get("Value")
+                if not isinstance(name, str) or not name:
+                    return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
+                if set(arguments) != {"ModifierName"}:
+                    return "EXECUTABLE_REFERENCE_REMOVE_MODIFIER_ARGUMENTS_UNSUPPORTED"
+                if not isinstance(operation.get("target"), Mapping):
+                    return "EXECUTABLE_REFERENCE_TARGET_MISSING"
         elif kind == "DAMAGE_REQUEST":
             attack = _mapping(arguments.get("AttackProperty"))
             if not isinstance(operation.get("target"), Mapping):

@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "06525f7c3410b3af1b7bea3511de8b551e8d34d484a8d94da75418b7a5475da6",
+  "audit_sha256": "1123fecb95a3b69d6c12cc9e9e33db1e23dceba40c10da491f1d7152d69696bd",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ADD_MODIFIER": 21,
@@ -12,7 +12,7 @@
     "MODIFY_TEAM_SP": 6,
     "MODIFY_WEAKNESS": 7,
     "PREDICATE": 513,
-    "REMOVE_MODIFIER": 48,
+    "REMOVE_MODIFIER": 70,
     "SET_DYNAMIC_VALUE": 207
   },
   "executor_context_contract": {
@@ -62,8 +62,9 @@
       "PredicateContext providers"
     ],
     "REMOVE_MODIFIER": [
-      "target resolution",
-      "ModifierInstance state"
+      "target resolution or explicit callback ModifierInstance identity",
+      "ModifierInstance state",
+      "dirty-removal lifecycle boundary"
     ],
     "SET_DYNAMIC_VALUE": [
       "scope owner resolution",
@@ -75,7 +76,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "10b9b0a62ed3a940494aaa7b960e55159819eb270fc4b2772c69d9710a206e4e",
+  "input_compiler_report_sha256": "871cd1dd4ad3690daf69ecc2906c26b1083747aee05a14fe0276ccd582e8469e",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

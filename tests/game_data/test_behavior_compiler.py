@@ -79,3 +79,11 @@ class BehaviorCompilerTest(unittest.TestCase):
         operation = rejected["entrypoints"][0]["operations"][0]
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
         self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_SET_MODIFIER_DYNAMIC_ARGUMENTS_UNSUPPORTED")
+
+    def test_remove_self_modifier_accepts_only_empty_targetless_shape(self) -> None:
+        operation = {"operation_id": "remove", "source_type": "RPG.GameCore.RemoveSelfModifier", "kind": "REMOVE_MODIFIER", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": []}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}
+        self.assertEqual(BehaviorCompiler().compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        invalid = dict(operation, target={"Alias": "Caster"})
+        rejected = BehaviorCompiler().compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [invalid]}]))
+        self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_REMOVE_SELF_TARGET_UNSUPPORTED")

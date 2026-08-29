@@ -42,7 +42,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
-    "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
+    "REMOVE_MODIFIER": ("target resolution or explicit callback ModifierInstance identity", "ModifierInstance state", "dirty-removal lifecycle boundary"),
     "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext for selected normal stance only"),
     "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
@@ -738,6 +738,8 @@ class SemanticExecutor:
         until ``remove_dirty``.  Therefore this handler must not shortcut the
         boundary by deleting entries from the state map.
         """
+        if operation.get("source_type") == "RPG.GameCore.RemoveSelfModifier":
+            return self._execute_remove_self_modifier(operation, state, context)
         arguments = operation.get("arguments", {})
         modifier = arguments.get("ModifierName", {})
         name = modifier.get("Value") if isinstance(modifier, Mapping) else None
@@ -759,6 +761,42 @@ class SemanticExecutor:
                 "instance_ids": affected,
             })
         return ExecutionResult(current, tuple(trace))
+
+    def _execute_remove_self_modifier(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Mark exactly the callback's own live modifier for dirty removal.
+
+        ``RemoveSelfModifier`` has no source target or name.  The selected
+        reference contract therefore binds it to the callback instance, not
+        to every same-named modifier on an inferred target.  Physical cleanup
+        remains a later lifecycle boundary and callback/property keys stay
+        attached while the instance is ``TO_BE_REMOVED``.
+        """
+        owner_id = context.modifier_owner_id
+        instance_id = context.modifier_instance_id
+        if not owner_id or not instance_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: RemoveSelfModifier requires modifier_owner_id and modifier_instance_id")
+        state.entity(owner_id)
+        instance = next((item for item in state.modifiers(owner_id) if item.instance_id == instance_id), None)
+        if instance is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: callback modifier instance is not owned by modifier_owner_id")
+        if context.modifier_id and instance.name != context.modifier_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: callback modifier instance name does not match modifier_id")
+        if instance.state != ModifierState.ALIVE:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: RemoveSelfModifier requires an ALIVE callback instance")
+        transition = mark_destroy(state.modifiers(owner_id), instance_id, reason=0)
+        return ExecutionResult(state.replace_modifiers(owner_id, transition.instances), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "MODIFIER_SELF_MARKED_FOR_DIRTY_REMOVAL",
+            "owner_id": owner_id,
+            "modifier_instance_id": instance_id,
+            "modifier_name": instance.name,
+            "lifecycle_action": transition.action,
+        },))
 
     def _execute_damage(
         self,

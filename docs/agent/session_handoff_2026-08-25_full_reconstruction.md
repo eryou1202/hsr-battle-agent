@@ -34,7 +34,7 @@
 - Current coverage split: 249 behavior-bearing records (92 structural-only
   compiled), 109 `EXECUTABLE_REFERENCE` records / 208 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus six explicitly separate operation components;
+  are source-backed executed plus seven explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -125,6 +125,11 @@
   and preserves all its other local values. A real MCommon_Windfury component
   executes through the generic bridge; Add/targeted/ambiguous forms are still
   rejected.
+- `REMOVE-SELF-MODIFIER-001` admits only targetless, argument-free
+  `RemoveSelfModifier` callbacks bound to one explicit ALIVE callback instance.
+  It marks delayed removal rather than deleting state. This closes 22
+  operations, promotes three complete Modifier records, and executes a real
+  M_BlackSwan_DOTFlag component.
 
 ## Source state
 
@@ -137,11 +142,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `ADD-MODIFIER-CATALOG-CLOSURE-001`: partition the 218 remaining
-   `AddModifier` blocks by catalog resolvability, exact target alias and
-   argument shape. Admit only a measured high-frequency branch that has a
-   concrete canonical ModifierDefinition and the existing pending lifecycle
-   contract; never guess stacking/default/global lookup.
+1. `ADD-MODIFIER-ALIVE-ONLY-FALSE-001`: lower only the three catalog-resolvable
+   `AddModifier {ModifierName, AliveOnly=false}` forms targeting
+   `ModifierOwnerEntity`. Keep true AliveOnly, chance/lifetime/layer fields,
+   global lookup and missing-definition forms rejected.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

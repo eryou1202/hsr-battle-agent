@@ -33,6 +33,7 @@ HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifi
 BLEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed"
 STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
 WINDFURY_SKILL_NO_NEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed"
+BLACK_SWAN_DOT_FLAG_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOTFlag"
 
 
 def _record(behavior_id: str) -> dict:
@@ -174,6 +175,46 @@ class ReferenceExecutionTest(unittest.TestCase):
         state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"e1": (pending,)})
         with self.assertRaisesRegex(Exception, "exactly one ALIVE"):
             SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
+
+    def test_remove_self_modifier_marks_callback_instance_for_later_cleanup(self) -> None:
+        record = {
+            "behavior_id": "remove-self-fixture", "owner_kind": "Modifier", "owner_ref": "remove-self-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "remove-self", "source_type": "RPG.GameCore.RemoveSelfModifier", "kind": "REMOVE_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        own = ModifierInstance("e1:own:1", "MFixture", "Replace", 7, "e1", None, None, ModifierState.ALIVE, callback_registration_keys=("callback",), property_contribution_keys=("property",))
+        other = ModifierInstance("e1:other:1", "MFixture", "Replace", 7, "e1", None, None, ModifierState.ALIVE)
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"e1": (own, other)})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1", modifier_id="MFixture", modifier_instance_id="e1:own:1"))
+        self.assertEqual(result.state.modifiers("e1")[0].state, ModifierState.TO_BE_REMOVED)
+        self.assertEqual(result.state.modifiers("e1")[0].callback_registration_keys, ("callback",))
+        self.assertEqual(result.state.modifiers("e1")[1].state, ModifierState.ALIVE)
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_SELF_MARKED_FOR_DIRTY_REMOVAL")
+
+    def test_source_backed_black_swan_dot_flag_remove_self_component_executes(self) -> None:
+        source = _record(BLACK_SWAN_DOT_FLAG_ID)
+        remove = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.RemoveSelfModifier"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-remove-self-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_REMOVE_SELF_COMPONENT", "operations": [remove]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        dot_flag = ModifierInstance("e1:dot-flag:1", "M_BlackSwan_DOTFlag", "Replace", 7, "e1", None, None, ModifierState.ALIVE)
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))}, modifier_instances={"e1": (dot_flag,)})
+        result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_REMOVE_SELF_COMPONENT", state, ExecutionContext(caster_id="p1", modifier_owner_id="e1", modifier_id="M_BlackSwan_DOTFlag", modifier_instance_id="e1:dot-flag:1"))
+        self.assertEqual(result.state.modifiers("e1")[0].state, ModifierState.TO_BE_REMOVED)
+        self.assertEqual(result.trace[0]["disposition"], "MODIFIER_SELF_MARKED_FOR_DIRTY_REMOVAL")
 
     def test_add_modifier_requires_catalog_and_preserves_pending_lifecycle_boundary(self) -> None:
         record = {
