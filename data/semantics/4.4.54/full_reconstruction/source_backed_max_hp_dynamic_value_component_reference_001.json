@@ -1,0 +1,13 @@
+{
+  "fixture_id": "SOURCE-BACKED-MAX-HP-DYNAMIC-VALUE-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute a real canonical MCommon_Element_Bleed SetDynamicValueByProperty MaxHP component through BehaviorCompiler and SemanticExecutor. This isolates the state read from the wider bleed callback/lifecycle.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {"behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed", "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[0]:OnCreate:1", "entrypoint_event": "MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[0]:OnCreate", "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json", "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "ModifierMap", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]},
+  "selected_context": {"caster_id": "e1", "modifier_owner_id": "e1"},
+  "selected_initial_state": {"e1": {"team": "dark", "hp": "500", "max_hp": "750"}},
+  "expected_transition": {"dynamic_value_store": {"e1": {"MDF_TargetMaxHP": "750"}}, "ordered_dispositions": ["DYNAMIC_VALUE_SET_FROM_MAX_HP"]},
+  "assumptions": ["The fixture uses the existing DynamicValue default scope model with caster and ModifierOwnerEntity deliberately equal.", "The surrounding bleed callback remains outside the component contract."],
+  "unsupported_boundary": ["This is not an assertion of full Element Bleed behavior or a Golden game trace."]
+}

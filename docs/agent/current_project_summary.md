@@ -14,7 +14,7 @@ static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
 structural-only records plus 109 `EXECUTABLE_REFERENCE` records (208
-independently closed executable entrypoints); four complete records and four
+independently closed executable entrypoints); four complete records and five
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -50,6 +50,10 @@ an explicit `ModifierInstance` identity. This keeps the locally evidenced
 runtime `Layer` field distinct from `Count`; a second Black Swan DOT component
 is source-backed executed. MaxLayer, Count and other modifier-value reads stay
 rejected.
+Selected `SetDynamicValueByProperty` reads of `ModifierOwnerEntity.MaxHP` now
+also execute against immutable survival state; a real Element Bleed component
+is source-backed executed. Attack, DEF, break/stat contributions and other
+aliases remain separate strict branches.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

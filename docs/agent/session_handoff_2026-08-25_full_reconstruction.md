@@ -115,6 +115,10 @@
   a DynamicValue multiplier and writes the result into the selected scope.
   It never uses `Count` as a proxy. A Black Swan DOT OnCustomEvent component
   is source-backed executed under that contract.
+- `DYNAMICVALUE-PROPERTY-MAXHP-READ-001` admits only
+  `ModifierOwnerEntity.MaxHP` reads from immutable survival state. A real
+  Element Bleed component is source-backed executed; general property reads
+  remain explicitly rejected.
 
 ## Source state
 
@@ -127,10 +131,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DYNAMICVALUE-PROPERTY-MAXHP-READ-001`: lower only
-   `SetDynamicValueByProperty` with `ReadTargetType=ModifierOwnerEntity` and
-   `Value=MaxHP` against immutable SurvivalState.max_hp. Do not generalize it
-   to other stats, aliases or property-contribution materialization.
+1. `MODIFIER-LOCAL-DYNAMIC-VALUE-MUTATION-001`: lower only targetless
+   `SetModifierDynamicValue {DynamicKey, ModifierName, NewValue}` overwrites
+   when the callback ModifierOwnerEntity has exactly one live modifier with
+   that source name. Keep target/ModifyFunction forms rejected.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

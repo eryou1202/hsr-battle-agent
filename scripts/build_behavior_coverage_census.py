@@ -47,6 +47,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_modifier_layer_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[0]:OnCreate:1",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_max_hp_dynamic_value_component_reference_001.json",
+    },
 )
 
 

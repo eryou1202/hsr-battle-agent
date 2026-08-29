@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected modifier Layer read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
@@ -515,6 +515,8 @@ class SemanticExecutor:
         arguments = operation.get("arguments", {})
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByModifierValue":
             return self._execute_set_dynamic_value_from_modifier_layer(operation, state, context)
+        if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByProperty":
+            return self._execute_set_dynamic_value_from_max_hp(operation, state, context)
         owner_id = self._scope_owner(operation, state, context)
         key = dynamic_key_from_payload(arguments.get("DynamicKey"))
         value = self._evaluate_value(arguments.get("Value"), state, context)
@@ -570,6 +572,37 @@ class SemanticExecutor:
             "read_target_id": read_targets[0],
             "modifier_instance_id": instance.instance_id,
             "modifier_layer": instance.layer,
+        },))
+
+    def _execute_set_dynamic_value_from_max_hp(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Store a selected ModifierOwnerEntity ``MaxHP`` state projection.
+
+        ``SetDynamicValueByProperty`` has broader stat/property semantics than
+        this bridge.  Its sole accepted source shape reads the immutable
+        survival max-HP field of exactly one ModifierOwnerEntity.  It does not
+        materialize contribution slots, derive any other stat, or guess a
+        multi-target reduction policy.
+        """
+        arguments = operation.get("arguments", {})
+        read_targets = self._resolve_targets(arguments.get("ReadTargetType"), state, context)
+        if len(read_targets) != 1:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: MaxHP read requires one owner target")
+        owner_id = self._scope_owner(operation, state, context)
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = state.entity(read_targets[0]).survival.max_hp
+        transition = state.dynamic_store.set_value(owner_id, key, value)
+        return ExecutionResult(replace(state, dynamic_store=transition.store), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DYNAMIC_VALUE_SET_FROM_MAX_HP",
+            "owner_id": owner_id,
+            "key": key,
+            "value": str(value),
+            "read_target_id": read_targets[0],
         },))
 
     def _execute_define_dynamic_value(

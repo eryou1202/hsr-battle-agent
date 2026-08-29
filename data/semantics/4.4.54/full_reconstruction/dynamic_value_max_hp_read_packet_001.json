@@ -1,0 +1,24 @@
+{
+  "packet_id": "DYNAMICVALUE-PROPERTY-MAXHP-READ-001",
+  "game_version": "4.4.54",
+  "scope": "Selected RPG.GameCore.SetDynamicValueByProperty payloads with ReadTargetType=ModifierOwnerEntity, Value=MaxHP and an explicit DynamicKey.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve exactly one ModifierOwnerEntity, read its immutable SurvivalState.max_hp, then synchronously write that Decimal into the selected DynamicValue scope/key. No property contribution materialization, derived stat, multiple target reduction or scope guess is introduced by this packet.",
+  "state_reads": ["ReadTargetType ModifierOwnerEntity", "RuntimeEntity.survival.max_hp", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The MaxHP value visible at this callback sibling is written before the next sibling. This packet does not determine what changes MaxHP or how a missing ContextScope is chosen beyond the pre-existing DynamicValue selected scope model.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_Element_Bleed and MCommon_DOT_Tear read ModifierOwnerEntity MaxHP into MDF_TargetMaxHP on create/phase/custom-event callbacks."},
+    {"packet": "dynamic_mvp_v1:HEAL_STATE_TRANSITION", "support": "immutable CurrentHP/MaxHP survival holder used by the reference bridge."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "scope/key store transition."},
+    {"fixture": "source_backed_max_hp_dynamic_value_component_reference_001.json", "support": "real canonical Element Bleed operation executed through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_modifier_owner_max_hp_dynamic_projection_reads_immutable_survival_state", "tests/game_data/test_reference_execution.py::test_source_backed_bleed_max_hp_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_MAX_HP",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["Value other than MaxHP", "ReadTargetType other than ModifierOwnerEntity", "extra source arguments", "missing DynamicKey", "multiple/no target resolution"],
+  "unsupported_boundary": ["Attack/DEF/BreakDamageAddedRatio/status or contribution-slot reads", "other target aliases", "MaxHP mutation, derived-stat materialization and no-scope native default proof", "full bleed/DoT lifecycle and Golden trace claim"],
+  "dsh_implementation_contract": "Keep direct survival MaxHP reads separate from the general property system. Resolve a single source target, copy its current MaxHP into the DynamicValue store at the existing scope boundary, and reject all non-selected property read shapes."
+}

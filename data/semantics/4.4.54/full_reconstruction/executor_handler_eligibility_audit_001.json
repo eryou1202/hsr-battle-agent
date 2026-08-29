@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "9cd573ad286b3ac3e6be63c9d6bbfbf36f6d195a6cdace7586fd9bb7cda1a696",
+  "audit_sha256": "42b272e683909713a436182789e61ce39d9d1f0d921e4017d83da60992a9bd03",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ADD_MODIFIER": 21,
@@ -13,7 +13,7 @@
     "MODIFY_WEAKNESS": 7,
     "PREDICATE": 513,
     "REMOVE_MODIFIER": 48,
-    "SET_DYNAMIC_VALUE": 196
+    "SET_DYNAMIC_VALUE": 202
   },
   "executor_context_contract": {
     "ADD_MODIFIER": [
@@ -67,13 +67,14 @@
     ],
     "SET_DYNAMIC_VALUE": [
       "scope owner resolution",
-      "DynamicValue key/value inputs or selected modifier Layer read",
+      "DynamicValue key/value inputs or selected state read",
       "DynamicValueStore",
-      "explicit ModifierInstance identity for SetDynamicValueByModifierValue"
+      "explicit ModifierInstance identity for SetDynamicValueByModifierValue",
+      "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty"
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "563632ad0439498abe8fbf2817ec221ad0e50a95a5b42b02c2626a7b437e7e3f",
+  "input_compiler_report_sha256": "6a4d22d96567561767321a9ae3426f88ac35427e261d9002ec191c87554958d0",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

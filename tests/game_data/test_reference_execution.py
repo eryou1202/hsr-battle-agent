@@ -30,6 +30,7 @@ BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/
 BLACK_SWAN_DOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
 WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
 HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
+BLEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed"
 STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
 
 
@@ -117,6 +118,22 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("e1", "MDF_Layer"), Decimal("6"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER")
+
+    def test_modifier_owner_max_hp_dynamic_projection_reads_immutable_survival_state(self) -> None:
+        record = {
+            "behavior_id": "max-hp-fixture", "owner_kind": "Modifier", "owner_ref": "max-hp-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONCREATE", "operations": [{
+                "operation_id": "read-max-hp", "source_type": "RPG.GameCore.SetDynamicValueByProperty", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": "MDF_TargetMaxHP", "ReadTargetType": {"Alias": "ModifierOwnerEntity"}, "Value": "MaxHP"}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("2"), Decimal("125")))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
+        self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("125"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
 
     def test_add_modifier_requires_catalog_and_preserves_pending_lifecycle_boundary(self) -> None:
         record = {
@@ -453,6 +470,31 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("e1", "Dot_Layer_Count"), Decimal("3"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER")
+
+    def test_source_backed_bleed_max_hp_component_executes(self) -> None:
+        source = _record(BLEED_ID)
+        max_hp = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in entrypoint["operations"]
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByProperty"
+            and operation["arguments"].get("Value") == "MaxHP"
+            and operation["arguments"].get("ReadTargetType", {}).get("Alias") == "ModifierOwnerEntity"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-max-hp-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_MAX_HP_COMPONENT", "operations": [max_hp]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("750")))})
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_MAX_HP_COMPONENT", state,
+            ExecutionContext(caster_id="e1", modifier_owner_id="e1"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("750"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({
