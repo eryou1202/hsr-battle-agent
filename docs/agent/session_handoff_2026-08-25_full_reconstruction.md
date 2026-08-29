@@ -34,7 +34,7 @@
 - Current coverage split: 249 behavior-bearing records (89 structural-only
   compiled), 112 `EXECUTABLE_REFERENCE` records / 213 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus ten explicitly separate operation components;
+  are source-backed executed plus eleven explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -147,10 +147,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `DYNAMICVALUE-PROPERTY-BREAK-DAMAGE-READ-001`: lower only Caster or
-   SnapshotPropertyEntity `BreakDamageAddedRatio` reads using an explicit
-   materialized state leaf. Do not infer snapshot capture, materialize general
-   property contributions, or include `StatusProbabilityBase`.
+1. `DYNAMICVALUE-PROPERTY-STATUS-PROBABILITY-READ-001`: lower only the single
+   Caster `StatusProbabilityBase` read with an explicit materialized
+   effect-hit-rate leaf. Keep property contribution materialization and every
+   other stat reader separate.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

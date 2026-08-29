@@ -1,0 +1,24 @@
+{
+  "packet_id": "DYNAMICVALUE-PROPERTY-BREAK-DAMAGE-READ-001",
+  "game_version": "4.4.54",
+  "scope": "RPG.GameCore.SetDynamicValueByProperty payloads with exactly DynamicKey, ReadTargetType=Caster or SnapshotPropertyEntity, and Value=BreakDamageAddedRatio.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve exactly one explicit Caster or SnapshotPropertyEntity and copy its already-materialized RuntimeEntity.break_damage_added_ratio leaf into the selected DynamicValue scope/key. This is a property read only: it does not calculate Break damage, reconstruct property contributions, or capture snapshots.",
+  "state_reads": ["Caster or SnapshotPropertyEntity target context", "RuntimeEntity.break_damage_added_ratio", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The supplied materialized ratio is copied synchronously at this callback sibling. Later values use the normal DynamicValue visibility model; this packet establishes no Break event or snapshot lifecycle timing.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_Element_Bleed, MCommon_Element_Entangle and MCommon_Element_Confine use Caster/SnapshotPropertyEntity BreakDamageAddedRatio reads."},
+    {"source": "external_reconstruction.py:PROPERTY_KEYS", "support": "The existing reconstruction model maps BreakDamageAddedRatioBase to the break-effect stat family without using it to infer this runtime read."},
+    {"packet": "TARGET-001", "support": "Caster and SnapshotPropertyEntity require explicit deterministic context identities."},
+    {"fixture": "source_backed_snapshot_break_damage_dynamic_value_component_reference_001.json", "support": "A real canonical MCommon_Element_Bleed OnCreate operation executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_break_damage_added_ratio_projection_reads_only_explicit_caster_or_snapshot", "tests/game_data/test_reference_execution.py::test_source_backed_element_bleed_snapshot_break_damage_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing or multiple source targets", "aliases other than Caster/SnapshotPropertyEntity", "Value other than BreakDamageAddedRatio", "extra source arguments", "unmaterialized break-damage property"],
+  "unsupported_boundary": ["property contribution calculation", "snapshot capture/lifetime", "Break damage/Delay/Recovery execution", "StatusProbabilityBase and other property reads", "full Element Bleed lifecycle and Golden trace claim"],
+  "dsh_implementation_contract": "Carry a separately materialized break-damage ratio in battle state and pass it through the exact target alias. Do not substitute the target's toughness break context, calculate a formula, or fallback from a snapshot to the caster. Copy only the selected leaf into DynamicValue; reject all other property reads until explicit contracts exist."
+}

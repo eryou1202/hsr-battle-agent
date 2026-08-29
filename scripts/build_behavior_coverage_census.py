@@ -83,6 +83,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_snapshot_property_attack_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Element_Bleed:MODIFIER_CALLBACK:MCommon_Element_Bleed._CallbackList[0]:OnCreate:3",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_snapshot_break_damage_dynamic_value_component_reference_001.json",
+    },
 )
 
 

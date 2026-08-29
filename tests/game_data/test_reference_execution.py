@@ -188,6 +188,28 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.dynamic_store.read("p1", "MDF_CasterAttack"), Decimal("789"))
         self.assertEqual(result.trace[0]["read_target_alias"], "SnapshotPropertyEntity")
 
+    def test_break_damage_added_ratio_projection_reads_only_explicit_caster_or_snapshot(self) -> None:
+        record = {
+            "behavior_id": "break-damage-read-fixture", "owner_kind": "Modifier", "owner_ref": "break-damage-read-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONCREATE", "operations": [{
+                "operation_id": "read-break", "source_type": "RPG.GameCore.SetDynamicValueByProperty", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": "MDF_Break", "ReadTargetType": {"Alias": "SnapshotPropertyEntity"}, "Value": "BreakDamageAddedRatio"}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")), break_damage_added_ratio=Decimal("0.1")),
+            "snapshot": RuntimeEntity("snapshot", "dark", SurvivalState(Decimal("1"), Decimal("1")), break_damage_added_ratio=Decimal("0.44")),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONCREATE", state,
+            ExecutionContext(caster_id="p1", snapshot_property_entity_id="snapshot"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("p1", "MDF_Break"), Decimal("0.44"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO")
+
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
             "behavior_id": "modifier-local-write-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-local-write-fixture", "source_refs": [],
@@ -713,6 +735,34 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("p1", "MDF_CasterAttack"), Decimal("654"))
         self.assertEqual(result.trace[0]["read_target_alias"], "SnapshotPropertyEntity")
+
+    def test_source_backed_element_bleed_snapshot_break_damage_component_executes(self) -> None:
+        source = _record(BLEED_ID)
+        break_ratio = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByProperty"
+            and operation["arguments"].get("Value") == "BreakDamageAddedRatio"
+            and operation["arguments"].get("ReadTargetType", {}).get("Alias") == "SnapshotPropertyEntity"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-snapshot-break-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_SNAPSHOT_BREAK_COMPONENT", "operations": [break_ratio]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+            "snapshot": RuntimeEntity("snapshot", "dark", SurvivalState(Decimal("1"), Decimal("1")), break_damage_added_ratio=Decimal("0.5")),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_SNAPSHOT_BREAK_COMPONENT", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="p1", snapshot_property_entity_id="snapshot"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("p1", "_CasterBreakDamageAddedRatio"), Decimal("0.5"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; or Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution or explicit callback ModifierInstance identity", "ModifierInstance state", "dirty-removal lifecycle boundary"),
@@ -69,6 +69,7 @@ class RuntimeEntity:
     modifier_names: tuple[str, ...] = ()
     attack: Decimal = Decimal("0")
     defense: Decimal = Decimal("0")
+    break_damage_added_ratio: Decimal = Decimal("0")
     toughness: ToughnessState | None = None
     weaknesses: tuple[str, ...] = ()
 
@@ -208,6 +209,7 @@ class ReferenceBattleState:
                     "modifier_names": list(entity.modifier_names),
                     "attack": str(entity.attack),
                     "defense": str(entity.defense),
+                    "break_damage_added_ratio": str(entity.break_damage_added_ratio),
                     "toughness": None if entity.toughness is None else dict(entity.toughness.as_json()),
                     "weaknesses": list(entity.weaknesses),
                 }
@@ -522,6 +524,8 @@ class SemanticExecutor:
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByProperty":
             if operation.get("arguments", {}).get("Value") == "Attack":
                 return self._execute_set_dynamic_value_from_entity_attack(operation, state, context)
+            if operation.get("arguments", {}).get("Value") == "BreakDamageAddedRatio":
+                return self._execute_set_dynamic_value_from_break_damage_added_ratio(operation, state, context)
             return self._execute_set_dynamic_value_from_max_hp(operation, state, context)
         owner_id = self._scope_owner(operation, state, context)
         key = dynamic_key_from_payload(arguments.get("DynamicKey"))
@@ -691,6 +695,41 @@ class SemanticExecutor:
         return ExecutionResult(replace(state, dynamic_store=transition.store), ({
             "operation_id": operation.get("operation_id"),
             "disposition": "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK",
+            "owner_id": owner_id,
+            "key": key,
+            "value": str(value),
+            "read_target_id": read_targets[0],
+            "read_target_alias": alias,
+        },))
+
+    def _execute_set_dynamic_value_from_break_damage_added_ratio(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Copy one explicit materialized BreakDamageAddedRatio property.
+
+        This is a state-read bridge only: it neither calculates Break damage
+        nor reconstructs when a snapshot is created.  Caster and
+        SnapshotPropertyEntity are intentionally distinct alias inputs, while
+        both provide their already-materialized ratio leaf to DynamicValue.
+        """
+        arguments = operation.get("arguments", {})
+        read_target = arguments.get("ReadTargetType")
+        alias = read_target.get("Alias") if isinstance(read_target, Mapping) else None
+        if alias not in {"Caster", "SnapshotPropertyEntity"}:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: BreakDamageAddedRatio requires Caster or SnapshotPropertyEntity")
+        read_targets = self._resolve_targets(read_target, state, context)
+        if len(read_targets) != 1:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: BreakDamageAddedRatio requires one source entity")
+        owner_id = self._scope_owner(operation, state, context)
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = state.entity(read_targets[0]).break_damage_added_ratio
+        transition = state.dynamic_store.set_value(owner_id, key, value)
+        return ExecutionResult(replace(state, dynamic_store=transition.store), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO",
             "owner_id": owner_id,
             "key": key,
             "value": str(value),

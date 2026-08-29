@@ -14,7 +14,7 @@ static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
 structural-only records plus 112 `EXECUTABLE_REFERENCE` records (213
-independently closed executable entrypoints); four complete records and ten
+independently closed executable entrypoints); four complete records and eleven
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -62,6 +62,10 @@ The explicit `SnapshotPropertyEntity → Attack` branch now executes from a
 caller-supplied materialized snapshot entity, never by falling back to the
 caster. A real `MCommon_DOT_Tear` component covers it. Snapshot capture and
 lifetime, as well as every other snapshot property, remain unsupported.
+Selected Caster/SnapshotPropertyEntity `BreakDamageAddedRatio` reads now copy
+an explicit materialized runtime leaf without substituting toughness context or
+calculating Break damage. A real `MCommon_Element_Bleed` component covers the
+snapshot form; property materialization and Break lifecycle remain separate.
 Selected targetless `SetModifierDynamicValue` writes now separately update one
 uniquely named **ALIVE** ModifierInstance-local value, rather than using the
 battle DynamicValue store. A real `MCommon_Windfury` component resets its
