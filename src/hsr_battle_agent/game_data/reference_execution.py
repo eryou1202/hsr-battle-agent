@@ -682,6 +682,8 @@ class SemanticExecutor:
         context: ExecutionContext,
     ) -> ExecutionResult:
         arguments = operation.get("arguments", {})
+        if "AliveOnly" in arguments and arguments.get("AliveOnly") is not False:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: selected AddModifier bridge accepts only AliveOnly=false")
         modifier = arguments.get("ModifierName", {})
         name = modifier.get("Value") if isinstance(modifier, Mapping) else None
         definition = context.modifier_catalog.get(str(name))
@@ -723,6 +725,7 @@ class SemanticExecutor:
                 "instance_id": transition.affected_instance_id,
                 "lifecycle_action": transition.action,
                 "dynamic_value_keys": sorted(dynamic_values),
+                "alive_only": arguments.get("AliveOnly"),
             })
         return ExecutionResult(current, tuple(trace))
 

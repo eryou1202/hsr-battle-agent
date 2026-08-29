@@ -34,6 +34,7 @@ BLEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifie
 STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3001213"
 WINDFURY_SKILL_NO_NEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed"
 BLACK_SWAN_DOT_FLAG_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOTFlag"
+BLACK_SWAN_DOT_FLAG_PARENT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
 
 
 def _record(behavior_id: str) -> dict:
@@ -252,6 +253,23 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.modifiers("p1")[0].dynamic_values, {"MDF_Ratio": Decimal("0.25")})
         self.assertEqual(result.trace[0]["dynamic_value_keys"], ["MDF_Ratio"])
 
+    def test_add_modifier_accepts_explicit_false_alive_only_without_extra_filter(self) -> None:
+        record = {
+            "behavior_id": "modifier-alive-only-false-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-alive-only-false-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"ModifierName": {"Value": "MFixture"}, "AliveOnly": False}, "children": [],
+            }]}],
+        }
+        catalog = {"MFixture": ModifierDefinition("MFixture", "Replace", "fixture:modifier")}
+        compiled = BehaviorCompiler(modifier_catalog=catalog).compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="p1", modifier_owner_id="e1", caster_runtime_id=7, modifier_catalog=catalog))
+        self.assertEqual(result.state.modifiers("e1")[0].state, ModifierState.TO_BE_ADDED)
+        self.assertFalse(result.trace[0]["alive_only"])
+
     def test_source_backed_stage_callback_adds_modifier_with_local_dynamic_values(self) -> None:
         corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
         compiled = BehaviorCompiler(modifier_catalog=modifier_catalog_from_corpus(corpus)).compile_record(_record(STAGE_ADD_DAMAGE_ID))
@@ -269,6 +287,29 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(instance.name, "MCommon_LevelAllDamageAddedRatio")
         self.assertEqual(instance.dynamic_values, {"MDF_PropertyValue": Decimal("0.35")})
         self.assertEqual([item["disposition"] for item in result.trace], ["BRANCH_SUCCESS", "MODIFIER_APPEND_OR_REFRESH_PENDING"])
+
+    def test_source_backed_black_swan_add_modifier_alive_only_false_component_executes(self) -> None:
+        source = _record(BLACK_SWAN_DOT_FLAG_PARENT_ID)
+        add = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.AddModifier"
+            and operation["arguments"] == {"AliveOnly": False, "ModifierName": {"Value": "M_BlackSwan_00_ForbidEffectFlag"}}
+        )
+        corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        catalog = modifier_catalog_from_corpus(corpus)
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-add-alive-only-false-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_ADD_ALIVE_ONLY_FALSE_COMPONENT", "operations": [add]}],
+        }
+        compiled = BehaviorCompiler(modifier_catalog=catalog).compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_ADD_ALIVE_ONLY_FALSE_COMPONENT", state, ExecutionContext(caster_id="p1", modifier_owner_id="e1", caster_runtime_id=7, modifier_catalog=catalog))
+        self.assertEqual(result.state.modifiers("e1")[0].name, "M_BlackSwan_00_ForbidEffectFlag")
+        self.assertFalse(result.trace[0]["alive_only"])
 
     def test_remove_modifier_marks_instances_but_does_not_clean_them_early(self) -> None:
         record = {

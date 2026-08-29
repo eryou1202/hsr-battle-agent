@@ -14,7 +14,7 @@ static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
 structural-only records plus 109 `EXECUTABLE_REFERENCE` records (208
-independently closed executable entrypoints); four complete records and seven
+independently closed executable entrypoints); four complete records and eight
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -64,6 +64,12 @@ explicit ALIVE callback instance `TO_BE_REMOVED`, preserving callback/property
 ownership until dirty cleanup. This promotes three full Modifier records and
 executes a real `M_BlackSwan_DOTFlag` source component; named multi-target and
 adventure removal remain separate strict paths.
+Three canonical-definition-backed `AddModifier` forms with explicit
+`AliveOnly=false` now also lower through the same pending lifecycle transition.
+The false flag is recorded rather than silently discarded; `AliveOnly=true`,
+chance, lifetime, layer and unresolvable-definition variants remain rejected.
+A real Black Swan DOT component validates this path without promoting its
+surrounding callback.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

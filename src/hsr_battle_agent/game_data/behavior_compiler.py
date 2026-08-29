@@ -299,7 +299,11 @@ class BehaviorCompiler:
             name = modifier.get("Value")
             if not isinstance(name, str) or not name:
                 return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
-            if set(arguments) not in ({"ModifierName"}, {"ModifierName", "DynamicValues"}):
+            allowed_argument_sets = ({"ModifierName"}, {"ModifierName", "DynamicValues"})
+            if set(arguments) == {"ModifierName", "AliveOnly"}:
+                if arguments.get("AliveOnly") is not False:
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ALIVE_ONLY_UNSUPPORTED"
+            elif set(arguments) not in allowed_argument_sets:
                 return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED"
             if not isinstance(operation.get("target"), Mapping):
                 return "EXECUTABLE_REFERENCE_TARGET_MISSING"

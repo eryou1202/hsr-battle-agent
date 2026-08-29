@@ -34,7 +34,7 @@
 - Current coverage split: 249 behavior-bearing records (92 structural-only
   compiled), 109 `EXECUTABLE_REFERENCE` records / 208 independently closed
   entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus seven explicitly separate operation components;
+  are source-backed executed plus eight explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -130,6 +130,11 @@
   It marks delayed removal rather than deleting state. This closes 22
   operations, promotes three complete Modifier records, and executes a real
   M_BlackSwan_DOTFlag component.
+- `ADD-MODIFIER-ALIVE-ONLY-FALSE-001` admits only catalog-resolvable
+  `AddModifier {ModifierName, AliveOnly=false}` forms. Three operations lower
+  to the existing pending lifecycle bridge and a Black Swan DOT component is
+  source-backed executed; no true AliveOnly, chance, lifetime or layer policy
+  is inferred.
 
 ## Source state
 
@@ -142,10 +147,11 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `ADD-MODIFIER-ALIVE-ONLY-FALSE-001`: lower only the three catalog-resolvable
-   `AddModifier {ModifierName, AliveOnly=false}` forms targeting
-   `ModifierOwnerEntity`. Keep true AliveOnly, chance/lifetime/layer fields,
-   global lookup and missing-definition forms rejected.
+1. `DYNAMICVALUE-PROPERTY-ATTACK-PARAM-READ-001`: lower only
+   `SetDynamicValueByProperty Value=Attack` reads with exactly one ParamEntity
+   or ParamEntity2 source target. Keep SnapshotPropertyEntity,
+   BreakDamageAddedRatio, StatusProbabilityBase and other property reads
+   rejected.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

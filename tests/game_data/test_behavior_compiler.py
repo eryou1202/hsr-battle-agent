@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 
 from hsr_battle_agent.game_data.behavior_compiler import BehaviorCompiler
+from hsr_battle_agent.game_data.modifier_catalog import ModifierDefinition
 
 
 class BehaviorCompilerTest(unittest.TestCase):
@@ -87,3 +88,12 @@ class BehaviorCompilerTest(unittest.TestCase):
         invalid = dict(operation, target={"Alias": "Caster"})
         rejected = BehaviorCompiler().compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [invalid]}]))
         self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_REMOVE_SELF_TARGET_UNSUPPORTED")
+
+    def test_add_modifier_accepts_only_explicit_false_alive_only(self) -> None:
+        operation = {"operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"}, "arguments": {"ModifierName": {"Value": "MFixture"}, "AliveOnly": False}, "children": []}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}
+        catalog = {"MFixture": ModifierDefinition("MFixture", "Replace", "fixture:modifier")}
+        self.assertEqual(BehaviorCompiler(modifier_catalog=catalog).compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        invalid = dict(operation, arguments={"ModifierName": {"Value": "MFixture"}, "AliveOnly": True})
+        rejected = BehaviorCompiler(modifier_catalog=catalog).compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [invalid]}]))
+        self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_ADD_MODIFIER_ALIVE_ONLY_UNSUPPORTED")
