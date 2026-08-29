@@ -13,8 +13,8 @@ Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
-structural-only records plus 109 `EXECUTABLE_REFERENCE` records (192
-independently closed executable entrypoints); four complete records and three
+structural-only records plus 109 `EXECUTABLE_REFERENCE` records (208
+independently closed executable entrypoints); four complete records and four
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -45,6 +45,11 @@ shield-before-HP commit; a real Black Swan `MAvatar_BlackSwan_00_DOT` operation
 component is source-backed executed. DoT application, refresh, stack, expiry,
 and scheduling remain uncompiled. Corpus hash:
 `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
+Selected `SetDynamicValueByModifierValue` Layer reads also now execute through
+an explicit `ModifierInstance` identity. This keeps the locally evidenced
+runtime `Layer` field distinct from `Count`; a second Black Swan DOT component
+is source-backed executed. MaxLayer, Count and other modifier-value reads stay
+rejected.
 Reference semantics now exist and are tested for: KERNEL-EVENT
 ordering, Modifier lifecycle, DynamicValue store + all 1347 corpus PostfixExpr
 programs, TargetAlias resolution, Scheduler markers/templates/loops/delay,

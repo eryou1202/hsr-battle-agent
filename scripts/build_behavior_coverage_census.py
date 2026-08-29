@@ -41,6 +41,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_dot_damage_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[3]:OnCustomEvent:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_modifier_layer_dynamic_value_component_reference_001.json",
+    },
 )
 
 

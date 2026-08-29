@@ -1,0 +1,24 @@
+{
+  "packet_id": "MODIFIER-LAYER-DYNAMIC-VALUE-001",
+  "game_version": "4.4.54",
+  "scope": "Selected RPG.GameCore.SetDynamicValueByModifierValue payloads with ReadTargetType=ModifierOwnerEntity, ValueType=Layer, a required Multiplier and an explicit current ModifierInstance identity.",
+  "closure_status": "PARTIAL_R3_R4_REFERENCE",
+  "selected_model": "Resolve exactly one ModifierOwnerEntity. Resolve the callback's explicit ModifierInstance by instance_id on that owner, read its distinct Layer state leaf (never BaseModifierInstance.Count), multiply it by the supplied DynamicValue expression, then write the result to the selected DynamicValue scope owner. A missing instance, missing Layer, mismatched callback name or ambiguous target is a hard error.",
+  "state_reads": ["ReadTargetType target", "ModifierInstance.instance_id/name/layer", "Multiplier DynamicValue expression", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The operation is a synchronous callback child: it reads the Layer visible at that sibling position and commits its DynamicValue write before the next sibling. Layer mutation/stack application is not inferred by this packet.",
+  "evidence": [
+    {"artifact": "data/semantics/4.4.54/modifier_application_bridge_07.json", "level": "R4", "support": "TurnBasedModifierInstance.Layer is a proven distinct int32 state getter; Count and Layer are separate fields."},
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "real MAvatar_BlackSwan_00_DOT OnCustomEvent reads ModifierOwnerEntity Layer into Dot_Layer_Count."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "scope/key store and multiplier expression evaluation."},
+    {"fixture": "source_backed_modifier_layer_dynamic_value_component_reference_001.json", "support": "real canonical operation executed through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_modifier_layer_dynamic_projection_uses_explicit_layer_not_count", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_modifier_layer_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["ReadTargetType other than ModifierOwnerEntity", "ValueType other than Layer", "missing Multiplier/DynamicKey", "missing or mismatched modifier instance", "missing Layer", "MaxLayer/Count/current-life and modifier-local DynamicValue value types"],
+  "unsupported_boundary": ["Add/refresh/stack operations that mutate Layer", "MaxLayer arithmetic and config slot names", "multiple-instance/global lookup policy", "other SetDynamicValueByModifierValue shapes", "full callback registration/lifecycle and Golden trace claim"],
+  "dsh_implementation_contract": "Represent ModifierInstance.Layer independently from Count. Bind callback execution to an instance identity, resolve its owner through the source target selector, and reject rather than substitute Count/default Layer when that identity or state leaf is unavailable."
+}

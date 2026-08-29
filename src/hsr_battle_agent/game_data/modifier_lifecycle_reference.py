@@ -61,6 +61,11 @@ class ModifierInstance:
     callback_registration_keys: tuple[str, ...] = ()
     property_contribution_keys: tuple[str, ...] = ()
     dynamic_values: Mapping[str, Decimal] = field(default_factory=dict)
+    # ``Layer`` is a distinct proven TurnBasedModifierInstance state leaf;
+    # it is not the BaseModifierInstance ``Count`` field.  Application and
+    # stack mutation remain outside this reference lifecycle, so callers
+    # must provide it explicitly when an executable operation reads Layer.
+    layer: int | None = None
 
 
 @dataclass(frozen=True)

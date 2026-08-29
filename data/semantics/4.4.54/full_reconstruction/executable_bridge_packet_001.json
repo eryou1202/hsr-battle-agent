@@ -11,6 +11,7 @@
       "HEAL_REQUEST: HealByHealerMaxHP, HealByTargetMaxHP",
       "MODIFY_PROPERTY_STACK",
       "SET_DYNAMIC_VALUE",
+      "SET_DYNAMIC_VALUE: selected SetDynamicValueByModifierValue ModifierOwnerEntity/Layer reads with explicit ModifierInstance identity",
       "DEFINE_DYNAMIC_VALUE",
       "ADD_MODIFIER with an explicit canonical Modifier catalog definition and optional selected modifier-local DynamicValues initialization",
       "REMOVE_MODIFIER: named instance mark-destroy only; dirty cleanup remains separate",
@@ -20,7 +21,7 @@
       "HEADLESS_PRESENTATION_OMITTED"
     ]
   },
-  "state_reads": ["entities.survival", "entities.toughness", "entities.weaknesses", "team_skill_points", "dynamic_store", "property_states", "target context including dispatch ParamEntity", "execution context dynamic hashes/scopes", "deterministic RNG"],
+  "state_reads": ["entities.survival", "entities.toughness", "entities.weaknesses", "team_skill_points", "dynamic_store", "property_states", "modifier_instances including explicit Layer", "target context including dispatch ParamEntity", "execution context dynamic hashes/scopes", "deterministic RNG"],
   "state_writes": ["entities.survival.hp/shield/alive", "entities.toughness current/broken", "entities.weaknesses", "team_skill_points current", "dynamic_store", "property_states", "modifier_instances pending append/refresh/mark-destroy/local dynamic values"],
   "ordering": "Entrypoint operations execute in canonical sibling order. Conditional selects exactly SuccessTaskList or FailedTaskList and then executes that child list in order. Presentation operations are omitted only when the compiler marked gating_risk=NONE.",
   "evidence": [
@@ -50,6 +51,7 @@
     "missing DynamicHash, target alias or predicate provider input",
     "AddModifier with missing/unsupported/conflicting canonical Stacking, chance, lifetime or layer parameters",
     "later callback lookup of modifier-local DynamicValues by instance identity",
+    "SetDynamicValueByModifierValue MaxLayer/Count/current-life/other value types, non-ModifierOwner target aliases, or missing callback instance identity",
     "RemoveModifier with no explicit name, caster/global filters, or immediate dirty cleanup semantics",
     "DamageValue/direct-damage, Break/SuperBreak request families, SPHitRatio, split/AOE sequencing, damage tags, inherited attack fields, missing explicit toughness/Break runtime inputs and non-selected formula types; DOT application/chance/refresh/stack/expiry scheduling remains separate from selected no-crit DOT ticks",
     "ModifySPNew pre-action cost/gate, NoSpCost/cap modifiers, special-mode resource holders and scheduler timing",

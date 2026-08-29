@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected modifier Layer read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution", "ModifierInstance state"),
@@ -218,7 +218,7 @@ class ReferenceBattleState:
                 key: [
                     {"instance_id": item.instance_id, "name": item.name, "stacking": item.stacking, "state": item.state.name,
                      "current_life": item.current_life, "count": item.count, "caster_runtime_id": item.caster_runtime_id,
-                     "dynamic_values": {key: str(value) for key, value in sorted(item.dynamic_values.items())}}
+                     "layer": item.layer, "dynamic_values": {key: str(value) for key, value in sorted(item.dynamic_values.items())}}
                     for item in values
                 ]
                 for key, values in sorted(self.modifier_instances.items())
@@ -241,6 +241,7 @@ class ExecutionContext:
     caster_id: str | None = None
     modifier_owner_id: str | None = None
     modifier_id: str | None = None
+    modifier_instance_id: str | None = None
     param_entity_ids: tuple[str, ...] = ()
     param_entity2_ids: tuple[str, ...] = ()
     damage_attacker_id: str | None = None
@@ -512,6 +513,8 @@ class SemanticExecutor:
         context: ExecutionContext,
     ) -> ExecutionResult:
         arguments = operation.get("arguments", {})
+        if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByModifierValue":
+            return self._execute_set_dynamic_value_from_modifier_layer(operation, state, context)
         owner_id = self._scope_owner(operation, state, context)
         key = dynamic_key_from_payload(arguments.get("DynamicKey"))
         value = self._evaluate_value(arguments.get("Value"), state, context)
@@ -522,6 +525,51 @@ class SemanticExecutor:
             "owner_id": owner_id,
             "key": key,
             "value": str(value),
+        },))
+
+    def _execute_set_dynamic_value_from_modifier_layer(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Store a selected current ModifierInstance.Layer projection.
+
+        Local evidence distinguishes the runtime ``Layer`` getter from the
+        base modifier ``Count`` field.  The bridge therefore requires an
+        explicit current instance identity and never substitutes Count or a
+        guessed default layer.  Only the compiler-validated
+        ModifierOwnerEntity/Layer shape reaches this handler.
+        """
+        arguments = operation.get("arguments", {})
+        read_targets = self._resolve_targets(arguments.get("ReadTargetType"), state, context)
+        if len(read_targets) != 1:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier Layer read requires one owner target")
+        if not context.modifier_instance_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier Layer read requires modifier_instance_id")
+        instance = next((item for item in state.modifiers(read_targets[0]) if item.instance_id == context.modifier_instance_id), None)
+        if instance is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier instance is not owned by read target")
+        if context.modifier_id and instance.name != context.modifier_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier instance name does not match callback context")
+        if instance.layer is None:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier Layer is not supplied by ReferenceBattleState")
+        if isinstance(instance.layer, bool) or not isinstance(instance.layer, int) or instance.layer < 0:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: modifier Layer must be a non-negative integer")
+        multiplier = self._evaluate_value(arguments.get("Multiplier"), state, context)
+        owner_id = self._scope_owner(operation, state, context)
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = Decimal(instance.layer) * multiplier
+        transition = state.dynamic_store.set_value(owner_id, key, value)
+        return ExecutionResult(replace(state, dynamic_store=transition.store), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER",
+            "owner_id": owner_id,
+            "key": key,
+            "value": str(value),
+            "read_target_id": read_targets[0],
+            "modifier_instance_id": instance.instance_id,
+            "modifier_layer": instance.layer,
         },))
 
     def _execute_define_dynamic_value(

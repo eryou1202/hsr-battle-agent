@@ -54,3 +54,10 @@ class BehaviorCompilerTest(unittest.TestCase):
         self.assertGreater(coverage["by_owner_kind"]["Modifier"]["structural_compiled"], 0)
         self.assertGreater(coverage["by_owner_kind"]["StageBuff"]["structural_compiled"], 0)
         self.assertEqual(coverage["golden_tested"], 0)
+
+    def test_modifier_layer_reader_rejects_max_layer_and_unknown_read_shapes(self) -> None:
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONSTACK", "operations": [{"operation_id": "read", "source_type": "RPG.GameCore.SetDynamicValueByModifierValue", "kind": "SET_DYNAMIC_VALUE", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {"DynamicKey": "MDF_Max", "ReadTargetType": {"Alias": "ModifierOwnerEntity"}, "ValueType": "MaxLayer", "Multiplier": {"IsDynamic": False, "FixedValue": {"Value": 1}}}, "children": []}]}]}
+        result = BehaviorCompiler().compile_record(record)
+        operation = result["entrypoints"][0]["operations"][0]
+        self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
+        self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TYPE_UNSUPPORTED")

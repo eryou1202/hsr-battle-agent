@@ -246,7 +246,25 @@ class BehaviorCompiler:
             if not str(operation.get("source_type", "")).startswith("RPG.GameCore.By"):
                 return "EXECUTABLE_REFERENCE_PREDICATE_TYPE_MISSING"
         elif kind == "SET_DYNAMIC_VALUE":
-            if not isinstance(arguments.get("DynamicKey"), Mapping) or not isinstance(arguments.get("Value"), Mapping):
+            source_type = str(operation.get("source_type", ""))
+            if source_type == "RPG.GameCore.SetDynamicValueByModifierValue":
+                allowed = {"DynamicKey", "ReadTargetType", "ValueType", "Multiplier", "ContextScope"}
+                if not set(arguments).issubset(allowed):
+                    return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_ARGUMENTS_UNSUPPORTED"
+                read_target = _mapping(arguments.get("ReadTargetType"))
+                if read_target.get("Alias") != "ModifierOwnerEntity":
+                    return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TARGET_UNSUPPORTED"
+                if arguments.get("ValueType") != "Layer":
+                    return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TYPE_UNSUPPORTED"
+                if not isinstance(arguments.get("Multiplier"), Mapping):
+                    return "EXECUTABLE_REFERENCE_MODIFIER_VALUE_MULTIPLIER_MISSING"
+                try:
+                    dynamic_key = arguments.get("DynamicKey")
+                    if not (isinstance(dynamic_key, str) and dynamic_key) and not (isinstance(dynamic_key, Mapping) and isinstance(dynamic_key.get("Value"), str) and dynamic_key.get("Value")):
+                        return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+                except AttributeError:
+                    return "EXECUTABLE_REFERENCE_DYNAMIC_KEY_MISSING"
+            elif not isinstance(arguments.get("DynamicKey"), Mapping) or not isinstance(arguments.get("Value"), Mapping):
                 return "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING"
         elif kind == "DEFINE_DYNAMIC_VALUE":
             if not isinstance(arguments.get("DynamicKey"), Mapping):

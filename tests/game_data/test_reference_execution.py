@@ -95,6 +95,29 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.dynamic_store.read("p1", "stacks"), Decimal("3"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET")
 
+    def test_modifier_layer_dynamic_projection_uses_explicit_layer_not_count(self) -> None:
+        record = {
+            "behavior_id": "modifier-layer-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-layer-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTACK", "operations": [{
+                "operation_id": "read-layer", "source_type": "RPG.GameCore.SetDynamicValueByModifierValue", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"ContextScope": "ContextModifier", "DynamicKey": "MDF_Layer", "ReadTargetType": {"Alias": "ModifierOwnerEntity"}, "ValueType": "Layer", "Multiplier": {"IsDynamic": False, "FixedValue": {"Value": 2}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        modifier = ModifierInstance("e1:layer:1", "MFixture", "Replace", 7, "e1", None, 99, ModifierState.ALIVE, layer=3)
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            modifier_instances={"e1": (modifier,)},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTACK", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="e1", modifier_id="MFixture", modifier_instance_id="e1:layer:1"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("e1", "MDF_Layer"), Decimal("6"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER")
+
     def test_add_modifier_requires_catalog_and_preserves_pending_lifecycle_boundary(self) -> None:
         record = {
             "behavior_id": "modifier-fixture", "owner_kind": "Avatar", "owner_ref": "modifier-fixture", "source_refs": [],
@@ -399,6 +422,37 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.entity("e1").survival.hp, Decimal("380.0"))
         self.assertEqual(result.trace[0]["disposition"], "DOT_DAMAGE_COMMITTED")
         self.assertFalse(result.trace[0]["crit_applied"])
+
+    def test_source_backed_black_swan_modifier_layer_component_executes(self) -> None:
+        source = _record(BLACK_SWAN_DOT_ID)
+        layer = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            if entrypoint["event"] == "MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[3]:OnCustomEvent"
+            for operation in entrypoint["operations"]
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByModifierValue"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-modifier-layer-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_MODIFIER_LAYER_COMPONENT", "operations": [layer]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        modifier = ModifierInstance("e1:dot:1", "MAvatar_BlackSwan_00_DOT", "Replace", 7, "e1", None, 99, ModifierState.ALIVE, layer=3)
+        state = ReferenceBattleState(
+            entities={
+                "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+                "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("500"), Decimal("500"))),
+            },
+            modifier_instances={"e1": (modifier,)},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_MODIFIER_LAYER_COMPONENT", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="e1", modifier_id="MAvatar_BlackSwan_00_DOT", modifier_instance_id="e1:dot:1"),
+        )
+        self.assertEqual(result.state.dynamic_store.read("e1", "Dot_Layer_Count"), Decimal("3"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MODIFIER_LAYER")
 
     def test_unbound_operation_remains_a_hard_execution_error(self) -> None:
         compiled = BehaviorCompiler().compile_record({

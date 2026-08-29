@@ -110,6 +110,11 @@
   shield-before-HP tick transition. A real Black Swan
   `MAvatar_BlackSwan_00_DOT` OnPhase1 component is source-backed executed;
   its enclosing application/lifecycle callback is deliberately not promoted.
+- `MODIFIER-LAYER-DYNAMIC-VALUE-001` admits only the source shape that reads
+  `ModifierOwnerEntity`'s explicit current ModifierInstance `Layer`, applies
+  a DynamicValue multiplier and writes the result into the selected scope.
+  It never uses `Count` as a proxy. A Black Swan DOT OnCustomEvent component
+  is source-backed executed under that contract.
 
 ## Source state
 
@@ -122,10 +127,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `SET-DYNAMIC-VALUE-CROSS-TARGET-001`: aggregate only remaining
-   unexecutable `SET_DYNAMIC_VALUE` payload shapes. Admit a single exact
-   read/write target resolver model only if it preserves source scope and is
-   supported by real canonical evidence.
+1. `DYNAMICVALUE-PROPERTY-MAXHP-READ-001`: lower only
+   `SetDynamicValueByProperty` with `ReadTargetType=ModifierOwnerEntity` and
+   `Value=MaxHP` against immutable SurvivalState.max_hp. Do not generalize it
+   to other stats, aliases or property-contribution materialization.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.
