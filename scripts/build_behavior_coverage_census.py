@@ -89,6 +89,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_snapshot_break_damage_dynamic_value_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03._CallbackList[0]:OnEnterBattle:0",
+        "owner_kind": "Avatar",
+        "fixture": "source_backed_status_probability_dynamic_value_component_reference_001.json",
+    },
 )
 
 

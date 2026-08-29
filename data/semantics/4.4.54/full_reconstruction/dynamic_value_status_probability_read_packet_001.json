@@ -1,0 +1,23 @@
+{
+  "packet_id": "DYNAMICVALUE-PROPERTY-STATUS-PROBABILITY-READ-001",
+  "game_version": "4.4.54",
+  "scope": "The single lifted RPG.GameCore.SetDynamicValueByProperty payload with exactly ReadTargetType=Caster and Value=StatusProbabilityBase.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve exactly one Caster and copy its already-materialized RuntimeEntity.status_probability_base leaf into the selected DynamicValue scope/key. The leaf is an explicit scenario/state input and is not recalculated from a property contribution stack by this bridge.",
+  "state_reads": ["Caster target context", "RuntimeEntity.status_probability_base", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The materialized Caster value is copied synchronously at this callback sibling and follows the normal DynamicValue visibility boundary.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "Avatar_BlackSwan_00_SkillTree03 OnEnterBattle copies Caster StatusProbabilityBase into CasterStatusProbability."},
+    {"source": "external_reconstruction.py:PROPERTY_KEYS", "support": "Existing static reconstruction associates StatusProbabilityBase with effect-hit-rate while leaving materialization separate."},
+    {"fixture": "source_backed_status_probability_dynamic_value_component_reference_001.json", "support": "The real canonical Black Swan SkillTree component executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_status_probability_base_projection_reads_only_materialized_caster_leaf", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_status_probability_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["aliases other than Caster", "missing/multiple Caster", "Value other than StatusProbabilityBase", "extra source arguments", "unmaterialized effect-hit-rate leaf"],
+  "unsupported_boundary": ["property contribution materialization", "effect-hit-rate formula semantics", "other statistic reads", "full Black Swan SkillTree behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Represent the already-materialized status-probability base stat explicitly on the entity. For this single source form, resolve Caster and copy that Decimal to DynamicValue. Never synthesize it from raw equipment, modifiers or another property reader at execution time."
+}

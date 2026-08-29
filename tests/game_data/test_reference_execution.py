@@ -210,6 +210,22 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.dynamic_store.read("p1", "MDF_Break"), Decimal("0.44"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO")
 
+    def test_status_probability_base_projection_reads_only_materialized_caster_leaf(self) -> None:
+        record = {
+            "behavior_id": "status-probability-read-fixture", "owner_kind": "Modifier", "owner_ref": "status-probability-read-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONCREATE", "operations": [{
+                "operation_id": "read-status", "source_type": "RPG.GameCore.SetDynamicValueByProperty", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": "CasterStatusProbability", "ReadTargetType": {"Alias": "Caster"}, "Value": "StatusProbabilityBase"}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")), status_probability_base=Decimal("0.36"))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="p1"))
+        self.assertEqual(result.state.dynamic_store.read("p1", "CasterStatusProbability"), Decimal("0.36"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE")
+
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
             "behavior_id": "modifier-local-write-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-local-write-fixture", "source_refs": [],
@@ -763,6 +779,28 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("p1", "_CasterBreakDamageAddedRatio"), Decimal("0.5"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_BREAK_DAMAGE_ADDED_RATIO")
+
+    def test_source_backed_black_swan_status_probability_component_executes(self) -> None:
+        source = _record("external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03")
+        status_probability = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByProperty"
+            and operation["arguments"].get("Value") == "StatusProbabilityBase"
+            and operation["arguments"].get("ReadTargetType", {}).get("Alias") == "Caster"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-status-probability-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_STATUS_PROBABILITY_COMPONENT", "operations": [status_probability]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")), status_probability_base=Decimal("0.41"))})
+        result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_STATUS_PROBABILITY_COMPONENT", state, ExecutionContext(caster_id="p1", modifier_owner_id="p1"))
+        self.assertEqual(result.state.dynamic_store.read("p1", "CasterStatusProbability"), Decimal("0.41"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

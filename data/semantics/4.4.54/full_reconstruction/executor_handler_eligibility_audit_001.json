@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "ee4fc044d9d9c9291799d7e21fecb3214c9ad8f4f551b9655363a37d0c6e8c19",
+  "audit_sha256": "fab3d86642a3c2a99589eb7e8d687cab71f5188defb76de57b0e522069f1d8b8",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ADD_MODIFIER": 24,
@@ -13,7 +13,7 @@
     "MODIFY_WEAKNESS": 7,
     "PREDICATE": 513,
     "REMOVE_MODIFIER": 70,
-    "SET_DYNAMIC_VALUE": 217
+    "SET_DYNAMIC_VALUE": 218
   },
   "executor_context_contract": {
     "ADD_MODIFIER": [
@@ -71,12 +71,12 @@
       "DynamicValue key/value inputs or selected state read",
       "DynamicValueStore",
       "explicit ModifierInstance identity for SetDynamicValueByModifierValue",
-      "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; or Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio for SetDynamicValueByProperty",
+      "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio; or Caster RuntimeEntity.status_probability_base for SetDynamicValueByProperty",
       "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "38802e20a157781a4cb95a9ec144c419b55502e54fbdb9a82731a9fb14355347",
+  "input_compiler_report_sha256": "d33b69a2d2d38b41ccac7c87f02a2fc20b8ff166a5048971ee3c0c21c959d196",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

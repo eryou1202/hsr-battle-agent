@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-STATUS-PROBABILITY-DYNAMIC-VALUE-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute the real Avatar_BlackSwan_00_SkillTree03 Caster StatusProbabilityBase SetDynamicValueByProperty operation through BehaviorCompiler and SemanticExecutor with an explicit materialized effect-hit-rate input.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillTree03:MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03._CallbackList[0]:OnEnterBattle:0",
+    "entrypoint_event": "MODIFIER_CALLBACK:M_BlackSwan_00_SkillTree03._CallbackList[0]:OnEnterBattle",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json", "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "AbilityList", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "p1", "modifier_owner_id": "p1"},
+  "selected_initial_state": {"p1": {"team": "light", "hp": "1", "max_hp": "1", "status_probability_base": "0.41"}},
+  "expected_transition": {"dynamic_value_store": {"p1": {"CasterStatusProbability": "0.41"}}, "ordered_dispositions": ["DYNAMIC_VALUE_SET_FROM_STATUS_PROBABILITY_BASE"]},
+  "assumptions": ["The fixture provides an already-materialized status-probability base leaf.", "The DynamicValue default scope is selected as p1 by the explicit caster context."],
+  "unsupported_boundary": ["This is not full Avatar_BlackSwan_00_SkillTree03 behavior, a stat materialization proof, or a Golden game trace."]
+}

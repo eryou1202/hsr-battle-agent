@@ -288,9 +288,10 @@ class BehaviorCompiler:
                     (alias == "ModifierOwnerEntity" and value_kind == "MaxHP")
                     or (alias in {"ParamEntity", "ParamEntity2", "SnapshotPropertyEntity"} and value_kind == "Attack")
                     or (alias in {"Caster", "SnapshotPropertyEntity"} and value_kind == "BreakDamageAddedRatio")
+                    or (alias == "Caster" and value_kind == "StatusProbabilityBase")
                 ):
                     return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED" if value_kind == "Attack" else "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED"
-                if value_kind not in {"MaxHP", "Attack", "BreakDamageAddedRatio"}:
+                if value_kind not in {"MaxHP", "Attack", "BreakDamageAddedRatio", "StatusProbabilityBase"}:
                     return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED"
                 dynamic_key = arguments.get("DynamicKey")
                 if not (isinstance(dynamic_key, str) and dynamic_key) and not (isinstance(dynamic_key, Mapping) and isinstance(dynamic_key.get("Value"), str) and dynamic_key.get("Value")):
