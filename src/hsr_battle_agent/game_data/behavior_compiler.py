@@ -282,9 +282,14 @@ class BehaviorCompiler:
                 if set(arguments) != {"DynamicKey", "ReadTargetType", "Value"}:
                     return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_ARGUMENTS_UNSUPPORTED"
                 read_target = _mapping(arguments.get("ReadTargetType"))
-                if read_target.get("Alias") != "ModifierOwnerEntity":
-                    return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED"
-                if arguments.get("Value") != "MaxHP":
+                alias = read_target.get("Alias")
+                value_kind = arguments.get("Value")
+                if not (
+                    (alias == "ModifierOwnerEntity" and value_kind == "MaxHP")
+                    or (alias in {"ParamEntity", "ParamEntity2"} and value_kind == "Attack")
+                ):
+                    return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED" if value_kind == "Attack" else "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED"
+                if value_kind not in {"MaxHP", "Attack"}:
                     return "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED"
                 dynamic_key = arguments.get("DynamicKey")
                 if not (isinstance(dynamic_key, str) and dynamic_key) and not (isinstance(dynamic_key, Mapping) and isinstance(dynamic_key.get("Value"), str) and dynamic_key.get("Value")):

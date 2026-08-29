@@ -39,7 +39,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "PREDICATE": ("Predicate payload", "PredicateContext providers"),
     "HEAL_REQUEST": ("target resolution", "DynamicValue scope/hash inputs", "target SurvivalState"),
     "MODIFY_PROPERTY_STACK": ("target resolution", "DynamicValue scope/hash inputs", "PropertyState"),
-    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
+    "SET_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs or selected state read", "DynamicValueStore", "explicit ModifierInstance identity for SetDynamicValueByModifierValue", "selected ModifierOwnerEntity SurvivalState.max_hp or ParamEntity/ParamEntity2 RuntimeEntity.attack for SetDynamicValueByProperty", "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"),
     "DEFINE_DYNAMIC_VALUE": ("scope owner resolution", "DynamicValue key/value inputs", "DynamicValueStore"),
     "ADD_MODIFIER": ("target resolution", "explicit ModifierDefinition catalog", "caster runtime id", "optional modifier-local DynamicValues"),
     "REMOVE_MODIFIER": ("target resolution or explicit callback ModifierInstance identity", "ModifierInstance state", "dirty-removal lifecycle boundary"),
@@ -518,6 +518,8 @@ class SemanticExecutor:
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByModifierValue":
             return self._execute_set_dynamic_value_from_modifier_layer(operation, state, context)
         if operation.get("source_type") == "RPG.GameCore.SetDynamicValueByProperty":
+            if operation.get("arguments", {}).get("Value") == "Attack":
+                return self._execute_set_dynamic_value_from_entity_attack(operation, state, context)
             return self._execute_set_dynamic_value_from_max_hp(operation, state, context)
         owner_id = self._scope_owner(operation, state, context)
         key = dynamic_key_from_payload(arguments.get("DynamicKey"))
@@ -655,6 +657,41 @@ class SemanticExecutor:
             "key": key,
             "value": str(value),
             "read_target_id": read_targets[0],
+        },))
+
+    def _execute_set_dynamic_value_from_entity_attack(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Store one selected ParamEntity/ParamEntity2 immutable Attack read.
+
+        This packet does not materialize property contributions or resolve the
+        broader SnapshotPropertyEntity family.  It copies only the explicitly
+        supplied runtime entity's already-materialized ``attack`` leaf into
+        the existing selected DynamicValue scope.
+        """
+        arguments = operation.get("arguments", {})
+        read_target = arguments.get("ReadTargetType")
+        alias = read_target.get("Alias") if isinstance(read_target, Mapping) else None
+        if alias not in {"ParamEntity", "ParamEntity2"}:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: Attack read requires ParamEntity or ParamEntity2")
+        read_targets = self._resolve_targets(read_target, state, context)
+        if len(read_targets) != 1:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: Attack read requires one source entity")
+        owner_id = self._scope_owner(operation, state, context)
+        key = dynamic_key_from_payload(arguments.get("DynamicKey"))
+        value = state.entity(read_targets[0]).attack
+        transition = state.dynamic_store.set_value(owner_id, key, value)
+        return ExecutionResult(replace(state, dynamic_store=transition.store), ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK",
+            "owner_id": owner_id,
+            "key": key,
+            "value": str(value),
+            "read_target_id": read_targets[0],
+            "read_target_alias": alias,
         },))
 
     def _execute_define_dynamic_value(

@@ -71,6 +71,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_add_modifier_alive_only_false_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage:MODIFIER_CALLBACK:MCommon_MindControl_Damage._CallbackList[0]:OnListenCharmMakeDamage:3/TaskList:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_param_entity_attack_dynamic_value_component_reference_001.json",
+    },
 )
 
 

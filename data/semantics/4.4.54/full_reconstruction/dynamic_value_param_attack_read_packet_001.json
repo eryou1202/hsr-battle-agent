@@ -1,0 +1,24 @@
+{
+  "packet_id": "DYNAMICVALUE-PROPERTY-ATTACK-PARAM-READ-001",
+  "game_version": "4.4.54",
+  "scope": "RPG.GameCore.SetDynamicValueByProperty payloads with exactly DynamicKey, ReadTargetType=ParamEntity or ParamEntity2, and Value=Attack.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve exactly one ParamEntity or ParamEntity2 through the existing TargetAlias context, copy its already-materialized RuntimeEntity.attack leaf into the existing selected DynamicValue scope/key, and make the write visible to the following sibling. No property-contribution materialization or snapshot entity inference occurs.",
+  "state_reads": ["ParamEntity/ParamEntity2 target collection", "RuntimeEntity.attack", "selected DynamicValue scope owner"],
+  "state_writes": ["DynamicValueStore owner/key Decimal value"],
+  "ordering": "The immutable Attack value at this callback sibling is copied synchronously before the next sibling. This packet does not establish when attack properties are materialized or snapshot captured.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "MCommon_MindControl_Damage OnListenCharmMakeDamage reads ParamEntity and ParamEntity2 Attack into ATK_Avatar."},
+    {"packet": "TARGET-001", "support": "Existing TargetAlias resolver has deterministic ParamEntity/ParamEntity2 bindings."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "Existing selected scope/key DynamicValue store transition."},
+    {"fixture": "source_backed_param_entity_attack_dynamic_value_component_reference_001.json", "support": "A real canonical MCommon_MindControl_Damage ParamEntity operation executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_param_entity_attack_dynamic_projection_reads_selected_runtime_attack", "tests/game_data/test_reference_execution.py::test_source_backed_mind_control_param_entity_attack_component_executes"],
+    "trace_disposition": "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["SnapshotPropertyEntity", "Caster/ModifierOwnerEntity attack reads", "multiple/no ParamEntity target", "Value other than Attack", "extra source arguments"],
+  "unsupported_boundary": ["Attack materialization from modifier contributions", "snapshot property ownership/capture timing", "BreakDamageAddedRatio, StatusProbabilityBase, DEF or other property reads", "full mind-control behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Separate already-materialized entity Attack reads from generic stat/property reconstruction. Resolve exactly one explicit parameter target and copy its current attack leaf into the normal DynamicValue scope; reject snapshots and every other property/target pair until their owners and timing are proven."
+}

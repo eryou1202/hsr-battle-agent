@@ -35,6 +35,7 @@ STAGE_ADD_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Lev
 WINDFURY_SKILL_NO_NEED_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury_SkillNoNeed"
 BLACK_SWAN_DOT_FLAG_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:M_BlackSwan_DOTFlag"
 BLACK_SWAN_DOT_FLAG_PARENT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
+MIND_CONTROL_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage"
 
 
 def _record(behavior_id: str) -> dict:
@@ -144,6 +145,25 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
         self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("125"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
+
+    def test_param_entity_attack_dynamic_projection_reads_selected_runtime_attack(self) -> None:
+        record = {
+            "behavior_id": "attack-read-fixture", "owner_kind": "Modifier", "owner_ref": "attack-read-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONCREATE", "operations": [{
+                "operation_id": "read-attack", "source_type": "RPG.GameCore.SetDynamicValueByProperty", "kind": "SET_DYNAMIC_VALUE",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None,
+                "arguments": {"DynamicKey": "ATK_Avatar", "ReadTargetType": {"Alias": "ParamEntity2"}, "Value": "Attack"}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+            "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("1"), Decimal("1")), attack=Decimal("321")),
+        })
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONCREATE", state, ExecutionContext(caster_id="p1", param_entity2_ids=("e2",)))
+        self.assertEqual(result.state.dynamic_store.read("p1", "ATK_Avatar"), Decimal("321"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK")
 
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
@@ -617,6 +637,31 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("e1", "MDF_TargetMaxHP"), Decimal("750"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_MAX_HP")
+
+    def test_source_backed_mind_control_param_entity_attack_component_executes(self) -> None:
+        source = _record(MIND_CONTROL_DAMAGE_ID)
+        attack = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetDynamicValueByProperty"
+            and operation["arguments"].get("Value") == "Attack"
+            and operation["arguments"].get("ReadTargetType", {}).get("Alias") == "ParamEntity"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-param-attack-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_PARAM_ATTACK_COMPONENT", "operations": [attack]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")), attack=Decimal("456")),
+        })
+        result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_PARAM_ATTACK_COMPONENT", state, ExecutionContext(caster_id="p1", modifier_owner_id="p1", param_entity_ids=("e1",)))
+        self.assertEqual(result.state.dynamic_store.read("p1", "ATK_Avatar"), Decimal("456"))
+        self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_ENTITY_ATTACK")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

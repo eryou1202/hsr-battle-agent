@@ -63,12 +63,12 @@ class BehaviorCompilerTest(unittest.TestCase):
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
         self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TYPE_UNSUPPORTED")
 
-    def test_property_dynamic_reader_rejects_non_max_hp_stats(self) -> None:
+    def test_property_dynamic_reader_rejects_unsupported_property_target_pairs(self) -> None:
         record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONSTACK", "operations": [{"operation_id": "read", "source_type": "RPG.GameCore.SetDynamicValueByProperty", "kind": "SET_DYNAMIC_VALUE", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {"DynamicKey": "MDF_Attack", "ReadTargetType": {"Alias": "ModifierOwnerEntity"}, "Value": "Attack"}, "children": []}]}]}
         result = BehaviorCompiler().compile_record(record)
         operation = result["entrypoints"][0]["operations"][0]
         self.assertEqual(operation["disposition"], "BOUND_UNEXECUTABLE_PACKET")
-        self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED")
+        self.assertEqual(operation["reference_execution_blocker"], "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED")
 
     def test_set_modifier_dynamic_value_accepts_only_targetless_overwrite_shape(self) -> None:
         base = {"operation_id": "write", "source_type": "RPG.GameCore.SetModifierDynamicValue", "kind": "SET_DYNAMIC_VALUE", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {"DynamicKey": {"Value": "MDF_Count"}, "ModifierName": {"Value": "MFixture"}, "NewValue": {"IsDynamic": False, "FixedValue": {"Value": 1}}}, "children": []}
