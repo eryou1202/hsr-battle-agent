@@ -1,0 +1,23 @@
+{
+  "packet_id": "SCHEDULER-DELAY-ADD-NORMALIZED-001",
+  "game_version": "4.4.54",
+  "scope": "Six lifted RPG.GameCore.ModifyActionDelay payloads with exactly fixed AddNormalizedValue and an explicit target alias.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve each target in deterministic target-alias order, apply the scheduler reference ActionDelayState.add(delta) transition per target, and clamp the normalized value at zero. The bridge preserves only the mutable action-delay state boundary; it does not recompute AV, select the next actor, consume turns, or emulate native interrupt ordering.",
+  "state_reads": ["target alias collection", "per-target ActionDelayState.normalized_value", "fixed AddNormalizedValue"],
+  "state_writes": ["per-target ActionDelayState.normalized_value", "per-target skip_target_turn flag preserved by scheduler reference"],
+  "ordering": "Targets are resolved in canonical TargetAlias order. Each target commits its add-and-clamp transition synchronously; no AV reorder or action-completion side effect is inferred at this packet boundary.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "BattleEventAbility_900100/900101, ChallengeTurnLimit, RedStanceState and StanceBreakState provide fixed AddNormalizedValue forms."},
+    {"packet": "SCHEDULER-001", "support": "Existing scheduler reference defines ModifyActionDelay add semantics and zero clamp."},
+    {"fixture": "source_backed_fixed_action_delay_component_reference_001.json", "support": "A real StageBuff AllDarkTeam -1 operation executes through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_fixed_action_delay_commits_per_resolved_target_and_clamps", "tests/game_data/test_reference_execution.py::test_source_backed_stage_fixed_action_delay_component_executes", "tests/game_data/test_scheduler_semantics_reference.py::test_delay_set_add_reset_and_clamp"],
+    "trace_disposition": "ACTION_DELAY_MODIFIED",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["dynamic AddNormalizedValue", "SetActionDelay/ResetActionDelay", "missing target", "extra arguments", "no resolved targets"],
+  "unsupported_boundary": ["AV recomputation", "next-actor ordering", "turn consumption", "Ultimate/FUA/interrupt scheduling", "dynamic delay values", "full StageBuff behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Keep a distinct per-action/per-entity normalized delay state. For the selected fixed ModifyActionDelay source shape, resolve targets deterministically, add the Decimal delta, clamp at zero, and emit a commit trace. Do not treat this partial state transition as AV reordering or a complete scheduler implementation."
+}

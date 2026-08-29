@@ -26,6 +26,7 @@ from .predicate_semantics_reference import PredicateContext, evaluate_predicate
 from .property_contribution_reference import PropertyState
 from .modifier_catalog import ModifierDefinition
 from .modifier_lifecycle_reference import ModifierInstance, ModifierState, add_or_refresh, mark_destroy
+from .scheduler_semantics_reference import ActionDelayState, apply_delay_operation
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
 from .toughness_break_reference import ToughnessState, apply_toughness_damage
 
@@ -46,6 +47,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext for selected normal stance only"),
     "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
+    "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed AddNormalizedValue contract", "selected scheduler action-delay commit boundary"),
 }
 
 
@@ -133,6 +135,7 @@ class ReferenceBattleState:
     modifier_instances: Mapping[str, tuple[ModifierInstance, ...]] = field(default_factory=dict)
     team_skill_points: Mapping[str, TeamSkillPointState] = field(default_factory=dict)
     special_resources: Mapping[str, Decimal] = field(default_factory=dict)
+    action_delays: Mapping[str, ActionDelayState] = field(default_factory=dict)
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
     challenge_left: int | None = None
@@ -178,6 +181,16 @@ class ReferenceBattleState:
         states = dict(self.team_skill_points)
         states[team] = value
         return replace(self, team_skill_points=states)
+
+    def action_delay_state(self, entity_id: str) -> ActionDelayState:
+        self.entity(entity_id)
+        return self.action_delays.get(entity_id, ActionDelayState(Decimal("0")))
+
+    def replace_action_delay_state(self, entity_id: str, value: ActionDelayState) -> "ReferenceBattleState":
+        self.entity(entity_id)
+        states = dict(self.action_delays)
+        states[entity_id] = value
+        return replace(self, action_delays=states)
 
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
@@ -233,6 +246,10 @@ class ReferenceBattleState:
                 for key, value in sorted(self.team_skill_points.items())
             },
             "special_resources": {key: str(value) for key, value in sorted(self.special_resources.items())},
+            "action_delays": {
+                key: {"normalized_value": str(value.normalized_value), "skip_target_turn": value.skip_target_turn}
+                for key, value in sorted(self.action_delays.items())
+            },
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
             "challenge_left": self.challenge_left,
@@ -393,6 +410,8 @@ class SemanticExecutor:
             return self._execute_attach_weakness(operation, state, context)
         if kind == "MODIFY_TEAM_SP":
             return self._execute_modify_team_sp(operation, state, context)
+        if kind == "DELAY_ACTION":
+            return self._execute_delay_action(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -890,6 +909,38 @@ class SemanticExecutor:
                 "lifecycle_action": transition.action,
                 "dynamic_value_keys": sorted(dynamic_values),
                 "alive_only": arguments.get("AliveOnly"),
+            })
+        return ExecutionResult(current, tuple(trace))
+
+    def _execute_delay_action(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit the selected fixed normalized-delay delta per resolved target.
+
+        This adapter deliberately stops at the scheduler reference's
+        ``ActionDelayState`` boundary.  It applies a fixed
+        ``ModifyActionDelay.AddNormalizedValue`` and its zero clamp, but does
+        not recalculate AV, choose the next actor, consume a turn, or infer a
+        native interrupt ordering.
+        """
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        if not targets:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: ModifyActionDelay resolved no targets")
+        current = state
+        trace: list[Mapping[str, Any]] = []
+        for target_id in targets:
+            transition = apply_delay_operation(operation, current.action_delay_state(target_id))
+            current = current.replace_action_delay_state(target_id, transition.delay)
+            trace.append({
+                "operation_id": operation.get("operation_id"),
+                "disposition": "ACTION_DELAY_MODIFIED",
+                "target_id": target_id,
+                "action": transition.action,
+                "normalized_value": str(transition.delay.normalized_value),
+                "skip_target_turn": transition.delay.skip_target_turn,
             })
         return ExecutionResult(current, tuple(trace))
 

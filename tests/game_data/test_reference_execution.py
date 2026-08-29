@@ -20,6 +20,7 @@ from hsr_battle_agent.game_data.reference_execution import (
     TeamSkillPointState,
     ToughnessCommitContext,
 )
+from hsr_battle_agent.game_data.scheduler_semantics_reference import ActionDelayState
 from hsr_battle_agent.game_data.toughness_break_reference import ToughnessState
 
 
@@ -38,6 +39,7 @@ BLACK_SWAN_DOT_FLAG_PARENT_ID = "external:TurnBasedGameData:Config/ConfigAbility
 MIND_CONTROL_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl_Damage"
 DOT_TEAR_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear"
 WINDFURY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury"
+STAGE_DELAY_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100"
 
 
 def _record(behavior_id: str) -> dict:
@@ -246,6 +248,30 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("p1", "MDF_Layer"), Decimal("6"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER")
+
+    def test_fixed_action_delay_commits_per_resolved_target_and_clamps(self) -> None:
+        record = {
+            "behavior_id": "delay-fixture", "owner_kind": "StageBuff", "owner_ref": "delay-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "delay", "source_type": "RPG.GameCore.ModifyActionDelay", "kind": "DELAY_ACTION",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "AllDarkTeam"},
+                "arguments": {"AddNormalizedValue": {"IsDynamic": False, "FixedValue": {"Value": -1}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={
+                "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+                "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1"))),
+                "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("1"), Decimal("1"))),
+            },
+            action_delays={"e1": ActionDelayState(Decimal("0.25")), "e2": ActionDelayState(Decimal("2"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="p1"))
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
+        self.assertEqual(result.state.action_delay_state("e2").normalized_value, Decimal("1"))
+        self.assertEqual([item["disposition"] for item in result.trace], ["ACTION_DELAY_MODIFIED", "ACTION_DELAY_MODIFIED"])
 
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
@@ -848,6 +874,34 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.dynamic_store.read("p1", "MDF_WindfuryCount"), Decimal("4"))
         self.assertEqual(result.trace[0]["disposition"], "DYNAMIC_VALUE_SET_FROM_OWN_MODIFIER_LAYER")
+
+    def test_source_backed_stage_fixed_action_delay_component_executes(self) -> None:
+        source = _record(STAGE_DELAY_ID)
+        delay = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.ModifyActionDelay"
+            and operation["arguments"].get("AddNormalizedValue", {}).get("IsDynamic") is False
+            and operation.get("target", {}).get("Alias") == "AllDarkTeam"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-delay-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_DELAY_COMPONENT", "operations": [delay]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={
+                "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+                "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1"))),
+            },
+            action_delays={"e1": ActionDelayState(Decimal("0.4"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_DELAY_COMPONENT", state, ExecutionContext(caster_id="p1"))
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
+        self.assertEqual(result.trace[0]["action"], "ADD")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

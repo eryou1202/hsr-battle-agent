@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-FIXED-ACTION-DELAY-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute BattleEventAbility_900100's real AllDarkTeam fixed -1 ModifyActionDelay operation through BehaviorCompiler and SemanticExecutor against explicit ActionDelayState inputs.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:8",
+    "entrypoint_event": "MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json", "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "AbilityList", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "p1"},
+  "selected_initial_state": {"p1": {"team": "light", "hp": "1", "max_hp": "1"}, "e1": {"team": "dark", "hp": "1", "max_hp": "1", "action_delay": "0.4"}},
+  "expected_transition": {"action_delays": {"e1": {"normalized_value": "0", "skip_target_turn": false}}, "ordered_dispositions": ["ACTION_DELAY_MODIFIED"]},
+  "assumptions": ["The fixture supplies an action-delay state independent of AV scheduling.", "AllDarkTeam target resolution is deterministic under the existing TargetAlias model."],
+  "unsupported_boundary": ["This is not full BattleEventAbility_900100 behavior, AV reorder semantics, or a Golden game trace."]
+}

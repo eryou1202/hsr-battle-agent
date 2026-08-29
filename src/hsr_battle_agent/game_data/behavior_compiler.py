@@ -41,7 +41,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "FORMATION_CHANGE": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "INSERT_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "DELAY_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DELAY_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_ACTION_STATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_ACTION_COST": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "ACTION_START_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -411,6 +411,16 @@ class BehaviorCompiler:
             value = arguments.get("AddRatio", arguments.get("AddValue"))
             if not isinstance(value, Mapping):
                 return "EXECUTABLE_REFERENCE_TEAM_SP_VALUE_MISSING"
+        elif kind == "DELAY_ACTION":
+            if str(operation.get("source_type", "")) != "RPG.GameCore.ModifyActionDelay":
+                return "EXECUTABLE_REFERENCE_ACTION_DELAY_TYPE_UNSUPPORTED"
+            if set(arguments) != {"AddNormalizedValue"}:
+                return "EXECUTABLE_REFERENCE_ACTION_DELAY_ARGUMENTS_UNSUPPORTED"
+            if not isinstance(operation.get("target"), Mapping):
+                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+            value = _mapping(arguments.get("AddNormalizedValue"))
+            if value.get("IsDynamic") is not False or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
+                return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
