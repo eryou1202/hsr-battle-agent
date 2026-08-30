@@ -1,0 +1,62 @@
+{
+  "packet_id": "SCHEDULER-INSERT-ABILITY-QUEUE-001",
+  "game_version": "4.4.54",
+  "scope": "One exact RPG.GameCore.TurnInsertAbility shape: a Caster-owned Black Swan OnEnterBattle callback with a named ability, AllEnemy target alias, explicit priority and no DynamicValues, liveness masks, abort flags or nested child tasks.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve the outer Caster alias to exactly one owner and append an immutable PendingInsertedAction in canonical task execution order. Preserve AbilityName, inner AbilityTarget, declared priority and source flags. The record remains pending; it is neither arbitrated nor executed by this packet.",
+  "state_reads": [
+    "outer Caster target alias",
+    "current pending inserted-action queue length",
+    "strict TurnInsertAbility payload"
+  ],
+  "state_writes": [
+    "ReferenceBattleState.pending_inserted_actions append"
+  ],
+  "ordering": "Queue append is synchronous at the source TaskList position and receives the next zero-based enqueue index. This preserves source task order only. InsertAbilityPriority is stored, not interpreted as a global sort or arbitration rule.",
+  "evidence": [
+    {
+      "source": "TurnBasedGameData",
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "support": "The exact Black Swan StageAbility_Maze callback contains a Caster-owned TurnInsertAbility with no extra state-bearing fields. The other reviewed TurnInsertAbility records require AbortBehaviorFlags, DynamicValues, liveness masks or special revive/servant semantics and are rejected."
+    },
+    {
+      "packet": "SCHEDULER-001",
+      "support": "Existing InsertedActionSpec preserves action-insertion source fields losslessly; the new bridge adds only an explicit pre-arbitration immutable queue boundary."
+    },
+    {
+      "fixture": "source_backed_insert_ability_queue_component_reference_001.json",
+      "support": "The Black Swan source operation executes through BehaviorCompiler and SemanticExecutor and produces one pending queue record."
+    }
+  ],
+  "acceptance": {
+    "tests": [
+      "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_insert_ability_component_queues_without_arbitration",
+      "tests/game_data/test_reference_execution.py::test_insert_ability_rejects_abort_or_liveness_qualified_shape",
+      "tests/game_data/test_executable_handler_eligibility.py::test_every_compiler_executable_kind_has_a_handler_context_contract"
+    ],
+    "trace_disposition": "ACTION_INSERTED_PENDING",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": [
+    "RPG.GameCore.TurnInsertAction",
+    "outer target other than exact Caster alias",
+    "missing or non-AllEnemy inner target alias",
+    "AbortBehaviorFlags",
+    "DynamicValues",
+    "OwnerAliveState or TargetAliveState",
+    "missing/false selected source flags",
+    "nested child tasks"
+  ],
+  "unsupported_boundary": [
+    "priority arbitration and tie breaking",
+    "inner ability target resolution",
+    "inserted ability execution",
+    "AV reset/reorder",
+    "next actor selection",
+    "ordinary turn consumption",
+    "Ultimate/FUA/ExtraAction/interrupt conflict resolution",
+    "revive, servant and Windfury insertion variants",
+    "Golden game-trace claim"
+  ],
+  "dsh_implementation_contract": "For this exact source shape, append a deterministic immutable pending-action record containing owner, ability name, inner target intent, priority and source flags. Do not turn append order or InsertAbilityPriority into an executable scheduler policy until arbitration, target-resolution and action-lifecycle contracts are independently frozen. Reject every non-identical insertion payload instead of silently queuing it."
+}

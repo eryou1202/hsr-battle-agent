@@ -43,6 +43,7 @@ WINDFURY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModi
 STAGE_DELAY_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100"
 AML_MINION_SKILL01_ID = "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02"
 MODIFY_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ModifyActionDelayOnTurnEnd"
+BLACK_SWAN_MAZE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel"
 
 
 def _record(behavior_id: str) -> dict:
@@ -1171,6 +1172,62 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0.3"))
         self.assertEqual(result.trace[0]["action"], "ADD")
+
+    def test_source_backed_black_swan_insert_ability_component_queues_without_arbitration(self) -> None:
+        source = _record(BLACK_SWAN_MAZE_ID)
+        insert = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.TurnInsertAbility"
+            and operation["arguments"].get("AbilityName", {}).get("Value") == "Avatar_BlackSwan_00_SkillMazeInLevel_Insert"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-insert-ability-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_INSERT_ABILITY_COMPONENT", "operations": [insert]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(entities={
+            "black-swan": RuntimeEntity("black-swan", "light", SurvivalState(Decimal("1"), Decimal("1"))),
+            "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1"))),
+            "e2": RuntimeEntity("e2", "dark", SurvivalState(Decimal("1"), Decimal("1"))),
+        })
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_INSERT_ABILITY_COMPONENT", state, ExecutionContext(caster_id="black-swan"),
+        )
+        self.assertEqual(len(result.state.pending_inserted_actions), 1)
+        pending = result.state.pending_inserted_actions[0]
+        self.assertEqual(pending.enqueue_index, 0)
+        self.assertEqual(pending.owner_id, "black-swan")
+        self.assertEqual(pending.spec.ability_name, "Avatar_BlackSwan_00_SkillMazeInLevel_Insert")
+        self.assertEqual(pending.spec.insert_priority, "AvatarBuffSelf")
+        self.assertEqual(pending.spec.ability_target, {"$type": "RPG.GameCore.TargetAlias", "Alias": "AllEnemy"})
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_INSERTED_PENDING")
+        self.assertEqual(result.state.action_tasks, {})
+        self.assertEqual(result.state.action_delays, {})
+
+    def test_insert_ability_rejects_abort_or_liveness_qualified_shape(self) -> None:
+        operation = {
+            "operation_id": "insert", "source_type": "RPG.GameCore.TurnInsertAbility", "kind": "INSERT_ACTION",
+            "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT",
+            "target": {"$type": "RPG.GameCore.TargetAlias", "Alias": "Caster"},
+            "arguments": {
+                "AbilityName": {"Value": "Skill_Insert"},
+                "AbilityTarget": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AllEnemy"},
+                "CanRunOnUnselectableTarget": True,
+                "InsertAbilityPriority": "AvatarBuffSelf",
+                "ShowInActionBar": True,
+                "AbortBehaviorFlags": ["STAT_CTRL"],
+            },
+            "children": [],
+        }
+        record = {"behavior_id": "insert-reject-fixture", "owner_kind": "Avatar", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONSTART", "operations": [operation]}]}
+        compiled = BehaviorCompiler().compile_record(record)
+        operation_ir = compiled["entrypoints"][0]["operations"][0]
+        self.assertEqual(compiled["compile_status"], "COMPILED_STRUCTURE_ONLY")
+        self.assertEqual(operation_ir["reference_execution_blocker"], "EXECUTABLE_REFERENCE_INSERT_ACTION_ARGUMENTS_UNSUPPORTED")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:
         source = _record(WINDFURY_SKILL_NO_NEED_ID)

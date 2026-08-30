@@ -26,7 +26,14 @@ from .predicate_semantics_reference import PredicateContext, evaluate_predicate
 from .property_contribution_reference import PropertyState
 from .modifier_catalog import ModifierDefinition
 from .modifier_lifecycle_reference import ModifierInstance, ModifierState, add_or_refresh, mark_destroy
-from .scheduler_semantics_reference import ActionDelayState, TaskState, TaskStep, apply_delay_operation, trace_completion_marker
+from .scheduler_semantics_reference import (
+    ActionDelayState,
+    InsertedActionSpec,
+    TaskState,
+    TaskStep,
+    apply_delay_operation,
+    trace_completion_marker,
+)
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
 from .toughness_break_reference import ToughnessState, apply_toughness_damage
 
@@ -51,6 +58,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "ACTION_COMPLETION_MARKER": ("explicit action task identity", "existing EXECUTING TaskStep", "selected scheduler task-success boundary"),
     "DAMAGE_COMPLETION_MARKER": ("explicit damage task identity", "existing EXECUTING TaskStep", "selected scheduler damage-task-success boundary"),
     "ACTION_START_MARKER": ("explicit action task identity", "existing READY TaskStep", "selected scheduler task-executing boundary"),
+    "INSERT_ACTION": ("single explicit Caster owner", "strict TurnInsertAbility payload", "immutable pending inserted-action queue"),
 }
 
 
@@ -129,6 +137,39 @@ class SandboxRng:
 
 
 @dataclass(frozen=True)
+class PendingInsertedAction:
+    """A source-accurate action insertion before scheduler arbitration.
+
+    The selected bridge preserves that an ability was inserted, who inserted
+    it, the source task order and its declared priority.  It deliberately does
+    not select the ability target, arbitrate equal priorities, advance AV, or
+    execute the ability.  Those are separate scheduler contracts.
+    """
+
+    enqueue_index: int
+    operation_id: str
+    owner_id: str
+    spec: InsertedActionSpec
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "enqueue_index": self.enqueue_index,
+            "operation_id": self.operation_id,
+            "owner_id": self.owner_id,
+            "ability_name": self.spec.ability_name,
+            "ability_target": self.spec.ability_target,
+            "auto_cast": self.spec.auto_cast,
+            "auto_cast_target": self.spec.auto_cast_target,
+            "insert_priority": self.spec.insert_priority,
+            "show_in_action_bar": self.spec.show_in_action_bar,
+            "can_run_on_unselectable_target": self.spec.can_run_on_unselectable_target,
+            "can_run_after_fight_finish": self.spec.can_run_after_fight_finish,
+            "custom_tags": list(self.spec.custom_tags),
+            "raw_payload": self.spec.raw_payload,
+        }
+
+
+@dataclass(frozen=True)
 class ReferenceBattleState:
     """Immutable state consumed by all first-bridge semantic adapters."""
 
@@ -141,6 +182,7 @@ class ReferenceBattleState:
     action_delays: Mapping[str, ActionDelayState] = field(default_factory=dict)
     action_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
     damage_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
+    pending_inserted_actions: tuple[PendingInsertedAction, ...] = ()
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
     challenge_left: int | None = None
@@ -219,6 +261,11 @@ class ReferenceBattleState:
         tasks[task.task_id] = task
         return replace(self, damage_tasks=tasks)
 
+    def append_inserted_action(self, action: PendingInsertedAction) -> "ReferenceBattleState":
+        if action.enqueue_index != len(self.pending_inserted_actions):
+            raise SemanticExecutionError("inserted action enqueue_index must equal the current pending queue length")
+        return replace(self, pending_inserted_actions=self.pending_inserted_actions + (action,))
+
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
             entities={key: entity.snapshot() for key, entity in self.entities.items()},
@@ -285,6 +332,7 @@ class ReferenceBattleState:
                 key: {"state": value.state.name, "owner_id": value.owner_id}
                 for key, value in sorted(self.damage_tasks.items())
             },
+            "pending_inserted_actions": [action.as_json() for action in self.pending_inserted_actions],
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
             "challenge_left": self.challenge_left,
@@ -455,6 +503,8 @@ class SemanticExecutor:
             return self._execute_damage_completion_marker(operation, state, context)
         if kind == "ACTION_START_MARKER":
             return self._execute_action_start_marker(operation, state, context)
+        if kind == "INSERT_ACTION":
+            return self._execute_insert_action(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -1058,6 +1108,44 @@ class SemanticExecutor:
             "previous_state": before.state.name,
             "state": committed.state.name,
             "owner_id": committed.owner_id,
+        },))
+
+    def _execute_insert_action(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Append one strict ``TurnInsertAbility`` record for later arbitration.
+
+        This is intentionally not an action execution path.  The queue retains
+        source task order and the declared priority only; it does not resolve
+        the inserted ability's inner target, reset AV, consume a turn, choose
+        the next actor, or arbitrate an Ultimate/FUA/extra action conflict.
+        """
+        targets = self._resolve_targets(operation.get("target"), state, context)
+        if len(targets) != 1:
+            raise SemanticExecutionError(
+                f"{operation.get('operation_id')}: strict TurnInsertAbility requires one explicit Caster owner"
+            )
+        spec = InsertedActionSpec.from_operation(operation)
+        if not spec.ability_name or spec.ability_target is None or not spec.insert_priority:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: incomplete strict TurnInsertAbility payload")
+        pending = PendingInsertedAction(
+            enqueue_index=len(state.pending_inserted_actions),
+            operation_id=str(operation.get("operation_id")),
+            owner_id=targets[0],
+            spec=spec,
+        )
+        current = state.append_inserted_action(pending)
+        return ExecutionResult(current, ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "ACTION_INSERTED_PENDING",
+            "enqueue_index": pending.enqueue_index,
+            "owner_id": pending.owner_id,
+            "ability_name": spec.ability_name,
+            "insert_priority": spec.insert_priority,
+            "ability_target": spec.ability_target,
         },))
 
     def _execute_damage_completion_marker(

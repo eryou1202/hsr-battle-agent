@@ -40,7 +40,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "FORMATION_CHANGE": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "INSERT_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "INSERT_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DELAY_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_ACTION_STATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_ACTION_COST": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -451,6 +451,30 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_ACTION_START_ARGUMENTS_UNSUPPORTED"
             if operation.get("target") is not None:
                 return "EXECUTABLE_REFERENCE_ACTION_START_TARGET_UNSUPPORTED"
+        elif kind == "INSERT_ACTION":
+            if str(operation.get("source_type", "")) != "RPG.GameCore.TurnInsertAbility":
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_TYPE_UNSUPPORTED"
+            target = _mapping(operation.get("target"))
+            if set(target) != {"$type", "Alias"} or target.get("$type") != "RPG.GameCore.TargetAlias" or target.get("Alias") != "Caster":
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_OWNER_UNSUPPORTED"
+            if set(arguments) != {
+                "AbilityName",
+                "AbilityTarget",
+                "CanRunOnUnselectableTarget",
+                "InsertAbilityPriority",
+                "ShowInActionBar",
+            }:
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_ARGUMENTS_UNSUPPORTED"
+            ability_name = _mapping(arguments.get("AbilityName"))
+            ability_target = _mapping(arguments.get("AbilityTarget"))
+            if set(ability_name) != {"Value"} or not isinstance(ability_name.get("Value"), str) or not ability_name.get("Value"):
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_ABILITY_NAME_UNSUPPORTED"
+            if set(ability_target) != {"$type", "Alias"} or ability_target.get("$type") != "RPG.GameCore.TargetAlias" or ability_target.get("Alias") != "AllEnemy":
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_ABILITY_TARGET_UNSUPPORTED"
+            if arguments.get("CanRunOnUnselectableTarget") is not True or arguments.get("ShowInActionBar") is not True:
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_FLAGS_UNSUPPORTED"
+            if not isinstance(arguments.get("InsertAbilityPriority"), str) or not arguments.get("InsertAbilityPriority"):
+                return "EXECUTABLE_REFERENCE_INSERT_ACTION_PRIORITY_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:

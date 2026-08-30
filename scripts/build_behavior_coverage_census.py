@@ -131,6 +131,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_dynamic_action_delay_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+        "owner_kind": "Avatar",
+        "fixture": "source_backed_insert_ability_queue_component_reference_001.json",
+    },
 )
 
 

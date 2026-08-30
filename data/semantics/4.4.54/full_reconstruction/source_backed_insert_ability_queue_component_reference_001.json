@@ -1,0 +1,54 @@
+{
+  "fixture_id": "SOURCE-BACKED-INSERT-ABILITY-QUEUE-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute Black Swan's exact StageAbility_Maze OnEnterBattle TurnInsertAbility component through BehaviorCompiler and SemanticExecutor, preserving a pending action rather than inventing scheduler arbitration.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+    "entrypoint_event": "MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle",
+    "source_refs": [
+      {
+        "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+        "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+        "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+        "source": "TurnBasedGameData",
+        "source_container": "AbilityList",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+      }
+    ]
+  },
+  "selected_context": {"caster_id": "black-swan"},
+  "selected_initial_state": {
+    "black-swan": {"team": "light", "hp": "1", "max_hp": "1"},
+    "e1": {"team": "dark", "hp": "1", "max_hp": "1"},
+    "e2": {"team": "dark", "hp": "1", "max_hp": "1"},
+    "pending_inserted_actions": []
+  },
+  "expected_transition": {
+    "pending_inserted_actions": [
+      {
+        "enqueue_index": 0,
+        "owner_id": "black-swan",
+        "ability_name": "Avatar_BlackSwan_00_SkillMazeInLevel_Insert",
+        "ability_target": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AllEnemy"},
+        "insert_priority": "AvatarBuffSelf"
+      }
+    ],
+    "ordered_dispositions": ["ACTION_INSERTED_PENDING"],
+    "action_tasks_unchanged": true,
+    "action_delays_unchanged": true
+  },
+  "assumptions": [
+    "The source Caster alias is supplied as one explicit RuntimeEntity.",
+    "The fixture intentionally preserves, but does not resolve, the inserted ability's AllEnemy target intent.",
+    "The source is close-version behavior evidence and does not silently replace Nanoka 4.4.54 static identity."
+  ],
+  "unsupported_boundary": [
+    "This is not full StageAbility_Maze_BlackSwan_Modifier callback behavior.",
+    "This does not execute Avatar_BlackSwan_00_SkillMazeInLevel_Insert.",
+    "This does not prove priority arbitration, AV reordering, turn consumption or a Golden game trace."
+  ]
+}

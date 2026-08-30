@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "19d94333bf4c57dc3f64ee97cba1c75d886b7fbbb5e7ee3dab32038205f2a166",
+  "audit_sha256": "da66fe1571bd9d0b518e4c669825febb48121a18809e6539c0507df0ec292293",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ACTION_COMPLETION_MARKER": 7,
@@ -12,6 +12,7 @@
     "DEFINE_DYNAMIC_VALUE": 7,
     "DELAY_ACTION": 12,
     "HEAL_REQUEST": 6,
+    "INSERT_ACTION": 1,
     "MODIFY_PROPERTY_STACK": 158,
     "MODIFY_TEAM_SP": 6,
     "MODIFY_WEAKNESS": 7,
@@ -69,6 +70,11 @@
       "DynamicValue scope/hash inputs",
       "target SurvivalState"
     ],
+    "INSERT_ACTION": [
+      "single explicit Caster owner",
+      "strict TurnInsertAbility payload",
+      "immutable pending inserted-action queue"
+    ],
     "MODIFY_PROPERTY_STACK": [
       "target resolution",
       "DynamicValue scope/hash inputs",
@@ -102,7 +108,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "93e47088d5184d5c8e20724006db414769043ae0c017ca0462a2e7e863a13abc",
+  "input_compiler_report_sha256": "bd02feaecdd04de44e0d7a84205535bc23ab1dbbfb3c4404adf6a08a40d9b545",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []
