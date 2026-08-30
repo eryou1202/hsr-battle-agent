@@ -20,7 +20,7 @@ from hsr_battle_agent.game_data.reference_execution import (
     TeamSkillPointState,
     ToughnessCommitContext,
 )
-from hsr_battle_agent.game_data.scheduler_semantics_reference import ActionDelayState, TaskState, TaskStep
+from hsr_battle_agent.game_data.scheduler_semantics_reference import ActionDelayState, OrdinaryTurnTimeline, TaskState, TaskStep
 from hsr_battle_agent.game_data.toughness_break_reference import ToughnessState
 
 
@@ -337,6 +337,58 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_task("skill:p1:1").state, TaskState.SUCCESS)
         self.assertEqual(result.state.action_task("skill:p1:1").owner_id, "p1")
         self.assertEqual(result.trace[0]["disposition"], "ACTION_COMPLETION_MARKED_SUCCESS")
+
+    def test_ordinary_completion_composes_success_marker_with_av_recharge_without_special_arbitration(self) -> None:
+        state = ReferenceBattleState(
+            entities={
+                "p1105": RuntimeEntity("p1105", "light", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100")),
+                "p1307": RuntimeEntity("p1307", "light", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100")),
+                "m4014030": RuntimeEntity("m4014030", "dark", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100")),
+            },
+            action_tasks={"skill:p1105:1": TaskStep("skill:p1105:1", TaskState.SUCCESS, "p1105")},
+            ordinary_turn_timeline=OrdinaryTurnTimeline(
+                action_order=("p1105", "p1307", "m4014030"),
+                remaining_delays={"p1105": Decimal("0"), "p1307": Decimal("20"), "m4014030": Decimal("30")},
+                current_actor_id="p1105",
+                turn_index=1,
+            ),
+        )
+        result = SemanticExecutor().advance_ordinary_after_completed_action(
+            state,
+            ExecutionContext(caster_id="p1105", action_task_id="skill:p1105:1"),
+            eligible_entity_ids=("p1105", "p1307", "m4014030"),
+        )
+        timeline = result.state.ordinary_turn_timeline
+        self.assertIsNotNone(timeline)
+        assert timeline is not None
+        self.assertEqual(timeline.current_actor_id, "p1307")
+        self.assertEqual(timeline.remaining_delays, {"p1307": Decimal("0"), "m4014030": Decimal("10"), "p1105": Decimal("80")})
+        self.assertEqual(result.trace[0]["disposition"], "ORDINARY_ACTION_RECHARGED_AND_NEXT_SELECTED")
+        self.assertEqual(result.trace[0]["pending_inserted_actions_ignored"], 0)
+
+    def test_ordinary_completion_rejects_dead_eligible_entity_or_unfinished_action_task(self) -> None:
+        alive = RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100"))
+        dead = RuntimeEntity("e1", "dark", SurvivalState(Decimal("0"), Decimal("1"), alive=False), speed=Decimal("100"))
+        state = ReferenceBattleState(
+            entities={"p1": alive, "e1": dead},
+            action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.EXECUTING, "p1")},
+            ordinary_turn_timeline=OrdinaryTurnTimeline(
+                action_order=("p1", "e1"),
+                remaining_delays={"p1": Decimal("0"), "e1": Decimal("10")},
+                current_actor_id="p1",
+            ),
+        )
+        executor = SemanticExecutor()
+        context = ExecutionContext(caster_id="p1", action_task_id="skill:p1:1")
+        with self.assertRaisesRegex(Exception, "SUCCESS action task"):
+            executor.advance_ordinary_after_completed_action(state, context, eligible_entity_ids=("p1",))
+        completed = ReferenceBattleState(
+            entities=state.entities,
+            action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.SUCCESS, "p1")},
+            ordinary_turn_timeline=state.ordinary_turn_timeline,
+        )
+        with self.assertRaisesRegex(Exception, "exclude dead"):
+            executor.advance_ordinary_after_completed_action(completed, context, eligible_entity_ids=("p1", "e1"))
 
     def test_skill_perform_finish_rejects_missing_or_nonexecuting_task(self) -> None:
         record = {

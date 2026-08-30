@@ -1,0 +1,46 @@
+{
+  "fixture_id": "ORDINARY-AV-COMPOSITION-REFERENCE-001",
+  "game_version": "4.4.54",
+  "purpose": "Exercise the generic ReferenceBattleState ordinary completion adapter using the first standard property-38 transition in the existing real-content semantic E2E fixture, without claiming inserted-action or full scheduler arbitration.",
+  "status": "LOCAL-ANCHOR-AND-SEMANTIC-FIXTURE_REFERENCE_NOT_GOLDEN",
+  "provenance": {
+    "semantic_e2e_fixture": "data/semantics/4.4.54/dynamic_mvp_v1/semantic_e2e_mvp_v1.json",
+    "stage_id": "30113121",
+    "actor_ids": ["p1105", "p1307", "m4014030"],
+    "real_content_ids": {"p1105_avatar_id": "1105", "p1307_avatar_id": "1307", "m4014030_monster_id": "4014030"},
+    "local_anchor": "src/hsr_battle_agent/battle_runtime/turns.py"
+  },
+  "selected_initial_state": {
+    "action_task": {"task_id": "skill:p1105:1", "state": "SUCCESS", "owner_id": "p1105"},
+    "ordinary_timeline": {
+      "action_order": ["p1105", "p1307", "m4014030"],
+      "remaining_delays": {"p1105": "0", "p1307": "20", "m4014030": "30"},
+      "current_actor_id": "p1105",
+      "elapsed_action_delay": "0",
+      "turn_index": 1
+    },
+    "eligible_ordinary_entities": ["p1105", "p1307", "m4014030"],
+    "speeds": {"p1105": "100", "p1307": "100", "m4014030": "100"},
+    "excluded_scheduler_state": {"pending_inserted_actions": [], "behavior_level_action_delays": {}}
+  },
+  "expected_transition": {
+    "recharged_actor_id": "p1105",
+    "recharged_delay": "100",
+    "candidate_order_before_advance": ["p1307", "m4014030", "p1105"],
+    "selected_delay": "20",
+    "next_actor_id": "p1307",
+    "ordinary_timeline": {
+      "action_order": ["p1307", "m4014030", "p1105"],
+      "remaining_delays": {"p1307": "0", "m4014030": "10", "p1105": "80"},
+      "current_actor_id": "p1307",
+      "elapsed_action_delay": "20",
+      "turn_index": 2
+    },
+    "ordered_dispositions": ["ORDINARY_ACTION_RECHARGED_AND_NEXT_SELECTED"]
+  },
+  "nonclaims": [
+    "The normalized speed/delay values are the semantic-E2E probe, not a literal stage-stat replay.",
+    "The fixture does not execute a canonical behavior entrypoint and is not source-backed compiler coverage.",
+    "No ActionDelayState modifier, inserted action, special action, action legality recomputation, target selection or native equal-key List.Sort behavior is exercised."
+  ]
+}

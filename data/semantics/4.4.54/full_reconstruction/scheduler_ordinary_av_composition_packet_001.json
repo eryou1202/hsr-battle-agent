@@ -1,0 +1,65 @@
+{
+  "packet_id": "SCHEDULER-ORDINARY-AV-COMPOSITION-001",
+  "game_version": "4.4.54",
+  "scope": "The already selected standard ordinary-action completion boundary only: an explicitly SUCCESS action TaskStep recharges its active ordinary actor from speed/property-32 and advances the explicit eligible ordinary property-38 list to its next stable candidate.",
+  "closure_status": "PARTIAL_R4_R3_REFERENCE",
+  "selected_model": "After action effects and resource post-commit have settled and an explicit ordinary action task is SUCCESS, require that task owner to equal the active ordinary actor. Set that actor's remaining action delay to ActionDelayDistance/speed with ActionDelayDistance=10000. Stably sort the supplied eligible ordinary list by remaining delay while preserving the prior action-list order on equal delays, subtract the selected delay from every eligible candidate, and make the first candidate active. The reference state keeps this property-38 timeline separate from behavior-level ActionDelayState modifiers.",
+  "state_reads": [
+    "explicit successful action TaskStep and owner",
+    "OrdinaryTurnTimeline.current_actor_id/action_order/remaining_delays",
+    "eligible ordinary entity identities",
+    "RuntimeEntity.speed selected as property-32 input",
+    "RuntimeEntity.survival.alive for caller-supplied eligibility validation"
+  ],
+  "state_writes": [
+    "completed actor remaining property-38 delay",
+    "all eligible remaining property-38 delays after selected-delay advance",
+    "ordinary action-list order",
+    "OrdinaryTurnTimeline.current_actor_id",
+    "OrdinaryTurnTimeline.elapsed_action_delay and turn_index"
+  ],
+  "ordering": "This boundary runs only after the explicit action-completion marker. Recharge occurs before candidate ordering; selected delay is then subtracted synchronously from the closed ordinary candidate set. State visibility is the immutable next ReferenceBattleState. Equal-delay tie policy is deliberate stable prior action-list order, matching the existing Semantics-29 scoped runtime policy rather than claiming native List.Sort internals.",
+  "evidence": [
+    {
+      "packet": "DYN-MVP-AV-001",
+      "support": "R4/R3 selected ordinary model identifies property 32 as speed, property 38 as remaining delay, ActionDelayDistance=10000, recharge before selection, and advance/order after settled action effects."
+    },
+    {
+      "local_anchor": "src/hsr_battle_agent/battle_runtime/turns.py",
+      "support": "Existing Semantics-29 scoped implementation independently preserves an action list, sorts remaining property-38 delay with stable prior-list ties, advances selected delay, and requires action completion before next selection."
+    },
+    {
+      "fixture": "data/semantics/4.4.54/dynamic_mvp_v1/semantic_e2e_mvp_v1.json",
+      "support": "The real-content semantic fixture provides the p1105 -> p1307 first ordinary completion values used by the reference acceptance fixture."
+    }
+  ],
+  "acceptance": {
+    "tests": [
+      "tests/game_data/test_scheduler_semantics_reference.py::test_ordinary_completion_recharges_then_stably_advances_property_38_scope",
+      "tests/game_data/test_scheduler_semantics_reference.py::test_ordinary_initial_selection_uses_stable_prior_action_list_tie_order",
+      "tests/game_data/test_reference_execution.py::test_ordinary_completion_composes_success_marker_with_av_recharge_without_special_arbitration",
+      "tests/game_data/test_reference_execution.py::test_ordinary_completion_rejects_dead_eligible_entity_or_unfinished_action_task"
+    ],
+    "fixture": "ordinary_av_composition_reference_001.json",
+    "trace_disposition": "ORDINARY_ACTION_RECHARGED_AND_NEXT_SELECTED",
+    "status": "LOCAL-ANCHOR-AND-SEMANTIC-FIXTURE-REFERENCE_NOT_SOURCE-BACKED-CANONICAL-OPERATION_NOT_GOLDEN"
+  },
+  "strict_rejection": [
+    "missing/unfinished action task",
+    "completion owner different from active ordinary actor",
+    "empty or timeline-absent ordinary eligibility domain",
+    "dead entity supplied as eligible",
+    "nonpositive speed",
+    "entity absent from the ordinary action list"
+  ],
+  "unsupported_boundary": [
+    "derivation of ordinary eligibility from full action/target legality",
+    "behavior-level SetActionDelay/ModifyActionDelay/ResetActionDelay composition with property 38",
+    "pending inserted-action eligibility or priority arbitration",
+    "Advance Forward, delay, skip-turn consumption, Ultimate, FUA, Extra Action, Immediate Action, interrupts and queued-response arbitration",
+    "summon/memosprite/special-entity action lists",
+    "native equal-key sort implementation details",
+    "Golden game-trace claim"
+  ],
+  "dsh_implementation_contract": "Keep a distinct immutable ordinary property-38 timeline. At the explicit ordinary action completion boundary only, validate the completed task and supplied alive ordinary candidates; set the actor delay to 10000/speed, stably reorder by remaining delay/prior list order, subtract the selected delay from every candidate, and expose the next actor. Do not allow behavior-level delay modifiers, pending inserts, or special-action policies to silently affect this transition until their own arbitration contracts are frozen."
+}

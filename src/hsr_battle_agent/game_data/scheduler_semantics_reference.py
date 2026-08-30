@@ -69,6 +69,164 @@ class ActionDelayState:
 
 
 @dataclass(frozen=True)
+class OrdinaryTurnTimeline:
+    """Reference state for the closed ordinary property-38 scheduler scope.
+
+    This is deliberately distinct from ``ActionDelayState``.  The latter is a
+    behavior-level delay operation holder, while this timeline represents the
+    standard-MVP remaining action-delay/action-list model recovered as
+    property 38.  Inserted actions, Advance/Delay composition, special turns,
+    and priority arbitration are not represented here.
+    """
+
+    action_order: tuple[str, ...]
+    remaining_delays: Mapping[str, Decimal]
+    current_actor_id: str | None = None
+    elapsed_action_delay: Decimal = Decimal("0")
+    turn_index: int = 0
+
+    def __post_init__(self) -> None:
+        if not self.action_order or len(set(self.action_order)) != len(self.action_order):
+            raise SchedulerSemanticError("ordinary action order must contain unique entities")
+        if set(self.remaining_delays) != set(self.action_order):
+            raise SchedulerSemanticError("ordinary remaining-delay keys must exactly match action order")
+        if any(value < 0 for value in self.remaining_delays.values()):
+            raise SchedulerSemanticError("ordinary remaining delays must be non-negative")
+        if self.current_actor_id is not None and self.current_actor_id not in self.remaining_delays:
+            raise SchedulerSemanticError("ordinary current actor is absent from action order")
+        if self.elapsed_action_delay < 0 or self.turn_index < 0:
+            raise SchedulerSemanticError("ordinary timeline counters must be non-negative")
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "action_order": list(self.action_order),
+            "remaining_delays": {key: str(value) for key, value in sorted(self.remaining_delays.items())},
+            "current_actor_id": self.current_actor_id,
+            "elapsed_action_delay": str(self.elapsed_action_delay),
+            "turn_index": self.turn_index,
+        }
+
+
+@dataclass(frozen=True)
+class OrdinaryTurnTransition:
+    """One ordinary candidate-selection or post-action advance result."""
+
+    timeline: OrdinaryTurnTimeline
+    selected_actor_id: str
+    selected_delay: Decimal
+    ordered_candidates_before_advance: tuple[str, ...]
+    recharged_actor_id: str | None = None
+    recharged_delay: Decimal | None = None
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "selected_actor_id": self.selected_actor_id,
+            "selected_delay": str(self.selected_delay),
+            "ordered_candidates_before_advance": list(self.ordered_candidates_before_advance),
+            "recharged_actor_id": self.recharged_actor_id,
+            "recharged_delay": None if self.recharged_delay is None else str(self.recharged_delay),
+            "timeline": self.timeline.as_json(),
+        }
+
+
+def _ordinary_candidates(timeline: OrdinaryTurnTimeline, eligible_ids: Iterable[str]) -> tuple[str, ...]:
+    eligible = set(eligible_ids)
+    ordered = tuple(entity_id for entity_id in timeline.action_order if entity_id in eligible)
+    if not ordered:
+        raise SchedulerSemanticError("ordinary scheduler requires at least one eligible actor")
+    if len(ordered) != len(eligible):
+        missing = sorted(eligible - set(ordered))
+        raise SchedulerSemanticError(f"ordinary scheduler eligible actor is absent from action order: {missing!r}")
+    positions = {entity_id: index for index, entity_id in enumerate(ordered)}
+    return tuple(sorted(ordered, key=lambda entity_id: (timeline.remaining_delays[entity_id], positions[entity_id])))
+
+
+def _advance_ordinary_candidates(
+    timeline: OrdinaryTurnTimeline,
+    eligible_ids: Iterable[str],
+    *,
+    recharged_actor_id: str | None = None,
+    recharged_delay: Decimal | None = None,
+) -> OrdinaryTurnTransition:
+    candidates = _ordinary_candidates(timeline, eligible_ids)
+    selected_actor_id = candidates[0]
+    selected_delay = timeline.remaining_delays[selected_actor_id]
+    remaining = {
+        entity_id: max(Decimal("0"), timeline.remaining_delays[entity_id] - selected_delay)
+        for entity_id in candidates
+    }
+    advanced = OrdinaryTurnTimeline(
+        action_order=candidates,
+        remaining_delays=remaining,
+        current_actor_id=selected_actor_id,
+        elapsed_action_delay=timeline.elapsed_action_delay + selected_delay,
+        turn_index=timeline.turn_index + 1,
+    )
+    return OrdinaryTurnTransition(
+        timeline=advanced,
+        selected_actor_id=selected_actor_id,
+        selected_delay=selected_delay,
+        ordered_candidates_before_advance=candidates,
+        recharged_actor_id=recharged_actor_id,
+        recharged_delay=recharged_delay,
+    )
+
+
+def select_initial_ordinary_actor(
+    timeline: OrdinaryTurnTimeline,
+    eligible_ids: Iterable[str],
+) -> OrdinaryTurnTransition:
+    """Select and advance to one ordinary actor without a prior completion."""
+    if timeline.current_actor_id is not None:
+        raise SchedulerSemanticError("ordinary timeline already has an active actor")
+    return _advance_ordinary_candidates(timeline, eligible_ids)
+
+
+def complete_ordinary_action(
+    timeline: OrdinaryTurnTimeline,
+    *,
+    actor_id: str,
+    eligible_ids: Iterable[str],
+    speeds: Mapping[str, Decimal],
+    action_delay_distance: Decimal = Decimal("10000"),
+) -> OrdinaryTurnTransition:
+    """Recharge one completed ordinary actor, then select the next actor.
+
+    This is the bounded DYN-MVP-AV-001 model: the completing actor receives
+    ``ActionDelayDistance / speed``; eligible ordinary actors are stably
+    ordered by remaining delay and prior action-list position; the selected
+    delay advances every candidate.  Callers own eligibility filtering and
+    must not pass special/inserted action candidates into this scope.
+    """
+    if timeline.current_actor_id != actor_id:
+        raise SchedulerSemanticError("ordinary completion actor must match the active ordinary actor")
+    eligible = tuple(eligible_ids)
+    if actor_id not in eligible:
+        raise SchedulerSemanticError("ordinary completion actor is not eligible")
+    if action_delay_distance <= 0:
+        raise SchedulerSemanticError("ordinary action-delay distance must be positive")
+    speed = speeds.get(actor_id)
+    if speed is None or speed <= 0:
+        raise SchedulerSemanticError("ordinary completion actor requires positive explicit speed")
+    recharge = action_delay_distance / speed
+    delays = dict(timeline.remaining_delays)
+    delays[actor_id] = recharge
+    recharged = OrdinaryTurnTimeline(
+        action_order=timeline.action_order,
+        remaining_delays=delays,
+        current_actor_id=None,
+        elapsed_action_delay=timeline.elapsed_action_delay,
+        turn_index=timeline.turn_index,
+    )
+    return _advance_ordinary_candidates(
+        recharged,
+        eligible,
+        recharged_actor_id=actor_id,
+        recharged_delay=recharge,
+    )
+
+
+@dataclass(frozen=True)
 class LoopSpec:
     max_loop_count: int
     body_operations: tuple[Mapping[str, Any], ...]

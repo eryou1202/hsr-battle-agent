@@ -29,6 +29,8 @@ from .modifier_lifecycle_reference import ModifierInstance, ModifierState, add_o
 from .scheduler_semantics_reference import (
     ActionDelayState,
     InsertedActionSpec,
+    OrdinaryTurnTimeline,
+    complete_ordinary_action,
     TaskState,
     TaskStep,
     apply_delay_operation,
@@ -84,6 +86,7 @@ class RuntimeEntity:
     defense: Decimal = Decimal("0")
     break_damage_added_ratio: Decimal = Decimal("0")
     status_probability_base: Decimal = Decimal("0")
+    speed: Decimal = Decimal("0")
     toughness: ToughnessState | None = None
     weaknesses: tuple[str, ...] = ()
 
@@ -183,6 +186,7 @@ class ReferenceBattleState:
     action_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
     damage_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
     pending_inserted_actions: tuple[PendingInsertedAction, ...] = ()
+    ordinary_turn_timeline: OrdinaryTurnTimeline | None = None
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
     challenge_left: int | None = None
@@ -266,6 +270,11 @@ class ReferenceBattleState:
             raise SemanticExecutionError("inserted action enqueue_index must equal the current pending queue length")
         return replace(self, pending_inserted_actions=self.pending_inserted_actions + (action,))
 
+    def replace_ordinary_turn_timeline(self, timeline: OrdinaryTurnTimeline) -> "ReferenceBattleState":
+        for entity_id in timeline.action_order:
+            self.entity(entity_id)
+        return replace(self, ordinary_turn_timeline=timeline)
+
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
             entities={key: entity.snapshot() for key, entity in self.entities.items()},
@@ -299,6 +308,7 @@ class ReferenceBattleState:
                     "defense": str(entity.defense),
                     "break_damage_added_ratio": str(entity.break_damage_added_ratio),
                     "status_probability_base": str(entity.status_probability_base),
+                    "speed": str(entity.speed),
                     "toughness": None if entity.toughness is None else dict(entity.toughness.as_json()),
                     "weaknesses": list(entity.weaknesses),
                 }
@@ -333,6 +343,7 @@ class ReferenceBattleState:
                 for key, value in sorted(self.damage_tasks.items())
             },
             "pending_inserted_actions": [action.as_json() for action in self.pending_inserted_actions],
+            "ordinary_turn_timeline": None if self.ordinary_turn_timeline is None else self.ordinary_turn_timeline.as_json(),
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
             "challenge_left": self.challenge_left,
@@ -439,6 +450,53 @@ class SemanticExecutor:
             current = result.state
             trace.extend(result.trace)
         return ExecutionResult(current, tuple(trace))
+
+    def advance_ordinary_after_completed_action(
+        self,
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+        *,
+        eligible_entity_ids: Sequence[str],
+    ) -> ExecutionResult:
+        """Compose an already-completed ordinary task with DYN-MVP-AV-001.
+
+        This method is intentionally a global scheduler boundary rather than
+        a compiler operation.  It requires the explicit action marker to have
+        committed first and ignores pending inserted actions and behavior-level
+        ActionDelayState modifiers until their arbitration semantics close.
+        """
+        task_id = context.action_task_id
+        if not task_id:
+            raise SemanticExecutionError("ordinary action completion requires explicit action_task_id")
+        task = state.action_task(task_id)
+        if task.state is not TaskState.SUCCESS or not task.owner_id:
+            raise SemanticExecutionError("ordinary action completion requires a SUCCESS action task with an owner")
+        timeline = state.ordinary_turn_timeline
+        if timeline is None:
+            raise SemanticExecutionError("ordinary action completion requires an initialized ordinary timeline")
+        eligible = tuple(eligible_entity_ids)
+        if any(not state.entity(entity_id).survival.alive for entity_id in eligible):
+            raise SemanticExecutionError("ordinary eligibility must exclude dead entities")
+        speeds = {entity_id: state.entity(entity_id).speed for entity_id in eligible}
+        transition = complete_ordinary_action(
+            timeline,
+            actor_id=task.owner_id,
+            eligible_ids=eligible,
+            speeds=speeds,
+        )
+        current = state.replace_ordinary_turn_timeline(transition.timeline)
+        return ExecutionResult(current, ({
+            "disposition": "ORDINARY_ACTION_RECHARGED_AND_NEXT_SELECTED",
+            "completed_task_id": task_id,
+            "recharged_actor_id": transition.recharged_actor_id,
+            "recharged_delay": str(transition.recharged_delay),
+            "candidate_order_before_advance": list(transition.ordered_candidates_before_advance),
+            "selected_delay": str(transition.selected_delay),
+            "next_actor_id": transition.selected_actor_id,
+            "elapsed_action_delay": str(transition.timeline.elapsed_action_delay),
+            "turn_index": transition.timeline.turn_index,
+            "pending_inserted_actions_ignored": len(current.pending_inserted_actions),
+        },))
 
     def _execute_operation(
         self,

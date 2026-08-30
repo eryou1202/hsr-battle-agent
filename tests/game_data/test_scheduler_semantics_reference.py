@@ -8,11 +8,14 @@ from hsr_battle_agent.game_data.scheduler_semantics_reference import (
     ActionDelayState,
     InsertedActionSpec,
     LoopSpec,
+    OrdinaryTurnTimeline,
     SchedulerSemanticError,
     TaskState,
     apply_delay_operation,
+    complete_ordinary_action,
     conditional_loop_expand,
     expand_template_invocation,
+    select_initial_ordinary_actor,
     trace_completion_marker,
 )
 
@@ -48,6 +51,59 @@ class SchedulerReferenceTest(unittest.TestCase):
             add_result.delay,
         )
         self.assertEqual((reset.action, reset.delay.normalized_value, reset.delay.skip_target_turn), ("RESET", Decimal("0"), True))
+
+    def test_ordinary_completion_recharges_then_stably_advances_property_38_scope(self) -> None:
+        timeline = OrdinaryTurnTimeline(
+            action_order=("p1105", "p1307", "m4014030"),
+            remaining_delays={
+                "p1105": Decimal("0"),
+                "p1307": Decimal("20"),
+                "m4014030": Decimal("30"),
+            },
+            current_actor_id="p1105",
+            turn_index=1,
+        )
+        transition = complete_ordinary_action(
+            timeline,
+            actor_id="p1105",
+            eligible_ids=("p1105", "p1307", "m4014030"),
+            speeds={
+                "p1105": Decimal("100"),
+                "p1307": Decimal("100"),
+                "m4014030": Decimal("100"),
+            },
+        )
+        self.assertEqual(transition.recharged_delay, Decimal("100"))
+        self.assertEqual(transition.ordered_candidates_before_advance, ("p1307", "m4014030", "p1105"))
+        self.assertEqual(transition.selected_actor_id, "p1307")
+        self.assertEqual(transition.selected_delay, Decimal("20"))
+        self.assertEqual(
+            transition.timeline.remaining_delays,
+            {"p1307": Decimal("0"), "m4014030": Decimal("10"), "p1105": Decimal("80")},
+        )
+        self.assertEqual(transition.timeline.current_actor_id, "p1307")
+        self.assertEqual(transition.timeline.elapsed_action_delay, Decimal("20"))
+        self.assertEqual(transition.timeline.turn_index, 2)
+
+    def test_ordinary_initial_selection_uses_stable_prior_action_list_tie_order(self) -> None:
+        timeline = OrdinaryTurnTimeline(
+            action_order=("b", "a"),
+            remaining_delays={"b": Decimal("0"), "a": Decimal("0")},
+        )
+        transition = select_initial_ordinary_actor(timeline, ("a", "b"))
+        self.assertEqual(transition.ordered_candidates_before_advance, ("b", "a"))
+        self.assertEqual(transition.selected_actor_id, "b")
+
+    def test_ordinary_completion_rejects_wrong_actor_or_nonpositive_speed(self) -> None:
+        timeline = OrdinaryTurnTimeline(
+            action_order=("p1", "e1"),
+            remaining_delays={"p1": Decimal("0"), "e1": Decimal("5")},
+            current_actor_id="p1",
+        )
+        with self.assertRaisesRegex(SchedulerSemanticError, "match the active"):
+            complete_ordinary_action(timeline, actor_id="e1", eligible_ids=("p1", "e1"), speeds={"e1": Decimal("100")})
+        with self.assertRaisesRegex(SchedulerSemanticError, "positive explicit speed"):
+            complete_ordinary_action(timeline, actor_id="p1", eligible_ids=("p1", "e1"), speeds={"p1": Decimal("0")})
 
     def test_fixed_loop_and_conditional_loop(self) -> None:
         body = [{"operation_id": "body"}]
