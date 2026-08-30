@@ -126,6 +126,17 @@ StackProperty trace for `MCommon_AttackRatioUp` writing a stable
 modifier-owned property slot, and a toughness/break reference.
 Authoritative state lives in `coverage_ledger_v1.json`.
 
+`CONTENT-BEHAVIOR-MAPPING-001` now makes the static-versus-behavior gap
+machine-auditable. The exact local 4.4.54 denominator is 97 Avatars, 664
+Skills, 5,018 Traces, 582 Eidolons, 169 LightCones, 60 RelicSets, 628
+Monsters, 12,873 MonsterSkills and 18 StageBuffs. The captured behavior slice
+has no literal native-ID join to those entities: its 29 Avatar behavior
+records identify only two **representation-transform candidates** (Natasha
+1105 and Black Swan 1307) through cached source tags. Individual skills,
+traces and eidolons remain unmapped; LightCone, RelicSet and MonsterSkill
+behavior capture is currently zero. These are denominator/gap facts, not an
+execution-coverage claim.
+
 It now also has a separate static-content route: Nanoka 4.4.54 is captured as
 an immutable local raw snapshot, normalized into Canonical JSON/JSONL, and
 rebuilt into a local SQLite query database.  That makes static Character,

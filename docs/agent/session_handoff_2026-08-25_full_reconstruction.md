@@ -7,6 +7,22 @@
 - Highest goal: `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`.
 - DSH production build remains frozen.
 
+## Current resume point — checkpoint 038
+
+`CONTENT-BEHAVIOR-MAPPING-001` has completed. It reads only the exact local
+Nanoka 4.4.54 SQLite, the canonical corpus/compiler report, and the cached
+StarRailRes character index. It reports exact static denominators but does not
+invent native behavior joins: two parent Avatar representation-transform
+candidates (Natasha `1105`, Black Swan `1307`), zero direct links, and zero
+captured LightCone/RelicSet/MonsterSkill behavior links. Its output is
+`data/semantics/4.4.54/full_reconstruction/content_behavior_mapping_001.json`.
+
+Next ticket: `COMPILER-RETARGET-EXECUTION-001`. Group the twenty `Retarget`
+payloads from `behavior_compiler_report_002.json`; only lower a form with a
+supported target collection, deterministic selection/RNG contract and wholly
+closed nested children. Do not infer action arbitration or promote a complete
+record from an independently executable component.
+
 ## Completed
 
 - `RECON-STATE-REPAIR-001` repaired SSOT status, Effect IR vocabulary,
