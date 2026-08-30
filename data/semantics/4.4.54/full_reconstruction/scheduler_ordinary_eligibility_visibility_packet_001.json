@@ -1,0 +1,56 @@
+{
+  "packet_id": "SCHEDULER-ORDINARY-ELIGIBILITY-VISIBILITY-001",
+  "game_version": "4.4.54",
+  "scope": "The standard ordinary candidate-domain projection immediately before the already closed ordinary property-38 completion/selection boundary. It is limited to entities already present in OrdinaryTurnTimeline.action_order.",
+  "closure_status": "PARTIAL_R4_R3_REFERENCE",
+  "selected_model": "Project ordinary candidates from the immutable timeline's prior action-list order. Retain an entity only when its explicit ordinary_action_eligible participation flag is true and settled SurvivalState.alive is true. The projection does not inspect target selectability, action-resource legality, behavior-level ActionDelayState modifiers, or pending inserted-action records. It is therefore the closed ordinary alive/action-domain filter, not a general legal_actions implementation.",
+  "state_reads": [
+    "OrdinaryTurnTimeline.action_order",
+    "RuntimeEntity.ordinary_action_eligible",
+    "settled RuntimeEntity.survival.alive"
+  ],
+  "state_writes": [
+    "none; returns a deterministic ordered ordinary candidate identity tuple",
+    "the consuming ordinary completion boundary records the selected candidate set in its trace"
+  ],
+  "ordering": "Life-state filtering occurs after settled HP/death state and before ordinary candidate sorting. The projected tuple preserves prior action-list order; the downstream property-38 comparator supplies stable remaining-delay ordering.",
+  "evidence": [
+    {
+      "packet": "DYN-MVP-DEATH-001",
+      "support": "R4/R3 ordinary death contract removes DEAD entities from the ordinary action domain before a subsequent ordinary action selection."
+    },
+    {
+      "packet": "DYN-MVP-AV-001",
+      "support": "The ordinary AV model consumes an eligible action list and keeps special action systems outside its scope."
+    },
+    {
+      "local_anchor": "src/hsr_battle_agent/battle_runtime/turns.py",
+      "support": "The existing Semantics-29 runtime owns a distinct ordinary participant list; this reference projection retains that scope and does not turn target selectable state into action eligibility."
+    }
+  ],
+  "acceptance": {
+    "tests": [
+      "tests/game_data/test_reference_execution.py::test_ordinary_completion_rejects_unfinished_action_task_and_derives_alive_ordinary_domain",
+      "tests/game_data/test_reference_execution.py::test_ordinary_completion_composes_success_marker_with_av_recharge_without_special_arbitration"
+    ],
+    "fixture": "ordinary_av_composition_reference_001.json",
+    "trace_fields": ["eligible_entity_ids", "eligible_domain_source"],
+    "status": "REFERENCE_STATE_PROJECTION_NOT_CANONICAL-BEHAVIOR-COMPILER-COVERAGE_NOT_GOLDEN"
+  },
+  "strict_rejection": [
+    "absent ordinary timeline",
+    "candidate entity absent from the timeline",
+    "using target selectable state as a substitute for ordinary action participation",
+    "implicitly scheduling an inserted action from the pending queue",
+    "implicitly applying a behavior-level ActionDelayState modifier to property 38"
+  ],
+  "unsupported_boundary": [
+    "resource/skill/target legality",
+    "terminal/wave handling when no ordinary candidates remain",
+    "special, summon, memosprite, boss-part or replacement participant derivation",
+    "pending inserted-action eligibility and arbitration",
+    "Advance Forward, delay, turn-skip consumption, Ultimate/FUA/ExtraAction/Immediate Action/interrupt composition",
+    "Golden game-trace claim"
+  ],
+  "dsh_implementation_contract": "Store ordinary action participation independently from target selectability. Build the ordinary candidate tuple only from the current ordinary timeline in prior action-list order, requiring both ordinary participation and settled alive state. Feed that tuple to the property-38 AV transition. Do not broaden this projection into a general action-legality or special-action scheduler path without an explicit contract."
+}

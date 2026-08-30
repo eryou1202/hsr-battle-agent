@@ -356,7 +356,6 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().advance_ordinary_after_completed_action(
             state,
             ExecutionContext(caster_id="p1105", action_task_id="skill:p1105:1"),
-            eligible_entity_ids=("p1105", "p1307", "m4014030"),
         )
         timeline = result.state.ordinary_turn_timeline
         self.assertIsNotNone(timeline)
@@ -364,31 +363,34 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(timeline.current_actor_id, "p1307")
         self.assertEqual(timeline.remaining_delays, {"p1307": Decimal("0"), "m4014030": Decimal("10"), "p1105": Decimal("80")})
         self.assertEqual(result.trace[0]["disposition"], "ORDINARY_ACTION_RECHARGED_AND_NEXT_SELECTED")
+        self.assertEqual(result.trace[0]["eligible_entity_ids"], ["p1105", "p1307", "m4014030"])
         self.assertEqual(result.trace[0]["pending_inserted_actions_ignored"], 0)
 
-    def test_ordinary_completion_rejects_dead_eligible_entity_or_unfinished_action_task(self) -> None:
+    def test_ordinary_completion_rejects_unfinished_action_task_and_derives_alive_ordinary_domain(self) -> None:
         alive = RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100"))
         dead = RuntimeEntity("e1", "dark", SurvivalState(Decimal("0"), Decimal("1"), alive=False), speed=Decimal("100"))
+        special = RuntimeEntity("special", "dark", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100"), ordinary_action_eligible=False)
         state = ReferenceBattleState(
-            entities={"p1": alive, "e1": dead},
+            entities={"p1": alive, "e1": dead, "special": special},
             action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.EXECUTING, "p1")},
             ordinary_turn_timeline=OrdinaryTurnTimeline(
-                action_order=("p1", "e1"),
-                remaining_delays={"p1": Decimal("0"), "e1": Decimal("10")},
+                action_order=("p1", "e1", "special"),
+                remaining_delays={"p1": Decimal("0"), "e1": Decimal("10"), "special": Decimal("5")},
                 current_actor_id="p1",
             ),
         )
         executor = SemanticExecutor()
         context = ExecutionContext(caster_id="p1", action_task_id="skill:p1:1")
         with self.assertRaisesRegex(Exception, "SUCCESS action task"):
-            executor.advance_ordinary_after_completed_action(state, context, eligible_entity_ids=("p1",))
+            executor.advance_ordinary_after_completed_action(state, context)
         completed = ReferenceBattleState(
             entities=state.entities,
             action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.SUCCESS, "p1")},
             ordinary_turn_timeline=state.ordinary_turn_timeline,
         )
-        with self.assertRaisesRegex(Exception, "exclude dead"):
-            executor.advance_ordinary_after_completed_action(completed, context, eligible_entity_ids=("p1", "e1"))
+        result = executor.advance_ordinary_after_completed_action(completed, context)
+        self.assertEqual(result.trace[0]["eligible_entity_ids"], ["p1"])
+        self.assertEqual(result.state.ordinary_turn_timeline.current_actor_id, "p1")
 
     def test_skill_perform_finish_rejects_missing_or_nonexecuting_task(self) -> None:
         record = {

@@ -87,6 +87,7 @@ class RuntimeEntity:
     break_damage_added_ratio: Decimal = Decimal("0")
     status_probability_base: Decimal = Decimal("0")
     speed: Decimal = Decimal("0")
+    ordinary_action_eligible: bool = True
     toughness: ToughnessState | None = None
     weaknesses: tuple[str, ...] = ()
 
@@ -275,6 +276,25 @@ class ReferenceBattleState:
             self.entity(entity_id)
         return replace(self, ordinary_turn_timeline=timeline)
 
+    def ordinary_eligible_entity_ids(self) -> tuple[str, ...]:
+        """Project the closed ordinary action domain from immutable state.
+
+        The ordinary property-38 timeline retains historical action-list order,
+        including entities that may subsequently die.  This projection removes
+        only entities explicitly not participating in the ordinary domain or
+        no longer alive.  Pending inserted actions and behavior-level delay
+        modifiers remain separate scheduler state and cannot enter through
+        this method.
+        """
+        timeline = self.ordinary_turn_timeline
+        if timeline is None:
+            raise SemanticExecutionError("ordinary eligibility requires an initialized ordinary timeline")
+        return tuple(
+            entity_id
+            for entity_id in timeline.action_order
+            if self.entity(entity_id).ordinary_action_eligible and self.entity(entity_id).survival.alive
+        )
+
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
             entities={key: entity.snapshot() for key, entity in self.entities.items()},
@@ -309,6 +329,7 @@ class ReferenceBattleState:
                     "break_damage_added_ratio": str(entity.break_damage_added_ratio),
                     "status_probability_base": str(entity.status_probability_base),
                     "speed": str(entity.speed),
+                    "ordinary_action_eligible": entity.ordinary_action_eligible,
                     "toughness": None if entity.toughness is None else dict(entity.toughness.as_json()),
                     "weaknesses": list(entity.weaknesses),
                 }
@@ -455,8 +476,6 @@ class SemanticExecutor:
         self,
         state: ReferenceBattleState,
         context: ExecutionContext,
-        *,
-        eligible_entity_ids: Sequence[str],
     ) -> ExecutionResult:
         """Compose an already-completed ordinary task with DYN-MVP-AV-001.
 
@@ -474,9 +493,7 @@ class SemanticExecutor:
         timeline = state.ordinary_turn_timeline
         if timeline is None:
             raise SemanticExecutionError("ordinary action completion requires an initialized ordinary timeline")
-        eligible = tuple(eligible_entity_ids)
-        if any(not state.entity(entity_id).survival.alive for entity_id in eligible):
-            raise SemanticExecutionError("ordinary eligibility must exclude dead entities")
+        eligible = state.ordinary_eligible_entity_ids()
         speeds = {entity_id: state.entity(entity_id).speed for entity_id in eligible}
         transition = complete_ordinary_action(
             timeline,
@@ -495,6 +512,8 @@ class SemanticExecutor:
             "next_actor_id": transition.selected_actor_id,
             "elapsed_action_delay": str(transition.timeline.elapsed_action_delay),
             "turn_index": transition.timeline.turn_index,
+            "eligible_entity_ids": list(eligible),
+            "eligible_domain_source": "ReferenceBattleState.ordinary_eligible_entity_ids",
             "pending_inserted_actions_ignored": len(current.pending_inserted_actions),
         },))
 
