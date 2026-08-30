@@ -1,0 +1,38 @@
+{
+  "packet_id": "MODIFIER-ADD-FIXED-LIFETIME-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R4_R3_EXECUTABLE_REFERENCE",
+  "scope": "A deliberately narrow AddModifier form: a catalog-defined modifier with supported catalog Stacking, no extra arguments except a static non-negative integral LifeTime, and the canonical ModifierOwnerEntity target alias.",
+  "selected_model": {
+    "state_reads": ["ExecutionContext.modifier_catalog[name]", "ExecutionContext.modifier_owner_id", "operation.arguments.LifeTime.FixedValue.Value"],
+    "state_writes": ["ReferenceBattleState.modifier_instances[modifier_owner_id] append-or-refresh transition", "ModifierInstance.current_life"],
+    "transition": "The generic AddModifier executor creates or refreshes a pending ModifierInstance using the existing catalog Stacking model and persists the fixed LifeTime as current_life. It does not activate, tick, expire, or physically remove the instance at the AddModifier operation boundary.",
+    "ordering": "The existing Modifier lifecycle preserves TO_BE_ADDED at this boundary; activation, lifetime tick and dirty cleanup remain explicit later lifecycle transitions.",
+    "target_rule": "Only ModifierOwnerEntity is accepted; no inferred retarget or global modifier owner lookup is permitted."
+  },
+  "evidence": {
+    "local": [{"artifact": "data/semantics/4.4.54/full_reconstruction/modifier_lifecycle_packet_001.json", "support": "PRIM-MODIFIER-001 defines current_life storage, ALIVE-only lifetime decrement and delayed dirty removal."}],
+    "external": [{"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "Three MoreOneMorePerTurn OnPhase1 callbacks carry the exact fixed LifeTime values 2, 3 and 4 for catalog-defined OneMore."}],
+    "confidence": "R4 lifecycle state model plus R3 pinned close-version canonical source payloads."
+  },
+  "accepted_payload": {
+    "target_alias": "ModifierOwnerEntity",
+    "arguments": {"ModifierName": {"Value": "catalog-defined non-empty name"}, "LifeTime": {"IsDynamic": false, "FixedValue": {"Value": "non-negative integer"}}}
+  },
+  "strict_rejection": [
+    "missing modifier catalog definition or unsupported catalog Stacking",
+    "dynamic, fractional, negative or structurally extended LifeTime",
+    "Chance, DynamicValues, InheritCaster, AliveOnly, Layer, custom fields or any unrecognized AddModifier argument combination",
+    "all target aliases other than ModifierOwnerEntity"
+  ],
+  "unsupported_boundary": [
+    "This packet does not choose default stacking, lifetime, caster inheritance or global lookup policy.",
+    "It does not execute callback bodies or define the scheduler tick/event at which current_life changes.",
+    "It is not proof that all AddModifier operations or whole source BehaviorRecords are executable."
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_behavior_compiler.py::BehaviorCompilerTest.test_add_modifier_accepts_only_catalog_defined_static_lifetime_on_modifier_owner", "tests/game_data/test_reference_execution.py::ReferenceExecutionTest.test_add_modifier_static_lifetime_persists_through_pending_lifecycle", "tests/game_data/test_reference_execution.py::ReferenceExecutionTest.test_source_backed_fixed_lifetime_add_modifier_component_executes"],
+    "expected": "The three source components append pending OneMore instances with Merge stacking and current_life 2, 3 and 4 respectively."
+  },
+  "dsh_implementation_contract": "Accept this form only after schema validation. Preserve current_life on the pending instance and dispatch lifecycle activation/tick/cleanup through the shared modifier lifecycle rather than treating AddModifier as immediate activation or direct removal."
+}

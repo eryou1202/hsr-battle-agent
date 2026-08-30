@@ -97,3 +97,12 @@ class BehaviorCompilerTest(unittest.TestCase):
         invalid = dict(operation, arguments={"ModifierName": {"Value": "MFixture"}, "AliveOnly": True})
         rejected = BehaviorCompiler(modifier_catalog=catalog).compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [invalid]}]))
         self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_ADD_MODIFIER_ALIVE_ONLY_UNSUPPORTED")
+
+    def test_add_modifier_accepts_only_catalog_defined_static_lifetime_on_modifier_owner(self) -> None:
+        operation = {"operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ModifierOwnerEntity"}, "arguments": {"ModifierName": {"Value": "MFixture"}, "LifeTime": {"IsDynamic": False, "FixedValue": {"Value": 2}}}, "children": []}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}
+        catalog = {"MFixture": ModifierDefinition("MFixture", "Merge", "fixture:modifier")}
+        self.assertEqual(BehaviorCompiler(modifier_catalog=catalog).compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        dynamic = dict(operation, arguments={"ModifierName": {"Value": "MFixture"}, "LifeTime": {"IsDynamic": True, "PostfixExpr": {}}})
+        rejected = BehaviorCompiler(modifier_catalog=catalog).compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [dynamic]}]))
+        self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED")

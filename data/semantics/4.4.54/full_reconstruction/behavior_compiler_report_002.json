@@ -14,10 +14,10 @@
       "Modifier": {
         "behavior_bearing": 164,
         "captured": 467,
-        "executable_reference": 114,
+        "executable_reference": 117,
         "golden_tested": 0,
         "static_definition_only": 303,
-        "structural_compiled": 27
+        "structural_compiled": 24
       },
       "Monster": {
         "behavior_bearing": 3,
@@ -38,7 +38,7 @@
     },
     "canonicalized": 553,
     "captured": 553,
-    "executable": 114,
+    "executable": 117,
     "failure_reasons": {
       "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 129
     },
@@ -46,12 +46,12 @@
     "operation_level": {
       "compiled_disposition": {
         "BOUND_PRIMITIVE": 20,
-        "BOUND_UNEXECUTABLE_PACKET": 417,
-        "EXECUTABLE_REFERENCE": 1419,
+        "BOUND_UNEXECUTABLE_PACKET": 414,
+        "EXECUTABLE_REFERENCE": 1422,
         "HEADLESS_PRESENTATION_OMITTED": 298
       },
-      "executable_bound": 1419,
-      "executable_entrypoints": 221,
+      "executable_bound": 1422,
+      "executable_entrypoints": 224,
       "source_semantic_status": {
         "MODELLED": 32,
         "PRESENTATION": 298,
@@ -59,7 +59,7 @@
       }
     },
     "static_definition_only": 304,
-    "structural_compiled": 87
+    "structural_compiled": 84
   },
   "game_version": "4.4.54",
   "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
@@ -49931,7 +49931,7 @@
                       "kind": "ADD_MODIFIER",
                       "node_role": "OPERATION",
                       "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999016:MODIFIER_CALLBACK:StageAbility_3999016_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:1",
-                      "reference_execution_blocker": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+                      "reference_execution_blocker": "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED",
                       "semantic_status": "REQUIRES_PACKET",
                       "source_operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999016:MODIFIER_CALLBACK:StageAbility_3999016_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:1",
                       "source_type": "RPG.GameCore.AddModifier",
@@ -50084,7 +50084,7 @@
         }
       ],
       "game_version": "4.4.54",
-      "ir_sha256": "aa24cc7a474c5af5328f29a6a9662696276f2da395ea34841375a391b71ff57f",
+      "ir_sha256": "bfadc749335d4495077122cc8d96406ae370e011db85cb74ffc9ccef2e8e05c4",
       "owner_kind": "StageBuff",
       "owner_ref": "StageAbility_3999016",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -138503,7 +138503,7 @@
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -138635,7 +138635,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MoreOneMorePerTurn._CallbackList[2]:OnPhase1",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -138654,12 +138654,12 @@
               "dependencies": [
                 "PRIM-MODIFIER-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
               "kind": "ADD_MODIFIER",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn:MODIFIER_CALLBACK:MoreOneMorePerTurn._CallbackList[2]:OnPhase1:0",
-              "reference_execution_blocker": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+              "reference_execution_blocker": null,
               "semantic_status": "REQUIRES_PACKET",
               "source_operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn:MODIFIER_CALLBACK:MoreOneMorePerTurn._CallbackList[2]:OnPhase1:0",
               "source_type": "RPG.GameCore.AddModifier",
@@ -138784,10 +138784,10 @@
           "source_event": "MoreOneMorePerTurn._CallbackList[4]:OnListenTurnEnd"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "aee3a97912583d99996632dd272eb4c559585c7fa3903e1409eec3d8c4beb36e",
+      "ir_sha256": "5f853ecaec5d5ba1244cdc948acadc0463287823f31068e812156d0028c55130",
       "owner_kind": "Modifier",
       "owner_ref": "MoreOneMorePerTurn",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -138802,13 +138802,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -138940,7 +138940,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MoreOneMorePerTurn_4._CallbackList[2]:OnPhase1",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -138959,12 +138959,12 @@
               "dependencies": [
                 "PRIM-MODIFIER-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
               "kind": "ADD_MODIFIER",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4:MODIFIER_CALLBACK:MoreOneMorePerTurn_4._CallbackList[2]:OnPhase1:0",
-              "reference_execution_blocker": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+              "reference_execution_blocker": null,
               "semantic_status": "REQUIRES_PACKET",
               "source_operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4:MODIFIER_CALLBACK:MoreOneMorePerTurn_4._CallbackList[2]:OnPhase1:0",
               "source_type": "RPG.GameCore.AddModifier",
@@ -139089,10 +139089,10 @@
           "source_event": "MoreOneMorePerTurn_4._CallbackList[4]:OnListenTurnEnd"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "87516e6fe69dd398e6d28a9a61aea5672a26c8a19cf97ab8ba653292b1f7b0e2",
+      "ir_sha256": "2ba671127c2934882e4b8c8c3ef0a1246c3cd4e2e88959f79501ab590dfe7bd6",
       "owner_kind": "Modifier",
       "owner_ref": "MoreOneMorePerTurn_4",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -139107,13 +139107,13 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
       "behavior_bearing": true,
       "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5",
-      "compile_status": "COMPILED_STRUCTURE_ONLY",
+      "compile_status": "EXECUTABLE_REFERENCE",
       "dynamic_value_definitions": [
         {
           "definition": {
@@ -139245,7 +139245,7 @@
             "priority": null
           },
           "event": "MODIFIER_CALLBACK:MoreOneMorePerTurn_5._CallbackList[2]:OnPhase1",
-          "executable_reference": false,
+          "executable_reference": true,
           "execution_blockers": [],
           "operations": [
             {
@@ -139264,12 +139264,12 @@
               "dependencies": [
                 "PRIM-MODIFIER-001"
               ],
-              "disposition": "BOUND_UNEXECUTABLE_PACKET",
+              "disposition": "EXECUTABLE_REFERENCE",
               "event_boundary": "UNKNOWN",
               "kind": "ADD_MODIFIER",
               "node_role": "OPERATION",
               "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5:MODIFIER_CALLBACK:MoreOneMorePerTurn_5._CallbackList[2]:OnPhase1:0",
-              "reference_execution_blocker": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+              "reference_execution_blocker": null,
               "semantic_status": "REQUIRES_PACKET",
               "source_operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5:MODIFIER_CALLBACK:MoreOneMorePerTurn_5._CallbackList[2]:OnPhase1:0",
               "source_type": "RPG.GameCore.AddModifier",
@@ -139394,10 +139394,10 @@
           "source_event": "MoreOneMorePerTurn_5._CallbackList[4]:OnListenTurnEnd"
         }
       ],
-      "executable": false,
+      "executable": true,
       "execution_blockers": [],
       "game_version": "4.4.54",
-      "ir_sha256": "a4c15ad42c4eebe938ba43f81cfd463bb21cf225ee6bf8f134893d0cb52f07a1",
+      "ir_sha256": "4d2902d8a33abf21795efc53046fd4e48f85dac4afe9142fb79f0a36ba941f7b",
       "owner_kind": "Modifier",
       "owner_ref": "MoreOneMorePerTurn_5",
       "schema": "hsr_battle_agent.behavior_ir/1",
@@ -139412,7 +139412,7 @@
           "version_relation": "CLOSE_4.4.0_TO_4.4.54"
         }
       ],
-      "structural_only": true,
+      "structural_only": false,
       "template_definitions": []
     },
     {
@@ -143232,6 +143232,6 @@
       "template_definitions": []
     }
   ],
-  "report_sha256": "cf533456b5f18e8e6fe990142755658789f342d6022d83e1282adf9a2e8a91dd",
+  "report_sha256": "1458581785a201eeaae56c67b0939af0f35282dc1be81f2ccf01c608b72a67c7",
   "schema": "hsr_battle_agent.behavior_compiler_report/1"
 }

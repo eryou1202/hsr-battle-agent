@@ -72,6 +72,17 @@ def _decimal(value: Any) -> Decimal:
         raise SemanticExecutionError(f"non-numeric runtime value {value!r}") from error
 
 
+def _fixed_nonnegative_integral_lifetime(value: Any, operation_id: Any) -> int:
+    """Decode the compiler-approved fixed LifeTime payload defensively."""
+    if not isinstance(value, Mapping) or set(value) != {"IsDynamic", "FixedValue"} or value.get("IsDynamic") is not False:
+        raise SemanticExecutionError(f"{operation_id}: fixed LifeTime payload is unsupported")
+    fixed = value.get("FixedValue")
+    raw = fixed.get("Value") if isinstance(fixed, Mapping) and set(fixed) == {"Value"} else None
+    if isinstance(raw, bool) or not isinstance(raw, int) or raw < 0:
+        raise SemanticExecutionError(f"{operation_id}: fixed LifeTime must be a non-negative integer")
+    return raw
+
+
 @dataclass(frozen=True)
 class RuntimeEntity:
     """The shared entity facts needed by the initial generic executor."""
@@ -1079,6 +1090,12 @@ class SemanticExecutor:
         arguments = operation.get("arguments", {})
         if "AliveOnly" in arguments and arguments.get("AliveOnly") is not False:
             raise SemanticExecutionError(f"{operation.get('operation_id')}: selected AddModifier bridge accepts only AliveOnly=false")
+        current_life = None
+        if "LifeTime" in arguments:
+            target_payload = operation.get("target") if isinstance(operation.get("target"), Mapping) else {}
+            if target_payload.get("Alias") != "ModifierOwnerEntity":
+                raise SemanticExecutionError(f"{operation.get('operation_id')}: fixed LifeTime AddModifier requires ModifierOwnerEntity")
+            current_life = _fixed_nonnegative_integral_lifetime(arguments.get("LifeTime"), operation.get("operation_id"))
         modifier = arguments.get("ModifierName", {})
         name = modifier.get("Value") if isinstance(modifier, Mapping) else None
         definition = context.modifier_catalog.get(str(name))
@@ -1106,7 +1123,7 @@ class SemanticExecutor:
                 stacking=definition.stacking,
                 caster_runtime_id=context.caster_runtime_id,
                 source_provider_id=context.caster_id,
-                current_life=None,
+                current_life=current_life,
                 count=None,
                 dynamic_values=dynamic_values,
             )
@@ -1121,6 +1138,7 @@ class SemanticExecutor:
                 "lifecycle_action": transition.action,
                 "dynamic_value_keys": sorted(dynamic_values),
                 "alive_only": arguments.get("AliveOnly"),
+                "current_life": current_life,
             })
         return ExecutionResult(current, tuple(trace))
 

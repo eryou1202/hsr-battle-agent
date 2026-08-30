@@ -81,6 +81,23 @@ def _mapping(value: Any) -> Mapping[str, Any]:
     return value if isinstance(value, Mapping) else {}
 
 
+def _fixed_nonnegative_integral_value(value: Any) -> int | None:
+    """Accept only the selected fixed integer config-value shape."""
+    payload = _mapping(value)
+    fixed = _mapping(payload.get("FixedValue"))
+    raw = fixed.get("Value")
+    if (
+        set(payload) != {"IsDynamic", "FixedValue"}
+        or payload.get("IsDynamic") is not False
+        or set(fixed) != {"Value"}
+        or isinstance(raw, bool)
+        or not isinstance(raw, int)
+        or raw < 0
+    ):
+        return None
+    return raw
+
+
 class BehaviorCompiler:
     """Compile only canonical IR; raw external payload is never consulted."""
 
@@ -317,7 +334,7 @@ class BehaviorCompiler:
             name = modifier.get("Value")
             if not isinstance(name, str) or not name:
                 return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
-            allowed_argument_sets = ({"ModifierName"}, {"ModifierName", "DynamicValues"})
+            allowed_argument_sets = ({"ModifierName"}, {"ModifierName", "DynamicValues"}, {"ModifierName", "LifeTime"})
             if set(arguments) == {"ModifierName", "AliveOnly"}:
                 if arguments.get("AliveOnly") is not False:
                     return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ALIVE_ONLY_UNSUPPORTED"
@@ -327,6 +344,11 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_TARGET_MISSING"
             if name not in self._modifier_catalog:
                 return "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED"
+            if set(arguments) == {"ModifierName", "LifeTime"}:
+                if _fixed_nonnegative_integral_value(arguments.get("LifeTime")) is None:
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED"
+                if _mapping(operation.get("target")).get("Alias") != "ModifierOwnerEntity":
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_TARGET_UNSUPPORTED"
             dynamic_values = arguments.get("DynamicValues")
             if dynamic_values is not None and (
                 not isinstance(dynamic_values, Mapping)

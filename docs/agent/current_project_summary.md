@@ -12,12 +12,17 @@ definitions, and 2295 recursive semantic nodes (1780 operations, 515
 Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current compiler-output node statuses: 1824 `REQUIRES_PACKET`, 298
-`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 88
-structural-only records plus 113 `EXECUTABLE_REFERENCE` records (218
-independently closed executable entrypoints); four complete records and eighteen
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 84
+structural-only records plus 117 `EXECUTABLE_REFERENCE` records (224
+independently closed executable entrypoints); four complete records and twenty-four
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
+The narrow fixed-lifetime `AddModifier` form now persists a catalog-defined
+modifier's static integral `LifeTime` as pending-instance `current_life`;
+the three real `MoreOneMorePerTurn` OnPhase1 components are counted only as
+source-backed components because their surrounding callbacks still depend on
+unprovided `DynamicHash` values.
 it handles closed conditional/predicate, heal, StackProperty, and DynamicValue
 define/set routes and rejects all other behavior-affecting operations. A strict
 standalone normal-HP `DamageRequest` bridge now commits through shield then HP

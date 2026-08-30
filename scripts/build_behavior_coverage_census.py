@@ -149,6 +149,24 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_set_reset_action_delay_components_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn:MODIFIER_CALLBACK:MoreOneMorePerTurn._CallbackList[2]:OnPhase1:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_fixed_lifetime_add_modifier_components_reference_001.json",
+    },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4:MODIFIER_CALLBACK:MoreOneMorePerTurn_4._CallbackList[2]:OnPhase1:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_fixed_lifetime_add_modifier_components_reference_001.json",
+    },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5:MODIFIER_CALLBACK:MoreOneMorePerTurn_5._CallbackList[2]:OnPhase1:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_fixed_lifetime_add_modifier_components_reference_001.json",
+    },
 )
 
 

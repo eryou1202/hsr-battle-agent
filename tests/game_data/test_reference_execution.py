@@ -46,6 +46,9 @@ MODIFY_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifi
 BLACK_SWAN_MAZE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel"
 SET_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_SetActionDelayOnTurnEnd"
 MIND_CONTROL_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl"
+ONE_MORE_PER_TURN_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn"
+ONE_MORE_PER_TURN_4_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_4"
+ONE_MORE_PER_TURN_5_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MoreOneMorePerTurn_5"
 
 
 def _record(behavior_id: str) -> dict:
@@ -729,6 +732,51 @@ class ReferenceExecutionTest(unittest.TestCase):
         result = SemanticExecutor().execute_entrypoint(compiled, "ONPHASE", state, ExecutionContext(caster_id="p1", modifier_owner_id="e1", caster_runtime_id=7, modifier_catalog=catalog))
         self.assertEqual(result.state.modifiers("e1")[0].state, ModifierState.TO_BE_ADDED)
         self.assertFalse(result.trace[0]["alive_only"])
+
+    def test_add_modifier_static_lifetime_persists_through_pending_lifecycle(self) -> None:
+        record = {
+            "behavior_id": "modifier-lifetime-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-lifetime-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONPHASE", "operations": [{
+                "operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"ModifierName": {"Value": "MFixture"}, "LifeTime": {"IsDynamic": False, "FixedValue": {"Value": 2}}}, "children": [],
+            }]}],
+        }
+        catalog = {"MFixture": ModifierDefinition("MFixture", "Merge", "fixture:modifier")}
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))})
+        result = SemanticExecutor().execute_entrypoint(
+            BehaviorCompiler(modifier_catalog=catalog).compile_record(record), "ONPHASE", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="e1", caster_runtime_id=7, modifier_catalog=catalog),
+        )
+        instance = result.state.modifiers("e1")[0]
+        self.assertEqual((instance.current_life, instance.state), (2, ModifierState.TO_BE_ADDED))
+        self.assertEqual(result.trace[0]["current_life"], 2)
+
+    def test_source_backed_fixed_lifetime_add_modifier_component_executes(self) -> None:
+        corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        catalog = modifier_catalog_from_corpus(corpus)
+        for behavior_id, expected_lifetime in (
+            (ONE_MORE_PER_TURN_ID, 2),
+            (ONE_MORE_PER_TURN_4_ID, 3),
+            (ONE_MORE_PER_TURN_5_ID, 4),
+        ):
+            source = _record(behavior_id)
+            entrypoint = next(item for item in source["entrypoints"] if item["event"].endswith(":OnPhase1"))
+            component = {
+                "behavior_id": f"{behavior_id}:fixed-lifetime-add-modifier-component",
+                "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+                "entrypoints": [{"event": "SOURCE_FIXED_LIFETIME_ADD_MODIFIER_COMPONENT", "operations": entrypoint["operations"]}],
+            }
+            state = ReferenceBattleState(entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))})
+            compiled = BehaviorCompiler(modifier_catalog=catalog).compile_record(component)
+            self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+            result = SemanticExecutor().execute_entrypoint(
+                compiled, "SOURCE_FIXED_LIFETIME_ADD_MODIFIER_COMPONENT", state,
+                ExecutionContext(caster_id="p1", modifier_owner_id="p1", caster_runtime_id=7, modifier_catalog=catalog),
+            )
+            instance = result.state.modifiers("p1")[0]
+            self.assertEqual((instance.name, instance.current_life, instance.stacking), ("OneMore", expected_lifetime, "Merge"))
+            self.assertEqual(result.trace[0]["disposition"], "MODIFIER_APPEND_OR_REFRESH_PENDING")
 
     def test_source_backed_stage_callback_adds_modifier_with_local_dynamic_values(self) -> None:
         corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
