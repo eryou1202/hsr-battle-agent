@@ -113,6 +113,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Avatar",
         "fixture": "source_backed_skill_perform_finish_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02:ONSTART:2",
+        "owner_kind": "Avatar",
+        "fixture": "source_backed_damage_perform_finish_component_reference_001.json",
+    },
 )
 
 

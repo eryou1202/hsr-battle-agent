@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-DAMAGE-PERFORM-FINISH-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute Black Swan Skill01 Phase02's real no-argument DamagePerformFinish component through BehaviorCompiler and SemanticExecutor against an explicit EXECUTING damage task.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02:ONSTART:2",
+    "entrypoint_event": "ONSTART",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json", "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "AbilityList", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "black-swan", "damage_task_id": "damage:black-swan:1"},
+  "selected_initial_state": {"black-swan": {"team": "light", "hp": "1", "max_hp": "1"}, "damage_tasks": {"damage:black-swan:1": {"state": "EXECUTING", "owner_id": "black-swan"}}},
+  "expected_transition": {"damage_tasks": {"damage:black-swan:1": {"state": "SUCCESS", "owner_id": "black-swan"}}, "ordered_dispositions": ["DAMAGE_COMPLETION_MARKED_SUCCESS"]},
+  "assumptions": ["The fixture supplies a concrete damage-task identity and its pre-marker EXECUTING state.", "Only the marker transition is claimed; the earlier Skill01 DamageRequest is not executed by this component fixture."],
+  "unsupported_boundary": ["This is not full Black Swan Skill01 behavior, HP/toughness application, AV scheduling, action completion, or a Golden game trace."]
+}

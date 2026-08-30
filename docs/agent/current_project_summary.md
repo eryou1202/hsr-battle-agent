@@ -78,6 +78,9 @@ reordering, next-actor selection, turn consumption, or interrupt scheduling.
 Seven no-argument `SkillPerformFinish` forms now mark an explicitly identified
 already-executing scheduler task `SUCCESS`; this is likewise not AV recharge,
 turn consumption, next-actor selection, or special-action arbitration.
+Seven no-argument `DamagePerformFinish` forms now independently mark an
+explicitly identified damage task `SUCCESS`; they do not apply HP/toughness
+damage, complete the action task, or trigger timeline arbitration.
 Selected targetless `SetModifierDynamicValue` writes now separately update one
 uniquely named **ALIVE** ModifierInstance-local value, rather than using the
 battle DynamicValue store. A real `MCommon_Windfury` component resets its

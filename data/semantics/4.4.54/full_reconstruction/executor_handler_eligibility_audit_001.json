@@ -1,11 +1,12 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "0aa5f26b48bc64e25c410f9a7f915b630e63c445a47eff438d2a5e1931674c4d",
+  "audit_sha256": "59423e9efc4a22dae03c68408fa95664a74202b406f6f38004ca99a82522cdaf",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ACTION_COMPLETION_MARKER": 7,
     "ADD_MODIFIER": 24,
     "CONDITIONAL": 364,
+    "DAMAGE_COMPLETION_MARKER": 7,
     "DAMAGE_REQUEST": 15,
     "DEFINE_DYNAMIC_VALUE": 7,
     "DELAY_ACTION": 6,
@@ -33,6 +34,11 @@
       "Predicate payload",
       "PredicateContext providers",
       "compiled child operation contexts"
+    ],
+    "DAMAGE_COMPLETION_MARKER": [
+      "explicit damage task identity",
+      "existing EXECUTING TaskStep",
+      "selected scheduler damage-task-success boundary"
     ],
     "DAMAGE_REQUEST": [
       "damage source stats",
@@ -89,7 +95,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "ccad813a4a1b492e7bdaf06ca68097fac2de727c6e92047aa492f75c7ad13af2",
+  "input_compiler_report_sha256": "941252c2833960faa99c78df1cdf4d14a045e67e900dfc68854fe04b9e33c6bb",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

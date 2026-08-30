@@ -1,0 +1,23 @@
+{
+  "packet_id": "SCHEDULER-DAMAGE-PERFORM-FINISH-001",
+  "game_version": "4.4.54",
+  "scope": "Seven recursively lifted no-argument, no-target RPG.GameCore.DamagePerformFinish operations, including direct, projectile-child and conditional-child placements.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "DamagePerformFinish is an explicit damage-task completion boundary. Given an explicit existing damage TaskStep in EXECUTING state, commit that same damage task identity as SUCCESS while preserving the owner. Damage task state is separate from action task state and prior HP/toughness writes.",
+  "state_reads": ["ExecutionContext.damage_task_id", "ReferenceBattleState.damage_tasks[damage_task_id].state", "ReferenceBattleState.damage_tasks[damage_task_id].owner_id"],
+  "state_writes": ["ReferenceBattleState.damage_tasks[damage_task_id].state = SUCCESS"],
+  "ordering": "The task-success write occurs at the canonical marker's position, after any preceding child or sibling operations in the compiled entrypoint. It neither applies HP/toughness damage nor creates an action completion/timeline transition.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "All seven recursively lifted reviewed DamagePerformFinish operations have empty arguments and null targets; placements include Black Swan, Natasha projectile/conditional children, and a Monster skill."},
+    {"packet": "SCHEDULER-001", "support": "Existing TaskState and trace_completion_marker reference maps damage completion markers to SUCCESS."},
+    {"fixture": "source_backed_damage_perform_finish_component_reference_001.json", "support": "Black Swan Skill01 Phase02's canonical marker executes through BehaviorCompiler and SemanticExecutor with an explicit EXECUTING damage task."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_damage_perform_finish_marks_separate_executing_damage_task_success", "tests/game_data/test_reference_execution.py::test_damage_perform_finish_rejects_missing_or_nonexecuting_damage_task", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_damage_finish_component_executes", "tests/game_data/test_scheduler_semantics_reference.py::test_markers_transition_executing_then_success"],
+    "trace_disposition": "DAMAGE_COMPLETION_MARKED_SUCCESS",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing damage_task_id", "unknown damage task", "task not in EXECUTING state", "non-DamagePerformFinish marker type", "non-empty arguments", "non-null target"],
+  "unsupported_boundary": ["HP/toughness damage application", "action-task completion", "AV reset/recharge", "next-actor ordering", "turn consumption", "Ultimate/FUA/ExtraAction/interrupt arbitration", "full DoT/projectile lifecycle", "Golden trace claim"],
+  "dsh_implementation_contract": "Maintain a task table distinct for damage resolution. For a selected no-argument DamagePerformFinish operation, require an existing EXECUTING damage task selected by the caller, commit exactly that task to SUCCESS, and preserve its owner. Do not use the marker to infer a DamageRequest, HP/toughness commit, action completion, AV schedule, or arbitration."
+}

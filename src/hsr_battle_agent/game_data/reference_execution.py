@@ -49,6 +49,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
     "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed AddNormalizedValue contract", "selected scheduler action-delay commit boundary"),
     "ACTION_COMPLETION_MARKER": ("explicit action task identity", "existing EXECUTING TaskStep", "selected scheduler task-success boundary"),
+    "DAMAGE_COMPLETION_MARKER": ("explicit damage task identity", "existing EXECUTING TaskStep", "selected scheduler damage-task-success boundary"),
 }
 
 
@@ -138,6 +139,7 @@ class ReferenceBattleState:
     special_resources: Mapping[str, Decimal] = field(default_factory=dict)
     action_delays: Mapping[str, ActionDelayState] = field(default_factory=dict)
     action_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
+    damage_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
     challenge_left: int | None = None
@@ -205,6 +207,17 @@ class ReferenceBattleState:
         tasks[task.task_id] = task
         return replace(self, action_tasks=tasks)
 
+    def damage_task(self, task_id: str) -> TaskStep:
+        try:
+            return self.damage_tasks[task_id]
+        except KeyError as error:
+            raise SemanticExecutionError(f"unknown scheduler damage task {task_id!r}") from error
+
+    def replace_damage_task(self, task: TaskStep) -> "ReferenceBattleState":
+        tasks = dict(self.damage_tasks)
+        tasks[task.task_id] = task
+        return replace(self, damage_tasks=tasks)
+
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
             entities={key: entity.snapshot() for key, entity in self.entities.items()},
@@ -267,6 +280,10 @@ class ReferenceBattleState:
                 key: {"state": value.state.name, "owner_id": value.owner_id}
                 for key, value in sorted(self.action_tasks.items())
             },
+            "damage_tasks": {
+                key: {"state": value.state.name, "owner_id": value.owner_id}
+                for key, value in sorted(self.damage_tasks.items())
+            },
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
             "challenge_left": self.challenge_left,
@@ -293,6 +310,7 @@ class ExecutionContext:
     current_turn_owner_id: str | None = None
     snapshot_property_entity_id: str | None = None
     action_task_id: str | None = None
+    damage_task_id: str | None = None
     dynamic_hash_values: Mapping[str, Any] = field(default_factory=dict)
     dynamic_scope_owners: Mapping[str, str] = field(default_factory=dict)
     skill_type: str = ""
@@ -432,6 +450,8 @@ class SemanticExecutor:
             return self._execute_delay_action(operation, state, context)
         if kind == "ACTION_COMPLETION_MARKER":
             return self._execute_action_completion_marker(operation, state, context)
+        if kind == "DAMAGE_COMPLETION_MARKER":
+            return self._execute_damage_completion_marker(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -992,6 +1012,39 @@ class SemanticExecutor:
         return ExecutionResult(current, ({
             "operation_id": operation.get("operation_id"),
             "disposition": "ACTION_COMPLETION_MARKED_SUCCESS",
+            "task_id": task_id,
+            "previous_state": before.state.name,
+            "state": committed.state.name,
+            "owner_id": committed.owner_id,
+        },))
+
+    def _execute_damage_completion_marker(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit a no-argument ``DamagePerformFinish`` damage-task boundary.
+
+        This task state is intentionally separate from both the action task
+        and the HP/toughness mutations that a prior DamageRequest may have
+        performed.  The marker does not itself apply damage or choose a
+        timeline transition.
+        """
+        task_id = context.damage_task_id
+        if not task_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: DamagePerformFinish requires explicit damage_task_id")
+        before = state.damage_task(task_id)
+        if before.state is not TaskState.EXECUTING:
+            raise SemanticExecutionError(
+                f"{operation.get('operation_id')}: DamagePerformFinish requires EXECUTING damage task {task_id!r}"
+            )
+        transition = trace_completion_marker(operation, task_id=task_id)
+        committed = TaskStep(task_id=transition.task_id, state=transition.state, owner_id=before.owner_id)
+        current = state.replace_damage_task(committed)
+        return ExecutionResult(current, ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "DAMAGE_COMPLETION_MARKED_SUCCESS",
             "task_id": task_id,
             "previous_state": before.state.name,
             "state": committed.state.name,

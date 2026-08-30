@@ -36,7 +36,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "SET_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DEFINE_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "EXECUTABLE_REFERENCE"},
-    "DAMAGE_COMPLETION_MARKER": {"packet": "PRIM-DAMAGE-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "DAMAGE_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "FORMATION_CHANGE": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -428,6 +428,13 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_ARGUMENTS_UNSUPPORTED"
             if operation.get("target") is not None:
                 return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_TARGET_UNSUPPORTED"
+        elif kind == "DAMAGE_COMPLETION_MARKER":
+            if str(operation.get("source_type", "")) != "RPG.GameCore.DamagePerformFinish":
+                return "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_TYPE_UNSUPPORTED"
+            if arguments:
+                return "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_ARGUMENTS_UNSUPPORTED"
+            if operation.get("target") is not None:
+                return "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_TARGET_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:

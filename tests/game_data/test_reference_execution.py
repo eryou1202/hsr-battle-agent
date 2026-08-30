@@ -341,6 +341,74 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_task("skill:black-swan:1").state, TaskState.SUCCESS)
         self.assertEqual(result.trace[0]["disposition"], "ACTION_COMPLETION_MARKED_SUCCESS")
 
+    def test_damage_perform_finish_marks_separate_executing_damage_task_success(self) -> None:
+        record = {
+            "behavior_id": "damage-finish-fixture", "owner_kind": "Avatar", "owner_ref": "damage-finish-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "finish", "source_type": "RPG.GameCore.DamagePerformFinish", "kind": "DAMAGE_COMPLETION_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.EXECUTING, "p1")},
+            damage_tasks={"damage:p1:1": TaskStep("damage:p1:1", TaskState.EXECUTING, "p1")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTART", state, ExecutionContext(caster_id="p1", damage_task_id="damage:p1:1"),
+        )
+        self.assertEqual(result.state.damage_task("damage:p1:1").state, TaskState.SUCCESS)
+        self.assertEqual(result.state.action_task("skill:p1:1").state, TaskState.EXECUTING)
+        self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMPLETION_MARKED_SUCCESS")
+
+    def test_damage_perform_finish_rejects_missing_or_nonexecuting_damage_task(self) -> None:
+        record = {
+            "behavior_id": "damage-finish-fixture", "owner_kind": "Avatar", "owner_ref": "damage-finish-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "finish", "source_type": "RPG.GameCore.DamagePerformFinish", "kind": "DAMAGE_COMPLETION_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            damage_tasks={"damage:p1:1": TaskStep("damage:p1:1", TaskState.READY, "p1")},
+        )
+        with self.assertRaisesRegex(Exception, "damage_task_id"):
+            SemanticExecutor().execute_entrypoint(compiled, "ONSTART", state, ExecutionContext(caster_id="p1"))
+        with self.assertRaisesRegex(Exception, "EXECUTING"):
+            SemanticExecutor().execute_entrypoint(
+                compiled, "ONSTART", state, ExecutionContext(caster_id="p1", damage_task_id="damage:p1:1"),
+            )
+
+    def test_source_backed_black_swan_damage_finish_component_executes(self) -> None:
+        source = _record(BLACK_SWAN_SKILL01_ID)
+        finish = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.DamagePerformFinish"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-damage-finish-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_DAMAGE_FINISH_COMPONENT", "operations": [finish]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"black-swan": RuntimeEntity("black-swan", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            damage_tasks={"damage:black-swan:1": TaskStep("damage:black-swan:1", TaskState.EXECUTING, "black-swan")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_DAMAGE_FINISH_COMPONENT", state,
+            ExecutionContext(caster_id="black-swan", damage_task_id="damage:black-swan:1"),
+        )
+        self.assertEqual(result.state.damage_task("damage:black-swan:1").state, TaskState.SUCCESS)
+        self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMPLETION_MARKED_SUCCESS")
+
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {
             "behavior_id": "modifier-local-write-fixture", "owner_kind": "Modifier", "owner_ref": "modifier-local-write-fixture", "source_refs": [],
