@@ -27,14 +27,14 @@
 - Regenerated corpus: 553 records, 508 entrypoints (404 Modifier
   callbacks), 2 template definitions, 287 DynamicValue definitions, 2295
   recursive semantic nodes (1780 operations, 515 Predicate AST).
-- Node statuses: REQUIRES_PACKET 1826, PRESENTATION 430, MODELLED 32,
+- Node statuses in the current compiler output: REQUIRES_PACKET 1824, PRESENTATION 298, MODELLED 32,
   OPAQUE 7.
 - Current corpus hash:
   `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
 - Current coverage split: 249 behavior-bearing records (89 structural-only
   compiled), 112 `EXECUTABLE_REFERENCE` records / 215 independently closed
-  entrypoints, and 304 static-definition-only records. Four complete records
-  are source-backed executed plus fourteen explicitly separate operation components;
+entrypoints, and 304 static-definition-only records. Four complete records
+are source-backed executed plus fifteen explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -147,9 +147,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `SCHEDULER-ACTION-COMPLETION-MARKER-001`: lower only no-argument
-   `SkillPerformFinish` markers with an explicit action task identity. Keep AV
-   recharge, next-actor ordering and native interrupt semantics separate.
+1. `SCHEDULER-DAMAGE-COMPLETION-MARKER-001`: inspect only no-argument
+   `DamagePerformFinish` markers and lower only an explicit executing damage
+   task to `SUCCESS`. Keep damage application, AV recharge, next-actor ordering
+   and native interrupt semantics separate.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

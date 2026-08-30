@@ -45,7 +45,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "MODIFY_ACTION_STATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_ACTION_COST": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "ACTION_START_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "ACTION_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ACTION_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "INCLUDE_TASK_TEMPLATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "LOOP": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "CONDITIONAL_LOOP": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -421,6 +421,13 @@ class BehaviorCompiler:
             value = _mapping(arguments.get("AddNormalizedValue"))
             if value.get("IsDynamic") is not False or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
                 return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
+        elif kind == "ACTION_COMPLETION_MARKER":
+            if str(operation.get("source_type", "")) != "RPG.GameCore.SkillPerformFinish":
+                return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_TYPE_UNSUPPORTED"
+            if arguments:
+                return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_ARGUMENTS_UNSUPPORTED"
+            if operation.get("target") is not None:
+                return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_TARGET_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:

@@ -1,0 +1,23 @@
+{
+  "packet_id": "SCHEDULER-SKILL-PERFORM-FINISH-001",
+  "game_version": "4.4.54",
+  "scope": "Seven lifted no-argument, no-target RPG.GameCore.SkillPerformFinish operations.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "SkillPerformFinish is an explicit action-task completion boundary. Given an explicit existing TaskStep in EXECUTING state, commit that same task identity as SUCCESS while preserving its owner. This packet intentionally does not infer AV reset/recharge, next-actor selection, turn consumption, Ultimate/FUA arbitration, or interrupt ordering.",
+  "state_reads": ["ExecutionContext.action_task_id", "ReferenceBattleState.action_tasks[action_task_id].state", "ReferenceBattleState.action_tasks[action_task_id].owner_id"],
+  "state_writes": ["ReferenceBattleState.action_tasks[action_task_id].state = SUCCESS"],
+  "ordering": "The task-success write is an immediate explicit completion boundary after preceding canonical operations in the same entrypoint. It is not a scheduler queue transition.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "Seven reviewed 4.4.x-close SkillPerformFinish operations are uniformly empty payloads with no target, including Black Swan, Natasha, and Monster skill phases."},
+    {"packet": "SCHEDULER-001", "support": "Existing TaskState and trace_completion_marker reference maps action completion markers to SUCCESS."},
+    {"fixture": "source_backed_skill_perform_finish_component_reference_001.json", "support": "Black Swan Skill01 Phase02's canonical marker executes through BehaviorCompiler and SemanticExecutor with an explicit EXECUTING task."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_skill_perform_finish_marks_explicit_executing_action_task_success", "tests/game_data/test_reference_execution.py::test_skill_perform_finish_rejects_missing_or_nonexecuting_task", "tests/game_data/test_reference_execution.py::test_source_backed_black_swan_skill_finish_component_executes", "tests/game_data/test_scheduler_semantics_reference.py::test_markers_transition_executing_then_success"],
+    "trace_disposition": "ACTION_COMPLETION_MARKED_SUCCESS",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing action_task_id", "unknown action task", "task not in EXECUTING state", "non-SkillPerformFinish marker type", "non-empty arguments", "non-null target"],
+  "unsupported_boundary": ["AV reset/recharge", "next-actor ordering", "turn consumption", "Ultimate/FUA/ExtraAction/interrupt arbitration", "action legality recomputation", "full Black Swan Skill01 behavior", "Golden trace claim"],
+  "dsh_implementation_contract": "Maintain an explicit scheduler task table. For a selected no-argument SkillPerformFinish operation, require the caller to identify an existing EXECUTING action task, commit exactly that task to SUCCESS, and preserve its owner. Keep all timeline/AV/arbitration effects in later scheduler contracts rather than deriving them from this marker."
+}

@@ -20,7 +20,7 @@ from hsr_battle_agent.game_data.reference_execution import (
     TeamSkillPointState,
     ToughnessCommitContext,
 )
-from hsr_battle_agent.game_data.scheduler_semantics_reference import ActionDelayState
+from hsr_battle_agent.game_data.scheduler_semantics_reference import ActionDelayState, TaskState, TaskStep
 from hsr_battle_agent.game_data.toughness_break_reference import ToughnessState
 
 
@@ -28,6 +28,7 @@ CORPUS_PATH = Path("data/semantics/4.4.54/full_reconstruction/external_behavior_
 HOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:GlobalModifiers:MAvatar_Natasha_00_HOT_HPByMaxHP"
 PROPERTY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Property.json:MCommon_AttackRatioUp"
 BLACK_SWAN_SKILL02_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill02_Phase02"
+BLACK_SWAN_SKILL01_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_Skill01_Phase02"
 BLACK_SWAN_DOT_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT"
 WEAKNESS_FIRE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_WeakType_Fire"
 HOT_SP_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_HOT_SP"
@@ -272,6 +273,73 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
         self.assertEqual(result.state.action_delay_state("e2").normalized_value, Decimal("1"))
         self.assertEqual([item["disposition"] for item in result.trace], ["ACTION_DELAY_MODIFIED", "ACTION_DELAY_MODIFIED"])
+
+    def test_skill_perform_finish_marks_explicit_executing_action_task_success(self) -> None:
+        record = {
+            "behavior_id": "skill-finish-fixture", "owner_kind": "Avatar", "owner_ref": "skill-finish-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "finish", "source_type": "RPG.GameCore.SkillPerformFinish", "kind": "ACTION_COMPLETION_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.EXECUTING, "p1")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTART", state, ExecutionContext(caster_id="p1", action_task_id="skill:p1:1"),
+        )
+        self.assertEqual(result.state.action_task("skill:p1:1").state, TaskState.SUCCESS)
+        self.assertEqual(result.state.action_task("skill:p1:1").owner_id, "p1")
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_COMPLETION_MARKED_SUCCESS")
+
+    def test_skill_perform_finish_rejects_missing_or_nonexecuting_task(self) -> None:
+        record = {
+            "behavior_id": "skill-finish-fixture", "owner_kind": "Avatar", "owner_ref": "skill-finish-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "finish", "source_type": "RPG.GameCore.SkillPerformFinish", "kind": "ACTION_COMPLETION_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        state = ReferenceBattleState(
+            entities={"p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:p1:1": TaskStep("skill:p1:1", TaskState.READY, "p1")},
+        )
+        with self.assertRaisesRegex(Exception, "action_task_id"):
+            SemanticExecutor().execute_entrypoint(compiled, "ONSTART", state, ExecutionContext(caster_id="p1"))
+        with self.assertRaisesRegex(Exception, "EXECUTING"):
+            SemanticExecutor().execute_entrypoint(
+                compiled, "ONSTART", state, ExecutionContext(caster_id="p1", action_task_id="skill:p1:1"),
+            )
+
+    def test_source_backed_black_swan_skill_finish_component_executes(self) -> None:
+        source = _record(BLACK_SWAN_SKILL01_ID)
+        finish = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SkillPerformFinish"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-skill-finish-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_SKILL_FINISH_COMPONENT", "operations": [finish]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"black-swan": RuntimeEntity("black-swan", "light", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:black-swan:1": TaskStep("skill:black-swan:1", TaskState.EXECUTING, "black-swan")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_SKILL_FINISH_COMPONENT", state,
+            ExecutionContext(caster_id="black-swan", action_task_id="skill:black-swan:1"),
+        )
+        self.assertEqual(result.state.action_task("skill:black-swan:1").state, TaskState.SUCCESS)
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_COMPLETION_MARKED_SUCCESS")
 
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {

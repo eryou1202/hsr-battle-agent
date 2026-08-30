@@ -26,7 +26,7 @@ from .predicate_semantics_reference import PredicateContext, evaluate_predicate
 from .property_contribution_reference import PropertyState
 from .modifier_catalog import ModifierDefinition
 from .modifier_lifecycle_reference import ModifierInstance, ModifierState, add_or_refresh, mark_destroy
-from .scheduler_semantics_reference import ActionDelayState, apply_delay_operation
+from .scheduler_semantics_reference import ActionDelayState, TaskState, TaskStep, apply_delay_operation, trace_completion_marker
 from .target_semantics_reference import BattleTargetContext, EntitySnapshot, resolve_target_payload
 from .toughness_break_reference import ToughnessState, apply_toughness_damage
 
@@ -48,6 +48,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
     "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed AddNormalizedValue contract", "selected scheduler action-delay commit boundary"),
+    "ACTION_COMPLETION_MARKER": ("explicit action task identity", "existing EXECUTING TaskStep", "selected scheduler task-success boundary"),
 }
 
 
@@ -136,6 +137,7 @@ class ReferenceBattleState:
     team_skill_points: Mapping[str, TeamSkillPointState] = field(default_factory=dict)
     special_resources: Mapping[str, Decimal] = field(default_factory=dict)
     action_delays: Mapping[str, ActionDelayState] = field(default_factory=dict)
+    action_tasks: Mapping[str, TaskStep] = field(default_factory=dict)
     rng: SandboxRng = SandboxRng(seed=0)
     wave_count: int = 1
     challenge_left: int | None = None
@@ -191,6 +193,17 @@ class ReferenceBattleState:
         states = dict(self.action_delays)
         states[entity_id] = value
         return replace(self, action_delays=states)
+
+    def action_task(self, task_id: str) -> TaskStep:
+        try:
+            return self.action_tasks[task_id]
+        except KeyError as error:
+            raise SemanticExecutionError(f"unknown scheduler action task {task_id!r}") from error
+
+    def replace_action_task(self, task: TaskStep) -> "ReferenceBattleState":
+        tasks = dict(self.action_tasks)
+        tasks[task.task_id] = task
+        return replace(self, action_tasks=tasks)
 
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
         return BattleTargetContext(
@@ -250,6 +263,10 @@ class ReferenceBattleState:
                 key: {"normalized_value": str(value.normalized_value), "skip_target_turn": value.skip_target_turn}
                 for key, value in sorted(self.action_delays.items())
             },
+            "action_tasks": {
+                key: {"state": value.state.name, "owner_id": value.owner_id}
+                for key, value in sorted(self.action_tasks.items())
+            },
             "rng_seed": self.rng.seed,
             "wave_count": self.wave_count,
             "challenge_left": self.challenge_left,
@@ -275,6 +292,7 @@ class ExecutionContext:
     current_turn_action_entity_id: str | None = None
     current_turn_owner_id: str | None = None
     snapshot_property_entity_id: str | None = None
+    action_task_id: str | None = None
     dynamic_hash_values: Mapping[str, Any] = field(default_factory=dict)
     dynamic_scope_owners: Mapping[str, str] = field(default_factory=dict)
     skill_type: str = ""
@@ -412,6 +430,8 @@ class SemanticExecutor:
             return self._execute_modify_team_sp(operation, state, context)
         if kind == "DELAY_ACTION":
             return self._execute_delay_action(operation, state, context)
+        if kind == "ACTION_COMPLETION_MARKER":
+            return self._execute_action_completion_marker(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -943,6 +963,40 @@ class SemanticExecutor:
                 "skip_target_turn": transition.delay.skip_target_turn,
             })
         return ExecutionResult(current, tuple(trace))
+
+    def _execute_action_completion_marker(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit a no-argument ``SkillPerformFinish`` task-success boundary.
+
+        The selected scheduler reference proves only the task-state marker:
+        the caller supplies the concrete action task already in ``EXECUTING``
+        state, and this boundary turns it into ``SUCCESS``.  AV recharge,
+        next-actor selection, turn consumption and arbitration remain outside
+        this adapter.
+        """
+        task_id = context.action_task_id
+        if not task_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: SkillPerformFinish requires explicit action_task_id")
+        before = state.action_task(task_id)
+        if before.state is not TaskState.EXECUTING:
+            raise SemanticExecutionError(
+                f"{operation.get('operation_id')}: SkillPerformFinish requires EXECUTING action task {task_id!r}"
+            )
+        transition = trace_completion_marker(operation, task_id=task_id)
+        committed = TaskStep(task_id=transition.task_id, state=transition.state, owner_id=before.owner_id)
+        current = state.replace_action_task(committed)
+        return ExecutionResult(current, ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "ACTION_COMPLETION_MARKED_SUCCESS",
+            "task_id": task_id,
+            "previous_state": before.state.name,
+            "state": committed.state.name,
+            "owner_id": committed.owner_id,
+        },))
 
     def _execute_remove_modifier(
         self,

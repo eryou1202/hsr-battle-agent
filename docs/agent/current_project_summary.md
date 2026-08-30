@@ -11,8 +11,8 @@ Modifier callbacks), 2 TaskListTemplate definitions, 287 DynamicValue
 definitions, and 2295 recursive semantic nodes (1780 operations, 515
 Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
-denominator. Current lifted node statuses: 1826 `REQUIRES_PACKET`, 430
-`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 92
+denominator. Current compiler-output node statuses: 1824 `REQUIRES_PACKET`, 298
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 89
 structural-only records plus 112 `EXECUTABLE_REFERENCE` records (215
 independently closed executable entrypoints); four complete records and fourteen
 separately labeled operation components have run through the generic bridge
@@ -75,6 +75,9 @@ explicit ALIVE callback ModifierInstance, preserving its distinction from
 Six fixed `ModifyActionDelay AddNormalizedValue` forms now execute into an
 explicit per-target normalized-delay state with zero clamp. This is not AV
 reordering, next-actor selection, turn consumption, or interrupt scheduling.
+Seven no-argument `SkillPerformFinish` forms now mark an explicitly identified
+already-executing scheduler task `SUCCESS`; this is likewise not AV recharge,
+turn consumption, next-actor selection, or special-action arbitration.
 Selected targetless `SetModifierDynamicValue` writes now separately update one
 uniquely named **ALIVE** ModifierInstance-local value, rather than using the
 battle DynamicValue store. A real `MCommon_Windfury` component resets its
