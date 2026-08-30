@@ -15,6 +15,7 @@ from hsr_battle_agent.game_data.scheduler_semantics_reference import (
     complete_ordinary_action,
     conditional_loop_expand,
     expand_template_invocation,
+    ordered_ordinary_candidates,
     select_initial_ordinary_actor,
     trace_completion_marker,
 )
@@ -93,6 +94,7 @@ class SchedulerReferenceTest(unittest.TestCase):
         transition = select_initial_ordinary_actor(timeline, ("a", "b"))
         self.assertEqual(transition.ordered_candidates_before_advance, ("b", "a"))
         self.assertEqual(transition.selected_actor_id, "b")
+        self.assertEqual(ordered_ordinary_candidates(timeline, ("a", "b")), ("b", "a"))
 
     def test_ordinary_completion_rejects_wrong_actor_or_nonpositive_speed(self) -> None:
         timeline = OrdinaryTurnTimeline(

@@ -1,0 +1,54 @@
+{
+  "packet_id": "SCHEDULER-CANDIDATE-STATE-001",
+  "game_version": "4.4.54",
+  "scope": "A deterministic read-only composition view of the currently closed ordinary property-38 candidate category and losslessly queued TurnInsertAbility records. It intentionally performs no cross-category scheduler arbitration.",
+  "closure_status": "PARTIAL_R3_R4_REFERENCE",
+  "selected_model": "Build SchedulerCandidateState from two independent state domains: (1) use the closed ordinary participation/alive projection and property-38 stable comparator to expose ordered ordinary candidate IDs; (2) copy immutable PendingInsertedAction queue records in enqueue order. Return an explicit UNRESOLVED_PENDING_INSERT_ACTION_ARBITRATION status. The view neither selects nor executes a pending inserted action and does not import behavior-level ActionDelayState into property 38.",
+  "state_reads": [
+    "OrdinaryTurnTimeline and settled ordinary participation/alive state",
+    "ReferenceBattleState.pending_inserted_actions in source enqueue order"
+  ],
+  "state_writes": ["none; SchedulerCandidateState is an immutable diagnostic/reference view"],
+  "ordering": "The ordinary category has the independently frozen remaining-delay/prior-list ordering. The pending category has independently frozen source enqueue order. No ordering relation between categories is claimed or calculated.",
+  "evidence": [
+    {
+      "packet": "SCHEDULER-ORDINARY-AV-COMPOSITION-001",
+      "support": "Supplies the closed ordinary property-38 comparator and completion scope."
+    },
+    {
+      "packet": "SCHEDULER-ORDINARY-ELIGIBILITY-VISIBILITY-001",
+      "support": "Supplies the state-derived ordinary participation/alive projection."
+    },
+    {
+      "packet": "SCHEDULER-INSERT-ABILITY-QUEUE-001",
+      "support": "Supplies the lossless source-order pending insertion record and explicitly leaves its arbitration unclosed."
+    },
+    {
+      "fixture": "source_backed_scheduler_candidate_state_component_reference_001.json",
+      "support": "A real Black Swan TurnInsertAbility operation reaches the pending queue and then appears beside ordinary candidates without any inferred selection."
+    }
+  ],
+  "acceptance": {
+    "tests": [
+      "tests/game_data/test_reference_execution.py::test_scheduler_candidate_state_exposes_source_backed_pending_insert_without_arbitration",
+      "tests/game_data/test_scheduler_semantics_reference.py::test_ordinary_initial_selection_uses_stable_prior_action_list_tie_order"
+    ],
+    "status": "SOURCE_BACKED_COMPOSITION_REFERENCE_NOT_NEW_CANONICAL-OPERATION-COVERAGE_NOT_GOLDEN"
+  },
+  "strict_rejection": [
+    "selecting a pending action from InsertAbilityPriority",
+    "using pending queue position as an AV/turn priority",
+    "resolving inserted ability targets",
+    "using ActionDelayState as property-38 delay",
+    "claiming a legal action, active action, or completion transition from this read-only view"
+  ],
+  "unsupported_boundary": [
+    "Ultimate/FUA/ExtraAction/Immediate Action/interrupt arbitration",
+    "pending action target resolution or execution",
+    "AV reset/reorder or turn consumption for inserted actions",
+    "Advance/Delay/skip-turn interaction",
+    "summon/memosprite/boss special candidate categories",
+    "Golden game-trace claim"
+  ],
+  "dsh_implementation_contract": "Preserve ordinary candidates and inserted-action records as separate typed scheduler inputs. Expose deterministic order within each category, but require a separately frozen arbitration policy before selecting a cross-category next action. This view must never mutate BattleState or provide a silent fallback to ordinary selection when a pending inserted action exists."
+}

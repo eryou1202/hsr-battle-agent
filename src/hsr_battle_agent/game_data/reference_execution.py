@@ -31,6 +31,7 @@ from .scheduler_semantics_reference import (
     InsertedActionSpec,
     OrdinaryTurnTimeline,
     complete_ordinary_action,
+    ordered_ordinary_candidates,
     TaskState,
     TaskStep,
     apply_delay_operation,
@@ -174,6 +175,27 @@ class PendingInsertedAction:
 
 
 @dataclass(frozen=True)
+class SchedulerCandidateState:
+    """Lossless pre-arbitration view of the currently known scheduler inputs.
+
+    Only ordinary property-38 candidates have a closed ordering model.  Pending
+    inserted actions remain source-order records; no priority, target, AV or
+    turn-consumption policy is inferred from this view.
+    """
+
+    ordinary_candidate_ids: tuple[str, ...]
+    pending_inserted_actions: tuple[PendingInsertedAction, ...]
+    arbitration_status: str = "UNRESOLVED_PENDING_INSERT_ACTION_ARBITRATION"
+
+    def as_json(self) -> dict[str, Any]:
+        return {
+            "ordinary_candidate_ids": list(self.ordinary_candidate_ids),
+            "pending_inserted_actions": [item.as_json() for item in self.pending_inserted_actions],
+            "arbitration_status": self.arbitration_status,
+        }
+
+
+@dataclass(frozen=True)
 class ReferenceBattleState:
     """Immutable state consumed by all first-bridge semantic adapters."""
 
@@ -293,6 +315,22 @@ class ReferenceBattleState:
             entity_id
             for entity_id in timeline.action_order
             if self.entity(entity_id).ordinary_action_eligible and self.entity(entity_id).survival.alive
+        )
+
+    def scheduler_candidate_state(self) -> SchedulerCandidateState:
+        """Return ordinary and inserted candidate categories without selection.
+
+        This is the composition boundary after queue creation and before any
+        unclosed inserted-action arbitration.  In particular, ActionDelayState
+        modifiers remain behavior-level state and are intentionally absent.
+        """
+        timeline = self.ordinary_turn_timeline
+        if timeline is None:
+            raise SemanticExecutionError("scheduler candidate state requires an initialized ordinary timeline")
+        ordinary = ordered_ordinary_candidates(timeline, self.ordinary_eligible_entity_ids())
+        return SchedulerCandidateState(
+            ordinary_candidate_ids=ordinary,
+            pending_inserted_actions=self.pending_inserted_actions,
         )
 
     def target_context(self, context: "ExecutionContext") -> BattleTargetContext:
@@ -516,6 +554,10 @@ class SemanticExecutor:
             "eligible_domain_source": "ReferenceBattleState.ordinary_eligible_entity_ids",
             "pending_inserted_actions_ignored": len(current.pending_inserted_actions),
         },))
+
+    def scheduler_candidate_state(self, state: ReferenceBattleState) -> SchedulerCandidateState:
+        """Read the deterministic candidate categories without arbitrating them."""
+        return state.scheduler_candidate_state()
 
     def _execute_operation(
         self,

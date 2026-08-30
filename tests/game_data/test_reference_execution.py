@@ -392,6 +392,39 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.trace[0]["eligible_entity_ids"], ["p1"])
         self.assertEqual(result.state.ordinary_turn_timeline.current_actor_id, "p1")
 
+    def test_scheduler_candidate_state_exposes_source_backed_pending_insert_without_arbitration(self) -> None:
+        source = _record(BLACK_SWAN_MAZE_ID)
+        insert = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.TurnInsertAbility"
+            and operation["arguments"].get("AbilityName", {}).get("Value") == "Avatar_BlackSwan_00_SkillMazeInLevel_Insert"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:scheduler-candidate-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_INSERT_CANDIDATE_COMPONENT", "operations": [insert]}],
+        }
+        state = ReferenceBattleState(
+            entities={
+                "black-swan": RuntimeEntity("black-swan", "light", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100")),
+                "e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")), speed=Decimal("100")),
+            },
+            ordinary_turn_timeline=OrdinaryTurnTimeline(
+                action_order=("black-swan", "e1"),
+                remaining_delays={"black-swan": Decimal("0"), "e1": Decimal("15")},
+            ),
+        )
+        queued = SemanticExecutor().execute_entrypoint(
+            BehaviorCompiler().compile_record(record), "SOURCE_INSERT_CANDIDATE_COMPONENT", state, ExecutionContext(caster_id="black-swan"),
+        )
+        candidates = SemanticExecutor().scheduler_candidate_state(queued.state)
+        self.assertEqual(candidates.ordinary_candidate_ids, ("black-swan", "e1"))
+        self.assertEqual(len(candidates.pending_inserted_actions), 1)
+        self.assertEqual(candidates.pending_inserted_actions[0].spec.insert_priority, "AvatarBuffSelf")
+        self.assertEqual(candidates.arbitration_status, "UNRESOLVED_PENDING_INSERT_ACTION_ARBITRATION")
+
     def test_skill_perform_finish_rejects_missing_or_nonexecuting_task(self) -> None:
         record = {
             "behavior_id": "skill-finish-fixture", "owner_kind": "Avatar", "owner_ref": "skill-finish-fixture", "source_refs": [],

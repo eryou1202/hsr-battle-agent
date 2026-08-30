@@ -141,6 +141,15 @@ def _ordinary_candidates(timeline: OrdinaryTurnTimeline, eligible_ids: Iterable[
     return tuple(sorted(ordered, key=lambda entity_id: (timeline.remaining_delays[entity_id], positions[entity_id])))
 
 
+def ordered_ordinary_candidates(timeline: OrdinaryTurnTimeline, eligible_ids: Iterable[str]) -> tuple[str, ...]:
+    """Expose the closed ordinary comparator without advancing scheduler state.
+
+    The returned sequence is a candidate category only.  It neither makes an
+    action eligible nor arbitrates it against pending inserted/special actions.
+    """
+    return _ordinary_candidates(timeline, eligible_ids)
+
+
 def _advance_ordinary_candidates(
     timeline: OrdinaryTurnTimeline,
     eligible_ids: Iterable[str],

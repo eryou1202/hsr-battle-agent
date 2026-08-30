@@ -1,0 +1,28 @@
+{
+  "fixture_id": "SOURCE-BACKED-SCHEDULER-CANDIDATE-STATE-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Verify that the real Black Swan pending TurnInsertAbility component can be presented in the generic scheduler candidate view beside independently ordered ordinary candidates without creating an arbitration rule.",
+  "status": "SOURCE-BACKED-COMPOSITION-REFERENCE_NOT_NEW_OPERATION-COVERAGE_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel:MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+    "entrypoint_event": "MODIFIER_CALLBACK:StageAbility_Maze_BlackSwan_Modifier._CallbackList[0]:OnEnterBattle",
+    "source_fixture": "source_backed_insert_ability_queue_component_reference_001.json"
+  },
+  "selected_initial_state": {
+    "ordinary_timeline": {"action_order": ["black-swan", "e1"], "remaining_delays": {"black-swan": "0", "e1": "15"}},
+    "ordinary_participation": {"black-swan": true, "e1": true},
+    "pending_inserted_actions": []
+  },
+  "expected_transition": {
+    "ordinary_candidate_ids": ["black-swan", "e1"],
+    "pending_inserted_actions": [{"enqueue_index": 0, "owner_id": "black-swan", "ability_name": "Avatar_BlackSwan_00_SkillMazeInLevel_Insert", "insert_priority": "AvatarBuffSelf"}],
+    "arbitration_status": "UNRESOLVED_PENDING_INSERT_ACTION_ARBITRATION"
+  },
+  "nonclaims": [
+    "No priority relation between black-swan's ordinary action and AvatarBuffSelf is inferred.",
+    "The inserted ability is not target-resolved, scheduled, executed or counted as a new executable canonical operation.",
+    "This reference composition is not a Golden trace."
+  ]
+}
