@@ -137,6 +137,18 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Avatar",
         "fixture": "source_backed_insert_ability_queue_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_SetActionDelayOnTurnEnd",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_SetActionDelayOnTurnEnd:MODIFIER_CALLBACK:MCommon_SetActionDelayOnTurnEnd._CallbackList[0]:OnListenTurnEnd:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_set_reset_action_delay_components_reference_001.json",
+    },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl:MODIFIER_CALLBACK:MCommon_MindControl._CallbackList[1]:OnPhase1:0/FailedTaskList:1/SuccessTaskList:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_set_reset_action_delay_components_reference_001.json",
+    },
 )
 
 

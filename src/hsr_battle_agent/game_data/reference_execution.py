@@ -1011,13 +1011,13 @@ class SemanticExecutor:
         state: ReferenceBattleState,
         context: ExecutionContext,
     ) -> ExecutionResult:
-        """Commit the selected fixed normalized-delay delta per resolved target.
+        """Commit one selected normalized-delay transition per resolved target.
 
         This adapter deliberately stops at the scheduler reference's
-        ``ActionDelayState`` boundary.  It applies a fixed
-        ``ModifyActionDelay.AddNormalizedValue`` and its zero clamp.  Dynamic
-        values resolve only through the existing explicit DynamicValue context.
-        The adapter does
+        ``ActionDelayState`` boundary.  It applies only compiler-approved
+        ModifyActionDelay add, SetActionDelay set or ResetActionDelay reset
+        payloads. Dynamic values resolve only through the existing explicit
+        DynamicValue context. The adapter does
         not recalculate AV, choose the next actor, consume a turn, or infer a
         native interrupt ordering.
         """

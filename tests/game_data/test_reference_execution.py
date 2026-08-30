@@ -44,6 +44,8 @@ STAGE_DELAY_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_Ma
 AML_MINION_SKILL01_ID = "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02"
 MODIFY_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ModifyActionDelayOnTurnEnd"
 BLACK_SWAN_MAZE_ID = "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_SkillMazeInLevel"
+SET_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_SetActionDelayOnTurnEnd"
+MIND_CONTROL_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_MindControl"
 
 
 def _record(behavior_id: str) -> dict:
@@ -1172,6 +1174,58 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0.3"))
         self.assertEqual(result.trace[0]["action"], "ADD")
+
+    def test_source_backed_set_action_delay_component_executes(self) -> None:
+        source = _record(SET_DELAY_TURN_END_ID)
+        delay = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SetActionDelay"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-set-delay-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_SET_DELAY_COMPONENT", "operations": [delay]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_delays={"e1": ActionDelayState(Decimal("0.25"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_SET_DELAY_COMPONENT", state,
+            ExecutionContext(caster_id="e1", modifier_owner_id="e1", dynamic_hash_values={"-1227794911": "0.6"}),
+        )
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0.6"))
+        self.assertEqual(result.trace[0]["action"], "SET")
+
+    def test_source_backed_reset_action_delay_component_executes(self) -> None:
+        source = _record(MIND_CONTROL_ID)
+        reset = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.ResetActionDelay"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-reset-delay-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_RESET_DELAY_COMPONENT", "operations": [reset]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_delays={"e1": ActionDelayState(Decimal("0.6"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_RESET_DELAY_COMPONENT", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"),
+        )
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
+        self.assertTrue(result.state.action_delay_state("e1").skip_target_turn)
+        self.assertEqual(result.trace[0]["action"], "RESET")
 
     def test_source_backed_black_swan_insert_ability_component_queues_without_arbitration(self) -> None:
         source = _record(BLACK_SWAN_MAZE_ID)

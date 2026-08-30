@@ -412,24 +412,43 @@ class BehaviorCompiler:
             if not isinstance(value, Mapping):
                 return "EXECUTABLE_REFERENCE_TEAM_SP_VALUE_MISSING"
         elif kind == "DELAY_ACTION":
-            if str(operation.get("source_type", "")) != "RPG.GameCore.ModifyActionDelay":
-                return "EXECUTABLE_REFERENCE_ACTION_DELAY_TYPE_UNSUPPORTED"
-            if set(arguments) != {"AddNormalizedValue"}:
-                return "EXECUTABLE_REFERENCE_ACTION_DELAY_ARGUMENTS_UNSUPPORTED"
-            if not isinstance(operation.get("target"), Mapping):
-                return "EXECUTABLE_REFERENCE_TARGET_MISSING"
-            value = _mapping(arguments.get("AddNormalizedValue"))
-            if value.get("IsDynamic") is False:
-                if set(value) != {"IsDynamic", "FixedValue"} or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
-                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_FIXED_VALUE_UNSUPPORTED"
-            elif value.get("IsDynamic") is True:
-                postfix = _mapping(value.get("PostfixExpr"))
-                if set(value) != {"IsDynamic", "PostfixExpr"}:
-                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_ARGUMENTS_UNSUPPORTED"
-                if not isinstance(postfix.get("OpCodes"), str) or not isinstance(postfix.get("DynamicHashes"), list) or not isinstance(postfix.get("FixedValues"), list):
+            source_type = str(operation.get("source_type", ""))
+            target = _mapping(operation.get("target"))
+            if source_type == "RPG.GameCore.ModifyActionDelay":
+                if set(arguments) != {"AddNormalizedValue"}:
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_ARGUMENTS_UNSUPPORTED"
+                if not isinstance(operation.get("target"), Mapping):
+                    return "EXECUTABLE_REFERENCE_TARGET_MISSING"
+                value = _mapping(arguments.get("AddNormalizedValue"))
+                if value.get("IsDynamic") is False:
+                    if set(value) != {"IsDynamic", "FixedValue"} or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
+                        return "EXECUTABLE_REFERENCE_ACTION_DELAY_FIXED_VALUE_UNSUPPORTED"
+                elif value.get("IsDynamic") is True:
+                    postfix = _mapping(value.get("PostfixExpr"))
+                    if set(value) != {"IsDynamic", "PostfixExpr"}:
+                        return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_ARGUMENTS_UNSUPPORTED"
+                    if not isinstance(postfix.get("OpCodes"), str) or not isinstance(postfix.get("DynamicHashes"), list) or not isinstance(postfix.get("FixedValues"), list):
+                        return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
+                else:
                     return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
+            elif source_type == "RPG.GameCore.SetActionDelay":
+                if set(target) != {"$type", "Alias"} or target.get("$type") != "RPG.GameCore.TargetAlias" or target.get("Alias") != "ModifierOwnerEntity":
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_TARGET_UNSUPPORTED"
+                if set(arguments) != {"Value"}:
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_ARGUMENTS_UNSUPPORTED"
+                value = _mapping(arguments.get("Value"))
+                postfix = _mapping(value.get("PostfixExpr"))
+                if value.get("IsDynamic") is not True or set(value) != {"IsDynamic", "PostfixExpr"}:
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_VALUE_UNSUPPORTED"
+                if not isinstance(postfix.get("OpCodes"), str) or not isinstance(postfix.get("DynamicHashes"), list) or not isinstance(postfix.get("FixedValues"), list):
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_VALUE_UNSUPPORTED"
+            elif source_type == "RPG.GameCore.ResetActionDelay":
+                if set(target) != {"$type", "Alias"} or target.get("$type") != "RPG.GameCore.TargetAlias" or target.get("Alias") != "ModifierOwnerEntity":
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_RESET_TARGET_UNSUPPORTED"
+                if set(arguments) != {"SkipTargetTurn"} or arguments.get("SkipTargetTurn") is not True:
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_RESET_ARGUMENTS_UNSUPPORTED"
             else:
-                return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
+                return "EXECUTABLE_REFERENCE_ACTION_DELAY_TYPE_UNSUPPORTED"
         elif kind == "ACTION_COMPLETION_MARKER":
             if str(operation.get("source_type", "")) != "RPG.GameCore.SkillPerformFinish":
                 return "EXECUTABLE_REFERENCE_ACTION_COMPLETION_TYPE_UNSUPPORTED"

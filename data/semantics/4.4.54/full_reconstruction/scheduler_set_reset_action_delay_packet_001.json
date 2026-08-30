@@ -1,0 +1,61 @@
+{
+  "packet_id": "SCHEDULER-SET-RESET-ACTION-DELAY-001",
+  "game_version": "4.4.54",
+  "scope": "The single reviewed dynamic RPG.GameCore.SetActionDelay and single reviewed RPG.GameCore.ResetActionDelay forms, each with an exact ModifierOwnerEntity outer target alias.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve ModifierOwnerEntity to one or more explicit runtime targets. SetActionDelay evaluates its selected PostfixExpr through the unified DynamicValue resolver and replaces each ActionDelayState normalized value. ResetActionDelay sets the normalized value to zero and writes the explicit SkipTargetTurn flag. Neither transition performs AV ordering or executes a candidate action.",
+  "state_reads": [
+    "ModifierOwnerEntity target alias",
+    "per-target ActionDelayState",
+    "selected SetActionDelay PostfixExpr",
+    "ExecutionContext.dynamic_hash_values and scoped DynamicValueStore for SetActionDelay"
+  ],
+  "state_writes": [
+    "per-target ActionDelayState.normalized_value",
+    "per-target ActionDelayState.skip_target_turn for ResetActionDelay"
+  ],
+  "ordering": "Each resolved target commits synchronously in canonical target order. Set replaces only normalized delay and preserves the existing skip flag; Reset writes zero plus the source SkipTargetTurn=true flag.",
+  "evidence": [
+    {
+      "source": "TurnBasedGameData",
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "support": "The reviewed corpus contains exactly one SetActionDelay with dynamic Value on ModifierOwnerEntity and one ResetActionDelay with SkipTargetTurn=true on ModifierOwnerEntity."
+    },
+    {
+      "packet": "SCHEDULER-DELAY-ADD-NORMALIZED-001",
+      "support": "Existing ActionDelayState set/add/reset reference supplies the immutable storage and zero-clamp boundary."
+    },
+    {
+      "fixture": "source_backed_set_reset_action_delay_components_reference_001.json",
+      "support": "Both source operations execute through the generic compiler/executor against explicit runtime state."
+    }
+  ],
+  "acceptance": {
+    "tests": [
+      "tests/game_data/test_reference_execution.py::test_source_backed_set_action_delay_component_executes",
+      "tests/game_data/test_reference_execution.py::test_source_backed_reset_action_delay_component_executes",
+      "tests/game_data/test_scheduler_semantics_reference.py::test_delay_set_add_reset_and_clamp",
+      "tests/game_data/test_executable_handler_eligibility.py::test_every_compiler_executable_kind_has_a_handler_context_contract"
+    ],
+    "trace_dispositions": ["ACTION_DELAY_MODIFIED: SET", "ACTION_DELAY_MODIFIED: RESET"],
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": [
+    "other target aliases",
+    "fixed/mixed SetActionDelay values",
+    "SetActionDelay payloads with extra fields",
+    "ResetActionDelay payloads other than exact SkipTargetTurn=true",
+    "unresolved DynamicHash",
+    "ModifyActionDelay forms outside separately closed add shapes"
+  ],
+  "unsupported_boundary": [
+    "AV recomputation/reorder",
+    "next actor selection",
+    "turn consumption",
+    "inserted-action eligibility",
+    "Ultimate/FUA/ExtraAction/interrupt arbitration",
+    "action execution or legal-action recomputation",
+    "Golden game-trace claim"
+  ],
+  "dsh_implementation_contract": "Use the same immutable ActionDelayState holder and DynamicValue evaluator already shared by fixed/dynamic ModifyActionDelay. For only these exact source shapes, replace or reset the target delay state and emit a trace. Treat queue reordering, actor selection and SkipTargetTurn consumption as independent scheduler contracts; never infer them from this storage mutation."
+}
