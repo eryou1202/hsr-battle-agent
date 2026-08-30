@@ -119,6 +119,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Avatar",
         "fixture": "source_backed_damage_perform_finish_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02:ONSTART:1",
+        "owner_kind": "Monster",
+        "fixture": "source_backed_skill_execution_start_component_reference_001.json",
+    },
 )
 
 

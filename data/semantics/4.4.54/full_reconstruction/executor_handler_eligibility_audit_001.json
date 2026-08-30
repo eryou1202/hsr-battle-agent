@@ -1,9 +1,10 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "59423e9efc4a22dae03c68408fa95664a74202b406f6f38004ca99a82522cdaf",
+  "audit_sha256": "2dfaeadfd1ef7e3b848c0196641180d7c2d0154103b35f7ce27a9f40a062c35e",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ACTION_COMPLETION_MARKER": 7,
+    "ACTION_START_MARKER": 1,
     "ADD_MODIFIER": 24,
     "CONDITIONAL": 364,
     "DAMAGE_COMPLETION_MARKER": 7,
@@ -23,6 +24,11 @@
       "explicit action task identity",
       "existing EXECUTING TaskStep",
       "selected scheduler task-success boundary"
+    ],
+    "ACTION_START_MARKER": [
+      "explicit action task identity",
+      "existing READY TaskStep",
+      "selected scheduler task-executing boundary"
     ],
     "ADD_MODIFIER": [
       "target resolution",
@@ -95,7 +101,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "941252c2833960faa99c78df1cdf4d14a045e67e900dfc68854fe04b9e33c6bb",
+  "input_compiler_report_sha256": "8f07a4b33e6bb21c79328381a2aeb0730fbe773cb90db57a71f9d64b32b2094b",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

@@ -50,6 +50,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed AddNormalizedValue contract", "selected scheduler action-delay commit boundary"),
     "ACTION_COMPLETION_MARKER": ("explicit action task identity", "existing EXECUTING TaskStep", "selected scheduler task-success boundary"),
     "DAMAGE_COMPLETION_MARKER": ("explicit damage task identity", "existing EXECUTING TaskStep", "selected scheduler damage-task-success boundary"),
+    "ACTION_START_MARKER": ("explicit action task identity", "existing READY TaskStep", "selected scheduler task-executing boundary"),
 }
 
 
@@ -452,6 +453,8 @@ class SemanticExecutor:
             return self._execute_action_completion_marker(operation, state, context)
         if kind == "DAMAGE_COMPLETION_MARKER":
             return self._execute_damage_completion_marker(operation, state, context)
+        if kind == "ACTION_START_MARKER":
+            return self._execute_action_start_marker(operation, state, context)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
@@ -1012,6 +1015,39 @@ class SemanticExecutor:
         return ExecutionResult(current, ({
             "operation_id": operation.get("operation_id"),
             "disposition": "ACTION_COMPLETION_MARKED_SUCCESS",
+            "task_id": task_id,
+            "previous_state": before.state.name,
+            "state": committed.state.name,
+            "owner_id": committed.owner_id,
+        },))
+
+    def _execute_action_start_marker(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+    ) -> ExecutionResult:
+        """Commit a no-argument ``SkillExecutionStart`` task-start boundary.
+
+        The selected model consumes neither a turn nor a timeline slot.  It
+        only makes an already-created ``READY`` action task observable as
+        ``EXECUTING``; all action selection and scheduler policies remain
+        external to this narrow reference bridge.
+        """
+        task_id = context.action_task_id
+        if not task_id:
+            raise SemanticExecutionError(f"{operation.get('operation_id')}: SkillExecutionStart requires explicit action_task_id")
+        before = state.action_task(task_id)
+        if before.state is not TaskState.READY:
+            raise SemanticExecutionError(
+                f"{operation.get('operation_id')}: SkillExecutionStart requires READY action task {task_id!r}"
+            )
+        transition = trace_completion_marker(operation, task_id=task_id)
+        committed = TaskStep(task_id=transition.task_id, state=transition.state, owner_id=before.owner_id)
+        current = state.replace_action_task(committed)
+        return ExecutionResult(current, ({
+            "operation_id": operation.get("operation_id"),
+            "disposition": "ACTION_MARKED_EXECUTING",
             "task_id": task_id,
             "previous_state": before.state.name,
             "state": committed.state.name,

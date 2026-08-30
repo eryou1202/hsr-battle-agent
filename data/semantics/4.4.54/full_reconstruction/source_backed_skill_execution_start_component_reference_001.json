@@ -1,0 +1,18 @@
+{
+  "fixture_id": "SOURCE-BACKED-SKILL-EXECUTION-START-COMPONENT-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute Monster_AML_Minion01_00 Skill01 Phase02's real no-argument SkillExecutionStart component through BehaviorCompiler and SemanticExecutor against an explicit READY action task.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {
+    "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02",
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02:ONSTART:1",
+    "entrypoint_event": "ONSTART",
+    "source_refs": [{"commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "path": "Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json", "raw_sha256": "6d2ef55fd1b9f0f58377316f1771a2f387ee6ade17b8e14fb321e76ea118f35d", "repository": "https://github.com/DimbreathBot/TurnBasedGameData", "source": "TurnBasedGameData", "source_container": "AbilityList", "version_relation": "CLOSE_4.4.0_TO_4.4.54"}]
+  },
+  "selected_context": {"caster_id": "minion", "action_task_id": "skill:minion:1"},
+  "selected_initial_state": {"minion": {"team": "dark", "hp": "1", "max_hp": "1"}, "action_tasks": {"skill:minion:1": {"state": "READY", "owner_id": "minion"}}},
+  "expected_transition": {"action_tasks": {"skill:minion:1": {"state": "EXECUTING", "owner_id": "minion"}}, "ordered_dispositions": ["ACTION_MARKED_EXECUTING"]},
+  "assumptions": ["The fixture supplies a concrete scheduler task identity and its pre-marker READY state.", "Only the start marker is claimed; Monster AI, target selection, damage and completion are outside this component fixture."],
+  "unsupported_boundary": ["This is not full Monster_AML_Minion01_00 Skill01 behavior, Monster AI, AV scheduling, resource commit, target selection, or a Golden game trace."]
+}

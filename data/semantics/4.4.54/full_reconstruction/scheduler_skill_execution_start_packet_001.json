@@ -1,0 +1,23 @@
+{
+  "packet_id": "SCHEDULER-SKILL-EXECUTION-START-001",
+  "game_version": "4.4.54",
+  "scope": "The one recursively lifted no-argument, no-target RPG.GameCore.SkillExecutionStart operation in the reviewed corpus.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "SkillExecutionStart is an explicit action-task start boundary. Given an explicit existing action TaskStep in READY state, commit that same task identity as EXECUTING while preserving the owner. The marker does not select the action, consume a turn, commit resources, select targets, create a damage task, or alter AV/timeline order.",
+  "state_reads": ["ExecutionContext.action_task_id", "ReferenceBattleState.action_tasks[action_task_id].state", "ReferenceBattleState.action_tasks[action_task_id].owner_id"],
+  "state_writes": ["ReferenceBattleState.action_tasks[action_task_id].state = EXECUTING"],
+  "ordering": "The task-state write occurs at the canonical marker's position. It provides only the already-selected task's execution visibility boundary.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "The reviewed Monster_AML_Minion01_00 Skill01 Phase02 contains a sole empty SkillExecutionStart marker."},
+    {"packet": "SCHEDULER-001", "support": "Existing TaskState and trace_completion_marker reference maps action start markers to EXECUTING."},
+    {"fixture": "source_backed_skill_execution_start_component_reference_001.json", "support": "The real Monster SkillExecutionStart component executes through BehaviorCompiler and SemanticExecutor with an explicit READY action task."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_skill_execution_start_marks_explicit_ready_action_task_executing", "tests/game_data/test_reference_execution.py::test_skill_execution_start_rejects_missing_or_nonready_action_task", "tests/game_data/test_reference_execution.py::test_source_backed_monster_skill_execution_start_component_executes", "tests/game_data/test_scheduler_semantics_reference.py::test_markers_transition_executing_then_success"],
+    "trace_disposition": "ACTION_MARKED_EXECUTING",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["missing action_task_id", "unknown action task", "task not in READY state", "non-SkillExecutionStart marker type", "non-empty arguments", "non-null target"],
+  "unsupported_boundary": ["action candidate selection", "target legality", "SP/Energy/resource commit", "damage task creation", "HP/toughness application", "AV reset/recharge", "next-actor ordering", "Ultimate/FUA/ExtraAction/interrupt arbitration", "full Monster AI", "Golden trace claim"],
+  "dsh_implementation_contract": "Keep scheduler task creation/selection outside this marker. For a selected no-argument SkillExecutionStart operation, require an existing READY action task chosen by the caller and commit exactly that task to EXECUTING. Preserve the owner and do not infer resource, targeting, damage or timeline side effects."
+}

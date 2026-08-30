@@ -41,6 +41,7 @@ MIND_CONTROL_DAMAGE_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier
 DOT_TEAR_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Tear"
 WINDFURY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury"
 STAGE_DELAY_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100"
+AML_MINION_SKILL01_ID = "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02"
 
 
 def _record(behavior_id: str) -> dict:
@@ -363,6 +364,46 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_task("skill:p1:1").state, TaskState.EXECUTING)
         self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMPLETION_MARKED_SUCCESS")
 
+    def test_skill_execution_start_marks_explicit_ready_action_task_executing(self) -> None:
+        record = {
+            "behavior_id": "skill-start-fixture", "owner_kind": "Monster", "owner_ref": "skill-start-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "start", "source_type": "RPG.GameCore.SkillExecutionStart", "kind": "ACTION_START_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"m1": RuntimeEntity("m1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:m1:1": TaskStep("skill:m1:1", TaskState.READY, "m1")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTART", state, ExecutionContext(caster_id="m1", action_task_id="skill:m1:1"),
+        )
+        self.assertEqual(result.state.action_task("skill:m1:1").state, TaskState.EXECUTING)
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_MARKED_EXECUTING")
+
+    def test_skill_execution_start_rejects_missing_or_nonready_action_task(self) -> None:
+        record = {
+            "behavior_id": "skill-start-fixture", "owner_kind": "Monster", "owner_ref": "skill-start-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTART", "operations": [{
+                "operation_id": "start", "source_type": "RPG.GameCore.SkillExecutionStart", "kind": "ACTION_START_MARKER",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": None, "arguments": {}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        state = ReferenceBattleState(
+            entities={"m1": RuntimeEntity("m1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:m1:1": TaskStep("skill:m1:1", TaskState.EXECUTING, "m1")},
+        )
+        with self.assertRaisesRegex(Exception, "action_task_id"):
+            SemanticExecutor().execute_entrypoint(compiled, "ONSTART", state, ExecutionContext(caster_id="m1"))
+        with self.assertRaisesRegex(Exception, "READY"):
+            SemanticExecutor().execute_entrypoint(
+                compiled, "ONSTART", state, ExecutionContext(caster_id="m1", action_task_id="skill:m1:1"),
+            )
+
     def test_damage_perform_finish_rejects_missing_or_nonexecuting_damage_task(self) -> None:
         record = {
             "behavior_id": "damage-finish-fixture", "owner_kind": "Avatar", "owner_ref": "damage-finish-fixture", "source_refs": [],
@@ -408,6 +449,32 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         self.assertEqual(result.state.damage_task("damage:black-swan:1").state, TaskState.SUCCESS)
         self.assertEqual(result.trace[0]["disposition"], "DAMAGE_COMPLETION_MARKED_SUCCESS")
+
+    def test_source_backed_monster_skill_execution_start_component_executes(self) -> None:
+        source = _record(AML_MINION_SKILL01_ID)
+        start = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.SkillExecutionStart"
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-skill-start-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_SKILL_START_COMPONENT", "operations": [start]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"minion": RuntimeEntity("minion", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_tasks={"skill:minion:1": TaskStep("skill:minion:1", TaskState.READY, "minion")},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_SKILL_START_COMPONENT", state,
+            ExecutionContext(caster_id="minion", action_task_id="skill:minion:1"),
+        )
+        self.assertEqual(result.state.action_task("skill:minion:1").state, TaskState.EXECUTING)
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_MARKED_EXECUTING")
 
     def test_set_modifier_dynamic_value_overwrites_unique_alive_modifier_local_value(self) -> None:
         record = {

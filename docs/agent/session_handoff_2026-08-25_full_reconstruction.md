@@ -34,7 +34,7 @@
 - Current coverage split: 249 behavior-bearing records (89 structural-only
 compiled), 112 `EXECUTABLE_REFERENCE` records / 216 independently closed
 entrypoints, and 304 static-definition-only records. Four complete records
-are source-backed executed plus sixteen explicitly separate operation components;
+are source-backed executed plus seventeen explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -147,10 +147,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `SCHEDULER-ACTION-START-MARKER-001`: inspect only the no-argument Monster
-   `SkillExecutionStart` marker and lower only an explicit action task to
-   `EXECUTING`. Keep action selection, target legality, AV timing, resource
-   commit, next-actor ordering and native interrupt semantics separate.
+1. `SCHEDULER-DYNAMIC-DELAY-ADD-001`: lower only exact dynamic
+   `ModifyActionDelay AddNormalizedValue` forms whose `PostfixExpr` values
+   resolve through explicit DynamicValue context. Keep Set/Reset delay, AV
+   ordering, action selection and native interrupt semantics separate.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

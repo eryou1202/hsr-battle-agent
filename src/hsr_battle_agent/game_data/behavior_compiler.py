@@ -44,7 +44,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "DELAY_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "MODIFY_ACTION_STATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "MODIFY_ACTION_COST": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
-    "ACTION_START_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "ACTION_START_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "ACTION_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "INCLUDE_TASK_TEMPLATE": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "LOOP": {"packet": "SCHEDULER-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
@@ -435,6 +435,13 @@ class BehaviorCompiler:
                 return "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_ARGUMENTS_UNSUPPORTED"
             if operation.get("target") is not None:
                 return "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_TARGET_UNSUPPORTED"
+        elif kind == "ACTION_START_MARKER":
+            if str(operation.get("source_type", "")) != "RPG.GameCore.SkillExecutionStart":
+                return "EXECUTABLE_REFERENCE_ACTION_START_TYPE_UNSUPPORTED"
+            if arguments:
+                return "EXECUTABLE_REFERENCE_ACTION_START_ARGUMENTS_UNSUPPORTED"
+            if operation.get("target") is not None:
+                return "EXECUTABLE_REFERENCE_ACTION_START_TARGET_UNSUPPORTED"
         return None
 
     def _compile_children(self, operation: Mapping[str, Any]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], bool]:
