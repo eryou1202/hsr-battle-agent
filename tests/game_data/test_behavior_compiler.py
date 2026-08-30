@@ -106,3 +106,12 @@ class BehaviorCompilerTest(unittest.TestCase):
         dynamic = dict(operation, arguments={"ModifierName": {"Value": "MFixture"}, "LifeTime": {"IsDynamic": True, "PostfixExpr": {}}})
         rejected = BehaviorCompiler(modifier_catalog=catalog).compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [dynamic]}]))
         self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED")
+
+    def test_add_modifier_accepts_only_selected_certain_self_caster_param_lifetime_shape(self) -> None:
+        operation = {"operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "ParamEntity"}, "arguments": {"ModifierName": {"Value": "MFixture"}, "Chance": {"IsDynamic": False, "FixedValue": {"Value": 1}}, "InheritCaster": "CasterSelf", "LifeTime": {"IsDynamic": False, "FixedValue": {"Value": 3}}, "DynamicValues": {"MDF_Value": {"IsDynamic": False, "FixedValue": {"Value": 0.5}}}}, "children": []}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}
+        catalog = {"MFixture": ModifierDefinition("MFixture", "ReplaceByCaster", "fixture:modifier")}
+        self.assertEqual(BehaviorCompiler(modifier_catalog=catalog).compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        target_self = dict(operation, arguments={**operation["arguments"], "InheritCaster": "TargetSelf"})
+        rejected = BehaviorCompiler(modifier_catalog=catalog).compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [target_self]}]))
+        self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_ADD_MODIFIER_INHERIT_CASTER_UNSUPPORTED")

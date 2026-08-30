@@ -98,6 +98,27 @@ def _fixed_nonnegative_integral_value(value: Any) -> int | None:
     return raw
 
 
+def _fixed_positive_integral_value(value: Any) -> int | None:
+    """Accept the selected positive fixed integer config-value shape."""
+    result = _fixed_nonnegative_integral_value(value)
+    return result if result is not None and result > 0 else None
+
+
+def _fixed_one_value(value: Any) -> bool:
+    """Recognize a fixed certainty value without accepting dynamic chance."""
+    payload = _mapping(value)
+    fixed = _mapping(payload.get("FixedValue"))
+    raw = fixed.get("Value")
+    return (
+        set(payload) == {"IsDynamic", "FixedValue"}
+        and payload.get("IsDynamic") is False
+        and set(fixed) == {"Value"}
+        and not isinstance(raw, bool)
+        and isinstance(raw, (int, float))
+        and raw == 1
+    )
+
+
 class BehaviorCompiler:
     """Compile only canonical IR; raw external payload is never consulted."""
 
@@ -334,7 +355,8 @@ class BehaviorCompiler:
             name = modifier.get("Value")
             if not isinstance(name, str) or not name:
                 return "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING"
-            allowed_argument_sets = ({"ModifierName"}, {"ModifierName", "DynamicValues"}, {"ModifierName", "LifeTime"})
+            fixed_lifetime_self_caster = {"Chance", "DynamicValues", "InheritCaster", "LifeTime", "ModifierName"}
+            allowed_argument_sets = ({"ModifierName"}, {"ModifierName", "DynamicValues"}, {"ModifierName", "LifeTime"}, fixed_lifetime_self_caster)
             if set(arguments) == {"ModifierName", "AliveOnly"}:
                 if arguments.get("AliveOnly") is not False:
                     return "EXECUTABLE_REFERENCE_ADD_MODIFIER_ALIVE_ONLY_UNSUPPORTED"
@@ -348,6 +370,15 @@ class BehaviorCompiler:
                 if _fixed_nonnegative_integral_value(arguments.get("LifeTime")) is None:
                     return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED"
                 if _mapping(operation.get("target")).get("Alias") != "ModifierOwnerEntity":
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_TARGET_UNSUPPORTED"
+            if set(arguments) == fixed_lifetime_self_caster:
+                if not _fixed_one_value(arguments.get("Chance")):
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_CHANCE_UNSUPPORTED"
+                if arguments.get("InheritCaster") != "CasterSelf":
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_INHERIT_CASTER_UNSUPPORTED"
+                if _fixed_positive_integral_value(arguments.get("LifeTime")) is None:
+                    return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED"
+                if _mapping(operation.get("target")).get("Alias") != "ParamEntity":
                     return "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_TARGET_UNSUPPORTED"
             dynamic_values = arguments.get("DynamicValues")
             if dynamic_values is not None and (

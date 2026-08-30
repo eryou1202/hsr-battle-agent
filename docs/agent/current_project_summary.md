@@ -14,7 +14,7 @@ static-definition-only references, which no longer deflate the behavior
 denominator. Current compiler-output node statuses: 1824 `REQUIRES_PACKET`, 298
 `PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 84
 structural-only records plus 117 `EXECUTABLE_REFERENCE` records (224
-independently closed executable entrypoints); four complete records and twenty-four
+independently closed executable entrypoints); four complete records and twenty-six
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -23,6 +23,9 @@ modifier's static integral `LifeTime` as pending-instance `current_life`;
 the three real `MoreOneMorePerTurn` OnPhase1 components are counted only as
 source-backed components because their surrounding callbacks still depend on
 unprovided `DynamicHash` values.
+Two StageBuff components separately establish only the exact `Chance=1`,
+`InheritCaster=CasterSelf`, positive fixed-lifetime `ParamEntity` form;
+target-self, permanent-lifetime and random variants remain rejected.
 it handles closed conditional/predicate, heal, StackProperty, and DynamicValue
 define/set routes and rejects all other behavior-affecting operations. A strict
 standalone normal-HP `DamageRequest` bridge now commits through shield then HP

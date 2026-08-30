@@ -167,6 +167,18 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Modifier",
         "fixture": "source_backed_fixed_lifetime_add_modifier_components_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999010_Modifier._CallbackList[0]:OnAfterHit:0",
+        "owner_kind": "StageBuff",
+        "fixture": "source_backed_certain_self_caster_param_lifetime_add_modifier_components_reference_001.json",
+    },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999027_Modifier_Sub._CallbackList[0]:OnAfterAttack:0/TaskList:0",
+        "owner_kind": "StageBuff",
+        "fixture": "source_backed_certain_self_caster_param_lifetime_add_modifier_components_reference_001.json",
+    },
 )
 
 

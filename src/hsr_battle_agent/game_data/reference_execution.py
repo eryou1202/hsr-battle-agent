@@ -83,6 +83,22 @@ def _fixed_nonnegative_integral_lifetime(value: Any, operation_id: Any) -> int:
     return raw
 
 
+def _fixed_positive_integral_lifetime(value: Any, operation_id: Any) -> int:
+    result = _fixed_nonnegative_integral_lifetime(value, operation_id)
+    if result <= 0:
+        raise SemanticExecutionError(f"{operation_id}: fixed LifeTime must be positive")
+    return result
+
+
+def _fixed_one_chance(value: Any, operation_id: Any) -> None:
+    if not isinstance(value, Mapping) or set(value) != {"IsDynamic", "FixedValue"} or value.get("IsDynamic") is not False:
+        raise SemanticExecutionError(f"{operation_id}: Chance must be a fixed certainty")
+    fixed = value.get("FixedValue")
+    raw = fixed.get("Value") if isinstance(fixed, Mapping) and set(fixed) == {"Value"} else None
+    if isinstance(raw, bool) or not isinstance(raw, (int, float)) or raw != 1:
+        raise SemanticExecutionError(f"{operation_id}: Chance must equal fixed 1")
+
+
 @dataclass(frozen=True)
 class RuntimeEntity:
     """The shared entity facts needed by the initial generic executor."""
@@ -1093,9 +1109,19 @@ class SemanticExecutor:
         current_life = None
         if "LifeTime" in arguments:
             target_payload = operation.get("target") if isinstance(operation.get("target"), Mapping) else {}
-            if target_payload.get("Alias") != "ModifierOwnerEntity":
-                raise SemanticExecutionError(f"{operation.get('operation_id')}: fixed LifeTime AddModifier requires ModifierOwnerEntity")
-            current_life = _fixed_nonnegative_integral_lifetime(arguments.get("LifeTime"), operation.get("operation_id"))
+            if set(arguments) == {"ModifierName", "LifeTime"}:
+                if target_payload.get("Alias") != "ModifierOwnerEntity":
+                    raise SemanticExecutionError(f"{operation.get('operation_id')}: fixed LifeTime AddModifier requires ModifierOwnerEntity")
+                current_life = _fixed_nonnegative_integral_lifetime(arguments.get("LifeTime"), operation.get("operation_id"))
+            elif set(arguments) == {"Chance", "DynamicValues", "InheritCaster", "LifeTime", "ModifierName"}:
+                if target_payload.get("Alias") != "ParamEntity":
+                    raise SemanticExecutionError(f"{operation.get('operation_id')}: selected inherited fixed LifeTime AddModifier requires ParamEntity")
+                if arguments.get("InheritCaster") != "CasterSelf":
+                    raise SemanticExecutionError(f"{operation.get('operation_id')}: selected inherited AddModifier requires CasterSelf")
+                _fixed_one_chance(arguments.get("Chance"), operation.get("operation_id"))
+                current_life = _fixed_positive_integral_lifetime(arguments.get("LifeTime"), operation.get("operation_id"))
+            else:
+                raise SemanticExecutionError(f"{operation.get('operation_id')}: LifeTime AddModifier argument shape is unsupported")
         modifier = arguments.get("ModifierName", {})
         name = modifier.get("Value") if isinstance(modifier, Mapping) else None
         definition = context.modifier_catalog.get(str(name))
@@ -1139,6 +1165,7 @@ class SemanticExecutor:
                 "dynamic_value_keys": sorted(dynamic_values),
                 "alive_only": arguments.get("AliveOnly"),
                 "current_life": current_life,
+                "inherit_caster": arguments.get("InheritCaster"),
             })
         return ExecutionResult(current, tuple(trace))
 

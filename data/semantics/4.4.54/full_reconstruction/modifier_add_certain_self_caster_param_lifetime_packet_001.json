@@ -1,0 +1,32 @@
+{
+  "packet_id": "MODIFIER-ADD-CERTAIN-SELF-CASTER-PARAM-LIFETIME-001",
+  "game_version": "4.4.54",
+  "status": "PARTIAL_R3_EXECUTABLE_REFERENCE",
+  "scope": "The exact catalog-defined AddModifier form with ParamEntity target, fixed Chance=1, InheritCaster=CasterSelf, a positive static integral LifeTime, and DynamicValues evaluated only through explicit ExecutionContext resolver inputs.",
+  "selected_model": {
+    "state_reads": ["ExecutionContext.param_entity_ids", "ExecutionContext.caster_id", "ExecutionContext.caster_runtime_id", "ExecutionContext.dynamic_hash_values", "ExecutionContext.modifier_catalog"],
+    "state_writes": ["pending ModifierInstance on each resolved ParamEntity", "ModifierInstance.current_life", "ModifierInstance.source_provider_id", "ModifierInstance.caster_runtime_id", "ModifierInstance.dynamic_values"],
+    "chance": "Fixed Chance exactly 1 commits without an RNG draw. Any non-fixed or non-unit chance is rejected.",
+    "inherit_caster": "CasterSelf writes the existing explicit context caster identity into the new ModifierInstance. TargetSelf and every other source token are rejected.",
+    "ordering": "Each selected target receives the ordinary pending AddModifier transition. Activation, lifetime tick, expiry, and callback dispatch remain separate modifier lifecycle/event boundaries."
+  },
+  "evidence": {
+    "external": [{"artifact": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json", "support": "StageAbility_3999010 and StageAbility_3999027 contain the exact selected ParamEntity payload, with Chance fixed to 1, CasterSelf, LifeTime 3/1, and catalog definitions using ReplaceByCaster."}],
+    "local": [{"artifact": "data/semantics/4.4.54/full_reconstruction/modifier_lifecycle_packet_001.json", "support": "Existing lifecycle defines pending append/refresh and current_life storage; its generic catalog transition remains reused."}],
+    "confidence": "R3 close-version pinned source reconstruction plus existing R4 lifecycle state model."
+  },
+  "strict_rejection": [
+    "Chance other than fixed 1, including dynamic chance",
+    "InheritCaster other than exactly CasterSelf",
+    "non-positive, dynamic, fractional, or structurally extended LifeTime",
+    "all targets other than ParamEntity",
+    "missing modifier catalog definition, unsupported catalog Stacking, or unresolvable DynamicValues",
+    "TargetSelf, permanent LifeTime=-1, AllDarkTeam and all other AddModifier shapes"
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_behavior_compiler.py::BehaviorCompilerTest.test_add_modifier_accepts_only_selected_certain_self_caster_param_lifetime_shape", "tests/game_data/test_reference_execution.py::ReferenceExecutionTest.test_source_backed_certain_self_caster_param_lifetime_components_execute"],
+    "expected": "MCommon_DOT_Electric and MCommon_Element_Electric source components append pending ReplaceByCaster instances on ParamEntity with current_life 3/1 and source CasterSelf identity."
+  },
+  "unsupported_boundary": ["The two source components are not full BehaviorRecord execution or Golden traces.", "No target-self inheritance, chance sampling, permanent lifetime encoding, AoE target collection, DoT lifecycle, or scheduler tick policy is inferred."],
+  "dsh_implementation_contract": "Lower only the exact validated shape. Resolve ParamEntity and DynamicValues through the shared context; create/refresh the ModifierInstance using its catalog Stacking and preserve CasterSelf identity. Do not turn unit Chance into a generic random system or extend this packet to TargetSelf/permanent lifetime forms."
+}

@@ -1,0 +1,13 @@
+{
+  "fixture_id": "SOURCE-BACKED-CERTAIN-SELF-CASTER-PARAM-LIFETIME-ADD-MODIFIER-COMPONENTS-REFERENCE-001",
+  "game_version": "4.4.54",
+  "input_corpus_sha256": "fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a",
+  "purpose": "Execute two exact StageBuff AddModifier components through the generic compiler/executor with explicit ParamEntity and DynamicHash context, without claiming their enclosing callbacks or records are complete.",
+  "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN",
+  "source": {"repository": "https://github.com/DimbreathBot/TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "version_relation": "CLOSE_4.4.0_TO_4.4.54", "components": [{"behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010", "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999010_Modifier._CallbackList[0]:OnAfterHit:0", "result": {"modifier": "MCommon_DOT_Electric", "current_life": 3, "dynamic_values": {"Modifier_Electric_DamagePercentage": "0.5"}}}, {"behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027", "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999027_Modifier_Sub._CallbackList[0]:OnAfterAttack:0/TaskList:0", "result": {"modifier": "MCommon_Element_Electric", "current_life": 1, "dynamic_values": {"MDF_DamagePercentage": "0.7"}}, "explicit_dynamic_hash_values": {"462955996": "0.7"}}]},
+  "selected_context": {"caster_id": "stage", "caster_runtime_id": 7, "param_entity_ids": ["e1"], "modifier_catalog": "canonical reviewed-corpus catalog"},
+  "selected_initial_state": {"e1": {"team": "dark", "hp": "1", "max_hp": "1", "modifiers": []}},
+  "expected_transition": {"target": "e1", "stacking": "ReplaceByCaster", "state": "TO_BE_ADDED", "source_provider_id": "stage", "caster_runtime_id": 7, "ordered_dispositions": ["MODIFIER_APPEND_OR_REFRESH_PENDING"]},
+  "assumptions": ["Chance fixed 1 is treated as certain and consumes no RNG draw.", "DynamicHash 462955996 is supplied explicitly as a fixture resolver input, not inferred from the source record."],
+  "unsupported_boundary": ["No enclosing predicate/event, dynamic chance, TargetSelf, permanent lifetime, DoT tick/expiry, or Golden outcome is claimed."]
+}

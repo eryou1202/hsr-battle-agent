@@ -34,13 +34,16 @@
 - Current coverage split: 249 behavior-bearing records (84 structural-only
 compiled), 117 `EXECUTABLE_REFERENCE` records / 224 independently closed
 entrypoints, and 304 static-definition-only records. Four complete records
-are source-backed executed plus twenty-four explicitly separate operation components;
+are source-backed executed plus twenty-six explicitly separate operation components;
   Golden-tested remains zero.
 - `MODIFIER-ADD-FIXED-LIFETIME-001` accepts only catalog-defined
   `ModifierOwnerEntity` AddModifier payloads with a static integral LifeTime;
   it preserves `current_life` while retaining `TO_BE_ADDED`. The real
   MoreOneMorePerTurn OnPhase1 2/3/4 forms are components only, because their
   other callbacks still require DynamicHash resolver values.
+- Two StageBuff components also cover the exact certain CasterSelf/ParamEntity
+  fixed-lifetime AddModifier form; this remains component-only support and
+  does not imply TargetSelf, permanent-lifetime, or random AddModifier semantics.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
 - Modifier lifecycle reference now implements pending append ->

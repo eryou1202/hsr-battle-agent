@@ -778,6 +778,43 @@ class ReferenceExecutionTest(unittest.TestCase):
             self.assertEqual((instance.name, instance.current_life, instance.stacking), ("OneMore", expected_lifetime, "Merge"))
             self.assertEqual(result.trace[0]["disposition"], "MODIFIER_APPEND_OR_REFRESH_PENDING")
 
+    def test_source_backed_certain_self_caster_param_lifetime_components_execute(self) -> None:
+        corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        catalog = modifier_catalog_from_corpus(corpus)
+        cases = (
+            (
+                "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010",
+                "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999010_Modifier._CallbackList[0]:OnAfterHit:0",
+                "MCommon_DOT_Electric", 3, {"Modifier_Electric_DamagePercentage": Decimal("0.5")}, {},
+            ),
+            (
+                "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027",
+                "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027:MODIFIER_CALLBACK:MLevel_WB_StageAbility_3999027_Modifier_Sub._CallbackList[0]:OnAfterAttack:0/TaskList:0",
+                "MCommon_Element_Electric", 1, {"MDF_DamagePercentage": Decimal("0.7")}, {"462955996": "0.7"},
+            ),
+        )
+        for behavior_id, operation_id, name, lifetime, expected_values, dynamic_hash_values in cases:
+            source = _record(behavior_id)
+            operation = next(
+                item for entrypoint in source["entrypoints"] for item in _walk_operations(entrypoint["operations"])
+                if item["operation_id"] == operation_id
+            )
+            component = {
+                "behavior_id": f"{behavior_id}:certain-self-caster-param-lifetime-component",
+                "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+                "entrypoints": [{"event": "SOURCE_CERTAIN_SELF_CASTER_PARAM_LIFETIME_COMPONENT", "operations": [operation]}],
+            }
+            state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))})
+            result = SemanticExecutor().execute_entrypoint(
+                BehaviorCompiler(modifier_catalog=catalog).compile_record(component),
+                "SOURCE_CERTAIN_SELF_CASTER_PARAM_LIFETIME_COMPONENT", state,
+                ExecutionContext(caster_id="stage", caster_runtime_id=7, param_entity_ids=("e1",), modifier_catalog=catalog, dynamic_hash_values=dynamic_hash_values),
+            )
+            instance = result.state.modifiers("e1")[0]
+            self.assertEqual((instance.name, instance.current_life, instance.stacking), (name, lifetime, "ReplaceByCaster"))
+            self.assertEqual((instance.source_provider_id, instance.caster_runtime_id, instance.dynamic_values), ("stage", 7, expected_values))
+            self.assertEqual((result.trace[0]["disposition"], result.trace[0]["inherit_caster"]), ("MODIFIER_APPEND_OR_REFRESH_PENDING", "CasterSelf"))
+
     def test_source_backed_stage_callback_adds_modifier_with_local_dynamic_values(self) -> None:
         corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
         compiled = BehaviorCompiler(modifier_catalog=modifier_catalog_from_corpus(corpus)).compile_record(_record(STAGE_ADD_DAMAGE_ID))
