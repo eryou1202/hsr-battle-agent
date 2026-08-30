@@ -47,7 +47,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "DAMAGE_REQUEST": ("damage source stats", "target resolution", "DamageMultiplierContext", "optional ToughnessCommitContext for selected normal stance only"),
     "MODIFY_WEAKNESS": ("target resolution", "entity weakness state"),
     "MODIFY_TEAM_SP": ("target resolution", "shared TeamSkillPointState", "DynamicValue scope/hash inputs"),
-    "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed AddNormalizedValue contract", "selected scheduler action-delay commit boundary"),
+    "DELAY_ACTION": ("target resolution", "per-target ActionDelayState", "fixed or decoded PostfixExpr AddNormalizedValue", "DynamicValue scope/hash inputs for dynamic delay", "selected scheduler action-delay commit boundary"),
     "ACTION_COMPLETION_MARKER": ("explicit action task identity", "existing EXECUTING TaskStep", "selected scheduler task-success boundary"),
     "DAMAGE_COMPLETION_MARKER": ("explicit damage task identity", "existing EXECUTING TaskStep", "selected scheduler damage-task-success boundary"),
     "ACTION_START_MARKER": ("explicit action task identity", "existing READY TaskStep", "selected scheduler task-executing boundary"),
@@ -965,7 +965,9 @@ class SemanticExecutor:
 
         This adapter deliberately stops at the scheduler reference's
         ``ActionDelayState`` boundary.  It applies a fixed
-        ``ModifyActionDelay.AddNormalizedValue`` and its zero clamp, but does
+        ``ModifyActionDelay.AddNormalizedValue`` and its zero clamp.  Dynamic
+        values resolve only through the existing explicit DynamicValue context.
+        The adapter does
         not recalculate AV, choose the next actor, consume a turn, or infer a
         native interrupt ordering.
         """
@@ -975,7 +977,11 @@ class SemanticExecutor:
         current = state
         trace: list[Mapping[str, Any]] = []
         for target_id in targets:
-            transition = apply_delay_operation(operation, current.action_delay_state(target_id))
+            transition = apply_delay_operation(
+                operation,
+                current.action_delay_state(target_id),
+                dynamic_resolver=lambda key: self._resolve_dynamic(current, context, key),
+            )
             current = current.replace_action_delay_state(target_id, transition.delay)
             trace.append({
                 "operation_id": operation.get("operation_id"),

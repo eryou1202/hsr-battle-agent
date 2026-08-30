@@ -125,6 +125,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "Monster",
         "fixture": "source_backed_skill_execution_start_component_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ModifyActionDelayOnTurnEnd",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ModifyActionDelayOnTurnEnd:MODIFIER_CALLBACK:MCommon_ModifyActionDelayOnTurnEnd._CallbackList[0]:OnListenTurnEnd:0",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_dynamic_action_delay_component_reference_001.json",
+    },
 )
 
 

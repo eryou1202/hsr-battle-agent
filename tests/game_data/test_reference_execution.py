@@ -42,6 +42,7 @@ DOT_TEAR_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModi
 WINDFURY_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_Windfury"
 STAGE_DELAY_ID = "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100"
 AML_MINION_SKILL01_ID = "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json:Monster_AML_Minion01_00_Skill01_Phase02"
+MODIFY_DELAY_TURN_END_ID = "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_ModifyActionDelayOnTurnEnd"
 
 
 def _record(behavior_id: str) -> dict:
@@ -274,6 +275,44 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
         self.assertEqual(result.state.action_delay_state("e2").normalized_value, Decimal("1"))
         self.assertEqual([item["disposition"] for item in result.trace], ["ACTION_DELAY_MODIFIED", "ACTION_DELAY_MODIFIED"])
+
+    def test_dynamic_action_delay_uses_unified_dynamic_hash_context(self) -> None:
+        record = {
+            "behavior_id": "dynamic-delay-fixture", "owner_kind": "Modifier", "owner_ref": "dynamic-delay-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTACK", "operations": [{
+                "operation_id": "delay", "source_type": "RPG.GameCore.ModifyActionDelay", "kind": "DELAY_ACTION",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT",
+                "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"AddNormalizedValue": {"IsDynamic": True, "PostfixExpr": {"DynamicHashes": [7], "FixedValues": [], "OpCodes": "AQAR"}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_delays={"e1": ActionDelayState(Decimal("0.3"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "ONSTACK", state,
+            ExecutionContext(caster_id="e1", modifier_owner_id="e1", dynamic_hash_values={"7": "-0.2"}),
+        )
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0.1"))
+        self.assertEqual(result.trace[0]["disposition"], "ACTION_DELAY_MODIFIED")
+
+    def test_dynamic_action_delay_rejects_missing_dynamic_hash(self) -> None:
+        record = {
+            "behavior_id": "dynamic-delay-fixture", "owner_kind": "Modifier", "owner_ref": "dynamic-delay-fixture", "source_refs": [],
+            "entrypoints": [{"event": "ONSTACK", "operations": [{
+                "operation_id": "delay", "source_type": "RPG.GameCore.ModifyActionDelay", "kind": "DELAY_ACTION",
+                "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT",
+                "target": {"Alias": "ModifierOwnerEntity"},
+                "arguments": {"AddNormalizedValue": {"IsDynamic": True, "PostfixExpr": {"DynamicHashes": [7], "FixedValues": [], "OpCodes": "AQAR"}}}, "children": [],
+            }]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        state = ReferenceBattleState(entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))})
+        with self.assertRaisesRegex(Exception, "DynamicHash 7"):
+            SemanticExecutor().execute_entrypoint(compiled, "ONSTACK", state, ExecutionContext(caster_id="e1", modifier_owner_id="e1"))
 
     def test_skill_perform_finish_marks_explicit_executing_action_task_success(self) -> None:
         record = {
@@ -1104,6 +1143,33 @@ class ReferenceExecutionTest(unittest.TestCase):
         )
         result = SemanticExecutor().execute_entrypoint(compiled, "SOURCE_DELAY_COMPONENT", state, ExecutionContext(caster_id="p1"))
         self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0"))
+        self.assertEqual(result.trace[0]["action"], "ADD")
+
+    def test_source_backed_dynamic_action_delay_component_executes(self) -> None:
+        source = _record(MODIFY_DELAY_TURN_END_ID)
+        delay = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["source_type"] == "RPG.GameCore.ModifyActionDelay"
+            and operation["arguments"].get("AddNormalizedValue", {}).get("IsDynamic") is True
+        )
+        record = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-dynamic-delay-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_DYNAMIC_DELAY_COMPONENT", "operations": [delay]}],
+        }
+        compiled = BehaviorCompiler().compile_record(record)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        state = ReferenceBattleState(
+            entities={"e1": RuntimeEntity("e1", "dark", SurvivalState(Decimal("1"), Decimal("1")))},
+            action_delays={"e1": ActionDelayState(Decimal("0.5"))},
+        )
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_DYNAMIC_DELAY_COMPONENT", state,
+            ExecutionContext(caster_id="e1", modifier_owner_id="e1", dynamic_hash_values={"1784011670": "0.2"}),
+        )
+        self.assertEqual(result.state.action_delay_state("e1").normalized_value, Decimal("0.3"))
         self.assertEqual(result.trace[0]["action"], "ADD")
 
     def test_source_backed_windfury_modifier_local_dynamic_value_component_executes(self) -> None:

@@ -1,0 +1,24 @@
+{
+  "packet_id": "SCHEDULER-DYNAMIC-DELAY-ADD-001",
+  "game_version": "4.4.54",
+  "scope": "Six recursively lifted RPG.GameCore.ModifyActionDelay operations with exactly AddNormalizedValue={IsDynamic:true,PostfixExpr} and explicit target aliases.",
+  "closure_status": "PARTIAL_R3_REFERENCE",
+  "selected_model": "Resolve the explicit target alias deterministically. Evaluate AddNormalizedValue using the existing decoded PostfixExpr and unified DynamicValue resolver; require every DynamicHash through ExecutionContext or the selected DynamicValueStore scope. Apply the resulting Decimal delta to ActionDelayState and clamp normalized value at zero. Missing DynamicHash is a hard execution error.",
+  "state_reads": ["target alias collection", "per-target ActionDelayState.normalized_value", "decoded PostfixExpr", "ExecutionContext.dynamic_hash_values and scoped DynamicValueStore"],
+  "state_writes": ["per-target ActionDelayState.normalized_value", "per-target skip_target_turn flag preserved by scheduler reference"],
+  "ordering": "Each target commits one synchronously evaluated add-and-clamp transition in canonical target order. This remains a delay-state mutation, not AV reorder, action selection or a queue insertion.",
+  "evidence": [
+    {"source": "TurnBasedGameData", "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "support": "Six reviewed dynamic AddNormalizedValue forms are exclusively PostfixExpr payloads on ModifierOwnerEntity; their formula bytecode is accepted by the existing 1347/1347 decoder."},
+    {"packet": "SCHEDULER-DELAY-ADD-NORMALIZED-001", "support": "Existing ActionDelayState add-and-zero-clamp transition defines the storage boundary."},
+    {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "support": "Existing unified DynamicValue resolver supplies explicit hash lookup and fails unresolved values."},
+    {"fixture": "source_backed_dynamic_action_delay_component_reference_001.json", "support": "MCommon_ModifyActionDelayOnTurnEnd executes its real postfix delta against explicit context through the generic compiler/executor."}
+  ],
+  "acceptance": {
+    "tests": ["tests/game_data/test_reference_execution.py::test_dynamic_action_delay_uses_unified_dynamic_hash_context", "tests/game_data/test_reference_execution.py::test_dynamic_action_delay_rejects_missing_dynamic_hash", "tests/game_data/test_reference_execution.py::test_source_backed_dynamic_action_delay_component_executes", "tests/game_data/test_scheduler_semantics_reference.py::test_delay_set_add_reset_and_clamp"],
+    "trace_disposition": "ACTION_DELAY_MODIFIED",
+    "status": "SOURCE_BACKED_OPERATION_COMPONENT_REFERENCE_NOT_FULL_ENTRYPOINT_NOT_GOLDEN"
+  },
+  "strict_rejection": ["SetActionDelay", "ResetActionDelay", "missing target", "extra operation arguments", "non-Postfix dynamic payload", "malformed PostfixExpr", "unresolved DynamicHash", "no resolved targets"],
+  "unsupported_boundary": ["AV recomputation", "next-actor ordering", "turn consumption", "Ultimate/FUA/ExtraAction/interrupt scheduling", "action insertion", "special skip semantics beyond ActionDelayState", "full Modifier behavior and Golden trace claim"],
+  "dsh_implementation_contract": "Use the same Decimal DynamicValue evaluation service as formulas and other executable primitives. For this exact dynamic ModifyActionDelay source shape, resolve targets, evaluate the postfix delta against explicit context/store data, add it to each independent normalized delay value, clamp at zero, and emit a commit trace. Preserve unknown scheduler effects outside this packet."
+}

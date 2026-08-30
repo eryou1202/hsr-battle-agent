@@ -1,6 +1,6 @@
 {
   "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
-  "audit_sha256": "2dfaeadfd1ef7e3b848c0196641180d7c2d0154103b35f7ce27a9f40a062c35e",
+  "audit_sha256": "19d94333bf4c57dc3f64ee97cba1c75d886b7fbbb5e7ee3dab32038205f2a166",
   "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
   "executable_operation_counts": {
     "ACTION_COMPLETION_MARKER": 7,
@@ -10,7 +10,7 @@
     "DAMAGE_COMPLETION_MARKER": 7,
     "DAMAGE_REQUEST": 15,
     "DEFINE_DYNAMIC_VALUE": 7,
-    "DELAY_ACTION": 6,
+    "DELAY_ACTION": 12,
     "HEAL_REQUEST": 6,
     "MODIFY_PROPERTY_STACK": 158,
     "MODIFY_TEAM_SP": 6,
@@ -60,7 +60,8 @@
     "DELAY_ACTION": [
       "target resolution",
       "per-target ActionDelayState",
-      "fixed AddNormalizedValue contract",
+      "fixed or decoded PostfixExpr AddNormalizedValue",
+      "DynamicValue scope/hash inputs for dynamic delay",
       "selected scheduler action-delay commit boundary"
     ],
     "HEAL_REQUEST": [
@@ -101,7 +102,7 @@
     ]
   },
   "game_version": "4.4.54",
-  "input_compiler_report_sha256": "8f07a4b33e6bb21c79328381a2aeb0730fbe773cb90db57a71f9d64b32b2094b",
+  "input_compiler_report_sha256": "93e47088d5184d5c8e20724006db414769043ae0c017ca0462a2e7e863a13abc",
   "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
   "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
   "unhandled_kinds": []

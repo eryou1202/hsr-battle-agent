@@ -31,10 +31,10 @@
   OPAQUE 7.
 - Current corpus hash:
   `fea0ab0e397012d0418d6f6b709d7ff91b2e51637bf16d3b1ea1c0bcfa7e913a`.
-- Current coverage split: 249 behavior-bearing records (89 structural-only
-compiled), 112 `EXECUTABLE_REFERENCE` records / 216 independently closed
+- Current coverage split: 249 behavior-bearing records (88 structural-only
+compiled), 113 `EXECUTABLE_REFERENCE` records / 218 independently closed
 entrypoints, and 304 static-definition-only records. Four complete records
-are source-backed executed plus seventeen explicitly separate operation components;
+are source-backed executed plus eighteen explicitly separate operation components;
   Golden-tested remains zero.
 - KERNEL-EVENT nested-dispatch packet/tracer timing is aligned and covered
   by a multi-registration test.
@@ -147,10 +147,10 @@ External raw files are build-time-only and must not be read by runtime.
 
 After the corpus/SSOT repair and the reference packets above, continue with:
 
-1. `SCHEDULER-DYNAMIC-DELAY-ADD-001`: lower only exact dynamic
-   `ModifyActionDelay AddNormalizedValue` forms whose `PostfixExpr` values
-   resolve through explicit DynamicValue context. Keep Set/Reset delay, AV
-   ordering, action selection and native interrupt semantics separate.
+1. `SCHEDULER-INSERT-ABILITY-QUEUE-001`: lower only the simplest named
+   `TurnInsertAbility` form with explicit Caster owner/target, preserving a
+   pending insertion record without priority arbitration or execution. Keep
+   dynamic/lifecycle/abort insertion forms and native queue ordering separate.
 2. Rebuild `behavior_compiler_report_002.json` and
    `behavior_coverage_census_002.json`, retaining separate full-record,
    component, entrypoint and Golden counts.

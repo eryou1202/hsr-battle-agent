@@ -419,7 +419,16 @@ class BehaviorCompiler:
             if not isinstance(operation.get("target"), Mapping):
                 return "EXECUTABLE_REFERENCE_TARGET_MISSING"
             value = _mapping(arguments.get("AddNormalizedValue"))
-            if value.get("IsDynamic") is not False or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
+            if value.get("IsDynamic") is False:
+                if set(value) != {"IsDynamic", "FixedValue"} or not isinstance(_mapping(value.get("FixedValue")).get("Value"), (int, float)):
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_FIXED_VALUE_UNSUPPORTED"
+            elif value.get("IsDynamic") is True:
+                postfix = _mapping(value.get("PostfixExpr"))
+                if set(value) != {"IsDynamic", "PostfixExpr"}:
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_ARGUMENTS_UNSUPPORTED"
+                if not isinstance(postfix.get("OpCodes"), str) or not isinstance(postfix.get("DynamicHashes"), list) or not isinstance(postfix.get("FixedValues"), list):
+                    return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
+            else:
                 return "EXECUTABLE_REFERENCE_ACTION_DELAY_DYNAMIC_VALUE_UNSUPPORTED"
         elif kind == "ACTION_COMPLETION_MARKER":
             if str(operation.get("source_type", "")) != "RPG.GameCore.SkillPerformFinish":

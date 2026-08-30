@@ -12,9 +12,9 @@ definitions, and 2295 recursive semantic nodes (1780 operations, 515
 Predicate AST). 249 records are behavior-bearing and 304 are
 static-definition-only references, which no longer deflate the behavior
 denominator. Current compiler-output node statuses: 1824 `REQUIRES_PACKET`, 298
-`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 89
-structural-only records plus 112 `EXECUTABLE_REFERENCE` records (216
-independently closed executable entrypoints); four complete records and seventeen
+`PRESENTATION`, 32 `MODELLED`, 7 `OPAQUE`. The strict compiler now has 88
+structural-only records plus 113 `EXECUTABLE_REFERENCE` records (218
+independently closed executable entrypoints); four complete records and eighteen
 separately labeled operation components have run through the generic bridge
 with real canonical payloads. Golden-tested coverage remains zero. The generic bridge consumes compiled IR,
 `ReferenceBattleState`, `ExecutionContext`, and deterministic `SandboxRng`;
@@ -84,6 +84,10 @@ damage, complete the action task, or trigger timeline arbitration.
 The one reviewed no-argument Monster `SkillExecutionStart` form now marks an
 explicitly identified `READY` action task `EXECUTING`; it does not choose an
 action, target, resource commit, damage task, or AV/timeline transition.
+Six dynamic `ModifyActionDelay AddNormalizedValue` forms now use the same
+strict Postfix/DynamicValue resolver as other primitives before changing the
+independent delay state; unresolved hashes hard-fail and no AV reordering is
+claimed.
 Selected targetless `SetModifierDynamicValue` writes now separately update one
 uniquely named **ALIVE** ModifierInstance-local value, rather than using the
 battle DynamicValue store. A real `MCommon_Windfury` component resets its
