@@ -179,6 +179,12 @@ SOURCE_BACKED_EXECUTED_COMPONENTS = (
         "owner_kind": "StageBuff",
         "fixture": "source_backed_certain_self_caster_param_lifetime_add_modifier_components_reference_001.json",
     },
+    {
+        "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT",
+        "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_BlackSwan_00_DOT:MODIFIER_CALLBACK:MAvatar_BlackSwan_00_DOT._CallbackList[1]:OnPhase1:1/SuccessTaskList:7/SuccessTaskList:3",
+        "owner_kind": "Modifier",
+        "fixture": "source_backed_retarget_adjoin_component_reference_001.json",
+    },
 )
 
 

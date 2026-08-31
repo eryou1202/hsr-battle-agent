@@ -37,7 +37,7 @@ PRIMITIVE_BINDINGS: Mapping[str, Mapping[str, Any]] = {
     "DEFINE_DYNAMIC_VALUE": {"packet": "DYNAMIC-VALUE-SEMANTICS-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DAMAGE_REQUEST": {"packet": "PRIM-DAMAGE-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "DAMAGE_COMPLETION_MARKER": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
-    "RETARGET": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
+    "RETARGET": {"packet": "TARGET-001", "execution_scope": "EXECUTABLE_REFERENCE"},
     "TARGET_FILTER": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "FORMATION_CHANGE": {"packet": "TARGET-001", "execution_scope": "STRUCTURAL_PACKET_ONLY"},
     "INSERT_ACTION": {"packet": "SCHEDULER-001", "execution_scope": "EXECUTABLE_REFERENCE"},
@@ -464,6 +464,27 @@ class BehaviorCompiler:
             value = arguments.get("AddRatio", arguments.get("AddValue"))
             if not isinstance(value, Mapping):
                 return "EXECUTABLE_REFERENCE_TEAM_SP_VALUE_MISSING"
+        elif kind == "RETARGET":
+            # Retarget selects a new ParamEntity scope for its TaskList.  The
+            # selected model is deliberately limited to the source form whose
+            # collection ordering is already closed by TARGET-001: the two
+            # adjacent entities of the modifier owner, no random draw, and a
+            # static positive maximum.  Broader aliases, target filters,
+            # predicates and random selection remain separate contracts.
+            target = _mapping(operation.get("target"))
+            if str(operation.get("source_type", "")) != "RPG.GameCore.Retarget":
+                return "EXECUTABLE_REFERENCE_RETARGET_TYPE_UNSUPPORTED"
+            if set(target) != {"$type", "Alias"} or target.get("$type") != "RPG.GameCore.TargetAlias" or target.get("Alias") != "ModifierOwnerAdjoinEntity":
+                return "EXECUTABLE_REFERENCE_RETARGET_TARGET_UNSUPPORTED"
+            if set(arguments) != {"MaxNumber", "TaskList"}:
+                return "EXECUTABLE_REFERENCE_RETARGET_ARGUMENTS_UNSUPPORTED"
+            if _fixed_positive_integral_value(arguments.get("MaxNumber")) is None:
+                return "EXECUTABLE_REFERENCE_RETARGET_MAX_NUMBER_UNSUPPORTED"
+            if not isinstance(arguments.get("TaskList"), list) or not arguments["TaskList"]:
+                return "EXECUTABLE_REFERENCE_RETARGET_TASK_LIST_MISSING"
+            children = operation.get("children")
+            if not isinstance(children, list) or len(children) != 1 or not isinstance(children[0], Mapping) or children[0].get("field_path") != "TaskList":
+                return "EXECUTABLE_REFERENCE_RETARGET_CHILDREN_UNSUPPORTED"
         elif kind == "DELAY_ACTION":
             source_type = str(operation.get("source_type", ""))
             target = _mapping(operation.get("target"))

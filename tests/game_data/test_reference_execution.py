@@ -1434,6 +1434,42 @@ class ReferenceExecutionTest(unittest.TestCase):
         self.assertEqual(result.state.action_tasks, {})
         self.assertEqual(result.state.action_delays, {})
 
+    def test_source_backed_black_swan_dot_adjoin_retarget_component_executes_in_stable_order(self) -> None:
+        corpus = json.loads(CORPUS_PATH.read_text(encoding="utf-8"))
+        source = _record(BLACK_SWAN_DOT_ID)
+        retarget = next(
+            operation
+            for entrypoint in source["entrypoints"]
+            for operation in _walk_operations(entrypoint["operations"])
+            if operation["kind"] == "RETARGET"
+            and operation.get("target", {}).get("Alias") == "ModifierOwnerAdjoinEntity"
+            and set(operation["arguments"]) == {"MaxNumber", "TaskList"}
+        )
+        component = {
+            "behavior_id": f"{source['behavior_id']}:source-backed-adjoin-retarget-component",
+            "owner_kind": source["owner_kind"], "owner_ref": source["owner_ref"], "source_refs": source["source_refs"],
+            "entrypoints": [{"event": "SOURCE_ADJOIN_RETARGET_COMPONENT", "operations": [retarget]}],
+        }
+        compiled = BehaviorCompiler(modifier_catalog=modifier_catalog_from_corpus(corpus)).compile_record(component)
+        self.assertEqual(compiled["compile_status"], "EXECUTABLE_REFERENCE")
+        store = DynamicValueStore.empty().set_value("e0", "Dot_Layer_Count", Decimal("0")).store
+        state = ReferenceBattleState(entities={
+            "p1": RuntimeEntity("p1", "light", SurvivalState(Decimal("100"), Decimal("100"))),
+            "e0": RuntimeEntity("e0", "dark", SurvivalState(Decimal("100"), Decimal("100")), position=(0, 1)),
+            "e-left": RuntimeEntity("e-left", "dark", SurvivalState(Decimal("100"), Decimal("100")), position=(0, 0)),
+            "e-right": RuntimeEntity("e-right", "dark", SurvivalState(Decimal("100"), Decimal("100")), position=(0, 2)),
+        }, dynamic_store=store)
+        catalog = modifier_catalog_from_corpus(corpus)
+        result = SemanticExecutor().execute_entrypoint(
+            compiled, "SOURCE_ADJOIN_RETARGET_COMPONENT", state,
+            ExecutionContext(caster_id="p1", modifier_owner_id="e0", caster_runtime_id=7, modifier_catalog=catalog, dynamic_scope_owners={"ContextModifier": "e0"}, dynamic_hash_values={"709841456": "1"}),
+        )
+        self.assertEqual(result.trace[0]["disposition"], "RETARGET_ORDERED_PREFIX_SELECTED")
+        self.assertEqual(result.trace[0]["selected_ids"], ["e-left", "e-right"])
+        self.assertEqual([item["param_entity_id"] for item in result.trace if item["disposition"] == "RETARGET_CHILD_SCOPE_BOUND"], ["e-left", "e-right"])
+        self.assertEqual([item.name for item in result.state.modifiers("e-left")], ["M_BlackSwan_P01_AddDOTFlag"])
+        self.assertEqual([item.name for item in result.state.modifiers("e-right")], ["M_BlackSwan_P01_AddDOTFlag"])
+
     def test_insert_ability_rejects_abort_or_liveness_qualified_shape(self) -> None:
         operation = {
             "operation_id": "insert", "source_type": "RPG.GameCore.TurnInsertAbility", "kind": "INSERT_ACTION",

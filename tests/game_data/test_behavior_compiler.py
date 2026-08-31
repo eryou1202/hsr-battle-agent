@@ -89,6 +89,15 @@ class BehaviorCompilerTest(unittest.TestCase):
         rejected = BehaviorCompiler().compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [invalid]}]))
         self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_REMOVE_SELF_TARGET_UNSUPPORTED")
 
+    def test_retarget_accepts_only_fixed_nonrandom_owner_adjoin_task_list(self) -> None:
+        child = {"operation_id": "presentation", "source_type": "RPG.GameCore.TriggerEffect", "kind": "PRESENTATION", "semantic_status": "PRESENTATION", "gating_risk": "NONE", "target": {"Alias": "ParamEntity"}, "arguments": {}, "children": []}
+        operation = {"operation_id": "retarget", "source_type": "RPG.GameCore.Retarget", "kind": "RETARGET", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"$type": "RPG.GameCore.TargetAlias", "Alias": "ModifierOwnerAdjoinEntity"}, "arguments": {"MaxNumber": {"IsDynamic": False, "FixedValue": {"Value": 2}}, "TaskList": [{"$type": "RPG.GameCore.TriggerEffect"}]}, "children": [{"field_path": "TaskList", "operations": [child]}]}
+        record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}
+        self.assertEqual(BehaviorCompiler().compile_record(record)["compile_status"], "EXECUTABLE_REFERENCE")
+        random = dict(operation, arguments=dict(operation["arguments"], ByRandom=True))
+        rejected = BehaviorCompiler().compile_record(dict(record, entrypoints=[{"event": "ONPHASE", "operations": [random]}]))
+        self.assertEqual(rejected["entrypoints"][0]["operations"][0]["reference_execution_blocker"], "EXECUTABLE_REFERENCE_RETARGET_ARGUMENTS_UNSUPPORTED")
+
     def test_add_modifier_accepts_only_explicit_false_alive_only(self) -> None:
         operation = {"operation_id": "add", "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER", "semantic_status": "REQUIRES_PACKET", "gating_risk": "KNOWN_STATE_COMMIT", "target": {"Alias": "Caster"}, "arguments": {"ModifierName": {"Value": "MFixture"}, "AliveOnly": False}, "children": []}
         record = {"behavior_id": "fixture", "owner_kind": "Modifier", "owner_ref": "fixture", "source_refs": [], "entrypoints": [{"event": "ONPHASE", "operations": [operation]}]}

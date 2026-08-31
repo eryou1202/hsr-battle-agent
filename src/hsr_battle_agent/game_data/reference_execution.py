@@ -62,6 +62,7 @@ EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS: Mapping[str, tuple[str, ...]] = {
     "DAMAGE_COMPLETION_MARKER": ("explicit damage task identity", "existing EXECUTING TaskStep", "selected scheduler damage-task-success boundary"),
     "ACTION_START_MARKER": ("explicit action task identity", "existing READY TaskStep", "selected scheduler task-executing boundary"),
     "INSERT_ACTION": ("single explicit Caster owner", "strict TurnInsertAbility payload", "immutable pending inserted-action queue"),
+    "RETARGET": ("ModifierOwnerAdjoinEntity ordered target collection", "fixed positive MaxNumber", "per-selected-target ParamEntity child scope", "fully executable TaskList children", "no random selection or target-filter policy"),
 }
 
 
@@ -651,7 +652,62 @@ class SemanticExecutor:
             return self._execute_action_start_marker(operation, state, context)
         if kind == "INSERT_ACTION":
             return self._execute_insert_action(operation, state, context)
+        if kind == "RETARGET":
+            return self._execute_retarget(operation, state, context, owner_ref)
         raise SemanticExecutionError(f"{operation_id}: executable reference has no handler for {kind}")
+
+    def _execute_retarget(
+        self,
+        operation: Mapping[str, Any],
+        state: ReferenceBattleState,
+        context: ExecutionContext,
+        owner_ref: str,
+    ) -> ExecutionResult:
+        """Execute the closed non-random adjacent-target Retarget subset.
+
+        ``Retarget`` establishes a child TaskList context.  For this selected
+        source form, TARGET-001 already provides the modifier-owner adjacent
+        collection in stable formation order; source ``MaxNumber`` selects its
+        ordered prefix and each child list runs once with exactly that entity
+        bound as ``ParamEntity``.  This is neither a target-filter model nor
+        an Ultimate/FUA/action-arbitration rule.
+        """
+        operation_id = str(operation.get("operation_id"))
+        arguments = operation.get("arguments")
+        target = operation.get("target")
+        if not isinstance(arguments, Mapping) or set(arguments) != {"MaxNumber", "TaskList"}:
+            raise SemanticExecutionError(f"{operation_id}: unsupported Retarget arguments")
+        if str(operation.get("source_type")) != "RPG.GameCore.Retarget":
+            raise SemanticExecutionError(f"{operation_id}: unsupported Retarget source type")
+        if not isinstance(target, Mapping) or target.get("Alias") != "ModifierOwnerAdjoinEntity":
+            raise SemanticExecutionError(f"{operation_id}: unsupported Retarget target")
+        max_number = _fixed_positive_integral_lifetime(arguments.get("MaxNumber"), operation_id)
+        groups = operation.get("children", ())
+        if len(groups) != 1 or not isinstance(groups[0], Mapping) or groups[0].get("field_path") != "TaskList":
+            raise SemanticExecutionError(f"{operation_id}: Retarget requires one compiled TaskList child group")
+        candidates = self._resolve_targets(target, state, context)
+        selected = candidates[:max_number]
+        current = state
+        trace: list[Mapping[str, Any]] = [{
+            "operation_id": operation_id,
+            "disposition": "RETARGET_ORDERED_PREFIX_SELECTED",
+            "target_alias": "ModifierOwnerAdjoinEntity",
+            "candidate_ids": list(candidates),
+            "selected_ids": list(selected),
+            "max_number": max_number,
+            "selection_policy": "STABLE_TARGET_ORDER_NO_RANDOM",
+        }]
+        for target_id in selected:
+            child_context = replace(context, param_entity_ids=(target_id,))
+            child = self._execute_operations(groups[0].get("operations", ()), current, child_context, owner_ref)
+            current = child.state
+            trace.append({
+                "operation_id": operation_id,
+                "disposition": "RETARGET_CHILD_SCOPE_BOUND",
+                "param_entity_id": target_id,
+            })
+            trace.extend(child.trace)
+        return ExecutionResult(current, tuple(trace))
 
     def _resolve_targets(self, value: Any, state: ReferenceBattleState, context: ExecutionContext) -> tuple[str, ...]:
         return resolve_target_payload(value, state.target_context(context))

@@ -1,0 +1,22 @@
+{
+  "packet_id": "COMPILER-RETARGET-ADJOIN-FIXED-LIMIT-001",
+  "game_version": "4.4.54",
+  "scope": "RPG.GameCore.Retarget with ModifierOwnerAdjoinEntity, fixed positive MaxNumber and one TaskList; no ByRandom/Predictate/filter fields",
+  "selected_model": "Resolve ModifierOwnerAdjoinEntity with TARGET-001 stable formation ordering, take its fixed MaxNumber ordered prefix, and execute the compiled TaskList once per selected target with ParamEntity rebound to exactly that target.",
+  "state_reads": ["ModifierOwnerEntity position/team/alive/selectable", "RuntimeEntity formation positions", "compiled TaskList dependencies"],
+  "state_writes": ["only state writes produced by fully executable TaskList children"],
+  "ordering_constraints": ["target collection is resolved before children", "no random draw", "selected targets retain TARGET-001 order", "each target child scope completes before the next target begins"],
+  "evidence": {
+    "source": "TurnBasedGameData",
+    "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "record": "MAvatar_BlackSwan_00_DOT",
+    "operation": "OnPhase1 SuccessTaskList Retarget ModifierOwnerAdjoinEntity",
+    "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "local_anchors": ["target_selector_batch_05.json", "TARGET-001 selected TargetAlias resolver"]
+  },
+  "evidence_level": "R3_CROSS_SOURCE_RECONSTRUCTED_WITH_LOCAL_TARGET_ANCHORS",
+  "closure_status": "CLOSED_RECONSTRUCTED_NARROW_SUBSET",
+  "unsupported_cases": ["ByRandom", "Retarget Predicate", "TargetSequence/TargetFilter", "AllEnemy/AllTeam Retarget policy", "IncludeLimbo", "dynamic/zero/negative MaxNumber", "unclosed child tasks", "action/scheduler arbitration"],
+  "acceptance_fixture": "source_backed_retarget_adjoin_component_reference_001.json",
+  "dsh_implementation_contract": "Implement Retarget as a scoped child-task iterator, not as a global target mutation. Preserve target order and bind each selected child scope's ParamEntity explicitly. Reject every unselected payload form rather than choosing a random/filter policy."
+}
