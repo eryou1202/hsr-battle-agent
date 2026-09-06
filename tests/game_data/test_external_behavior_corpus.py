@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 import unittest
 
+from hsr_battle_agent.game_data.external_behavior import _modifier_definitions
+
 
 class ExternalBehaviorCorpusTest(unittest.TestCase):
     @classmethod
@@ -70,6 +72,20 @@ class ExternalBehaviorCorpusTest(unittest.TestCase):
                     for operation in walk(template.get("operations", []))
                 )
         self.assertEqual(predicate_count, 515)
+
+    def test_embedded_modifier_map_is_preserved_as_definition_data(self) -> None:
+        definitions = _modifier_definitions({
+            "Modifiers": {
+                "MEmbedded": {
+                    "Stacking": "ReplaceByCaster",
+                    "DynamicValues": {"Floats": {"1": {"ReadInfo": {"Type": "None"}}}},
+                }
+            }
+        })
+        self.assertEqual(definitions[0]["name"], "MEmbedded")
+        self.assertEqual(definitions[0]["source_field_path"], "Modifiers.MEmbedded")
+        self.assertEqual(definitions[0]["payload"]["Stacking"], "ReplaceByCaster")
+        self.assertIn("DynamicValues", definitions[0]["payload"])
 
 
 if __name__ == "__main__":

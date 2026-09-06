@@ -32,6 +32,8 @@ STATIC_FAMILIES: Mapping[str, str] = {
 
 OWNER_STATIC_FAMILY: Mapping[str, str] = {
     "Avatar": "Avatar",
+    "LightCone": "LightCone",
+    "RelicSet": "RelicSet",
     "Monster": "Monster",
     "StageBuff": "StageBuff",
 }
@@ -116,12 +118,30 @@ def _avatar_candidate(
         if owner.startswith("avatar" + tag)
     ]
     if len(matches) != 1:
-        return "SOURCE_PATH_ONLY", [], None
+        return "UNMAPPED", [], None
     tag, external_ids = matches[0]
     local_ids = [entity_id for entity_id in external_ids if entity_id in static_avatar_ids]
     if len(local_ids) != 1:
-        return "SOURCE_PATH_ONLY", [], tag
+        return "UNMAPPED", [], tag
     return "REPRESENTATION_TRANSFORM_CANDIDATE", local_ids, tag
+
+
+def _exact_config_id_candidate(
+    owner_ref: str,
+    *,
+    static_ids: set[str],
+) -> list[str]:
+    """Accept only an unambiguous numeric config token already in static IDs.
+
+    Equipment source records use forms such as ``Ability20000`` and
+    ``RelicAbility101``.  This is more precise than a filename/name match but
+    deliberately remains a separate classification from a literal native ID.
+    Numbers embedded in arbitrary text do not count unless exactly one token
+    equals a known static entity ID.
+    """
+    values = re.findall(r"(?<!\d)(\d{3,})(?!\d)", owner_ref)
+    candidates = sorted({value for value in values if value in static_ids})
+    return candidates if len(candidates) == 1 else []
 
 
 def _record_link(
@@ -147,10 +167,14 @@ def _record_link(
         # This deliberately only accepts a literal ID equality.  Current
         # close-version owner refs do not satisfy it, but the rule is retained
         # for future exact-version sources.
-        link_type = "DIRECT_ID_LINK"
+        link_type = "EXACT_ID"
         candidate_ids = [owner_ref]
     elif linked_family:
-        link_type = "SOURCE_PATH_ONLY"
+        candidate_ids = _exact_config_id_candidate(
+            owner_ref,
+            static_ids=set(static_ids[linked_family]),
+        )
+        link_type = "EXACT_CONFIG_ID" if candidate_ids else "UNMAPPED"
 
     report_entrypoints = compiled.get("entrypoints", []) if compiled else []
     entrypoints, executable_entrypoints = _entrypoint_counts(report_entrypoints)
@@ -169,11 +193,14 @@ def _record_link(
         "static_link": {
             "static_family": linked_family,
             "classification": link_type,
+            "mapping_method": link_type,
             "candidate_entity_ids": candidate_ids,
             "representation_tag": representation_tag,
             "evidence": (
                 "literal owner_ref equals an exact 4.4.54 entity_id"
-                if link_type == "DIRECT_ID_LINK"
+                if link_type == "EXACT_ID"
+                else "an unambiguous numeric config token in the source owner equals one exact 4.4.54 entity_id"
+                if link_type == "EXACT_CONFIG_ID"
                 else "normalized Avatar_<tag> owner filename matches cached StarRailRes character tag; not native-ID proof"
                 if link_type == "REPRESENTATION_TRANSFORM_CANDIDATE"
                 else "captured source path/owner only; no exact static-ID relation is asserted"
@@ -231,12 +258,15 @@ def build_content_behavior_mapping(
     families: dict[str, dict[str, Any]] = {}
     for family, ids in STATIC_FAMILIES.items():
         links = [link for link in record_links if link["static_link"]["static_family"] == family]
-        direct = [link for link in links if link["static_link"]["classification"] == "DIRECT_ID_LINK"]
+        direct = [
+            link for link in links
+            if link["static_link"]["classification"] in {"EXACT_ID", "EXACT_CONFIG_ID"}
+        ]
         transformed = [
             link for link in links
             if link["static_link"]["classification"] == "REPRESENTATION_TRANSFORM_CANDIDATE"
         ]
-        source_only = [link for link in links if link["static_link"]["classification"] == "SOURCE_PATH_ONLY"]
+        source_only = [link for link in links if link["static_link"]["classification"] == "UNMAPPED"]
         directly_linked = {
             entity_id for link in direct for entity_id in link["static_link"]["candidate_entity_ids"]
         }
@@ -249,6 +279,9 @@ def build_content_behavior_mapping(
             "static_entities_representation_transform_candidates": len(transform_linked),
             "static_entities_unmapped": len(set(static_ids[family]) - directly_linked - transform_linked),
             "behavior_records_direct_id_link": len(direct),
+            "behavior_records_exact_config_id_link": sum(
+                link["static_link"]["classification"] == "EXACT_CONFIG_ID" for link in links
+            ),
             "behavior_records_representation_transform_candidate": len(transformed),
             "behavior_records_source_path_only": len(source_only),
             "behavior_records_captured_for_family": len(links),
@@ -274,25 +307,39 @@ def build_content_behavior_mapping(
         if link["static_link"]["static_family"] is None
     )
     payload = {
-        "report_id": "CONTENT-BEHAVIOR-MAPPING-001",
+        "report_id": "FULL-CONTENT-BEHAVIOR-MAPPING-001",
         "game_version": str(corpus.get("game_version")),
-        "status": "EXACT_STATIC_DENOMINATOR_WITH_CONSERVATIVE_BEHAVIOR_LINKS",
+        "status": "EXACT_STATIC_DENOMINATOR_WITH_PROVENANCE_AWARE_BEHAVIOR_LINKS",
         "counting_rule": (
             "Static denominators are ID-preserved local Nanoka 4.4.54 entities. "
-            "DIRECT_ID_LINK requires literal exact entity-id equality. "
+            "EXACT_ID requires literal exact entity-id equality; EXACT_CONFIG_ID requires an unambiguous numeric config token equal to one static entity ID. "
             "REPRESENTATION_TRANSFORM_CANDIDATE is a cached StarRailRes tag/filename relation only, "
             "never native-ID proof. SOURCE_PATH_ONLY and parent-only names do not count as static links."
         ),
         "inputs": dict(sorted(source_metadata.items())),
         "link_classifications": {
-            "DIRECT_ID_LINK": "literal source owner reference equals an exact local 4.4.54 static entity ID",
+            "EXACT_ID": "literal source owner reference equals an exact local 4.4.54 static entity ID",
+            "EXACT_CONFIG_ID": "a tokenized numeric source config owner reference equals exactly one local 4.4.54 static entity ID",
+            "STRUCTURED_MAPPING": "a separately recorded source relationship joins a behavior record to an exact local static entity",
             "REPRESENTATION_TRANSFORM_CANDIDATE": "normalized Avatar_<tag> filename matches a cached StarRailRes tag and one local Avatar ID; not native-ID proof",
-            "SOURCE_PATH_ONLY": "source path/name identifies a behavior family but has no exact static entity relation",
+            "UNMAPPED": "source path/name identifies a behavior family but has no exact static entity relation",
             "OUT_OF_STATIC_FAMILY_SCOPE": "captured global Modifier behavior has no corresponding requested static-content family",
             "PARENT_AVATAR_ONLY": "source name indicates Skill/Trace/Eidolon shape but does not identify its static entity ID",
         },
         "static_family_coverage": dict(sorted(families.items())),
         "captured_behavior_owner_summary": dict(sorted(Counter(link["owner_kind"] for link in record_links).items())),
+        "family_coverage_table": [
+            {
+                "family": family,
+                "static_total": details["static_entity_denominator"],
+                "behavior_mapped": details["behavior_records_direct_id_link"] + details["behavior_records_representation_transform_candidate"],
+                "canonicalized": details["behavior_records_captured_for_family"],
+                "executable": details["whole_record_executable_reference"],
+                "golden": 0,
+                "unmapped": details["static_entities_unmapped"],
+            }
+            for family, details in sorted(families.items())
+        ],
         "out_of_static_family_scope": dict(sorted(out_of_scope.items())),
         "record_links": record_links,
     }

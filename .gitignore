@@ -153,6 +153,12 @@ data/content/*/external_reconstruction/**
 data/db/**
 !data/db/README.md
 
+# Rebuildable full-content behavior products are hundreds of MiB.  Keep the
+# compact manifests/censuses and their generators in Git; keep these two heavy
+# products local beside the pinned source cache.
+data/semantics/*/full_reconstruction/full_content_behavior_corpus_*.json
+data/semantics/*/full_reconstruction/full_content_behavior_compiler_report_*.json
+
 # Pinned third-party research repositories.  They are inspected locally for
 # provenance and independently reimplemented; never vendored into this repo.
 .external_refs/

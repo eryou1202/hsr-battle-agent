@@ -246,13 +246,14 @@ families = {owner: {
     "full_game_behavior_denominator": "UNKNOWN",
 } for owner, values in coverage["by_owner_kind"].items()}
 for absent in ("Trace", "Eidolon", "LightCone", "RelicSet"):
-    families[absent] = {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable_reference": 0, "source_backed_executable": 0, "source_backed_executed_components": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"}
+    families.setdefault(absent, {"captured_records": 0, "behavior_bearing_denominator": 0, "static_definition_only": 0, "canonicalized": 0, "structural_compiled": 0, "executable_reference": 0, "source_backed_executable": 0, "source_backed_executed_components": 0, "executable": 0, "golden_tested": 0, "unsupported_or_uncompiled": 0, "full_game_behavior_denominator": "UNKNOWN"})
+full_content = str(corpus.get("corpus_id", "")).startswith("FULL-CONTENT-")
 payload = {
     "report_id": "BEHAVIOR-COVERAGE-CENSUS-002",
     "game_version": "4.4.54",
-    "status": "EXECUTABLE_REFERENCE_REVIEWED_CORPUS_BASELINE",
+    "status": "PINNED_FAMILY_FULL_CONTENT_EXECUTABLE_BASELINE" if full_content else "EXECUTABLE_REFERENCE_REVIEWED_CORPUS_BASELINE",
     "input_compiler_report_sha256": report["report_sha256"],
-    "counting_rule": "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. source_backed_executable counts complete BehaviorRecords executed through the bridge; source_backed_executed_components counts explicit provenance fixtures for independently executable canonical operations from records whose full entrypoint remains incomplete. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
+    "counting_rule": "The behavior denominator is the captured pinned-family records that contain at least one operational entrypoint or TaskListTemplate. It is the current full-content reconstruction baseline, not yet a proof of the complete 4.4.54 behavior denominator. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. source_backed_executable counts complete BehaviorRecords executed through the bridge; source_backed_executed_components counts explicit provenance fixtures for independently executable canonical operations from records whose full entrypoint remains incomplete." if full_content else "The behavior denominator is the reviewed captured records that contain at least one operational entrypoint or TaskListTemplate. Records with no operational behavior are counted separately as static definitions and never deflate the behavior denominator. source_backed_executable counts complete BehaviorRecords executed through the bridge; source_backed_executed_components counts explicit provenance fixtures for independently executable canonical operations from records whose full entrypoint remains incomplete. The full 4.4.54 behavior corpus denominator remains UNKNOWN.",
     "families": dict(sorted(families.items())),
     "overall": {
         "captured_records": coverage["captured"],
@@ -274,7 +275,7 @@ payload = {
         "executable_entrypoints": coverage.get("operation_level", {}).get("executable_entrypoints", 0),
     },
     "failure_clusters": coverage["failure_reasons"],
-    "next_high_leverage": {"ticket_id": "EXECUTABLE-BRIDGE-EXPANSION-001", "reason": "The first generic bridge executes only fully closed conditional/heal and StackProperty records. Select the next operation family by executable-reference gain after this report's strict disposition counts, never by static entity count."},
+    "next_high_leverage": {"ticket_id": "FULL-CONTENT-COMPILER-CENSUS-001" if full_content else "EXECUTABLE-BRIDGE-EXPANSION-001", "reason": "Select the next generic mechanism from the full-content failure census by unlockable-record count, family breadth, architecture importance, cost, and uncertainty." if full_content else "The first generic bridge executes only fully closed conditional/heal and StackProperty records. Select the next operation family by executable-reference gain after this report's strict disposition counts, never by static entity count."},
 }
 write_json(arguments.output, payload)
 print(json.dumps({"output_path": str(arguments.output), "overall": payload["overall"]}, sort_keys=True))

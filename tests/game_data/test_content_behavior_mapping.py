@@ -52,6 +52,5 @@ class ContentBehaviorMappingTest(unittest.TestCase):
         }]}
         payload = build_content_behavior_mapping(corpus, {"records": []}, static_ids, tags, source_metadata={})
         link = payload["record_links"][0]["static_link"]
-        self.assertEqual(link["classification"], "SOURCE_PATH_ONLY")
+        self.assertEqual(link["classification"], "UNMAPPED")
         self.assertEqual(payload["static_family_coverage"]["Monster"]["static_entities_directly_linked"], 0)
-

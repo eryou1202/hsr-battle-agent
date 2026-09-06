@@ -23,7 +23,7 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Iterable, Mapping
 
 from .external_reconstruction import CONTENT_VERSION, default_external_root
 from .nanoka_content import stable_hash, write_json
@@ -191,6 +191,8 @@ def _owner(path: str) -> str:
         return "Avatar"
     if "/Monster/" in path:
         return "Monster"
+    if "/Equip/" in path:
+        return "RelicSet" if Path(path).name == "RelicAbility.json" else "LightCone"
     if "MazeBuff" in path:
         return "StageBuff"
     if "Modifier" in path:
@@ -551,13 +553,46 @@ def _dynamic_value_definitions(value: Mapping[str, Any]) -> list[dict[str, Any]]
     return definitions
 
 
+def _modifier_definitions(value: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Expose an Ability's embedded ``Modifiers`` map as definitions.
+
+    The map is not merely a callback container: ``AddModifier`` operations in
+    the same and other behaviors use it as the authoritative source of a
+    modifier's stacking/lifetime metadata.  Keeping it as a definition edge
+    avoids creating duplicate executable BehaviorRecords while making the
+    data available to the generic modifier catalog.
+    """
+    modifiers = value.get("Modifiers")
+    if not isinstance(modifiers, Mapping):
+        return []
+    definitions: list[dict[str, Any]] = []
+    for name in sorted(str(key) for key in modifiers):
+        payload = _mapping(modifiers.get(name))
+        if not payload:
+            continue
+        definitions.append({
+            "name": name,
+            "source_field_path": f"Modifiers.{name}",
+            "payload": payload,
+        })
+    return definitions
+
+
 def build_external_behavior_corpus(
     version: str = CONTENT_VERSION,
     *,
     source_root: Path | None = None,
     output_path: Path | None = None,
+    behavior_paths: Iterable[str] | None = None,
+    corpus_id: str = "EXTERNAL-BEHAVIOR-CORPUS-REVIEWED-SLICE-V2",
 ) -> dict[str, Any]:
-    """Build a deterministic canonical index for the reviewed behavior slice."""
+    """Build a deterministic canonical index for one pinned behavior set.
+
+    ``behavior_paths`` is an explicit family-scoped retrieval list, never a
+    directory glob.  The default remains the compact reviewed regression
+    slice, while full-content ingestion can use the same normalizer and IR
+    without a parallel schema.
+    """
     if version != CONTENT_VERSION:
         raise ValueError(f"external behavior corpus is pinned to {CONTENT_VERSION}, not {version}")
     root = source_root or default_external_root()
@@ -568,7 +603,12 @@ def build_external_behavior_corpus(
         raise ValueError("TurnBasedGameData snapshot commit mismatch")
     file_meta = _mapping(manifest.get("files"))
     records: list[dict[str, Any]] = []
-    for relative_path in TURN_BASED_BEHAVIOR_PATHS:
+    selected_paths = tuple(sorted({str(path).replace("\\", "/") for path in (
+        behavior_paths if behavior_paths is not None else TURN_BASED_BEHAVIOR_PATHS
+    )}))
+    if not selected_paths:
+        raise ValueError("behavior corpus needs at least one explicit source path")
+    for relative_path in selected_paths:
         metadata = _mapping(file_meta.get(relative_path))
         path = base / "files" / relative_path
         if not path.exists() or not metadata.get("raw_sha256"):
@@ -662,6 +702,8 @@ def build_external_behavior_corpus(
                         raw_ref=container_ref,
                     ),
                     "dynamic_value_definitions": _dynamic_value_definitions(payload),
+                    "modifier_definitions": _modifier_definitions(payload),
+                    "modifier_definition_payload": payload if owner_kind == "Modifier" else None,
                     "modifier_payload": payload.get("Modifiers"),
                     "raw_unknown": raw_unknown,
                     "reconstruction_status": "CANONICALIZED",
@@ -669,9 +711,11 @@ def build_external_behavior_corpus(
     records.sort(key=lambda record: record["behavior_id"])
     corpus = {
         "schema": "hsr_battle_agent.external_behavior_corpus/2",
+        "corpus_id": corpus_id,
         "game_version": version,
         "source": "TurnBasedGameData",
         "source_commit": manifest["selected_commit"],
+        "source_path_count": len(selected_paths),
         "records": records,
     }
     corpus["corpus_sha256"] = stable_hash(corpus)

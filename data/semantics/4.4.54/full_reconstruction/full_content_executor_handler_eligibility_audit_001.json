@@ -1,0 +1,123 @@
+{
+  "audit_id": "EXECUTOR-HANDLER-ELIGIBILITY-AUDIT-001",
+  "audit_sha256": "2f9631ae8b02762027f00177acc34ed7f1c68dbb540b7286ba542dfa133ef1e0",
+  "counting_rule": "Counts compiled operations whose disposition is EXECUTABLE_REFERENCE. This audit validates handler and declared-context surface only; it never upgrades source-backed or Golden status.",
+  "executable_operation_counts": {
+    "ACTION_COMPLETION_MARKER": 1634,
+    "ACTION_START_MARKER": 859,
+    "ADD_MODIFIER": 1585,
+    "CONDITIONAL": 13352,
+    "DAMAGE_COMPLETION_MARKER": 1246,
+    "DAMAGE_REQUEST": 120,
+    "DEFINE_DYNAMIC_VALUE": 1688,
+    "DELAY_ACTION": 241,
+    "HEAL_REQUEST": 37,
+    "INSERT_ACTION": 1,
+    "MODIFY_PROPERTY_STACK": 1609,
+    "MODIFY_TEAM_SP": 310,
+    "MODIFY_WEAKNESS": 80,
+    "PREDICATE": 24314,
+    "REMOVE_MODIFIER": 5847,
+    "RETARGET": 2,
+    "SET_DYNAMIC_VALUE": 5875
+  },
+  "executor_context_contract": {
+    "ACTION_COMPLETION_MARKER": [
+      "explicit action task identity",
+      "existing EXECUTING TaskStep",
+      "selected scheduler task-success boundary"
+    ],
+    "ACTION_START_MARKER": [
+      "explicit action task identity",
+      "existing READY TaskStep",
+      "selected scheduler task-executing boundary"
+    ],
+    "ADD_MODIFIER": [
+      "target resolution",
+      "explicit ModifierDefinition catalog",
+      "caster runtime id",
+      "optional modifier-local DynamicValues"
+    ],
+    "CONDITIONAL": [
+      "Predicate payload",
+      "PredicateContext providers",
+      "compiled child operation contexts"
+    ],
+    "DAMAGE_COMPLETION_MARKER": [
+      "explicit damage task identity",
+      "existing EXECUTING TaskStep",
+      "selected scheduler damage-task-success boundary"
+    ],
+    "DAMAGE_REQUEST": [
+      "damage source stats",
+      "target resolution",
+      "DamageMultiplierContext",
+      "optional ToughnessCommitContext for selected normal stance only"
+    ],
+    "DEFINE_DYNAMIC_VALUE": [
+      "scope owner resolution",
+      "DynamicValue key/value inputs",
+      "DynamicValueStore"
+    ],
+    "DELAY_ACTION": [
+      "target resolution",
+      "per-target ActionDelayState",
+      "fixed or decoded PostfixExpr AddNormalizedValue",
+      "DynamicValue scope/hash inputs for dynamic delay",
+      "selected scheduler action-delay commit boundary"
+    ],
+    "HEAL_REQUEST": [
+      "target resolution",
+      "DynamicValue scope/hash inputs",
+      "target SurvivalState"
+    ],
+    "INSERT_ACTION": [
+      "single explicit Caster owner",
+      "strict TurnInsertAbility payload",
+      "immutable pending inserted-action queue"
+    ],
+    "MODIFY_PROPERTY_STACK": [
+      "target resolution",
+      "DynamicValue scope/hash inputs",
+      "PropertyState"
+    ],
+    "MODIFY_TEAM_SP": [
+      "target resolution",
+      "shared TeamSkillPointState",
+      "DynamicValue scope/hash inputs"
+    ],
+    "MODIFY_WEAKNESS": [
+      "target resolution",
+      "entity weakness state"
+    ],
+    "PREDICATE": [
+      "Predicate payload",
+      "PredicateContext providers"
+    ],
+    "REMOVE_MODIFIER": [
+      "target resolution or explicit callback ModifierInstance identity",
+      "ModifierInstance state",
+      "dirty-removal lifecycle boundary"
+    ],
+    "RETARGET": [
+      "ModifierOwnerAdjoinEntity ordered target collection",
+      "fixed positive MaxNumber",
+      "per-selected-target ParamEntity child scope",
+      "fully executable TaskList children",
+      "no random selection or target-filter policy"
+    ],
+    "SET_DYNAMIC_VALUE": [
+      "scope owner resolution",
+      "DynamicValue key/value inputs or selected state read",
+      "DynamicValueStore",
+      "explicit ALIVE callback ModifierInstance identity for SetDynamicValueByModifierValue Layer reads",
+      "selected ModifierOwnerEntity SurvivalState.max_hp; ParamEntity/ParamEntity2/SnapshotPropertyEntity RuntimeEntity.attack; Caster/SnapshotPropertyEntity RuntimeEntity.break_damage_added_ratio; or Caster RuntimeEntity.status_probability_base for SetDynamicValueByProperty",
+      "unique ALIVE ModifierOwnerEntity instance named by SetModifierDynamicValue"
+    ]
+  },
+  "game_version": "4.4.54",
+  "input_compiler_report_sha256": "52b1476f7191372371230af6b675b2768466a6e6d045da84725b7c0ffbb3cb25",
+  "missing_context_policy": "SemanticExecutor raises SemanticExecutionError when a selected operation is invoked without its declared scenario/context input; no handler supplies fixture defaults.",
+  "status": "PASS_ALL_EXECUTABLE_KINDS_HAVE_HANDLER_AND_CONTEXT_CONTRACT",
+  "unhandled_kinds": []
+}

@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from hashlib import sha256
 import base64
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 from pathlib import Path
 import sqlite3
@@ -254,6 +255,30 @@ class ExternalReferenceFetcher:
                 time.sleep(1.0 * (attempt + 1))
         raise ExternalReferenceError(f"GitHub API request failed: {url}: {last_error}")
 
+    def _request_list(self, url: str) -> list[Mapping[str, Any]]:
+        """Read a commit-addressed GitHub directory listing without coercing it.
+
+        ``_request_json`` intentionally returns a mapping for the blob/tree
+        endpoints used by the original small snapshot.  Contents-directory
+        endpoints instead return a JSON array, so full-content family discovery
+        needs this separate, equally bounded helper.
+        """
+        last_error: Exception | None = None
+        for attempt in range(self.retries):
+            try:
+                request = Request(url, headers={"Accept": "application/vnd.github+json", "User-Agent": "HSR-Battle-Agent/0.0 external-reference"})
+                with urlopen(request, timeout=self.timeout_seconds) as response:
+                    decoded = json.loads(response.read().decode("utf-8"))
+                if not isinstance(decoded, list):
+                    raise ExternalReferenceError(f"GitHub directory endpoint returned non-list: {url}")
+                return [_mapping(value) for value in decoded if isinstance(value, Mapping)]
+            except (HTTPError, URLError, TimeoutError, json.JSONDecodeError, ExternalReferenceError) as exc:
+                last_error = exc
+                if isinstance(exc, HTTPError) and exc.code not in {429, 500, 502, 503, 504}:
+                    break
+                time.sleep(1.0 * (attempt + 1))
+        raise ExternalReferenceError(f"GitHub directory request failed: {url}: {last_error}")
+
     def _fetch_file(self, source: ExternalSource, path: str) -> tuple[bytes, dict[str, Any]]:
         repo = self._repository_path(source)
         encoded_path = "/".join(quote(segment) for segment in path.split("/"))
@@ -294,6 +319,49 @@ class ExternalReferenceFetcher:
             "fetched_at": _utc_now(),
         }
         return payload, metadata
+
+    def _fetch_raw_pinned_file(
+        self,
+        source: ExternalSource,
+        path: str,
+        *,
+        expected_git_blob_sha: str | None = None,
+    ) -> tuple[bytes, dict[str, Any]]:
+        """Fetch one known path directly from the immutable commit raw endpoint.
+
+        Bulk family ingestion already has a tree/directory discovery blob SHA.
+        Calling the Contents API once per file would needlessly consume its
+        unauthenticated rate budget, so this deliberately uses only the
+        commit-addressed raw endpoint and retains the discovery SHA separately.
+        """
+        repo = self._repository_path(source)
+        encoded_path = "/".join(quote(segment) for segment in path.split("/"))
+        raw_url = f"https://raw.githubusercontent.com/{repo}/{source.selected_commit}/{encoded_path}"
+        last_error: Exception | None = None
+        for attempt in range(self.retries):
+            try:
+                request = Request(raw_url, headers={"User-Agent": "HSR-Battle-Agent/0.0 external-reference"})
+                with urlopen(request, timeout=self.timeout_seconds) as response:
+                    payload = response.read()
+                return payload, {
+                    "path": path,
+                    "contents_api_url": f"{GITHUB_API}/repos/{repo}/contents/{encoded_path}?ref={source.selected_commit}",
+                    "download_url": raw_url,
+                    "git_blob_url": (
+                        f"{GITHUB_API}/repos/{repo}/git/blobs/{expected_git_blob_sha}"
+                        if expected_git_blob_sha else None
+                    ),
+                    "git_blob_sha": expected_git_blob_sha,
+                    "raw_sha256": _sha256_bytes(payload),
+                    "raw_size": len(payload),
+                    "fetched_at": _utc_now(),
+                }
+            except (HTTPError, URLError, TimeoutError) as exc:
+                last_error = exc
+                if isinstance(exc, HTTPError) and exc.code not in {429, 500, 502, 503, 504}:
+                    break
+                time.sleep(1.0 * (attempt + 1))
+        raise ExternalReferenceError(f"raw family fetch failed for {source.name}:{path}: {last_error}")
 
     def fetch(self, source_names: Iterable[str] | None = None) -> dict[str, Any]:
         wanted = set(source_names or (source.name for source in EXTERNAL_SOURCES))
@@ -363,7 +431,176 @@ class ExternalReferenceFetcher:
             results[source.name] = {"files": len(files), "snapshot": str(base), "manifest_sha256": current_manifest.get("manifest_sha256")}
         return {"schema": "hsr_battle_agent.external_reference_fetch/1", "sources": results}
 
-    def discover_paths(self, source_name: str, query_terms: Iterable[str]) -> dict[str, Any]:
+    def fetch_explicit_paths(
+        self,
+        source_name: str,
+        path_records: Iterable[Mapping[str, Any]],
+        *,
+        workers: int = 4,
+    ) -> dict[str, Any]:
+        """Fetch one explicit, family-scoped list from a pinned source.
+
+        This is deliberately narrower than a repository mirror.  Callers must
+        provide paths already discovered from the exact selected commit, plus
+        any tree metadata they want retained for provenance.  The immutable
+        local cache and source manifest remain the only runtime input; neither
+        this method nor its callers are available to the battle runtime.
+
+        A small bounded worker count is used only for independent raw payload
+        retrieval.  Manifest updates occur on the caller thread after each
+        completed file, leaving an interrupted run resumable without
+        re-downloading verified bytes.
+        """
+        source = _source_by_name(source_name)
+        normalized: dict[str, dict[str, Any]] = {}
+        for raw_record in path_records:
+            record = _mapping(raw_record)
+            path = str(record.get("path", "")).strip().replace("\\", "/")
+            if not path or path.startswith("/") or ".." in Path(path).parts:
+                raise ExternalReferenceError(f"unsafe explicit source path: {path!r}")
+            previous = normalized.get(path)
+            if previous is not None and stable_hash(previous) != stable_hash(record):
+                raise ExternalReferenceError(f"conflicting explicit source metadata for {source_name}:{path}")
+            normalized[path] = dict(record)
+        if not normalized:
+            return {
+                "schema": "hsr_battle_agent.external_reference_explicit_fetch/1",
+                "source": source.name,
+                "selected_commit": source.selected_commit,
+                "requested": 0,
+                "cached": 0,
+                "fetched": 0,
+            }
+
+        base = self.root / source.name
+        previous_path = base / "manifest.json"
+        previous = _mapping(read_json(previous_path)) if previous_path.exists() else {}
+        if previous and previous.get("selected_commit") != source.selected_commit:
+            raise ExternalReferenceError(
+                f"selected commit mismatch in {previous_path}: "
+                f"{previous.get('selected_commit')} != {source.selected_commit}"
+            )
+        previous_files = _mapping(previous.get("files"))
+        files: dict[str, Any] = {
+            str(path): dict(_mapping(row))
+            for path, row in previous_files.items()
+        }
+
+        def checkpoint() -> None:
+            manifest = {
+                "schema": "hsr_battle_agent.external_reference_snapshot/1",
+                "source": source.name,
+                "repository_url": source.repository_url,
+                "selected_commit": source.selected_commit,
+                "selected_branch": source.selected_branch,
+                "commit_date": source.commit_date,
+                "declared_game_version": source.declared_game_version,
+                "declared_game_build": source.declared_game_build,
+                "version_match": source.version_match,
+                "license": source.license,
+                "source_role": source.source_role,
+                "usage_scope": source.usage_scope,
+                "license_note": source.license_note,
+                "local_clone_path": None,
+                "local_snapshot_path": str(base),
+                "files": dict(sorted(files.items())),
+            }
+            manifest["manifest_sha256"] = stable_hash(manifest)
+            write_json(previous_path, manifest)
+
+        pending: list[tuple[str, dict[str, Any]]] = []
+        cached = 0
+        for path, record in sorted(normalized.items()):
+            destination = base / "files" / path
+            old = _mapping(files.get(path))
+            if destination.exists() and old.get("raw_sha256"):
+                payload = destination.read_bytes()
+                if _sha256_bytes(payload) != old.get("raw_sha256"):
+                    raise ExternalReferenceError(f"immutable external snapshot hash changed: {destination}")
+                updated = dict(old)
+                updated["fetch_status"] = "CACHED"
+                updated["family_scopes"] = sorted({
+                    *[str(value) for value in _list(old.get("family_scopes"))],
+                    str(record.get("family", "UNSPECIFIED")),
+                })
+                for key in ("discovery_git_blob_sha", "discovery_size", "version_relation"):
+                    if record.get(key) is not None:
+                        updated[key] = record[key]
+                files[path] = updated
+                cached += 1
+                continue
+            if destination.exists() and not old:
+                payload = destination.read_bytes()
+                files[path] = {
+                    "path": path,
+                    "contents_api_url": None,
+                    "download_url": None,
+                    "git_blob_url": None,
+                    "git_blob_sha": record.get("discovery_git_blob_sha"),
+                    "raw_sha256": _sha256_bytes(payload),
+                    "raw_size": len(payload),
+                    "fetched_at": None,
+                    "fetch_status": "RECOVERED_UNINDEXED",
+                    "family_scopes": [str(record.get("family", "UNSPECIFIED"))],
+                    "discovery_git_blob_sha": record.get("discovery_git_blob_sha"),
+                    "discovery_size": record.get("discovery_size"),
+                    "version_relation": record.get("version_relation"),
+                }
+                cached += 1
+                checkpoint()
+                continue
+            pending.append((path, record))
+
+        fetched = 0
+        worker_count = max(1, min(int(workers), 4))
+        with ThreadPoolExecutor(max_workers=worker_count) as executor:
+            futures = {
+                executor.submit(
+                    self._fetch_raw_pinned_file,
+                    source,
+                    path,
+                    expected_git_blob_sha=(
+                        str(record["discovery_git_blob_sha"])
+                        if record.get("discovery_git_blob_sha") else None
+                    ),
+                ): (path, record)
+                for path, record in pending
+            }
+            for future in as_completed(futures):
+                path, record = futures[future]
+                payload, metadata = future.result()
+                destination = base / "files" / path
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_bytes(payload)
+                metadata.update({
+                    "fetch_status": "FETCHED",
+                    "family_scopes": [str(record.get("family", "UNSPECIFIED"))],
+                    "discovery_git_blob_sha": record.get("discovery_git_blob_sha"),
+                    "discovery_size": record.get("discovery_size"),
+                    "version_relation": record.get("version_relation"),
+                })
+                files[path] = metadata
+                fetched += 1
+                checkpoint()
+        checkpoint()
+        return {
+            "schema": "hsr_battle_agent.external_reference_explicit_fetch/1",
+            "source": source.name,
+            "selected_commit": source.selected_commit,
+            "requested": len(normalized),
+            "cached": cached,
+            "fetched": fetched,
+            "worker_count": worker_count,
+            "manifest_path": str(previous_path),
+        }
+
+    def discover_paths(
+        self,
+        source_name: str,
+        query_terms: Iterable[str],
+        *,
+        output_path: Path | None = None,
+    ) -> dict[str, Any]:
         """Record a bounded, commit-addressed search of one repository tree.
 
         Discovery is intentionally separate from ``fetch``: it obtains only
@@ -413,7 +650,53 @@ class ExternalReferenceFetcher:
             "matches": query_matches,
         }
         artifact["artifact_sha256"] = stable_hash(artifact)
-        write_json(self.root / source.name / "semantic_discovery_v1.json", artifact)
+        write_json(output_path or self.root / source.name / "semantic_discovery_v1.json", artifact)
+        return artifact
+
+    def discover_directory_paths(
+        self,
+        source_name: str,
+        directory_path: str,
+        *,
+        output_path: Path,
+    ) -> dict[str, Any]:
+        """Capture one direct pinned directory listing as a family manifest.
+
+        This is used when the repository-wide recursive Git tree is marked
+        truncated.  The method does not recurse or download payload bytes; a
+        later explicit fetch consumes precisely the returned file paths.
+        """
+        source = _source_by_name(source_name)
+        path = directory_path.strip("/")
+        if not path or ".." in Path(path).parts:
+            raise ExternalReferenceError(f"unsafe source directory path: {directory_path!r}")
+        repo = self._repository_path(source)
+        encoded_path = "/".join(quote(segment) for segment in path.split("/"))
+        url = f"{GITHUB_API}/repos/{repo}/contents/{encoded_path}?ref={source.selected_commit}"
+        listing = self._request_list(url)
+        entries = [
+            {
+                "path": str(entry.get("path")),
+                "type": entry.get("type"),
+                "git_blob_sha": entry.get("sha"),
+                "size": entry.get("size"),
+            }
+            for entry in listing
+            if isinstance(entry.get("path"), str)
+        ]
+        artifact = {
+            "schema": "hsr_battle_agent.external_reference_directory_discovery/1",
+            "source": source.name,
+            "repository_url": source.repository_url,
+            "selected_commit": source.selected_commit,
+            "directory_path": path,
+            "contents_url": url,
+            "fetched_at": _utc_now(),
+            "recursive": False,
+            "entries": sorted(entries, key=lambda entry: str(entry["path"])),
+        }
+        artifact["artifact_sha256"] = stable_hash(artifact)
+        write_json(output_path, artifact)
         return artifact
 
 
