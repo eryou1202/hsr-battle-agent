@@ -2,7 +2,52 @@
 
 This summary reflects the current local `main`, not an older handoff snapshot.
 
-## Full reconstruction program — current phase
+## Authoritative current phase — full-content bulk reconstruction
+
+`FULL-CONTENT BULK RECONSTRUCTION / INGESTION = ACTIVE`.
+`FULL-CONTENT PIPELINE = ESTABLISHED`, but complete 4.4.54 behavior-family
+coverage and full dynamic semantics are not complete. The active denominator
+is the pinned, family-scoped full corpus, **not** the former reviewed
+249-record slice (which remains a regression/reference corpus only).
+
+The current pinned manifest has 711 normalizer inputs: 266 Avatar Ability,
+15 LightCone Ability, 1 RelicSet Ability, 373 Monster Ability, 15 Global
+Modifier, 3 Stage Buff Ability, 2 Stage AdventureModifier, 13 Level Ability,
+and 28 AdventureModifier documents; Avatar Config and Monster AI documents
+are cached as non-normalizer ownership/index evidence. All selected inputs are
+hash/provenance cached at their pinned source revision.
+
+The latest full corpus hash is
+`c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d`:
+14,042 canonical records, 10,685 behavior-bearing records, and 3,357
+static-definition-only records. The strict compiler reports 2,579 structural
+records, 1,528 `EXECUTABLE_REFERENCE` records, 4,738 executable entrypoints,
+and 59,595 executable operation bindings. Four complete records and 27
+separately labelled real-content components are source-backed executed; Golden
+coverage is zero. `EXECUTABLE_REFERENCE` is a strict reference-execution
+classification, never a claim of an independent Golden game trace.
+
+The canonical Modifier definition catalog is live: 9,964 candidates, 9,771
+unique structured names, 120 full-payload-equivalent duplicates retaining all
+provenance, 61 true conflicts retained as conflicts, 2,623 definitions
+accepted only under existing explicit stacking support, and 7,087 rejected
+definitions. Missing/unsupported stacking is never guessed. Level and
+AdventureModifier source-family labels similarly do not claim a static
+Stage/Mode/Environment ID join.
+
+The main full-corpus blockers are cross-behavior `TriggerAbility` invocation,
+unresolved Modifier definitions, Monster formation changes, mixed-state damage
+requests, and unsupported Retarget forms. The next scoped task is
+`CROSS-BEHAVIOR-INVOKE-001`: build a corpus-wide target registry and promote
+only unambiguous, deterministic invocation boundaries; scheduler/arbitration
+affecting calls remain strict failures. `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`
+is **NO** and `DSH_PRODUCTION_BUILD` remains **FROZEN**.
+
+Artifacts and exact resume instructions are in
+`data/semantics/4.4.54/full_reconstruction/` and
+`docs/agent/session_handoff_2026-09-07_full_content_reconstruction.md`.
+
+## Historical reviewed-slice record — not the current denominator
 
 The highest target is `FULL_4_4_54_SANDBOX_RECONSTRUCTION_FREEZE`; DSH
 production implementation remains frozen until that gate. The canonical

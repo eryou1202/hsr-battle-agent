@@ -1,6 +1,14 @@
 {
   "families": [
     {
+      "cached_verified_paths": 28,
+      "family": "ADVENTURE_MODIFIER",
+      "missing_paths": 0,
+      "normalizer_input": true,
+      "notes": "Pinned positive discovery paths only.",
+      "positive_discovery_paths": 28
+    },
+    {
       "cached_verified_paths": 266,
       "family": "AVATAR_ABILITY",
       "missing_paths": 0,
@@ -23,6 +31,14 @@
       "normalizer_input": true,
       "notes": "Pinned positive discovery paths only.",
       "positive_discovery_paths": 15
+    },
+    {
+      "cached_verified_paths": 13,
+      "family": "LEVEL_ABILITY",
+      "missing_paths": 0,
+      "normalizer_input": true,
+      "notes": "Pinned positive discovery paths only.",
+      "positive_discovery_paths": 13
     },
     {
       "cached_verified_paths": 15,
@@ -77,16 +93,16 @@
   "known_uncovered_families": [
     {
       "family": "MODE_BUFF",
-      "next_action": "Run a family-scoped pinned discovery; do not infer absence.",
-      "status": "NOT_DISCOVERED_IN_CURRENT_TRUNCATED_TREE"
+      "next_action": "Resolve source records to exact static/runtime ownership without filename inference.",
+      "status": "SOURCE_CANDIDATES_CAPTURED_STATIC_AND_SEMANTIC_JOIN_UNRESOLVED"
     },
     {
       "family": "ENVIRONMENT_BUFF",
-      "next_action": "Run a family-scoped pinned discovery; do not infer absence.",
-      "status": "NOT_DISCOVERED_IN_CURRENT_TRUNCATED_TREE"
+      "next_action": "Resolve source records to exact static/runtime ownership without filename inference.",
+      "status": "SOURCE_CANDIDATES_CAPTURED_STATIC_AND_SEMANTIC_JOIN_UNRESOLVED"
     }
   ],
-  "manifest_sha256": "f7721b789115a8ea30bcda5f2c0d6c8494f1d77cc393ac9a63d21c720a147279",
+  "manifest_sha256": "a11c42bb63a6c0db2ab23c00339c19981963735d143cc94557740197d137ca11",
   "normalizer_paths": [
     {
       "capture_status": "CACHED_VERIFIED",
@@ -2910,9 +2926,23 @@
     },
     {
       "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ad1b2c6fcbc89ac217afa717fa4b01c382304c22",
+      "discovery_size": 2014,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json",
+      "raw_sha256": "438b471eca23e4969a75d5683301c28674ac497a7b9325132c7cacbf869bc8d1",
+      "raw_size": 2014,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "f137686f062df8ae4bcb601e25b476b5814bf9e5",
       "discovery_size": 204921,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
       "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da",
       "raw_size": 204921,
@@ -2922,7 +2952,11 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "784c75103bcbddf17f626d52fec5a4965a2faec5",
       "discovery_size": 69654,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_Raid.json",
       "raw_sha256": "308502ed20d6952c498d14c4797763bc1af4304698b584e77af5c9249171966d",
       "raw_size": 69654,
@@ -2932,10 +2966,104 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "b6e191a2123a4543988cbcd4b28b266baaf8da86",
       "discovery_size": 198328,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_RogueV2.json",
       "raw_sha256": "d90413498cdf34883581c71066619e235a0bf8569f22389113a8bdfb3d14fe3f",
       "raw_size": 198328,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "dd09d51c85e4b62400c83c8028626cabaa527dbc",
+      "discovery_size": 157545,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json",
+      "raw_sha256": "abb24e57c91751f49d699ad8305c5f454102ef99e9da8aaee1054cd262c58a43",
+      "raw_size": 157545,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "d4b7642e4c2ecd42d2eb01959590cd5908fa5111",
+      "discovery_size": 31063,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeCommon_Ability.json",
+      "raw_sha256": "2aa521ef219e957d239077516a108631210319e4cf200eb1e0e7060e4e23e5d8",
+      "raw_size": 31063,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9d1d1fac87144c4aa66982e268b953e18092fa60",
+      "discovery_size": 7214,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeMonster_Ability.json",
+      "raw_sha256": "9ee5e2b0a2ae276fd9c8d561533462feca382d6fa8466a0a11432038dd9904d9",
+      "raw_size": 7214,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "07bcd02fc1e16dae729f3d00127d822a8677987b",
+      "discovery_size": 12235,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazePlaneEnvi_Ability.json",
+      "raw_sha256": "d5a7ef9460707ffa46c920b42e5895d9e5955756519a67fb869a3b8e50350fc4",
+      "raw_size": 12235,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "77dff35337e96acff6b01b32716276bda7f76873",
+      "discovery_size": 2348,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeProp_Ability.json",
+      "raw_sha256": "9ecc5b51b4f04c73af21ec6c00c13b46cb1f4020384a365fbb854a809cf3c9f0",
+      "raw_size": 2348,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "51c4f21aed551f1f63c0ebb7854f46b98d0c90b8",
+      "discovery_size": 31844,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json",
+      "raw_sha256": "9de01f771226426856e665210b13002303eba61a2bca377047a1bb5307c2534b",
+      "raw_size": 31844,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "1a47e9ee6a3ba62c57310b983c80b319f460b705",
+      "discovery_size": 9145,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json",
+      "raw_sha256": "802405d9d0d95d4afa03844d5308a9f5baf6d2056fa2914636443fe7b66151f7",
+      "raw_size": 9145,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "a039375b6dd2f316bea711a7d530ac01a5a22b33",
+      "discovery_size": 69715,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json",
+      "raw_sha256": "516daccb5290f42637943af5be07e1450b6f9f9feeeada99cffe2f900884e48f",
+      "raw_size": 69715,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "4ae4e59227292740c11a21f5d31f59c0bc962c25",
+      "discovery_size": 114114,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json",
+      "raw_sha256": "93a4856c30e6a27d1a2e2e2fd1ca8a8aa50518777cfdd5a55bbc3197dde74b09",
+      "raw_size": 114114,
       "version_relation": "CLOSE_4.4.0_TO_4.4.54"
     },
     {
@@ -6670,9 +6798,53 @@
     },
     {
       "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ce968d054a3376ccd0d34331bede6b217942a7d0",
+      "discovery_size": 93524,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Common.json",
+      "raw_sha256": "2c1db781c9eda0ee7d596efc998120bc1ded4cc7058b1f8f13a4d9236a3de7ae",
+      "raw_size": 93524,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9709d2e55c0520c40093218b8ee0017db75234d4",
+      "discovery_size": 2035,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json",
+      "raw_sha256": "e758b3cb9bcf8bad6b9ee70371c0e2da9449bc06965d829d0215d0b0daa8b910",
+      "raw_size": 2035,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94aefb1f857ab465a61895cd1fa452d1275c8f52",
+      "discovery_size": 61858,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Item.json",
+      "raw_sha256": "7c9386757619a52aecb8ac8d91b6874853209e5ffd6cd4e48f69ecd090405321",
+      "raw_size": 61858,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f7ffb50a97ac4472c803fca759685dc45984c241",
+      "discovery_size": 561,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Item_Special.json",
+      "raw_sha256": "ba850e88dd261f803164651ae69bd196e0c505722fea1752dc835ed7c70bc08d",
+      "raw_size": 561,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "e372068e568d0782a747c5797865ba66d8e51fe7",
       "discovery_size": 10553,
-      "family": "STAGE_ADVENTURE_MODIFIER",
+      "families": [
+        "ADVENTURE_MODIFIER",
+        "STAGE_ADVENTURE_MODIFIER"
+      ],
+      "family": "ADVENTURE_MODIFIER",
       "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json",
       "raw_sha256": "cbcfcbd359f58588fd3478186415742815e49957069d35c68e1fead68ca41625",
       "raw_size": 10553,
@@ -6682,10 +6854,234 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "745ffe07ebdc615b5fb3664864092cb4368be13d",
       "discovery_size": 8437,
-      "family": "STAGE_ADVENTURE_MODIFIER",
+      "families": [
+        "ADVENTURE_MODIFIER",
+        "STAGE_ADVENTURE_MODIFIER"
+      ],
+      "family": "ADVENTURE_MODIFIER",
       "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
       "raw_sha256": "7af004859bbacb56f85463ddc4446f3bbb89de3d59f3d983bf913b48a5136aab",
       "raw_size": 8437,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94734786ecaee9d349f17673b109087fda665974",
+      "discovery_size": 15071,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_NPCMonster.json",
+      "raw_sha256": "3f53d3e33e631296abc91cdb0fbb655c7e45aea7902ff9df558e694535ac21cb",
+      "raw_size": 15071,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f1e580d9883a156d707ee385c113bbffd2034197",
+      "discovery_size": 1749,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Player.json",
+      "raw_sha256": "9698c83a7dfc52fb238ab13cbc25666b470059393d61ff607fea21da2f0caa5a",
+      "raw_size": 1749,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94cb7aeb9087aacccb7a14bdb7f40fcd0146fd1d",
+      "discovery_size": 9164,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Raid.json",
+      "raw_sha256": "7c0d03cc9e4479397d6d14afb97037d760b4cf48c72e49b232087c9c84ec97b1",
+      "raw_size": 9164,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9906c7ca04004dd2d26fb6ce29c6072084402e6f",
+      "discovery_size": 35121,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue.json",
+      "raw_sha256": "83d23e1d71a3f89ebe14e7b07d01e728a02ef6e08c01abc2a74786ba30065f8d",
+      "raw_size": 35121,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "98062e8726c21d534431557db62b15054ab3a6f0",
+      "discovery_size": 10696,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_DLC1.json",
+      "raw_sha256": "1fc848331d9e23803c01e8fe21c44a9d1c7065e881a56d77aabd7f9a4f6fcee5",
+      "raw_size": 10696,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ec567e239e452f6567b832a4887576394d18a228",
+      "discovery_size": 1320,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Endless.json",
+      "raw_sha256": "dc61f928f46f05730bad57b91d416c0750f0ebe56d32ed36d8d678138223f935",
+      "raw_size": 1320,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "c702270cb0eb2608b1f0310a23edebd4cda46a66",
+      "discovery_size": 1537,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Erudition.json",
+      "raw_sha256": "f84bf3ec5c6988e67ff561dcca90b549498aed48d04fb1266adb5bff13502ff6",
+      "raw_size": 1537,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "0349a19388d38b21a1750c5d9f1e08887abf159a",
+      "discovery_size": 11238,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Nous.json",
+      "raw_sha256": "f44b89e520a43bd179b59355818c6271078c0b5a142cfd0342da5d66eedca405",
+      "raw_size": 11238,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "e6d65cfd52d7381527c4380ed9834e09e72125f0",
+      "discovery_size": 5987,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_RogueMagic.json",
+      "raw_sha256": "e9ce935820593cebd0a932ff26d9626f578be4bb01ca4430afd1fc54fb6d5b40",
+      "raw_size": 5987,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "400d88fa5364c4f8253572ec9a9ff3af4fbe1cd5",
+      "discovery_size": 28474,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S1.json",
+      "raw_sha256": "7c719c9ed6e067b7027d5416b12a53a119b7bfbe42990ec37093357202695cc8",
+      "raw_size": 28474,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f258209bd8e3198b6be0503f48a0ce9cf7e83fd5",
+      "discovery_size": 2222,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S2.json",
+      "raw_sha256": "6706c5559c5c789081d3c377d59332d70fae768eab4048edd9ef832024f529f5",
+      "raw_size": 2222,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "c8708f1869ade83a8e21beffea340cc1a44f5c10",
+      "discovery_size": 2485,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S3.json",
+      "raw_sha256": "1e8fbeeb0eea677f4227f76b68c92cf4b220857c5f8f0ddbf82d33fa8646d604",
+      "raw_size": 2485,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "20737bc06ac70f9f2e2d90703e8dc245f00e6571",
+      "discovery_size": 27404,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S4.json",
+      "raw_sha256": "a0afcc0343278c3c959ca0b8dd51958aa0473f8dd9c7d07156bfa4830511134a",
+      "raw_size": 27404,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "2b3286f8431f86c1a94132a9007eec7722e2a10d",
+      "discovery_size": 16824,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S5.json",
+      "raw_sha256": "f91292c1f33631e442e8d945b15f8ee3a0ee47cc70115c5e04ba5a109fd94316",
+      "raw_size": 16824,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "2f7995e218aadb09d0b89af92e2718e5990ddd41",
+      "discovery_size": 1526,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S6.json",
+      "raw_sha256": "6380b9c605786567b1ef08509404451b2b79391d3c9c7485bf61ae6ac5d79cdc",
+      "raw_size": 1526,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "3c56773963ce4876389b872e3566d49b9b5f9868",
+      "discovery_size": 26396,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S7.json",
+      "raw_sha256": "3509e3b2c8810b4fd6131a07d1d93f76e95d5ef5b20a05a95c84667e623bfeb6",
+      "raw_size": 26396,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "bef0b002851c3bcfa388a41efda3860c85b0feee",
+      "discovery_size": 60,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Test.json",
+      "raw_sha256": "2f74d4d8259ac7a29307ef6c4b2ed0fcadd4f7e89e96f6d87b161f9bae1bb51f",
+      "raw_size": 60,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ff82012d4e08444d20fa384ac106d0c95660d54d",
+      "discovery_size": 4930,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Tourn1.json",
+      "raw_sha256": "45d7425ab38a4ac73ed3386223f339fee7971b23da176aff3d64d4e1bbce2426",
+      "raw_size": 4930,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "775b2ae181b8d5a4c9144f8fbd49ce5fce2b2235",
+      "discovery_size": 18033,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rubbish.json",
+      "raw_sha256": "b76a96cd1e751d2a86e9d635970c1d9c27bcc00cb6f9045d1b90c7a8ce449800",
+      "raw_size": 18033,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "e3c52a666ac7fdf126273c49dba4cbe0f171c2ca",
+      "discovery_size": 2635,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_ShopBuff.json",
+      "raw_sha256": "a5f8320a881d01a90529d8630f1c7daa6f78e0c592a9127f295de55e515bcdc1",
+      "raw_size": 2635,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ef772f74d7d4cd1fb63de39ddd12c4e7534f11f4",
+      "discovery_size": 460,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Shower.json",
+      "raw_sha256": "f4acf74dc39b68dcea2ab9e98d51f891187cc7fc4a4c8d5f2502550f1470aed6",
+      "raw_size": 460,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ebb6669c429b80fc0d2c8dad22ca819a5644d343",
+      "discovery_size": 575,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_SystemUse.json",
+      "raw_sha256": "3b7cd8823807c6b4195db0caf3c17ed806006a29eda021db160956f354c0ea0f",
+      "raw_size": 575,
       "version_relation": "CLOSE_4.4.0_TO_4.4.54"
     },
     {
@@ -9682,9 +10078,23 @@
     },
     {
       "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ad1b2c6fcbc89ac217afa717fa4b01c382304c22",
+      "discovery_size": 2014,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json",
+      "raw_sha256": "438b471eca23e4969a75d5683301c28674ac497a7b9325132c7cacbf869bc8d1",
+      "raw_size": 2014,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "f137686f062df8ae4bcb601e25b476b5814bf9e5",
       "discovery_size": 204921,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
       "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da",
       "raw_size": 204921,
@@ -9694,7 +10104,11 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "784c75103bcbddf17f626d52fec5a4965a2faec5",
       "discovery_size": 69654,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_Raid.json",
       "raw_sha256": "308502ed20d6952c498d14c4797763bc1af4304698b584e77af5c9249171966d",
       "raw_size": 69654,
@@ -9704,10 +10118,104 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "b6e191a2123a4543988cbcd4b28b266baaf8da86",
       "discovery_size": 198328,
-      "family": "STAGE_BUFF_ABILITY",
+      "families": [
+        "LEVEL_ABILITY",
+        "STAGE_BUFF_ABILITY"
+      ],
+      "family": "LEVEL_ABILITY",
       "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_RogueV2.json",
       "raw_sha256": "d90413498cdf34883581c71066619e235a0bf8569f22389113a8bdfb3d14fe3f",
       "raw_size": 198328,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "dd09d51c85e4b62400c83c8028626cabaa527dbc",
+      "discovery_size": 157545,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json",
+      "raw_sha256": "abb24e57c91751f49d699ad8305c5f454102ef99e9da8aaee1054cd262c58a43",
+      "raw_size": 157545,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "d4b7642e4c2ecd42d2eb01959590cd5908fa5111",
+      "discovery_size": 31063,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeCommon_Ability.json",
+      "raw_sha256": "2aa521ef219e957d239077516a108631210319e4cf200eb1e0e7060e4e23e5d8",
+      "raw_size": 31063,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9d1d1fac87144c4aa66982e268b953e18092fa60",
+      "discovery_size": 7214,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeMonster_Ability.json",
+      "raw_sha256": "9ee5e2b0a2ae276fd9c8d561533462feca382d6fa8466a0a11432038dd9904d9",
+      "raw_size": 7214,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "07bcd02fc1e16dae729f3d00127d822a8677987b",
+      "discovery_size": 12235,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazePlaneEnvi_Ability.json",
+      "raw_sha256": "d5a7ef9460707ffa46c920b42e5895d9e5955756519a67fb869a3b8e50350fc4",
+      "raw_size": 12235,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "77dff35337e96acff6b01b32716276bda7f76873",
+      "discovery_size": 2348,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeProp_Ability.json",
+      "raw_sha256": "9ecc5b51b4f04c73af21ec6c00c13b46cb1f4020384a365fbb854a809cf3c9f0",
+      "raw_size": 2348,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "51c4f21aed551f1f63c0ebb7854f46b98d0c90b8",
+      "discovery_size": 31844,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json",
+      "raw_sha256": "9de01f771226426856e665210b13002303eba61a2bca377047a1bb5307c2534b",
+      "raw_size": 31844,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "1a47e9ee6a3ba62c57310b983c80b319f460b705",
+      "discovery_size": 9145,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json",
+      "raw_sha256": "802405d9d0d95d4afa03844d5308a9f5baf6d2056fa2914636443fe7b66151f7",
+      "raw_size": 9145,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "a039375b6dd2f316bea711a7d530ac01a5a22b33",
+      "discovery_size": 69715,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json",
+      "raw_sha256": "516daccb5290f42637943af5be07e1450b6f9f9feeeada99cffe2f900884e48f",
+      "raw_size": 69715,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "4ae4e59227292740c11a21f5d31f59c0bc962c25",
+      "discovery_size": 114114,
+      "family": "LEVEL_ABILITY",
+      "path": "Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json",
+      "raw_sha256": "93a4856c30e6a27d1a2e2e2fd1ca8a8aa50518777cfdd5a55bbc3197dde74b09",
+      "raw_size": 114114,
       "version_relation": "CLOSE_4.4.0_TO_4.4.54"
     },
     {
@@ -13442,9 +13950,53 @@
     },
     {
       "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ce968d054a3376ccd0d34331bede6b217942a7d0",
+      "discovery_size": 93524,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Common.json",
+      "raw_sha256": "2c1db781c9eda0ee7d596efc998120bc1ded4cc7058b1f8f13a4d9236a3de7ae",
+      "raw_size": 93524,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9709d2e55c0520c40093218b8ee0017db75234d4",
+      "discovery_size": 2035,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json",
+      "raw_sha256": "e758b3cb9bcf8bad6b9ee70371c0e2da9449bc06965d829d0215d0b0daa8b910",
+      "raw_size": 2035,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94aefb1f857ab465a61895cd1fa452d1275c8f52",
+      "discovery_size": 61858,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Item.json",
+      "raw_sha256": "7c9386757619a52aecb8ac8d91b6874853209e5ffd6cd4e48f69ecd090405321",
+      "raw_size": 61858,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f7ffb50a97ac4472c803fca759685dc45984c241",
+      "discovery_size": 561,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Item_Special.json",
+      "raw_sha256": "ba850e88dd261f803164651ae69bd196e0c505722fea1752dc835ed7c70bc08d",
+      "raw_size": 561,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "e372068e568d0782a747c5797865ba66d8e51fe7",
       "discovery_size": 10553,
-      "family": "STAGE_ADVENTURE_MODIFIER",
+      "families": [
+        "ADVENTURE_MODIFIER",
+        "STAGE_ADVENTURE_MODIFIER"
+      ],
+      "family": "ADVENTURE_MODIFIER",
       "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json",
       "raw_sha256": "cbcfcbd359f58588fd3478186415742815e49957069d35c68e1fead68ca41625",
       "raw_size": 10553,
@@ -13454,10 +14006,234 @@
       "capture_status": "CACHED_VERIFIED",
       "discovery_git_blob_sha": "745ffe07ebdc615b5fb3664864092cb4368be13d",
       "discovery_size": 8437,
-      "family": "STAGE_ADVENTURE_MODIFIER",
+      "families": [
+        "ADVENTURE_MODIFIER",
+        "STAGE_ADVENTURE_MODIFIER"
+      ],
+      "family": "ADVENTURE_MODIFIER",
       "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
       "raw_sha256": "7af004859bbacb56f85463ddc4446f3bbb89de3d59f3d983bf913b48a5136aab",
       "raw_size": 8437,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94734786ecaee9d349f17673b109087fda665974",
+      "discovery_size": 15071,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_NPCMonster.json",
+      "raw_sha256": "3f53d3e33e631296abc91cdb0fbb655c7e45aea7902ff9df558e694535ac21cb",
+      "raw_size": 15071,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f1e580d9883a156d707ee385c113bbffd2034197",
+      "discovery_size": 1749,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Player.json",
+      "raw_sha256": "9698c83a7dfc52fb238ab13cbc25666b470059393d61ff607fea21da2f0caa5a",
+      "raw_size": 1749,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "94cb7aeb9087aacccb7a14bdb7f40fcd0146fd1d",
+      "discovery_size": 9164,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Raid.json",
+      "raw_sha256": "7c0d03cc9e4479397d6d14afb97037d760b4cf48c72e49b232087c9c84ec97b1",
+      "raw_size": 9164,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "9906c7ca04004dd2d26fb6ce29c6072084402e6f",
+      "discovery_size": 35121,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue.json",
+      "raw_sha256": "83d23e1d71a3f89ebe14e7b07d01e728a02ef6e08c01abc2a74786ba30065f8d",
+      "raw_size": 35121,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "98062e8726c21d534431557db62b15054ab3a6f0",
+      "discovery_size": 10696,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_DLC1.json",
+      "raw_sha256": "1fc848331d9e23803c01e8fe21c44a9d1c7065e881a56d77aabd7f9a4f6fcee5",
+      "raw_size": 10696,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ec567e239e452f6567b832a4887576394d18a228",
+      "discovery_size": 1320,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Endless.json",
+      "raw_sha256": "dc61f928f46f05730bad57b91d416c0750f0ebe56d32ed36d8d678138223f935",
+      "raw_size": 1320,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "c702270cb0eb2608b1f0310a23edebd4cda46a66",
+      "discovery_size": 1537,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Erudition.json",
+      "raw_sha256": "f84bf3ec5c6988e67ff561dcca90b549498aed48d04fb1266adb5bff13502ff6",
+      "raw_size": 1537,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "0349a19388d38b21a1750c5d9f1e08887abf159a",
+      "discovery_size": 11238,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Nous.json",
+      "raw_sha256": "f44b89e520a43bd179b59355818c6271078c0b5a142cfd0342da5d66eedca405",
+      "raw_size": 11238,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "e6d65cfd52d7381527c4380ed9834e09e72125f0",
+      "discovery_size": 5987,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_RogueMagic.json",
+      "raw_sha256": "e9ce935820593cebd0a932ff26d9626f578be4bb01ca4430afd1fc54fb6d5b40",
+      "raw_size": 5987,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "400d88fa5364c4f8253572ec9a9ff3af4fbe1cd5",
+      "discovery_size": 28474,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S1.json",
+      "raw_sha256": "7c719c9ed6e067b7027d5416b12a53a119b7bfbe42990ec37093357202695cc8",
+      "raw_size": 28474,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "f258209bd8e3198b6be0503f48a0ce9cf7e83fd5",
+      "discovery_size": 2222,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S2.json",
+      "raw_sha256": "6706c5559c5c789081d3c377d59332d70fae768eab4048edd9ef832024f529f5",
+      "raw_size": 2222,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "c8708f1869ade83a8e21beffea340cc1a44f5c10",
+      "discovery_size": 2485,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S3.json",
+      "raw_sha256": "1e8fbeeb0eea677f4227f76b68c92cf4b220857c5f8f0ddbf82d33fa8646d604",
+      "raw_size": 2485,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "20737bc06ac70f9f2e2d90703e8dc245f00e6571",
+      "discovery_size": 27404,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S4.json",
+      "raw_sha256": "a0afcc0343278c3c959ca0b8dd51958aa0473f8dd9c7d07156bfa4830511134a",
+      "raw_size": 27404,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "2b3286f8431f86c1a94132a9007eec7722e2a10d",
+      "discovery_size": 16824,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S5.json",
+      "raw_sha256": "f91292c1f33631e442e8d945b15f8ee3a0ee47cc70115c5e04ba5a109fd94316",
+      "raw_size": 16824,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "2f7995e218aadb09d0b89af92e2718e5990ddd41",
+      "discovery_size": 1526,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S6.json",
+      "raw_sha256": "6380b9c605786567b1ef08509404451b2b79391d3c9c7485bf61ae6ac5d79cdc",
+      "raw_size": 1526,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "3c56773963ce4876389b872e3566d49b9b5f9868",
+      "discovery_size": 26396,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_S7.json",
+      "raw_sha256": "3509e3b2c8810b4fd6131a07d1d93f76e95d5ef5b20a05a95c84667e623bfeb6",
+      "raw_size": 26396,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "bef0b002851c3bcfa388a41efda3860c85b0feee",
+      "discovery_size": 60,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Test.json",
+      "raw_sha256": "2f74d4d8259ac7a29307ef6c4b2ed0fcadd4f7e89e96f6d87b161f9bae1bb51f",
+      "raw_size": 60,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ff82012d4e08444d20fa384ac106d0c95660d54d",
+      "discovery_size": 4930,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rogue_Tourn1.json",
+      "raw_sha256": "45d7425ab38a4ac73ed3386223f339fee7971b23da176aff3d64d4e1bbce2426",
+      "raw_size": 4930,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "775b2ae181b8d5a4c9144f8fbd49ce5fce2b2235",
+      "discovery_size": 18033,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Rubbish.json",
+      "raw_sha256": "b76a96cd1e751d2a86e9d635970c1d9c27bcc00cb6f9045d1b90c7a8ce449800",
+      "raw_size": 18033,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "e3c52a666ac7fdf126273c49dba4cbe0f171c2ca",
+      "discovery_size": 2635,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_ShopBuff.json",
+      "raw_sha256": "a5f8320a881d01a90529d8630f1c7daa6f78e0c592a9127f295de55e515bcdc1",
+      "raw_size": 2635,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ef772f74d7d4cd1fb63de39ddd12c4e7534f11f4",
+      "discovery_size": 460,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_Shower.json",
+      "raw_sha256": "f4acf74dc39b68dcea2ab9e98d51f891187cc7fc4a4c8d5f2502550f1470aed6",
+      "raw_size": 460,
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    {
+      "capture_status": "CACHED_VERIFIED",
+      "discovery_git_blob_sha": "ebb6669c429b80fc0d2c8dad22ca819a5644d343",
+      "discovery_size": 575,
+      "family": "ADVENTURE_MODIFIER",
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_SystemUse.json",
+      "raw_sha256": "3b7cd8823807c6b4195db0caf3c17ed806006a29eda021db160956f354c0ea0f",
+      "raw_size": 575,
       "version_relation": "CLOSE_4.4.0_TO_4.4.54"
     },
     {
@@ -15048,8 +15824,10 @@
       "/Camera/"
     ],
     "normalizer_input_families": [
+      "ADVENTURE_MODIFIER",
       "AVATAR_ABILITY",
       "GLOBAL_MODIFIER",
+      "LEVEL_ABILITY",
       "LIGHTCONE_ABILITY",
       "MONSTER_ABILITY",
       "RELIC_SET_ABILITY",
@@ -15064,6 +15842,8 @@
     "discovery_sha256": "4ea650b83a65d48d2a5d231cd7e952dd80c5379318609a133d03c4b8beac4679",
     "equipment_directory_discovery_path": ".external_refs/TurnBasedGameData/full_content_equipment_directory_001.json",
     "equipment_directory_discovery_sha256": "d4124440b26a8f1869c81cbcd7ce3d4afbb55fbb06856e19193b6ed0667342e9",
+    "expansion_discovery_path": ".external_refs/TurnBasedGameData/full_content_family_discovery_001.json",
+    "expansion_discovery_sha256": "97ad2018865b525fe4583948732d581489c724d2c600dfa295fa949bb6d1de4d",
     "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
     "selected_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
     "source": "TurnBasedGameData",

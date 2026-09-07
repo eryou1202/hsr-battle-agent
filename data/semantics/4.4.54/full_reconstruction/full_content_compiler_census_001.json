@@ -1,7 +1,7 @@
 {
   "counting_rule": "The denominator is behavior-bearing Canonical BehaviorRecords from the currently captured pinned source families. It is not the complete 4.4.54 game behavior denominator, and static entity counts are reported separately only as mapping coverage.",
   "coverage": {
-    "behavior_bearing": 10189,
+    "behavior_bearing": 10685,
     "by_owner_kind": {
       "Avatar": {
         "behavior_bearing": 2359,
@@ -10,6 +10,14 @@
         "golden_tested": 0,
         "static_definition_only": 69,
         "structural_compiled": 302
+      },
+      "ExternalBehavior": {
+        "behavior_bearing": 93,
+        "captured": 94,
+        "executable_reference": 0,
+        "golden_tested": 0,
+        "static_definition_only": 1,
+        "structural_compiled": 70
       },
       "LightCone": {
         "behavior_bearing": 187,
@@ -20,12 +28,12 @@
         "structural_compiled": 147
       },
       "Modifier": {
-        "behavior_bearing": 3658,
-        "captured": 4782,
-        "executable_reference": 1315,
+        "behavior_bearing": 4061,
+        "captured": 7172,
+        "executable_reference": 1349,
         "golden_tested": 0,
-        "static_definition_only": 1124,
-        "structural_compiled": 859
+        "static_definition_only": 3111,
+        "structural_compiled": 921
       },
       "Monster": {
         "behavior_bearing": 3809,
@@ -52,30 +60,30 @@
         "structural_compiled": 111
       }
     },
-    "canonicalized": 11558,
-    "captured": 11558,
-    "executable": 1494,
+    "canonicalized": 14042,
+    "captured": 14042,
+    "executable": 1528,
     "failure_reasons": {
-      "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 28550
+      "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 29086
     },
     "golden_tested": 0,
     "operation_level": {
       "compiled_disposition": {
-        "BOUND_PRIMITIVE": 4421,
-        "BOUND_UNEXECUTABLE_PACKET": 24695,
-        "EXECUTABLE_REFERENCE": 58800,
-        "HEADLESS_PRESENTATION_OMITTED": 23268
+        "BOUND_PRIMITIVE": 4430,
+        "BOUND_UNEXECUTABLE_PACKET": 25078,
+        "EXECUTABLE_REFERENCE": 59595,
+        "HEADLESS_PRESENTATION_OMITTED": 23378
       },
-      "executable_bound": 58800,
-      "executable_entrypoints": 4627,
+      "executable_bound": 59595,
+      "executable_entrypoints": 4738,
       "source_semantic_status": {
-        "MODELLED": 4768,
-        "PRESENTATION": 23268,
-        "REQUIRES_PACKET": 83148
+        "MODELLED": 4777,
+        "PRESENTATION": 23378,
+        "REQUIRES_PACKET": 84326
       }
     },
-    "static_definition_only": 1369,
-    "structural_compiled": 2447
+    "static_definition_only": 3357,
+    "structural_compiled": 2579
   },
   "failure_clusters": [
     {
@@ -524,7 +532,7 @@
     },
     {
       "blocking_dependency": "EXECUTABLE_REFERENCE_RETARGET_TARGET_UNSUPPORTED",
-      "operation_count": 479,
+      "operation_count": 480,
       "operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:GlobalModifiers:MAvatar_Advanced_Huohuo_Passive_HealHP:MODIFIER_CALLBACK:MAvatar_Advanced_Huohuo_Passive_HealHP._CallbackList[0]:OnPhase1:6",
         "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:GlobalModifiers:MAvatar_Advanced_Huohuo_Passive_HealHP:MODIFIER_CALLBACK:MAvatar_Advanced_Huohuo_Passive_HealHP._CallbackList[0]:OnPhase1:7",
@@ -557,7 +565,7 @@
       ],
       "source_type": "RPG.GameCore.Retarget",
       "static_family": "GLOBAL_OR_UNMAPPED",
-      "unlockable_record_count": 258
+      "unlockable_record_count": 259
     },
     {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
@@ -1079,7 +1087,7 @@
     },
     {
       "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED",
-      "operation_count": 167,
+      "operation_count": 168,
       "operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:1",
         "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:BattleEventAbility_900100:MODIFIER_CALLBACK:Modifier_BattleEventAbility_900100._CallbackList[0]:OnPhase1:4",
@@ -1261,6 +1269,43 @@
       "source_type": "RPG.GameCore.SetDynamicValueByProperty",
       "static_family": "Avatar",
       "unlockable_record_count": 101
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED",
+      "operation_count": 150,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json:StageAbility_Maze_Geppard:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301001:MODIFIER_CALLBACK:StageAbility_301001_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301001:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301002:MODIFIER_CALLBACK:StageAbility_301002_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301002:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301003:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301004:MODIFIER_CALLBACK:StageAbility_301004_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301004:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301005:MODIFIER_CALLBACK:StageAbility_301005_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301005:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301006:ONADD:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301007:ONADD:0"
+      ],
+      "operation_kind": "ADD_MODIFIER",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json:StageAbility_Maze_Geppard",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301001",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301002",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301003",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301004",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301005",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301006",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301007",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301008",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001011",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001012",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001021"
+      ],
+      "source_type": "RPG.GameCore.AddModifier",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 93
     },
     {
       "blocking_dependency": "EXECUTABLE_REFERENCE_WEAKNESS_PAYLOAD_UNSUPPORTED",
@@ -2111,6 +2156,43 @@
       ],
       "source_type": "RPG.GameCore.SetModifierValue",
       "static_family": "Avatar",
+      "unlockable_record_count": 46
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 48,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_400004:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_400009:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401003:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401005:ONCREATE:1",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401012:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401026:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401030:ONCREATE:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401030:ONCREATE:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401036:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402001:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402016:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402024:ONCREATE:0"
+      ],
+      "operation_kind": "MODIFY_TEAM_HP",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_400004",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_400009",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401003",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401005",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401012",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401026",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401030",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_401036",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402001",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402016",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402024",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Item.json:ADV_ItemAbility_402027"
+      ],
+      "source_type": "RPG.GameCore.AdventureModifyTeamPlayerHP",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 46
     },
     {
@@ -3520,6 +3602,43 @@
       "unlockable_record_count": 17
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
+      "operation_count": 18,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json:ADV_StageAbility_3990801:ONAFTERBATTLE:1",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json:ADV_StageAbility_3990803:ONSTACK:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2010011:ONAFTERBATTLE:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991101:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991111:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991121:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612020:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612120:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612220:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612320:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612420:ONAFTERBATTLE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612520:ONAFTERBATTLE:0"
+      ],
+      "operation_kind": "SET_DYNAMIC_VALUE",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json:ADV_StageAbility_3990801",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_DesignerBackup_V0.80.json:ADV_StageAbility_3990803",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2010011",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991101",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991111",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_3991121",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612020",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612120",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612220",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612320",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612420",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_612520"
+      ],
+      "source_type": "RPG.GameCore.SetAdventureDynamicValue",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 17
+    },
+    {
       "blocking_dependency": "EXECUTABLE_REFERENCE_INSERT_ACTION_TYPE_UNSUPPORTED",
       "operation_count": 34,
       "operation_ids": [
@@ -3813,6 +3932,43 @@
       ],
       "source_type": "RPG.GameCore.LoopExecuteTaskListWithInterval",
       "static_family": "Monster",
+      "unlockable_record_count": 13
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_RETARGET_TARGET_UNSUPPORTED",
+      "operation_count": 22,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_022_Modifier._CallbackList[0]:OnEnterBattle:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029:MODIFIER_CALLBACK:StageAbility_3999029_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030:MODIFIER_CALLBACK:StageAbility_3999030_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031:MODIFIER_CALLBACK:StageAbility_3999031_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032:MODIFIER_CALLBACK:StageAbility_3999032_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033:MODIFIER_CALLBACK:StageAbility_3999033_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034:MODIFIER_CALLBACK:StageAbility_3999034_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035:MODIFIER_CALLBACK:StageAbility_3999035_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge101:MODIFIER_CALLBACK:StageAbility_RogueChallengeMode_Challenge101_Modifier._CallbackList[0]:OnEnterBattle:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge101:MODIFIER_CALLBACK:StageAbility_RogueChallengeMode_Challenge101_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge101:MODIFIER_CALLBACK:StageAbility_RogueChallengeMode_Challenge101_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge101:MODIFIER_CALLBACK:StageAbility_RogueChallengeMode_Challenge101_Modifier._CallbackList[1]:OnLeaveBattle:0"
+      ],
+      "operation_kind": "RETARGET",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge101",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge302",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge303",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge304"
+      ],
+      "source_type": "RPG.GameCore.Retarget",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 13
     },
     {
@@ -4149,6 +4305,42 @@
       "unlockable_record_count": 12
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_PREDICATE_TYPE_MISSING",
+      "operation_count": 25,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_DisAdventage:ONBEFOREBATTLE:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Imaginary:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Imaginary:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Imaginary:ONBEFOREBATTLE:0/SuccessTaskList:0/Predicate:0/PredicateList:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Physical:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Physical:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/Predicate:0"
+      ],
+      "operation_kind": "PREDICATE",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_DisAdventage",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Imaginary",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Physical",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Quantum",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Thunder",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Wind",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Raid.json:ADV_StageAbility_44201",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Raid.json:ADV_StageAbility_44201_RaidTarget",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rubbish.json:ADV_Modifier_Sneak_Disadvantage"
+      ],
+      "source_type": "RPG.GameCore.AdventureByIsBattlePostureType",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 11
+    },
+    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 16,
       "operation_ids": [
@@ -4324,6 +4516,41 @@
       ],
       "source_type": "RPG.GameCore.AddModifier",
       "static_family": "Monster",
+      "unlockable_record_count": 10
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING",
+      "operation_count": 16,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_BombRobotATKHit:ONCREATE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_BombRobotATKHit:ONCREATE:1",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_HitToDie:ONBEATTACK:1",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_LateDead:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_MiniHero_HitToDie:ONBEATTACK:1",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_SpeedUp:ONSTACK:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_SpeedUp:ONTEAMLEADERCHANGE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MiniHero_LateDead:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONSTACK:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONTEAMLEADERCHANGE:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_631026:ONSTACK:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_631026:ONTEAMLEADERCHANGE:0"
+      ],
+      "operation_kind": "ADD_MODIFIER",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_BombRobotATKHit",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_HitToDie",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_LateDead",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_MiniHero_HitToDie",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_SpeedUp",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MiniHero_LateDead",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_631026",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S1.json:ADV_StageAbility_633106",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S7.json:ADV_StageAbility_633519"
+      ],
+      "source_type": "RPG.GameCore.AddAdventureModifier",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 10
     },
     {
@@ -4698,6 +4925,39 @@
       "unlockable_record_count": 8
     },
     {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 14,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Fire:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Fire_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Ice:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Ice_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.0.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.1.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.2.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.3.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.4.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.5.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0/CaseTaskList.6.TaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Imaginary:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Imaginary_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Physical:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Physical_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Quantum:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Quantum_Modifier._CallbackList[0]:OnEnterBattle:0"
+      ],
+      "operation_kind": "INCLUDE_TASK_TEMPLATE",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Fire",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Ice",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Imaginary",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Physical",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Quantum",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Thunder",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Wind"
+      ],
+      "source_type": "RPG.GameCore.IncludeTaskListTemplate",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 8
+    },
+    {
       "blocking_dependency": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
       "operation_count": 12,
       "operation_ids": [
@@ -4822,6 +5082,38 @@
       "unlockable_record_count": 8
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_PREDICATE_TYPE_MISSING",
+      "operation_count": 42,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire:ONBEFOREBATTLE:0/SuccessTaskList:0/Predicate:0/PredicateList:2",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:0/SuccessTaskList:0/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/FailedTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/FailedTaskList:1/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/FailedTaskList:1/SuccessTaskList:0/Predicate:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice:ONBEFOREBATTLE:0/SuccessTaskList:0/Predicate:0/PredicateList:2"
+      ],
+      "operation_kind": "PREDICATE",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Fire",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Ice",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Imaginary",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Physical",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Quantum",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Thunder",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_StageAbility_MazeCommon_ListenEnterBattle_Wind"
+      ],
+      "source_type": "RPG.GameCore.AdventureByPlayerCurrentSkillType",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 7
+    },
+    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 15,
       "operation_ids": [
@@ -4851,6 +5143,38 @@
       ],
       "source_type": "RPG.GameCore.SetResilience",
       "static_family": "Avatar",
+      "unlockable_record_count": 7
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 14,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029:MODIFIER_CALLBACK:StageAbility_3999029_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029:MODIFIER_CALLBACK:StageAbility_3999029_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030:MODIFIER_CALLBACK:StageAbility_3999030_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030:MODIFIER_CALLBACK:StageAbility_3999030_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031:MODIFIER_CALLBACK:StageAbility_3999031_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031:MODIFIER_CALLBACK:StageAbility_3999031_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032:MODIFIER_CALLBACK:StageAbility_3999032_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032:MODIFIER_CALLBACK:StageAbility_3999032_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033:MODIFIER_CALLBACK:StageAbility_3999033_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033:MODIFIER_CALLBACK:StageAbility_3999033_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034:MODIFIER_CALLBACK:StageAbility_3999034_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/FailedTaskList:0/FailedTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034:MODIFIER_CALLBACK:StageAbility_3999034_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:2"
+      ],
+      "operation_kind": "RESET_TOUGHNESS",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035"
+      ],
+      "source_type": "RPG.GameCore.ResetStance",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 7
     },
     {
@@ -4943,6 +5267,33 @@
       "unlockable_record_count": 7
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_TARGET_UNSUPPORTED",
+      "operation_count": 7,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029:MODIFIER_CALLBACK:StageAbility_3999029_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030:MODIFIER_CALLBACK:StageAbility_3999030_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031:MODIFIER_CALLBACK:StageAbility_3999031_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032:MODIFIER_CALLBACK:StageAbility_3999032_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033:MODIFIER_CALLBACK:StageAbility_3999033_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034:MODIFIER_CALLBACK:StageAbility_3999034_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035:MODIFIER_CALLBACK:StageAbility_3999035_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:1"
+      ],
+      "operation_kind": "ADD_MODIFIER",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035"
+      ],
+      "source_type": "RPG.GameCore.AddModifier",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 7
+    },
+    {
       "blocking_dependency": "EXECUTABLE_REFERENCE_INSERT_ACTION_ABILITY_TARGET_UNSUPPORTED",
       "operation_count": 7,
       "operation_ids": [
@@ -4967,6 +5318,33 @@
       ],
       "source_type": "RPG.GameCore.TurnInsertAbility",
       "static_family": "Monster",
+      "unlockable_record_count": 7
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 7,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301001:MODIFIER_CALLBACK:StageAbility_301001_Modifier_Sub._CallbackList[0]:OnBeforeBeingHitAll:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301002:MODIFIER_CALLBACK:StageAbility_301002_Modifier_Sub._CallbackList[0]:OnBeforeHit:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301004:MODIFIER_CALLBACK:StageAbility_301004_Modifier_Sub._CallbackList[0]:OnBeforeBeingHitAll:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301005:MODIFIER_CALLBACK:StageAbility_301005_Modifier_Sub._CallbackList[0]:OnBeforeHitAll:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301008:MODIFIER_CALLBACK:StageAbility_301008_Modifier_Sub._CallbackList[0]:OnBeforeHitAll:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001041:MODIFIER_CALLBACK:StageAbility_5001041_Modifier_Sub._CallbackList[0]:OnBeforeHit:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001042:MODIFIER_CALLBACK:StageAbility_5001042_Modifier_Sub._CallbackList[0]:OnBeforeHit:0/SuccessTaskList:0"
+      ],
+      "operation_kind": "MODIFY_DAMAGE_DATA",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301001",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301002",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301004",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301005",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_301008",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001041",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_5001042"
+      ],
+      "source_type": "RPG.GameCore.ModifyDamageData",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 7
     },
     {
@@ -5021,6 +5399,33 @@
       ],
       "source_type": "RPG.GameCore.SetDynamicValueByVariateType",
       "static_family": "Avatar",
+      "unlockable_record_count": 7
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 7,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029:MODIFIER_CALLBACK:StageAbility_3999029_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030:MODIFIER_CALLBACK:StageAbility_3999030_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031:MODIFIER_CALLBACK:StageAbility_3999031_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032:MODIFIER_CALLBACK:StageAbility_3999032_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033:MODIFIER_CALLBACK:StageAbility_3999033_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034:MODIFIER_CALLBACK:StageAbility_3999034_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035:MODIFIER_CALLBACK:StageAbility_3999035_Modifier._CallbackList[0]:OnEnterBattle:0/TaskList:0/SuccessTaskList:3"
+      ],
+      "operation_kind": "TRIGGER_BREAK",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999029",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999030",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999031",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999032",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999033",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999034",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999035"
+      ],
+      "source_type": "RPG.GameCore.TriggerBreak",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 7
     },
     {
@@ -5166,6 +5571,31 @@
       ],
       "source_type": "RPG.GameCore.AttachSkillTypeDisable",
       "static_family": "Monster",
+      "unlockable_record_count": 6
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING",
+      "operation_count": 6,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_HitNoBattle:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_SpeedUp:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_631026:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S1.json:ADV_StageAbility_633106:ONDESTROY:0",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S7.json:ADV_StageAbility_633519:ONDESTROY:0"
+      ],
+      "operation_kind": "REMOVE_MODIFIER",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_HitNoBattle",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Common.json:ADV_Modifier_MazeCommon_SpeedUp",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue.json:ADV_StageAbility_631026",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S1.json:ADV_StageAbility_633106",
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rogue_S7.json:ADV_StageAbility_633519"
+      ],
+      "source_type": "RPG.GameCore.RemoveAdventureModifier",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 6
     },
     {
@@ -5631,6 +6061,27 @@
       "unlockable_record_count": 4
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_HEAL_VALUE_MISSING",
+      "operation_count": 4,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_AllBreak:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_SpecialChallenge_AllBreak_Win._CallbackList[0]:OnCreate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Greater60:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_SpecialChallenge_Greater60_Lose._CallbackList[0]:OnCreate:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_021:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_021_Modifier._CallbackList[0]:OnEnterBattle:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_022_Modifier._CallbackList[0]:OnEnterBattle:0"
+      ],
+      "operation_kind": "HEAL_REQUEST",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_AllBreak",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Greater60",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_021",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022"
+      ],
+      "source_type": "RPG.GameCore.HealHP",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 4
+    },
+    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 4,
       "operation_ids": [
@@ -5760,6 +6211,27 @@
       "unlockable_record_count": 3
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_TEAM_SP_ARGUMENTS_UNSUPPORTED",
+      "operation_count": 5,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Greater60:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_SpecialChallenge_Greater60_Lose._CallbackList[0]:OnCreate:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_021:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_021_Modifier._CallbackList[0]:OnEnterBattle:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_021:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_021_Modifier._CallbackList[0]:OnEnterBattle:2",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_022_Modifier._CallbackList[0]:OnEnterBattle:1",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022:MODIFIER_CALLBACK:StageAbility_MazeWhitebox_Boxing_022_Modifier._CallbackList[0]:OnEnterBattle:2"
+      ],
+      "operation_kind": "MODIFY_TEAM_SP",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Greater60",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_021",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_071Ver.json:StageAbility_MazeWhitebox_Boxing_022"
+      ],
+      "source_type": "RPG.GameCore.ModifySPNew",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 3
+    },
+    {
       "blocking_dependency": "EXECUTABLE_REFERENCE_PROPERTY_VALUE_ARGUMENTS_UNSUPPORTED",
       "operation_count": 5,
       "operation_ids": [
@@ -5858,6 +6330,25 @@
       ],
       "source_type": "RPG.GameCore.SetActionDelay",
       "static_family": "Monster",
+      "unlockable_record_count": 3
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+      "operation_count": 3,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json:StageAbility_Maze_Geppard:MODIFIER_CALLBACK:StageAbility_Maze_Geppard_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_NormalDamageReduce:MODIFIER_CALLBACK:StageAbility_NormalDamageReduce_Modifier._CallbackList[0]:OnListenAfterSkillUse:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeProp_Ability.json:StageAbility_MazeProp_BossArea:MODIFIER_CALLBACK:StageAbility_MazeProp_BossArea_Modifier._CallbackList[0]:OnListenCharacterCreate:0/SuccessTaskList:0"
+      ],
+      "operation_kind": "ADD_MODIFIER",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeAvatar_Ability.json:StageAbility_Maze_Geppard",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json:StageAbility_NormalDamageReduce",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeProp_Ability.json:StageAbility_MazeProp_BossArea"
+      ],
+      "source_type": "RPG.GameCore.AddModifier",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 3
     },
     {
@@ -6333,6 +6824,23 @@
       "unlockable_record_count": 2
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_ACTION_DELAY_ARGUMENTS_UNSUPPORTED",
+      "operation_count": 2,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Monster:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Monster_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999040:MODIFIER_CALLBACK:StageAbility_3999040_Modifier_AfterBreak._CallbackList[0]:OnStack:3"
+      ],
+      "operation_kind": "DELAY_ACTION",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Monster",
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability_090Ver.json:StageAbility_3999040"
+      ],
+      "source_type": "RPG.GameCore.ModifyActionDelay",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 2
+    },
+    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 2,
       "operation_ids": [
@@ -6703,22 +7211,6 @@
       "unlockable_record_count": 1
     },
     {
-      "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING",
-      "operation_count": 2,
-      "operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONSTACK:0",
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONTEAMLEADERCHANGE:0"
-      ],
-      "operation_kind": "ADD_MODIFIER",
-      "owner_kind": "Modifier",
-      "sample_behavior_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp"
-      ],
-      "source_type": "RPG.GameCore.AddAdventureModifier",
-      "static_family": "GLOBAL_OR_UNMAPPED",
-      "unlockable_record_count": 1
-    },
-    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 2,
       "operation_ids": [
@@ -6779,22 +7271,6 @@
         "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeChallenge.json:ADV_StageAbility_3030136"
       ],
       "source_type": "RPG.GameCore.AdvChangeSkillTreeLevel",
-      "static_family": "GLOBAL_OR_UNMAPPED",
-      "unlockable_record_count": 1
-    },
-    {
-      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
-      "operation_count": 2,
-      "operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2023301:ONAFTERBATTLE:0",
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2023301:ONCREATE:0"
-      ],
-      "operation_kind": "MODIFY_TEAM_HP",
-      "owner_kind": "Modifier",
-      "sample_behavior_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2023301"
-      ],
-      "source_type": "RPG.GameCore.AdventureModifyTeamPlayerHP",
       "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 1
     },
@@ -6985,6 +7461,21 @@
       "unlockable_record_count": 1
     },
     {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_TARGET_UNSUPPORTED",
+      "operation_count": 1,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Player:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_Player_Modifier._CallbackList[0]:OnEnterBattle:0/SuccessTaskList:0"
+      ],
+      "operation_kind": "DELAY_ACTION",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_Player"
+      ],
+      "source_type": "RPG.GameCore.SetActionDelay",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 1
+    },
+    {
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 1,
       "operation_ids": [
@@ -6997,6 +7488,21 @@
       ],
       "source_type": "RPG.GameCore.DispelStatus",
       "static_family": "LightCone",
+      "unlockable_record_count": 1
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 1,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazePlaneEnvi_Ability.json:LevelPlaneEnviAbility_2020011:MODIFIER_CALLBACK:MLevel_LevelPlaneEnviAbility_2020011_Modifier_Sub._CallbackList[0]:OnEnterBattle:0"
+      ],
+      "operation_kind": "DISPEL_STATUS",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazePlaneEnvi_Ability.json:LevelPlaneEnviAbility_2020011"
+      ],
+      "source_type": "RPG.GameCore.DispelStatus",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 1
     },
     {
@@ -7048,6 +7554,21 @@
       "blocking_dependency": "NO_EXECUTABLE_LOWERING",
       "operation_count": 1,
       "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Less30:MODIFIER_CALLBACK:MDF_LockHP._CallbackList[0]:OnStack:0"
+      ],
+      "operation_kind": "LOCK_HP",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json:StageAbility_MazeWhitebox_SpecialChallenge_Less30"
+      ],
+      "source_type": "RPG.GameCore.LockHP",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 1
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 1,
+      "operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAbility/Equip/EquipmemtAbility.json:Ability21000:MODIFIER_CALLBACK:MEquip_21000_Main._CallbackList[0]:OnBeforeDealHeal:0/SuccessTaskList:0"
       ],
       "operation_kind": "MODIFY_HEAL_DATA",
@@ -7087,6 +7608,21 @@
       ],
       "source_type": "RPG.GameCore.RemoveBehaviorFlagForModifier",
       "static_family": "Avatar",
+      "unlockable_record_count": 1
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 1,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rubbish.json:ADV_Modifier_Sneak_Disadvantage:ONBEFOREBATTLE:0/SuccessTaskList:0"
+      ],
+      "operation_kind": "MODIFY_SPECIAL_RESOURCE",
+      "owner_kind": "Modifier",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_Rubbish.json:ADV_Modifier_Sneak_Disadvantage"
+      ],
+      "source_type": "RPG.GameCore.ChangeMechanismBarValue",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 1
     },
     {
@@ -7147,21 +7683,6 @@
       ],
       "source_type": "RPG.GameCore.StackWeakness",
       "static_family": "StageBuff",
-      "unlockable_record_count": 1
-    },
-    {
-      "blocking_dependency": "EXECUTABLE_REFERENCE_MODIFIER_NAME_MISSING",
-      "operation_count": 1,
-      "operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp:ONDESTROY:0"
-      ],
-      "operation_kind": "REMOVE_MODIFIER",
-      "owner_kind": "Modifier",
-      "sample_behavior_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_Modifier_20511_SpeedUp"
-      ],
-      "source_type": "RPG.GameCore.RemoveAdventureModifier",
-      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 1
     },
     {
@@ -7228,21 +7749,6 @@
       "blocking_dependency": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
       "operation_count": 1,
       "operation_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2010011:ONAFTERBATTLE:0/SuccessTaskList:0"
-      ],
-      "operation_kind": "SET_DYNAMIC_VALUE",
-      "owner_kind": "Modifier",
-      "sample_behavior_ids": [
-        "external:TurnBasedGameData:Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json:ADV_LevelAbilityModifier_MazeEnviProp_2010011"
-      ],
-      "source_type": "RPG.GameCore.SetAdventureDynamicValue",
-      "static_family": "GLOBAL_OR_UNMAPPED",
-      "unlockable_record_count": 1
-    },
-    {
-      "blocking_dependency": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
-      "operation_count": 1,
-      "operation_ids": [
         "external:TurnBasedGameData:Config/ConfigAbility/Equip/Equip33.json:Ability23042:MODIFIER_CALLBACK:MEquip_23042_Sub._CallbackList[0]:OnAfterAttack:0"
       ],
       "operation_kind": "SET_DYNAMIC_VALUE",
@@ -7282,6 +7788,21 @@
       ],
       "source_type": "RPG.GameCore.SetDynamicValueByStatusCount",
       "static_family": "StageBuff",
+      "unlockable_record_count": 1
+    },
+    {
+      "blocking_dependency": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
+      "operation_count": 1,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge201:MODIFIER_CALLBACK:StageAbility_RogueChallengeMode_Challenge201_Modifier._CallbackList[0]:OnLeaveBattle:0/SuccessTaskList:0"
+      ],
+      "operation_kind": "SET_DYNAMIC_VALUE",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_RogueChallengeMode_Ability.json:StageAbility_RogueChallengeMode_Challenge201"
+      ],
+      "source_type": "RPG.GameCore.SetDynamicValueByVariateType",
+      "static_family": "GLOBAL_OR_UNMAPPED",
       "unlockable_record_count": 1
     },
     {
@@ -7328,47 +7849,62 @@
       "source_type": "RPG.GameCore.SwitchCaseByAttackDamageType",
       "static_family": "Avatar",
       "unlockable_record_count": 1
+    },
+    {
+      "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+      "operation_count": 1,
+      "operation_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness:MODIFIER_CALLBACK:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness_Modifier._CallbackList[0]:OnEnterBattle:0"
+      ],
+      "operation_kind": "SWITCH_CASE",
+      "owner_kind": "ExternalBehavior",
+      "sample_behavior_ids": [
+        "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeCommon_Ability.json:StageAbility_MazeCommon_EnterBattle_IgnoreWeakness"
+      ],
+      "source_type": "RPG.GameCore.SwitchCaseByAttackDamageType",
+      "static_family": "GLOBAL_OR_UNMAPPED",
+      "unlockable_record_count": 1
     }
   ],
   "game_version": "4.4.54",
   "inputs": {
     "compiler_report_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_compiler_report_001.json",
-    "compiler_report_sha256": "52b1476f7191372371230af6b675b2768466a6e6d045da84725b7c0ffbb3cb25",
+    "compiler_report_sha256": "26643b96b7daf90773f0e68a132f7e762b73822479c3792ac7dc3ed04f1f5ddb",
     "corpus_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
-    "corpus_sha256": "2cc36628d49ec42e2f1b940e319bd1cf1b352403d766739690f6a04afc2f8f02",
+    "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
     "mapping_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_mapping_001.json",
-    "mapping_sha256": "bac4cb73810a0cf899a33ce9c29340e7ed8148ad80ce3dbcb500fd2ac8b32f8b",
+    "mapping_sha256": "cb7aa492ba7831381f8b1451986d008bda8739ae02688f79188a7a00f5334511",
     "modifier_catalog_path": "data/semantics/4.4.54/full_reconstruction/full_modifier_definition_catalog_001.json",
-    "modifier_catalog_sha256": "911b3077e127ba1efdaf78b07ecab5f92be621bb669946d2304b11bba6503690"
+    "modifier_catalog_sha256": "bd59d8b1bb4d256365b0a34ac8f7cd771ec19011f4397e17409439f2f95cd97e"
   },
   "modifier_definition_catalog": {
-    "definition_candidate_count": 7432,
+    "definition_candidate_count": 9964,
     "definitions_by_stacking": {
       "EntityUnique": 17,
-      "MISSING": 5020,
-      "Merge": 10,
+      "MISSING": 7022,
+      "Merge": 17,
       "Multiple": 140,
       "Prolong": 2,
-      "Refresh": 28,
-      "Replace": 490,
+      "Refresh": 30,
+      "Replace": 1004,
       "ReplaceButKeepLifeTime": 2,
-      "ReplaceByCaster": 1459,
+      "ReplaceByCaster": 1462,
       "ReplaceByCasterOrUnStack": 5,
       "RetainGlobalLatest": 4,
       "RetainGlobalLatestUnique": 5
     },
     "equivalent_duplicate_count": 120,
-    "supported_catalog_definition_count": 2099,
-    "true_conflict_count": 59,
-    "unique_definition_name_count": 7241,
-    "unsupported_definition_count": 5083
+    "supported_catalog_definition_count": 2623,
+    "true_conflict_count": 61,
+    "unique_definition_name_count": 9771,
+    "unsupported_definition_count": 7087
   },
   "next_selection_rule": "Select a generic primitive by unlockable_record_count × family breadth × architecture importance ÷ semantic uncertainty; defer narrow unproven shapes.",
   "operation_dispositions": {
-    "BOUND_PRIMITIVE": 4421,
-    "BOUND_UNEXECUTABLE_PACKET": 24695,
-    "EXECUTABLE_REFERENCE": 58800,
-    "HEADLESS_PRESENTATION_OMITTED": 23268
+    "BOUND_PRIMITIVE": 4430,
+    "BOUND_UNEXECUTABLE_PACKET": 25078,
+    "EXECUTABLE_REFERENCE": 59595,
+    "HEADLESS_PRESENTATION_OMITTED": 23378
   },
   "report_id": "FULL-CONTENT-COMPILER-CENSUS-001",
   "static_family_coverage": [

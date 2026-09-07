@@ -107,6 +107,28 @@ def _equipment_directory_rows(path: Path) -> dict[str, list[dict[str, Any]]]:
     }
 
 
+def _expanded_level_rows(path: Path) -> dict[str, list[dict[str, Any]]]:
+    """Select bounded Level/Adventure families from the follow-up discovery.
+
+    The family labels describe source schema locations only. They do not
+    assert a static StageBuff ID join or runtime mode/environment semantics.
+    """
+    if not path.exists():
+        return {}
+    artifact = _mapping(json.loads(path.read_text(encoding="utf-8")))
+    if artifact.get("selected_commit") != TURN_BASED_COMMIT:
+        raise ValueError("full-content family discovery commit mismatch")
+    level = _non_layout(
+        _entries(artifact, "Config/ConfigAbility/Level/Level_Maze")
+        + _entries(artifact, "Config/ConfigAbility/Level/Level_Challenge")
+    )
+    adventure = _non_layout(_entries(artifact, "Config/ConfigAdventureModifier/"))
+    return {
+        "LEVEL_ABILITY": sorted({row["path"]: row for row in level}.values(), key=lambda row: row["path"]),
+        "ADVENTURE_MODIFIER": sorted({row["path"]: row for row in adventure}.values(), key=lambda row: row["path"]),
+    }
+
+
 def build_full_content_behavior_ingestion_manifest(
     *,
     source_root: Path | None = None,
@@ -123,6 +145,7 @@ def build_full_content_behavior_ingestion_manifest(
     discovery_path = source_root_path / "semantic_discovery_v1.json"
     source_manifest_path = source_root_path / "manifest.json"
     equipment_discovery_path = source_root_path / "full_content_equipment_directory_001.json"
+    expansion_discovery_path = source_root_path / "full_content_family_discovery_001.json"
     discovery = _mapping(json.loads(discovery_path.read_text(encoding="utf-8")))
     source_manifest = _mapping(json.loads(source_manifest_path.read_text(encoding="utf-8")))
     if discovery.get("selected_commit") != TURN_BASED_COMMIT:
@@ -133,6 +156,7 @@ def build_full_content_behavior_ingestion_manifest(
     cached_files = _mapping(source_manifest.get("files"))
     families = _family_rows(discovery)
     families.update(_equipment_directory_rows(equipment_discovery_path))
+    families.update(_expanded_level_rows(expansion_discovery_path))
     all_paths: dict[str, dict[str, Any]] = {}
     family_summaries: list[dict[str, Any]] = []
     for family, rows in sorted(families.items()):
@@ -177,7 +201,7 @@ def build_full_content_behavior_ingestion_manifest(
     normalizer_families = {
         "AVATAR_ABILITY", "MONSTER_ABILITY", "STAGE_BUFF_ABILITY",
         "STAGE_ADVENTURE_MODIFIER", "GLOBAL_MODIFIER", "LIGHTCONE_ABILITY",
-        "RELIC_SET_ABILITY",
+        "RELIC_SET_ABILITY", "LEVEL_ABILITY", "ADVENTURE_MODIFIER",
     }
     normalized_paths = [
         row for row in all_paths.values()
@@ -204,6 +228,14 @@ def build_full_content_behavior_ingestion_manifest(
                 _sha256(equipment_discovery_path)
                 if equipment_discovery_path.exists() else None
             ),
+            "expansion_discovery_path": (
+                str(expansion_discovery_path).replace("\\", "/")
+                if expansion_discovery_path.exists() else None
+            ),
+            "expansion_discovery_sha256": (
+                _sha256(expansion_discovery_path)
+                if expansion_discovery_path.exists() else None
+            ),
         },
         "selection_rule": {
             "include": "positive paths from the pinned discovery artifact, .json excluding .layout.json",
@@ -217,8 +249,8 @@ def build_full_content_behavior_ingestion_manifest(
         "known_uncovered_families": [
             {
                 "family": family,
-                "status": "NOT_DISCOVERED_IN_CURRENT_TRUNCATED_TREE",
-                "next_action": "Run a family-scoped pinned discovery; do not infer absence.",
+                "status": "SOURCE_CANDIDATES_CAPTURED_STATIC_AND_SEMANTIC_JOIN_UNRESOLVED" if expansion_discovery_path.exists() else "NOT_DISCOVERED_IN_CURRENT_TRUNCATED_TREE",
+                "next_action": "Resolve source records to exact static/runtime ownership without filename inference." if expansion_discovery_path.exists() else "Run a family-scoped pinned discovery; do not infer absence.",
             }
             for family in (
                 ("MODE_BUFF", "ENVIRONMENT_BUFF")
