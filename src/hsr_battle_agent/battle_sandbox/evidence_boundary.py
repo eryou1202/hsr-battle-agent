@@ -194,10 +194,13 @@ class ReferenceResult:
 
 
 class ReferenceRegistry:
-    """Inert registry marker for reference profiles.
+    """Inert, homogeneous registry for ``REFERENCE_MODEL`` profiles.
 
-    It stores profiles and their evidence modes.  It has no execution entry
-    point and cannot yield native contracts: the two registry roles are
+    ``SANDBOX_EXTENSION`` and ``UNSUPPORTED`` are distinct evidence modes, not
+    aliases for reference-model evidence.  This registry therefore refuses
+    those profiles rather than reporting a misleading scalar mode for a
+    heterogeneous collection.  It has no execution entry point and cannot
+    yield native contracts: the native and reference-model registry roles are
     deliberately separate types.
     """
 
@@ -211,6 +214,13 @@ class ReferenceRegistry:
             raise EvidenceBoundaryError(
                 "ReferenceRegistry accepts ReferenceProfile values only; got "
                 f"{type(profile).__name__}"
+            )
+        if profile.evidence_mode is not EvidenceMode.REFERENCE_MODEL:
+            raise EvidenceBoundaryError(
+                "ReferenceRegistry accepts REFERENCE_MODEL profiles only; got "
+                f"{profile.evidence_mode.value}. SANDBOX_EXTENSION and "
+                "UNSUPPORTED remain separate evidence classes and require "
+                "their own explicitly typed registry if storage is needed"
             )
         self._profiles.append(profile)
         return profile
@@ -348,6 +358,9 @@ def is_reference_wrapper(candidate: Any) -> bool:
 def evidence_mode_of(candidate: Any) -> EvidenceMode | None:
     """Return the declared evidence mode of a boundary object, else ``None``."""
     if isinstance(candidate, ReferenceRegistry):
+        # ReferenceRegistry is homogeneous by construction: register() accepts
+        # REFERENCE_MODEL profiles only.  Returning one scalar cannot mislabel
+        # SANDBOX_EXTENSION or UNSUPPORTED contents.
         return EvidenceMode.REFERENCE_MODEL
     mode = getattr(candidate, "evidence_mode", None)
     if isinstance(mode, EvidenceMode):

@@ -34,14 +34,11 @@ evidence.
 & "<resolved python>" -m unittest discover -s tests/battle_runtime -t . -p "test_*.py"
 ```
 
-One-line form, used as the per-task regression requirement:
-
-```
-python -m unittest discover -s tests/battle_ir -t . -p "test_*.py" && python -m unittest discover -s tests/battle_sandbox -t . -p "test_*.py" && python -m unittest discover -s tests/battle_runtime -t . -p "test_*.py"
-```
-
 Use the repository-resolved interpreter documented in
 `docs/agent/dsh_windows_environment.md`; do not use bare `python` or `py`.
+The placeholder in every command below means the `.Exe` returned by
+`Resolve-PythonInterpreter` from `scripts/python/resolve_python.ps1`; it is not
+pseudocode permission to invoke a PATH-resolved interpreter.
 
 ### Measured baseline (2026-09-20, after P0-B and P0-C)
 
@@ -59,8 +56,8 @@ Python 3.13.12.
 
 ### Wider deterministic run
 
-```
-python -m unittest discover -s tests -t . -p "test_*.py"
+```powershell
+& "<resolved python>" -m unittest discover -s tests -t . -p "test_*.py"
 ```
 
 Measured: **532 tests, OK**. That is FAST_UNIT (524) plus `tests/reverse` (8). See the
@@ -89,9 +86,9 @@ carry an exact reproduction command and a re-entry condition.
 
 Reproduction:
 
-```
-set PYTHONPATH=src
-python -m unittest discover -s tests/game_data -p "test_*.py"
+```powershell
+$env:PYTHONPATH = "src"
+& "<resolved python>" -m unittest discover -s tests/game_data -p "test_*.py"
 ```
 
 Measured: **Ran 153 tests in ~89 s, FAILED (errors=2)** — exactly the two cleanup errors
@@ -124,9 +121,9 @@ there is no body-pass evidence and no environmental quarantine is available.
 
 Reproduction:
 
-```
-python -m unittest discover -s tests/unpacker -p "test_*.py"
-python -m unittest discover -s tests/cross_version -p "test_*.py"
+```powershell
+& "<resolved python>" -m unittest discover -s tests/unpacker -p "test_*.py"
+& "<resolved python>" -m unittest discover -s tests/cross_version -p "test_*.py"
 ```
 
 Measured: `tests/unpacker` Ran 1 test → 1 collection error; `tests/cross_version` Ran 2
@@ -139,7 +136,7 @@ then these suites are `BLOCKED_OPTIONAL` and are excluded from fast regression.
 `numpy` and `jsonschema` are **test-only extras**. `[project].dependencies` stays empty so
 that the production package and the fast lane never require them.
 
-## 5. Discovery gap (recorded, not fixed here)
+## 5. Discovery policy
 
 `python -m unittest discover -s tests -t .` walks only **importable packages**. Directories
 under `tests/` without an `__init__.py` are silently skipped:
@@ -155,14 +152,21 @@ under `tests/` without an `__init__.py` are silently skipped:
 | `tests/unpacker` | no | **no** |
 | `tests/models`, `tests/planning`, `tests/runtime`, `tests/semantics`, `tests/simulator` | no | no test modules present (contain only `.gitkeep`) |
 
+Decision: **`ACCEPT_DOCUMENTED_LANE_DISCOVERY`**. Root discovery is a useful
+aggregate over importable test packages, but it is not the repository's
+whole-tree or milestone-closing authority. The explicit lane commands are the
+trustworthy baseline because they make suite inclusion, environmental status,
+and optional-dependency status visible instead of relying on package walking.
+
 Consequences and rules:
 
 - The root command's green `OK` must never be reported as "the whole test tree is green".
 - The affected directories also cannot be discovered with an explicit `-t .` top level;
   they raise `ImportError: Start directory is not importable` until they gain a package
   marker. They can still be exercised today with `-s tests/<dir>` plus `PYTHONPATH=src`.
-- Follow-up owner: a future P0 task may add `tests/<dir>/__init__.py` markers. That was
-  outside P0-D's allowlist and was deliberately not done, and no test file was modified.
+- Package markers are not required for M0.5 closure. A future task may add them
+  only if root discovery is deliberately redefined as whole-tree discovery;
+  that change must also preserve the environmental and optional-suite policy.
 
 Expected effect once markers are added: the root run should rise by the `tests/game_data`
 count (153) and by whatever the optional suites contribute once their extras are present.

@@ -1,15 +1,15 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.2",
+  "plan_version": "1.0.7",
   "generated_date": "2026-09-20",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
     "planning_only": true,
     "production_implementation_performed": false,
-    "tests_modified": false,
+    "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M0",
-    "next_milestone": "M0.5",
+    "current_milestone": "M0.5",
+    "next_milestone": "M1",
     "golden": 0
   },
   "authority_precedence": [
@@ -177,6 +177,9 @@
   },
   "migration_strategy_decision": {
     "id": "MIGRATION_STRATEGY_DECISION",
+    "status": "RATIFIED",
+    "ratified_at": "2026-09-20",
+    "adr": "docs/agent/terra_architecture_decisions_v1.md",
     "chosen": "B_FREEZE_LEGACY_BEHIND_ADAPTER_AND_CREATE_NEW_TERRA_PATH",
     "rationale": [
       "highest semantic isolation",
@@ -214,10 +217,14 @@
       "remove legacy native reachability",
       "retire adapter after all retained primitives migrate or are reference-only"
     ],
-    "rollback_plan": "Strict path is profile-gated and versioned; rollback removes its router/export without downgrading snapshots or modifying legacy fixtures. Never translate v2 state back to v1 as semantic equality."
+    "rollback_plan": "Strict path is profile-gated and versioned; rollback removes its router/export without downgrading snapshots or modifying legacy fixtures. Never translate v2 state back to v1 as semantic equality.",
+    "change_control_requirement": "Any change requires a unique change request with reason/evidence, affected tasks/files, semantic and migration impact, rollback, Sol authorization, a new master revision and change-history entry. Astra is used only for a qualifying frozen-evidence reopen."
   },
   "rng_ownership_decision": {
     "id": "RNG_OWNERSHIP_DECISION",
+    "status": "RATIFIED",
+    "ratified_at": "2026-09-20",
+    "adr": "docs/agent/terra_architecture_decisions_v1.md",
     "chosen": "RNG_STATE_OWNED_BY_TERRA_BATTLE_STATE_TRANSACTION_GETS_PRIVATE_CLONE",
     "rules": [
       "preflight draws zero",
@@ -228,14 +235,19 @@
     ],
     "algorithm_label": "SANDBOX_RNG_ALGORITHM=PYTHON_RANDOM_MT19937",
     "native_equivalence": "UNKNOWN_CLIENT_RNG; never claimed",
-    "legacy_handling": "legacy adapters receive a private clone and may publish only a certified staged RNG delta"
+    "legacy_handling": "legacy adapters receive a private clone and may publish only a certified staged RNG delta",
+    "change_control_requirement": "Any change requires the formal architecture change-control record. A client-native RNG equivalence claim additionally requires version/hash-qualified evidence and a freeze reopen."
   },
   "reference_quarantine_decision": {
     "id": "REFERENCE_QUARANTINE_DECISION",
+    "status": "RATIFIED",
+    "ratified_at": "2026-09-20",
+    "adr": "docs/agent/terra_architecture_decisions_v1.md",
     "chosen": "TYPE_AND_REGISTRY_SEPARATION_PLUS_SINGLE_ADAPTER_BOUNDARY",
     "rules": [
       "ReferenceProfile/ReferenceDescriptor/ReferenceResult cannot satisfy NativeContract or GateCertificate",
       "ReferenceRegistry and NativeContractRegistry are separate",
+      "ReferenceRegistry is homogeneous and accepts REFERENCE_MODEL profiles only; SANDBOX_EXTENSION and UNSUPPORTED remain distinct and require explicitly typed registries if storage is needed",
       "StrictExecutor imports no quarantined module directly",
       "only reference_boundary may cross and must preserve EvidenceMode in snapshot/hash/output",
       "AST/import tests enforce the boundary"
@@ -252,7 +264,14 @@
       "EXECUTABLE_REFERENCE",
       "golden_eligible"
     ],
-    "native_rule": "reuse never changes evidence class"
+    "native_rule": "reuse never changes evidence class",
+    "evidence_mode_canonicalization": {
+      "current_state": "battle_sandbox.evidence_boundary.EvidenceMode is provisional P0 guard-rail infrastructure",
+      "f01_001_rule": "F01-001 must create the sole canonical EvidenceMode in battle_ir/evidence.py and, in the same change, battle_sandbox.evidence_boundary must delete its local enum definition and import/re-export or otherwise consume that exact class object",
+      "identity_invariant": "Two equal-valued but identity-unequal EvidenceMode classes are forbidden; every current and future 'is EvidenceMode.*' comparison must resolve to the canonical battle_ir class after F01-001",
+      "scope": "Migration rule only; F01-001 is not implemented during P0-F"
+    },
+    "change_control_requirement": "Any change requires the formal architecture change-control record. Reference-to-native promotion or a frozen evidence-mode change requires the applicable evidence reopen."
   },
   "milestones": [
     {
@@ -268,7 +287,7 @@
     {
       "id": "M0.5",
       "title": "REPOSITORY STABILIZED",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "exit_criteria": [
         "authority preservation commit verified",
         "root discovery works",
@@ -277,7 +296,18 @@
         "environmental/optional policy recorded",
         "three ADRs ratified",
         "reference guard rails pass"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-20",
+      "closure_evidence": {
+        "authority_preservation_commit_verified": "PASS - 3243c5eb947f3583e5918ef45cacb7ce6fcfd862 exists and is an ancestor of starting HEAD; 19 master authority refs match under AUTHORITY_RECONCILIATION_001",
+        "root_discovery_policy_trustworthy": "PASS - ACCEPT_DOCUMENTED_LANE_DISCOVERY; root discovers 532 tests across importable packages and is explicitly not described as whole-tree coverage",
+        "catalog_counts": "PASS - 53 exact tests; counts are catalog-derived and synthetic changes require no constant edit",
+        "fast_baseline": "PASS - 131 + 208 + 185 = 524, zero failures/errors",
+        "environmental_optional_policy": "PASS - game_data remains 153 tests with two documented environmental teardown errors; numpy/jsonschema suites remain BLOCKED_OPTIONAL, not green",
+        "adrs": "PASS - all three decision IDs ratified in docs/agent/terra_architecture_decisions_v1.md",
+        "reference_guard_rails": "PASS - 38 exact tests; ReferenceRegistry mode defect repaired under CR-P0-F-LOCAL-20260920-001"
+      }
     },
     {
       "id": "M1",
@@ -916,7 +946,8 @@
         "P0-D"
       ],
       "status_updated_at": "2026-09-20",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - catalog-wide counts are derived from the catalog under test; synthetic removal and enabled/disabled semantics are exercised; hash validation and pinned per-artifact expectations remain intact; no semantic expectation was weakened.",
       "changed_files": [
         "tests/battle_ir/test_semantic_batch_catalog.py"
       ],
@@ -1042,7 +1073,8 @@
       "readiness_recomputed_at": "2026-09-20",
       "readiness_basis": "dependencies P0-B and P0-C are both DONE",
       "status_updated_at": "2026-09-20",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - command examples now use the repository-resolved interpreter consistently and ACCEPT_DOCUMENTED_LANE_DISCOVERY explicitly defines the honest root scope. Lane separation, Golden=0, empty NATIVE_TRACE, environmental status, BLOCKED_OPTIONAL status, and empty production dependencies are preserved.",
       "changed_files": [
         "docs/agent/terra_test_matrix.md",
         "pyproject.toml"
@@ -1175,7 +1207,8 @@
         "F01-001"
       ],
       "status_updated_at": "2026-09-20",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - reference/native separation, the single crossing point, evidence preservation and strict import quarantine were correct. CR-P0-F-LOCAL-20260920-001 repaired the concrete registry mislabelling risk by making ReferenceRegistry REFERENCE_MODEL-only and added the F01-001 canonical EvidenceMode migration invariant.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
         "src/hsr_battle_agent/battle_sandbox/reference_boundary.py",
@@ -1232,7 +1265,7 @@
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Ratify migration, RNG and quarantine ADRs",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1300,14 +1333,42 @@
       ],
       "next_tasks": [
         "F01-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-20",
+      "change_request_id": "CR-P0-F-LOCAL-20260920-001",
+      "changed_files": [
+        "docs/agent/terra_architecture_decisions_v1.md",
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+      ],
+      "change_summary": "Ratified MIGRATION_STRATEGY_DECISION, RNG_OWNERSHIP_DECISION and REFERENCE_QUARANTINE_DECISION in a durable ADR; added the canonical EvidenceMode migration invariant and the REFERENCE_MODEL-only registry invariant; validated the complete task graph and closed M0.5 after the separately controlled P0-D/P0-E review repairs passed.",
+      "test_results": [
+        "ADR/master decision IDs agree exactly: PASS",
+        "duplicate-key validator on master and authority reconciliation: PASS",
+        "DAG: 75 unique task IDs, every dependency and next-task reference exists, acyclic (75/75 visited), no READY task has unmet dependencies: PASS",
+        "F01-009 -> {F02-001,R01-001}; {F02-013,R01-013} -> G01-001: PASS",
+        "P0-C exact: Ran 53 tests, OK",
+        "P0-E exact including registry-mode repair: Ran 38 tests, OK",
+        "FAST_UNIT: battle_ir 131 OK; battle_sandbox 208 OK; battle_runtime 185 OK; total 524",
+        "root discoverable-package scope: Ran 532 tests, OK"
+      ],
+      "acceptance_rows": {
+        "ADR and master decisions agree byte-for-byte on decision IDs": "PASS",
+        "DAG validator passes": "PASS",
+        "No production or test file changes": "PASS for P0-F itself; the evidence-boundary and test edits belong to separately authorized CR-P0-F-LOCAL-20260920-001 and have semantic impact NONE"
+      },
+      "checkpoint": {
+        "head_before_task": "435ab634e23824971701a799f3b74ac2eca65e08",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-001",
+        "next_command": "Read F01-001 and perform its canonical EvidenceMode migration; do not retain the provisional sandbox enum as a second class."
+      }
     },
     {
       "task_id": "F01-001",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "EvidenceMode and VersionRelation enums",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1346,7 +1407,8 @@
       "implementation_requirements": [
         "Implement exactly the four frozen evidence modes and explicit version relations",
         "Reject unknown serialized values",
-        "Do not make evidence mode an executable boolean"
+        "Do not make evidence mode an executable boolean",
+        "Create the sole canonical EvidenceMode class in battle_ir/evidence.py and in the same task make battle_sandbox.evidence_boundary import/re-export or otherwise consume that exact class object; delete the provisional sandbox enum definition and update every identity comparison so no equal-valued but identity-unequal EvidenceMode class remains"
       ],
       "migration_constraints": [
         "Use the legacy-runtime quarantine/new Terra path migration strategy; no live bidirectional facade.",
@@ -1380,7 +1442,9 @@
         "F01-004",
         "F01-005",
         "F01-006"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "P0-D, P0-E and P0-F are DONE; canonical EvidenceMode migration is explicitly recorded but not yet implemented"
     },
     {
       "task_id": "F01-002",
@@ -6410,7 +6474,7 @@
       "optional-dependency suites either installed and green or explicitly out of lane",
       "no semantic expectation weakened"
     ],
-    "observed": {
+    "historical_observed_planning_time": {
       "static_functions": 679,
       "run": 649,
       "passed": 644,
@@ -6418,7 +6482,61 @@
       "environmental_errors": 2,
       "blocked_optional_imports": 3
     },
-    "fast_regression": "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"",
+    "observed": {
+      "measurement_date": "2026-09-20",
+      "FAST_UNIT": {
+        "battle_ir": {
+          "tests": 131,
+          "result": "OK"
+        },
+        "battle_sandbox": {
+          "tests": 208,
+          "result": "OK"
+        },
+        "battle_runtime": {
+          "tests": 185,
+          "result": "OK"
+        },
+        "total": 524,
+        "failures": 0,
+        "errors": 0,
+        "result": "GREEN"
+      },
+      "root_discoverable_packages": {
+        "tests": 532,
+        "result": "OK",
+        "scope": "battle_ir, battle_sandbox, battle_runtime and reverse only; not the whole tests tree"
+      },
+      "game_data": {
+        "tests": 153,
+        "failures": 0,
+        "environmental_teardown_errors": 2,
+        "result": "ENVIRONMENTAL_NOT_GREEN"
+      },
+      "optional_suites": {
+        "result": "BLOCKED_OPTIONAL",
+        "missing": [
+          "numpy",
+          "jsonschema"
+        ]
+      },
+      "NATIVE_TRACE": {
+        "count": 0,
+        "result": "EMPTY"
+      },
+      "Golden": 0
+    },
+    "fast_regression": "Use each fast_regression_commands entry with the repository-resolved interpreter; never substitute bare python or py.",
+    "fast_regression_commands": [
+      "& \"<resolved python>\" -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"",
+      "& \"<resolved python>\" -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"",
+      "& \"<resolved python>\" -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\""
+    ],
+    "root_discovery_policy": {
+      "decision": "ACCEPT_DOCUMENTED_LANE_DISCOVERY",
+      "rationale": "Root unittest discovery is a useful aggregate over importable packages but is not whole-tree authority. Explicit lane commands are trustworthy because game_data environmental status and cross_version/unpacker optional blocking remain visible and separately reproducible.",
+      "m0_5_effect": "Does not block closure; the root command works for its documented discoverable-package scope and must never be reported as the whole test tree."
+    },
     "lanes": {
       "FAST_UNIT": "narrow task tests plus battle_ir/battle_sandbox/battle_runtime; deterministic and DB-free",
       "STRUCTURAL": "schemas, hashes, presence, identity, descriptors, gates",
@@ -6851,47 +6969,70 @@
       "SOL review",
       "master revision"
     ],
-    "astra_role": "only evidence reopen, not normal roadmap changes"
+    "astra_role": "only evidence reopen, not normal roadmap changes",
+    "approved_change_requests": [
+      {
+        "change_request_id": "CR-P0-F-LOCAL-20260920-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Final Sol review found that ReferenceRegistry accepts heterogeneous non-native profile modes while evidence_mode_of(ReferenceRegistry) always reports REFERENCE_MODEL; the test-matrix examples contradict its repository-resolved-interpreter policy; and the mutable master still exposes a planning-time baseline and stale top-level plan_version. Repair these local software/control defects and ratify the P0-F ADRs without reopening HSR semantics.",
+        "affected_task_ids": [
+          "P0-D",
+          "P0-E",
+          "P0-F",
+          "F01-001"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+          "tests/battle_sandbox/test_reference_quarantine.py",
+          "docs/agent/terra_test_matrix.md",
+          "docs/agent/terra_architecture_decisions_v1.md",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE",
+        "migration_impact": "ReferenceRegistry becomes explicitly REFERENCE_MODEL-only. SANDBOX_EXTENSION and UNSUPPORTED remain distinct valid EvidenceMode values on profiles, envelopes and results but require an explicitly typed future registry if registry storage is needed. When F01-001 creates battle_ir.evidence.EvidenceMode, battle_sandbox.evidence_boundary must import and re-export that exact class; all identity comparisons must then target the canonical class, and no duplicate enum may remain.",
+        "rollback": "Remove the registry-mode guard and its focused tests, restore the prior command examples, remove the ADR/control additions, and restore the prior master snapshot. Rollback must not create a second EvidenceMode class or modify frozen authority.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_P0_FINAL_REVIEW_2026-09-20",
+        "astra_reopen_required": false,
+        "validation": "P0-E exact 38 OK; FAST_UNIT 524 OK; root documented scope 532 OK; duplicate-key, authority reconciliation and DAG validation PASS"
+      }
+    ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-20",
-    "status": "P0_D_DONE_ONLY_SOL_TASK_REMAINS",
-    "head_at_run_start": "945a26c6643ab0628b1bca56fb23770f6197514e",
+    "status": "M0_5_REPOSITORY_STABILIZED_DONE",
+    "head_at_run_start": "435ab634e23824971701a799f3b74ac2eca65e08",
     "changed_files": [
-      "tests/battle_ir/test_semantic_batch_catalog.py",
       "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
-      "src/hsr_battle_agent/battle_sandbox/reference_boundary.py",
       "tests/battle_sandbox/test_reference_quarantine.py",
       "docs/agent/terra_test_matrix.md",
-      "pyproject.toml",
+      "docs/agent/terra_architecture_decisions_v1.md",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Only P0-C, P0-E and P0-D allowlist paths and the control-plane master changed. Git write operations were disabled for this session, so nothing was staged or committed; a manual commit plan was produced instead. Frozen Astra artifacts, the catalog, the two protected modified tracked files and all unrelated untracked artifacts were not modified.",
+    "worktree_note": "Final Sol review repaired only the formally authorized local software/control defects and completed P0-F. Git writes remained disabled: nothing was staged, committed or pushed. Frozen Astra artifacts, catalog/hash-pinned artifacts, battle runtime behavior, the two protected modified tracked files and unrelated untracked artifacts were not modified.",
     "tests": [
       "P0-C exact test_command: Ran 53 tests, OK: PASS",
       "P0-E exact test_command: Ran 38 tests, OK: PASS",
-      "P0-D FAST_UNIT determinism: four identical runs of 131/208/185 all OK: PASS",
-      "full root discovery: Ran 532 tests, OK under both Python 3.11.9 and 3.13.12: PASS",
-      "game_data: Ran 153 tests, 2 environmental Windows tempfile cleanup errors, 0 failures: recorded ENVIRONMENTAL with body-pass evidence",
-      "unpacker and cross_version: BLOCKED_OPTIONAL on numpy/jsonschema: recorded, not green",
-      "pyproject.toml TOML parse and empty runtime dependencies: PASS",
-      "frozen Astra artifacts and catalog.json unmodified: PASS",
-      "duplicate-key validator on the master: PASS"
+      "FAST_UNIT: battle_ir 131 OK; battle_sandbox 208 OK; battle_runtime 185 OK; total 524: PASS",
+      "root discoverable-package scope: Ran 532 tests, OK: PASS",
+      "duplicate-key validator on master and authority reconciliation: PASS",
+      "DAG: 75 unique tasks, all references exist, acyclic, READY dependencies satisfied: PASS",
+      "authority refs/reconciliation and preservation commit: PASS",
+      "frozen Astra artifacts and catalog.json unmodified: PASS"
     ],
     "blockers": [],
     "cheap_tasks_executed": 4,
     "cheap_tasks_remaining_ready": 0,
     "remaining_ready_cheap": [],
     "remaining_ready_any": [
-      "P0-F"
+      "F01-001"
     ],
-    "long_run_stopped_reason": "All eligible cheap P0 tasks (P0-C, P0-E, P0-D) are DONE. The only remaining ready P0 task is P0-F, which is SOL_IMPLEMENT and explicitly out of scope for this session.",
+    "long_run_stopped_reason": "M0.5 is closed. F01-001 is READY but explicitly excluded from this session.",
     "git_write_operations_by_agent": "NONE (disabled by session policy)",
-    "recommended_executor": "SOL for P0-F (ratify migration, RNG and quarantine ADRs and validate the DAG)",
-    "next_command": "Read master and docs/agent/terra_task_prompts/ for P0-F; SOL owns the ADR ratification."
+    "recommended_executor": "CHEAP_MODEL_STRICT for F01-001 with SOL review",
+    "next_command": "Read the F01-001 task and docs/agent/terra_task_prompts/F01_001_evidence_modes.md; implement the canonical evidence vocabulary without retaining a second EvidenceMode class."
   },
   "next_ready_tasks": [
-    "P0-F"
+    "F01-001"
   ],
   "change_history": [
     {
@@ -6935,6 +7076,13 @@
       "date": "2026-09-20",
       "change": "P0-D DONE. Added docs/agent/terra_test_matrix.md codifying the six evidence lanes without combined coverage, the deterministic FAST_UNIT command and measured counts (131/208/185 = 524 green, four identical runs), the environmental quarantine rules with body-pass evidence for the two Windows tempfile cleanup errors, the BLOCKED_OPTIONAL numpy/jsonschema suites with reproduction and re-entry, and a newly identified discovery gap in which tests/game_data (153 tests), tests/cross_version and tests/unpacker are invisible to the root discovery command. Added a test-only optional extra to pyproject.toml without adding any runtime dependency. Golden remains 0. All remaining cheap P0 work is complete; only P0-F (SOL_IMPLEMENT) is ready.",
       "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.7",
+      "date": "2026-09-20",
+      "change_request_id": "CR-P0-F-LOCAL-20260920-001",
+      "change": "Sol final review completed P0-C/P0-D/P0-E, repaired the ReferenceRegistry scalar-mode inconsistency by making it REFERENCE_MODEL-only, made test-matrix interpreter examples consistent, selected ACCEPT_DOCUMENTED_LANE_DISCOVERY, preserved the planning-time three-failure snapshot separately while refreshing the current 524/532 baseline, ratified all three P0-F ADRs, recorded the F01-001 single-canonical-EvidenceMode migration rule, validated authority and the 75-task acyclic DAG, closed M0.5, and made F01-001 READY without executing it. Semantic impact NONE; frozen authority and battle runtime behavior unchanged.",
+      "review": "SOL_RATIFIED"
     }
   ],
   "validation_requirements": [
@@ -6958,9 +7106,9 @@
     },
     "by_status": {
       "READY": 1,
-      "NOT_STARTED": 58,
+      "NOT_STARTED": 57,
       "BLOCKED": 10,
-      "DONE": 6
+      "DONE": 7
     },
     "freeze_tickets": [
       "TERRA-F01",

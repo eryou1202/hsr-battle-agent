@@ -232,12 +232,36 @@ class TestRegistrySeparation(unittest.TestCase):
             native_registry.register(profile)
         self.assertEqual(len(native_registry), 0)
 
-    def test_reference_registry_rejects_native_contracts(self):
+    def test_reference_registry_is_reference_model_only(self):
         reference_registry = eb.ReferenceRegistry()
         contract = eb.certify_native_contract("contract.example")
         with self.assertRaises(eb.EvidenceBoundaryError):
             reference_registry.register(contract)
         self.assertEqual(len(reference_registry), 0)
+        accepted = eb.ReferenceProfile(
+            "reference.packet.example",
+            evidence_mode=eb.EvidenceMode.REFERENCE_MODEL,
+        )
+        reference_registry.register(accepted)
+        self.assertIs(
+            eb.evidence_mode_of(reference_registry),
+            eb.EvidenceMode.REFERENCE_MODEL,
+        )
+        self.assertEqual(reference_registry.profiles, (accepted,))
+
+        for mode in (
+            eb.EvidenceMode.SANDBOX_EXTENSION,
+            eb.EvidenceMode.UNSUPPORTED,
+        ):
+            with self.subTest(mode=mode):
+                with self.assertRaises(eb.EvidenceBoundaryError):
+                    reference_registry.register(
+                        eb.ReferenceProfile(
+                            f"reference.{mode.value.lower()}",
+                            evidence_mode=mode,
+                        )
+                    )
+        self.assertEqual(reference_registry.profiles, (accepted,))
 
     def test_registries_are_inert_labels_not_executors(self):
         for registry in (eb.ReferenceRegistry(), eb.NativeContractRegistry()):
