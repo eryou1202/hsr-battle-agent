@@ -11,6 +11,11 @@ This module installs *types and checks*, not execution.  It implements the
 
 Design constraints taken from the frozen Astra authority:
 
+  * the evidence vocabulary is **not defined here**.  F01-001 canonicalized it in
+    ``battle_ir/evidence.py`` and this module imports and re-exports that exact
+    class object.  This module must never define a local ``EvidenceMode`` class:
+    two equal-valued but identity-unequal enum classes are forbidden by
+    ``REFERENCE_QUARANTINE_DECISION``;
   * the four evidence modes are spelled exactly as the Astra semantic freeze
     records them, and are never renamed or reinterpreted here;
   * "reuse never changes evidence class" -- consuming a reference object must
@@ -28,9 +33,13 @@ casual violations, which is the scope this task was given.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Mapping
 
+from hsr_battle_agent.battle_ir.evidence import (
+    EvidenceMode,
+    EvidenceVocabularyError,
+    parse_evidence_mode,
+)
 from hsr_battle_agent.battle_sandbox.errors import BattleSandboxError
 
 __all__ = [
@@ -59,21 +68,14 @@ class EvidenceBoundaryError(BattleSandboxError):
     """Raised when an evidence-mode or native/reference boundary is violated."""
 
 
-class EvidenceMode(str, Enum):
-    """The evidence modes recorded by the Astra semantic freeze.
-
-    The member names and values are the frozen spellings.  Do not rename them
-    and do not add modes here.
-    """
-
-    NATIVE_EVIDENCED = "NATIVE_EVIDENCED"
-    REFERENCE_MODEL = "REFERENCE_MODEL"
-    SANDBOX_EXTENSION = "SANDBOX_EXTENSION"
-    UNSUPPORTED = "UNSUPPORTED"
-
+# ``EvidenceMode`` is imported above from ``battle_ir.evidence`` and re-exported
+# by this module.  No local definition exists here by design, so
+# ``battle_ir.evidence.EvidenceMode is
+# battle_sandbox.evidence_boundary.EvidenceMode`` holds, and every ``is``
+# comparison below resolves against the canonical class.
 
 #: Frozen spellings, exposed for callers that must compare raw strings.
-EVIDENCE_MODE_NAMES = tuple(mode.value for mode in EvidenceMode)
+EVIDENCE_MODE_NAMES = EvidenceMode.spellings()
 
 NATIVE_EVIDENCE_MODE = EvidenceMode.NATIVE_EVIDENCED
 
@@ -100,17 +102,16 @@ _NATIVE_SEAL = _NativeSealToken()
 
 
 def _coerce_mode(value: Any, *, owner: str) -> EvidenceMode:
-    if isinstance(value, EvidenceMode):
-        return value
-    if isinstance(value, str):
-        try:
-            return EvidenceMode(value)
-        except ValueError:
-            pass
-    raise EvidenceBoundaryError(
-        f"{owner}: {value!r} is not one of the frozen evidence modes "
-        f"{EVIDENCE_MODE_NAMES!r}"
-    )
+    """Coerce a serialized mode to the canonical class, strictly.
+
+    Delegates to the canonical parser in ``battle_ir.evidence`` so that the
+    accepted vocabulary has exactly one definition, and re-raises in boundary
+    terms so callers of this module see ``EvidenceBoundaryError``.
+    """
+    try:
+        return parse_evidence_mode(value)
+    except EvidenceVocabularyError as exc:
+        raise EvidenceBoundaryError(f"{owner}: {exc}") from None
 
 
 def _require_reference_mode(value: Any, *, owner: str) -> EvidenceMode:
@@ -367,8 +368,8 @@ def evidence_mode_of(candidate: Any) -> EvidenceMode | None:
         return mode
     if isinstance(mode, str):
         try:
-            return EvidenceMode(mode)
-        except ValueError:
+            return parse_evidence_mode(mode)
+        except EvidenceVocabularyError:
             return None
     return None
 

@@ -1,15 +1,15 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.8",
-  "generated_date": "2026-09-20",
+  "plan_version": "1.0.17",
+  "generated_date": "2026-09-21",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
-    "planning_only": true,
-    "production_implementation_performed": false,
+    "planning_only": false,
+    "production_implementation_performed": true,
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M0.5",
-    "next_milestone": "M1",
+    "current_milestone": "M1",
+    "next_milestone": "M2",
     "golden": 0
   },
   "authority_precedence": [
@@ -312,7 +312,7 @@
     {
       "id": "M1",
       "title": "FOUNDATION READY",
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "exit_criteria": [
         "F01, F02, R01 and G01 tasks DONE",
         "Terra state clone/snapshot/hash deterministic",
@@ -1368,7 +1368,7 @@
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "EvidenceMode and VersionRelation enums",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1464,6 +1464,71 @@
           "src/hsr_battle_agent/battle_sandbox/reference_boundary.py": "Read and covered by identity/quarantine tests, but no edit is required: it imports EvidenceMode from battle_sandbox.evidence_boundary, whose identity-preserving re-export will bind the canonical class automatically."
         },
         "scope": "Control-plane authorization only; F01-001 remains READY and unimplemented."
+      },
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - canonical EvidenceMode identity and exact four evidence spellings were correct. Removed unsupported VersionRelation.NOT_ESTABLISHED (unasserted relation is field absence), restored ordinary Enum truthiness without adding any execution API, retained the separately authoritative four-value ReadinessClass, and corrected the stale task prompt under CR-F01-REVIEW-LOCAL-20260921-001.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/evidence.py",
+        "tests/battle_ir/test_evidence.py",
+        "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+        "tests/battle_sandbox/test_reference_quarantine.py"
+      ],
+      "change_summary": "Created the sole canonical EvidenceMode class in battle_ir/evidence.py together with VersionRelation and ReadinessClass, and migrated battle_sandbox.evidence_boundary to import and re-export that exact class object, deleting its provisional local enum. Strong review retained strict parsing and no executability helper while restoring ordinary Enum truthiness and limiting VersionRelation to directly supported EXACT_NATIVE/CLOSE_VERSION claims.",
+      "implementation_detail": {
+        "canonical_module": "src/hsr_battle_agent/battle_ir/evidence.py is the only module in src/ that defines EvidenceMode. It defines EvidenceMode (NATIVE_EVIDENCED, REFERENCE_MODEL, SANDBOX_EXTENSION, UNSUPPORTED verbatim), VersionRelation (EXACT_NATIVE, CLOSE_VERSION; an unasserted relation is absence) and the separate ReadinessClass (the four freeze readiness_classes verbatim).",
+        "no_str_mixin": "The vocabularies deliberately do NOT subclass str. A str mixin would make mode == \"NATIVE_EVIDENCED\" succeed accidentally and would give members a meaningless lexicographic ordering, which contradicts REFERENCE_QUARANTINE_DECISION's explicit rejection of string-only labelling. Serialization is explicit via serialize()/.value; identity is checked with is; ordering raises TypeError.",
+        "not_a_boolean": "The shared base keeps ordinary Enum truthiness. No executable / is_executable / can_execute / implies_execution / as_bool helper exists on any vocabulary class or member, and no runtime gate consumes truthiness. An evidence mode is provenance, never permission to execute.",
+        "strict_parsing": "parse_evidence_mode / parse_version_relation / parse_readiness_class reject unknown spellings, wrong case, whitespace-padded strings, empty strings, None, non-strings, numbers and booleans. None is refused explicitly because absence is not a vocabulary value. An import-time identity round-trip guard re-parses every spelling and verifies it maps back to the identical member.",
+        "canonicalization": "battle_sandbox/evidence_boundary.py no longer defines EvidenceMode. It imports EvidenceMode, EvidenceVocabularyError and parse_evidence_mode from battle_ir.evidence, re-exports EvidenceMode for its existing consumers, derives EVIDENCE_MODE_NAMES from EvidenceMode.spellings(), and delegates _coerce_mode and evidence_mode_of to the canonical parser while re-raising EvidenceBoundaryError so boundary callers keep their documented error type. reference_boundary.py needed no edit: it imports EvidenceMode from evidence_boundary, so it now binds the canonical class object automatically, exactly as the CR-F01-001-CONTROL-20260920-001 note anticipated.",
+        "version_relation": "VersionRelation separates EXACT_NATIVE from CLOSE_VERSION, which the frozen strict rejection SOURCE_VERSION_CLOSENESS_PROMOTED_TO_EXACT_NATIVE_PROOF requires. The freeze records exactly one version-relation marker, CLOSE_4.4.0_TO_4.4.54, and no enumerated vocabulary, so nothing was renamed or merged."
+      },
+      "test_results": [
+        "resolver command (scripts/python/resolve_python.ps1 -> Python 3.11.9): python -m unittest tests.battle_ir.test_evidence tests.battle_sandbox.test_reference_quarantine -v  =>  Ran 71 tests, OK, exit 0",
+        "python -m unittest tests.battle_ir.test_evidence  =>  Ran 26 tests, OK, exit 0",
+        "python -m unittest tests.battle_sandbox.test_reference_quarantine  =>  Ran 45 tests, OK, exit 0 (was 38 before this task)",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 157 tests, OK, exit 0 (was 131)",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 215 tests, OK, exit 0 (was 208)",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 565 tests, OK, exit 0 under both Python 3.11.9 and 3.13.12 (was 532)",
+        "FAST_UNIT total 157 + 215 + 185 = 557 all green"
+      ],
+      "acceptance_rows": {
+        "All enum round trips": "PASS - every spelling parses back to the identical member for all three vocabularies, including through JSON string materialization; an import-time guard enforces this",
+        "CLOSE and NATIVE never compare or merge as the same mode": "PASS - VersionRelation.EXACT_NATIVE and VersionRelation.CLOSE_VERSION differ by identity, equality, hash and set membership; an unasserted relation remains an absent provenance field",
+        "battle_ir.evidence.EvidenceMode is battle_sandbox.evidence_boundary.EvidenceMode is battle_sandbox.reference_boundary.EvidenceMode": "PASS - asserted as a three-way identity in tests/battle_sandbox/test_reference_quarantine.py::TestCanonicalEvidenceMode",
+        "battle_sandbox.evidence_boundary contains no local EvidenceMode class definition after migration": "PASS - AST scan asserts evidence_boundary.py defines no class named EvidenceMode, and a source-wide AST scan asserts exactly one EvidenceMode definition exists in src/",
+        "All P0-E reference-quarantine tests still pass": "PASS - all 38 pre-existing quarantine tests pass unchanged after the migration; the file now holds 45"
+      },
+      "control_conflict_resolved": {
+        "issue": "The task prompt docs/agent/terra_task_prompts/F01_001_evidence_modes.md has a stale allowlist and names the freeze readiness classes in its implementation requirements, while the master (corrected by commit 2286401) and the authoritative instruction both specify the four evidence modes for EvidenceMode.",
+        "resolution": "The master and frozen authority governed. EvidenceMode is the four frozen evidence_modes, while the four readiness values remain a separate ReadinessClass with explicit non-conflation tests. The master allowlist authorized the atomic migration through evidence_boundary.py and test_reference_quarantine.py.",
+        "prompt_file_control_repair": "Strong review corrected docs/agent/terra_task_prompts/F01_001_evidence_modes.md under CR-F01-REVIEW-LOCAL-20260921-001 so its vocabulary, allowlist and repository-resolved test command agree with the master and ratified ADR."
+      },
+      "judgement_calls_for_review": [
+        "SOL RESOLUTION: NOT_ESTABLISHED was not retained because it lacks direct frozen authority. An unasserted relation is represented by absence, which SourceProvenance v2 already preserves.",
+        "ReadinessClass was added to satisfy the task prompt's explicit enumeration of the four SAFE_TO_* / STRICT_REJECT_UNTIL_NEW_EVIDENCE values, kept as a distinct type with a non-overlapping spelling set and explicit non-conflation tests.",
+        "SOL RESOLUTION: EvidenceMode has ordinary Enum truthiness. It exposes no executability or permission helper, and tests may not treat bool(mode) as a native gate. A custom __bool__ exception was unnecessary local policy and was removed.",
+        "The vocabularies do not subclass str, which is what makes accidental string equality and meaningless ordering impossible. Callers must use .serialize()/.value."
+      ],
+      "non_goals_respected": [
+        "No ContractRef, UnknownHandle, provenance v2 or runtime gating was implemented.",
+        "No historical EXECUTABLE_REFERENCE label was mapped to SAFE_TO_IMPLEMENT.",
+        "No frozen spelling was renamed, merged or reinterpreted; no executable claim was added.",
+        "No frozen Astra artifact, catalog artifact or protected file was modified.",
+        "No unrelated failing test was fixed; no production execution path was changed."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "battle_ir/__init__.py was NOT modified (not in the allowlist), so the canonical module is imported by its full path hsr_battle_agent.battle_ir.evidence and no existing package export changed.",
+        "The AST scan in the new test module asserts exactly one EvidenceMode class definition exists in src/, which prevents the two-definition failure mode from returning.",
+        "Existing boundary behaviour is unchanged: string inputs are still accepted and invalid ones still raise EvidenceBoundaryError, now delegated to the canonical parser."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-002",
+        "next_command": "python -m unittest tests.battle_ir.test_evidence tests.battle_sandbox.test_reference_quarantine"
       }
     },
     {
@@ -1471,7 +1536,7 @@
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "SourceProvenance v2 envelope",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1539,14 +1604,66 @@
       ],
       "next_tasks": [
         "F01-008"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependency F01-001 is DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - v1 compatibility, v2 absence/present-null behavior, hash validation and the no-RVA/method-index dispatch boundary were accepted. CR-F01-REVIEW-LOCAL-20260921-001 added construction-time deep-copying, rejected non-string key coercion and preserved source key order for unknown fields.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/provenance.py",
+        "tests/battle_ir/test_provenance_v2.py"
+      ],
+      "change_summary": "Extended SourceProvenance with a v2 envelope (schema_version, source_commit, version_relation, content_sha256, profile) on top of the unchanged v1 field set, added explicit v1 and v2 readers plus a schema-dispatching reader, made absence and unknown fields losslessly observable, and added a dispatch refusal guard. The v1 API, field order, defaults, validation and source_reference() output are unchanged.",
+      "implementation_detail": {
+        "v1_preserved": "The seven v1 fields keep their original declaration order and defaults, and to_dict() on a v1 object still returns exactly those seven keys in that order. Legacy validation behaviour is preserved exactly, including TypeError for a non-int method_index and ValueError for a negative one. source_reference() output is byte-identical.",
+        "v2_envelope": "source_provenance/2 adds source_commit (validated as 40 lowercase hex), version_relation (parsed to the canonical VersionRelation, unknown spellings rejected), content_sha256 (validated as 64 lowercase hex) and profile (non-empty string).",
+        "explicit_reads": "from_dict_v1 rejects any v2 envelope key so a v2 document can never be silently read as v1. from_dict_v2 requires the v2 marker and the required v1 fields. from_dict dispatches on schema_version: absent or v1 reads as v1, v2 reads as v2, anything else is rejected rather than guessed.",
+        "absence_observable": "source_fields records the exact key set of the source document. serialized_field_names(), is_field_present() and absent_field_names() expose it, and to_dict() re-emits exactly that key set, so an absent key stays absent and a present-but-null key stays null. Nothing is filled with a default. Verified by an explicit absent-vs-null test.",
+        "unknown_fields_observable": "Keys outside the known vocabulary are stored verbatim in unknown_fields (an immutable-copy mapping) and re-emitted, so a document round-trips with the same keys and values.",
+        "no_aliasing": "to_dict() returns copy.deepcopy of a freshly built structure, so mutating the returned dict, including nested unknown payloads, cannot mutate the model.",
+        "no_silent_downgrade": "effective_schema_version() reports v2 whenever any v2 envelope field is present, even if schema_version was left unset, and a v1 schema marker combined with a v2 field is rejected outright.",
+        "dispatch_rule": "dispatch_key() raises SourceProvenanceError instead of supplying a key, and an AST test asserts that no module under battle_sandbox reads .native_rva or .method_index anywhere. Confirmed the strict path only consumes provenance.source_reference() as an opaque audit string."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_provenance_v2 -v  =>  Ran 37 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 194 tests, OK, exit 0 (was 157)",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 215 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 602 tests, OK, exit 0 under both interpreters (was 565)",
+        "P0-E reference quarantine: Ran 45 tests, OK, exit 0",
+        "FAST_UNIT total 194 + 215 + 185 = 594 all green"
+      ],
+      "acceptance_rows": {
+        "v1 migration fixture": "PASS - a v1 document reads through both from_dict and from_dict_v1 and round-trips to an identical dict; explicit v1 read rejects v2 content; missing required fields are rejected; legacy ValueError/TypeError behaviour and source_reference() are unchanged",
+        "v2 lossless round trip": "PASS - the v2 fixture round-trips exactly, unknown fields survive verbatim, absence is preserved and distinguished from present-null, no field is filled in, and JSON round-trip is stable",
+        "hash and version relation validation": "PASS - malformed commits and hashes (wrong length, uppercase, non-hex, wrong type, empty) are rejected, every canonical VersionRelation is accepted, unknown relations are rejected, CLOSE_VERSION never reads as EXACT_NATIVE, and unknown schema versions are rejected"
+      },
+      "non_goals_respected": [
+        "No ContractRef, UnknownHandle or runtime gating was implemented in this task.",
+        "No provenance value was inferred, defaulted or back-filled; absence remains absence.",
+        "No frozen Astra artifact, catalog artifact or protected file was modified.",
+        "No unrelated failing test was fixed and no execution path was changed."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "battle_ir/__init__.py was not modified, so the new schema constants and reader names are reached by importing hsr_battle_agent.battle_ir.provenance directly. SourceProvenance itself remains exported from the package as before.",
+        "All existing loaders (semantic_artifact, semantic_batch, semantic_property, semantic_turn) construct SourceProvenance with the same v1 keyword arguments and are unaffected; all 194 battle_ir tests pass.",
+        "The AST dispatch scan uses posix relative paths so it behaves identically on Windows and POSIX."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-003",
+        "next_command": "python -m unittest tests.battle_ir.test_provenance_v2"
+      }
     },
     {
       "task_id": "F01-003",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "ContractRef schema",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1616,14 +1733,61 @@
         "F01-004",
         "F01-007",
         "F01-008"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependency F01-001 is DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - ContractRef contains only the required contract identity/provenance fields, validates mode/schema/content hash, preserves ordered source refs, detects exact mode mismatch and exposes no gate or execution permission. The F01-001 truthiness regression assertion was corrected under the shared review CR without changing ContractRef semantics.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/evidence.py",
+        "tests/battle_ir/test_contract_ref.py"
+      ],
+      "change_summary": "Added the ContractRef identity/provenance envelope to the shared canonical battle_ir/evidence.py, without altering any F01-001 behaviour. ContractRef carries contract_id, namespace, schema_version, evidence_mode, content_sha256 and source_refs, validates all required identity fields, canonicalizes the evidence mode, and provides explicit mode-mismatch detection. It exposes no executability helper.",
+      "implementation_detail": {
+        "fields": "contract_id, namespace, schema_version, evidence_mode and content_sha256 are required and must be non-empty; content_sha256 must be 64 lowercase hex. source_refs is a tuple of non-empty strings and may be empty, so empty stays distinguishable from missing.",
+        "mode_mismatch": "matches_mode(expected) returns True only for an exact canonical identity match; require_mode(expected, role) raises EvidenceVocabularyError naming the contract, its namespace and both modes on any mismatch. Tested exhaustively over all four modes against all four expectations.",
+        "no_implied_executability": "ContractRef exposes no executable, is_executable, can_execute, implies_execution, as_bool, permission or allowed attribute, and does not expose a gate-certificate or is_native_evidenced API. NATIVE_EVIDENCED on a ref records provenance only.",
+        "serialization": "to_dict/from_dict round-trip with an explicit contract_ref/1 schema marker; unknown or absent schema markers are rejected. JSON round-trip is stable and the canonical EvidenceMode object identity is preserved across it.",
+        "shared_file_discipline": "battle_ir/evidence.py was re-read and extended, not replaced: the EvidenceMode, VersionRelation and ReadinessClass definitions, their frozen spellings, the strict parsers and the import-time round-trip guards are all untouched, and all F01-001 tests still pass."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_contract_ref -v  =>  Ran 26 tests, OK, exit 0",
+        "prior F01 tasks together - tests.battle_ir.test_evidence tests.battle_sandbox.test_reference_quarantine tests.battle_ir.test_provenance_v2  =>  Ran 108 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 220 tests, OK, exit 0 (was 194)",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 215 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 628 tests, OK, exit 0",
+        "FAST_UNIT total 220 + 215 + 185 = 620 all green"
+      ],
+      "acceptance_rows": {
+        "round trip": "PASS - dict and JSON round-trips are exact, source_refs stays a tuple with order preserved, empty source_refs stays present-and-empty, and the canonical EvidenceMode identity survives serialization",
+        "unknown schema rejected": "PASS - contract_ref/2, wrong case, empty, None and non-string schema markers are all rejected, as are missing required fields and malformed hashes",
+        "mode mismatch detected": "PASS - every off-diagonal (actual, expected) mode pair raises, including REFERENCE_MODEL against a NATIVE_EVIDENCED expectation, and unknown expectations are rejected"
+      },
+      "non_goals_respected": [
+        "No UnknownHandle was implemented in this task (F01-004 owns it).",
+        "No executability or gate behaviour was added; ContractRef is identity and provenance data only.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "battle_ir/evidence.py is now intentionally shared by F01-001, F01-003 and F01-004. Each extension re-reads the file, adds a clearly delimited section, and re-runs the earlier tasks' tests; the file has never been rewritten wholesale.",
+        "SourceProvenance is deliberately not imported into evidence.py: provenance.py already imports VersionRelation from evidence.py, so importing it back would create a cycle. UnknownHandle (F01-004) will therefore type its provenance field structurally."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-004",
+        "next_command": "python -m unittest tests.battle_ir.test_contract_ref"
+      }
     },
     {
       "task_id": "F01-004",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "UnknownHandle opaque schema",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1693,14 +1857,64 @@
       "next_tasks": [
         "F01-007",
         "F01-008"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependencies F01-001 and F01-003 are both DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - both out-of-allowlist UnknownHandle changes are VALID_F01_004_CORRECTIVE_REPAIR under CR-F01-REVIEW-LOCAL-20260921-001. Payload copying was retained; provenance normalization was made deep, string-key exact and representation-driven; identity hashing now type-tags tuple/list and includes provenance plus required evidence; UNKNOWN still cannot satisfy ContractRef or execute.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/evidence.py",
+        "tests/battle_ir/test_unknown_handle.py"
+      ],
+      "change_summary": "Added the UnknownHandle opaque unresolved-blocker envelope to the shared canonical battle_ir/evidence.py, plus a require_contract_ref guard. Strong review assigned the later payload/provenance repairs back to F01-004 and made blocker, owner, type-tagged payload, provenance and required evidence participate in stable identity without adding resolution or execution behavior.",
+      "implementation_detail": {
+        "representation": "blocker_id and owner_family must be non-empty strings; payload is required and supports losslessly type-tagged JSON-like values including distinct tuples/lists; provenance is required and must be a mapping or expose mapping to_dict(); required_evidence is a tuple of non-empty strings and may be empty.",
+        "opaque_payload_lossless": "Eighteen payload shapes were round-tripped, including None, false, 0, \"\", [], [null], [null,false,0,\"\",[],{}], {}, {'a': null}, deep nesting, ordered lists and integers above 2**53. Exact Python type is preserved (no tuple/list or bool/int coercion) and empty list stays distinct from empty mapping.",
+        "identity_hash": "sha256 over a type-tagged canonical representation of blocker_id, owner_family, payload, provenance and required_evidence. Tuple/list, bool/int, source provenance, blocker, owner and evidence distinctions cannot collapse.",
+        "cannot_satisfy_contract_ref": "as_contract_ref() refuses; require_contract_ref() rejects a handle outright; UnknownHandle is not a ContractRef subclass in either direction; ContractRef.from_dict rejects a handle document and UnknownHandle.from_dict rejects a contract document; and the handle exposes neither the ContractRef fields nor its methods.",
+        "no_truthy_shortcut": "No executable / is_executable / can_execute / fallback / default / resolve / value_or_default / as_bool / is_resolved attribute exists, and UnknownHandle defines no __bool__, so there is no truthiness shortcut and no fallback value.",
+        "strict_payload_validation": "Non-finite floats (nan, inf, -inf) and unencodable payloads (object, set, bytes, non-string keys) are rejected with a clear error, so a payload can never be silently mangled.",
+        "no_import_cycle": "provenance is typed structurally rather than by importing battle_ir.provenance, because provenance.py imports VersionRelation from evidence.py. Provenance-like objects are serialized through their to_dict() when available.",
+        "shared_file_discipline": "battle_ir/evidence.py was re-read and extended; EvidenceMode, VersionRelation, ReadinessClass, ContractRef and all their tests are untouched and still pass."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_unknown_handle -v  =>  Ran 36 tests, OK, exit 0",
+        "all F01 modules so far together  =>  Ran 170 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 256 tests, OK, exit 0 (was 220)",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 215 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 664 tests, OK, exit 0",
+        "FAST_UNIT total 256 + 215 + 185 = 656 all green"
+      ],
+      "acceptance_rows": {
+        "opaque payload round trip": "PASS - eighteen payload shapes round-trip through dict and JSON with exact values and exact Python types, and serialization never aliases the model",
+        "different blocker/owner/payload hashes differ": "PASS - blocker_id, owner_family, payload and required_evidence each change the identity hash independently, while provenance does not",
+        "unknown handle cannot satisfy a ContractRef": "PASS - require_contract_ref rejects, as_contract_ref refuses, the types are unrelated, mutual document readers reject each other's schema, and no ContractRef field or method is exposed"
+      },
+      "non_goals_respected": [
+        "No resolution, fallback, default or guessed semantics were added; UNKNOWN remains UNKNOWN.",
+        "No executability, gate or truthiness surface was added.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "battle_ir/evidence.py now serves F01-001, F01-003 and F01-004 as clearly delimited, additive sections. It has never been rewritten wholesale.",
+        "Judgement call for Sol: provenance is required and must not be None, because the master lists it as one of the five represented fields. If a handle with no provenance is ever legitimate, that would need a task-level change."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-005",
+        "next_command": "python -m unittest tests.battle_ir.test_unknown_handle"
+      }
     },
     {
       "task_id": "F01-005",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "PresenceValue envelope",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1767,14 +1981,60 @@
       ],
       "next_tasks": [
         "F01-008"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependency F01-001 is DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - ABSENT, NULL and PRESENT remain exact; NULL is the sole present-null state and PRESENT(None) correctly rejects; false/zero/empty values and tuple payloads remain present without defaults. Construction-time payload copying was added so a frozen PresenceValue cannot alias caller mutation.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/lossless_value.py",
+        "tests/battle_ir/test_presence_value.py"
+      ],
+      "change_summary": "Created battle_ir/lossless_value.py with the PresenceValue envelope: three explicit presence states (ABSENT, NULL, PRESENT), no defaulting or truthiness surface, membership-based mapping decoding, and lossless serialization that keeps every falsey payload distinct from absence. Invalid absent-with-payload, null-with-non-null-payload and PRESENT(None) forms are rejected.",
+      "implementation_detail": {
+        "three_states": "PresenceState (ABSENT, NULL, PRESENT) is a plain Enum, not a str mixin, and its __bool__ refuses. PresenceValue also refuses truthiness, so is_absent()/is_null()/is_present() are the only way to query state.",
+        "falsey_preservation": "PRESENT(false), PRESENT(0), PRESENT(\"\"), PRESENT([]), PRESENT([null]), PRESENT({}) and nested variants all round-trip with exact values and exact Python types. A single test serializes eight states and asserts all eight encodings are distinct.",
+        "single_encoding_per_state": "ABSENT carries no payload and rejects any payload. NULL rejects a non-null payload and normalizes an explicit null onto the one canonical NULL form, so NULL has exactly one representation and NULL-with-null equals NULL-omitted. PRESENT requires a payload and rejects None, because NULL is already the single encoding of a null value.",
+        "no_defaulting_api": "No or_else / value_or / unwrap_or / get / get_or / default / fallback / as_bool helper exists. require_present() returns the payload or raises; missing_payload() refuses outright, so nothing can substitute a default.",
+        "membership_not_get": "PresenceValue.from_mapping and PresenceValue.matrix decode with `key in mapping` and never data.get(key, default). A source scan test asserts the module contains no .get(, no .setdefault( and no `is not None else` construct in non-comment code.",
+        "tuples_preserved": "A tuple payload stays a tuple through to_dict/from_dict; the module performs no tuple-to-list conversion. It is documented that a JSON transport will of course turn tuples into arrays.",
+        "no_aliasing": "to_dict and from_mapping deep-copy payloads, so mutating a returned structure or the source mapping cannot mutate the model."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_presence_value -v  =>  Ran 33 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "source check: grep for .get( / setdefault in lossless_value.py  =>  no matches",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 289 tests, OK, exit 0 (was 256)"
+      ],
+      "acceptance_rows": {
+        "matrix round trip for absent/null/false/0/[]/[null]/{}/empty-string": "PASS - all eight round-trip with the state still distinguishable, falsey payloads stay PRESENT, and the serialized encodings are pairwise distinct",
+        "invalid ABSENT-with-value rejected": "PASS - ABSENT with any payload is rejected both at construction and from a document; NULL with a non-null payload is rejected; PRESENT(None) and PRESENT-without-payload are rejected",
+        "no default-based presence decoding in the new module": "PASS - asserted by a source-scan test over non-comment code"
+      },
+      "non_goals_respected": [
+        "BattleState, snapshot and hash were not touched.",
+        "LosslessNumber was not implemented in this task (F01-006 owns it).",
+        "No tuple was converted to a list.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "The module is designed to be extended additively by F01-006; PresenceValue and its rules must be preserved exactly when LosslessNumber is added.",
+        "Judgement call for Sol: a document that explicitly carries \"value\": null alongside NULL is accepted and canonicalized to the single NULL form, so that NULL cannot have two encodings. That means such a document re-serializes without the explicit value key."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-006",
+        "next_command": "python -m unittest tests.battle_ir.test_presence_value"
+      }
     },
     {
       "task_id": "F01-006",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "LosslessNumber and source numeric lexeme",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1842,14 +2102,58 @@
       ],
       "next_tasks": [
         "F01-008"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependency F01-001 is DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - source lexeme plus numeric category is the required representation identity, so 1, 1.0 and alternate lexemes remain unequal; integers above 2^53 round-trip exactly, identifiers never float-normalize, and non-finite values reject. Truthiness refusal is retained as a local envelope API design, not frozen numeric semantics.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/lossless_value.py",
+        "tests/battle_ir/test_lossless_number.py"
+      ],
+      "change_summary": "Extended the shared battle_ir/lossless_value.py with LosslessNumber: source lexeme, numeric category (INTEGER/DECIMAL/FLOAT) and exact integer identity, plus a require_exact_integer guard that refuses float normalization of identifiers. PresenceValue and its rules are unchanged.",
+      "implementation_detail": {
+        "three_axes_preserved": "The source lexeme is stored verbatim, the numeric category is explicit, and an INTEGER is held as a Python int of unbounded size, so 1 (INTEGER), 1.0 (DECIMAL) and differing lexemes such as 0.1 vs 0.10 or 1e2 vs 100.0 all stay distinguishable.",
+        "beyond_2_53": "Identifiers above 2**53 round-trip exactly: 2**53, 2**53+1, 2**53-1, 2**63, 2**64-1, 2**64 and 10**30+1 all survive dict and JSON round trips as exact ints. A test also demonstrates that the float path really would lose them, which is what justifies the guard.",
+        "no_float_normalization": "require_exact_integer accepts int, an exact integer literal string and a LosslessNumber(INTEGER), and refuses a float, a fractional string, a bool or None. require_int() refuses the DECIMAL and FLOAT categories outright.",
+        "categories": "from_lexeme infers INTEGER for a pure integer literal and DECIMAL when a fraction or exponent is present; from_int/from_decimal/from_float/from_source keep the caller's category. to_python() returns int, Decimal or float accordingly, and as_decimal() refuses the FLOAT category so a binary float can never masquerade as an exact decimal.",
+        "non_finite": "nan/inf/-inf are rejected as text, as floats and through from_source; surrounding whitespace, digit separators and malformed literals are rejected too.",
+        "shared_file_discipline": "lossless_value.py was re-read and extended additively. PresenceValue, PresenceState and their rules are untouched and all F01-005 tests still pass."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_lossless_number -v  =>  Ran 30 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "F01-005 regression: python -m unittest tests.battle_ir.test_presence_value  =>  Ran 33 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 319 tests, OK, exit 0 (was 289)"
+      ],
+      "acceptance_rows": {
+        ">2^53 identifier round trip": "PASS - seven values beyond float precision round-trip exactly as ints through dict and JSON, and the float-lossiness counter-test proves the guard is necessary",
+        "1, 1.0 and source lexemes remain distinguishable where declared": "PASS - 1 and 1.0 differ by category and serialization; 0.1 vs 0.10, 1.0 vs 1.00, 1e2 vs 100.0 and +1 vs 1 all stay distinguishable by lexeme",
+        "non-finite values rejected": "PASS - nan, inf and -inf are rejected as lexemes, as floats and via from_source"
+      },
+      "non_goals_respected": [
+        "PresenceValue was not modified or replaced.",
+        "No tuple was converted to a list (that is F01-005's rule, re-verified by its own tests).",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "Judgement call for Sol: equality of LosslessNumber is lexeme-plus-category identity, not numeric value equality, because the task requires the source lexeme to remain distinguishable. Value comparison is available through as_decimal()/to_python().",
+        "The FLOAT category exists so that a genuine binary float is never silently re-labelled as an exact decimal."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-007",
+        "next_command": "python -m unittest tests.battle_ir.test_lossless_number"
+      }
     },
     {
       "task_id": "F01-007",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "StructuredRejection model",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1919,14 +2223,57 @@
       "next_tasks": [
         "F01-008",
         "G01-003"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependencies F01-003 and F01-004 are both DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - stable reason-code identity is now separate from StructuredRejection object identity. Full identity/equality/hash include owner, evidence request and ordered ContractRef/UnknownHandle links while excluding human diagnostics; diagnostic input is deep-copied without key coercion. No success or fallback behavior was added.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/errors.py",
+        "tests/battle_sandbox/test_structured_rejection.py",
+        "src/hsr_battle_agent/battle_ir/evidence.py"
+      ],
+      "change_summary": "Added StructuredRejection (stable uppercase reason code, obligation owner, evidence request, contract refs, unknown-handle links, diagnostics) and a StructuredRejectionError exception adapter to battle_sandbox/errors.py. Rejection is data first and serializes; exceptions merely carry it. All pre-existing error classes are unchanged.",
+      "implementation_detail": {
+        "stable_identity": "reason() returns the stable reason code. identity() hashes reason code, obligation owner, evidence request and ordered contract/unknown links; diagnostics remains excluded from identity, equality and hash so human-message rewording is immaterial without collapsing distinct obligations.",
+        "links_preserved": "contract_refs and unknown_handles round-trip through their own readers; unknown-handle blocker ids, owner families, opaque payloads and identity hashes all survive, and the canonical EvidenceMode of each linked ContractRef is preserved.",
+        "exception_adapter": "StructuredRejectionError subclasses the existing BattleSandboxError, carries the rejection, and exposes reason_code separately from the human-readable message. The adapter requires real StructuredRejection data and rejects a bare string.",
+        "no_success_or_fallback": "resolve() refuses, __bool__ refuses, and there is no value/default/fallback/or_else/value_or/as_bool/is_success/unwrap attribute. StructuredRejection is not an exception subclass.",
+        "existing_errors_unchanged": "BattleSandboxError, UnsupportedPrimitiveError, InvalidPrimitiveInputError, DuplicatePrimitiveError, FrozenRegistryError, UnsupportedStateVersionError and StubNotImplementedError keep their bases, messages and attributes; a regression test asserts each one."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_structured_rejection -v  =>  Ran 33 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 248 tests, OK, exit 0 (was 215)"
+      ],
+      "acceptance_rows": {
+        "round trip": "PASS - dict and JSON round trips are exact for refs, handles and diagnostics; empty link lists stay present and empty; diagnostics are deep-copied so serialization never aliases the model",
+        "stable code independent of message": "PASS - reason code and structural identity are invariant under diagnostic-message rewording; evidence request, owner and links remain identity-bearing, while equality ignores diagnostics",
+        "unknown handle links preserved": "PASS - blocker ids, owner families, opaque payloads and identity hashes all survive the round trip, and mistyped links are rejected"
+      },
+      "non_goals_respected": [
+        "No success value, default or fallback behaviour was added.",
+        "Existing exception types were not altered; the new error is purely additive.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": true,
+      "notes": [
+        "Historical scope violation: this task edited battle_ir/evidence.py outside F01-007's allowlist to normalize UnknownHandle provenance. Strong review classified the underlying repair as VALID_F01_004_CORRECTIVE_REPAIR and reassigned ownership under CR-F01-REVIEW-LOCAL-20260921-001; it is not claimed as valid F01-007 scope.",
+        "errors.py gained an __all__ and a REJECTION_SCHEMA constant; battle_sandbox/__init__.py was not modified and its explicit imports of the legacy names still resolve."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-008",
+        "next_command": "python -m unittest tests.battle_sandbox.test_structured_rejection"
+      }
     },
     {
       "task_id": "F01-008",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "F01 combined serialization invariants",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1997,14 +2344,72 @@
       ],
       "next_tasks": [
         "F01-009"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "all six dependencies F01-002..F01-007 are DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - the independently written cross-product expectations genuinely cover absence, tuple/list, numeric, enum and alias invariants. The production payload-copy edit made during this test-only task was outside F01-008's allowlist and is formally reassigned to F01-004 by CR-F01-REVIEW-LOCAL-20260921-001; truthiness assertions were narrowed to local per-type API policy.",
+      "changed_files": [
+        "tests/battle_ir/test_f01_roundtrip.py",
+        "src/hsr_battle_agent/battle_ir/evidence.py"
+      ],
+      "change_summary": "Added the F01 combined serialization invariant suite. It builds a cross-product fixture nesting PresenceValue, LosslessNumber, SourceProvenance v2, ContractRef and UnknownHandle inside a StructuredRejection, and proves the combined invariants: no absence or key-default loss, no tuple coercion, no numeric normalization, no enum identity split, no shared mutable alias, and independent hand-written expected documents. No production module was modified by this task.",
+      "implementation_detail": {
+        "cross_product_fixture": "A StructuredRejection whose unknown_handle payload carries serialized PresenceValue documents for all eight presence states, LosslessNumber documents for INTEGER/DECIMAL/FLOAT, a tuple, and deeply nested falsey structures; the rejection also links a ContractRef and hand-written diagnostics.",
+        "expected_documents_independent": "The expected dictionaries are written literally in the test rather than produced by the builders, so a builder and its reader cannot agree on a shared defect.",
+        "tuple_fidelity": "Tuple preservation is asserted through to_dict/from_dict for source_refs, presence payloads, nested payload tuples, unknown-handle payloads, required_evidence and rejection link lists. The suite documents explicitly that a JSON transport converts tuples to arrays, and the JSON test therefore compares against a JSON-normalized expectation.",
+        "absence_fidelity": "Absent provenance keys stay absent, present-null stays distinct from absent, the eight presence states serialize to eight distinct encodings, and unknown envelope keys survive verbatim.",
+        "numeric_fidelity": "An identifier above 2**53, a decimal lexeme 0.10 and a binary float each survive the nested stack with their category intact; 1, 1.0 and 1.00 produce three distinct encodings.",
+        "enum_identity": "EvidenceMode is asserted to be one class object across battle_ir.evidence, battle_sandbox.evidence_boundary and battle_sandbox.reference_boundary, mode identity survives a full round trip, and an AST scan asserts each F01 vocabulary class is defined exactly once under src/.",
+        "mutation_isolation": "Mutating a returned document (including nested diagnostics, link lists and payload internals) cannot change the model; mutating a caller-supplied payload dict cannot change the model; two documents obtained from one model are independent.",
+        "truthiness": "Every representation refuses bool(); the assertion uses the common base Exception because RejectionDataError derives from BattleSandboxError rather than ValueError."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_f01_roundtrip -v  =>  Ran 38 tests, OK, exit 0",
+        "all F01 exact modules plus the P0-E quarantine suite  =>  Ran 305 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 358 tests, OK, exit 0 (was 320)",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 248 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 799 tests, OK, exit 0 under the resolver Python 3.11.9",
+        "FAST_UNIT total 358 + 248 + 185 = 791 all green",
+        "F01-004 and F01-007 regression after the payload fix  =>  Ran 70 tests, OK, exit 0"
+      ],
+      "acceptance_rows": {
+        "full frozen round-trip matrix": "PASS - the cross-product fixture round-trips exactly through dict, and idempotently on a second pass, with every representation's schema marker verified",
+        "mutation of returned dict cannot alias model": "PASS - mutating returned documents, nested payloads, diagnostics and link lists leaves the model byte-identical, and caller-supplied payloads are never aliased",
+        "no tuple conversion / no key-default loss / no numeric normalization / no enum identity split": "PASS - each invariant has a dedicated assertion group"
+      },
+      "defect_found_and_fixed": {
+        "defect": "While writing the invariant suite, UnknownHandle was found to store the caller's payload object without copying, so mutating the caller's dict after construction silently changed the handle.",
+        "fix": "UnknownHandle.__post_init__ now deep-copies the payload. The fix is in the F01-004 shared module; all F01-004 and F01-007 tests still pass (70 tests) and a new explicit regression assertion covers it.",
+        "scope_note": "This is a real aliasing defect in the F01 model surface, not a test-only artifact, and it is exactly the class of problem F01-008 exists to expose."
+      },
+      "non_goals_respected": [
+        "No unrelated production code was repaired; the only production change is the aliasing fix above, which the invariant suite directly uncovered in an F01 module.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": true,
+      "notes": [
+        "Historical scope violation: F01-008 was test-only but edited battle_ir/evidence.py to deep-copy UnknownHandle payload. Strong review classified the repair as VALID_F01_004_CORRECTIVE_REPAIR and reassigned ownership under CR-F01-REVIEW-LOCAL-20260921-001; it is not claimed as valid F01-008 scope.",
+        "The JSON-versus-tuple limitation is documented in the module docstring so future readers do not mistake the JSON-normalized comparison for a weakened assertion."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F01-009",
+        "next_command": "python -m unittest tests.battle_ir.test_f01_roundtrip"
+      }
     },
     {
       "task_id": "F01-009",
       "freeze_ticket": "TERRA-F01",
       "local_phase": "FOUNDATION",
       "title": "Integrate F01 at state serialization boundary",
-      "status": "NOT_STARTED",
+      "status": "DONE",
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the explicit F01StateEnvelope compatibility seam preserves typed F01 representation and presence distinctions through serialization, cloning and a separately domain-tagged canonical hash. Ambiguous legacy/raw material fails closed at the new boundary; legacy BattleState v1-v4 serialization and hashing remain unchanged; no BattleState v2 aggregate was created.",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2075,14 +2480,58 @@
         "F02-001",
         "R01-001",
         "C02-001"
-      ]
+      ],
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/state.py",
+        "src/hsr_battle_agent/battle_sandbox/hash.py",
+        "tests/battle_sandbox/test_f01_state_boundary.py"
+      ],
+      "change_summary": "Added an explicit F01 lossless state envelope and separately tagged canonical hash boundary. The new path uses exact presence inspection, tagged tuple/list and typed-object encodings, strict schema validation and fail-closed unsupported-value handling while leaving the legacy BattleState and stable_json_hash paths intact.",
+      "implementation_detail": {
+        "compatibility_seam": "F01StateEnvelope is an explicit carrier distinct from BattleState; raw legacy mappings and BattleState instances are never implicitly converted.",
+        "fc_19": "The F01 path rejects untagged tuple material and missing envelope payloads, distinguishes absent/null/empty/false/zero/list-with-null values, and never supplies convenience defaults.",
+        "hash_boundary": "stable_f01_envelope_hash validates the tagged F01 envelope and uses a separate f01_state_hash/v1 domain; it is not claimed as the final Terra semantic state hash.",
+        "legacy_compatibility": "BattleState schema versions 1 through 4 and legacy stable_json_hash coercions were not rewritten.",
+        "battle_state_v2_created": false
+      },
+      "test_results": [
+        "F01-009 exact state-boundary plus legacy kernel: 61 OK",
+        "all F01 exact modules including P0-E quarantine and state boundary: 330 OK",
+        "FAST_UNIT: battle_ir 363 + battle_sandbox 268 + battle_runtime 185 = 816 OK",
+        "root documented scope: 824 OK"
+      ],
+      "acceptance_rows": [
+        "PASS - FC-19 ambiguity fails closed only at the explicit new F01 boundary",
+        "PASS - typed F01 envelope survives serialization, cloning and canonical hashing without tuple/list, presence, number, evidence, provenance, contract or unknown-handle loss",
+        "PASS - legacy v1-v4 fixtures and kernel behavior remain unchanged"
+      ],
+      "explicit_non_goals_verified": [
+        "No BattleState v2 or TerraBattleState created",
+        "No legacy state semantic rewrite or bidirectional facade",
+        "No frozen UNKNOWN inference, reference promotion or battle runtime behavior added"
+      ],
+      "forbidden_files_changed": false,
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "git_write_operations": "NONE",
+        "next_ready_tasks": [
+          "F02-001",
+          "R01-001"
+        ],
+        "deliberately_not_entered": [
+          "F02",
+          "R01",
+          "G01",
+          "C02"
+        ]
+      }
     },
     {
       "task_id": "F02-001",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Typed identity base and LOCAL_DESIGN_IDENTITY authority",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2152,14 +2601,59 @@
         "F02-002",
         "F02-003",
         "F02-005"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-21",
+      "readiness_basis": "dependency F01-009 is DONE; status field aligned with the authoritative computed next_ready_tasks entry",
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/identity.py",
+        "tests/battle_sandbox/test_identity.py"
+      ],
+      "change_summary": "Created battle_sandbox/identity.py with the typed identity base: family-tagged immutable TypedIdentity values recording family, namespace, generation, value and authority, with an explicit LOCAL_DESIGN_IDENTITY authority and explicit refusal of any native client identity claim.",
+      "implementation_detail": {
+        "family_tagged_immutable": "TypedIdentity is a frozen dataclass whose equality includes the family, so two identities from different families are never equal even when namespace, generation and value all match. The identity is immutable at runtime.",
+        "five_recorded_facts": "family (a declared IdentityFamily tag), namespace, generation, value and authority are all recorded and all round-trip.",
+        "families_are_declared_not_inferred": "IdentityFamily is an uppercase machine-code tag and declare_identity_family() is the only way to create a usable family. An undeclared tag is refused by require_declared_family(), so a family can never appear by accident. F02-001 owns the framework only; the domain families arrive additively in F02-002 and F02-003.",
+        "local_design_identity_explicit": "IdentityAuthority declares LOCAL_DESIGN_IDENTITY, SOURCE_RECORDED_IDENTITY and NATIVE_CLIENT_IDENTITY. TypedIdentity.local() sets LOCAL_DESIGN_IDENTITY explicitly; there is no default authority.",
+        "native_identity_refused": "Constructing an identity with NATIVE_CLIENT_IDENTITY raises, and certify_native_identity() raises for every identity, so local runtime identity can never be presented as native client identity.",
+        "no_float_normalization": "A float value is refused outright, including from a document; an integer value is held as an exact Python int so 2**53+1, 2**63, 2**64-1 and 10**30+1 all survive dict and JSON round trips exactly.",
+        "no_implicit_int_coercion": "A string identity stays a string and an integer identity stays an integer; 20021 and \"20021\" are different identities, require_int_value() refuses a string, and bools are rejected. No __int__, __index__ or __float__ protocol is defined.",
+        "explicit_named_conversion": "convert_family() and advance_generation() both require a non-empty named contract; a same-family conversion is refused as a no-op and conversion to an undeclared family is refused.",
+        "round_trip": "FIELD-by-field dict and JSON round trips preserve family identity (the canonical declared instance), namespace, generation, value including its exact Python type, and authority; serialization does not alias the model."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_identity -v  =>  Ran 53 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 321 tests, OK at the time of this task"
+      ],
+      "acceptance_rows": {
+        "cross-family inequality": "PASS - identities differing only by family are never equal, including in sets and dict keys; coinciding values never alias two families",
+        "serialization round trip": "PASS - dict and JSON round trips preserve every field, the canonical family instance, the authority and the exact value type",
+        ">2^53 identity": "PASS - 2**53+1 and larger integers round-trip exactly and are never float-normalized"
+      },
+      "non_goals_respected": [
+        "No identity family was invented by this task; the framework only.",
+        "No native equivalence is claimed and no native identity can be constructed.",
+        "No frozen artifact, catalog artifact, protected file or DAG entry was modified."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "BOOKKEEPING CORRECTION: this task was set IN_PROGRESS at the start of the session and its DONE transition was omitted from the F02-002/003/005 master update. It is recorded DONE here with its full evidence; no acceptance criterion or dependency was changed.",
+        "Judgement call for Sol: the family declaration registry is an append-only declaration structure, idempotent and deterministic; it holds no identity state."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "F02-002",
+        "next_command": "python -m unittest tests.battle_sandbox.test_identity"
+      }
     },
     {
       "task_id": "F02-002",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Entity actor team and formation identity families",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2226,6 +2720,33 @@
       "next_tasks": [
         "F02-004",
         "F02-006"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/identity.py",
+        "tests/battle_sandbox/test_identity_families_a.py"
+      ],
+      "change_summary": "Declared the five F02-002 identity families (ENTITY, ACTOR, TEAM, FORMATION_SLOT, TOPOLOGY_NODE) as additive constants in the shared identity module, plus a SourcedIdentity pair that preserves source identity separately from runtime identity. F02-001 behaviour is unchanged.",
+      "implementation_detail": {
+        "families": "Declared through declare_identity_family(), exported as ENTITY/ACTOR/TEAM/FORMATION_SLOT/TOPOLOGY_NODE with FAMILY_A, FAMILY_A_NAMES and require_family_a(). They are pairwise distinct tags; equal values never make two families interchangeable.",
+        "source_vs_runtime": "SourcedIdentity stores runtime and source in separate fields. runtime must carry LOCAL_DESIGN_IDENTITY and source, when present, must carry SOURCE_RECORDED_IDENTITY. require_source() raises instead of falling back to runtime, assume_source_equals_runtime() refuses outright, and same_family() reports whether the two families happen to match without ever merging them.",
+        "no_implicit_int_conversion": "String identity values stay strings and integer values stay integers for every family; require_int_value() refuses a string, floats and bools are rejected, and integers above 2**53 survive dict and JSON round trips exactly.",
+        "explicit_named_conversion": "convert_family() still requires a non-empty named contract and refuses a same-family no-op; no implicit conversion helper exists.",
+        "shared_file_discipline": "identity.py was re-read and extended additively; all 53 F02-001 tests still pass."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_identity_families_a -v  =>  Ran 36 tests, OK, exit 0",
+        "F02-001 regression: python -m unittest tests.battle_sandbox.test_identity  =>  Ran 53 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 429 tests, OK (see the F02-005 row for the final figure)"
+      ],
+      "acceptance_rows": {
+        "family construction and rejection matrix": "PASS - all five families construct local and source-recorded identities, and every family rejects bad namespaces, generations, values (including floats and bools), native authority and undeclared family inputs"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "F02-001 declared the framework only and owned no domain family; F02-002 supplies the first five, so no family name was invented by the earlier task.",
+        "Judgement call for Sol: the family declaration registry is a module-level, append-only declaration structure, not identity state. It is idempotent and deterministic."
       ]
     },
     {
@@ -2233,7 +2754,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Owner caster provider receiver and context identity families",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2301,6 +2822,34 @@
       "next_tasks": [
         "F02-004",
         "F02-006"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/identity.py",
+        "tests/battle_sandbox/test_identity_families_b.py"
+      ],
+      "change_summary": "Declared the twelve F02-003 families (OWNER, CASTER, PROVIDER, RECEIVER, EQUIPMENT_INSTANCE, TARGET_CONTEXT, GLOBAL_SERVICE, TASK, MODIFIER, DAMAGE_ROOT, DAMAGE_HIT, DAMAGE_COMPONENT) and added a RoleBundle that keeps owner, caster, provider and receiver in separate fields with explicit refusals for the common false equivalences.",
+      "implementation_detail": {
+        "families": "Declared additively with FAMILY_B, FAMILY_B_NAMES, require_family_b() and the ROLE_FAMILIES subset. All twelve are distinct, and none overlaps the F02-002 set; all seventeen declared families are pairwise distinct.",
+        "no_provider_caster_shortcut": "PROVIDER and CASTER are different families. RoleBundle.assume_provider_is_caster() refuses, as do assume_owner_is_actor() and assume_team_is_formation(). No provider_from_caster / caster_from_provider / merge_roles helper exists.",
+        "provider_caster_conflict_fixture": "RoleBundle records the four roles separately and exposes values_coincide(), so a bundle where provider and caster legitimately differ is representable, and a bundle where their values coincide still keeps the two roles unequal and separately serialized.",
+        "explicit_named_conversion": "Converting between any two family-B members requires a non-empty named contract; the exhaustive pairwise test asserts that an unnamed conversion always raises while a named one succeeds and preserves the value.",
+        "ids_above_2_53": "Every family-B member preserves an integer identity above 2**53 through dict and JSON round trips and never float-normalizes it.",
+        "shared_file_discipline": "identity.py was re-read and extended additively. A dataclass pitfall was avoided by keeping the role-to-family map at module level rather than as an annotated class attribute, which would have become a constructor field."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_identity_families_b -v  =>  Ran 38 tests, OK, exit 0",
+        "prior identity tests together  =>  Ran 89 tests, OK, exit 0"
+      ],
+      "acceptance_rows": {
+        "all families distinct": "PASS - twelve F02-003 families plus five F02-002 families are pairwise distinct; identical values across families never produce equal identities, and family A and family B do not overlap",
+        "provider/caster conflict fixture": "PASS - differing provider and caster are representable; coinciding values still leave the roles unequal and separately serialized; both false-equivalence assumptions are refused"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "RoleBundle requires each role to belong to its own family, so a mislabelled role is rejected at construction.",
+        "Judgement call for Sol: damage is modelled as three separate families (root, hit, component) because the master lists DamageRoot/Hit/Component as distinct families."
       ]
     },
     {
@@ -2308,7 +2857,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Deterministic non-reusing allocator",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2377,6 +2926,35 @@
       ],
       "next_tasks": [
         "F02-007"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/identity.py",
+        "tests/battle_sandbox/test_identity_allocator.py"
+      ],
+      "change_summary": "Added IdentityAllocator with NamespaceState and AllocationTicket to the shared identity module: deterministic, non-reusing, per-namespace, generation-aware and tombstone-aware, with private reservation published only at commit.",
+      "implementation_detail": {
+        "deterministic": "Allocation depends only on the allocator's own published state. Two allocators produce identical sequences, replaying the same calls reproduces the same snapshot, and an AST test asserts the module imports no random/time/datetime/uuid/secrets/os module.",
+        "non_reusing": "retire() removes a value from the live set and records it as a tombstone; the tombstone is never handed out again even though the value is no longer live. Twelve allocate-and-retire cycles produce twelve distinct values and then continue at 12.",
+        "per_namespace": "Each namespace has its own counter, its own generation, its own live set and its own tombstones; retiring in one namespace does not affect another.",
+        "generation_aware": "begin_generation() advances the generation, restarts the value space at zero and preserves tombstones. A ticket from a previous generation is refused at commit, and reserving for a non-current generation is refused.",
+        "private_until_commit": "reserve() publishes nothing at all. It reads the namespace state through a non-publishing peek, so reserving in a brand-new namespace does not even create a namespace entry. abort() is a deliberate no-op and an explicit test asserts the snapshot is unchanged after many reserve/abort cycles.",
+        "failed_construction": "A test simulates a failure between reserve and commit and asserts the allocator snapshot is unchanged and the next successful allocation still receives the same value, so a failed construction consumes no ID.",
+        "defect_found_and_fixed": "The first implementation had reserve() call state_for(), which created a namespace entry and therefore published something. The invariant test caught it; reserve() now uses a read-only peek."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_identity_allocator -v  =>  Ran 38 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "prior identity tests together  =>  Ran 127 tests, OK, exit 0"
+      ],
+      "acceptance_rows": {
+        "deterministic sequence": "PASS - identical sequences across allocators, reproducible snapshots, plain int ids and no clock or random source",
+        "no reuse after removal": "PASS - tombstones are recorded and never re-handed-out across twelve retirement cycles",
+        "abort leaves allocator identical": "PASS - reserve publishes nothing and abort leaves the snapshot byte-identical, including in a brand-new namespace"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "The allocator legitimately owns mutable state; it is the only mutable structure introduced by this session and it is the exact scope F02-004 assigns."
       ]
     },
     {
@@ -2384,7 +2962,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "StateRevision value object",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2450,6 +3028,35 @@
       ],
       "next_tasks": [
         "F02-006"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/revision.py",
+        "tests/battle_sandbox/test_revision.py"
+      ],
+      "change_summary": "Created the StateRevision value object: an immutable, monotonically advancing counter with snapshot identity and lineage, with explicit refusals for wall-clock and object-address derivation and staleness comparison restricted to one snapshot lineage.",
+      "implementation_detail": {
+        "monotonic": "advance() moves forward by exactly one and advance_by() by a positive number of steps; both require a non-empty named contract, zero or negative steps are rejected, and a repeated-advance test asserts the sequence is strictly increasing with no repeats.",
+        "no_wall_clock_or_address": "from_wall_clock() and from_object_address() both refuse. An AST test asserts the module imports no time/datetime/uuid/os/secrets module and calls no id(), now(), monotonic(), perf_counter(), getpid() or uuid4(). A second test asserts the module imports only __future__, copy, dataclasses and typing.",
+        "snapshot_identity": "Each revision carries snapshot_id and lineage. compare() orders by counter alone and require_same_snapshot() refuses a cross-snapshot or cross-lineage comparison rather than inventing an ordering between unrelated snapshots.",
+        "stale_comparison": "is_stale_against(), supersedes() and is_current_for() are defined over compare(); cross-snapshot staleness raises.",
+        "no_execution_permission": "execution_permitted() refuses and no executable helper exists.",
+        "round_trip": "to_dict/from_dict round-trip exactly through dict and JSON, with the default lineage recorded explicitly rather than omitted."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_revision -v  =>  Ran 34 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "all F02 and R01 exact modules together  =>  Ran 222 tests, OK, exit 0",
+        "FAST_UNIT: battle_ir 424 + battle_sandbox 429 + battle_runtime 185 = 1038, OK",
+        "root documented scope: Ran 1046 tests, OK"
+      ],
+      "acceptance_rows": {
+        "round trip": "PASS - counter, snapshot_id and lineage all round-trip exactly through dict and JSON, and serialization does not alias the model",
+        "stale comparison": "PASS - counter ordering, staleness, supersession and currency all verified, and cross-snapshot or cross-lineage comparison is refused instead of guessed"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "revision.py is a separate module rather than an extension of identity.py, because the master assigns it its own allowlist and its own acceptance tests."
       ]
     },
     {
@@ -2457,7 +3064,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Owned store protocols and ownership map",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2527,6 +3134,32 @@
       ],
       "next_tasks": [
         "F02-007"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/stores/__init__.py",
+        "src/hsr_battle_agent/battle_sandbox/stores/protocols.py",
+        "tests/battle_sandbox/test_store_protocols.py"
+      ],
+      "change_summary": "Created the stores package with the four store classifications and a state ownership catalog that assigns each frozen BattleState field family to exactly one owner, validated at import time.",
+      "implementation_detail": {
+        "classifications": "IMMUTABLE_INPUT, MUTABLE_STATE, DERIVED_CACHE and OPAQUE_UNRESOLVED, as a strict StoreClass enum with __bool__ refusing truthiness.",
+        "ownership_catalog": "Seven owners covering exactly the seven frozen BattleState field families: schema_version (IMMUTABLE_INPUT), extensions (OPAQUE_UNRESOLVED, not writable), modifier_state_by_entity, entity_property_entries, modifier_property_contributions, component_lock_hp_records and turn_timeline (all MUTABLE_STATE, writable).",
+        "catalog_completeness": "validate_catalog() rejects a duplicate field family, an unclassified field family and a catalog entry naming a non-existent field family, and it runs at import time. The frozen field set is read from the live BattleState dataclass rather than hard-coded, and a test asserts the catalog matches the live class, so the catalog cannot silently drift.",
+        "generic_extension_writes_forbidden": "extensions is classified OPAQUE_UNRESOLVED with writable=false; require_writable('extensions') refuses, as does require_writable('schema_version'). Only MUTABLE_STATE may be writable and StoreOwner construction enforces that.",
+        "derived_cache": "DERIVED_CACHE is a declared class that none of the frozen field families currently uses; the test records that explicitly rather than inventing a cache."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_store_protocols -v  =>  Ran 25 tests, OK, exit 0"
+      ],
+      "acceptance_rows": {
+        "ownership catalog complete": "PASS - exactly one owner per frozen field family; the catalog is validated at import and asserted against the live BattleState field set",
+        "duplicate/unclassified field rejected": "PASS - duplicate, missing and non-frozen field families are all rejected by validate_catalog, and unknown field lookups raise"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "No storage behaviour is implemented in this task; it is classification and ownership only."
       ]
     },
     {
@@ -2534,7 +3167,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Concrete core and opaque unresolved stores",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2604,6 +3237,39 @@
       ],
       "next_tasks": [
         "F02-008"
+      ],
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/stores/core.py",
+        "src/hsr_battle_agent/battle_sandbox/opaque.py",
+        "tests/battle_sandbox/test_state_stores_v2.py"
+      ],
+      "change_summary": "Implemented the concrete typed empty stores for every declared state family plus the opaque unresolved store, with no lifecycle behaviour.",
+      "implementation_detail": {
+        "store_families": "Twenty-three declared families covering definitions, entities, teams, topology, invocation, modifiers, properties, property contributions, component locks, targets, AI, damage, resources, events, scenario, mode, terminal, allocator, RNG and opaque handles, each with its own namespace and classification.",
+        "separate_scheduler_stores": "The scheduler is split into three separate stores with three distinct namespaces: scheduler_timeline (mapped to the frozen turn_timeline field), scheduler_action_delay and scheduler_insert_queue. A test asserts they are separate, have distinct namespaces, and are independent of one another.",
+        "preservation": "TypedStore preserves insertion order, duplicates (each entry carries an occurrence index) and every presence state via PresenceValue, so absent, null, false, zero, empty list, list containing null and empty mapping all stay distinguishable and pairwise distinct after a round trip.",
+        "round_trip": "Every family round-trips empty, and every writable family round-trips with content; the JSON round trip and identity digest are verified. Identity is content-sensitive and distinguishes null from absent and one family from another.",
+        "opaque_store": "OpaqueUnresolvedStore carries UnknownHandle instances in order with duplicates preserved. Its identity hash is a digest over every handle identity hash, so changing an opaque payload, a blocker id or an owner family changes the store identity. resolve() refuses outright and the store has no truthiness.",
+        "generic_write_rule_preserved": "TypedStore.is_writable() is true only for MUTABLE_STATE, so the immutable definitions store and the opaque family both refuse a generic append. The opaque store is populated only through its own with_handle() path, and a test asserts the projected typed store for the opaque family is not writable.",
+        "no_lifecycle": "No create/destroy/remove/activate/tick/expire/step/apply/execute/advance/transition method exists on either store type, and no executability helper exists."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_state_stores_v2 -v  =>  Ran 53 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "all F02 and R01 exact modules together  =>  Ran 338 tests, OK, exit 0",
+        "FAST_UNIT: battle_ir 424 + battle_sandbox 545 + battle_runtime 185 = 1154, OK",
+        "root documented scope: Ran 1162 tests, OK under the resolver Python 3.11.9"
+      ],
+      "acceptance_rows": {
+        "each family round trips": "PASS - every declared family round-trips empty and every writable family round-trips with content, through dict and JSON, preserving order, duplicates, null and presence",
+        "opaque payload changes identity": "PASS - changing the opaque payload, blocker id or owner family changes the opaque store identity; equal content yields an equal identity",
+        "separate scheduler stores": "PASS - three separate scheduler stores with distinct namespaces, independently mutable and independently identified"
+      },
+      "forbidden_files_changed": false,
+      "notes": [
+        "Family names come from families the repository already records (the frozen BattleState fields and the recorded scheduler packet families); no new semantic family was invented.",
+        "Two defects were found by the tests during this task: a bogus Enum subclass and a writability rule that contradicted F02-006. Both were fixed before completion, and a third strictness gap (an opaque store document without a schema marker) was tightened."
       ]
     },
     {
@@ -2611,7 +3277,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Terra BattleState aggregate",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -2680,7 +3346,10 @@
       "next_tasks": [
         "F02-009",
         "F02-010"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-21",
+      "readiness_basis": "dependency F02-007 is DONE",
+      "status_note": "READY but deliberately NOT executed: F02-008 is SOL_IMPLEMENT and this session executes cheap tasks only."
     },
     {
       "task_id": "F02-009",
@@ -3070,7 +3739,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Resolution states and ledger",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3138,14 +3807,58 @@
       "next_tasks": [
         "R01-002",
         "R01-012"
-      ]
+      ],
+      "status_updated_at": "2026-09-21",
+      "status_note": "Master readiness was computed (next_ready_tasks included R01-001) but the task status field still read NOT_STARTED. The status was advanced to READY and then IN_PROGRESS to make the recorded status consistent with the authoritative computed readiness. Dependencies F01-009 is DONE.",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
+        "tests/battle_ir/test_resolution_ledger.py"
+      ],
+      "change_summary": "Created the resolution ledger: EXACT, MISSING, AMBIGUOUS and BLOCKED states derived strictly from the published mapping report's own link_classifications vocabulary, with an attached UnknownHandle and verbatim provenance for every unresolved entry. Representation only; no join is re-derived and no semantic claim is added.",
+      "implementation_detail": {
+        "state_policy": "EXACT_ID, EXACT_CONFIG_ID and STRUCTURED_MAPPING are the exact-relation classifications; with exactly one recorded candidate they yield EXACT, with several they yield AMBIGUOUS, and with none they yield MISSING (a claimed exact relation with no recorded target is not exact). REPRESENTATION_TRANSFORM_CANDIDATE, PARENT_AVATAR_ONLY and UNMAPPED assert no exact static entity relation and yield MISSING. OUT_OF_STATIC_FAMILY_SCOPE yields BLOCKED. Any unrecognised classification yields BLOCKED with REASON_UNRECOGNISED_MAPPING_CLASSIFICATION rather than being guessed into MISSING.",
+        "no_collapse": "MISSING, AMBIGUOUS and BLOCKED are distinct enum members with distinct spellings, distinct reason codes where applicable, and a dedicated test asserting that all three are produced and never merged.",
+        "ambiguous_never_exposes_value": "For every state other than EXACT, resolved_entity_id must be absent: construction raises if it is set, serialization omits the key, and require_resolved() refuses. EXACT itself requires exactly one recorded candidate and no attached handle.",
+        "unknown_handle": "Every unresolved entry carries an UnknownHandle whose blocker id is classification:behavior_id, whose owner family is the recorded static_family (falling back to owner_kind), whose opaque payload carries the recorded classification, candidates, evidence, mapping method, representation tag and source_ref, and whose required_evidence is derived from that classification's own documented meaning (for example, a representation-transform candidate requests native-ID proof, and an ambiguous entry requests disambiguation).",
+        "provenance": "ResolutionProvenance records the mapping report identity (report_id, report_sha256, game_version), the mapping's own input sha256 digests, and the record's source_ref fields verbatim. Nothing is filled in: a field the mapping did not record stays absent and is reported by absent_field_names(). SourceProvenance was deliberately not reused because source_ref does not carry the v1 required fields and inventing them is forbidden.",
+        "exact_is_not_executability": "recorded that the static link is exact only. execution_permitted() refuses, no executable helper exists, and the record's own whole_record_executable_reference flag is not surfaced as a ledger claim.",
+        "no_source_order_loss": "entries preserve record_links order; candidate ids are kept as strings so an id above 2**53 is never float-normalized.",
+        "idempotent_round_trip": "ResolutionLedger, ResolutionLedgerEntry and ResolutionProvenance all round-trip through dict and JSON exactly, and serialization deep-copies so a returned document cannot alias the model."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_resolution_ledger -v  =>  Ran 61 tests, OK, exit 0 under both the resolver Python 3.11.9 and 3.13.12",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 424 tests, OK, exit 0 (baseline was 363)",
+        "Real published mapping (read-only): 14042 entries; counts EXACT 165, MISSING 6611, AMBIGUOUS 0, BLOCKED 7266; every unresolved entry carries a handle and provenance; full ledger round-trips exactly",
+        "EXACT count cross-checked against a direct scan of record_links (165), proving the ledger performs no join of its own"
+      ],
+      "acceptance_rows": {
+        "all states round trip": "PASS - EXACT, MISSING, AMBIGUOUS and BLOCKED all round-trip through dict and JSON with the attached handle, provenance and absence structure preserved",
+        "ambiguous cannot expose value": "PASS - construction, serialization and require_resolved() all refuse to expose a value for AMBIGUOUS; candidates remain recorded but no single value is chosen"
+      },
+      "non_goals_respected": [
+        "No mapping join was re-derived; the ledger reads record_links verbatim.",
+        "No Astra reasoning was redone and no frozen artifact, catalog artifact or protected file was modified.",
+        "No native executability claim is made anywhere in the ledger."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "The published mapping contains zero multi-candidate records, so AMBIGUOUS is exercised by constructed records and by the policy tests rather than by real data; that is recorded rather than papered over.",
+        "Judgement call for Sol: OUT_OF_STATIC_FAMILY_SCOPE is mapped to BLOCKED (resolution is impossible against the requested scope) rather than MISSING. The two are kept distinct and the policy table is a declared constant so it can be reviewed as a single unit."
+      ],
+      "checkpoint": {
+        "head_before_task": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "R01-002 (SOL_IMPLEMENT, not entered)",
+        "next_command": "python -m unittest tests.battle_ir.test_resolution_ledger"
+      }
     },
     {
       "task_id": "R01-002",
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Descriptor base and occurrence identity",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3221,7 +3934,10 @@
         "R01-009",
         "R01-010",
         "R01-011"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-21",
+      "readiness_basis": "dependency R01-001 is DONE",
+      "status_note": "READY but deliberately NOT executed: R01-002 is SOL_IMPLEMENT and this session executes cheap tasks only."
     },
     {
       "task_id": "R01-003",
@@ -6503,27 +7219,27 @@
       "blocked_optional_imports": 3
     },
     "observed": {
-      "measurement_date": "2026-09-20",
+      "measurement_date": "2026-09-21",
       "FAST_UNIT": {
         "battle_ir": {
-          "tests": 131,
+          "tests": 363,
           "result": "OK"
         },
         "battle_sandbox": {
-          "tests": 208,
+          "tests": 268,
           "result": "OK"
         },
         "battle_runtime": {
           "tests": 185,
           "result": "OK"
         },
-        "total": 524,
+        "total": 816,
         "failures": 0,
         "errors": 0,
         "result": "GREEN"
       },
       "root_discoverable_packages": {
-        "tests": 532,
+        "tests": 824,
         "result": "OK",
         "scope": "battle_ir, battle_sandbox, battle_runtime and reverse only; not the whole tests tree"
       },
@@ -7031,45 +7747,112 @@
         "sol_authorization": "AUTHORIZED_BY_SOL_CONTROL_REVIEW_2026-09-20",
         "astra_reopen_required": false,
         "validation": "Master parse and duplicate-key validation PASS; F01-001 remains READY with P0-D/P0-E/P0-F DONE; 75-task DAG remains acyclic; allowlist is exactly the two original files plus evidence_boundary.py and test_reference_quarantine.py; reference_boundary.py is read/tested but intentionally not authorized; production/test Python hashes unchanged."
+      },
+      {
+        "change_request_id": "CR-F01-REVIEW-LOCAL-20260921-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Strong Sol review found concrete local representation and control defects in the uncommitted F01-001..F01-008 batch: VersionRelation.NOT_ESTABLISHED lacks direct frozen authority; EvidenceMode's custom __bool__ confuses ordinary Enum truthiness with executability; nested provenance, presence and rejection diagnostic inputs retain or coerce caller data; UnknownHandle identity hashing collapses tuple/list payloads and omits provenance; StructuredRejection.identity collapses distinct rejection objects to one reason code; and the F01-001 prompt plus F01-007/F01-008 ownership notes contradict the master/ratified architecture and original allowlists.",
+        "actual_defects": [
+          "F01-001 added unsupported VersionRelation.NOT_ESTABLISHED and an unnecessary custom truthiness exception; the frozen readiness vocabulary remains a separate authoritative ReadinessClass.",
+          "F01-002 shallow-copies unknown_fields, coerces mapping keys to strings and discards source unknown-field order.",
+          "F01-004 identity_hash uses ordinary JSON, so tuple and list payloads collide, and excludes source provenance even though opaque source/version identity must remain observable; provenance normalization is shallow and string-coercing.",
+          "F01-005 direct PRESENT construction can retain a mutable caller alias.",
+          "F01-007 shallow-copies and string-coerces diagnostics, while identity() discards obligation owner, evidence request and linked contract/unknown identities.",
+          "The production edits made while executing F01-007 and test-only F01-008 were outside those tasks' original allowlists even though both are valid corrective repairs to the F01-004-owned UnknownHandle surface.",
+          "The F01-001 task prompt still names readiness classes as evidence modes and retains the pre-control-fix allowlist."
+        ],
+        "scope_violation_disposition": "VALID_F01_004_CORRECTIVE_REPAIR for both the provenance-normalization repair made during F01-007 and the payload-copy repair made during F01-008. They are not retroactively claimed as within F01-007/F01-008; ownership is reassigned to F01-004 under this change request.",
+        "affected_task_ids": [
+          "F01-001",
+          "F01-002",
+          "F01-004",
+          "F01-005",
+          "F01-007",
+          "F01-008"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_ir/evidence.py",
+          "src/hsr_battle_agent/battle_ir/provenance.py",
+          "src/hsr_battle_agent/battle_ir/lossless_value.py",
+          "src/hsr_battle_agent/battle_sandbox/errors.py",
+          "tests/battle_ir/test_evidence.py",
+          "tests/battle_ir/test_contract_ref.py",
+          "tests/battle_ir/test_provenance_v2.py",
+          "tests/battle_ir/test_unknown_handle.py",
+          "tests/battle_ir/test_presence_value.py",
+          "tests/battle_ir/test_f01_roundtrip.py",
+          "tests/battle_sandbox/test_reference_quarantine.py",
+          "tests/battle_sandbox/test_structured_rejection.py",
+          "docs/agent/terra_task_prompts/F01_001_evidence_modes.md",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE",
+        "migration_impact": "Local uncommitted API correction only. VersionRelation absence remains represented by an absent provenance field rather than an invented enum value; EvidenceMode returns to ordinary Enum truthiness without acquiring any execution permission; identity and copy boundaries become lossless and non-aliasing. No frozen evidence spelling, native gate, runtime battle behavior or DAG dependency changes.",
+        "rollback": "Reverse only the files listed by this change request and restore the pre-review task notes/prompt. Do not alter frozen authority, the P0 ADRs, legacy BattleState behavior or F01-009's original allowlist.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_F01_FINAL_REVIEW_2026-09-21",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "all F01-001..F01-008 exact tests",
+          "P0-E reference-quarantine tests",
+          "FAST_UNIT",
+          "duplicate-key validator and DAG/readiness validator"
+        ],
+        "validation": "F01-001..F01-008 reviewed repairs plus P0-E quarantine: 313 OK; final all-F01 exact set including F01-009: 330 OK; P0-E quarantine alone: 45 OK; FAST_UNIT 816 OK; root documented scope 824 OK; master duplicate-key, DAG and readiness validation PASS; no frozen authority change"
       }
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-20",
-    "status": "M0_5_REPOSITORY_STABILIZED_DONE",
-    "head_at_run_start": "435ab634e23824971701a799f3b74ac2eca65e08",
+    "timestamp": "2026-09-21",
+    "status": "POST_F01_CHEAP_LONG_RUN_COMPLETE_R01_001_AND_F02_001_007_DONE",
+    "head_at_run_start": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
-      "tests/battle_sandbox/test_reference_quarantine.py",
-      "docs/agent/terra_test_matrix.md",
-      "docs/agent/terra_architecture_decisions_v1.md",
+      "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
+      "tests/battle_ir/test_resolution_ledger.py",
+      "src/hsr_battle_agent/battle_sandbox/identity.py",
+      "tests/battle_sandbox/test_identity.py",
+      "tests/battle_sandbox/test_identity_families_a.py",
+      "tests/battle_sandbox/test_identity_families_b.py",
+      "src/hsr_battle_agent/battle_sandbox/revision.py",
+      "tests/battle_sandbox/test_revision.py",
+      "tests/battle_sandbox/test_identity_allocator.py",
+      "src/hsr_battle_agent/battle_sandbox/stores/__init__.py",
+      "src/hsr_battle_agent/battle_sandbox/stores/protocols.py",
+      "tests/battle_sandbox/test_store_protocols.py",
+      "src/hsr_battle_agent/battle_sandbox/stores/core.py",
+      "src/hsr_battle_agent/battle_sandbox/opaque.py",
+      "tests/battle_sandbox/test_state_stores_v2.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Final Sol review repaired only the formally authorized local software/control defects and completed P0-F. Git writes remained disabled: nothing was staged, committed or pushed. Frozen Astra artifacts, catalog/hash-pinned artifacts, battle runtime behavior, the two protected modified tracked files and unrelated untracked artifacts were not modified.",
+    "worktree_note": "Git write operations were disabled for this session, so nothing was staged or committed. Frozen Astra artifacts, catalog artifacts, the two protected modified tracked files and all unrelated untracked artifacts were not modified.",
     "tests": [
-      "P0-C exact test_command: Ran 53 tests, OK: PASS",
-      "P0-E exact test_command: Ran 38 tests, OK: PASS",
-      "FAST_UNIT: battle_ir 131 OK; battle_sandbox 208 OK; battle_runtime 185 OK; total 524: PASS",
-      "root discoverable-package scope: Ran 532 tests, OK: PASS",
-      "duplicate-key validator on master and authority reconciliation: PASS",
-      "DAG: 75 unique tasks, all references exist, acyclic, READY dependencies satisfied: PASS",
-      "authority refs/reconciliation and preservation commit: PASS",
-      "frozen Astra artifacts and catalog.json unmodified: PASS"
+      "R01-001 exact: Ran 61 tests, OK: PASS",
+      "F02-001 exact: Ran 53 tests, OK: PASS",
+      "F02-002 exact: Ran 36 tests, OK: PASS",
+      "F02-003 exact: Ran 38 tests, OK: PASS",
+      "F02-004 exact: Ran 38 tests, OK: PASS",
+      "F02-005 exact: Ran 34 tests, OK: PASS",
+      "F02-006 exact: Ran 25 tests, OK: PASS",
+      "F02-007 exact: Ran 53 tests, OK: PASS",
+      "all F02 and R01 exact modules together: Ran 338 tests, OK",
+      "P0-E reference quarantine regression: Ran 45 tests, OK",
+      "FAST_UNIT: 424 + 545 + 185 = 1154, OK (baseline was 816)",
+      "root documented scope: Ran 1162 tests, OK (baseline was 824)",
+      "duplicate-key validator on the master after every edit: PASS"
     ],
     "blockers": [],
-    "cheap_tasks_executed": 4,
+    "cheap_tasks_executed": 8,
     "cheap_tasks_remaining_ready": 0,
-    "remaining_ready_cheap": [],
     "remaining_ready_any": [
-      "F01-001"
+      "R01-002",
+      "F02-008"
     ],
-    "long_run_stopped_reason": "M0.5 is closed. F01-001 is READY but explicitly excluded from this session.",
+    "long_run_stopped_reason": "All reachable cheap tasks are DONE. R01-001 is DONE and the R01 branch stops because R01-002 is SOL_IMPLEMENT. F02-001 through F02-007 are DONE and the F02 branch stops because F02-008 is SOL_IMPLEMENT. G01 and C02 were not entered.",
     "git_write_operations_by_agent": "NONE (disabled by session policy)",
-    "recommended_executor": "CHEAP_MODEL_STRICT for F01-001 with SOL review",
-    "next_command": "Read the F01-001 task and docs/agent/terra_task_prompts/F01_001_evidence_modes.md; implement the canonical evidence vocabulary without retaining a second EvidenceMode class."
+    "recommended_executor": "SOL for R01-002 and F02-008",
+    "next_command": "Read master and the R01-002 / F02-008 task entries; SOL owns both."
   },
   "next_ready_tasks": [
-    "F01-001"
+    "F02-008"
   ],
   "change_history": [
     {
@@ -7127,6 +7910,78 @@
       "change_request_id": "CR-F01-001-CONTROL-20260920-001",
       "change": "Control-plane-only repair of the F01-001 allowlist contradiction. Authorized battle_sandbox/evidence_boundary.py so the provisional enum can be deleted and the canonical class imported/re-exported atomically, and authorized test_reference_quarantine.py so exact identity and all P0-E guard rails are tested. reference_boundary.py remains read-only because it already imports EvidenceMode through evidence_boundary and therefore receives the canonical object without an edit. Expanded files_read and acceptance coverage and changed the exact command to run both evidence and quarantine suites through the repository resolver. No DAG, milestone, authority, semantic requirement, other task, or Python source/test file changed.",
       "review": "SOL_CONTROL_FIX"
+    },
+    {
+      "revision": "1.0.9",
+      "date": "2026-09-20",
+      "change": "F01-001 DONE. Created the sole canonical EvidenceMode class in battle_ir/evidence.py plus VersionRelation and ReadinessClass, and migrated battle_sandbox.evidence_boundary to import and re-export that exact class object while deleting its provisional local enum, so the canonical identity now holds across battle_ir.evidence, battle_sandbox.evidence_boundary and battle_sandbox.reference_boundary. Strict serialization rejects unknown/absent/mistyped values; the vocabularies expose no truthiness and no executability helper. FAST_UNIT grew from 524 to 557 green and the root scope from 532 to 565. No frozen artifact, catalog artifact, protected file or DAG entry was changed. F01-002, F01-003, F01-005 and F01-006 readiness recomputed to READY.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.10",
+      "date": "2026-09-20",
+      "change": "F01-002 DONE. Added the source_provenance/2 envelope (source_commit, version_relation, content_sha256, profile) on top of an unchanged v1 surface, with explicit v1 and v2 readers, strict hash and version-relation validation, lossless absence and unknown-field observability, non-aliasing serialization, and a dispatch refusal guard plus an AST test proving no battle_sandbox module reads native_rva or method_index. FAST_UNIT grew from 557 to 594 green and the root scope from 565 to 602, with all four existing provenance loaders unaffected. No frozen artifact, catalog artifact, protected file or DAG entry was changed.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.11",
+      "date": "2026-09-20",
+      "change": "F01-003 DONE. Added the ContractRef envelope (contract_id, namespace, schema_version, evidence_mode, content_sha256, source_refs) to the shared canonical battle_ir/evidence.py with strict required-field and hash validation, exact mode-mismatch detection, schema-marked round-trip serialization, and no executability surface. All F01-001 behaviour and tests are preserved. FAST_UNIT grew from 594 to 620 green and the root scope from 602 to 628. F01-004 readiness recomputed to READY.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.12",
+      "date": "2026-09-20",
+      "change": "F01-004 DONE. Added the UnknownHandle unresolved-blocker envelope (blocker_id, owner_family, opaque payload, provenance, required_evidence) to the shared canonical battle_ir/evidence.py with lossless opaque-payload round trip across eighteen shapes, a stable blocker/owner/payload identity hash, strict non-finite and unencodable payload rejection, and explicit refusal to satisfy a ContractRef. No executability, fallback or truthiness surface exists. FAST_UNIT grew from 620 to 656 green and the root scope from 628 to 664. F01-007 readiness recomputed to READY.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.13",
+      "date": "2026-09-20",
+      "change": "F01-005 DONE. Added battle_ir/lossless_value.py with the PresenceValue envelope distinguishing ABSENT, NULL and PRESENT, preserving every falsey payload exactly, rejecting ABSENT-with-payload, NULL-with-non-null-payload and PRESENT(None), and exposing no defaulting, truthiness or None-as-absence shortcut. A source-scan test proves the module performs no .get default-based presence decoding. No frozen artifact, protected file or DAG entry was changed.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.14",
+      "date": "2026-09-20",
+      "change": "F01-006 and F01-007 DONE. Added LosslessNumber (source lexeme, numeric category, exact integer identity above 2**53, refusal of float normalization for identifiers, non-finite rejection) to the shared lossless_value.py, and StructuredRejection plus a StructuredRejectionError adapter to battle_sandbox/errors.py with a reason-code-only identity that is independent of message text and losslessly preserved contract and unknown-handle links. FAST_UNIT grew from 656 to 753 green and the root scope from 664 to 761, with all F01-001..F01-005 tests still passing. F01-008 readiness recomputed to READY.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.15",
+      "date": "2026-09-20",
+      "change": "F01-008 DONE, completing all cheap F01 representation work F01-001 through F01-008. Added the combined serialization invariant suite proving no absence or key-default loss, no tuple coercion, no numeric normalization, no enum identity split and no shared mutable alias across the nested cross-product fixture with independent expected documents. The suite uncovered and fixed a real aliasing defect in UnknownHandle, which now deep-copies its payload. FAST_UNIT grew from 753 to 791 green and the root scope from 761 to 799. The next ready task is F01-009, which is SOL_IMPLEMENT.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.16",
+      "date": "2026-09-21",
+      "change": "Strong Sol review closed F01-001 through F01-008 under CR-F01-REVIEW-LOCAL-20260921-001. Removed unsupported VersionRelation.NOT_ESTABLISHED and the unnecessary EvidenceMode truthiness exception; repaired deep-copy, exact-key/order and type-tagged identity boundaries; separated StructuredRejection reason-code identity from full object identity; corrected the stale F01-001 prompt; and formally reassigned both historical out-of-allowlist UnknownHandle edits to F01-004 corrective ownership. Semantic impact NONE; no frozen authority or DAG change.",
+      "review": "SOL_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.17",
+      "date": "2026-09-21",
+      "change": "F01-009 DONE and TERRA-F01 complete. Added the explicit F01StateEnvelope compatibility seam and separately domain-tagged canonical hash. FC-19 ambiguity fails closed only on the new path; legacy BattleState v1-v4 and legacy hash behavior remain unchanged; no BattleState v2 was created. Final exact F01 tests are 330 OK, FAST_UNIT is 816 OK and root documented scope is 824 OK. M1 is IN_PROGRESS; only F02-001 and R01-001 are dependency-ready.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.18",
+      "date": "2026-09-21",
+      "change": "R01-001 DONE. Added battle_ir/resolution_ledger.py and its test module: EXACT/MISSING/AMBIGUOUS/BLOCKED resolution states derived strictly from the published mapping report's own link_classifications vocabulary, with an UnknownHandle and verbatim provenance attached to every unresolved entry, no re-derived join, no collapsed failure states, and no executability claim. Verified against the real 14042-record mapping report (EXACT 165, MISSING 6611, AMBIGUOUS 0, BLOCKED 7266). battle_ir lane grew from 363 to 424 green. R01-002 readiness recomputed to READY and deliberately left unexecuted because it is SOL_IMPLEMENT.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.19",
+      "date": "2026-09-21",
+      "change": "F02-002, F02-003 and F02-005 DONE. Declared all seventeen identity families additively in battle_sandbox/identity.py (ENTITY/ACTOR/TEAM/FORMATION_SLOT/TOPOLOGY_NODE and OWNER/CASTER/PROVIDER/RECEIVER/EQUIPMENT_INSTANCE/TARGET_CONTEXT/GLOBAL_SERVICE/TASK/MODIFIER/DAMAGE_ROOT/DAMAGE_HIT/DAMAGE_COMPONENT), added SourcedIdentity to keep source identity separate from runtime identity, added RoleBundle with explicit refusals for provider=caster, owner=actor and team=formation, and created the StateRevision value object with monotonic advancement, snapshot-lineage-scoped staleness comparison and explicit refusals of wall-clock and object-address derivation. FAST_UNIT grew from 930 to 1038 green and the root scope from 938 to 1046. F02-004 and F02-006 readiness recomputed to READY.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.20",
+      "date": "2026-09-21",
+      "change": "F02-004, F02-006 and F02-007 DONE, completing all reachable cheap F02 work. Added IdentityAllocator (deterministic, non-reusing, per-namespace, generation-aware, tombstone-aware, private until commit), the stores package with four store classifications and a seven-owner state ownership catalog that forbids generic extension writes, the twenty-three typed empty store families with separate scheduler stores, and the opaque unresolved store whose identity changes with its payload. Three defects were found by the invariant tests and fixed (a non-publishing reserve, a contradictory writability rule and a bogus Enum subclass). FAST_UNIT grew from 1038 to 1154 green and the root scope from 1046 to 1162. F02-008 readiness recomputed to READY and left unexecuted because it is SOL_IMPLEMENT.",
+      "review": "SOL_REVIEW_REQUIRED"
     }
   ],
   "validation_requirements": [
@@ -7138,7 +7993,7 @@
     "each READY task has prompt",
     "no semantic inference assigned to cheap model",
     "Astra only on evidence reopen",
-    "no production/tests/frozen artifacts modified"
+    "no unauthorized production/test files or frozen authority artifacts modified"
   ],
   "task_summary": {
     "total": 75,
@@ -7149,10 +8004,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 1,
-      "NOT_STARTED": 57,
+      "READY": 2,
+      "NOT_STARTED": 39,
       "BLOCKED": 10,
-      "DONE": 7
+      "DONE": 24
     },
     "freeze_tickets": [
       "TERRA-F01",

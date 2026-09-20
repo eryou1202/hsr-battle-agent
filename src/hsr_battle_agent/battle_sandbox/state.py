@@ -35,8 +35,27 @@ import math
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
-from hsr_battle_agent.battle_sandbox.errors import UnsupportedStateVersionError
-from hsr_battle_agent.battle_sandbox.hash import stable_json_hash
+from hsr_battle_agent.battle_ir.evidence import (
+    ContractRef,
+    EvidenceMode,
+    ReadinessClass,
+    UnknownHandle,
+    VersionRelation,
+    parse_evidence_mode,
+    parse_readiness_class,
+    parse_version_relation,
+)
+from hsr_battle_agent.battle_ir.lossless_value import LosslessNumber, PresenceValue
+from hsr_battle_agent.battle_ir.provenance import SourceProvenance
+from hsr_battle_agent.battle_sandbox.errors import (
+    StructuredRejection,
+    UnsupportedStateVersionError,
+)
+from hsr_battle_agent.battle_sandbox.hash import (
+    F01_STATE_BOUNDARY_SCHEMA,
+    stable_f01_envelope_hash,
+    stable_json_hash,
+)
 
 BATTLE_STATE_SCHEMA_VERSION = 4
 _STATE_SCHEMA_KEY = "schema_version"
@@ -315,3 +334,267 @@ def deep_copy_json_value(value: Any) -> Any:
     if isinstance(value, list):
         return [deep_copy_json_value(item) for item in value]
     return value
+
+
+# ---------------------------------------------------------------------------
+# F01 lossless compatibility seam
+# ---------------------------------------------------------------------------
+
+
+class F01StateBoundaryError(ValueError):
+    """Raised when data cannot cross the explicit F01 state boundary losslessly."""
+
+
+_F01_OBJECT_TYPES = {
+    "ContractRef": ContractRef,
+    "UnknownHandle": UnknownHandle,
+    "PresenceValue": PresenceValue,
+    "LosslessNumber": LosslessNumber,
+    "SourceProvenance": SourceProvenance,
+    "StructuredRejection": StructuredRejection,
+}
+
+
+def _encode_f01_value(value: Any, where: str = "value") -> dict[str, Any]:
+    """Encode a value into an explicit type-tagged, JSON-safe F01 node."""
+    if isinstance(value, BattleState):
+        raise F01StateBoundaryError(
+            "legacy BattleState material cannot be converted implicitly into "
+            "the F01 lossless path"
+        )
+    for enum_type, type_name in (
+        (EvidenceMode, "EvidenceMode"),
+        (VersionRelation, "VersionRelation"),
+        (ReadinessClass, "ReadinessClass"),
+    ):
+        if isinstance(value, enum_type):
+            return {
+                "kind": "f01_enum",
+                "type": type_name,
+                "value": value.serialize(),
+            }
+    for type_name, object_type in _F01_OBJECT_TYPES.items():
+        if isinstance(value, object_type):
+            return {
+                "kind": "f01_object",
+                "type": type_name,
+                "document": _encode_f01_value(
+                    value.to_dict(), f"{where}.{type_name}"
+                ),
+            }
+    if value is None:
+        return {"kind": "null"}
+    if isinstance(value, bool):
+        return {"kind": "bool", "value": value}
+    if isinstance(value, int):
+        return {"kind": "int", "lexeme": str(value)}
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise F01StateBoundaryError(f"{where} contains a non-finite float")
+        return {"kind": "float", "hex": value.hex()}
+    if isinstance(value, str):
+        return {"kind": "str", "value": value}
+    if isinstance(value, list):
+        return {
+            "kind": "list",
+            "items": [
+                _encode_f01_value(item, f"{where}[{index}]")
+                for index, item in enumerate(value)
+            ],
+        }
+    if isinstance(value, tuple):
+        return {
+            "kind": "tuple",
+            "items": [
+                _encode_f01_value(item, f"{where}[{index}]")
+                for index, item in enumerate(value)
+            ],
+        }
+    if isinstance(value, Mapping):
+        items: dict[str, Any] = {}
+        for key, item in value.items():
+            if not isinstance(key, str):
+                raise F01StateBoundaryError(
+                    f"{where} mapping keys must be strings, got "
+                    f"{type(key).__name__}"
+                )
+            items[key] = _encode_f01_value(item, f"{where}.{key}")
+        return {"kind": "mapping", "items": items}
+    raise F01StateBoundaryError(
+        f"{where} contains unsupported {type(value).__name__}; no lossy "
+        "conversion is available"
+    )
+
+
+def _require_node_keys(
+    node: Mapping[str, Any], expected: set[str], where: str
+) -> None:
+    if set(node) != expected:
+        raise F01StateBoundaryError(
+            f"{where} must contain exactly {sorted(expected)}, got "
+            f"{sorted(str(key) for key in node)}"
+        )
+
+
+def _decode_f01_value(node: Any, where: str = "payload") -> Any:
+    """Decode one F01 node; every shape is exact and ambiguity fails closed."""
+    if not isinstance(node, Mapping):
+        raise F01StateBoundaryError(f"{where} must be a tagged mapping")
+    if "kind" not in node:
+        raise F01StateBoundaryError(f"{where} is missing its kind tag")
+    kind = node["kind"]
+    if kind == "null":
+        _require_node_keys(node, {"kind"}, where)
+        return None
+    if kind == "bool":
+        _require_node_keys(node, {"kind", "value"}, where)
+        if not isinstance(node["value"], bool):
+            raise F01StateBoundaryError(f"{where}.value must be bool")
+        return node["value"]
+    if kind == "int":
+        _require_node_keys(node, {"kind", "lexeme"}, where)
+        lexeme = node["lexeme"]
+        if not isinstance(lexeme, str):
+            raise F01StateBoundaryError(f"{where}.lexeme must be a string")
+        try:
+            value = int(lexeme)
+        except ValueError as exc:
+            raise F01StateBoundaryError(
+                f"{where}.lexeme is not an integer"
+            ) from exc
+        if str(value) != lexeme:
+            raise F01StateBoundaryError(
+                f"{where}.lexeme is not the canonical integer spelling"
+            )
+        return value
+    if kind == "float":
+        _require_node_keys(node, {"kind", "hex"}, where)
+        if not isinstance(node["hex"], str):
+            raise F01StateBoundaryError(f"{where}.hex must be a string")
+        try:
+            value = float.fromhex(node["hex"])
+        except ValueError as exc:
+            raise F01StateBoundaryError(f"{where}.hex is invalid") from exc
+        if not math.isfinite(value) or value.hex() != node["hex"]:
+            raise F01StateBoundaryError(
+                f"{where}.hex must be a canonical finite float spelling"
+            )
+        return value
+    if kind == "str":
+        _require_node_keys(node, {"kind", "value"}, where)
+        if not isinstance(node["value"], str):
+            raise F01StateBoundaryError(f"{where}.value must be a string")
+        return node["value"]
+    if kind in ("list", "tuple"):
+        _require_node_keys(node, {"kind", "items"}, where)
+        items = node["items"]
+        if not isinstance(items, list):
+            raise F01StateBoundaryError(f"{where}.items must be a list")
+        decoded = [
+            _decode_f01_value(item, f"{where}.items[{index}]")
+            for index, item in enumerate(items)
+        ]
+        return tuple(decoded) if kind == "tuple" else decoded
+    if kind == "mapping":
+        _require_node_keys(node, {"kind", "items"}, where)
+        items = node["items"]
+        if not isinstance(items, Mapping):
+            raise F01StateBoundaryError(f"{where}.items must be a mapping")
+        decoded_mapping: dict[str, Any] = {}
+        for key, item in items.items():
+            if not isinstance(key, str):
+                raise F01StateBoundaryError(
+                    f"{where}.items keys must be strings"
+                )
+            decoded_mapping[key] = _decode_f01_value(item, f"{where}.items.{key}")
+        return decoded_mapping
+    if kind == "f01_enum":
+        _require_node_keys(node, {"kind", "type", "value"}, where)
+        parsers = {
+            "EvidenceMode": parse_evidence_mode,
+            "VersionRelation": parse_version_relation,
+            "ReadinessClass": parse_readiness_class,
+        }
+        enum_type = node["type"]
+        if enum_type not in parsers:
+            raise F01StateBoundaryError(f"{where} has unknown F01 enum type")
+        try:
+            return parsers[enum_type](node["value"])
+        except ValueError as exc:
+            raise F01StateBoundaryError(f"{where} has invalid enum data") from exc
+    if kind == "f01_object":
+        _require_node_keys(node, {"kind", "type", "document"}, where)
+        object_type = node["type"]
+        if object_type not in _F01_OBJECT_TYPES:
+            raise F01StateBoundaryError(f"{where} has unknown F01 object type")
+        document = _decode_f01_value(node["document"], f"{where}.document")
+        if not isinstance(document, Mapping):
+            raise F01StateBoundaryError(
+                f"{where}.document must decode to a mapping"
+            )
+        try:
+            return _F01_OBJECT_TYPES[object_type].from_dict(document)
+        except (TypeError, ValueError) as exc:
+            raise F01StateBoundaryError(
+                f"{where} contains invalid {object_type} data"
+            ) from exc
+    raise F01StateBoundaryError(f"{where} has unknown kind {kind!r}")
+
+
+class F01StateEnvelope:
+    """Explicit compatibility carrier for F01 data, separate from BattleState.
+
+    This is not BattleState v2 and performs no legacy conversion.  Construction
+    is the explicit crossing point; every value is type-tagged so absence/null,
+    tuple/list, numeric and evidence identity survive serialization and hashing.
+    """
+
+    __slots__ = ("_payload",)
+
+    def __init__(self, value: Any) -> None:
+        self._payload = _encode_f01_value(value)
+
+    @property
+    def boundary_kind(self) -> str:
+        return "F01_LOSSLESS"
+
+    @property
+    def value(self) -> Any:
+        """Return an independent decoded value."""
+        return _decode_f01_value(deep_copy_json_value(self._payload))
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": F01_STATE_BOUNDARY_SCHEMA,
+            "payload": deep_copy_json_value(self._payload),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "F01StateEnvelope":
+        if not isinstance(data, Mapping):
+            raise F01StateBoundaryError("F01 envelope document must be a mapping")
+        if set(data) != {"schema", "payload"}:
+            raise F01StateBoundaryError(
+                "F01 envelope must contain exactly 'schema' and 'payload'; "
+                "missing data is never defaulted"
+            )
+        if data["schema"] != F01_STATE_BOUNDARY_SCHEMA:
+            raise F01StateBoundaryError(
+                f"unknown F01 envelope schema {data['schema']!r}"
+            )
+        value = _decode_f01_value(data["payload"])
+        return cls(value)
+
+    def clone(self) -> "F01StateEnvelope":
+        return type(self).from_dict(self.to_dict())
+
+    def state_hash(self) -> str:
+        return stable_f01_envelope_hash(self.to_dict())
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, F01StateEnvelope):
+            return NotImplemented
+        return self.to_dict() == other.to_dict()
+
+    def __repr__(self) -> str:
+        return f"F01StateEnvelope(kind={self.boundary_kind!r})"

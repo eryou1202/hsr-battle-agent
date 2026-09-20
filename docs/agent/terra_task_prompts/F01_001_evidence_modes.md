@@ -27,6 +27,8 @@ Read the task object in the master. Run `git status --short`, verify every depen
 
 - `src/hsr_battle_agent/battle_ir/evidence.py`
 - `tests/battle_ir/test_evidence.py`
+- `src/hsr_battle_agent/battle_sandbox/evidence_boundary.py`
+- `tests/battle_sandbox/test_reference_quarantine.py`
 - `data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json`
 
 ## Forbidden files
@@ -38,10 +40,13 @@ Read the task object in the master. Run `git status --short`, verify every depen
 
 ## Implementation requirements
 
-- Implement exactly SAFE_TO_IMPLEMENT, SAFE_TO_REPRESENT_ONLY, SAFE_REFERENCE_MODEL_ONLY and STRICT_REJECT_UNTIL_NEW_EVIDENCE.
+- Implement exactly the four frozen evidence modes: NATIVE_EVIDENCED, REFERENCE_MODEL, SANDBOX_EXTENSION and UNSUPPORTED.
+- Keep the four frozen readiness classes SAFE_TO_IMPLEMENT, SAFE_TO_REPRESENT_ONLY, SAFE_REFERENCE_MODEL_ONLY and STRICT_REJECT_UNTIL_NEW_EVIDENCE in a distinct `ReadinessClass`; never collapse readiness into evidence.
 - Implement explicit version relations including exact/native and close-version without treating them as equivalent.
+- Represent an unasserted version relation by field absence; do not invent a serialized enum value without direct authority.
 - Use strict serialization; reject unknown values.
-- Do not expose `executable`, truthiness or implicit promotion helpers.
+- Do not expose `executable` or implicit promotion helpers. Ordinary Enum truthiness is not an execution gate.
+- Create the sole canonical `EvidenceMode` class in `battle_ir/evidence.py`; `battle_sandbox.evidence_boundary` must import/re-export that exact class object and delete its provisional local definition.
 
 
 
@@ -54,8 +59,8 @@ Read the task object in the master. Run `git status --short`, verify every depen
 
 ## Tests
 
-- `python -m unittest tests.battle_ir.test_evidence -v`
-- `python -m unittest discover -s tests/battle_ir -t . -p "test_*.py"`
+- `. .\scripts\python\resolve_python.ps1; $Py = Resolve-PythonInterpreter; & $Py.Exe -m unittest tests.battle_ir.test_evidence tests.battle_sandbox.test_reference_quarantine -v`
+- `& $Py.Exe -m unittest discover -s tests/battle_ir -t . -p "test_*.py"`
 
 A test is successful only when its expected outcome matches the task. Record command, exit code and unexpected output. Do not mark `DONE` if an acceptance test is unavailable or unexpectedly fails.
 
@@ -90,4 +95,3 @@ CHECKPOINT: <none or exact continuation>
 ## Stop condition
 
 Stop immediately after the allowed-file diff is complete, required tests are recorded, the task-local master checkpoint is updated, and no forbidden file changed.
-

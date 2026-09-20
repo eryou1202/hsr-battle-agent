@@ -447,5 +447,108 @@ class TestQuarantinedModulesRemainImportable(unittest.TestCase):
                 self.assertEqual(module.__name__, module_name)
 
 
+class TestCanonicalEvidenceMode(unittest.TestCase):
+    """F01-001: the sandbox must consume the canonical battle-IR class object.
+
+    Two equal-valued but identity-unequal ``EvidenceMode`` classes are forbidden
+    by ``REFERENCE_QUARANTINE_DECISION``.  These tests prove that
+    ``battle_sandbox.evidence_boundary`` no longer defines its own enum and that
+    every sandbox path resolves to the single canonical class.
+    """
+
+    def test_three_way_identity_of_the_canonical_class(self):
+        from hsr_battle_agent.battle_ir.evidence import (
+            EvidenceMode as canonical,
+        )
+
+        self.assertIs(canonical, eb.EvidenceMode)
+        self.assertIs(canonical, rb.EvidenceMode)
+        self.assertIs(canonical, eb.EvidenceMode)
+        # The class objects are the same object, not merely equal.
+        self.assertIs(eb.EvidenceMode, rb.EvidenceMode)
+
+    def test_members_resolve_to_the_canonical_class(self):
+        from hsr_battle_agent.battle_ir.evidence import (
+            EvidenceMode as canonical,
+        )
+
+        for name, member in (
+            ("NATIVE_EVIDENCED", eb.NATIVE_EVIDENCE_MODE),
+            ("NATIVE_EVIDENCED", canonical.NATIVE_EVIDENCED),
+        ):
+            self.assertEqual(member.name, name)
+            self.assertIs(member.__class__, canonical)
+        for member in eb.NON_NATIVE_EVIDENCE_MODES:
+            self.assertIs(member.__class__, canonical)
+
+    def test_evidence_boundary_has_no_local_evidence_mode_class(self):
+        source = (STRICT_PATH_DIR / "evidence_boundary.py").read_text(
+            encoding="utf-8"
+        )
+        tree = ast.parse(source)
+        local = [
+            node.name
+            for node in ast.walk(tree)
+            if isinstance(node, ast.ClassDef) and node.name == "EvidenceMode"
+        ]
+        self.assertEqual(
+            local,
+            [],
+            "evidence_boundary.py must not define a local EvidenceMode class",
+        )
+
+    def test_evidence_boundary_imports_the_canonical_class(self):
+        imported = imported_modules(STRICT_PATH_DIR / "evidence_boundary.py")
+        self.assertIn("hsr_battle_agent.battle_ir.evidence", imported)
+        self.assertIn(
+            "hsr_battle_agent.battle_ir.evidence.EvidenceMode", imported
+        )
+
+    def test_frozen_spellings_are_unchanged_after_migration(self):
+        from hsr_battle_agent.battle_ir.evidence import (
+            EVIDENCE_MODE_SPELLINGS,
+        )
+
+        self.assertEqual(
+            eb.EVIDENCE_MODE_NAMES,
+            (
+                "NATIVE_EVIDENCED",
+                "REFERENCE_MODEL",
+                "SANDBOX_EXTENSION",
+                "UNSUPPORTED",
+            ),
+        )
+        self.assertEqual(eb.EVIDENCE_MODE_NAMES, EVIDENCE_MODE_SPELLINGS)
+
+    def test_boundary_behaviour_is_unchanged_for_string_inputs(self):
+        # The migration must not change accepted inputs or error types.
+        profile = eb.ReferenceProfile(
+            "reference.packet.example", evidence_mode="REFERENCE_MODEL"
+        )
+        self.assertIs(profile.evidence_mode.__class__, eb.EvidenceMode)
+        with self.assertRaises(eb.EvidenceBoundaryError):
+            eb.ReferenceProfile(
+                "reference.packet.illegal",
+                evidence_mode="NATIVE_EVIDENCED",
+            )
+        with self.assertRaises(eb.EvidenceBoundaryError):
+            eb.ReferenceProfile(
+                "reference.packet.illegal", evidence_mode="NOT_A_MODE"
+            )
+
+    def test_canonical_class_exposes_no_executability_helper(self):
+        for name in (
+            "executable",
+            "is_executable",
+            "can_execute",
+            "implies_execution",
+            "as_bool",
+        ):
+            with self.subTest(name=name):
+                self.assertFalse(hasattr(eb.EvidenceMode, name))
+        # API_DESIGN_LOCAL: ordinary Enum truthiness is not an execution gate.
+        self.assertTrue(bool(eb.EvidenceMode.NATIVE_EVIDENCED))
+
+
 if __name__ == "__main__":
     unittest.main()
