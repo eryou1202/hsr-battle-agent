@@ -376,7 +376,7 @@
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Build exact authority preservation manifest",
-      "status": "READY",
+      "status": "BLOCKED",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [],
@@ -448,14 +448,128 @@
       ],
       "next_tasks": [
         "P0-A2"
-      ]
+      ],
+      "manual_execution_reconciled": false,
+      "status_reconciliation": {
+        "reconciled_at": "2026-09-20",
+        "reconciled_by": "TERRA_DS_LONG_RUN_SESSION",
+        "preservation_commit": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+        "authority_commit_manifest_2026-09-20_json_exists": true,
+        "manifest_parses": true,
+        "all_manifest_paths_exist": true,
+        "all_manifest_sha256_match": false,
+        "astra_semantic_freeze_v1_json_tracked_in_head": true,
+        "terra_implementation_master_v1_json_tracked_in_head": true,
+        "preservation_commit_present_in_branch_history": true,
+        "two_protected_modified_tracked_files_still_unstaged": true,
+        "staging_repeated_by_this_session": false,
+        "additional_preservation_commit_created": false,
+        "verdict": "P0-A1_ACCEPTANCE_NOT_FACTUALLY_SATISFIED"
+      },
+      "blocker": {
+        "blocker_id": "P0-A1-AUTHORITY-HASH-MISMATCH",
+        "blocker_class": "AUTHORITY_MISMATCH",
+        "scope": "REPOSITORY_WIDE",
+        "failed_acceptance_test": "Every listed path exists and hash matches its governing authority where a hash is supplied",
+        "failed_prompt_test": "For every manifest entry: Test-Path and Get-FileHash -Algorithm SHA256",
+        "summary": "3 of 30 manifest entries carry a SHA-256 that does not match the file on disk. The manifest did not compute these values from the files; it inherited them verbatim from the Astra freeze inputs list. The Astra freeze, the Terra master and the manifest all record the same three stale values, while the actual file hashes appear in no authority artifact anywhere in the repository.",
+        "mismatched_entries": [
+          {
+            "path": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+            "governing_authority": "astra_semantic_freeze_v1.json authority.inputs role FROZEN_DOMAIN",
+            "recorded_sha256": "50d7e45a8838542882d2bcc114486638e96433234db2799c0254a22b8e91fe13",
+            "actual_sha256_disk_and_head": "e4820e01060d208c4e6bbcce11bcb580d8d0bcd855960c6edf15c49574262b29",
+            "recorded_also_in": [
+              "docs/agent/authority_commit_manifest_2026-09-20.json",
+              "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json"
+            ]
+          },
+          {
+            "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+            "governing_authority": "astra_semantic_freeze_v1.json authority.inputs role FROZEN_DOMAIN",
+            "recorded_sha256": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198",
+            "actual_sha256_disk_and_head": "c00830c9af0a433dd330948f373690294bdb817b2ff3600d4be090fdfbe7dda1",
+            "recorded_also_in": [
+              "docs/agent/authority_commit_manifest_2026-09-20.json",
+              "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json"
+            ]
+          },
+          {
+            "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+            "governing_authority": "astra_semantic_freeze_v1.json authority.inputs role FROZEN_DOMAIN",
+            "recorded_sha256": "a582917cd595b9eab8f3800b705a301e6a868a9f91571b3f9ba9242cd2b824f4",
+            "actual_sha256_disk_and_head": "f74d3bf9256c4440a8f8c851b61a80b873ca9889d2eac2a8c4fb8cad3ede4246",
+            "recorded_also_in": [
+              "docs/agent/authority_commit_manifest_2026-09-20.json",
+              "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+              "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json"
+            ]
+          }
+        ],
+        "confirming_facts": [
+          "The three actual hashes were produced independently by hashlib SHA-256 and by certutil -hashfile SHA256 and agree.",
+          "For all three paths the working-tree blob and the HEAD blob are identical and equal the actual hash, so the preservation commit 3243c5e captured content that differs from the reviewed manifest.",
+          "astra_semantic_freeze_v1.json asserts authority.domain_documents_unchanged = true and authority.preservation = 'Original Domain 1-9, followups, packets, reports and unrelated dirty work remain byte-for-byte unchanged', which the current tree violates for these three FROZEN_DOMAIN documents.",
+          "The Astra freeze file itself is unchanged: its own recorded hash 04801259a1cf677c762a604d58c40c16c4e14347ccefe1185a2bbdec6c18cc7e matches the file on disk.",
+          "This is not a line-ending or encoding artifact; LF-normalised and raw hashes agree.",
+          "The reverse-master difference is NOT part of this blocker: freeze.authority.master_before_audit records round 9 sha 2f24eaa1..., which is the intended pre-audit snapshot, and the reverse master is now round 10."
+        ],
+        "why_not_resolvable_here": [
+          "Deciding whether the freeze hash list is stale or whether the three domain documents were legitimately revised is a frozen-semantics authorisation question.",
+          "Resolving it would require either editing a frozen Astra artifact or promoting unrecorded file content to authoritative status; both are forbidden by the freeze and by the task non-goals.",
+          "No cheap-model task or local Terra task owns this decision."
+        ],
+        "required_authority": "SOL_REVIEW_REQUIRED plus the Astra freeze reopen policy",
+        "expected_fourth_manifest_difference": "After this bookkeeping edit the manifest also no longer matches terra_implementation_master_v1.json, because this session changed the master. That difference is expected and is NOT a fourth authority mismatch: the manifest recorded the master at 1b5db7fcca4665d2e0d5f53c7cde17ff9ce6a89508e937b16ccbeb4d48c54e2f, and the master hash necessarily changes with every bookkeeping edit, so it cannot pin its own final value here. Only the three FROZEN_DOMAIN documents listed in mismatched_entries are an authority-integrity failure; verify them with hashlib.sha256 or certutil -hashfile SHA256 against the recorded_sha256 values above.",
+        "affected_downstream": [
+          "P0-A2 (dependency P0-A1 not DONE; its own post-commit hash test fails for the same three paths)",
+          "P0-B, P0-C, P0-E, P0-F (all depend on P0-A2 DONE and on authority path/hash verification)",
+          "P0-D (depends on P0-B and P0-C)",
+          "Every later F01/F02/R01/G01 task step 'verify authority paths/hashes'"
+        ],
+        "re_entry_condition": "A Sol or Astra authority decision either (a) republishes the Astra freeze with the three corrected FROZEN_DOMAIN hashes, or (b) restores the three frozen domain documents to the freeze-recorded bytes, and the manifest is regenerated so that every recorded SHA-256 equals Get-FileHash of the file it names."
+      },
+      "tests_executed": [
+        "python -c json.load(docs/agent/authority_commit_manifest_2026-09-20.json) => PASS (parses)",
+        "os.path.exists for all 30 manifest paths => PASS (0 missing)",
+        "hashlib.sha256 for all 30 manifest paths vs manifest sha256 => FAIL (27 pass, 3 fail)",
+        "certutil -hashfile <path> SHA256 for the 3 failures => FAIL (confirms hashlib, independent tool)",
+        "git diff --cached --name-only => '' (exit 0); nothing staged",
+        "git status --short on the two protected tracked files => ' M' unstaged, unmodified by this session",
+        "git cat-file -e HEAD:<freeze> and HEAD:<master> => PASS (both tracked in HEAD)",
+        "git rev-parse 3243c5e^ => ce62dc0028d15cbdc7a332c3db860ed7fffb9c58 (preservation commit parent, in branch history)",
+        "git diff --stat HEAD -- src tests => EMPTY"
+      ],
+      "notes": [
+        "Reconciliation performed only; no staging, no commit, no manifest regeneration was attempted.",
+        "The manifest was not rewritten because doing so would overwrite the reviewed preservation record before the underlying authority question is settled.",
+        "The task DAG, requirements, acceptance tests and forbidden-file list were left unmodified.",
+        "Pre-existing defect observed in this control file and deliberately NOT fixed: progress_update_protocol contains the key master_control_file_exception twice (duplicate JSON key). Any naive json.load + json.dump round trip of this file silently drops one copy, so this file must only be edited with surgical text edits until that is authorised."
+      ],
+      "checkpoint": {
+        "head_at_reconciliation": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+        "changed_files_by_this_session": [
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_command": "Requires Sol/Astra authority decision; no cheap-model continuation exists.",
+        "recommended_executor": "SOL_IMPLEMENT"
+      }
     },
     {
       "task_id": "P0-A2",
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Create controlled authority preservation commit",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -524,7 +638,75 @@
         "P0-C",
         "P0-E",
         "P0-F"
-      ]
+      ],
+      "manual_execution_reconciled": false,
+      "status_reconciliation": {
+        "reconciled_at": "2026-09-20",
+        "reconciled_by": "TERRA_DS_LONG_RUN_SESSION",
+        "preservation_commit": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+        "staging_repeated_by_this_session": false,
+        "additional_preservation_commit_created": false,
+        "dependent_task_p0_a1_status": "BLOCKED",
+        "verdict": "P0-A2_ACCEPTANCE_NOT_FACTUALLY_SATISFIED"
+      },
+      "blocker": {
+        "blocker_id": "P0-A2-PRESERVATION-COMMIT-CONTENT-DIVERGES-FROM-REVIEWED-MANIFEST",
+        "blocker_class": "AUTHORITY_MISMATCH",
+        "scope": "REPOSITORY_WIDE",
+        "failed_acceptance_test": "post-commit manifest hashes still match",
+        "failed_prompt_test": "post-commit hashes equal the manifest",
+        "unsatisfied_implementation_requirement": "Recompute every approved manifest hash before staging",
+        "summary": "Commit 3243c5eb947f3583e5918ef45cacb7ce6fcfd862 exists on terra/implementation and preserves the reviewed path list, but for three of the approved paths the committed blob does not equal the SHA-256 the manifest records for it. The stage set was reviewed against the manifest list; the manifest hash column was never independently recomputed, so the preservation commit durably captures three FROZEN_DOMAIN documents whose bytes contradict the Astra freeze.",
+        "verification": {
+          "commit_sha": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+          "commit_parent": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+          "commit_message": "meta: preserve Astra freeze and Terra implementation authority",
+          "files_in_commit": 31,
+          "paths_matching_manifest_path_list": 30,
+          "paths_whose_committed_blob_hash_equals_manifest_sha256": 27,
+          "paths_whose_committed_blob_hash_differs_from_manifest_sha256": 3,
+          "two_protected_modified_tracked_files_committed": false,
+          "two_protected_modified_tracked_files_still_unstaged": true,
+          "commit_already_pushed_to_origin": true
+        },
+        "diverging_paths": [
+          "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+          "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+          "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json"
+        ],
+        "root_cause": "Same root cause as P0-A1-AUTHORITY-HASH-MISMATCH: the manifest SHA-256 column was populated from the Astra freeze inputs list rather than computed from the working-tree files.",
+        "why_not_resolvable_here": [
+          "The prompt's rule 'if the staged set differs by even one path, unstage only those explicit paths, record BLOCKED, and stop' cannot be applied retrospectively to an already-created commit.",
+          "A corrective commit would require deciding which side of the mismatch is authoritative, which is a frozen-semantics authorisation question.",
+          "Overwriting pushed history is forbidden by the protocol's commit-safety rules."
+        ],
+        "required_authority": "SOL_REVIEW_REQUIRED plus the Astra freeze reopen policy",
+        "re_entry_condition": "After the P0-A1 blocker is resolved by Sol/Astra, regenerate the manifest, recompute every hash before staging, and either amend the preservation record with a new reviewed commit or leave 3243c5e as a labelled superseded checkpoint. Do not rewrite pushed history."
+      },
+      "tests_executed": [
+        "git log --oneline -1 3243c5e => 'meta: preserve Astra freeze and Terra implementation authority' (exit 0)",
+        "git rev-parse 3243c5e^ => ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+        "git show --stat --oneline 3243c5e => 31 files changed, 707967 insertions, 0 deletions; src/ and tests/ absent from the commit",
+        "git diff --cached --name-only => '' (exit 0)",
+        "post-commit blob hash vs manifest sha256 for the 3 diverging paths => FAIL",
+        "git status --short => the two protected pre-existing modified tracked files remain ' M' (unstaged)",
+        "git branch -vv => terra/implementation 3243c5e [origin/terra/implementation] (already pushed)"
+      ],
+      "notes": [
+        "The staging mechanics themselves were correct: 30 explicit manifest paths, no git add . / -A / directory / glob, both protected files excluded.",
+        "Only the hash-verification acceptance criterion failed.",
+        "No corrective commit was created and no history was rewritten.",
+        "Task DAG, requirements, acceptance tests and forbidden-file list were left unmodified."
+      ],
+      "checkpoint": {
+        "head_at_reconciliation": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+        "changed_files_by_this_session": [
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_command": "Requires Sol/Astra authority decision; no cheap-model continuation exists.",
+        "recommended_executor": "SOL_IMPLEMENT"
+      }
     },
     {
       "task_id": "P0-B",
@@ -6455,33 +6637,49 @@
   },
   "last_checkpoint": {
     "timestamp": "2026-09-20",
-    "status": "PLAN_VALIDATED",
+    "status": "BLOCKED_AUTHORITY_HASH_MISMATCH",
+    "head": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
     "changed_files": [
-      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
-      "docs/agent/terra_implementation_master_2026-09-20.md",
-      "docs/agent/terra_progress_protocol.md",
-      "docs/agent/terra_task_prompts/*.md"
+      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
+    "worktree_note": "Only the implementation master changed in this session. src/ and tests/ remain byte-identical to HEAD. The 89-entry dirty working tree (2 protected modified tracked files plus 87 pre-existing untracked reverse/evidence artifacts) was neither classified, staged, moved, cleaned nor gitignored.",
     "tests": [
-      "PowerShell ConvertFrom-Json: PASS",
-      "75/75 task schema validation: PASS",
-      "dependency DAG acyclic: PASS",
-      "13/13 freeze tickets represented: PASS",
-      "FC-01..FC-19 and LSD-01..LSD-12 represented: PASS",
-      "8 prompt files; every READY task covered: PASS",
-      "authority hashes unchanged: PASS",
-      "git diff --stat HEAD -- src tests: EMPTY"
-    ]
+      "P0-A1/P0-A2 reconciliation: manifest exists, parses, all 30 paths exist: PASS",
+      "P0-A1/P0-A2 reconciliation: all 30 manifest SHA-256 match their files: FAIL (27 pass, 3 fail)",
+      "P0-A1/P0-A2 reconciliation: astra_semantic_freeze_v1.json tracked in HEAD: PASS",
+      "P0-A1/P0-A2 reconciliation: terra_implementation_master_v1.json tracked in HEAD: PASS",
+      "P0-A1/P0-A2 reconciliation: preservation commit 3243c5e in branch history: PASS",
+      "P0-A1/P0-A2 reconciliation: two protected modified tracked files remain unstaged: PASS",
+      "authority hashes unchanged: FAIL - 3 FROZEN_DOMAIN documents contradict the Astra freeze",
+    "git diff --cached --name-only at reconciliation start: EMPTY",
+    "git diff --cached --name-only at checkpoint commit: exactly one path, data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+    "git diff --cached --check: no whitespace errors",
+    "git diff --stat HEAD -- src tests: EMPTY"
+    ],
+    "blockers": [
+      "P0-A1-AUTHORITY-HASH-MISMATCH",
+      "P0-A2-PRESERVATION-COMMIT-CONTENT-DIVERGES-FROM-REVIEWED-MANIFEST"
+    ],
+    "blocker_scope": "REPOSITORY_WIDE",
+    "cheap_tasks_executed": 0,
+    "cheap_tasks_remaining_ready": 0,
+    "long_run_stopped_reason": "Authority mismatch discovered during mandatory P0-A1/P0-A2 reconciliation; no READY CHEAP_MODEL task remains.",
+    "recommended_executor": "SOL_IMPLEMENT with Astra freeze reopen policy",
+    "next_command": "Sol/Astra decision on whether the Astra freeze inputs hash list or the three FROZEN_DOMAIN documents are authoritative, then regenerate docs/agent/authority_commit_manifest_2026-09-20.json from computed hashes."
   },
-  "next_ready_tasks": [
-    "P0-A1"
-  ],
+  "next_ready_tasks": [],
   "change_history": [
     {
       "revision": "1.0.0",
       "date": "2026-09-20",
       "change": "Initial post-Astra local implementation master plan; architecture decisions selected; P0 and all 13 Terra tickets decomposed.",
       "review": "SOL_PLANNING_SESSION"
+    },
+    {
+      "revision": "1.0.1",
+      "date": "2026-09-20",
+      "change": "Bookkeeping only. Reconciled the manually executed P0-A1/P0-A2 authority preservation flow and found it NOT factually acceptable: 3 of 30 manifest SHA-256 values contradict the files they name, the same 3 stale values are recorded by the Astra freeze, and the preservation commit 3243c5e captures content that diverges from the reviewed manifest. Set P0-A1 and P0-A2 to BLOCKED with blocker records and checkpoints, set next_ready_tasks to empty, and updated task_summary.by_status. No DAG, milestone, architecture decision, evidence gate, coverage definition, requirement or acceptance test was changed, and no production or test file was touched.",
+      "review": "SOL_REVIEW_REQUIRED"
     }
   ],
   "validation_requirements": [
@@ -6504,9 +6702,9 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 1,
-      "NOT_STARTED": 64,
-      "BLOCKED": 10
+      "READY": 0,
+      "NOT_STARTED": 63,
+      "BLOCKED": 12
     },
     "freeze_tickets": [
       "TERRA-F01",
