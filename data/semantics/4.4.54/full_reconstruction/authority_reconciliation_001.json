@@ -1,0 +1,740 @@
+{
+  "schema": "hsr_battle_agent.authority_reconciliation/1",
+  "version": "1.0.0",
+  "generated_date": "2026-09-20",
+  "incident_id": "AUTHORITY_INTEGRITY_RECONCILIATION_001",
+  "status": "P0_AUTHORITY_RECONCILED",
+  "repository": {
+    "path": "D:\\HSR_Battle_Agent\\hsr-battle-agent",
+    "branch": "terra/implementation",
+    "head_at_investigation_start": "a505a25cf96bb718784faa85f4d962262d251ca5",
+    "refs_at_investigation_start": {
+      "main": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+      "terra/authority-preserve-20260920": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+      "terra/implementation": "a505a25cf96bb718784faa85f4d962262d251ca5",
+      "origin/main": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+      "origin/terra/authority-preserve-20260920": "3243c5eb947f3583e5918ef45cacb7ce6fcfd862",
+      "origin/terra/implementation": "a505a25cf96bb718784faa85f4d962262d251ca5"
+    },
+    "protected_modified_tracked_files": [
+      "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+      "docs/agent/handoffs/damage_request_dispatch_resolution_18.md"
+    ],
+    "protected_files_untouched_and_unstaged": true
+  },
+  "authority_precedence_unchanged": [
+    "ASTRA_FREEZE",
+    "FROZEN_DOMAIN_1_9",
+    "EXACT_TERRA_FOLLOWUPS",
+    "LOCAL_AUDIT",
+    "HISTORICAL_PACKETS_REPORTS",
+    "EXISTING_IMPLEMENTATION"
+  ],
+  "scope": {
+    "semantic_reverse_engineering_performed": false,
+    "production_implementation_performed": false,
+    "external_content_fetched": false,
+    "new_hsr_semantic_conclusions_invented": false
+  },
+  "authority_hash_policy": {
+    "immutable_semantic_authority": "May be SHA-256 pinned. The three original expected hashes remain historical freeze records.",
+    "reconciliation_overlay": "For the three named Domain files only, the current preserved SHA-256 is accepted through this versioned reconciliation because exact expected bytes are locally unavailable and current semantic contracts were verified against the final freeze.",
+    "mutable_control_state": "terra_implementation_master_v1.json is identified by schema/version plus Git commit/blob identity or an external manifest. It must not contain or depend on an internally self-referential SHA-256.",
+    "historical_manifest_rule": "The master hash in authority_commit_manifest_2026-09-20.json identifies the preservation-time snapshot only; it is not a perpetual invariant for the mutable master.",
+    "frozen_hashes_weakened": false
+  },
+  "authority_hash_results": [
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+      "recorded_sha256": "06e62fa808390ac4f58af4164bb4f8d3b5151b0cbd3ab76bf203d9e8c2010396",
+      "actual_sha256_at_investigation_start": "06e62fa808390ac4f58af4164bb4f8d3b5151b0cbd3ab76bf203d9e8c2010396",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_6"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+      "recorded_sha256": "70f1f16ad3ae9365098dcd83d105f9a73b6d6eed913b6a9d06b2f5ced2017133",
+      "actual_sha256_at_investigation_start": "70f1f16ad3ae9365098dcd83d105f9a73b6d6eed913b6a9d06b2f5ced2017133",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_8"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+      "recorded_sha256": "50d7e45a8838542882d2bcc114486638e96433234db2799c0254a22b8e91fe13",
+      "actual_sha256_at_investigation_start": "e4820e01060d208c4e6bbcce11bcb580d8d0bcd855960c6edf15c49574262b29",
+      "result": "MISMATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_3"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+      "recorded_sha256": "c8c0d097e09781615499f93be8160f1c64ce5d8c474b4c12fa8acf580848a47e",
+      "actual_sha256_at_investigation_start": "c8c0d097e09781615499f93be8160f1c64ce5d8c474b4c12fa8acf580848a47e",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_2"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+      "recorded_sha256": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198",
+      "actual_sha256_at_investigation_start": "c00830c9af0a433dd330948f373690294bdb817b2ff3600d4be090fdfbe7dda1",
+      "result": "MISMATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_5"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+      "recorded_sha256": "6e04106f03d5ce54b7acb77ed9c65bc8a5b69b1d7dad9041b65d0b5f8fd17e7b",
+      "actual_sha256_at_investigation_start": "6e04106f03d5ce54b7acb77ed9c65bc8a5b69b1d7dad9041b65d0b5f8fd17e7b",
+      "result": "MATCH",
+      "recorded_roles": [
+        "REVERSE_MASTER"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+      "recorded_sha256": "9081d6c4fd09610d7cba009bbc47e12843d6293c26cc20d2f9b4cb0ab38fd5c6",
+      "actual_sha256_at_investigation_start": "9081d6c4fd09610d7cba009bbc47e12843d6293c26cc20d2f9b4cb0ab38fd5c6",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_4"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+      "recorded_sha256": "04801259a1cf677c762a604d58c40c16c4e14347ccefe1185a2bbdec6c18cc7e",
+      "actual_sha256_at_investigation_start": "04801259a1cf677c762a604d58c40c16c4e14347ccefe1185a2bbdec6c18cc7e",
+      "result": "MATCH",
+      "recorded_roles": [
+        "PRIMARY_FREEZE"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+      "recorded_sha256": "224c5c21d64fe456cb19e880b6dc2afb934f317a1f17efade21b5f44b216b26d",
+      "actual_sha256_at_investigation_start": "224c5c21d64fe456cb19e880b6dc2afb934f317a1f17efade21b5f44b216b26d",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_9"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+      "recorded_sha256": "71941f5f62efaa9e55a1f4a10830075739d6f8f2b684cde9469b649f381cb9eb",
+      "actual_sha256_at_investigation_start": "71941f5f62efaa9e55a1f4a10830075739d6f8f2b684cde9469b649f381cb9eb",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_7"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "recorded_sha256": "a582917cd595b9eab8f3800b705a301e6a868a9f91571b3f9ba9242cd2b824f4",
+      "actual_sha256_at_investigation_start": "f74d3bf9256c4440a8f8c851b61a80b873ca9889d2eac2a8c4fb8cad3ede4246",
+      "result": "MISMATCH",
+      "recorded_roles": [
+        "FROZEN_DOMAIN_1"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/equipment_trace_eidolon_content_followup_001.json",
+      "recorded_sha256": "9be439451ecf87abebd254ca2f4d47adcc9aaf5fb64daf1b0118bd2c453058a6",
+      "actual_sha256_at_investigation_start": "9be439451ecf87abebd254ca2f4d47adcc9aaf5fb64daf1b0118bd2c453058a6",
+      "result": "MATCH",
+      "recorded_roles": [
+        "EXACT_TERRA_FOLLOWUP"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/monster_ai_binding_ledger_001.json",
+      "recorded_sha256": "409729ee0a403c36b7f1f2b4d98b6f3a6d5bb10e8a58fa294d52827ad5a4a3cb",
+      "actual_sha256_at_investigation_start": "409729ee0a403c36b7f1f2b4d98b6f3a6d5bb10e8a58fa294d52827ad5a4a3cb",
+      "result": "MATCH",
+      "recorded_roles": [
+        "EXACT_TERRA_FOLLOWUP"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/monster_ai_content_acquisition_001.json",
+      "recorded_sha256": "0aa6d8d8dfee4379b224c608a9a2571224214f2136975120021f3fc44257bc87",
+      "actual_sha256_at_investigation_start": "0aa6d8d8dfee4379b224c608a9a2571224214f2136975120021f3fc44257bc87",
+      "result": "MATCH",
+      "recorded_roles": [
+        "EXACT_TERRA_FOLLOWUP"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+      "recorded_sha256": "4794e3ee99eb159885eb794918835d01aa1b8645c3fd602b4f2aa365ed08f0a8",
+      "actual_sha256_at_investigation_start": "4794e3ee99eb159885eb794918835d01aa1b8645c3fd602b4f2aa365ed08f0a8",
+      "result": "MATCH",
+      "recorded_roles": [
+        "EXACT_TERRA_FOLLOWUP"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/stage_environment_mode_content_followup_001.json",
+      "recorded_sha256": "be2e40d86095ab71e0b13871c75c2ca50a585ef9254eec5e053c8b8d111592ef",
+      "actual_sha256_at_investigation_start": "be2e40d86095ab71e0b13871c75c2ca50a585ef9254eec5e053c8b8d111592ef",
+      "result": "MATCH",
+      "recorded_roles": [
+        "EXACT_TERRA_FOLLOWUP"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+      "recorded_sha256": "1b5db7fcca4665d2e0d5f53c7cde17ff9ce6a89508e937b16ccbeb4d48c54e2f",
+      "actual_sha256_at_investigation_start": "d76d66f70589aade62aa24d1d4baf05eb7d91231f2fe1732353438434d0437dc",
+      "result": "MISMATCH",
+      "recorded_roles": [
+        "MUTABLE_IMPLEMENTATION_CONTROL"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/terra_local_repository_audit_001.json",
+      "recorded_sha256": "961d37ffa35aeeea6456e9e095a59bec7660c7fc449a7e8f9bda683390acb500",
+      "actual_sha256_at_investigation_start": "961d37ffa35aeeea6456e9e095a59bec7660c7fc449a7e8f9bda683390acb500",
+      "result": "MATCH",
+      "recorded_roles": [
+        "LOCAL_AUDIT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+      "recorded_sha256": "215c400a2849e24d9c2037309f8950ac94daef2c22cadfae42a0657d5cb5bc71",
+      "actual_sha256_at_investigation_start": "215c400a2849e24d9c2037309f8950ac94daef2c22cadfae42a0657d5cb5bc71",
+      "result": "MATCH",
+      "recorded_roles": [
+        "FREEZE_HANDOFF"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_implementation_master_2026-09-20.md",
+      "recorded_sha256": "cad21a2c9f4c6f2f5e75db3ced3af8454cb7ed882efad7ebb4c77e498725a79d",
+      "actual_sha256_at_investigation_start": "cad21a2c9f4c6f2f5e75db3ced3af8454cb7ed882efad7ebb4c77e498725a79d",
+      "result": "MATCH",
+      "recorded_roles": [
+        "IMPLEMENTATION_HANDOFF"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_local_repository_audit_2026-09-20.md",
+      "recorded_sha256": "e6f6d224c98d30e83f7016ba5fd5b7b3a1a72240e12783c3d67f4ba4521663fa",
+      "actual_sha256_at_investigation_start": "e6f6d224c98d30e83f7016ba5fd5b7b3a1a72240e12783c3d67f4ba4521663fa",
+      "result": "MATCH",
+      "recorded_roles": [
+        "LOCAL_AUDIT_HANDOFF"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json",
+        "data/semantics/4.4.54/full_reconstruction\\terra_implementation_master_v1.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_progress_protocol.md",
+      "recorded_sha256": "4b70056388875609439b28d037d3a00cd70af74f78a5918ae80eed155b639876",
+      "actual_sha256_at_investigation_start": "4b70056388875609439b28d037d3a00cd70af74f78a5918ae80eed155b639876",
+      "result": "MATCH",
+      "recorded_roles": [
+        "PROGRESS_PROTOCOL"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/F01_001_evidence_modes.md",
+      "recorded_sha256": "761f97c9e90ad809e43d644cfda44b2621e3de2350de4336de901063608ce656",
+      "actual_sha256_at_investigation_start": "761f97c9e90ad809e43d644cfda44b2621e3de2350de4336de901063608ce656",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/F01_005_presence_value.md",
+      "recorded_sha256": "d395e8544ab02d6e0b7f6dcf898688f05143287f12e94264cbe287117dd951d7",
+      "actual_sha256_at_investigation_start": "d395e8544ab02d6e0b7f6dcf898688f05143287f12e94264cbe287117dd951d7",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_A1_authority_manifest.md",
+      "recorded_sha256": "1329a719c4f6cf404d03414b574ec66ac9a95f4e1e184a94b2d5ea68eaaff02f",
+      "actual_sha256_at_investigation_start": "1329a719c4f6cf404d03414b574ec66ac9a95f4e1e184a94b2d5ea68eaaff02f",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_A2_authority_commit.md",
+      "recorded_sha256": "bde13b14e24446bb3a0d9692d7e87d56f7ed36845a8c9349012b9cda3f52c809",
+      "actual_sha256_at_investigation_start": "bde13b14e24446bb3a0d9692d7e87d56f7ed36845a8c9349012b9cda3f52c809",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_B_test_discovery.md",
+      "recorded_sha256": "a51ed77cac49c6dd10a773d251c620dc08124c9c6a14ace51a74aebc37831009",
+      "actual_sha256_at_investigation_start": "a51ed77cac49c6dd10a773d251c620dc08124c9c6a14ace51a74aebc37831009",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_C_catalog_counts.md",
+      "recorded_sha256": "7fbba7c70517ba85603210a179fa08b087dc6cf3a2c071946dc79122e229a565",
+      "actual_sha256_at_investigation_start": "7fbba7c70517ba85603210a179fa08b087dc6cf3a2c071946dc79122e229a565",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_D_test_matrix.md",
+      "recorded_sha256": "3d9176d809e62489076efac3c9baf67919817e81e99fc48373bf02338fd9106e",
+      "actual_sha256_at_investigation_start": "3d9176d809e62489076efac3c9baf67919817e81e99fc48373bf02338fd9106e",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "docs/agent/terra_task_prompts/P0_E_reference_quarantine.md",
+      "recorded_sha256": "59c87c5c6919ea14056b051ebaef41f73e6364fdb36d41843f9dcb5710c5e482",
+      "actual_sha256_at_investigation_start": "59c87c5c6919ea14056b051ebaef41f73e6364fdb36d41843f9dcb5710c5e482",
+      "result": "MATCH",
+      "recorded_roles": [
+        "TASK_PROMPT"
+      ],
+      "where_recorded_hash_appears": [
+        "docs/agent\\authority_commit_manifest_2026-09-20.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+      "recorded_sha256": null,
+      "actual_sha256_at_investigation_start": "73eca41b69e22bb5fbad68337c3302fb17040d5aeb56bb0c1dd0d33532632387",
+      "result": "NOT_HASH_PINNED",
+      "recorded_roles": [
+        "DOMAIN_TARGETED_EVIDENCE"
+      ],
+      "where_recorded_hash_appears": []
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+      "recorded_sha256": "e4f35e3471143163ba4f9cfa4cafc56252083808a2eb356c47f81dc58de531d3",
+      "actual_sha256_at_investigation_start": "e4f35e3471143163ba4f9cfa4cafc56252083808a2eb356c47f81dc58de531d3",
+      "result": "MATCH",
+      "recorded_roles": [
+        "DOMAIN_TARGETED_EVIDENCE"
+      ],
+      "where_recorded_hash_appears": [
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json"
+      ]
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+      "recorded_sha256": "238f13846fd0d27c00a48cef22853aa03f570bce1be2441116dc0221a56ca41f",
+      "actual_sha256_at_investigation_start": "238f13846fd0d27c00a48cef22853aa03f570bce1be2441116dc0221a56ca41f",
+      "result": "MATCH",
+      "recorded_roles": [
+        "DOMAIN_TARGETED_EVIDENCE"
+      ],
+      "where_recorded_hash_appears": [
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+      ]
+    }
+  ],
+  "authority_hash_summary": {
+    "manifest_entries_checked": 30,
+    "manifest_exact_matches_at_investigation_start": 26,
+    "immutable_domain_mismatches": 3,
+    "mutable_master_snapshot_mismatch": 1,
+    "targeted_evidence_files_checked": 3,
+    "incident_scope_exactly_three_frozen_domain_mismatches": true
+  },
+  "mismatch_records": [
+    {
+      "domain": "FORMATION_BOSS",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+      "expected_sha256": "50d7e45a8838542882d2bcc114486638e96433234db2799c0254a22b8e91fe13",
+      "actual_sha256": "e4820e01060d208c4e6bbcce11bcb580d8d0bcd855960c6edf15c49574262b29",
+      "actual_git_blob_oid": "097fe145dc88ca52d14392dd67d6e77a33f515dd",
+      "expected_hash_provenance": [
+        "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/authority_commit_manifest_2026-09-20.json"
+      ],
+      "actual_hash_provenance": [
+        "working tree at investigation start",
+        "HEAD a505a25cf96bb718784faa85f4d962262d251ca5",
+        "preservation commit 3243c5eb947f3583e5918ef45cacb7ce6fcfd862"
+      ],
+      "recovery": {
+        "expected_blob_recovered": false,
+        "candidates_with_exact_sha256": 0
+      },
+      "semantic_equivalence": {
+        "classification": "BOOKKEEPING_ONLY",
+        "status_and_architecture": "Current file records the same partial native architecture boundary and evidence-blocked Terra readiness frozen by the final authority.",
+        "blocker_ids": [
+          "FB-Q1",
+          "FB-Q2",
+          "FB-Q3",
+          "FB-Q4"
+        ],
+        "strict_rejection_boundary": "Exact 14-item freeze set matched.",
+        "measured_counts": {
+          "targeted_nodes": 1505,
+          "records": 1050,
+          "monster_operations": 1087,
+          "monster_records": 804
+        },
+        "safety_and_reopen": "No compiler or executable gain is claimed; native unknowns and evidence-qualified reopen conditions remain.",
+        "cross_domain_contracts": "Topology remains separate from target selection, scheduler arbitration, modifier lifecycle, and phase semantics.",
+        "implementation_gate_impact": "NONE_FOUND"
+      },
+      "repair_classification": "CURRENT_BYTES_SEMANTICALLY_EQUIVALENT_RECONCILE_HASH"
+    },
+    {
+      "domain": "MONSTER_AI",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+      "expected_sha256": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198",
+      "actual_sha256": "c00830c9af0a433dd330948f373690294bdb817b2ff3600d4be090fdfbe7dda1",
+      "actual_git_blob_oid": "cd3950c8ea45a79f453f1ec420bc520e83721cb5",
+      "expected_hash_provenance": [
+        "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/authority_commit_manifest_2026-09-20.json"
+      ],
+      "actual_hash_provenance": [
+        "working tree at investigation start",
+        "HEAD a505a25cf96bb718784faa85f4d962262d251ca5",
+        "preservation commit 3243c5eb947f3583e5918ef45cacb7ce6fcfd862"
+      ],
+      "recovery": {
+        "expected_blob_recovered": false,
+        "candidates_with_exact_sha256": 0
+      },
+      "semantic_equivalence": {
+        "classification": "SEMANTIC_BUT_SUPERSEDED_AND_FREEZE_CONSISTENT",
+        "status_and_architecture": "Current file is FROZEN with scoped declarative architecture closed, native decisions evidence-blocked, and Terra readiness partial.",
+        "blocker_ids": [
+          "MA-Q01",
+          "MA-Q02",
+          "MA-Q03",
+          "MA-Q04",
+          "MA-Q05"
+        ],
+        "strict_rejection_boundary": "Exact 23-item freeze set matched.",
+        "measured_counts": {
+          "policies": 4,
+          "character_configs": 5,
+          "named_leaves": 55,
+          "sequence_containers": 1,
+          "direct_edges": 293,
+          "exact_parent_candidates": 19,
+          "sequence_rows": 11,
+          "sequence_occurrences": 15
+        },
+        "supersession": "Older same-file remaining-mapping-request text is superseded by the later sequence_id_binding and end_of_domain_gate sections and by final freeze conflict SC-03.",
+        "safety_and_reopen": "No native AI selector claim is introduced; duplicate leaves remain preserved and native blockers require version-qualified evidence.",
+        "cross_domain_contracts": "Scheduler supplies the opportunity; target selection is Domain 7; ability execution is Domain 1; topology is Domain 3.",
+        "implementation_gate_impact": "NONE_FOUND"
+      },
+      "repair_classification": "CURRENT_BYTES_SEMANTICALLY_EQUIVALENT_RECONCILE_HASH"
+    },
+    {
+      "domain": "TRIGGERABILITY",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "expected_sha256": "a582917cd595b9eab8f3800b705a301e6a868a9f91571b3f9ba9242cd2b824f4",
+      "actual_sha256": "f74d3bf9256c4440a8f8c851b61a80b873ca9889d2eac2a8c4fb8cad3ede4246",
+      "actual_git_blob_oid": "76d66dd871aec5364b3a6bd7fdc048c37023f199",
+      "expected_hash_provenance": [
+        "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/authority_commit_manifest_2026-09-20.json"
+      ],
+      "actual_hash_provenance": [
+        "working tree at investigation start",
+        "HEAD a505a25cf96bb718784faa85f4d962262d251ca5",
+        "preservation commit 3243c5eb947f3583e5918ef45cacb7ce6fcfd862"
+      ],
+      "recovery": {
+        "expected_blob_recovered": false,
+        "candidates_with_exact_sha256": 0
+      },
+      "semantic_equivalence": {
+        "classification": "BOOKKEEPING_ONLY",
+        "status_and_architecture": "Current historical PASS_4_COMPLETE_BLOCKED_BY_EVIDENCE is compatible with the final FROZEN authority; execution readiness remains NO.",
+        "blocker_ids": [
+          "TA-P4-Q1",
+          "TA-P4-Q2",
+          "TA-P4-Q3"
+        ],
+        "strict_rejection_boundary": "Exact 12-item freeze set matched.",
+        "measured_counts": {
+          "triggerability_calls": 4125,
+          "unique_calls": 2665,
+          "missing_calls": 1460,
+          "local_onstart_candidates": 164,
+          "invocation_eligibility_records": 0
+        },
+        "safety_and_reopen": "No invocation eligibility or TriggerAbility implementation is authorized; the evidence-qualified reopen boundary remains.",
+        "cross_domain_contracts": "Invocation identity and wait/trigger descriptors remain non-executable until exact resolution; no historical executable boolean is promoted.",
+        "implementation_gate_impact": "NONE_FOUND"
+      },
+      "repair_classification": "CURRENT_BYTES_SEMANTICALLY_EQUIVALENT_RECONCILE_HASH"
+    }
+  ],
+  "recovery_search_results": {
+    "allowed_sources_searched": [
+      "all 1815 local Git blobs enumerated by git cat-file --batch-all-objects, including reachable and dangling objects",
+      "reachable commits and branches",
+      "git fsck --full dangling blobs",
+      "index and local reflogs",
+      "repository copies under D:\\HSR_Battle_Agent",
+      "conversation-produced local files under C:\\Users\\而忧\\.codex"
+    ],
+    "plausible_local_files_sha256_scanned": 1518,
+    "expected_blob_matches": 0,
+    "exact_expected_blobs_recovered": false,
+    "current_files_first_entered_git_history": "commit 3243c5eb947f3583e5918ef45cacb7ce6fcfd862 with the current bytes",
+    "restoration_selected": false
+  },
+  "duplicate_key_findings": [
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+      "json_location": "$.progress_update_protocol",
+      "duplicate_key": "master_control_file_exception",
+      "first_value": "For every task, terra_implementation_master_v1.json is additionally allowed only for that task's status, notes, changed-file list, test results, blocker, checkpoint, change-history entry and computed next_ready_tasks. It is intentionally not repeated in every files_allowed_to_modify array and grants no DAG, architecture or semantic edits.",
+      "second_value": "For every task, terra_implementation_master_v1.json is additionally allowed only for that task's status, notes, changed-file list, test results, blocker, checkpoint, change-history entry and computed next_ready_tasks. It is intentionally not repeated in every files_allowed_to_modify array and grants no DAG, architecture or semantic edits.",
+      "values_identical": true,
+      "ordinary_parser_loses_information": true,
+      "repair": "Remove only the second adjacent member; do not reserialize the master.",
+      "repair_status": "APPLIED_AND_VALIDATED",
+      "validator": "tools/control/validate_json_no_duplicate_keys.mjs"
+    }
+  ],
+  "git_ref_incident_findings": {
+    "current_ref_health": "HEALTHY",
+    "fsck_full": {
+      "missing_or_corrupt_objects": 0,
+      "dangling_blobs": 38,
+      "dangling_trees": 73,
+      "dangling_commits": 0
+    },
+    "local_and_origin_named_refs_agree": true,
+    "evidence": "show-ref, log, reflog, ls-remote and fsck identify current named refs and reachable history consistently. Existing dangling non-commit objects are reported but no corruption is reported.",
+    "historical_incident_conclusion": "The reported prior SIGTERM/ref-loss sequence cannot be further attributed from current evidence. No current ref repair is required or authorized.",
+    "policy": "Agents must never directly create, edit, or delete .git metadata. If a normal Git ref mutation fails, stop Git mutation, preserve object IDs and reflog evidence, and request review."
+  },
+  "recommended_repair": {
+    "repair_class": "VERSIONED_AUTHORITY_RECONCILIATION_LAYER",
+    "domain_files_modified": false,
+    "freeze_master_handoff_modified": false,
+    "old_expected_hashes_retained": true,
+    "current_hashes_recorded": true,
+    "implementation_master_action": "Reference this reconciliation, repair the duplicate key surgically, record mutable-control identity policy, close P0-A1/P0-A2, and expose their existing dependents as READY.",
+    "astra_required": false
+  },
+  "files_authorized_for_next_mutation": [
+    "data/semantics/4.4.54/full_reconstruction/authority_reconciliation_001.json",
+    "docs/agent/authority_reconciliation_2026-09-20.md",
+    "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+    "tools/control/validate_json_no_duplicate_keys.mjs"
+  ],
+  "files_explicitly_forbidden": [
+    "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+    "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+    "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+    "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+    "docs/agent/handoffs/damage_request_dispatch_resolution_18.md",
+    "all production src files",
+    "all tests",
+    "all unrelated untracked artifacts",
+    ".git metadata"
+  ],
+  "p0_reentry_criteria": {
+    "reconciliation_artifact_parses_without_duplicate_keys": true,
+    "implementation_master_parses_without_duplicate_keys": true,
+    "three_current_sha256_values_match_disk": true,
+    "frozen_expected_sha256_values_retained_historically": true,
+    "semantic_equivalence_evidence_recorded": true,
+    "protected_modified_files_untouched_and_unstaged": true,
+    "narrow_commit_scope_validation": true,
+    "commit_and_push_identity": "Recorded externally by Git history and remote refs; intentionally not self-referential inside this artifact.",
+    "result_when_validated": "P0-A1_AND_P0-A2_DONE; P0-B_P0-C_P0-E_P0-F_READY"
+  },
+  "cheap_model_resume_decision": "YES_AFTER_THIS_RECONCILIATION_COMMIT_IS_PUSHED",
+  "next_ready_tasks_after_reentry": [
+    "P0-B",
+    "P0-C",
+    "P0-E",
+    "P0-F"
+  ]
+}
