@@ -1,0 +1,1648 @@
+{
+  "schema": "hsr_battle_agent.astra_stage_environment_mode/1",
+  "domain": "stage_environment_mode",
+  "pass": 1,
+  "status": "PASS_1_COMPLETE",
+  "authority": {
+    "game_version": "4.4.54",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "date": "2026-09-20",
+    "external_source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "content_database": "data/db/hsr_content_4.4.54.sqlite",
+    "content_database_sha256": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692",
+    "source_repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "evidence_priority": [
+      "CURRENT_VERSION_STATIC_DB",
+      "EXISTING_SCENARIO_CONTRACT",
+      "EXISTING_BEHAVIOR_CORPUS",
+      "CACHED_PINNED_SOURCE",
+      "SAVED_NATIVE_METADATA_AND_XREF_ONLY"
+    ],
+    "native_limit": "Saved metadata is declaration evidence. No native body was applied to a binary; an older raw type dump names 4.4.53, not an independently verified 4.4.54 body."
+  },
+  "scope": "Semantic reconstruction only; frozen Domains 1-8; no runtime or Domain 10",
+  "scenario_identity_model": {
+    "status": "CLOSED_AS_ARCHITECTURE",
+    "identity_rule": "Identity is a tagged family plus source/version/key. Equal integers, display names and filenames never merge families. Runtime identity includes scenario instance and occurrence/generation; repeated definitions do not share mutable state.",
+    "definitions": {
+      "StageDefinitionRef": "(stages, game_version, original_game_id), plus exact source payload and provenance",
+      "StageInstanceRef": "(scenario_instance_id, stage_occurrence_id); optional for direct custom scenarios",
+      "LevelDefinitionRef": "exact level_graph_path + source revision/hash; distinct from numeric stage.level",
+      "EncounterDefinitionRef": "derived source occurrence (mode record, detail path, lane, event index); local encounter ID is not a native StageID",
+      "WaveDefinitionRef": "source-scoped definition/graph node or normalized caller definition; legacy waves.entity_id is explicitly tagged DERIVED_CONTAINER",
+      "WaveInstanceRef": "(scenario_instance_id, wave_occurrence_id, activation_generation)",
+      "MonsterDefinitionRef": "versioned table family and exact original ID, including variant family where applicable",
+      "RuntimeMonsterEntityRef": "runtime registry identity supplied through Domain 3, distinct from source monster ID and spawn occurrence",
+      "EnvironmentDefinitionRef": "exact known family/config pointer; no universal environment table or entity",
+      "EnvironmentRuntimeRef": "tagged representation handle (entity/service/field/presentation/UNKNOWN) requiring evidence",
+      "StageBuffDefinitionRef": "canonical StageBuff reference, separately linked MazeBuff (ID,Lv) row and behavior refs",
+      "AdventureModifierDefinitionRef": "source file hash + ModifierMap key; distinct from StageBuff/MazeBuff numeric IDs",
+      "ModeDefinitionRef": "mode_metadata source collection + ID + nested ruleset scope or caller-defined supported ruleset",
+      "ModeRuntimeStateRef": "scenario-local mutable mode state identity",
+      "GlobalBehaviorDefinitionRef": "source path + declaration container/pointer/name + hash/version; corpus behavior ID retained"
+    },
+    "native_name_limits": [
+      "RPG.GameCore.StageRow declares LevelGraphPath and Level separately.",
+      "RPG.GameCore.StageConfig T18894 declares SubStages and volume/PVS/audio fields; do not conflate that name with StageRow T14976.",
+      "Native StageMonsterWave T14969 and local waves projection are distinct representations."
+    ],
+    "evidence": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations"
+  },
+  "official_stage_binding": {
+    "status": "EXACT_CONTENT_EDGES_WITH_BLOCKED_EXECUTION",
+    "source": "stages rows for game_version=4.4.54",
+    "count": 1459,
+    "components": [
+      "stage_id and original source envelope",
+      "level_graph_path and ordered sub_level_graphs",
+      "ordered monster_list groups and exact slot-key/MonsterID pairs",
+      "stage_ability_config declaration names",
+      "ordered opaque stage_config_data key/value records",
+      "level_win_condition and level_lose_condition strings",
+      "level/hard_level_group/elite_group property context",
+      "battle_scoring_group when present",
+      "trial_avatar_list and control flags"
+    ],
+    "ledger": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+    "edge_requirements": [
+      "source table or source path",
+      "exact source field/JSON pointer",
+      "destination family and ID/name/path",
+      "join method and unresolved candidates",
+      "source array index/slot identity",
+      "game version, commit/hash and version relation"
+    ],
+    "graph": {
+      "path": "Config/Level/StageCommonTemplate.json",
+      "referencing_rows": 1459,
+      "cached": false,
+      "status": "BLOCKED_BY_CONTENT_COVERAGE",
+      "meaning": "Stage directly supplies monster-list groups and parameters, but graph-controlled dispatch cannot be recovered without the referenced graph. Direct content containment is not direct lifecycle ownership."
+    },
+    "limits": [
+      "All 1459 inspected rows have StageType Challenge; this is not proof of a single common mode rule set.",
+      "All sub_level_graphs are empty in this projection; no universal absence of branching follows.",
+      "Numeric stage.level is not a LevelDefinitionRef."
+    ],
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_distributions",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges"
+    ]
+  },
+  "normalized_scenario_model": {
+    "status": "CLOSED_LOSSLESS_DESCRIPTOR_NOT_EXECUTABLE_BY_CONSTRUCTION",
+    "existing_contract": "data/semantics/4.4.54/full_reconstruction/free_scenario_assembly_contract_v1.json",
+    "existing_implementation": "src/hsr_battle_agent/game_data/scenario_compiler.py",
+    "implementation_change": "NONE",
+    "fields": {
+      "scenario_id": "required caller-owned stable ID",
+      "game_version": "4.4.54 plus explicit foreign-source version relations",
+      "official_source": "ABSENT for custom, or typed official stage/encounter refs with original envelope",
+      "participants": "ordered ParticipantSpawnSpec + Domain 8 player loadout/progression inputs",
+      "wave_definitions": "source-scoped immutable definitions, source group plans and opaque graph fragments",
+      "wave_plan": "ordered occurrence list or explicit graph; preserve repetition, branch labels, empty groups and unresolved edges",
+      "global_effects": "StageBuffActivation / AdventureModifierActivation / GlobalEffectActivation descriptors",
+      "environment": "typed EnvironmentBinding[] with representation and lifecycle status",
+      "mode_rules": "explicit supported ModeRuleSet or opaque source rules requiring rejection",
+      "transitions": "wave entry/advance/exit descriptors, each with evidence status",
+      "persistence_policy": "field-level before/after/ownership rules; UNKNOWN is not reset or preserve",
+      "terminal_rules": "separate victory/defeat/completion/termination/settlement policies",
+      "randomness": "algorithm/stream/seed/current state/draw-site contracts only if proved",
+      "provenance": "source envelopes, exact joins, field presence, version/hash and caller override history",
+      "unresolved": "structured strict rejection reasons and question IDs"
+    },
+    "completeness_rule": "Keep the full source payload and unknown fields even when they prevent execution. Raw JSON strings/lossless integer tokens are authoritative for large hashes. Do not round them through IEEE-754 numbers.",
+    "compatibility": "Existing static ScenarioCompiler is consumed as historical assembly infrastructure. Its status labels, default mode or golden_eligible flag do not prove Domain 9 scenario execution closure. No code audit or modification is performed.",
+    "custom_override_rule": "Caller-provided definitions/rules can be represented directly. Supported sandbox rule semantics must be explicit and separately validated; they are not evidence of native official behavior. Official template override precedence remains provenance-bearing and cannot erase unknown native semantics."
+  },
+  "level_encounter_wave_binding": {
+    "status": "PARTIAL_EXACT_SOURCE_RELATIONS",
+    "relations": [
+      {
+        "edge": "mode_metadata nested event object -> StageDefinitionRef",
+        "method": "explicit /.../event_id_list*/i/stage_id",
+        "matched_occurrences": 1543,
+        "missing_canonical_occurrences": 9,
+        "missing_unique_ids": 8,
+        "limit": "Nine embedded rows already exist in local mode payloads but were not normalized into stages. They remain source descriptors; no broad retrieval required."
+      },
+      {
+        "edge": "encounters -> stages",
+        "method": "payload.stage_id equality, preserving lane/event_index and raw provenance",
+        "matched": 1543,
+        "limit": "Encounters are repository-derived parent occurrence records, not proven native Encounter definitions."
+      },
+      {
+        "edge": "stages -> LevelDefinitionRef",
+        "method": "literal level_graph_path",
+        "references": 1459,
+        "unique_paths": 1,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE"
+      },
+      {
+        "edge": "stages -> source monster groups -> MonsterDefinitionRef",
+        "method": "monster_list array index + exact slot key/value",
+        "groups": 2743,
+        "monster_occurrences": 6717,
+        "status": "EXACT_CONTENT_EDGE"
+      },
+      {
+        "edge": "stages -> legacy waves",
+        "method": "existing normalizer reads _Wave into wave_index and wraps the entire monster_list",
+        "containers": 1459,
+        "limit": "Not a recovered native next-wave relation."
+      },
+      {
+        "edge": "_StageInfiniteGroup -> WaveGroupID/WaveIDList schema",
+        "method": "source key and native declaration only",
+        "stage_rows": 208,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE",
+        "limit": "No table rows or parsing/lookup body; do not assert ID equality to StageID or fabricate wave IDs."
+      },
+      {
+        "edge": "_CreateBattleEvent -> StageBattleEventRow schema",
+        "method": "source key and native EventID/AbilityNameList/ModifierNameList/SelfModifierNameList/ParamList declaration only",
+        "stage_rows": 1303,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE",
+        "limit": "No suffix-based BattleEventAbility name join."
+      }
+    ],
+    "projection_warning": {
+      "source": "src/hsr_battle_agent/game_data/nanoka_content.py:935",
+      "finding": "_build_stage_wave constructs one container per stage; source groups are recorded under group_index, and slot items are sorted lexically by this adapter. Adapter order is not native formation/scheduler order.",
+      "example": "Stage 30001011 -> legacy container 30001011:2 -> source groups 0 and 1, nine monster occurrences.",
+      "strong_reconstruction": "_Wave equals monster_list.length in all 1459 inspected rows. Treat it as a count-shaped template input, never as evidence that only native wave number 2 exists."
+    },
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/negative_checks"
+    ]
+  },
+  "wave_model": {
+    "status": "ARCHITECTURE_CLOSED_NATIVE_DISPATCH_PARTIAL",
+    "WaveDefinition": {
+      "identity": "typed source/caller definition ref",
+      "source_members": "ordered group descriptors with unmodified slot keys and MonsterDefinitionRefs",
+      "entry_batches": "explicit batch definitions/timing tags or UNKNOWN; distinct from formations",
+      "entry_predicate": "evidence-backed predicate or opaque graph node",
+      "advance_predicate": "explicit predicate/event and context binding or UNKNOWN",
+      "exit_policy": "explicit transitions and field-level persistence obligations",
+      "behavior_bindings": "wave-level effect/ability refs and parameter packets",
+      "graph": "ordered/branch/repeat edges only as authored; UNKNOWN where missing"
+    },
+    "WaveRuntimeState": {
+      "fields": [
+        "wave instance identity",
+        "definition ref",
+        "activation generation",
+        "pending/created/completed spawn occurrences",
+        "source group cursor and opaque graph execution state",
+        "completion predicate state",
+        "wave effects/context handles",
+        "transition/persistence revision"
+      ]
+    },
+    "observed": {
+      "source_list_lengths": {
+        "1": 432,
+        "2": 770,
+        "3": 257
+      },
+      "source_groups": 2743,
+      "repeated_group_stage_count": 171,
+      "repeated_example": "30110042 repeats a monster group at different array positions; do not deduplicate.",
+      "empty_groups_observed": 0,
+      "empty_wave_semantics": "UNKNOWN; no automatic skip",
+      "multi_group_wave_semantics": "UNKNOWN; existing container holds multiple groups but does not prove they enter simultaneously or form one native wave",
+      "branching": "UNKNOWN; graph unavailable",
+      "repetition": "Repeated source groups are observed; runtime looping/reuse rules UNKNOWN"
+    },
+    "native_surfaces": [
+      "StageMonsterWave Monster0..Monster4 fields",
+      "WaveMonster.LevelWaveIndex / MonsterList / WaitDie / Hide / ForbiddenPassiveSkill / CreateTiming",
+      "WaveMonsterTiming Normal and DelayCreate declarations",
+      "StageInfiniteGroupRow.WaveIDList",
+      "StageInfiniteWaveConfigRow.MonsterGroupIDList / Ability / ParamList / ClearPreviousAbility / MaxMonsterCount / MaxTeammateCount"
+    ],
+    "native_limit": "These declaration families support separate requests and delayed-creation representation, not actual branch/default/order semantics.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/negative_checks",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/monster_list_lengths"
+    ]
+  },
+  "spawn_boundary": {
+    "status": "REQUEST_REPRESENTATION_CLOSED_EXECUTION_BLOCKED",
+    "ParticipantSpawnSpec": {
+      "fields": [
+        "source definition and spawn occurrence identity",
+        "MonsterDefinitionRef OR player input",
+        "source group/slot index",
+        "level and property parameter refs",
+        "entry predicate/timing",
+        "initial animation/visibility/passive flags with presence tags",
+        "AI config ref or UNKNOWN",
+        "team/formation requests separately",
+        "runtime receiver/entity handle UNBOUND until created",
+        "evidence status and rejection reasons"
+      ]
+    },
+    "source_example": {
+      "path": "Config/ConfigAbility/Level/Level_MazeChallengeBuff_Ability.json",
+      "pointer": "/GlobalModifiers/MMonster_Summoner_Challenge/_CallbackList/0/CallbackConfig/0",
+      "type": "RPG.GameCore.SummonMonster",
+      "refresh_team_location": false,
+      "conclusion": "Summon request and formation-location refresh are separate fields. No proof of all subsequent subsystem transitions."
+    },
+    "separate_steps": [
+      "creation/spawn",
+      "team affiliation",
+      "formation membership/layout",
+      "visibility",
+      "targetability",
+      "AI initialization",
+      "scheduler actor registration"
+    ],
+    "frozen_contract": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/entity_lifecycle_dependency",
+    "no_inference": "SetTeamFormation is never a spawn request. Boss phase is not an implicit Stage wave.",
+    "unknown": "Actual creation timing, registry insertion, AI/setup callback and scheduler side effects remain D9-Q2 plus frozen domain blockers."
+  },
+  "wave_advance_contract": {
+    "status": "BLOCKED_BY_EVIDENCE_AND_GRAPH_CONTENT",
+    "candidate_surfaces": [
+      "WaveMonster.WaitDie declaration",
+      "TurnBasedGameMode.WaveMonsterBegin M499829 / WaveMonsterFinish M499830",
+      "get_IsLastMonsterWave M500028, counts including creation M500030",
+      "InfinitePerWaveData.OnMonsterDieOrEscape M528742, IsSummonFinished M528758, DeadProgress/DeadOrEscapeProgress M528767/M528768",
+      "LevelWaveMonster and LevelWaveMonsterBegin events"
+    ],
+    "proven_predicates": [],
+    "family_matrix": [
+      {
+        "family": "all relevant enemies dead",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      },
+      {
+        "family": "specific entity dead",
+        "wave_advance": "UNKNOWN",
+        "note": "Stage-level CDT_MonsterDie strings exist; that is not a wave-advance predicate."
+      },
+      {
+        "family": "counter zero",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      },
+      {
+        "family": "script/event",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      },
+      {
+        "family": "time/cycle threshold",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      },
+      {
+        "family": "objective completion",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      },
+      {
+        "family": "mode-specific predicate",
+        "wave_advance": "UNKNOWN",
+        "note": "No matched graph/body binding establishes this family as the wave transition rule."
+      }
+    ],
+    "distinction": "WAVE_CLEAR is an independent transition outcome. It does not imply STAGE_VICTORY, ENCOUNTER_COMPLETE or MODE_COMPLETE.",
+    "strict_reject": "No no_alive_enemies() default and no advance on empty pending/current entity sets.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_methods",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_body_search",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_distributions"
+    ]
+  },
+  "multiwave_persistence": {
+    "status": "EXPLICIT_BOUNDARY_ALL_NATIVE_FIELD_POLICIES_UNKNOWN",
+    "boundary": "wave exit -> scenario transition -> next entry; neither a new battle construction nor an identity-preserving no-op is assumed",
+    "fields": [
+      {
+        "field": "player_hp",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "energy",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "special_energy",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "team_sp_and_resources",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "av_action_delay",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "active_modifiers",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "dot_and_debuff_state",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "summons_and_memosprites",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "cooldowns",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "ability_instances_and_state",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "ai_state",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "stage_global_effects",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "environment_state",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "mode_score_and_counters",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      },
+      {
+        "field": "rng_state",
+        "policy": "UNKNOWN",
+        "reset_value": "UNKNOWN",
+        "transfer_or_owner_scope": "UNKNOWN",
+        "question": "D9-Q3"
+      }
+    ],
+    "narrow_evidence": [
+      {
+        "fact": "StageInfiniteWaveConfigRow.ClearPreviousAbility and InfinitePerWaveData.ClearPreviousAbility coexist with Ability/AbilityParams.",
+        "limit": "A selective lifecycle control is declared. Its branch, default, affected ability and invocation are not recovered."
+      },
+      {
+        "fact": "Saved WaveMonsterBegin xref reaches a property helper call site.",
+        "limit": "No property key, receiver, value or control flow is established. It proves neither AV reset nor preservation; raw dump provenance is not silently upgraded."
+      }
+    ],
+    "snapshot_requirement": "Store enough before-state and unresolved policy information for inspection; reject transition before mutation if any behavior-relevant field lacks a proven policy.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_body_search"
+    ]
+  },
+  "stage_buff_model": {
+    "status": "STATIC_ACTIVATION_SOURCE_DISTINCT_BATTLE_BINDING_PARTIAL",
+    "selection": "160 Stage _BindingMazeBuff key/value references -> 18 canonical StageBuff IDs.",
+    "definition": "17 exact cached ExcelOutput/MazeBuff.json rows with matching ID and explicit Lv=1; ID 3110018 is absent from pinned 4.4.0 table.",
+    "source_binding": {
+      "source_field": "InBattleBindingKey",
+      "binding_type": "StageAbilityBeforeCharacterBorn",
+      "declared_ability_names": "StrongChallengeEX_Environment_StageAbility_001 through _017 are explicit per-row values; no range/suffix lookup is used.",
+      "exact_behavior_matches": 0,
+      "missing_behavior_references": 17
+    },
+    "adventure_binding": {
+      "source_field": "ModifierName",
+      "name": "ADV_StageAbility_MazeCommon_Empty",
+      "definition_path": "Config/ConfigAdventureModifier/AdventureModifier_Common.json",
+      "pointer": "/ModifierMap/ADV_StageAbility_MazeCommon_Empty",
+      "definition_payload": {},
+      "exact_row_to_definition_edges": 17,
+      "meaning": "Exact empty adventure definition. Its existence is not the missing battle Ability and does not make the stage effect a no-op."
+    },
+    "parameters": "ParamList entries preserved per (ID,Lv) and index; receiver DynamicValue mapping not proved.",
+    "activation": "Binding tag declares a before-character-born category; actual registration, dispatch, owner and context UNKNOWN.",
+    "receiver": "UNKNOWN",
+    "duration": "UNKNOWN",
+    "wave_reset": "UNKNOWN",
+    "stacking": "UNKNOWN; Domain 2 only after a real AddModifier edge and complete context.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/maze_buff_selected_rows",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/4"
+    ]
+  },
+  "adventure_modifier_model": {
+    "status": "DEFINITION_REFERENCES_CAPTURED_ACTIVATION_PARTIAL",
+    "identity": "path + ModifierMap key + source hash/version; not a StageBuff ID",
+    "corpus_reuse": "28 AdventureModifier source files already selected/captured; no recapture.",
+    "selection_sources": [
+      "MazeBuff.ModifierName has 17 exact links to the empty named definition.",
+      "Other captured definitions remain source-only without a selected official Stage/Mode activation edge."
+    ],
+    "scope_evidence": {
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
+      "pointer": "/ModifierMap/ADV_LevelAbilityModifier_2013202",
+      "callbacks": [
+        "OnCreate",
+        "OnNpcMonsterCreate"
+      ],
+      "operations": [
+        "Retarget AllEnemy with AdventureByNPCMonsterPurposeType and ByRandom=true",
+        "AddClientMazeBuff ID=2013201 to ParamEntity"
+      ],
+      "conclusion": "Adventure/maze callbacks and client maze-buff requests are present. Do not lower this to an always-on battle-global Modifier."
+    },
+    "parameters": "Own DynamicValues and explicit operation payloads retained; parameter-provider link depends on source/activation and is UNKNOWN unless exact.",
+    "receiver_context": "Raw Caster/ParamEntity/other selectors retained; actual provider and owner UNKNOWN.",
+    "activation_timing": "Callback labels are source boundaries, not evidence of official runtime activation.",
+    "lifetime": "UNKNOWN",
+    "battle_only": "NOT_UNIVERSAL; broader adventure surfaces are observed",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/behavior_family_counts",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/3"
+    ]
+  },
+  "environment_model": {
+    "status": "FAMILY_SPECIFIC_NO_UNIVERSAL_ENTITY",
+    "families": [
+      {
+        "family": "MazeBuff InBattleBindingType=StageAbilityBeforeCharacterBorn",
+        "content_identity": "17 pinned MazeBuff IDs/Lv rows and explicit binding keys",
+        "runtime_representation": "UNKNOWN",
+        "behavior_attachment": "Explicit ability names, missing definitions",
+        "targetability": "UNKNOWN",
+        "scheduler_participation": "UNKNOWN",
+        "lifetime": "UNKNOWN",
+        "limit": "IsDisplayEnvInLevel=true is a display flag, not evidence of a hidden or targetable entity."
+      },
+      {
+        "family": "CreateBattleEvent / StageBattleEventRow",
+        "content_identity": "Explicit EventID request and separate native row schema",
+        "runtime_representation": "UNKNOWN; event-manager/context surface declared",
+        "behavior_attachment": "AbilityNameList / ModifierNameList / SelfModifierNameList declarations; rows unavailable",
+        "targetability": "UNKNOWN",
+        "scheduler_participation": "UNKNOWN; RaidTimeCount source contains caster action-delay request but no official owner binding",
+        "lifetime": "UNKNOWN"
+      },
+      {
+        "family": "Adventure MazeEnvi modifiers",
+        "content_identity": "source ModifierMap keys, exact callbacks",
+        "runtime_representation": "UNKNOWN_ADVENTURE_CONTEXT",
+        "behavior_attachment": "OnCreate/OnNpcMonsterCreate config",
+        "targetability": "UNKNOWN",
+        "scheduler_participation": "UNKNOWN",
+        "lifetime": "UNKNOWN"
+      },
+      {
+        "family": "Stage presentation/config values",
+        "content_identity": "_BGM source strings in 148 rows",
+        "runtime_representation": "OPAQUE_PRESENTATION_INPUT",
+        "behavior_attachment": "NO_COMBAT_JOIN_PROVEN",
+        "targetability": "NOT_ESTABLISHED",
+        "scheduler_participation": "NOT_ESTABLISHED",
+        "lifetime": "UNKNOWN",
+        "limit": "Do not create a combat entity from presentation metadata."
+      }
+    ],
+    "observed_alternatives": "A global service, hidden owner, field/hazard or targetable entity remain separate possible representations. Only evidence for a specific family can select one.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/configuration_keys",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/behavior_sites"
+    ]
+  },
+  "mode_model": {
+    "status": "STATIC_MODE_CONTEXT_EXACT_RULE_EXECUTION_PARTIAL",
+    "observed_collections": {
+      "maze": 46,
+      "maze_boss": 20,
+      "maze_extra": 26
+    },
+    "identity": "Keep source collection/record/detail/lane distinct; all StageType values being Challenge does not merge modes.",
+    "fields_observed": [
+      "countdown",
+      "challenge[].param plus localized presentation text",
+      "buff/param and buff_list1/2/3",
+      "option/sub_option",
+      "stage battle_scoring_group",
+      "_ChallengeStoryType",
+      "_StageInfiniteGroup"
+    ],
+    "behavior_families": [
+      "source-defined LevelChallengeTurnAcc / SetLevelChallengeTurnLimit / ByCompareChallengeLeft",
+      "source-defined SetRaidTargetProgress and scripted failure signal",
+      "declared infinite-wave pool/group/ability/limits",
+      "StageBuff timing-category selection"
+    ],
+    "binding_limit": "No named live-game rule is inferred from UI text. Mode metadata parameters/options are not executable predicates. Exact mode-to-stage nesting is proven; mode-to-runtime rule selection and precedence remain UNKNOWN.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/mode_fields",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/mode_metadata_index",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples"
+    ]
+  },
+  "initialization_partial_order": {
+    "status": "PARTIAL_DECLARATIVE_ORDER_NATIVE_DAG_UNCLOSED",
+    "nodes": [
+      "scenario_definition",
+      "player_entity_creation",
+      "domain8_loadout_activation",
+      "enemy_entity_creation",
+      "ai_setup",
+      "formation_setup",
+      "stage_buff_selection",
+      "stage_buff_activation",
+      "adventure_modifier_activation",
+      "environment_global_setup",
+      "scheduler_initialization",
+      "battle_start_callbacks"
+    ],
+    "proven_native_happens_before_edges": [],
+    "declared_timing_edges": [
+      {
+        "from": "selected StageAbilityBeforeCharacterBorn category",
+        "to": "character-born boundary",
+        "evidence": "MazeBuff.InBattleBindingType and T10553/F45607",
+        "status": "DECLARED_TIMING_CATEGORY_ONLY",
+        "not_proven": "Actual activation call/receiver/registration or ordering among multiple effects."
+      }
+    ],
+    "source_local_sequences": [
+      {
+        "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_Raid.json",
+        "scope": "/AbilityList/1/OnAdd",
+        "indices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "operations": [
+          "ModifyActionDelay",
+          "SetLevelChallengeTurnLimit",
+          "PredicateTaskList",
+          "AddModifier"
+        ],
+        "status": "SOURCE_LIST_ORDER_ONLY",
+        "limit": "Not a global battle-setup order or complete native callback execution proof."
+      }
+    ],
+    "representation_dependency_dag": [
+      {
+        "from": "scenario_definition",
+        "to": "request_descriptors"
+      },
+      {
+        "from": "resolved_entity_handle",
+        "to": "receiver_bound_activation_request"
+      },
+      {
+        "from": "resolved_entity_handle",
+        "to": "scheduler_actor_registration_request"
+      },
+      {
+        "from": "resolved_definition_and_context",
+        "to": "callback_dispatch_request"
+      }
+    ],
+    "dag_limit": "These are architecture validation dependencies, not newly proved native initialization edges. Before-character-born effects may use a service/context, so do not require a fake character owner. No universal all-abilities-registered-before-battle-start assertion.",
+    "unknown_pairs": [
+      "Domain 8 activation versus stage/global effects",
+      "AI versus formation versus scheduler setup",
+      "AdventureModifier versus StageBuff timing",
+      "global behavior registration versus native battle-start dispatch",
+      "player creation versus enemy creation"
+    ],
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/1"
+    ]
+  },
+  "global_owner_context": {
+    "status": "EXPLICIT_UNBOUND_CONTEXT_REJECTS_EXECUTION",
+    "GlobalEffectActivation": {
+      "fields": [
+        "activation_id",
+        "source_kind Stage|Mode|Environment|Adventure|Custom",
+        "source_definition_ref",
+        "behavior_definition_ref",
+        "trigger/timing presence and payload",
+        "runtime_receiver_ref",
+        "caster_ref",
+        "provider_ref",
+        "modifier_owner_ref",
+        "behavior_owner_ref",
+        "global_service_or_context_ref",
+        "parameter_record_ref",
+        "lifetime/persistence/stacking policy",
+        "binding evidence/status"
+      ]
+    },
+    "identity_rule": "All roles remain independent tagged references. UNKNOWN is a serializable unresolved reference, never entity 0, the player team, the first actor or the StageID.",
+    "modifier_boundary": "An exact source AddModifier operation can form a Domain 2 request descriptor. Execution still requires its receiver/provider/caster/owner and frozen stacking/lifetime contracts. Empty adventure definition is not a battle modifier activation.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/terra_contract",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples"
+    ]
+  },
+  "parameter_binding": {
+    "status": "EXACT_STATIC_ROWS_SYMBOLIC_DYNAMIC_INPUTS_PARTIAL",
+    "presence_states": [
+      "ABSENT",
+      "NULL",
+      "EMPTY",
+      "ZERO",
+      "VALUE"
+    ],
+    "extra_rule": "Explicit false retained as VALUE(false), not omission. Empty array/string/object retain their type. Preserve duplicates and raw numeric/string tokens.",
+    "exact_rows": [
+      {
+        "source": "stages.hard_level_group + stages.level",
+        "destination": "ExcelOutput/HardLevelGroup.json HardLevelGroup+Level",
+        "exact_matches": 1459,
+        "join": "COMPOSITE_FIELD_EQUALITY",
+        "effect": "Parameter input only; no property arithmetic or precedence promoted."
+      },
+      {
+        "source": "stages.elite_group",
+        "destination": "ExcelOutput/EliteGroup.json EliteGroup field",
+        "source_rows": 560,
+        "exact_matches": 559,
+        "missing": 1,
+        "missing_stage": "420514",
+        "limit": "Never join external_auxiliary_groups synthetic row index to EliteGroup."
+      },
+      {
+        "source": "StageBuff ID -> MazeBuff(ID,Lv=1)",
+        "destination": "ParamList",
+        "matched": 17,
+        "missing_ids": [
+          "3110018"
+        ],
+        "reader_join": "UNKNOWN"
+      },
+      {
+        "source": "stage_config_data ordered key/value",
+        "destination": "Level graph config input",
+        "reader_join": "BLOCKED_BY_CONTENT_COVERAGE"
+      }
+    ],
+    "dynamic_inputs": "ReadInfo.Type/Index and DynamicValues hash expressions are preserved symbolically. Type=None/Index=0 does not prove MazeBuff.ParamList[0]. No arithmetic or neighbor-row substitution.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_property_parameter_provenance",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/behavior_sites"
+    ]
+  },
+  "terminal_model": {
+    "status": "SOURCE_PREDICATE_SURFACES_EXACT_EXECUTION_BLOCKED",
+    "states": [
+      "ENTITY_DEATH",
+      "WAVE_COMPLETION",
+      "ENCOUNTER_COMPLETION",
+      "STAGE_VICTORY",
+      "STAGE_DEFEAT",
+      "MODE_COMPLETION",
+      "SCORE_SETTLEMENT",
+      "BATTLE_TERMINATION"
+    ],
+    "official_rows": {
+      "empty_win_conditions": 1297,
+      "custom_string_win_rows": 160,
+      "monster_die_condition_rows": [
+        {
+          "stage_id": "30002061",
+          "raw": "[CDT_MonsterDie:202303001]"
+        },
+        {
+          "stage_id": "30002062",
+          "raw": "[CDT_MonsterDie:200401003]"
+        }
+      ],
+      "custom_string": "[CDT_WaitCustomString:Level_SpecialWin]",
+      "meaning": "Exact serialized condition strings. Parser binding, referenced entity identity, AND/OR composition and fallback for [] are UNKNOWN. Empty does not mean all-enemies-dead or no victory."
+    },
+    "source_counterexample": {
+      "path": "Config/ConfigAbility/Level/Level_MazeWhitebox_Ability.json",
+      "pointer": "/AbilityList/1/Modifiers/StageAbility_MazeWhitebox_SpecialChallenge_AllBreak_Win/_CallbackList/2",
+      "description": "OnTriggerBreak compares AllDarkTeam character count with a stance<=0 predicate to >=5 and emits Level_SpecialWin. This is a source-level objective signal without requiring death; activation in the inspected official stages is not proven."
+    },
+    "TerminalRule": {
+      "fields": [
+        "rule identity and scope",
+        "source condition string or AST",
+        "receiver/entity/objective/context refs",
+        "trigger event/counter sources",
+        "composition and priority",
+        "simultaneous win/lose policy",
+        "termination versus result/settlement output",
+        "execution status"
+      ]
+    },
+    "unknowns": [
+      "final-wave-to-victory implication",
+      "win/lose conflict precedence",
+      "forced-end result classification",
+      "encounter/mode completion aggregation",
+      "settlement timing",
+      "native default conditions"
+    ],
+    "strict_rule": "No universal victory=all_enemies_dead; no victory after final list item.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_distributions",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/0",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations"
+    ]
+  },
+  "defeat_model": {
+    "status": "OPAQUE_UNTIL_PREDICATE_AND_CONTEXT_BOUND",
+    "official_rows": {
+      "empty_lose_conditions": 1299,
+      "special_lose_rows": 160,
+      "raw": "[CDT_WaitCustomString:Level_SpecialLose]"
+    },
+    "exact_source_surfaces": [
+      {
+        "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_Raid.json",
+        "pointer": "/AbilityList/16/Modifiers/RaidAbility_2420101_FailCondition_Modifier/_CallbackList/0",
+        "event": "OnListenCharacterEscape",
+        "effect": "TriggerCustomString Level_SpecialLose",
+        "limit": "Failure signal need not wait for player team death; no official selected-stage activation join."
+      },
+      {
+        "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability_Raid.json",
+        "pointer": "/AbilityList/1/Modifiers/Modifier_BattleEventAbility_RaidChallengeTurnLimit_RaidTimeCount/_CallbackList/1",
+        "effect": "Challenge-left predicate then ForceKill ModifierOwnerEntity",
+        "limit": "CompareValue is ABSENT in this branch; do not invent zero. ForceKill of this owner is not itself a recovered stage defeat predicate."
+      }
+    ],
+    "native_surface": "BattleEndReasonType declares None, AllDie and TimeLimit. Declaration alone does not identify the losing team, protection rules or evaluator order.",
+    "strict_rule": "No universal defeat=all_player_characters_dead; unknown protected-object, cycle/time or script failure rejects execution.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_distributions",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/1",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/2",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations"
+    ]
+  },
+  "score_cycle_objective_state": {
+    "status": "SEPARATE_MODE_STATE_PARTIAL_SOURCE_UPDATES",
+    "ModeRuntimeState": {
+      "fields": [
+        "ruleset/context identity",
+        "typed counters keyed by source declaration, not every integer",
+        "initial-value presence and provenance",
+        "update-event bindings",
+        "objective descriptors/status",
+        "score ledger and settlement status",
+        "wave-persistence policy",
+        "terminal consumer bindings"
+      ]
+    },
+    "observed": [
+      {
+        "field": "mode_metadata maze:100 /detail/0/countdown",
+        "initial_content_value": 20,
+        "meaning": "Static configured value only; native runtime initial assignment, decrement event and terminal consumer UNKNOWN."
+      },
+      {
+        "field": "stages.battle_scoring_group",
+        "rows": 368,
+        "meaning": "Scoring configuration reference; not current score or a win flag.",
+        "runtime_rule": "UNKNOWN"
+      },
+      {
+        "field": "BattleEventAbility_RaidTimeCount",
+        "initial_value": "symbolic LimitCount dynamic hash -1396861667; row parameter source UNKNOWN",
+        "update_event": "OnPhase1 callback with Priority=-12 includes LevelChallengeTurnAcc then SetRaidTargetProgress ModifyValue=1",
+        "wave_persistence": "UNKNOWN",
+        "consumer": "ByCompareChallengeLeft and ForceKill owner request; native comparison default and final result UNKNOWN"
+      },
+      {
+        "field": "InfinitePerWaveData",
+        "counters": [
+          "DeadCount",
+          "EscapeCount",
+          "SummonCount"
+        ],
+        "meaning": "Separate declared progress fields; not automatically score or completion.",
+        "initial_update_and_persistence": "UNKNOWN"
+      }
+    ],
+    "separation": "Cycle/challenge counters are not assumed to equal scheduler turn count, actor action count or wave index. Score is not terminal state.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/mode_fields",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/1",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations"
+    ]
+  },
+  "special_mode_overrides": {
+    "status": "RECORDED_NOT_IMPLEMENTED",
+    "overrides": [
+      {
+        "source": "Stage.level + hard_level_group / elite_group",
+        "destination": "enemy property setup inputs",
+        "activation": "battle setup UNKNOWN exact order",
+        "precedence": "UNKNOWN",
+        "binding": "EXACT_STATIC_PARAMETER_ROWS_PARTIAL"
+      },
+      {
+        "source": "WaveMonster.OverrideMonsterLevel / Hide / ForbiddenPassiveSkill / CreateTiming",
+        "destination": "spawn/passive/visibility setup",
+        "activation": "wave entry declaration",
+        "precedence": "UNKNOWN",
+        "binding": "NATIVE_SCHEMA_ONLY"
+      },
+      {
+        "source": "Stage.stage_ability_config / _BindingMazeBuff",
+        "destination": "global behavior activation",
+        "activation": "timing tag known only for 17 MazeBuff rows",
+        "precedence": "UNKNOWN"
+      },
+      {
+        "source": "_StageInfiniteGroup and native StageInfinite* row schema",
+        "destination": "wave layout/replacement/ability limits",
+        "activation": "UNKNOWN",
+        "precedence": "UNKNOWN"
+      },
+      {
+        "source": "RaidTimeCount OnAdd/OnEnterBattle ModifyActionDelay",
+        "destination": "Domain 4 scheduler input request",
+        "activation": "source callback only",
+        "precedence": "UNKNOWN"
+      },
+      {
+        "source": "trial_avatar_list (empty in inspected canonical stages)",
+        "destination": "Domain 8 selected player input",
+        "activation": "UNKNOWN",
+        "precedence": "UNKNOWN"
+      }
+    ],
+    "unproved_destinations": [
+      "player property override precedence",
+      "AI config override",
+      "formation override",
+      "target-rule override",
+      "scheduler initialization override"
+    ],
+    "rule": "No destination receives an executable override without exact binding, timing and precedence; consume frozen domains without modifications."
+  },
+  "rng_boundary": {
+    "status": "NO_PROCEDURAL_STAGE_RULE_PROMOTED",
+    "official_inspected_stage_draws": "No exact random enemy/wave/environment selection rule recovered from inspected stage fields; missing graph prevents a global absence claim.",
+    "observed_random_surface": {
+      "path": "Config/ConfigAdventureModifier/AdventureModifier_MazeEnvi.json",
+      "pointer": "/ModifierMap/ADV_LevelAbilityModifier_2013202/OnCreate/0",
+      "candidate_population": "symbolic AllEnemy filtered by AdventureByNPCMonsterPurposeType",
+      "draw_boundary": "Retarget has explicit ByRandom=true at OnCreate",
+      "ordering": "UNKNOWN",
+      "rng_stream_algorithm_draw_count": "UNKNOWN",
+      "replacement": "UNKNOWN",
+      "fallback": "UNKNOWN",
+      "scope": "Adventure receiver selection, not evidence of random Stage wave composition."
+    },
+    "strict_policy": "Do not consume RNG for missing content or guess selection/weight/fallback rules. Custom seeded scenarios still require a supported algorithm and exact draw contract.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/3",
+      "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/strict_rejections"
+    ]
+  },
+  "snapshot_clone_hash": {
+    "status": "ARCHITECTURE_CLOSED_NATIVE_TRANSITION_RESET_POLICY_UNKNOWN",
+    "immutable": [
+      "NormalizedScenarioDefinition and original source envelopes",
+      "source-scoped WaveDefinitions and ordered/repeated plans",
+      "global effect/environment/mode/terminal rule definitions",
+      "field presence and parameter records",
+      "source/version hashes and caller override provenance"
+    ],
+    "mutable": [
+      "ScenarioRuntimeState identity",
+      "current wave and occurrence/generation",
+      "pending/spawned/completed wave and spawn identities",
+      "graph cursors, pending conditions and transitions",
+      "active effect instances and lifetime/owner/provider/context handles",
+      "mode counters/objectives/score settlement",
+      "environment mutable state",
+      "terminal/result state and pending result events",
+      "scenario-local RNG stream/state/position",
+      "normal BattleState and subsystem snapshots"
+    ],
+    "derived_caches": [
+      "source lookup indexes",
+      "resolved static edge indexes",
+      "query projections tagged with dependency revisions"
+    ],
+    "clone_rule": "Share immutable definitions; clone mutable logical identities/alias relations, pending events and RNG state without re-triggering activation. Never reinitialize a clone from current actors alone. Cache invalidation/rebuild is permitted only when derivation is proved.",
+    "reset_rule": "Reset requires an explicit initial-state and per-field policy; UNKNOWN blocks native restart/transition execution.",
+    "hash_rule": "Hash source/version-qualified complete scenario definitions and all behavior-relevant mutable state with deterministic lossless serialization, ordered arrays and presence tags. Different pending waves, terminal rules or global bindings must yield distinct semantic identities even with identical actors.",
+    "unknown": "No native snapshot/hash algorithm is claimed. UNKNOWN packets can be hashed for inspection, but cannot authorize simulation/training/planner/golden execution."
+  },
+  "mapping_coverage": {
+    "status": "TARGETED_REPORT_NOT_EXECUTION_COVERAGE",
+    "version": "4.4.54 static projection; pinned behavior/tables declared 4.4.0 CLOSE",
+    "counts": {
+      "stages": 1459,
+      "encounters": 1543,
+      "waves": 1459,
+      "wave_monsters": 6717,
+      "stage_buffs": 18,
+      "mode_metadata": 92,
+      "external_stage_buffs": 17,
+      "external_auxiliary_groups": 2135,
+      "encounter_stage_relations": 1543,
+      "stage_waves": 1459,
+      "wave_monster_relations": 6717,
+      "stage_buff_relations": 160
+    },
+    "source_group_count": 2743,
+    "classifications": [
+      "STATIC_ONLY",
+      "EXACT_CONTENT_EDGE",
+      "EXACT_BEHAVIOR_REFERENCE",
+      "MISSING",
+      "AMBIGUOUS",
+      "BLOCKED_BY_CONTENT_COVERAGE",
+      "BLOCKED_BY_EVIDENCE"
+    ],
+    "families": [
+      {
+        "family": "stages",
+        "static_rows": 1459,
+        "status": "EXACT_CONTENT_EDGE",
+        "execution": "BLOCKED_BY_CONTENT_COVERAGE_AND_EVIDENCE"
+      },
+      {
+        "family": "encounters",
+        "static_rows": 1543,
+        "exact_stage_links": 1543,
+        "status": "EXACT_CONTENT_EDGE",
+        "identity": "DERIVED_SOURCE_OCCURRENCE"
+      },
+      {
+        "family": "Level graph",
+        "referenced_unique_paths": 1,
+        "local_graph_bodies": 0,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE",
+        "note": "13 Level ability files are not 13 Level graph definitions."
+      },
+      {
+        "family": "waves",
+        "static_rows": 1459,
+        "source_monster_groups": 2743,
+        "monster_occurrences": 6717,
+        "status": "EXACT_CONTENT_EDGE",
+        "semantic_boundary": "Derived container; native wave scheduling UNKNOWN"
+      },
+      {
+        "family": "StageBuff",
+        "static_rows": 18,
+        "stage_bindings": 160,
+        "pinned_maze_rows": 17,
+        "missing_maze_ids": [
+          "3110018"
+        ],
+        "battle_ability_exact_matches": 0,
+        "battle_ability_missing_refs": 17,
+        "adventure_empty_definition_exact_refs": 17,
+        "status": "PARTIAL_EXACT_CONTENT_AND_BEHAVIOR_REFERENCE",
+        "execution": "BLOCKED_BY_CONTENT_COVERAGE_AND_EVIDENCE"
+      },
+      {
+        "family": "AdventureModifier",
+        "captured_files": 28,
+        "static_db_table": "MISSING",
+        "status": "EXACT_BEHAVIOR_REFERENCE_FOR_17_SELECTED_EMPTY_BINDINGS_OTHERWISE_STATIC_ONLY",
+        "activation": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "family": "Level ability",
+        "captured_files": 13,
+        "status": "STATIC_ONLY_FOR_OFFICIAL_ACTIVATION",
+        "direct_stage_ability_refs": 68,
+        "matched": 0,
+        "missing": 68
+      },
+      {
+        "family": "Global Modifier",
+        "captured_files": 15,
+        "status": "STATIC_ONLY_FOR_OFFICIAL_ACTIVATION",
+        "note": "Captured definitions are not automatically active global effects."
+      },
+      {
+        "family": "Environment",
+        "static_table": "MISSING",
+        "captured_context_families": "MazeBuff display/timing, CreateBattleEvent and adventure callbacks",
+        "status": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "family": "mode_metadata",
+        "static_rows": 92,
+        "collections": {
+          "maze": 46,
+          "maze_boss": 20,
+          "maze_extra": 26
+        },
+        "exact_nested_stage_refs": 1543,
+        "missing_canonical_nested_refs": 9,
+        "local_embedded_stage_content": "PRESENT; eight distinct IDs across nine source occurrences",
+        "status": "EXACT_CONTENT_EDGE_WITH_PARTIAL_CANONICAL_PROJECTION",
+        "rules": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "family": "StageInfiniteGroup/StageInfiniteWaveConfig/StageInfiniteMonsterGroup",
+        "static_rows": "NO_LOCAL_TABLE_ROWS_OBSERVED",
+        "declared_schema": true,
+        "stage_group_ref_rows": 208,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE"
+      },
+      {
+        "family": "StageBattleEvent",
+        "static_rows": "NO_LOCAL_TABLE_ROWS_OBSERVED",
+        "stage_event_ref_rows": 1303,
+        "status": "BLOCKED_BY_CONTENT_COVERAGE"
+      },
+      {
+        "family": "property setup parameters",
+        "HardLevelGroup_matches": 1459,
+        "EliteGroup_matches": 559,
+        "EliteGroup_missing": 1,
+        "status": "EXACT_CONTENT_EDGE_WITH_VERSION_LIMIT"
+      }
+    ],
+    "existing_corpus_scope": {
+      "unique_files": 56,
+      "selected_records": 3377,
+      "family_manifest_counts": [
+        {
+          "cached_verified_paths": 28,
+          "family": "ADVENTURE_MODIFIER",
+          "missing_paths": 0,
+          "normalizer_input": true,
+          "notes": "Pinned positive discovery paths only.",
+          "positive_discovery_paths": 28
+        },
+        {
+          "cached_verified_paths": 15,
+          "family": "GLOBAL_MODIFIER",
+          "missing_paths": 0,
+          "normalizer_input": true,
+          "notes": "Pinned positive discovery paths only.",
+          "positive_discovery_paths": 15
+        },
+        {
+          "cached_verified_paths": 13,
+          "family": "LEVEL_ABILITY",
+          "missing_paths": 0,
+          "normalizer_input": true,
+          "notes": "Pinned positive discovery paths only.",
+          "positive_discovery_paths": 13
+        },
+        {
+          "cached_verified_paths": 2,
+          "family": "STAGE_ADVENTURE_MODIFIER",
+          "missing_paths": 0,
+          "normalizer_input": true,
+          "notes": "Pinned positive discovery paths only.",
+          "positive_discovery_paths": 2
+        },
+        {
+          "cached_verified_paths": 3,
+          "family": "STAGE_BUFF_ABILITY",
+          "missing_paths": 0,
+          "normalizer_input": true,
+          "notes": "Pinned positive discovery paths only.",
+          "positive_discovery_paths": 3
+        }
+      ],
+      "limit": "Stage family aliases overlap selected Level/Adventure paths; do not sum path aliases into unique files. No new compilation or behavior-universe expansion."
+    },
+    "edge_counts": {
+      "stages|EXPLICIT_CONFIG_PATH|BLOCKED_BY_CONTENT_COVERAGE": 1459,
+      "stages|EXPLICIT_MONSTER_ID_FIELD|EXACT_CONTENT_EDGE": 6717,
+      "stages|EXPLICIT_KEY_VALUE|EXACT_CONTENT_EDGE": 4929,
+      "stages|EXACT_COMPOSITE_FIELDS|EXACT_CONTENT_EDGE": 1459,
+      "stages|EXACT_ELITEGROUP_FIELD_NOT_DERIVED_ROW_ID|EXACT_CONTENT_EDGE": 559,
+      "stages|EXACT_DECLARED_NAME|MISSING": 68,
+      "stages|EXACT_ELITEGROUP_FIELD_NOT_DERIVED_ROW_ID|MISSING": 1,
+      "mode_metadata|EXPLICIT_NESTED_STAGE_ID|EXACT_CONTENT_EDGE": 1543,
+      "mode_metadata|EXPLICIT_NESTED_STAGE_ID|MISSING": 9,
+      "encounters|EXPLICIT_STAGE_ID|EXACT_CONTENT_EDGE": 1543,
+      "waves|DERIVED_CONTAINER_PARENT_NOT_NATIVE_WAVE|EXACT_CONTENT_EDGE": 1459,
+      "external_stage_buffs|EXPLICIT_DECLARED_NAME|MISSING": 17,
+      "external_stage_buffs|EXPLICIT_DECLARED_NAME|EXACT_BEHAVIOR_REFERENCE": 17
+    },
+    "ambiguity_note": "No multi-match exact-name join was promoted in the scoped ledger. Missing candidates are distinct from ambiguity; semantic wave interpretation remains unresolved.",
+    "evidence": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json"
+  },
+  "cross_domain_outputs": {
+    "domain3": "ParticipantSpawnSpec/config request, separate topology/formation requests; no spawn side effects inferred.",
+    "domain4": "Actor registration and explicit timeline/action-delay inputs only after actor/context exists and frozen scheduler contracts resolve; wave state remains Domain 9.",
+    "domain5": "Exact AI config input if available; no reset/default/selection inference.",
+    "domain8": "Chosen player lineup/loadout/progression input unchanged; no reopened activation analysis.",
+    "domain2": "Only real exact AddModifier request descriptors with independently bound global context; no blanket StageBuff lowering.",
+    "domain6": "Unchanged damage/survival contracts; no formula edits.",
+    "domain7": "Unchanged target/retarget contracts; no environment/global default target invented.",
+    "domain1": "Existing behavior invocation contract consumed; no barrier/context blocker reopened."
+  },
+  "terra_contract": {
+    "readiness": "PARTIAL",
+    "representation_ready": "YES",
+    "native_execution_ready": "NO_FOR_UNRESOLVED_SCENARIO_FAMILIES",
+    "types": [
+      "NormalizedScenarioDefinition",
+      "ScenarioRuntimeState",
+      "WaveDefinition",
+      "WaveRuntimeState",
+      "ParticipantSpawnSpec",
+      "GlobalEffectActivation",
+      "StageBuffActivation",
+      "AdventureModifierActivation",
+      "EnvironmentBinding",
+      "ModeRuleSet",
+      "ModeRuntimeState",
+      "TerminalRule",
+      "ScenarioTransition"
+    ],
+    "may_preserve": [
+      "all source envelopes and exact static edges",
+      "typed unresolved definitions/contexts",
+      "ordered and repeated source groups with slot keys",
+      "separate source versus runtime identities",
+      "presence-tagged parameters and symbolic conditions",
+      "explicit pending-wave/global-rule/mode/environment state for future snapshots",
+      "strict rejection reasons with evidence questions"
+    ],
+    "must_not_execute": "A lossless descriptor is not a runnable scenario. Reject before entity creation, state mutation, RNG draw or terminal result when required semantics are unresolved.",
+    "followup_ticket": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+    "followup_scope": "One exact pinned graph path only. No runtime implementation, recapture, discovery, compiler run or analysis of frozen domains.",
+    "local_projection_gap": "Nine embedded Stage rows in mode_metadata are already locally addressable; preserve their exact source pointers. Do not mechanically copy or canonicalize them during Astra. Any future canonical projection work must retain the original parent occurrence and not invent native IDs."
+  },
+  "negative_evidence": [
+    {
+      "id": "D9-N01",
+      "assumption": "Stage = Level",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "StageRow separately declares StageID, numeric Level and LevelGraphPath; all 1459 rows share one graph path.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N02",
+      "assumption": "Stage = Encounter",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "1543 source occurrences bind 1459 Stage rows; encounter IDs are derived with lane/event context.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N03",
+      "assumption": "one Stage has one wave",
+      "result": "PROJECTION_NOT_PROOF",
+      "evidence": "1459 legacy containers wrap 2743 groups; 770 stages have two and 257 have three. Native dispatch is still unknown.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N04",
+      "assumption": "enemy group = runtime formation",
+      "result": "UNPROVED",
+      "evidence": "monster_list groups provide ID slots; no creation/team/formation identity mapping follows. Domain 3 separates them.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N05",
+      "assumption": "wave clear = no living enemies",
+      "result": "UNPROVED",
+      "evidence": "WaitDie, creation counts, pending monsters, escape/dead progress are separate declarations; no transition predicate body.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N06",
+      "assumption": "stage victory = final wave clear",
+      "result": "UNPROVED",
+      "evidence": "Explicit custom win and specific MonsterDie condition strings exist; no final-wave evaluator recovered.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N07",
+      "assumption": "defeat = player team all dead",
+      "result": "SOURCE_COUNTEREXAMPLE_NOT_OFFICIAL_BINDING",
+      "evidence": "Raid fail ability emits Level_SpecialLose on OnListenCharacterEscape.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N08",
+      "assumption": "new wave resets AV",
+      "result": "UNPROVED",
+      "evidence": "WaveMonsterBegin property-helper xref does not identify AV/value/receiver/reset.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N09",
+      "assumption": "new wave resets modifiers",
+      "result": "UNPROVED",
+      "evidence": "No reset body; ClearPreviousAbility is a separate declared selective field.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N10",
+      "assumption": "new wave preserves all state",
+      "result": "UNPROVED",
+      "evidence": "No persistence contract; selective ability control and wave state are separate surfaces.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N11",
+      "assumption": "StageBuff = global Modifier",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "MazeBuff rows separately carry before-born Ability binding, Adventure ModifierName and ParamList.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N12",
+      "assumption": "AdventureModifier = StageBuff",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "The 17 different StageBuff IDs share one empty adventure definition while naming 17 different missing battle abilities.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N13",
+      "assumption": "Environment = hidden entity",
+      "result": "UNPROVED",
+      "evidence": "Display flag, battle-event request and adventure callbacks do not establish a universal entity.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N14",
+      "assumption": "mode rule = StageBuff",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "Mode countdown/objective metadata, scoring group and challenge-counter tasks are separate surfaces.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N15",
+      "assumption": "all global effects belong to player team",
+      "result": "SOURCE_COUNTEREXAMPLE_NOT_OFFICIAL_BINDING",
+      "evidence": "Source AllBreak ability targets AllDarkTeam for its objective; Caster/ModifierOwnerEntity/service roles are distinct.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N16",
+      "assumption": "battle starts only after all abilities are registered",
+      "result": "UNPROVED",
+      "evidence": "No native setup DAG; before/after-character-born binding tags do not imply global registration completion.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N17",
+      "assumption": "cycle count = scheduler turn count",
+      "result": "UNPROVED",
+      "evidence": "LevelChallengeTurnAcc is source-bound to a particular OnPhase1 owner callback; owner mapping and aggregation unknown.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N18",
+      "assumption": "score counter = terminal state",
+      "result": "COUNTEREXAMPLE_TO_IDENTITY_COLLAPSE",
+      "evidence": "BattleScoringGroup is a configuration reference; terminal condition strings and native win flags are separate fields.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N19",
+      "assumption": "same stage ID/value across tables = same object",
+      "result": "COUNTEREXAMPLE_TO_JOIN_RULE",
+      "evidence": "_StageInfiniteGroup may equal the StageID text, but WaveGroupID belongs to a distinct declared table family; equality alone proves no join.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N20",
+      "assumption": "official StageID is required for custom sandbox",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "Existing free_scenario_assembly_contract explicitly makes source_stage_id optional.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N21",
+      "assumption": "repeated groups may be deduplicated",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "171 stages repeat identical source groups at separate positions, including 30110042.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N22",
+      "assumption": "empty terminal list supplies native default",
+      "result": "UNPROVED",
+      "evidence": "Empty win/lose arrays preserve EMPTY; missing level graph/default evaluation blocks execution.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N23",
+      "assumption": "empty AdventureModifier means complete buff is harmless",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "Nonempty InBattleBindingKey still refers to a missing ability.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    },
+    {
+      "id": "D9-N24",
+      "assumption": "metadata type name StageConfig identifies stage row table",
+      "result": "COUNTEREXAMPLE",
+      "evidence": "StageConfig T18894 carries scene-volume fields; StageRow T14976 carries battle row fields.",
+      "scope": "Inspected local content/declarations only; no universal native absence claim."
+    }
+  ],
+  "strict_rejections": [
+    "MISSING_OR_AMBIGUOUS_STAGE_WAVE_GRAPH_BINDING",
+    "LEGACY_WAVE_CONTAINER_TREATED_AS_NATIVE_WAVE",
+    "UNKNOWN_SPAWN_SEMANTICS",
+    "UNKNOWN_WAVE_ADVANCE_PREDICATE",
+    "UNMODELED_MULTIWAVE_PERSISTENCE",
+    "MISSING_GLOBAL_BEHAVIOR_DEFINITION",
+    "UNKNOWN_GLOBAL_OWNER_CONTEXT",
+    "UNPROVED_STAGEBUFF_OR_ADVENTURE_ACTIVATION",
+    "UNKNOWN_RELEVANT_ENVIRONMENT_REPRESENTATION",
+    "UNKNOWN_MODE_OVERRIDE_PRECEDENCE",
+    "UNKNOWN_TERMINAL_PREDICATE_OR_SIMULTANEOUS_RESULT_POLICY",
+    "UNKNOWN_RANDOM_SCENARIO_RNG_CONTRACT",
+    "MISSING_PARAMETER_PROVIDER_OR_CROSS_VERSION_EQUIVALENCE",
+    "UNKNOWN_INITIALIZATION_ORDER_AFFECTING_STATE",
+    "OPAQUE_DISABLED_BEHAVIOR_USED_FOR_GOLDEN_PLANNER_OR_TRAINING",
+    "SILENT_GROUP_FLATTEN_OR_SORT_BY_ID",
+    "AUTOMATIC_ADVANCE_ON_EMPTY_ENEMIES",
+    "AUTOMATIC_RESET_OR_RETAIN_ALL_STATE",
+    "AUTOMATIC_VICTORY_AFTER_LAST_LIST_ITEM",
+    "FAKE_ENTITY_OWNER_OR_FAKE_OFFICIAL_STAGE_ID"
+  ],
+  "remaining_unknowns": [
+    {
+      "question": "D9-Q1",
+      "status": "UNKNOWN",
+      "known": "Exact Stage/Mode content edges and missing refs enumerated",
+      "missing": "StageCommonTemplate graph body; 68 explicit stage Ability refs and 17 MazeBuff battle Ability refs; StageBattleEvent/infinite-group tables; 3110018 and one EliteGroup row absent in pinned version. Nine embedded mode rows are local but absent canonical projection.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/maze_buff_missing_ids"
+      ]
+    },
+    {
+      "question": "D9-Q2",
+      "status": "UNKNOWN",
+      "known": "WaveMonster spawn/timing schema, begin/finish methods, source summon requests",
+      "missing": "Creation/registration/setup side effects; native graph dispatch; wave clear/advance predicate, delayed groups, repetition/branching and empty-wave semantics.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_methods"
+      ]
+    },
+    {
+      "question": "D9-Q3",
+      "status": "UNKNOWN",
+      "known": "Explicit field-by-field persistence boundary; selective ClearPreviousAbility declaration",
+      "missing": "Per-field reset/retain/transfer rules and owners across wave boundaries, including RNG and pending callbacks.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_declarations",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/native_body_search"
+      ]
+    },
+    {
+      "question": "D9-Q4",
+      "status": "UNKNOWN",
+      "known": "StageBuff timing tags; distinct adventure/battle refs; callback-local payloads",
+      "missing": "Global owner/receiver/caster/provider/service binding, activation dispatch, lifetimes/stacking and actual battle initialization DAG.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/maze_buff_selected_rows"
+      ]
+    },
+    {
+      "question": "D9-Q5",
+      "status": "UNKNOWN",
+      "known": "Explicit special condition strings and objective/failure signal examples",
+      "missing": "Terminal parser/evaluator, predicate context, AND/OR/defaults, victory/defeat priority, encounter/mode aggregation and score settlement.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/stage_distributions",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples"
+      ]
+    },
+    {
+      "question": "D9-Q6",
+      "status": "UNKNOWN",
+      "known": "Mode metadata/counter tasks, property parameter joins and random adventure selection site",
+      "missing": "Mode runtime initialization/update/persistence, override precedence, parameter-to-DynamicValue provider joins, environment representation and exact RNG draw contracts.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/mode_fields",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/targeted_source_examples/3"
+      ]
+    }
+  ],
+  "do_not_reason_again": [
+    "Domains 1-8 are frozen; Domain 8 bounded content followup is complete. Remaining blockers are consumed unchanged.",
+    "The legacy waves table is an adapter container; _Wave equals source group length in all inspected rows. Never treat its row count as native executable-wave coverage.",
+    "Stage numeric Level, LevelGraphPath, StageRow and scene StageConfig are distinct identities/surfaces.",
+    "StageBuff battle Ability binding and adventure ModifierName are separate. Seventeen empty adventure-definition matches do not close missing battle behavior.",
+    "No universal death-count victory/defeat/advance or wave reset/preserve rule was recovered.",
+    "All matching local declarations, targeted source examples and saved raw xref/type hits used for this pass were examined; no unexamined matching body justifies Pass 2.",
+    "Missing native bodies alone do not authorize another Astra pass. Do not apply old RVAs to a live DLL.",
+    "No broad Terra source search for missing behavior names or unknown table paths; only the exact graph ticket is authorized.",
+    "Do not enter Domain 10, implement runtime or perform final project audit."
+  ],
+  "architecture": "CLOSED_EVIDENCE_GATED_REPRESENTATION",
+  "native_scenario_execution": "PARTIAL_BLOCKED_BY_EVIDENCE",
+  "content_coverage": "PARTIAL",
+  "terra_ready": "PARTIAL",
+  "gate": "ONE_TERRA_CONTENT_FOLLOWUP",
+  "frozen_inputs": {
+    "artifacts": [
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+        "sha256": "a582917cd595b9eab8f3800b705a301e6a868a9f91571b3f9ba9242cd2b824f4"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+        "sha256": "c8c0d097e09781615499f93be8160f1c64ce5d8c474b4c12fa8acf580848a47e"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+        "sha256": "50d7e45a8838542882d2bcc114486638e96433234db2799c0254a22b8e91fe13"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+        "sha256": "9081d6c4fd09610d7cba009bbc47e12843d6293c26cc20d2f9b4cb0ab38fd5c6"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+        "sha256": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+        "sha256": "06e62fa808390ac4f58af4164bb4f8d3b5151b0cbd3ab76bf203d9e8c2010396"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+        "sha256": "71941f5f62efaa9e55a1f4a10830075739d6f8f2b684cde9469b649f381cb9eb"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+        "sha256": "70f1f16ad3ae9365098dcd83d105f9a73b6d6eed913b6a9d06b2f5ced2017133"
+      },
+      {
+        "path": "data/semantics/4.4.54/full_reconstruction/equipment_trace_eidolon_content_followup_001.json",
+        "sha256": "9be439451ecf87abebd254ca2f4d47adcc9aaf5fb64daf1b0118bd2c453058a6"
+      }
+    ],
+    "domain8_followup_status": "COMPLETE_BOUNDED_CONTENT_ACQUISITION",
+    "domain8_change": "MASTER_BOOKKEEPING_ONLY; content and native semantic conclusions unchanged"
+  },
+  "primary_answer": "A deterministic scenario requires explicit versioned definitions, occurrence identities, selected participants/loadouts, ordered source plans, independently bound global effects, and evidence-backed transition/persistence/terminal policies. Static rows alone provide a lossless scenario descriptor, not authority to initialize or advance a runnable battle.",
+  "pipeline": [
+    {
+      "from": "ScenarioInput",
+      "to": "OfficialStageDefinition OR NormalizedScenarioDefinition",
+      "status": "REPRESENTATION_CLOSED",
+      "rule": "OfficialStage is an optional template; caller-owned custom IDs require no invented StageID."
+    },
+    {
+      "from": "OfficialStageDefinition",
+      "to": "Source wave/group, level graph, parameters, effect and terminal descriptors",
+      "status": "PARTIAL_EXACT_CONTENT_EDGES",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json#/binding_edges"
+    },
+    {
+      "from": "NormalizedScenarioDefinition",
+      "to": "Battle setup + spawn/loadout/global activation requests",
+      "status": "STRICTLY_GATED_BY_FROZEN_DOMAINS_AND_D9_UNKNOWN_CONTRACTS"
+    },
+    {
+      "from": "Battle setup",
+      "to": "Battle start",
+      "status": "BLOCKED_BY_EVIDENCE_INITIALIZATION_OWNER_AND_ORDER"
+    },
+    {
+      "from": "Battle start",
+      "to": "Wave lifecycle + mode/environment updates",
+      "status": "BLOCKED_BY_EVIDENCE"
+    },
+    {
+      "from": "ScenarioTransition",
+      "to": "Next wave OR terminal evaluation/result/settlement",
+      "status": "BLOCKED_BY_EVIDENCE_NO_ENEMY_COUNT_FALLBACK"
+    }
+  ],
+  "end_of_domain_gate": {
+    "selected": "ONE_TERRA_CONTENT_FOLLOWUP",
+    "reason": "A pure content hole has an exact Stage-authored config path and an already pinned source repository/commit. One bounded retrieval can preserve that graph; it cannot guarantee native execution closure.",
+    "pass2_justified": false,
+    "pass2_reason": "No high-discrimination provenance-matched local body/trace remains identified and unexamined; metadata and source examples were consumed in Pass 1."
+  },
+  "artifacts": [
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_analyze_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_close_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_validate_v1.cjs"
+  ],
+  "validation": {
+    "status": "PASSED",
+    "checks": [
+      {
+        "name": "Current-version SQL counts and edge arithmetic",
+        "status": "PASSED"
+      },
+      {
+        "name": "Input and selected behavior file SHA256 stability",
+        "status": "PASSED"
+      },
+      {
+        "name": "Frozen artifacts unchanged since contract materialization and D8 complete",
+        "status": "PASSED"
+      },
+      {
+        "name": "Lossless row envelopes match SQLite strings",
+        "status": "PASSED"
+      },
+      {
+        "name": "Every content edge source and exact field exists",
+        "status": "PASSED"
+      },
+      {
+        "name": "Monster variant and explicit parent family identities remain separate",
+        "status": "PASSED"
+      },
+      {
+        "name": "Exact named behavior references and missing-name corpus check",
+        "status": "PASSED"
+      },
+      {
+        "name": "Single gate and one exact pinned-path Terra request",
+        "status": "PASSED"
+      },
+      {
+        "name": "Persistence remains UNKNOWN; architecture DAG has no cycle/native inflation",
+        "status": "PASSED"
+      },
+      {
+        "name": "Artifact links and complete semantic sections",
+        "status": "PASSED"
+      }
+    ],
+    "production_runtime_changed": false,
+    "compiler_run": false,
+    "nanoka_rebuild": false,
+    "subagents": false,
+    "evidence_sha256": "fc117250d47be94a64814f7c27f3b2059b98d4ddf99b8141b12dbe76842fcdb9",
+    "ticket_sha256": "8065b02132675961cb49176d74ae754195eaeb2c1d3b96bc1bcbc0df1a02aa68",
+    "scope": "Artifact-only checks. No runtime execution or full-project audit."
+  }
+}

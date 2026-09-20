@@ -1,0 +1,3355 @@
+{
+  "schema": "hsr_battle_agent.astra_target_retarget/1",
+  "domain": "target_retarget",
+  "pass": 1,
+  "status": "PASS_1_COMPLETE",
+  "architecture": "CLOSED",
+  "semantic_status": "BLOCKED_BY_EVIDENCE",
+  "scope": [
+    "Semantic reconstruction only; no production runtime",
+    "Domains 1-6 frozen; consume target-facing contracts",
+    "Targeted traversal only; no census/compiler execution",
+    "No live DLL or stale RVA application",
+    "Stop before Domains 8-10"
+  ],
+  "reference_model_quarantine": [
+    "TARGET-001 generic alive, faction shortcuts, row-column adjacency, center=first and entity-ID tie order are selected reference rules, not native closure",
+    "Fixed-adjoin scoped ParamEntity child iteration is a narrow reconstructed reference, not native write/lifetime proof"
+  ],
+  "target_object_model": {
+    "status": "CLOSED",
+    "slots": [
+      {
+        "name": "ExplicitEntityRef",
+        "contract": "Stable entity identity supplied by a proven caller; nullable reference separate from nullable list element"
+      },
+      {
+        "name": "TargetAliasExpression",
+        "contract": "Raw alias string plus lookup scope and definition provenance; expressions may compose aliases"
+      },
+      {
+        "name": "AbilityTargetInfo",
+        "contract": "Ability serialized target intent; not selected entities or receiver"
+      },
+      {
+        "name": "SkillTargetInfo",
+        "contract": "SkillTargetConfig with primary TargetType, SubTargetType and selection restrictions"
+      },
+      {
+        "name": "TargetTypeValue",
+        "contract": "Tagged by containing schema: enum-like intent versus nested selector config; do not merge same-spelled fields"
+      },
+      {
+        "name": "TargetSelectorDefinition",
+        "contract": "Immutable lossless typed selector AST including fetch, map, filter, sort, sequence, concat, take, index and query"
+      },
+      {
+        "name": "TaskActionTargetSlot",
+        "contract": "TaskContext F258952; accessor M505847, setter declaration M505848; raw entity slot separate from ability target"
+      },
+      {
+        "name": "AbilityTargetState",
+        "contract": "Current ability/inherent target views with owner ability reference; no Retarget write established"
+      },
+      {
+        "name": "SkillTargetListState",
+        "contract": "Skill perform owner plus ordered primary/secondary/list views; no alias-name cardinality guarantee"
+      },
+      {
+        "name": "ModifierTargetContext",
+        "contract": "Owner modifier, modifier owner, caster/provider and callback target slots remain separate"
+      },
+      {
+        "name": "ParamEntitySlots",
+        "contract": "Indexed parameter slots and separate ParamEntityList binding; ExtraParamStack declaration does not prove Retarget push/pop"
+      },
+      {
+        "name": "FormationAnchor",
+        "contract": "Spatial/topology reference; may be unselectable; not player legal target"
+      },
+      {
+        "name": "HitOriginRole",
+        "contract": "HitSource reference/list role, distinct from damage recipients, attacker and property provider"
+      },
+      {
+        "name": "SelectorResultBuffer",
+        "contract": "Operation-local ordered nullable items before outer mask; contains no implicit mutation authority"
+      },
+      {
+        "name": "ResolvedTargetSet",
+        "contract": "Ordered result with provenance, stage, null policy, count and validation status"
+      },
+      {
+        "name": "RetargetedState",
+        "contract": "Explicit owner+slot+mutation+scope descriptor; UNKNOWN destination/lifetime remains unexecutable"
+      }
+    ],
+    "frozen_boundaries": [
+      "Domain1 receiver != inherent target != callee TargetInfo",
+      "Domain3 formation membership != legal target; root/part/summon/alias views distinct",
+      "Domain4 SchedulerCandidate != PlayerLegalAction; scheduler does not run selectors",
+      "Domain5 supplies intent or skill metadata; Domain7 executes supported selector requests",
+      "Domain6 consumes resolved recipients; HitSource != recipient != attacker != property provider"
+    ]
+  },
+  "target_universe": {
+    "status": "DECLARATIVE_POPULATIONS_CLOSED_MEMBERSHIP_PARTIAL",
+    "representation": "TargetUniverseView {source_kind, source_ref, context_ref, collection_identity, collection_order_contract, topology_revision, provenance}",
+    "populations": [
+      {
+        "kind": "all battle entities",
+        "contract": "BattleAllEntity in IronTomb root alias; not registry equivalence"
+      },
+      {
+        "kind": "team / enemy / player views",
+        "contract": "AllTeamMember, AllEnemy, AllLightTeam, AllDarkTeam; source faction and inclusion policies unresolved"
+      },
+      {
+        "kind": "summons",
+        "contract": "CasterSummonedMinions, ModifierOwnerSummonedMinions and summoner maps; distinct from body parts"
+      },
+      {
+        "kind": "memosprites / servants",
+        "contract": "CasterServant, GetServant, RemoveServant and SkillTargetConfig servant options; do not map all summon types to servants"
+      },
+      {
+        "kind": "boss body parts",
+        "contract": "PartID mapping and explicit custom aliases; not formation membership or shared HP identity"
+      },
+      {
+        "kind": "hidden / unselectable helpers",
+        "contract": "IronTombPhantom starts from AllUnselectable; spatial use and query presence do not grant manual legality"
+      },
+      {
+        "kind": "dead / dying / limbo",
+        "contract": "AliveStateMask separates Limbo, LimboRevivable, Deathrattle, Dying, Died, WillBeDestroy and Destroyed; no global alive-only rule"
+      },
+      {
+        "kind": "special target objects",
+        "contract": "LevelEntity, SkillPointEntity, BattleEventEntityList retained as distinct view kinds"
+      },
+      {
+        "kind": "formation centers",
+        "contract": "DarkTeamCenter, LightTeamCenter, TeamFormation are unresolved spatial views; do not select first entity"
+      },
+      {
+        "kind": "proxies / aliases",
+        "contract": "Definition expansion preserves identity transformation; shared HP does not coalesce entity references"
+      }
+    ],
+    "registry_is_candidate_universe": false,
+    "team_membership_implies_targetability": false
+  },
+  "filter_model": {
+    "status": "COMPOSABLE_DESCRIPTORS_WITH_PARTIAL_EXECUTION",
+    "descriptor": {
+      "kind": "Typed filter kind",
+      "raw_payload": "Lossless source AST and field presence",
+      "context_binding": "Explicit candidate/ParamEntity/source bindings, UNKNOWN allowed only in representation",
+      "input_order": "Preserved only for proved filter",
+      "evidence": "Method/config proof and version"
+    },
+    "observed_families": [
+      {
+        "kind": "AliveStateMask",
+        "evidence": "TargetFilterAliveState.Mask; TargetQuery.AliveStateMask; outer EvaluateTarget mask"
+      },
+      {
+        "kind": "Selectability",
+        "evidence": "TargetRemoveUnselectable; TargetMapAllTeamMember.RemoveUnselectable; ByIsTargetUnselectable; not alive-state"
+      },
+      {
+        "kind": "TeamFaction",
+        "evidence": "TargetQuery.TeamTypeMask; ByTargetTeam"
+      },
+      {
+        "kind": "EntityKindIdentity",
+        "evidence": "TargetQuery.EntityTypeMask; ByTargetEntityType; ByCompareMonsterID/UniqueID/CharacterID/BattleEventID"
+      },
+      {
+        "kind": "SummonRelation",
+        "evidence": "ByHasSummonRelation; explicit GetServant/RemoveServant alias transforms"
+      },
+      {
+        "kind": "ModifierState",
+        "evidence": "ByIsContainModifier; ByContainBehaviorFlag; ByCompareModifierValue; ByStatusCount"
+      },
+      {
+        "kind": "PropertyHP",
+        "evidence": "ByCompareHP; ByCompareHPRatio; ByIsPropertyValueMinOrMax"
+      },
+      {
+        "kind": "Weakness",
+        "evidence": "ByHasStanceWeak; keep TargetSortByWeaknessMatch as ordering rather than filtering"
+      },
+      {
+        "kind": "TargetComparison",
+        "evidence": "ByCompareTarget; ByTargetListIntersects; ByIsTargetValid"
+      },
+      {
+        "kind": "FormationPosition",
+        "evidence": "ByIsTeamLocationIndexType; do not infer native adjacency substrate"
+      },
+      {
+        "kind": "PredicateComposition",
+        "evidence": "ByAnd, ByAny, ByNot plus original Inverse flags"
+      },
+      {
+        "kind": "CustomValue",
+        "evidence": "ByCheckCustomValueBool; ByCompareDynamicValue; no generic-lambda lowering"
+      }
+    ],
+    "not_promoted": [
+      "Generic targetable flag policy without a bound read",
+      "Aggro as universal eligibility filter",
+      "Distance as universal legality filter"
+    ],
+    "evidence_ref": "target_predicate_families; target_type_metadata"
+  },
+  "ordering_model": {
+    "layers": {
+      "selector_generated": "Preserve selector AST and output order; native policy UNKNOWN except bounded primitives",
+      "filter_preserved": "M505873 retains surviving relative order in observed removal loops",
+      "retarget_produced": "UNKNOWN for general families; fixed-adjoin packet remains reference only",
+      "consumer_read": "M504364 reads first; M505875 requires one; no implicit set conversion"
+    },
+    "observed_dependencies": [
+      "Formation via TargetSortByFormation",
+      "Explicit property/highest-first via TargetSortByProperty",
+      "Explicit TargetSortSequence with AITag and weakness match",
+      "Source sequence/concat structure",
+      "TargetShuffle and random policy flags",
+      "Action-bar adjacency is separate from formation adjacency"
+    ],
+    "no_invented_ties": [
+      "No entity-ID tie break",
+      "No default insertion-order tie rule",
+      "No stable sort assumption",
+      "No permutation-invariant cardinality shortcut"
+    ],
+    "evidence_ref": "selector_usage; target_type_metadata"
+  },
+  "adjacency_contract": {
+    "status": "STRUCTURE_CLOSED_EXECUTION_BLOCKED",
+    "selector": "TargetMapAdjoinEntity",
+    "method": 537807,
+    "fields": [
+      "SideType",
+      "AliveType",
+      "IncludeAllRows",
+      "AdjoinCount",
+      "CountingOption"
+    ],
+    "dependency": "Frozen Domain 3 formation/topology view; membership is not target legality",
+    "unknown": "Exact source collection, counting and missing-neighbor rules; no array[index +/- 1] lowering",
+    "distinct_families": [
+      "TargetMapAdjoinEntity: formation-related mapping, exact membership/counting pending",
+      "TargetMapActionBarAdjoinEntityList: LessMaxCount/LoopCondition observed; not interchangeable with spatial neighbors",
+      "AbilityTargetAdjoinEntity / ModifierOwnerAdjoinEntity / left/right / center+adjoin aliases: preserve expression and source context"
+    ],
+    "unknown_rules": [
+      "All formation members versus targetable subset",
+      "Dead, unselectable, servant and multirow counting",
+      "Boss-part and summon participation",
+      "Missing-neighbor handling",
+      "Center inclusion and final order"
+    ]
+  },
+  "aggro_taunt_contract": {
+    "status": "BOUNDARY_CLOSED_EXECUTION_BLOCKED",
+    "question": "TR-Q2",
+    "owner": "Domain7; AI supplies intent/policy only",
+    "facts": [
+      "TargetFetchByTauntAndAggro has SourceTarget F100997 and RandomByAggroWhenFail F100998",
+      "M537894 Transform is the saved config/runtime bridge",
+      "TauntOrAggroEnemy, TauntOrRandomEnemy, BattleEventCasterTauntOrAggroEnemy and servant-excluding alias variants observed"
+    ],
+    "classification": {
+      "candidate_eligibility": "Separate view/filter contract",
+      "aggro": "UNKNOWN weight/priority/score/fallback behavior",
+      "taunt": "UNKNOWN forced target versus preference and precedence",
+      "hard_lock": "Separate concept; no equivalence proved",
+      "ai_score": "Frozen Domain5 scoring input; does not own target selection"
+    },
+    "strongest_inference": "RandomByAggroWhenFail suggests a configurable random fallback role; only a field declaration, not a demonstrated branch or weighted draw",
+    "required_evidence": "M537894 body plus actual bound alias expansion and RNG helper dataflow"
+  },
+  "random_selection": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "question": "TR-Q2",
+    "families": [
+      {
+        "kind": "Retarget.ByRandom / RetargetList.ByRandom",
+        "fact": "Boolean request field independently serialized with MaxNumber/Predicate/IncludeLimbo",
+        "classification": "POLICY_SWITCH_DECLARED; exact algorithm UNKNOWN",
+        "candidate_list_before_randomness": "TargetType supplies a selector and Predicate supplies another dependency; exact filter/mask/limit/draw order UNKNOWN",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN",
+        "post_draw_order": "UNKNOWN",
+        "insufficient_candidates": "UNKNOWN",
+        "forbidden_lowering": "ByRandom=true does not authorize random.choice, repeated choice or shuffle"
+      },
+      {
+        "kind": "TargetShuffle",
+        "fact": "22 saved config occurrences; M538048 Transform",
+        "candidate_list_before_randomness": "Earlier TargetSequence stages structurally present; exact evaluated candidate order needs their contracts",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN_NATIVE; permutation-shaped name is not algorithm proof",
+        "post_draw_order": "UNKNOWN",
+        "example": "Cipher source sequence: AllDarkTeam.GetAliveOrLimbo -> HP-ratio predicate -> TargetShuffle -> MaxHP HighestFirst sort -> Take(1); sort stability/tie RNG unresolved"
+      },
+      {
+        "kind": "RetargetPerSequence.RandomTargetOnlyForBackup",
+        "fact": "F96462 declaration distinct from ByRandom; no inferred default",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN",
+        "insufficient_candidates": "UNKNOWN"
+      }
+    ],
+    "rng_contract": "Only use frozen deterministic RNG after exact algorithm, candidate order, stream and draw boundaries are evidenced. No speculative draws and no seed consumption on blocked operations."
+  },
+  "target_invalidation": {
+    "status": "BOUNDARY_CLOSED_POLICY_BLOCKED",
+    "question": "TR-Q5",
+    "known": [
+      "M505873 filters within a requested evaluation",
+      "Source ByIsTargetValid and SkillTargetConfig.IsDynamicTarget exist; neither proves universal late revalidation",
+      "M505847 raw target getter performs no validity filtering itself"
+    ],
+    "checkpoints": [
+      "Selector invocation",
+      "After an explicit Retarget request if native contract requires",
+      "Consumer entry if an actual call edge proves validation"
+    ],
+    "post_selection_triggers": [
+      {
+        "reason": "death",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "dying/limbo transition",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "despawn/destruction",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "phase change",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "unselectable state",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "team change",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "part disable",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "summon removal",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      }
+    ],
+    "validation_result": {
+      "status": "VALID | INVALID | UNKNOWN",
+      "reason": "Explicit reason or unresolved evidence question",
+      "observed_at": "World/context revision",
+      "consumer_ref": "Specific consumer and cardinality contract",
+      "disposition": "Only an evidenced per-consumer response; UNKNOWN blocks consumption"
+    },
+    "prohibitions": [
+      "No death-triggered automatic rerun",
+      "No silent dropping null/stale targets",
+      "No implicit first surviving target",
+      "No universal abort or fallback",
+      "No selector evaluation inferred from its mere existence"
+    ]
+  },
+  "retarget_state_ownership": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "question": "TR-Q3",
+    "native_anchors": {
+      "TaskActionTarget": "F258952 / getter M505847 / setter M505848; no Retarget write join",
+      "OwnerEntity": "F258957 / M505843 distinct owner slot",
+      "ExtraParamStack": "F258955 declared; not push/pop proof",
+      "ParamAccessors": "M505858 get_ParamRegister; M505859 get_CurrentParamData",
+      "executor_fields": "Retarget F259914..259919; RetargetList F259903..259908; RetargetPerSequence F259909..259913; names uninterpreted",
+      "helpers": "M508408/M508398 -> M504453; M508403 -> M504454; 7 stripped-name parameters each"
+    },
+    "candidate_slots": [
+      "TaskActionTarget scalar",
+      "TaskContext-associated target list if proved",
+      "Ability target",
+      "SkillTargetEntityList",
+      "Operation-local result list",
+      "ParamEntity/indexed slot",
+      "ParamEntityList",
+      "Modifier callback target",
+      "Caster/owner cache",
+      "Child TaskList context",
+      "Other native list/reference"
+    ],
+    "candidate_status": "No candidate promoted to actual native destination. Scalar TaskContext accessor does not prove a general list slot.",
+    "source_supported_dependencies": {
+      "Retarget": "ParamEntity predicates/children: candidate-scoped dependency",
+      "RetargetList": "Predicate uses ParamEntity while children use ParamEntityList; preserve separate bindings",
+      "RetargetPerSequence": "SequenceList children use ParamEntity; selection pairing UNKNOWN"
+    },
+    "required_proof": "Helper argument -> result identity -> slot write -> child read",
+    "rejection": "No default AbilityTargetEntity/SkillTargetEntityList/global-target write"
+  },
+  "retarget_lifetime": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "question": "TR-Q4",
+    "families": [
+      {
+        "family": "Retarget",
+        "starts": "UNKNOWN",
+        "children_see": "UNKNOWN original/shared/copied/rebound context",
+        "ends": "UNKNOWN",
+        "cleanup_restore": "No proved save-old/set-new/restore-old dataflow",
+        "nested_retarget": "UNKNOWN stack/overwrite/copied frame",
+        "failed_task_list": "UNKNOWN original versus selection/predicate context",
+        "later_trigger_ability": "Inheritance unresolved; consume frozen Domain1 boundary",
+        "modifier_callback_and_future_turn": "No persistence authorized",
+        "methods": [
+          {
+            "method_index": 508407,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508408,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508409,
+            "name": "OnTaskReset"
+          },
+          {
+            "method_index": 508410,
+            "name": "Tick"
+          }
+        ]
+      },
+      {
+        "family": "RetargetList",
+        "starts": "UNKNOWN",
+        "children_see": "UNKNOWN original/shared/copied/rebound context",
+        "ends": "UNKNOWN",
+        "cleanup_restore": "No proved save-old/set-new/restore-old dataflow",
+        "nested_retarget": "UNKNOWN stack/overwrite/copied frame",
+        "failed_task_list": "UNKNOWN original versus selection/predicate context",
+        "later_trigger_ability": "Inheritance unresolved; consume frozen Domain1 boundary",
+        "modifier_callback_and_future_turn": "No persistence authorized",
+        "methods": [
+          {
+            "method_index": 508397,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508398,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508399,
+            "name": "Tick"
+          },
+          {
+            "method_index": 508400,
+            "name": "OnTaskReset"
+          }
+        ]
+      },
+      {
+        "family": "RetargetPerSequence",
+        "starts": "UNKNOWN",
+        "children_see": "UNKNOWN original/shared/copied/rebound context",
+        "ends": "UNKNOWN",
+        "cleanup_restore": "No proved save-old/set-new/restore-old dataflow",
+        "nested_retarget": "UNKNOWN stack/overwrite/copied frame",
+        "failed_task_list": "UNKNOWN original versus selection/predicate context",
+        "later_trigger_ability": "Inheritance unresolved; consume frozen Domain1 boundary",
+        "modifier_callback_and_future_turn": "No persistence authorized",
+        "methods": [
+          {
+            "method_index": 508402,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508403,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508404,
+            "name": "OnTaskReset"
+          },
+          {
+            "method_index": 508405,
+            "name": "Tick"
+          }
+        ]
+      }
+    ],
+    "supported_lifetimes": "No general native operation/task/phase/ability/skill/future-turn default",
+    "reference_subset": "Fixed-positive ModifierOwnerAdjoinEntity packet selects scoped ParamEntity iteration as R3 reference only",
+    "clone_snapshot_hash": "Owner, slot, frame identity and ordered nullable bindings must be explicit. Unknown mutations cannot execute or invent copy/share/restore semantics."
+  },
+  "nested_context_boundary": {
+    "status": "SOURCE_DEPENDENCIES_CLOSED_INHERITANCE_BLOCKED",
+    "known": "Retarget source payloads contain TaskList/FailedTaskList; RetargetPerSequence contains ordered SequenceList TaskList entries. SuccessTaskList may belong to an enclosing/nested PredicateTaskList, not a universal Retarget field.",
+    "child_roles": [
+      "ParamEntity predicate candidate",
+      "ParamEntity child recipient",
+      "ParamEntityList group recipient",
+      "Original Caster/ModifierOwner/AbilityTarget/SkillTarget roles when explicitly referenced"
+    ],
+    "TriggerAbility": "Preserve receiver selector separately from inherent target and callee TargetInfo; do not change frozen invocation lifecycle",
+    "DamageByAttackProperty": "Preserve recipient selector and HitSource independently; no arithmetic",
+    "AddModifier": "Preserve receiver and modifier owner/caster/provider separately",
+    "unknowns": [
+      "Binding time and exact destination",
+      "Shared versus copied versus re-evaluated selector",
+      "Success/failure context restoration",
+      "Nested shadow/stack semantics",
+      "Waited/parallel child lifetime"
+    ],
+    "strict_gate": "Any dependent child execution rejects if its target inheritance is unresolved"
+  },
+  "multi_target_cardinality": {
+    "status": "REPRESENTATION_CLOSED_NATIVE_CONSUMPTION_PARTIAL",
+    "ResolvedTargetSet": {
+      "ordered_items": "Array<EntityRef | null>; immutable result value, not owner state",
+      "nullable_element_policy": "ALLOW | REJECT | UNKNOWN, scoped to producer and consumer separately",
+      "cardinality": "items.length, counting null entries and repeated occurrences at this named stage",
+      "non_null_occurrence_count": "Diagnostic only; never substitute automatically for cardinality",
+      "unique_entity_count": "Diagnostic only; never deduplicate to obtain a damage divisor",
+      "provenance": "Selector/alias source + context/owner + evidence + source and output ordering",
+      "selection_mode": "Exact selector/policy identity or UNKNOWN, not inferred choose-one",
+      "resolution_stage": "RAW_SELECTOR | POST_MASK | POST_RETARGET | CONSUMER_VALIDATED",
+      "validation": "Consumer-specific status; UNKNOWN cannot be consumed",
+      "rng_trace_ref": "Only for evidenced RNG execution"
+    },
+    "examples": [
+      {
+        "items": [],
+        "cardinality": 0
+      },
+      {
+        "items": [
+          null
+        ],
+        "cardinality": 1
+      },
+      {
+        "items": [
+          "e1",
+          "e1"
+        ],
+        "cardinality": 2
+      }
+    ],
+    "consumer_requirement": "Belongs to consuming entrypoint, not selector spelling; FIRST_OR_NONE and EXACTLY_ONE remain separate",
+    "callbacks": "Fanout iteration and multi-target callback grouping/order are consumer contracts; not one callback per unique entity by default"
+  },
+  "boss_part_boundary": {
+    "status": "CLOSED_RELATION_BOUNDARY_PARTIAL_SELECTOR_EXECUTION",
+    "frozen_contract": "Domain3 root/controller, body part, summon, alias view, formation membership and shared-HP member remain distinct",
+    "source_examples": [
+      {
+        "alias": "Monster_W4_IronTombCore_00",
+        "source": "BattleAllEntity",
+        "predicate": "ByCompareMonsterUniqueID=403501"
+      },
+      {
+        "alias": "Monster_W4_IronTombCorePart_00",
+        "source": "AllDarkTeam",
+        "predicate": "ByCompareMonsterUniqueID=403206"
+      },
+      {
+        "alias": "Monster_W4_IronTombCorePart_01",
+        "source": "AllDarkTeam",
+        "predicate": "ByCompareMonsterUniqueID=403207"
+      },
+      {
+        "alias": "Monster_W4_IronTombPhantom_00",
+        "source": "AllUnselectable",
+        "predicate": "ByCompareMonsterUniqueID=403502"
+      }
+    ],
+    "identity_rules": [
+      "Source filters by unique-config identity do not guarantee one runtime entity",
+      "PartID is a mapping argument, not an array position",
+      "TargetMapPartEntity M537868, TargetMapPartOwnerEntity M537870, TargetMapPartToOwner M538010 are distinct",
+      "RemoveRepeat on PartToOwner is explicit metadata; do not coalesce shared-HP recipients",
+      "Unselectable helper can participate in target computation and spatial anchoring"
+    ],
+    "evidence_ref": "raw_alias_sources; target_type_metadata; frozen Domain3 targetability_dependency"
+  },
+  "legal_target_boundary": {
+    "status": "CLOSED_ARCHITECTURE_NATIVE_POLICIES_PARTIAL",
+    "roles": [
+      "selector-resolvable",
+      "skill-valid",
+      "player-manually-selectable",
+      "AI-valid",
+      "forced",
+      "automatic-secondary/splash"
+    ],
+    "relation": "Separate predicates/queries sharing explicit context, never identity/equivalence",
+    "skill_fields": [
+      "TargetType",
+      "SubTargetType",
+      "TargetFilter",
+      "AliveState",
+      "AvoidSelf",
+      "AllowFriendServant",
+      "AllowEnemyServant",
+      "AllowUnselectableTarget",
+      "MergeServantSelectToSummoner",
+      "MaxTargetCount",
+      "IsDynamicTarget"
+    ],
+    "evidence": "SkillTargetConfig T17945/F85149..85163; Painter EnemySelect with AllowEnemyServant=Forbidden; AsatPramad Caster with AllowUnselectableTarget=true",
+    "scheduler": "No redesign; Domain4 action/opportunity boundary consumed",
+    "enumeration": "No legal_actions implementation or synthetic legal-target set"
+  },
+  "targetinfo_contract": {
+    "status": "STATIC_INTENT_CLOSED_EXECUTION_PRECEDENCE_UNKNOWN",
+    "ability_targetinfo": "Saved canonical raw_unknown.TargetInfo has TargetType-only shapes; e.g. InherentTargetEntity, SkillTargetEntityList, Caster. Not SkillTargetConfig or a resolved list.",
+    "skill_targetinfo": "SkillConfig F85254 links T17945 SkillTargetConfig; primary and secondary descriptors distinct",
+    "independent_fields": "DefaultTargetSelector F85242; AutoLockType F85244; AutoLockBySource F85245 remain separate",
+    "default_selector": "Absent in five previously inspected skill arrays; no default invented",
+    "ai_boundary": "Reuse frozen Domain5 exact leaf->SkillConfig.TargetInfo joins; AI does not execute selector",
+    "dynamic_target": "IsDynamicTarget true is a source fact, not timing or invalidation algorithm",
+    "separations": [
+      "manual primary class",
+      "automatic secondary targets",
+      "skill default selector",
+      "AI intent",
+      "ability target intent",
+      "Retarget request/result",
+      "HitSource role"
+    ],
+    "evidence_ref": "targetinfo_shapes; skill_target_sources; astra_monster_ai_v1.json#/target_intent_from_skill_config"
+  },
+  "damage_domain_output": {
+    "status": "INTERFACE_CLOSED_DEPENDENCY_IMPROVEMENT_ONLY",
+    "input": [
+      "Ordered ResolvedTargetSet with resolution stage and provenance",
+      "Explicit item cardinality and null/empty distinction",
+      "Separate attacker/property-provider/hit-origin roles when resolved"
+    ],
+    "EqualSplitInTargets": "Cardinality is now representable without list collapse. Exact validated recipient count, duplicate/null admission, timing and division policy remain evidence-gated; no damage formula changed.",
+    "HitSource_SkillTargetEntityList": "Preserve list-valued role request; exact role resolution/alias binding and DamageBehavior semantics are not closed",
+    "fanout": "Target/event count not inferred from scalar request count",
+    "DS_Q4": "NOT_CLOSED; representation of target cardinality improved only. DamageBehavior/HitSource native evidence remains required.",
+    "damage_domain_modified": false
+  },
+  "terra_contract": {
+    "status": "REPRESENTATION_READY_EXECUTION_PARTIAL",
+    "types": {
+      "TargetIntent": "Tagged ExplicitRef/AliasExpr/SelectorRef/AbilityInfo/SkillInfo/DeferredAI with provenance",
+      "TargetResolutionContext": "Distinct actor/caster/provider/modifier/ability/skill/parameter/source/formation roles and revisions",
+      "TargetUniverseView": "Explicit source collection relation and order contract",
+      "TargetCandidate": "Entity or special-object reference plus provenance; no implicit legality",
+      "TargetFilter": "Typed predicate/mask AST, field presence and binding evidence",
+      "TargetOrdering": "Explicit comparator/sequence/source order; UNKNOWN ties block affected execution",
+      "ResolvedTargetSet": "Ordered nullable items, stage, count, duplicate policy, source and RNG provenance",
+      "TargetConsumerContract": "Cardinality requirement separate from null/validity policy",
+      "RetargetRequest": "Tagged Retarget/RetargetList/RetargetPerSequence; lossless fields and child branches",
+      "TargetContextMutation": "owner_ref + slot_kind + slot_index + frame_ref + operation + before/after binding + activation/expiry/restore + evidence",
+      "TargetValidationResult": "status/reason/revision/consumer/disposition; UNKNOWN blocks consumption",
+      "SequenceTargetPairing": "Ordered source steps plus explicit pairing/reuse/fallback contract"
+    },
+    "mutation_operations": "REPLACE | APPEND | REMOVE | REORDER | BIND_CHILD | UNKNOWN; variants represent possibilities, not recovered Retarget behavior",
+    "serialization": "Preserve []/[null], item order, duplicates, field absent versus explicit false/zero, dynamic MaxNumber AST, raw aliases and definition scope",
+    "clone_snapshot_hash": "Separate immutable selector definition from resolved list and owner state; include logical owner/slot/frame identities, ordered bindings and pending sequence state. Do not hash by unordered entity set or collapse to current_target.",
+    "execution_gate": "Represent unknowns losslessly, but reject before mutation or RNG whenever destination/lifetime/ordering/validation/child binding is unsupported",
+    "production_runtime": "NOT_MODIFIED"
+  },
+  "alias_families": [
+    {
+      "family": "context_slot",
+      "aliases": [
+        {
+          "alias": "Caster",
+          "count_in_saved_traversal": 33364,
+          "sample": {
+            "pointer": "/records/0/entrypoints/0/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ModifierOwnerEntity",
+          "count_in_saved_traversal": 17301,
+          "sample": {
+            "pointer": "/records/0/entrypoints/2/operations/0/arguments/SuccessTaskList/0/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AbilityTargetEntity",
+          "count_in_saved_traversal": 5243,
+          "sample": {
+            "pointer": "/records/4/entrypoints/0/operations/4/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill01_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "DamageAttackerEntity",
+          "count_in_saved_traversal": 10,
+          "sample": {
+            "pointer": "/records/13754/entrypoints/0/operations/0/arguments/Predicate/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:StanceBreakState_Effect",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json",
+              "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "ModifierMap",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "DamageDefenderEntity",
+          "count_in_saved_traversal": 63,
+          "sample": {
+            "pointer": "/records/170/entrypoints/1/operations/0/arguments/ReadTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json:Avatar_Advanced_Silwolf_00_Rank06",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json",
+              "raw_sha256": "5e6e5e727011f696d7d59e3a32806909bf1a087488052fe3089ec2f5f87959dd",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Caster/owner/ability/damage context; exact alias expansion not proved by name",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "parameter",
+      "aliases": [
+        {
+          "alias": "ParamEntity",
+          "count_in_saved_traversal": 13244,
+          "sample": {
+            "pointer": "/records/0/entrypoints/1/operations/0/arguments/SuccessTaskList/0/ParamTarget",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ParamEntity2",
+          "count_in_saved_traversal": 78,
+          "sample": {
+            "pointer": "/records/0/entrypoints/3/operations/0/arguments/Predicate/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ParamEntityList",
+          "count_in_saved_traversal": 372,
+          "sample": {
+            "pointer": "/records/82/entrypoints/0/operations/0/arguments/Predicate/PredicateList/1/FirstTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json:GlobalModifiers:MAvatar_Advanced_Kafka_00_Friend_Mark_Main",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json",
+              "raw_sha256": "9325e64c77d51e0cfe5d19cab2ff0c8ada993685e80837c155ba382a55b06f4e",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Parameter register/index/stack; independent slots",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "skill_and_attack_list",
+      "aliases": [
+        {
+          "alias": "SkillTargetEntityList",
+          "count_in_saved_traversal": 233,
+          "sample": {
+            "pointer": "/records/26/entrypoints/0/operations/5/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:Avatar_Advanced_Huohuo_00_Skill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json",
+              "raw_sha256": "146133f2807811ff5e1a496f5028165b23d9ec82b8df8c140a09cf15920d3485",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ModifierOwnerSkillTargetEntityList",
+          "count_in_saved_traversal": 45,
+          "sample": {
+            "pointer": "/records/728/entrypoints/11/operations/0/arguments/SuccessTaskList/0/Predicate/PredicateList/0/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Archer_00_Ability.json:Avatar_Archer_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Avatar_Archer_00_Ability.json",
+              "raw_sha256": "277200092a3c5ae3689371ffa5ba9e50a3556429cf7365b594f3ab62b68f726b",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ParamEntitySkillTargetEntityList",
+          "count_in_saved_traversal": 32,
+          "sample": {
+            "pointer": "/records/70/entrypoints/14/operations/0/arguments/Predicate/PredicateList/1/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json:Avatar_Advanced_Kafka_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json",
+              "raw_sha256": "9325e64c77d51e0cfe5d19cab2ff0c8ada993685e80837c155ba382a55b06f4e",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AttackTargetList",
+          "count_in_saved_traversal": 71,
+          "sample": {
+            "pointer": "/records/13/entrypoints/3/operations/0/arguments/SuccessTaskList/0/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_SkillTree02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AbilityAttackTargetList",
+          "count_in_saved_traversal": 8,
+          "sample": {
+            "pointer": "/records/167/entrypoints/2/operations/1/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json:Avatar_Advanced_Silwolf_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json",
+              "raw_sha256": "5e6e5e727011f696d7d59e3a32806909bf1a087488052fe3089ec2f5f87959dd",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Specific skill/ability/modifier/event list owner",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "team_population",
+      "aliases": [
+        {
+          "alias": "AllEnemy",
+          "count_in_saved_traversal": 2185,
+          "sample": {
+            "pointer": "/records/9/entrypoints/0/operations/1/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill03_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllTeammate",
+          "count_in_saved_traversal": 682,
+          "sample": {
+            "pointer": "/records/27/entrypoints/0/operations/2/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:Avatar_Advanced_Huohuo_00_Skill03_EnterReady",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json",
+              "raw_sha256": "146133f2807811ff5e1a496f5028165b23d9ec82b8df8c140a09cf15920d3485",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllTeamMember",
+          "count_in_saved_traversal": 635,
+          "sample": {
+            "pointer": "/records/22/entrypoints/0/operations/0/arguments/TaskList/0/FailedTaskList/0/TargetType/Targets/0",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:Avatar_Advanced_Huohuo_00_Rank02_Insert",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json",
+              "raw_sha256": "146133f2807811ff5e1a496f5028165b23d9ec82b8df8c140a09cf15920d3485",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllLightTeam",
+          "count_in_saved_traversal": 1365,
+          "sample": {
+            "pointer": "/records/27/entrypoints/0/operations/6/arguments/CameraConfig/ShowEntityConfig/ShowTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:Avatar_Advanced_Huohuo_00_Skill03_EnterReady",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json",
+              "raw_sha256": "146133f2807811ff5e1a496f5028165b23d9ec82b8df8c140a09cf15920d3485",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllDarkTeam",
+          "count_in_saved_traversal": 1736,
+          "sample": {
+            "pointer": "/records/8/entrypoints/0/operations/4/arguments/PerformerType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill03_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "BattleAllEntity",
+          "count_in_saved_traversal": 12,
+          "sample": {
+            "pointer": "/records/8437/entrypoints/0/operations/0/arguments/Predicate/TargetType/Sequence/0",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W4_Claymore_00_Ability_LocalLegend.json:Monster_W4_Claymore_00_LocalLegend03_Skill04_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_00_Ability_LocalLegend.json",
+              "raw_sha256": "249ea231199a85c11ea46666e7bb1466e9de793e55cf3b35eb2f90793d3d41df",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Relative enemy/teammate distinct from absolute light/dark",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "unselectable_views",
+      "aliases": [
+        {
+          "alias": "AllUnselectable",
+          "count_in_saved_traversal": 79,
+          "sample": {
+            "pointer": "/records/22/entrypoints/0/operations/0/arguments/TaskList/0/FailedTaskList/0/TargetType/Targets/1",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json:Avatar_Advanced_Huohuo_00_Rank02_Insert",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json",
+              "raw_sha256": "146133f2807811ff5e1a496f5028165b23d9ec82b8df8c140a09cf15920d3485",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllEnemyWithUnSelectable",
+          "count_in_saved_traversal": 120,
+          "sample": {
+            "pointer": "/records/2/entrypoints/1/operations/0/arguments/ParamTarget",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Rank02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllLightTeamWithAllLightTeamUnselectable",
+          "count_in_saved_traversal": 162,
+          "sample": {
+            "pointer": "/records/80/entrypoints/1/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json:Avatar_Advanced_Kafka_SkillTree01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json",
+              "raw_sha256": "9325e64c77d51e0cfe5d19cab2ff0c8ada993685e80837c155ba382a55b06f4e",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AllDarkTeamWithAllDarkTeamUnselectable",
+          "count_in_saved_traversal": 348,
+          "sample": {
+            "pointer": "/records/213/raw_unknown/AdditionConfig/SubModifierList/0/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sparkle_00_Ability.json:GlobalModifiers:MAvatar_Advanced_Sparkle_PassiveSkill_Halo",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sparkle_00_Ability.json",
+              "raw_sha256": "d29f2099139985303d52339aeb71f96d1f02ab2a35a0629c50b4121af387689c",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Explicit collection/inclusion rules; no universal exclusion",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "summon_servant",
+      "aliases": [
+        {
+          "alias": "CasterSummoner",
+          "count_in_saved_traversal": 496,
+          "sample": {
+            "pointer": "/records/1270/entrypoints/0/operations/2/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Evernight_00_Ability.json:Avatar_Evernight_00_Skill02_2_Servant",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Avatar_Evernight_00_Ability.json",
+              "raw_sha256": "50cb415721bcfd7ec2069817bd40c977611abb4a8bccd4937863b569560320f5",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "CasterSummonedMinions",
+          "count_in_saved_traversal": 1172,
+          "sample": {
+            "pointer": "/records/4408/entrypoints/0/operations/5/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Elite01_01_Ability.json:Monster_AML_Elite01_01_Skill09_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_AML_Elite01_01_Ability.json",
+              "raw_sha256": "b07236bbe36bc6e3581e41e48a95862216055429cc5325223217ffdfbeb1f502",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ModifierOwnerSummonedMinions",
+          "count_in_saved_traversal": 27,
+          "sample": {
+            "pointer": "/records/5109/entrypoints/0/operations/0/arguments/SuccessTaskList/0/SuccessTaskList/0/SuccessTaskList/4/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W1_CocoliaP1_00_Ability_VS.json:GlobalModifiers:Monster_W1_CocoliaP1_00_RL_Revive_VS",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W1_CocoliaP1_00_Ability_VS.json",
+              "raw_sha256": "a95a856fb7d7c549cda73b08928f84cf22484edd032b17bea0fed7f421095945",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "CasterServant",
+          "count_in_saved_traversal": 305,
+          "sample": {
+            "pointer": "/records/665/entrypoints/0/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Aglaea_00_Ability.json:Avatar_Aglaea_00_Bonus",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Avatar_Aglaea_00_Ability.json",
+              "raw_sha256": "d102961dc78df067bbefa739c8b32d2ae8e7011050bd73e786d5992412572f4e",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ModifierOwnerSummoner",
+          "count_in_saved_traversal": 193,
+          "sample": {
+            "pointer": "/records/3726/entrypoints/3/operations/2/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Equip/Equip33.json:Ability23042",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Equip/Equip33.json",
+              "raw_sha256": "c61f350311c944bc608cf25bdede78b63ab3c98dcd9c0c96c43c696ede758dcb",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Summon ownership/servant views; distinct from parts",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "Required relational view; membership does not imply legality",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "spatial",
+      "aliases": [
+        {
+          "alias": "AbilityTargetAdjoinEntity",
+          "count_in_saved_traversal": 320,
+          "sample": {
+            "pointer": "/records/7/entrypoints/0/operations/2/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AbilityTargetAndAdjoinEntity",
+          "count_in_saved_traversal": 115,
+          "sample": {
+            "pointer": "/records/7/entrypoints/0/operations/4/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AbilityTargetLeftEntity",
+          "count_in_saved_traversal": 24,
+          "sample": {
+            "pointer": "/records/6878/entrypoints/0/operations/7/arguments/OnProjectileHit/2/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W2_LycanMecha_00_Ability.json:Monster_W2_LycanMecha_00_Skill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W2_LycanMecha_00_Ability.json",
+              "raw_sha256": "67cda63ad67083240dcd4f074a258f8432468b8161461fc7c80d53332247351f",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "AbilityTargetRightEntity",
+          "count_in_saved_traversal": 24,
+          "sample": {
+            "pointer": "/records/6878/entrypoints/0/operations/7/arguments/OnProjectileHit/3/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W2_LycanMecha_00_Ability.json:Monster_W2_LycanMecha_00_Skill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W2_LycanMecha_00_Ability.json",
+              "raw_sha256": "67cda63ad67083240dcd4f074a258f8432468b8161461fc7c80d53332247351f",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "ModifierOwnerAdjoinEntity",
+          "count_in_saved_traversal": 11,
+          "sample": {
+            "pointer": "/records/15/entrypoints/1/operations/11/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:GlobalModifiers:MAvatar_Advanced_BlackSwan_00_DOT",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "DarkTeamCenter",
+          "count_in_saved_traversal": 580,
+          "sample": {
+            "pointer": "/records/11/entrypoints/0/operations/3/arguments/CameraConfig/NormalConfig/AimTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_SkillMazeInLevel_Insert",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "LightTeamCenter",
+          "count_in_saved_traversal": 600,
+          "sample": {
+            "pointer": "/records/178/entrypoints/1/operations/0/arguments/SuccessTaskList/3/CameraConfig/NormalConfig/AnchorTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json:Avatar_Advanced_Silwolf_00_SkillMazeInLevel",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Silwolf_00_Ability.json",
+              "raw_sha256": "5e6e5e727011f696d7d59e3a32806909bf1a087488052fe3089ec2f5f87959dd",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "TeamFormation",
+          "count_in_saved_traversal": 600,
+          "sample": {
+            "pointer": "/records/8/entrypoints/0/operations/23/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill03_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Formation-relative source/center; unselectable anchors allowed",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "Required relational view; membership does not imply legality",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "special_objects",
+      "aliases": [
+        {
+          "alias": "LevelEntity",
+          "count_in_saved_traversal": 717,
+          "sample": {
+            "pointer": "/records/8/entrypoints/0/operations/2/arguments/CustomCenterTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json:Avatar_Advanced_BlackSwan_00_Skill03_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json",
+              "raw_sha256": "02edf28f578f3ea7c824e7776be15eb75d00a765cb7dbcbd58340a4fe3367eb9",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "SkillPointEntity",
+          "count_in_saved_traversal": 17,
+          "sample": {
+            "pointer": "/records/223/entrypoints/0/operations/5/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Welt_00_Ability.json:Avatar_Advanced_Welt_00_Skill01_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Welt_00_Ability.json",
+              "raw_sha256": "ea2403b5ebb265fa8e7eab148e702ad6ae6f36a50aedb3c0d56ccc64e622bace",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "BattleEventEntityList",
+          "count_in_saved_traversal": 67,
+          "sample": {
+            "pointer": "/records/111/entrypoints/2/operations/0/target/Sequence/0",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json:Avatar_Advanced_Sam_00_PassiveSkill01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json",
+              "raw_sha256": "f4c032c96189d29397b77fd9c93ad4023f6a99d66fdccadf53581a2d761de0cb",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "BattleEventCaster",
+          "count_in_saved_traversal": 86,
+          "sample": {
+            "pointer": "/records/112/entrypoints/1/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json:Avatar_Advanced_Sam_00_PassiveSkill01_BattleEvent",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json",
+              "raw_sha256": "f4c032c96189d29397b77fd9c93ad4023f6a99d66fdccadf53581a2d761de0cb",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Special object/context collections",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "taunt_aggro",
+      "aliases": [
+        {
+          "alias": "TauntOrAggroEnemy",
+          "count_in_saved_traversal": 23,
+          "sample": {
+            "pointer": "/records/5119/entrypoints/0/operations/9/arguments/TaskList/0/SuccessTaskList/0/AbilityTarget",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W1_CocoliaP1_00_IF_02_Ability.json:Boss_Cocolia_IF_Skill01_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W1_CocoliaP1_00_IF_02_Ability.json",
+              "raw_sha256": "faa22682aa8424966b52380f271c12f0ed0ee4528145138c7560f4ab67b99473",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "TauntOrRandomEnemy",
+          "count_in_saved_traversal": 33,
+          "sample": {
+            "pointer": "/records/4843/entrypoints/0/operations/13/arguments/FailedTaskList/0/FailedTaskList/0/FailedTaskList/0/SuccessTaskList/1/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_SW_Boss_00_Ability.json:Monster_SW_Boss_00_Skill06_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_SW_Boss_00_Ability.json",
+              "raw_sha256": "1239fe3aa57880eff908846b3869d91b7321c9b8d5de62e72c95d24fd14a4d92",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "BattleEventCasterTauntOrAggroEnemy",
+          "count_in_saved_traversal": 2,
+          "sample": {
+            "pointer": "/records/6239/entrypoints/1/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json:BattleEventAbility_W2_Feixiao_00",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json",
+              "raw_sha256": "5447a680fec02d114015e00022c289d36265f659dc377b6a74cb2b68b7ad4e3a",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "TauntOrRandomEnemyWithoutServant",
+          "count_in_saved_traversal": 3,
+          "sample": {
+            "pointer": "/records/9865/entrypoints/0/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W4_Theoroi_00_Ability.json:Monster_W4_Theoroi_00_Skill13_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W4_Theoroi_00_Ability.json",
+              "raw_sha256": "c037ac20950e1fd337b3b9c3f59358f16240440e63e88d41538385548248d247",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Alias policy lookup and source; precedence/random boundary pending",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "UNKNOWN policy/draw contract",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "body_part_custom",
+      "aliases": [
+        {
+          "alias": "PartEntity0",
+          "count_in_saved_traversal": 142,
+          "sample": {
+            "pointer": "/records/4190/entrypoints/0/operations/3/arguments/EventList/0/TaskList/0/CameraConfig/NormalConfig/AimTargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Insert_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json",
+              "raw_sha256": "2fc7f56a85db2b682822c0cd36f4c3032ab88587523b4ce8e8e5f5dd7c5f9bb3",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "PartEntity1",
+          "count_in_saved_traversal": 89,
+          "sample": {
+            "pointer": "/records/4190/entrypoints/0/operations/3/arguments/EventList/5/TaskList/8/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Insert_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json",
+              "raw_sha256": "2fc7f56a85db2b682822c0cd36f4c3032ab88587523b4ce8e8e5f5dd7c5f9bb3",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "PartEntity3",
+          "count_in_saved_traversal": 86,
+          "sample": {
+            "pointer": "/records/4190/entrypoints/0/operations/3/arguments/EventList/5/TaskList/10/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Insert_Phase01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json",
+              "raw_sha256": "2fc7f56a85db2b682822c0cd36f4c3032ab88587523b4ce8e8e5f5dd7c5f9bb3",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "Monster_W4_IronTombCorePart_00",
+          "count_in_saved_traversal": 38,
+          "sample": {
+            "pointer": "/records/9046/entrypoints/0/operations/0/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W4_IronTombCorePart_00_Ability.json:GlobalModifiers:MMonster_W4_IronTombCorePart_00_PartBreak_01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W4_IronTombCorePart_00_Ability.json",
+              "raw_sha256": "5002c1cb59c7aa605c7b80f3e4688e212318273c140cbe583f74cd3b6d98bd87",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        },
+        {
+          "alias": "Monster_W4_IronTombCorePart_01",
+          "count_in_saved_traversal": 30,
+          "sample": {
+            "pointer": "/records/9046/entrypoints/0/operations/1/target",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_W4_IronTombCorePart_00_Ability.json:GlobalModifiers:MMonster_W4_IronTombCorePart_00_PartBreak_01",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Monster/Monster_W4_IronTombCorePart_00_Ability.json",
+              "raw_sha256": "5002c1cb59c7aa605c7b80f3e4688e212318273c140cbe583f74cd3b6d98bd87",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "GlobalModifiers",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Part map or pinned custom alias; root/body/helper separate",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "Required relational view; membership does not imply legality",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    },
+    {
+      "family": "dynamic_custom",
+      "aliases": [
+        {
+          "alias": "HimekoNova_00_AssistTarget",
+          "count_in_saved_traversal": 18,
+          "sample": {
+            "pointer": "/records/1617/entrypoints/0/operations/2/arguments/FailedTaskList/2/Predicate/TargetType",
+            "behavior_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_HimekoNova_00_Ability.json:Avatar_HimekoNova_00_SupportSkill02_Phase02",
+            "source": {
+              "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+              "path": "Config/ConfigAbility/Avatar/Avatar_HimekoNova_00_Ability.json",
+              "raw_sha256": "8cc78b9415eb12f6f0f3a773974999ad17d9075caa1fd3e5eec11bb284d6e8ba",
+              "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+              "source": "TurnBasedGameData",
+              "source_container": "AbilityList",
+              "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+            }
+          }
+        }
+      ],
+      "input_context": "Pinned TargetAlias_HimekoNova -> TargetMapDynamicEntityParam(HimekoNova_00_Assist)",
+      "output_cardinality": "UNKNOWN until exact alias expansion/evaluator; never inferred from name",
+      "team_dependency": "Explicit source faction/team view; no implicit light/enemy equivalence",
+      "alive_dead": "Per expansion, explicit filter and caller mask; no global alive-only rule",
+      "selectability": "Independent per view/caller",
+      "formation_topology": "No implicit formation filter",
+      "fallback": "UNKNOWN; no first/random fallback",
+      "empty_result": "Preserve proved []; missing alias is unresolved, not empty",
+      "ordering": "UNKNOWN alias expansion; preserve supplied list without invented sort",
+      "rng_dependency": "No speculative RNG; inspect bound expansion",
+      "confidence": "FACT_CONFIG_USAGE; CONTEXT_ROLES_ARCHITECTURE; EXECUTION_PARTIAL"
+    }
+  ],
+  "retarget_families": [
+    {
+      "family": "Retarget",
+      "count_in_saved_traversal": 2714,
+      "request_fields": [
+        "TargetType",
+        "Predicate",
+        "ByRandom",
+        "IncludeLimbo",
+        "MaxNumber",
+        "TaskList",
+        "FailedTaskList",
+        "IgnoreParallelWarning"
+      ],
+      "executor": {
+        "type": "NGLADAGDPII",
+        "type_index": 55473,
+        "methods": [
+          {
+            "method_index": 508407,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508408,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508409,
+            "name": "OnTaskReset"
+          },
+          {
+            "method_index": 508410,
+            "name": "Tick"
+          }
+        ]
+      },
+      "input_target_state": "Original TargetType selector/alias, current context and predicate bindings",
+      "selector_argument": "TargetType nested config; distinct from SkillTargetConfig enum-like TargetType",
+      "affected_owner_context": "UNKNOWN destination; owner/slot binding unresolved",
+      "single_vs_list": "Source ParamEntity predicate/children support per-candidate context; no proved AbilityTargetEntity overwrite",
+      "mutation_kind": "UNKNOWN replace/append/remove/reorder",
+      "scope": "UNKNOWN_NATIVE",
+      "lifetime": "UNKNOWN_NATIVE",
+      "nested_relation": "TaskList/FailedTaskList or SequenceList structurally preserved; inheritance blocked",
+      "success_failure": "FailedTaskList observed; native empty/all-rejected/error guard and task result UNKNOWN",
+      "rng": "Raw ByRandom/RandomTargetOnlyForBackup retained; draw contract UNKNOWN",
+      "helper": "M504453 AbilityStatic.Retarget",
+      "samples": [
+        {
+          "pointer": "/records/26/entrypoints/0/operations/5",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "SkillTargetEntityList"
+          },
+          "fields": [
+            "ByRandom",
+            "MaxNumber",
+            "Predicate",
+            "TaskList"
+          ]
+        },
+        {
+          "pointer": "/records/262/entrypoints/0/operations/1/children/0/operations/2/children/0/operations/0/children/0/operations/0",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemyWithUnSelectable"
+          },
+          "fields": [
+            "ByRandom",
+            "Predicate",
+            "TaskList"
+          ]
+        },
+        {
+          "pointer": "/records/11/entrypoints/0/operations/12/children/0/operations/3",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "fields": [
+            "Predicate",
+            "TaskList"
+          ]
+        }
+      ],
+      "confidence": "FACT_CONFIG_AND_CALL_TOPOLOGY; NATIVE_MUTATION_BLOCKED"
+    },
+    {
+      "family": "RetargetList",
+      "count_in_saved_traversal": 81,
+      "request_fields": [
+        "TargetType",
+        "Predicate",
+        "ByRandom",
+        "IncludeLimbo",
+        "MaxNumber",
+        "TaskList",
+        "FailedTaskList"
+      ],
+      "executor": {
+        "type": "OHGPIBIJEMD",
+        "type_index": 55471,
+        "methods": [
+          {
+            "method_index": 508397,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508398,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508399,
+            "name": "Tick"
+          },
+          {
+            "method_index": 508400,
+            "name": "OnTaskReset"
+          }
+        ]
+      },
+      "input_target_state": "Original TargetType selector/alias, current context and predicate bindings",
+      "selector_argument": "TargetType nested config; distinct from SkillTargetConfig enum-like TargetType",
+      "affected_owner_context": "UNKNOWN destination; owner/slot binding unresolved",
+      "single_vs_list": "Source ParamEntityList children support a list-binding requirement; write unproved",
+      "mutation_kind": "UNKNOWN replace/append/remove/reorder",
+      "scope": "UNKNOWN_NATIVE",
+      "lifetime": "UNKNOWN_NATIVE",
+      "nested_relation": "TaskList/FailedTaskList or SequenceList structurally preserved; inheritance blocked",
+      "success_failure": "FailedTaskList observed; native empty/all-rejected/error guard and task result UNKNOWN",
+      "rng": "Raw ByRandom/RandomTargetOnlyForBackup retained; draw contract UNKNOWN",
+      "helper": "M504453 AbilityStatic.Retarget",
+      "samples": [
+        {
+          "pointer": "/records/6284/entrypoints/1/operations/8/children/0/operations/3",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllUnselectableWithAllTeammate"
+          },
+          "fields": [
+            "Predicate",
+            "TaskList"
+          ]
+        },
+        {
+          "pointer": "/records/8741/entrypoints/0/operations/7/children/0/operations/7/children/0/operations/0",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "CasterSummonedMinions"
+          },
+          "fields": [
+            "FailedTaskList",
+            "MaxNumber",
+            "Predicate",
+            "TaskList"
+          ]
+        },
+        {
+          "pointer": "/records/7863/entrypoints/0/operations/4",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllLightTeam"
+          },
+          "fields": [
+            "FailedTaskList",
+            "Predicate",
+            "TaskList"
+          ]
+        }
+      ],
+      "confidence": "FACT_CONFIG_AND_CALL_TOPOLOGY; NATIVE_MUTATION_BLOCKED"
+    },
+    {
+      "family": "RetargetPerSequence",
+      "count_in_saved_traversal": 6,
+      "request_fields": [
+        "Parallel",
+        "TargetType",
+        "Predicate",
+        "IncludeLimbo",
+        "RandomTargetOnlyForBackup",
+        "SequenceList"
+      ],
+      "executor": {
+        "type": "CMGFOPNCHBG",
+        "type_index": 55472,
+        "methods": [
+          {
+            "method_index": 508402,
+            "name": "Dispose"
+          },
+          {
+            "method_index": 508403,
+            "name": "OnTaskBegin"
+          },
+          {
+            "method_index": 508404,
+            "name": "OnTaskReset"
+          },
+          {
+            "method_index": 508405,
+            "name": "Tick"
+          }
+        ]
+      },
+      "input_target_state": "Original TargetType selector/alias, current context and predicate bindings",
+      "selector_argument": "TargetType nested config; distinct from SkillTargetConfig enum-like TargetType",
+      "affected_owner_context": "UNKNOWN destination; owner/slot binding unresolved",
+      "single_vs_list": "Sequence-target pairing descriptor; multiplicity/pairing unproved",
+      "mutation_kind": "UNKNOWN replace/append/remove/reorder",
+      "scope": "UNKNOWN_NATIVE",
+      "lifetime": "UNKNOWN_NATIVE",
+      "nested_relation": "TaskList/FailedTaskList or SequenceList structurally preserved; inheritance blocked",
+      "success_failure": "FailedTaskList observed; native empty/all-rejected/error guard and task result UNKNOWN",
+      "rng": "Raw ByRandom/RandomTargetOnlyForBackup retained; draw contract UNKNOWN",
+      "helper": "M504454 AbilityStatic.RetargetByCount",
+      "samples": [
+        {
+          "pointer": "/records/604/entrypoints/0/operations/9",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "fields": [
+            "Parallel",
+            "SequenceList"
+          ]
+        },
+        {
+          "pointer": "/records/4772/entrypoints/0/operations/6",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllEnemy"
+          },
+          "fields": [
+            "SequenceList"
+          ]
+        }
+      ],
+      "confidence": "FACT_CONFIG_AND_CALL_TOPOLOGY; NATIVE_MUTATION_BLOCKED"
+    }
+  ],
+  "negative_evidence": [
+    {
+      "assumption": "TargetAlias name implies cardinality",
+      "result": "REJECTED_SHORTCUT",
+      "observation": "Two distinct single-result consumers; custom unique-ID filters have no proven runtime singleton guarantee. [] and [null] remain distinct.",
+      "evidence": "target_list_shape_contract; consumer_cardinality_contract"
+    },
+    {
+      "assumption": "AllEnemy includes every enemy entity",
+      "result": "NOT_ESTABLISHED",
+      "observation": "AllEnemy/WithUnSelectable/RemoveServant views and explicit masks differ structurally; exact base alias expansion missing.",
+      "evidence": "alias_usage; target_type_metadata"
+    },
+    {
+      "assumption": "unselectable means absent from target computation",
+      "result": "COUNTEREXAMPLE_CONFIG",
+      "observation": "IronTombPhantom definition starts from AllUnselectable; AsatPramad Skill05_End allows unselectable target.",
+      "evidence": "raw_alias_sources; skill_target_sources"
+    },
+    {
+      "assumption": "formation member means legal target",
+      "result": "REJECTED_FROZEN_BOUNDARY",
+      "observation": "Domain3 distinguishes spatial membership from target legality.",
+      "evidence": "astra_formation_boss_v1.json#/targetability_dependency"
+    },
+    {
+      "assumption": "boss root equals visible body target",
+      "result": "COUNTEREXAMPLE_CONFIG",
+      "observation": "IronTomb root, two parts and phantom use separate source views and unique IDs.",
+      "evidence": "boss_part_boundary"
+    },
+    {
+      "assumption": "adjacent means neighboring array index",
+      "result": "REJECTED_SHORTCUT",
+      "observation": "Row scope/count/counting options and distinct action-bar adjacency family observed; exact substrate unknown.",
+      "evidence": "adjacency_contract"
+    },
+    {
+      "assumption": "aggro means hard lock",
+      "result": "NOT_ESTABLISHED",
+      "observation": "RandomByAggroWhenFail declaration supplies a policy distinction; no precedence or weight body.",
+      "evidence": "aggro_taunt_contract"
+    },
+    {
+      "assumption": "random selection is with replacement",
+      "result": "NOT_ESTABLISHED",
+      "observation": "ByRandom and TargetShuffle coexist; no random consumer algorithm recovered.",
+      "evidence": "random_boundary"
+    },
+    {
+      "assumption": "Retarget always replaces one entity",
+      "result": "REJECTED_ARCHITECTURE",
+      "observation": "RetargetList predicates use ParamEntity and children ParamEntityList; PerSequence has separate helper/structure. Native mutation is unresolved.",
+      "evidence": "retarget_state_ownership"
+    },
+    {
+      "assumption": "Retarget persists for whole skill",
+      "result": "NOT_ESTABLISHED",
+      "observation": "No begin-to-cleanup slot trace; narrow reference scope is not native proof.",
+      "evidence": "retarget_lifetime"
+    },
+    {
+      "assumption": "target death automatically reruns selector",
+      "result": "NOT_ESTABLISHED",
+      "observation": "Within-call mask filtering is not a saved-list consumer revalidation edge.",
+      "evidence": "invalidation_revalidation"
+    },
+    {
+      "assumption": "SkillTargetEntityList is unordered",
+      "result": "REJECTED_LOSSY_MODEL",
+      "observation": "Native result buffers and consumer first-item behavior are order-sensitive; specific alias ordering still requires proof.",
+      "evidence": "target_list_shape_contract; ordering_model"
+    },
+    {
+      "assumption": "player legal target equals selector candidate",
+      "result": "REJECTED_ARCHITECTURE",
+      "observation": "Skill primary/secondary and servant/unselectable policies are independent of general fetch/map results.",
+      "evidence": "legal_target_boundary"
+    },
+    {
+      "assumption": "Damage target equals HitSource",
+      "result": "REJECTED_FROZEN_BOUNDARY",
+      "observation": "Separate recipient, attacker, property provider and hit-origin roles preserved.",
+      "evidence": "domain6_output"
+    }
+  ],
+  "strict_rejections": [
+    "Unknown alias cardinality/expansion cannot resolve empty or first",
+    "Unknown selector ordering/ties: no entity-ID sort or default stable ordering",
+    "Unknown random algorithm/stream/draw/replacement/shortage policy: no speculative RNG",
+    "Unknown adjacency collection/counting/holes: no array-neighbor lowering",
+    "Unknown aggro/taunt force/weight/priority precedence",
+    "Unsupported boss-part identity or shared-HP identity collapse",
+    "Unknown invalid-reference fallback or pre-use revalidation",
+    "Unknown Retarget destination owner/slot",
+    "Unknown Retarget lifetime/restore/nested shadowing",
+    "Unknown child target inheritance/copy/share/reevaluation",
+    "Unknown SequenceList pairing/reuse/fallback",
+    "IncludeLimbo is not dead/hidden/unselectable/removed",
+    "No silent deduplication/null removal or []/[null] collapse",
+    "FIRST_OR_NONE only at a bound consumer; never generic first-target fallback",
+    "No automatic selector rerun after target death",
+    "No player legality inferred from selector result",
+    "No damage recipient equated to HitSource",
+    "No inferred missing config defaults"
+  ],
+  "remaining_unknowns": [
+    {
+      "id": "TR-Q1",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_methods_fields": "TargetAlias M538031 and TaskContext alias M505877; TargetSequence M538035/M538036; team-member M538115/M538117; formation sort M537942; adjoin M537807 with SideType/AliveType/IncludeAllRows/AdjoinCount/CountingOption; part maps M537868/M537870/M538010",
+      "missing_relation": "What ordered population and identity transform does each bound alias/selector produce, including null/empty/duplicate policy, filter basis, sort ties and missing neighbors?",
+      "best_evidence": "Provenance-matched alias table/AST plus bodies for the exact bound fetch/map/filter/sort chain; existing pinned GlobalTargetAlias source supplies definitions only"
+    },
+    {
+      "id": "TR-Q2",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_methods_fields": "M504453/M504454 ByRandom and IncludeLimbo argument branches; TargetShuffle M538048; TargetFetchByTauntAndAggro M537894 SourceTarget/RandomByAggroWhenFail; RetargetPerSequence RandomTargetOnlyForBackup",
+      "missing_relation": "Which candidate/filter/limit stage precedes randomness, and what are taunt/aggro precedence, draw count, RNG stream, replacement/reuse, output order and insufficient-candidate behavior?",
+      "best_evidence": "Complete matched helper/selector bodies and their direct RNG callees or ordered candidate-and-draw trace; flags/names are insufficient"
+    },
+    {
+      "id": "TR-Q3",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_methods_fields": "Retarget M508408 -> M504453, RetargetList M508398 -> M504453, RetargetPerSequence M508403 -> M504454; executor F259903..259919; TaskContext F258952/F258955, M505848/M505858/M505859",
+      "missing_relation": "Which returned list/reference is written to which owner+slot, and how do predicate ParamEntity and child ParamEntity/ParamEntityList reads bind to it?",
+      "best_evidence": "Complete matching begin/helper bodies with argument/field-store dataflow; existing 1024-byte call summaries cannot decide destination"
+    },
+    {
+      "id": "TR-Q4",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_methods_fields": "Retarget M508407/M508409/M508410; RetargetList M508397/M508399/M508400; RetargetPerSequence M508402/M508404/M508405; TaskContext CopyTo M505836/Clone M505837/Clear M505840/CreateChildContext M505841",
+      "missing_relation": "Where do bindings start/end, are old bindings saved/restored, and do nested/success/failure/parallel/sequence children share, copy, shadow or overwrite them? How are sequence entries paired with targets?",
+      "best_evidence": "Complete matching begin->child->Tick/reset/dispose store/read/restore path or identity-bearing lifecycle trace; do not reopen Domain1 invocation lifecycle"
+    },
+    {
+      "id": "TR-Q5",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_methods_fields": "Stored SkillTargetEntityList/ability target -> consumer; SkillTargetConfig F85163 IsDynamicTarget/F85157 AliveState/F85161 AllowUnselectableTarget; EvaluateTarget M505873; single consumers M504364/M505875; TargetDamageHP M504579 target-facing handoff only",
+      "missing_relation": "Does each consumer validate cached refs after death/removal/phase/selectability/team/part/summon change, and choose DROP/KEEP_REF/RESELECT/RETARGET/ABORT/FALLBACK? Which validated list stage/cardinality is supplied to damage?",
+      "best_evidence": "Matched concrete consumer target-read/validation/fallback call path or ordered stale-ref trace; local EvaluateTarget filtering is insufficient"
+    }
+  ],
+  "do_not_reason_again": [
+    "[] differs from [null]; preserve ordered list shape",
+    "FIRST_OR_NONE differs from EXACTLY_ONE",
+    "Retarget, RetargetList and RetargetPerSequence remain distinct",
+    "Alive-state, unselectability and summon rules are independent",
+    "Adjacency is parameterized, not array-neighbor arithmetic",
+    "EvaluateTarget local filtering preserves survivor order; it does not establish later revalidation",
+    "Saved Retarget call summaries do not establish destination or lifetime",
+    "Do not rerun saved targeted traversal or census",
+    "M508408/M508398 call M504453; M508403 calls M504454; do not rediscover helper identities",
+    "ByRandom is a raw policy switch until random consumer dataflow closes; no random.choice default",
+    "IncludeLimbo is not a synonym for dead/hidden/unselectable/removed",
+    "SequenceList entry count is not target count, RNG draw count or a proved one-to-one mapping",
+    "No complete native save/set/restore path established; another name search is not grounds for Pass2",
+    "Existing reference TARGET-001 rules remain reference-only; do not promote entity-ID tie breaks or center=first",
+    "DS-Q4 remains open; only the target-list/cardinality interface improved",
+    "Domains1-6 frozen; no runtime changes; do not enter Domain8"
+  ],
+  "checkpoint": {
+    "verified_date": "2026-09-19",
+    "prior_main_artifact": "Skeleton existed; findings retained in targeted evidence and conversation",
+    "targeted_evidence": "Existing 2801 Retarget-family nodes and 92466 selector nodes preserved; traversal NOT rerun",
+    "interruption": "QUOTA_INTERRUPTION_NOT_SEMANTIC_STOP",
+    "frozen_file_sha256": {
+      "astra_triggerability_v1.json": "a582917cd595b9eab8f3800b705a301e6a868a9f91571b3f9ba9242cd2b824f4",
+      "astra_modifier_v1.json": "c8c0d097e09781615499f93be8160f1c64ce5d8c474b4c12fa8acf580848a47e",
+      "astra_formation_boss_v1.json": "50d7e45a8838542882d2bcc114486638e96433234db2799c0254a22b8e91fe13",
+      "astra_scheduler_arbitration_v1.json": "9081d6c4fd09610d7cba009bbc47e12843d6293c26cc20d2f9b4cb0ab38fd5c6",
+      "astra_monster_ai_v1.json": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198",
+      "astra_damage_survival_v1.json": "06e62fa808390ac4f58af4164bb4f8d3b5151b0cbd3ab76bf203d9e8c2010396"
+    }
+  },
+  "target_list_shape_contract": {
+    "status": "CLOSED_REPRESENTATION",
+    "representation": "Ordered list of EntityRef | null; not a mathematical set",
+    "empty_vs_null": "[] != [null]",
+    "primitive_results": {
+      "TargetFetchTaskActionTarget": "0 or 1 element; null slot yields []",
+      "TargetFetchCaster": "1 element; null result yields [null]",
+      "TargetFetchNone": "[]"
+    },
+    "duplicates": "Do not deduplicate without a proven selector/consumer policy",
+    "source": "data/semantics/4.4.54/target_selector_batch_05.json"
+  },
+  "consumer_cardinality_contract": {
+    "FIRST_OR_NONE": {
+      "native_method": 504364,
+      "rule": "GetTaskSingleTarget returns first item if nonempty, otherwise null"
+    },
+    "EXACTLY_ONE": {
+      "native_method": 505875,
+      "rule": "EvaluateSingleTarget rejects/logs zero or multiple items; returns sole item, which can be null"
+    },
+    "ZERO_OR_MORE": {
+      "status": "ARCHITECTURE",
+      "rule": "Preserve full ordered list; consumer-specific null validation still required"
+    },
+    "ONE_OR_MORE": {
+      "status": "DECLARATIVE_ONLY_NO_UNIVERSAL_BINDING",
+      "rule": "Positive item count requirement distinct from null validity"
+    },
+    "SEQUENCE_ALIGNED": {
+      "status": "DECLARATIVE_ONLY_EXECUTION_BLOCKED",
+      "rule": "Represent ordered sequence-target pairing; no one-to-one/reuse rule inferred"
+    }
+  },
+  "filter_order_contract": {
+    "status": "PARTIAL_NATIVE_CLOSED_LOCAL_ORDER",
+    "method": 505873,
+    "source": "data/raw/4.4.54/evaluate_target_full_05.txt",
+    "pipeline": "Selector evaluation -> caller mask filtering; some branches also consult world collection",
+    "ordering": "Removal preserves surviving relative order within this single evaluation",
+    "non_claims": [
+      "No universal selector stable order",
+      "No Retarget result order proved",
+      "No pre-damage automatic reevaluation",
+      "No world collection equals universal candidate universe"
+    ]
+  },
+  "authority": {
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "head_at_pass_start": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "started": "2026-09-16",
+    "resumed": "2026-09-19",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "saved_native_image_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "live_binary": "NOT_OPENED; historical mismatch retained",
+    "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json"
+  },
+  "evidence_model": {
+    "FACT_NATIVE": "Bounded saved body fact for recorded image, not current live binary",
+    "FACT_CONFIG": "Pinned serialized request; not proof of execution or omitted defaults",
+    "FACT_METADATA": "Type, field, signature or call identity only",
+    "STRONG_RECONSTRUCTION": "Supported context/data dependency without complete native write proof",
+    "ARCHITECTURE": "Terra representation and rejection boundary; not a native implementation claim",
+    "UNKNOWN": "Blocks dependent execution"
+  },
+  "baseline": {
+    "historical_retarget_blocked_records_approx": 627,
+    "historical_retarget_blocked_operations_approx": 1858,
+    "status": "RETAINED_USER_BASELINE_NOT_RERUN",
+    "targeted_counts": {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "rule": "Retarget operations: recurse canonical children[group].operations once. Alias/selector/TargetInfo: raw_unknown plus TOP-LEVEL operation.target and full arguments recursively, including raw child lists; DO NOT traverse normalized children for these node counts. Avoids canonical/raw child mirrors. Counts describe canonical representation occurrences, not unique raw files or compiler blocked records.",
+      "retarget_nodes": 2801,
+      "alias_nodes": 89144,
+      "selector_nodes": 92466,
+      "targetinfo_nodes": 6601
+    },
+    "count_warning": "2801 request nodes are scoped occurrences, not revised compiler blocked operations or executable gain"
+  },
+  "alias_selector_pipeline": {
+    "status": "CLOSED_ARCHITECTURE_PARTIAL_NATIVE",
+    "stages": [
+      "TargetIntent with source context",
+      "Resolve alias/config definition under explicit lookup scope",
+      "Choose TargetUniverseView from proven fetch/map source",
+      "Apply declared selector AST in recorded source structure, retaining intermediate order",
+      "Apply caller mask/postfilters at EvaluateTarget boundary when that entrypoint is used",
+      "Publish ResolvedTargetSet",
+      "Optional RetargetRequest produces a separately owned TargetContextMutation only with a proved contract",
+      "Consumer-specific validation and cardinality handling",
+      "Consume targets / separate origin roles"
+    ],
+    "caveats": [
+      "Filters and sorts can be interleaved inside TargetSequence; do not normalize to one global filter-then-sort algorithm",
+      "AST source order is observed; comparator stability, concat dedup and precedence need native proof",
+      "Resolved targets do not automatically mutate skill/ability/caster state",
+      "Conditional TargetSelector Predicate/SuccTarget/FailTarget is a concrete config type, distinct from the generic selector concept"
+    ],
+    "evidence": [
+      "target_type_metadata",
+      "target_bridges",
+      "selector_usage",
+      "filter_order_contract"
+    ]
+  },
+  "alias_expression_contract": {
+    "raw_preservation": "Exact case, spacing, parentheses, +, -, dot transforms and lookup scope",
+    "observed_examples": [
+      "AllLightTeam.GetAliveOnly.SortByHP",
+      "AllEnemyWithUnSelectable - ModifierOwnerEntity",
+      "(ModifierOwnerEntity + AllTeammateWithUnselectable).WithBattleEvent.SortByActionOrder"
+    ],
+    "metadata": "TargetAliasPrecedence/TargetAliasTokenType declare structure; precedence/dedup/order need evaluator proof",
+    "custom_definitions": "27 pinned GlobalTargetAlias definitions across four hash-verified files saved in evidence; base alias table unresolved"
+  },
+  "selector_families": [
+    {
+      "type": "RPG.GameCore.TargetAlias",
+      "count_in_saved_traversal": 89144,
+      "samples": [
+        {
+          "pointer": "/records/0/entrypoints/0/operations/0/target",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json"
+        },
+        {
+          "pointer": "/records/0/entrypoints/0/operations/2/arguments/SuccessTaskList/1/TargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json"
+        },
+        {
+          "pointer": "/records/0/entrypoints/1/operations/0/arguments/SuccessTaskList/0/ParamTarget",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_BlackSwan_00_Ability.json"
+        }
+      ],
+      "classification": "ALIAS_EXPRESSION",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchCaster",
+      "count_in_saved_traversal": 1407,
+      "samples": [
+        {
+          "pointer": "/records/254/entrypoints/0/operations/1/target",
+          "source_path": "Config/ConfigAbility/Avatar/Assistant/Camera/Avatar_Bronya_00_Assistant_Camera.json"
+        },
+        {
+          "pointer": "/records/255/entrypoints/0/operations/1/target",
+          "source_path": "Config/ConfigAbility/Avatar/Assistant/Camera/Avatar_DanHeng_00_Assistant_Camera.json"
+        },
+        {
+          "pointer": "/records/301/entrypoints/0/operations/8/target",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_AML_Elite01_00_Ability.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "One raw nullable element; outer mask may filter",
+      "ordering": "Single append",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_NATIVE_PRIMITIVE_AND_CONFIG"
+    },
+    {
+      "type": "RPG.GameCore.TargetSequence",
+      "count_in_saved_traversal": 608,
+      "samples": [
+        {
+          "pointer": "/records/29/entrypoints/0/operations/3/arguments/SuccessTaskList/0/TargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/29/entrypoints/0/operations/3/arguments/SuccessTaskList/1/TargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/111/entrypoints/2/operations/0/target",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json"
+        }
+      ],
+      "classification": "COMPOSITION",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFilter",
+      "count_in_saved_traversal": 385,
+      "samples": [
+        {
+          "pointer": "/records/29/entrypoints/0/operations/3/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/29/entrypoints/0/operations/3/arguments/SuccessTaskList/1/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/111/entrypoints/2/operations/0/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Sam_00_Ability.json"
+        }
+      ],
+      "classification": "PREDICATE_OR_MASK_QUERY",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+      "count_in_saved_traversal": 283,
+      "samples": [
+        {
+          "pointer": "/records/5960/entrypoints/0/operations/1/target",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_ArgentiTotem_01_Ability_FateRin.json"
+        },
+        {
+          "pointer": "/records/5960/entrypoints/0/operations/4/target",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_ArgentiTotem_01_Ability_FateRin.json"
+        },
+        {
+          "pointer": "/records/5962/entrypoints/5/operations/2/arguments/AbilityTarget",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_ArgentiTotem_01_Ability_FateRin.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetIndex",
+      "count_in_saved_traversal": 112,
+      "samples": [
+        {
+          "pointer": "/records/6585/entrypoints/0/operations/6/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Huanlong_00_Ability_IF.json"
+        },
+        {
+          "pointer": "/records/6585/entrypoints/0/operations/7/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Huanlong_00_Ability_IF.json"
+        },
+        {
+          "pointer": "/records/6585/entrypoints/0/operations/8/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Huanlong_00_Ability_IF.json"
+        }
+      ],
+      "classification": "CARDINALITY_OR_POSITION",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetConcat",
+      "count_in_saved_traversal": 99,
+      "samples": [
+        {
+          "pointer": "/records/22/entrypoints/0/operations/0/arguments/TaskList/0/FailedTaskList/0/TargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/22/entrypoints/0/operations/0/arguments/TaskList/0/SuccessTaskList/12/FailedTaskList/0/TargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Huohuo_00_Ability.json"
+        },
+        {
+          "pointer": "/records/79/entrypoints/1/operations/0/target",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json"
+        }
+      ],
+      "classification": "COMPOSITION",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchPartner",
+      "count_in_saved_traversal": 92,
+      "samples": [
+        {
+          "pointer": "/records/594/entrypoints/0/operations/2/target",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W3_Junk_00_Ability.json"
+        },
+        {
+          "pointer": "/records/594/entrypoints/0/operations/4/target",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W3_Junk_00_Ability.json"
+        },
+        {
+          "pointer": "/records/594/entrypoints/0/operations/6/target",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W3_Junk_00_Ability.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetTake",
+      "count_in_saved_traversal": 49,
+      "samples": [
+        {
+          "pointer": "/records/408/entrypoints/1/operations/0/arguments/Target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Mecha02_00_Ability.json"
+        },
+        {
+          "pointer": "/records/408/entrypoints/3/operations/0/arguments/Target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Mecha02_00_Ability.json"
+        },
+        {
+          "pointer": "/records/471/entrypoints/5/operations/0/arguments/Target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Soldier01_03_Ability.json"
+        }
+      ],
+      "classification": "CARDINALITY_OR_POSITION",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByFormation",
+      "count_in_saved_traversal": 39,
+      "samples": [
+        {
+          "pointer": "/records/6043/entrypoints/0/operations/4/arguments/TaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Argenti_00_Ability_IF.json"
+        },
+        {
+          "pointer": "/records/8395/entrypoints/0/operations/1/arguments/FormationTarget/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_00_Ability.json"
+        },
+        {
+          "pointer": "/records/8395/entrypoints/0/operations/2/arguments/AbilityInherentTargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_00_Ability.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFilterAliveState",
+      "count_in_saved_traversal": 36,
+      "samples": [
+        {
+          "pointer": "/records/1610/entrypoints/0/operations/5/arguments/HILNFHCPEAD/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_HimekoNova_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2151/entrypoints/0/operations/4/target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2151/entrypoints/0/operations/5/target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        }
+      ],
+      "classification": "PREDICATE_OR_MASK_QUERY",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapActionBarAdjoinEntityList",
+      "count_in_saved_traversal": 34,
+      "samples": [
+        {
+          "pointer": "/records/6239/entrypoints/0/operations/5/arguments/FailedTaskList/0/Predicate/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json"
+        },
+        {
+          "pointer": "/records/6239/entrypoints/0/operations/5/arguments/FailedTaskList/0/SuccessTaskList/1/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json"
+        },
+        {
+          "pointer": "/records/6239/entrypoints/0/operations/5/arguments/FailedTaskList/0/SuccessTaskList/4/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetTimeSlow",
+      "count_in_saved_traversal": 30,
+      "samples": [
+        {
+          "pointer": "/records/74/entrypoints/0/operations/13/arguments/TaskList/1/SuccessTaskList/1",
+          "source_path": "Config/ConfigAbility/Avatar/Advanced/Avatar_Advanced_Kafka_00_Ability.json"
+        },
+        {
+          "pointer": "/records/267/entrypoints/0/operations/13/arguments/SuccessTaskList/0",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Acheron_00_Ability.json"
+        },
+        {
+          "pointer": "/records/269/entrypoints/0/operations/17/arguments/SuccessTaskList/0",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Acheron_00_Ability.json"
+        }
+      ],
+      "classification": "OPAQUE_TARGET_CONFIG",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByProperty",
+      "count_in_saved_traversal": 26,
+      "samples": [
+        {
+          "pointer": "/records/408/entrypoints/1/operations/0/arguments/Target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Mecha02_00_Ability.json"
+        },
+        {
+          "pointer": "/records/408/entrypoints/3/operations/0/arguments/Target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Mecha02_00_Ability.json"
+        },
+        {
+          "pointer": "/records/471/entrypoints/5/operations/0/arguments/Target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_AetherDivide_W1_Soldier01_03_Ability.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetShuffle",
+      "count_in_saved_traversal": 22,
+      "samples": [
+        {
+          "pointer": "/records/1032/entrypoints/9/operations/0/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Cipher_00_Ability.json"
+        },
+        {
+          "pointer": "/records/1032/entrypoints/10/operations/0/arguments/SuccessTaskList/0/TargetType/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Cipher_00_Ability.json"
+        },
+        {
+          "pointer": "/records/1032/entrypoints/11/operations/0/arguments/FailedTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Cipher_00_Ability.json"
+        }
+      ],
+      "classification": "RANDOM_TRANSFORM",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "Algorithm/draw contract UNKNOWN",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortMonsterRank",
+      "count_in_saved_traversal": 16,
+      "samples": [
+        {
+          "pointer": "/records/2768/entrypoints/1/operations/0/arguments/TaskList/0/TargetType/Sequence/3",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2775/entrypoints/0/operations/3/arguments/TaskList/3/TargetType/Sequence/3",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2783/entrypoints/3/operations/3/arguments/TaskList/0/FailedTaskList/0/TargetType/Sequence/3",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapAllTeamMember",
+      "count_in_saved_traversal": 13,
+      "samples": [
+        {
+          "pointer": "/records/2151/entrypoints/0/operations/4/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2151/entrypoints/0/operations/5/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2151/entrypoints/3/operations/8/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapAdjoinEntity",
+      "count_in_saved_traversal": 12,
+      "samples": [
+        {
+          "pointer": "/records/1041/entrypoints/0/operations/13/arguments/FormationTarget/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Cipher_00_Ability.json"
+        },
+        {
+          "pointer": "/records/1041/entrypoints/0/operations/14/arguments/FormationTarget/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Cipher_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2768/entrypoints/11/operations/0/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapDynamicEntityParam",
+      "count_in_saved_traversal": 12,
+      "samples": [
+        {
+          "pointer": "/records/6222/entrypoints/0/operations/14/arguments/CameraConfig/ShowEntityConfig/ShowTargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_FeixiaoPart_00_Ability.json"
+        },
+        {
+          "pointer": "/records/6325/entrypoints/0/operations/2/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability_IF.json"
+        },
+        {
+          "pointer": "/records/6325/entrypoints/0/operations/3/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability_IF.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchMonsterByID",
+      "count_in_saved_traversal": 12,
+      "samples": [
+        {
+          "pointer": "/records/6708/entrypoints/0/operations/8/arguments/ParallelAbilityList/5/Predicate/PredicateList/3/TargetType",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Kafka_00_IFEX_Ability.json"
+        },
+        {
+          "pointer": "/records/6708/entrypoints/0/operations/8/arguments/ParallelAbilityList/5/Predicate/PredicateList/4/TargetType",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Kafka_00_IFEX_Ability.json"
+        },
+        {
+          "pointer": "/records/6708/entrypoints/0/operations/8/arguments/ParallelAbilityList/5/Predicate/PredicateList/5/TargetType",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W2_Kafka_00_IFEX_Ability.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapTeamFormation",
+      "count_in_saved_traversal": 11,
+      "samples": [
+        {
+          "pointer": "/records/2885/entrypoints/0/operations/12/arguments/FollowTarget/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Topaz_00_Ability.json"
+        },
+        {
+          "pointer": "/records/8813/entrypoints/0/operations/1/arguments/MovingRangeList/1/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_FireProwler_00_Ability_IF.json"
+        },
+        {
+          "pointer": "/records/8814/entrypoints/0/operations/1/arguments/MovingRangeList/1/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_FireProwler_00_Ability_IF.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchCurrentInsertTurnSource",
+      "count_in_saved_traversal": 4,
+      "samples": [
+        {
+          "pointer": "/records/1255/entrypoints/1/operations/0/arguments/Predicate/PredicateList/2/SecondTargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Evanescia_00_Ability.json"
+        },
+        {
+          "pointer": "/records/1255/entrypoints/2/operations/0/arguments/Predicate/PredicateList/2/SecondTargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Evanescia_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2249/entrypoints/1/operations/0/arguments/Predicate/PredicateList/2/SecondTargetType",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_PlayerBoy_40_Ability.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByModifierValue",
+      "count_in_saved_traversal": 4,
+      "samples": [
+        {
+          "pointer": "/records/2148/entrypoints/0/operations/0/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2768/entrypoints/9/operations/1/arguments/TaskList/0/TargetType/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        },
+        {
+          "pointer": "/records/2775/entrypoints/0/operations/3/target/Sequence/2",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_TheHerta_00_Ability.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetQuery",
+      "count_in_saved_traversal": 3,
+      "samples": [
+        {
+          "pointer": "/records/273/entrypoints/0/operations/2/target",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Acheron_00_Ability.json"
+        },
+        {
+          "pointer": "/records/10065/entrypoints/0/operations/0/target/Sequence/0",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W5_Eater_00_Ability.json"
+        },
+        {
+          "pointer": "/records/10443/entrypoints/0/operations/3/target",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W5_Shell_00_Ability.json"
+        }
+      ],
+      "classification": "PREDICATE_OR_MASK_QUERY",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortSequence",
+      "count_in_saved_traversal": 3,
+      "samples": [
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/FailedTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/SuccessTaskList/0/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByAITag",
+      "count_in_saved_traversal": 3,
+      "samples": [
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/FailedTaskList/0/TargetType/Sequence/1/SortSequence/0",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/SuccessTaskList/0/TargetType/Sequence/1/SortSequence/0",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/SuccessTaskList/0/TargetType/Sequence/1/SortSequence/0",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByWeaknessMatch",
+      "count_in_saved_traversal": 3,
+      "samples": [
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/FailedTaskList/0/TargetType/Sequence/1/SortSequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/FailedTaskList/0/SuccessTaskList/0/TargetType/Sequence/1/SortSequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        },
+        {
+          "pointer": "/records/8483/entrypoints/0/operations/1/arguments/SuccessTaskList/0/TargetType/Sequence/1/SortSequence/1",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W4_Claymore_01_Ability_LocalLegend.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetMapPartOwnerEntity",
+      "count_in_saved_traversal": 1,
+      "samples": [
+        {
+          "pointer": "/records/939/entrypoints/0/operations/7/arguments/SuccessTaskList/0/TowardTarget/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Boothill_00_Ability.json"
+        }
+      ],
+      "classification": "RELATION_MAP",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetSortByElationPriority",
+      "count_in_saved_traversal": 1,
+      "samples": [
+        {
+          "pointer": "/records/1239/entrypoints/8/operations/1/target/Sequence/1",
+          "source_path": "Config/ConfigAbility/Avatar/Avatar_Evanescia_00_Ability.json"
+        }
+      ],
+      "classification": "ORDERING",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetFetchActualOwner",
+      "count_in_saved_traversal": 1,
+      "samples": [
+        {
+          "pointer": "/records/3747/entrypoints/1/operations/0/arguments/Predicate/PredicateList/2/TargetType/Sequence/1",
+          "source_path": "Config/ConfigAbility/Equip/Equip35.json"
+        }
+      ],
+      "classification": "CONTEXT_OR_POPULATION_FETCH",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    },
+    {
+      "type": "RPG.GameCore.TargetCompute",
+      "count_in_saved_traversal": 1,
+      "samples": [
+        {
+          "pointer": "/records/7991/entrypoints/0/operations/0/arguments/SuccessTaskList/0/TargetType",
+          "source_path": "Config/ConfigAbility/Monster/Monster_W3_Sam_00_RLBoss_Ability.json"
+        }
+      ],
+      "classification": "OPAQUE_TARGET_CONFIG",
+      "output_cardinality": "UNKNOWN until bound execution",
+      "ordering": "Generated/tie order UNKNOWN",
+      "filter_dependencies": "Nested config, context and caller mask",
+      "rng_dependency": "No name-based draws",
+      "confidence": "FACT_CONFIG_SHAPE; EXECUTION_UNPROVEN"
+    }
+  ],
+  "retarget_per_sequence": {
+    "status": "STRUCTURE_CLOSED_EXECUTION_BLOCKED",
+    "request": "TargetType + SequenceList; Parallel/Predicate/IncludeLimbo/RandomTargetOnlyForBackup retained with field presence",
+    "saved_samples": "4 Parallel=true requests with five TaskList entries; 2 omit Parallel with nine entries. Source shape counts are not target or RNG counts.",
+    "pairing_descriptor": {
+      "sequence_entries": "Ordered source entries/pointers",
+      "target_result_ref": "Separate selector result",
+      "pairing_policy": "UNKNOWN",
+      "target_reuse": "UNKNOWN",
+      "insufficient_targets": "UNKNOWN",
+      "per_entry_reevaluation": "UNKNOWN",
+      "context_share_copy": "UNKNOWN",
+      "rng_contract": "UNKNOWN"
+    },
+    "native_helper": "M508403 -> M504454 RetargetByCount; does not prove one-to-one mapping",
+    "runtime": "STRICT_REJECT until pairing/reuse/fallback/context/RNG known"
+  },
+  "random_boundary": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "question": "TR-Q2",
+    "families": [
+      {
+        "kind": "Retarget.ByRandom / RetargetList.ByRandom",
+        "fact": "Boolean request field independently serialized with MaxNumber/Predicate/IncludeLimbo",
+        "classification": "POLICY_SWITCH_DECLARED; exact algorithm UNKNOWN",
+        "candidate_list_before_randomness": "TargetType supplies a selector and Predicate supplies another dependency; exact filter/mask/limit/draw order UNKNOWN",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN",
+        "post_draw_order": "UNKNOWN",
+        "insufficient_candidates": "UNKNOWN",
+        "forbidden_lowering": "ByRandom=true does not authorize random.choice, repeated choice or shuffle"
+      },
+      {
+        "kind": "TargetShuffle",
+        "fact": "22 saved config occurrences; M538048 Transform",
+        "candidate_list_before_randomness": "Earlier TargetSequence stages structurally present; exact evaluated candidate order needs their contracts",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN_NATIVE; permutation-shaped name is not algorithm proof",
+        "post_draw_order": "UNKNOWN",
+        "example": "Cipher source sequence: AllDarkTeam.GetAliveOrLimbo -> HP-ratio predicate -> TargetShuffle -> MaxHP HighestFirst sort -> Take(1); sort stability/tie RNG unresolved"
+      },
+      {
+        "kind": "RetargetPerSequence.RandomTargetOnlyForBackup",
+        "fact": "F96462 declaration distinct from ByRandom; no inferred default",
+        "draw_count": "UNKNOWN",
+        "replacement_policy": "UNKNOWN",
+        "insufficient_candidates": "UNKNOWN"
+      }
+    ],
+    "rng_contract": "Only use frozen deterministic RNG after exact algorithm, candidate order, stream and draw boundaries are evidenced. No speculative draws and no seed consumption on blocked operations."
+  },
+  "include_limbo_contract": {
+    "status": "RAW_FLAG_PRESERVED_BINDING_UNKNOWN",
+    "fields": [
+      "Retarget F98196",
+      "RetargetList F98205",
+      "RetargetPerSequence F96461"
+    ],
+    "state_domain": "AliveStateMask explicitly distinguishes Bit_Limbo, Bit_LimboRevivable, Bit_Deathrattle, Bit_Dying, Bit_Died, Bit_WillBeDestroy, Bit_Destroyed and stage bits",
+    "observed_masks": [
+      "Mask_AliveOnly",
+      "Mask_DiedButNotDispose",
+      "Mask_AliveOrLimbo"
+    ],
+    "not_equivalent": [
+      "dead",
+      "hidden",
+      "unselectable",
+      "inactive",
+      "removed"
+    ],
+    "missing_relation": "IncludeLimbo boolean -> concrete helper mask/collection/branch argument is not recovered in M504453/M504454",
+    "rule": "Preserve explicit true/false/absent; no inferred business meaning or omitted default"
+  },
+  "invalidation_revalidation": {
+    "status": "BOUNDARY_CLOSED_POLICY_BLOCKED",
+    "question": "TR-Q5",
+    "known": [
+      "M505873 filters within a requested evaluation",
+      "Source ByIsTargetValid and SkillTargetConfig.IsDynamicTarget exist; neither proves universal late revalidation",
+      "M505847 raw target getter performs no validity filtering itself"
+    ],
+    "checkpoints": [
+      "Selector invocation",
+      "After an explicit Retarget request if native contract requires",
+      "Consumer entry if an actual call edge proves validation"
+    ],
+    "post_selection_triggers": [
+      {
+        "reason": "death",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "dying/limbo transition",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "despawn/destruction",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "phase change",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "unselectable state",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "team change",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "part disable",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      },
+      {
+        "reason": "summon removal",
+        "response": "UNKNOWN",
+        "choices": [
+          "DROP",
+          "KEEP_REF",
+          "RESELECT",
+          "RETARGET",
+          "ABORT",
+          "FALLBACK"
+        ],
+        "policy_evidence": "No per-consumer native validation/fallback edge established in this pass"
+      }
+    ],
+    "validation_result": {
+      "status": "VALID | INVALID | UNKNOWN",
+      "reason": "Explicit reason or unresolved evidence question",
+      "observed_at": "World/context revision",
+      "consumer_ref": "Specific consumer and cardinality contract",
+      "disposition": "Only an evidenced per-consumer response; UNKNOWN blocks consumption"
+    },
+    "prohibitions": [
+      "No death-triggered automatic rerun",
+      "No silent dropping null/stale targets",
+      "No implicit first surviving target",
+      "No universal abort or fallback",
+      "No selector evaluation inferred from its mere existence"
+    ]
+  },
+  "domain6_output": {
+    "status": "INTERFACE_CLOSED_DEPENDENCY_IMPROVEMENT_ONLY",
+    "input": [
+      "Ordered ResolvedTargetSet with resolution stage and provenance",
+      "Explicit item cardinality and null/empty distinction",
+      "Separate attacker/property-provider/hit-origin roles when resolved"
+    ],
+    "EqualSplitInTargets": "Cardinality is now representable without list collapse. Exact validated recipient count, duplicate/null admission, timing and division policy remain evidence-gated; no damage formula changed.",
+    "HitSource_SkillTargetEntityList": "Preserve list-valued role request; exact role resolution/alias binding and DamageBehavior semantics are not closed",
+    "fanout": "Target/event count not inferred from scalar request count",
+    "DS_Q4": "NOT_CLOSED; representation of target cardinality improved only. DamageBehavior/HitSource native evidence remains required.",
+    "damage_domain_modified": false
+  },
+  "evidence": [
+    {
+      "id": "TR-E01",
+      "confidence": "FACT_NATIVE_SAVED_PACKET",
+      "source": "data/semantics/4.4.54/target_selector_batch_05.json",
+      "fact": "Nullable ordered primitives and distinct first/exactly-one consumers",
+      "methods": [
+        505847,
+        505843,
+        538090,
+        538052,
+        538056,
+        504364,
+        505875
+      ]
+    },
+    {
+      "id": "TR-E02",
+      "confidence": "FACT_NATIVE_ACCEPTED_CHECKPOINT",
+      "source": "data/raw/4.4.54/evaluate_target_full_05.txt",
+      "method": 505873,
+      "fact": "Evaluate selector then caller mask; world collection on some branches; survivor relative order preserved",
+      "limit": "No universal consumer revalidation inference"
+    },
+    {
+      "id": "TR-E03",
+      "confidence": "FACT_METADATA_CALL_IDENTITY",
+      "source": "data/raw/4.4.54/action_execution_shortlist_06.json",
+      "fact": "M508408/M508398 -> M504453; M508403 -> M504454",
+      "limit": "1024-byte summaries versus 1968/1216/1568-byte gaps; not argument/field-write proof; no-call flags are not proof of no indirect selection"
+    },
+    {
+      "id": "TR-E04",
+      "confidence": "FACT_METADATA",
+      "source": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+      "fact": "Three distinct executor/lifecycle method families",
+      "detail_ref": "retarget_bridges"
+    },
+    {
+      "id": "TR-E05",
+      "confidence": "FACT_CONFIG",
+      "source": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "fact": "Saved scoped target/alias/Retarget occurrences; no repeated traversal",
+      "detail_ref": "traversal; retarget_shapes; alias_usage; selector_usage; target_predicate_families"
+    },
+    {
+      "id": "TR-E06",
+      "confidence": "FACT_PINNED_CONFIG",
+      "source": "raw_alias_sources",
+      "fact": "27 GlobalTargetAlias definitions in four hash-matched files; definitions do not close base alias or runtime selector contracts"
+    },
+    {
+      "id": "TR-E07",
+      "confidence": "FACT_PINNED_CONFIG_AND_FROZEN_INTERFACE",
+      "source": "skill_target_sources",
+      "fact": "Five prior skill arrays retain TargetInfo restrictions/default-selector absence",
+      "limit": "No dynamic target refresh timing inferred"
+    },
+    {
+      "id": "TR-E08",
+      "confidence": "REFERENCE_MODEL_ONLY",
+      "source": "data/semantics/4.4.54/full_reconstruction/retarget_adjoin_fixed_limit_packet_001.json",
+      "fact": "Scoped ParamEntity iteration is a narrow R3 selected model",
+      "limit": "Not native destination/lifetime proof; no general ordering or random contract"
+    }
+  ],
+  "content_status": {
+    "scoped_payloads": "AVAILABLE_IN_DURABLE_EVIDENCE",
+    "alias_definitions": "27 recovered custom definitions saved; base alias lookup/precedence and full coverage remain partial",
+    "native_vs_content": "TR-Q1..TR-Q5 are BLOCKED_BY_EVIDENCE. More request occurrences cannot close missing native semantics.",
+    "unverified_path_note": "Prior unsuccessful Monster_Svarog_00_Ability exact-path probe lacks a manifest-bound expected file identity; not promoted to a content blocker or fetch request.",
+    "bounded_terra_ticket": null,
+    "reason_no_ticket": "No confirmed missing exact-path content required to finish this representation boundary; sampled raw alias definitions are already preserved in evidence."
+  },
+  "validation": {
+    "required_fields_complete": true,
+    "count_checks": {
+      "retarget": true,
+      "aliases": true,
+      "selectors": true,
+      "targetinfo": true,
+      "families": true
+    },
+    "saved_sample_pointer_checks": 1442,
+    "saved_sample_pointer_errors": [],
+    "frozen_files_unchanged": {
+      "astra_triggerability_v1.json": true,
+      "astra_modifier_v1.json": true,
+      "astra_formation_boss_v1.json": true,
+      "astra_scheduler_arbitration_v1.json": true,
+      "astra_monster_ai_v1.json": true,
+      "astra_damage_survival_v1.json": true
+    },
+    "frozen_master_domains_unchanged": true,
+    "remaining_questions": 5,
+    "traversal_rerun": false,
+    "compiler_census_rerun": false,
+    "production_runtime_modified": false,
+    "scope": "Artifact consistency and direct saved-pointer dereferences only; no new corpus traversal, native sweep or runtime tests",
+    "no_repeated_targeted_traversal_on_resume": true
+  },
+  "architecture_scope": "Lossless target definition/context/universe/result/mutation/consumer/legal-target decomposition; no claim of native selector completion",
+  "native_selector_details": "PARTIAL",
+  "native_retarget_execution": "PARTIAL_STRUCTURAL_AND_CALL_IDENTITY_ONLY",
+  "terra_ready": "PARTIAL",
+  "domain_gate": "FROZEN",
+  "pass2_justification": "NOT_JUSTIFIED_WITH_CURRENT_EVIDENCE; reopen only on new provenance-matched body/dataflow or identity-bearing trace answering TR-Q1..TR-Q5",
+  "artifacts": [
+    "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+  ]
+}

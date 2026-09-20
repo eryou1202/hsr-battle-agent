@@ -1,0 +1,3867 @@
+{
+  "schema": "hsr_battle_agent.astra_triggerability_understanding/1",
+  "domain": "TriggerAbility",
+  "program": "ASTRA_SEMANTIC_CLOSURE_SPRINT",
+  "round": 1,
+  "status": "PASS_4_COMPLETE_BLOCKED_BY_EVIDENCE",
+  "architecture_status": "BLOCKED_BY_EVIDENCE",
+  "authority": {
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "observed_date": "2026-09-10",
+    "corpus_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+    "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+    "compiler_report_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_compiler_report_001.json",
+    "compiler_report_sha256": "26643b96b7daf90773f0e68a132f7e762b73822479c3792ac7dc3ed04f1f5ddb",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "dirty_work_preserved": [
+      "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+      "docs/agent/handoffs/damage_request_dispatch_resolution_18.md",
+      "Historical untracked reverse artifacts and tools/reference"
+    ],
+    "no_triggerability_implementation_partial_found": true
+  },
+  "persistence_checkpoint": "PASS_4_EVIDENCE_BLOCK_AND_TERRA_REJECTION_CONTRACT_PERSISTED",
+  "confidence_vocabulary": {
+    "FACT": "Direct observation of identified source/artifact/code; source/version scope retained.",
+    "STRONG_RECONSTRUCTION": "Architecture conclusion strongly supported by evidence; not a native runtime trace.",
+    "PLAUSIBLE_MODEL": "Viable hypothesis, forbidden as silent compiler default.",
+    "UNKNOWN": "Insufficient evidence; reject dependent execution."
+  },
+  "observed_distribution": {
+    "confidence": "FACT",
+    "total": 4125,
+    "is_skill_perform_true": 4064,
+    "explicit_false_observed": 0,
+    "is_skill_perform_omitted": 61,
+    "owner_operation_counts": {
+      "Avatar": 1239,
+      "Modifier": 11,
+      "Monster": 2875
+    },
+    "behavior_records": 2099,
+    "provenance": {
+      "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+      "method": "Prior in-session read-only traversal of records.entrypoints and template_definitions; recursively walk only canonical children.operations, selecting exact source_type RPG.GameCore.TriggerAbility. Do not recurse the duplicate raw TaskList copies in arguments.",
+      "recomputed_in_continuation": false
+    }
+  },
+  "confirmed_facts": [
+    {
+      "id": "TA-F01",
+      "confidence": "FACT",
+      "statement": "All 4125 observed AbilityName payloads are structured {Value: string}; no hash-only or dynamic-name case was observed.",
+      "evidence": [
+        "CORPUS"
+      ]
+    },
+    {
+      "id": "TA-F02",
+      "confidence": "FACT",
+      "statement": "The operation target and AbilityInherentTargetType are separate fields. Caster is the operation target in 4015 nodes, while 415 nodes explicitly supply an inherent target selector.",
+      "evidence": [
+        "CORPUS"
+      ]
+    },
+    {
+      "id": "TA-F03",
+      "confidence": "FACT",
+      "statement": "A prior exact-name AbilityList registry found 2665 uniquely named candidates and 1460 missing candidates; no ambiguity was observed. 1966 unique candidates share the source file; 699 are cross-file.",
+      "evidence": [
+        "CORPUS"
+      ],
+      "scope": "Definition existence only; no entity ownership or native call-boundary proof."
+    },
+    {
+      "id": "TA-F04",
+      "confidence": "FACT",
+      "statement": "The current compiler binds INVOKE_BEHAVIOR structurally only; no SemanticExecutor invocation handler exists.",
+      "evidence": [
+        "COMPILER",
+        "EXECUTOR"
+      ]
+    },
+    {
+      "id": "TA-F05",
+      "confidence": "FACT",
+      "statement": "Callee TargetInfo remains in canonical raw_unknown and is not retained as a typed execution target plan in compiled behavior IR.",
+      "evidence": [
+        "CORPUS",
+        "COMPILER"
+      ]
+    },
+    {
+      "id": "TA-F06",
+      "confidence": "FACT",
+      "statement": "Avatar Config.SkillAbilityList and SkillList.EntryAbility explicitly group multiple named ability phases/camera abilities under a logical skill.",
+      "evidence": [
+        "BLACKSWAN_CONFIG",
+        "ASTA_CONFIG"
+      ],
+      "scope": "Structured close-version ownership/grouping; no exact Nanoka native skill-ID join."
+    },
+    {
+      "id": "TA-F07",
+      "confidence": "FACT",
+      "statement": "Current ordinary scheduler composition ignores pending inserted actions; candidate visibility and task markers do not prove cross-behavior arbitration.",
+      "evidence": [
+        "EXECUTOR",
+        "SCHEDULER_CANDIDATE",
+        "SCHEDULER_ORDINARY"
+      ]
+    },
+    {
+      "id": "TA-F08",
+      "confidence": "FACT",
+      "statement": "Black Swan Skill01 Phase01 launches Phase02 at OnStart[1] and camera at [2], both explicit true, before starting Skill01 animation at [3]. Phase02 first waits for Skill01=0.348, then damages, emits DamagePerformFinish, waits for 0.371 and emits SkillPerformFinish at [5].",
+      "evidence": [
+        "BLACKSWAN_ABILITY"
+      ],
+      "exact_pointers": [
+        "/AbilityList/0/OnStart/1",
+        "/AbilityList/0/OnStart/2",
+        "/AbilityList/0/OnStart/3",
+        "/AbilityList/1/OnStart/0",
+        "/AbilityList/1/OnStart/2",
+        "/AbilityList/1/OnStart/5"
+      ]
+    },
+    {
+      "id": "TA-F09",
+      "confidence": "FACT",
+      "statement": "Asta Skill03 Phase01 launches camera with explicit true at [2], Phase02 with the flag omitted at [3], then starts Skill03 animation at [6]. Omitted-flag Phase02 waits for Skill03=0.77, applies effects and emits SkillPerformFinish at [5].",
+      "evidence": [
+        "ASTA_ABILITY"
+      ],
+      "exact_pointers": [
+        "/AbilityList/5/OnStart/2",
+        "/AbilityList/5/OnStart/3",
+        "/AbilityList/5/OnStart/6",
+        "/AbilityList/6/OnStart/0",
+        "/AbilityList/6/OnStart/5"
+      ]
+    },
+    {
+      "id": "TA-F10",
+      "confidence": "FACT",
+      "statement": "AML_Minion01 Skill01 Phase01 launches Phase02 with explicit true before animation startup. Phase02 waits until 0.15 before SkillExecutionStart, later waits until 0.49 before damage/DamagePerformFinish and until 0.6 before SkillPerformFinish. Launch and explicit action-start marker occupy different source positions.",
+      "evidence": [
+        "AML_MINION_ABILITY"
+      ],
+      "exact_pointers": [
+        "/AbilityList/1/OnStart/0",
+        "/AbilityList/1/OnStart/3",
+        "/AbilityList/2/OnStart/0",
+        "/AbilityList/2/OnStart/1",
+        "/AbilityList/2/OnStart/6",
+        "/AbilityList/2/OnStart/9"
+      ]
+    },
+    {
+      "id": "TA-F11",
+      "confidence": "FACT",
+      "statement": "Saved TriggerAbility OnTaskBegin topology contains a direct call at 0xB99B801 to 0xE767290, identified by saved metadata as M499776 TurnBasedGameMode.AddWaitAbility. A preceding call site at 0xB99B7B8 targets M506457 TurnBasedAbilityComponent.FindAbilityInstance (0xE728DD0).",
+      "evidence": [
+        "SAVED_TRIGGER_DISCOVERY",
+        "SAVED_METHODS",
+        "SAVED_TYPES"
+      ],
+      "scope": "Historical static call-site existence only. Saved 1024-byte linear window has no terminating ret; branch guard, arguments and reachability for true versus omitted are not captured."
+    },
+    {
+      "id": "TA-F12",
+      "confidence": "FACT",
+      "statement": "Saved TurnBasedGameMode metadata distinguishes _WaitingAbilityList, _ExecutingParallelAbilityList and _InsertAbilityList; AddWaitAbility/GetWaitingAbilityList are separate from AddExecutingParallelAbility.",
+      "evidence": [
+        "SAVED_FIELDS",
+        "SAVED_METHODS",
+        "SAVED_TYPES"
+      ],
+      "scope": "Identity only, not population/removal/arbitration semantics."
+    },
+    {
+      "id": "TA-P3-F01",
+      "confidence": "FACT",
+      "statement": "Saved SkillPerformFinish executor M509173 (NLNBMBIHCGA.OnTaskBegin) has direct-callee entries 0xE6CDE60 = M506904 SkillCharacterComponent.SetSkillPerformFinish and 0xE74B3B0 = M506655 TurnBasedAbilityComponent.ResetCharmAction. This is call topology, not branch reachability, argument identity or event ordering; it does not show a direct ProcessOnAfterSkillPerformFinish call.",
+      "evidence": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/2969",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621",
+        "data/normalized/4.4.54/methods.json#method_index=506904,506655"
+      ]
+    },
+    {
+      "id": "TA-P3-F02",
+      "confidence": "FACT",
+      "statement": "Saved AbilityInstanceState type T54569 declares EUnkonw, Ready, Executing and value__; no SUCCESS member. The scheduler finish packet writes SUCCESS to an explicitly supplied reference action task, not a recovered native ability state.",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=258185..258188",
+        "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json",
+        "data/semantics/4.4.54/full_reconstruction/source_backed_skill_perform_finish_component_reference_001.json"
+      ]
+    },
+    {
+      "id": "TA-P3-F03",
+      "confidence": "FACT",
+      "statement": "AddWaitAbility M499776 has one stripped-name parameter P458774 with type_reference 265335, also the return type_reference of get_OwnerAbilityRef M505656. FindAbilityInstance M506457 returns a different reference number 286703. Exact concrete type/wrapper conversion, parent/child origin and equality key are not resolved.",
+      "evidence": [
+        "data/normalized/4.4.54/parameters.json#parameter_index=458774",
+        "data/normalized/4.4.54/methods.json#method_index=499776,505656,506457"
+      ]
+    },
+    {
+      "id": "TA-P3-F04",
+      "confidence": "FACT",
+      "statement": "WaitSkillPerformAbilityFinish is a distinct config T22411 with zero declared fields, bridged to executor IAPDLAIIKHO T55946. Saved OnTaskBegin M509929 directly calls IsAllWaittingAbilitiesFinished M499778 (0xE7673A0); a separate Tick M509930 exists. Its predicate arguments, Tick body and task-success transition are not saved here.",
+      "evidence": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/normalized/4.4.54/methods.json#method_index=499778,509930"
+      ]
+    },
+    {
+      "id": "TA-P3-F05",
+      "confidence": "FACT",
+      "statement": "Pinned Serpent caller has TriggerAbility(true) at OnStart[10], animation tasks at [11,12], WaitSkillPerformAbilityFinish at [14], then SkillPerformFinish at [15]. Pinned Sam caller has WaitSkillPerformAbilityFinish at [17] then SkillPerformFinish at [18]. Both wait operations are canonical OPAQUE nodes with empty arguments, null target and UNKNOWN event_boundary. Only this lifecycle sequence is examined; other operations are not analyzed.",
+      "evidence": [
+        "P3_SERPENT",
+        "P3_SAM",
+        "P3_CANONICAL_SELECTION"
+      ]
+    },
+    {
+      "id": "TA-P3-F06",
+      "confidence": "FACT",
+      "statement": "Saved game-mode metadata has IsAllWaittingAbilitiesFinished overloads M499778 and M499779, _RefreshWaittingAbilityList M499890 and _IsAllWaittingAbilitiesFinished M499891. M499779 parameter type_reference=202024 matches get_OwnerEntity return type_reference; the specific filter and mutation are not established by the signature. No matching bodies for these consumers were found in the bounded saved raw-artifact search.",
+      "evidence": [
+        "P3_WAIT_CONSUMER_METADATA",
+        "P3_SEARCH_COVERAGE"
+      ]
+    },
+    {
+      "id": "TA-P3-F07",
+      "confidence": "FACT",
+      "statement": "M509480 NAGBMNBECCI, previously a candidate launch helper, itself directly calls TaskContext.EvaluateTarget at saved site 0xB99BE5C. Its name or position after AddWaitAbility cannot identify it as child-start without its body.",
+      "evidence": [
+        "data/raw/4.4.54/target_selector_xrefs_05.json#/targets/5/rel32_refs/88"
+      ]
+    },
+    {
+      "id": "TA-P3-F08",
+      "confidence": "FACT",
+      "statement": "Saved SkillExecutionStart M509166 has a direct callee M499784 TurnBasedGameMode.TriggerModifierAnySkillExecutionEvent (0xE767B80). Saved SkillPerformFinish M509173 has M506904 SetSkillPerformFinish (0xE6CDE60), plus patch-dispatch callees GetPatch/__Gen_Wrap_30. These establish event/perform and patch-dispatch surfaces, not actual taken branches, callback ordering or wait release.",
+      "evidence": [
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1555",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621",
+        "P3_MARKER_RESOLVED_METHODS"
+      ]
+    },
+    {
+      "id": "TA-P3-F09",
+      "confidence": "FACT",
+      "statement": "Saved TriggerAbility config T22410 additionally declares AbilityInherentTargetPredicate and DynamicValues; SkillPerformFinish T22348 declares SkipAttackSettlement. Their defaults/guards are not recovered and the existing canonical distribution is unchanged. These are schema preservation/rejection requirements, not proven runtime family discriminators.",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=97382..97387,97082"
+      ]
+    },
+    {
+      "id": "TA-P4-F01",
+      "confidence": "FACT",
+      "statement": "Saved T55022 SkillCharacterComponent metadata declares _SelfSkillPerformState F259373 (type_reference 608932), get_SelfPerformState M506958 (return reference 608937), and SetSkillPerformFinish M506904. Its parameter P465991 is reference 433618, not an identified wait-token parameter. The artifact contains declarations/signatures, not the setter body or a field-write link to waiting-list predicates.",
+      "evidence": [
+        "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+        "pass_3_evidence/selected_native_metadata/parameters.json#parameter_index=465991"
+      ]
+    }
+  ],
+  "reconstructed_conclusions": [
+    {
+      "id": "TA-R01",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Unique target resolution is insufficient to lower TriggerAbility universally as an ordinary synchronous behavior call. IsSkillPerform cannot be discarded as presentation or silently defaulted.",
+      "evidence": [
+        "TA-F01",
+        "TA-F03",
+        "DISTRIBUTION"
+      ]
+    },
+    {
+      "id": "TA-R02",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Represent the invocation receiver, inherent targets, callee Ability.TargetInfo, logical skill ownership and completion-marker ownership independently.",
+      "evidence": [
+        "TA-F02",
+        "TA-F05",
+        "TA-F06"
+      ]
+    },
+    {
+      "id": "TA-R03",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Ability phase and camera siblings triggered before the caller's animation task make run-callee-to-completion inlining an unsafe universal ordering rule.",
+      "evidence": [
+        "BLACKSWAN_ABILITY",
+        "ASTA_ABILITY",
+        "AML_ABILITY"
+      ],
+      "scope": "Does not by itself prove new AV turns, queue priority, or whether callee startup is immediate."
+    },
+    {
+      "id": "TA-R04",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Sampled phase launches need resumable/interleaved execution or an equivalent causal event model. Blocking the caller until callee completion would wait on an animation started only later by the caller; deleting waits would invert damage/animation order.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09",
+        "TA-F10"
+      ],
+      "limit": "Does not settle immediate start-to-first-yield versus deferred startup."
+    },
+    {
+      "id": "TA-R05",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Performance tracking is a TriggerAbility architecture dependency: the historical executor has an AddWaitAbility call path. Keep ability waiting separate from inserted-action queues and AV advancement.",
+      "evidence": [
+        "TA-F11",
+        "TA-F12"
+      ],
+      "limit": "IsSkillPerform guard of this call is UNKNOWN."
+    },
+    {
+      "id": "TA-R06",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Flag presence alone does not determine marker ownership: omitted-flag Asta Phase02 issues SkillPerformFinish; sampled explicit-true camera OnStart bodies do not themselves contain that marker.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09"
+      ],
+      "limit": "Absence of an explicit marker does not mean completion cannot be tracked elsewhere."
+    },
+    {
+      "id": "TA-R07",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Do not mark an action EXECUTING at launch merely because IsSkillPerform=true: AML_Minion01 has a later explicit SkillExecutionStart after a wait.",
+      "evidence": [
+        "TA-F10",
+        "SCHEDULER_START"
+      ]
+    },
+    {
+      "id": "TA-P3-R01",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Launch return, explicit wait barrier, ability execution lifetime and skill-perform finish must be represented as separate boundaries. Sampled caller progression is incompatible with a universal local await at TriggerAbility, while the explicit WaitSkillPerformAbilityFinish task supplies a separate completion-check site.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09",
+        "TA-F10",
+        "TA-P3-F04",
+        "TA-P3-F05"
+      ]
+    },
+    {
+      "id": "TA-P3-R02",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "The leading architecture is nonblocking phase/camera launch with game-mode-visible ability-wait bookkeeping and an optional explicit aggregate barrier. Whether registration is conditional on IsSkillPerform, how much child work happens inline, and which scope the barrier joins remain unproved.",
+      "evidence": [
+        "TA-F11",
+        "TA-F12",
+        "TA-P3-F03",
+        "TA-P3-F04",
+        "TA-P3-F05"
+      ]
+    },
+    {
+      "id": "TA-P3-R03",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Do not complete every registered child solely by its own explicit SkillPerformFinish: sampled true camera bodies have no such marker; omitted-flag Asta Phase02 does. Perform completion ownership and each ability execution lifetime require independent contracts.",
+      "evidence": [
+        "TA-R06",
+        "TA-F09",
+        "P3_BLACKSWAN_CAMERA"
+      ]
+    },
+    {
+      "id": "TA-P3-R04",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "A generic parent-child completion join cannot be inferred from AddWaitAbility: its game-mode receiver and explicit aggregate wait consumer remain compatible with a wider entity/perform barrier. Multiple child launches are source-backed; a per-parent wait set and its multiplicity are not.",
+      "evidence": [
+        "TA-F08",
+        "TA-P3-F03",
+        "TA-P3-F04",
+        "TA-P3-F06"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "TA-P4-Q1",
+      "confidence": "UNKNOWN",
+      "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+      "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+      "required_evidence": [
+        "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+        "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+        "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+        "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+      ],
+      "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+    },
+    {
+      "id": "TA-P4-Q2",
+      "confidence": "UNKNOWN",
+      "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+      "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+      "required_evidence": [
+        "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+        "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+        "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+        "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+      ],
+      "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+    },
+    {
+      "id": "TA-P4-Q3",
+      "confidence": "UNKNOWN",
+      "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+      "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+      "required_evidence": [
+        "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+        "M509930 Tick 0x15AAB390 complete body including result/state writes",
+        "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+        "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+      ],
+      "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+    }
+  ],
+  "payload_families": [
+    {
+      "id": "NAME_SKILL_PERFORM",
+      "argument_keys": [
+        "AbilityName",
+        "IsSkillPerform"
+      ],
+      "operations": 3658,
+      "execution_status": "REJECT_BOUNDARY_UNPROVEN"
+    },
+    {
+      "id": "NAME_SKILL_PERFORM_INHERENT",
+      "argument_keys": [
+        "AbilityInherentTargetType",
+        "AbilityName",
+        "IsSkillPerform"
+      ],
+      "operations": 406,
+      "execution_status": "REJECT_BOUNDARY_AND_TARGET_PLAN_UNPROVEN"
+    },
+    {
+      "id": "NAME_OMITTED_FLAG",
+      "argument_keys": [
+        "AbilityName"
+      ],
+      "operations": 52,
+      "execution_status": "REJECT_FLAG_DEFAULT_UNPROVEN"
+    },
+    {
+      "id": "NAME_INHERENT_OMITTED_FLAG",
+      "argument_keys": [
+        "AbilityInherentTargetType",
+        "AbilityName"
+      ],
+      "operations": 9,
+      "execution_status": "REJECT_FLAG_DEFAULT_AND_TARGET_PLAN_UNPROVEN"
+    }
+  ],
+  "identity_findings": {
+    "definition_registry": {
+      "key": "(source commit, structured AbilityList.Name)",
+      "candidate_identity": "canonical behavior_id; keep source path/container/hash",
+      "name_resolution": {
+        "unique": 2665,
+        "missing": 1460,
+        "ambiguous": 0
+      },
+      "same_file_unique": 1966,
+      "cross_file_unique": 699,
+      "rule": "Build candidate index from actual AbilityList definitions; never infer a missing camera is presentation from its name, remove suffixes, match display text, or use filename similarity as a static-ID join."
+    },
+    "runtime_binding": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "required": "Bind an entity's loaded ability set using explicit config/assembly provenance; global uniqueness is a candidate, not authorization to run that ability on any entity.",
+      "receiver_target": "TriggerAbility.TargetType -> canonical operation.target",
+      "inherent_target": "AbilityInherentTargetType evaluated against caller context; then callee TargetInfo selects its own ability target plan.",
+      "unresolved": "Default target inheritance and cross-owner context transport."
+    },
+    "lifecycle_identity": "Keep invocation_id, parent_invocation_id, skill_perform_id, action_task_id, damage_task_id, receiver_id and source_provider_id separate.",
+    "static_join": "Exact Nanoka data remains static authority; no new exact skill-ID join established.",
+    "wait_identity": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Registration accepts an ability-reference-shaped value: parameter type_reference 265335 is also get_OwnerAbilityRef return type_reference. Do not replace it with AbilityName, entity ID, or a fabricated per-parent token.",
+      "evidence": [
+        "TA-P3-F03"
+      ],
+      "exact_key": "UNKNOWN; type_reference equality is not concrete generic/wrapper type recovery or argument dataflow"
+    }
+  },
+  "state_reads": [
+    "Definition registry and entity-bound ability set",
+    "Caller execution frame and ParamEntity slots",
+    "Receiver target selector and optional inherent-target selector",
+    "Callee TargetInfo",
+    "Dynamic scope bindings and materialized per-call inputs",
+    "Skill/action/damage owner identities when a proven family requires them"
+  ],
+  "state_writes": {
+    "proven_native_complete_set": false,
+    "required_model_slots": [
+      "Invocation instance/frame and trace provenance",
+      "Shared battle writes produced by executed callee effects"
+    ],
+    "conditional_unproven": [
+      "Skill-performance child registration and completion joins",
+      "Scheduler queues or arbitration",
+      "Context-local dynamic values, target snapshots and callback registrations"
+    ]
+  },
+  "ordering_findings": {
+    "status": "UNKNOWN_NATIVE_BOUNDARY",
+    "source_array_order": "FACT: caller TriggerAbility tasks have concrete ordered indices; ordered launch sites do not establish child completion order.",
+    "callee_event": "A call must choose a supported entrypoint explicitly; do not execute every MODIFIER_CALLBACK/OnAdd event in the callee record.",
+    "headless_waits": "Existing presentation omission is not evidence that animation/timeline waits can be erased across stateful caller/callee interleaving.",
+    "sampled_phase_family": "STRONG_RECONSTRUCTION: caller progresses to animation start while launched callees await later positions.",
+    "strictly_distinct_boundaries": [
+      "Launch",
+      "First callee execution/yield",
+      "SkillExecutionStart",
+      "DamagePerformFinish",
+      "SkillPerformFinish",
+      "Ability completion/disposal",
+      "Waiting-list removal/join",
+      "Next-action arbitration"
+    ],
+    "marker_packet_limit": "Existing packets are PARTIAL_R3_REFERENCE with caller-supplied task IDs; they do not recover cross-invocation ownership.",
+    "equal_time_wakeup_order": "UNKNOWN; source provides causal constraints, not a native total order.",
+    "pass_3_resume_contract": "parent_resume_contract"
+  },
+  "scheduler_relationship": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "established": "TurnInsertAbility is a separate payload family with explicit queue-related fields. TriggerAbility's name/flag alone supplies no AV recharge, priority, turn consumption or inserted-action rule.",
+    "forbidden_inferences": [
+      "Every TriggerAbility creates a new turn",
+      "IsSkillPerform=true equals TurnInsertAbility",
+      "SkillPerformFinish returns from a normal function call",
+      "Omitted IsSkillPerform is proved false"
+    ],
+    "saved_direct_link": {
+      "call_site_rva": "0xB99B801",
+      "callee_rva": "0xE767290",
+      "method_index": 499776,
+      "method": "TurnBasedGameMode.AddWaitAbility",
+      "confidence": "FACT",
+      "flag_guard": "UNKNOWN"
+    },
+    "most_plausible_flag_role": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "statement": "Participation in existing skill-performance/wait completion bookkeeping; exact guard/default/owner/join remain unproven."
+    }
+  },
+  "lifecycle": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "required": "Track invoked ability instance lifetime separately from the receiver entity, persistent definition attachment, and owning skill/action. OnAdd/OnStart/OnRemove and modifier callbacks must not be flattened into a single invocation body.",
+    "native_start_join_dispose": "UNKNOWN: inherited Pass-3 activation and current Pass-4 identity/mutation/continuation blockers.",
+    "saved_wait_tracking": "Distinct AddWaitAbility registration and WaitSkillPerformAbilityFinish predicate task established; guard/identity/predicate/removal unresolved."
+  },
+  "determinism_rng": {
+    "status": "CONTRACT_REQUIREMENT_NOT_NATIVE_FACT",
+    "rules": [
+      "Stable candidate reporting order by canonical ID is for diagnostics only, never a runtime ambiguity tie-break.",
+      "Reject ambiguous or missing identity before effects.",
+      "Share a battle RNG stream with explicit committed draw order; do not reseed per invocation or duplicate RNG state into child frames.",
+      "Do not claim deterministic replay for interleaved random callees until dispatch order is selected and tested."
+    ]
+  },
+  "current_runtime_missing_abstractions": [
+    "InvocationRegistry with resolution distinct from eligibility",
+    "Receiver-bound LoadedAbilitySet",
+    "Typed callee TargetInfo in compiled IR",
+    "InvocationFrame with explicit target and dynamic scopes",
+    "SkillPerform ownership/child lifetime and completion join contract",
+    "Cross-record dependency/SCC validation and suspension-aware execution boundary",
+    "Ability waiting registry distinct from pending_inserted_actions",
+    "Resumable ability execution with explicit wakeup/continuation order"
+  ],
+  "terra_contract": {
+    "readiness": "PARTIAL",
+    "next_ticket": "CROSS-BEHAVIOR-INVOKE-001A_REGISTRY_AND_ELIGIBILITY",
+    "safe_implementation_subset": [
+      "Analysis-only registry/index and immutable invocation plan types",
+      "Preserve IsSkillPerform presence as well as value",
+      "Preserve callee TargetInfo and provenance",
+      "Report missing, ambiguous, unique-but-boundary-unproven separately",
+      "Cross-record graph validation and strict compiler diagnostics",
+      "Retain explicit WaitSkillPerformAbilityFinish as a distinct opaque/barrier-required dependency; do not omit it or lower it to success.",
+      "Emit diagnostics for launch, explicit barrier, perform marker and native ability lifetime separately.",
+      "Preserve additional native-schema fields when present; reject unmodeled defaults/fields."
+    ],
+    "source_backed_executable_call_subset": [],
+    "minimal_generic_runtime_contract": {
+      "InvocationRegistry": {
+        "input": "Canonical corpus and source provenance",
+        "output": "Exact-name candidate list and separate closure diagnostic; no execution side effects"
+      },
+      "InvocationPlan": {
+        "fields": [
+          "source_operation_id",
+          "candidate_behavior_id",
+          "callee_entrypoint",
+          "receiver_selector",
+          "inherent_target_selector_or_absent",
+          "is_skill_perform_presence",
+          "is_skill_perform_value_or_null",
+          "callee_target_plan",
+          "boundary_contract_id_or_null"
+        ],
+        "invariant": "Executable only when identity, receiver binding, target plan, context transport, effect closure and boundary_contract_id are all proven."
+      },
+      "InvocationFrame": {
+        "fields": [
+          "invocation_id",
+          "parent_invocation_id",
+          "behavior_id",
+          "entrypoint",
+          "receiver_id",
+          "caster_id",
+          "source_provider_id",
+          "inherent_target_ids",
+          "ability_target_ids",
+          "skill_target_ids",
+          "param_entity_ids",
+          "param_entity2_ids",
+          "dynamic_scope_bindings",
+          "skill_perform_id",
+          "action_task_id",
+          "damage_task_id"
+        ],
+        "invariant": "These are proposed distinct slots, not a claim that all fields are copied from the caller."
+      },
+      "InvocationBoundary": {
+        "state": "UNSELECTED",
+        "required_decisions": [
+          "start/return/suspend semantics",
+          "parent-child/sibling ordering",
+          "marker addressing",
+          "completion join",
+          "cancellation/disposal",
+          "recursion/reentrancy",
+          "RNG draw ownership"
+        ]
+      },
+      "PerformanceWaitRegistration": {
+        "status": "PROPOSED_TYPE_ONLY_NOT_EXECUTABLE",
+        "fields": [
+          "wait_registration_id",
+          "ability_instance_id",
+          "owning_skill_perform_id_or_unresolved",
+          "registration_sequence",
+          "completion_condition_contract_id",
+          "source_operation_id"
+        ],
+        "rule": "Do not synthesize queue insertion, action start or AV recharge; source population remains rejected until guard/identity semantics close."
+      }
+    },
+    "compiler_context_executor": {
+      "compiler": "Emit STRUCTURAL_CALL_ONLY/BOUNDARY_UNPROVEN for current source families. Callee local executable_reference is necessary but not sufficient. Preserve metadata and validate transitive dependencies, including nested callbacks only when actually invoked/registered.",
+      "context": "Require explicit receiver binding and typed target/dynamic-scope transport; absent IsSkillPerform stays absent. Do not replace all caster/provider/target identities with one entity.",
+      "executor": "No source-backed TriggerAbility handler promotion yet. A future handler must reject before mutation unless the InvocationPlan references a proved boundary contract; it may execute only the chosen entrypoint.",
+      "call_stack_recursion": "Compute strongly connected components. Until recursion/reentrancy has an explicit contract, reject executable cyclic calls; never truncate them or return success at a depth cap."
+    },
+    "files_and_types": [
+      {
+        "path": "src/hsr_battle_agent/game_data/behavior_compiler.py",
+        "types": [
+          "BehaviorCompiler",
+          "PRIMITIVE_BINDINGS"
+        ],
+        "change": "Consume registry; retain TargetInfo and field presence; separate resolution from invocation eligibility."
+      },
+      {
+        "path": "src/hsr_battle_agent/game_data/reference_execution.py",
+        "types": [
+          "ExecutionContext",
+          "SemanticExecutor",
+          "EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS"
+        ],
+        "change": "Reserve explicit InvocationFrame/plan dependencies; do not add executable dispatch until boundary closure."
+      },
+      {
+        "path": "src/hsr_battle_agent/game_data/behavior_invocation.py",
+        "status": "PROPOSED_NEW_FILE",
+        "types": [
+          "InvocationRegistry",
+          "InvocationResolution",
+          "InvocationPlan",
+          "InvocationFrame"
+        ],
+        "change": "Generic immutable identity/context contract; no content-name cases."
+      },
+      {
+        "path": "tests/game_data/test_behavior_compiler.py",
+        "change": "Regression tests for unresolved invocation and metadata retention.",
+        "types": [
+          "BehaviorCompiler",
+          "PRIMITIVE_BINDINGS"
+        ]
+      },
+      {
+        "path": "tests/game_data/test_reference_execution.py",
+        "change": "Assert source calls cannot run through an unproved invocation path."
+      },
+      {
+        "path": "tests/game_data/test_behavior_invocation.py",
+        "status": "PROPOSED_NEW_FILE",
+        "change": "Registry and graph contract tests."
+      }
+    ],
+    "required_tests": [
+      "Unique same-file candidate remains non-executable without a boundary contract.",
+      "Unique cross-file candidate does not imply the receiver owns/loads it.",
+      "Duplicate structured names produce AMBIGUOUS independent of source order; no first-match execution.",
+      "Missing camera-named target remains MISSING, never silently presentation.",
+      "Omitted IsSkillPerform differs from explicit false and explicit true.",
+      "Receiver ParamEntity and AbilityInherentTargetType=AllEnemy remain distinct in the plan.",
+      "Callee TargetInfo survives canonical-to-compiled metadata transport.",
+      "Callee executable ONSTART does not make its caller executable.",
+      "Do not run callee modifier callback entrypoints merely because ONSTART is invoked.",
+      "Direct and indirect recursion reject; preserve diagnostic call path.",
+      "Registry generation changes no battle state, RNG, executable coverage or historical dirty files.",
+      "After future boundary closure: caller-animation versus child-wait trace, sibling completion order, parent marker identity, cross-entity scope restoration, shared RNG, failure rollback and cancellation must each have an independent expected trace.",
+      "Black Swan child damage/finish must not be synchronously completed before the parent animation-start boundary.",
+      "Asta omitted-flag Phase02 with SkillPerformFinish must not be classified as lifecycle-free.",
+      "AML_Minion01 launch must not duplicate or preempt its later SkillExecutionStart.",
+      "Explicit-true camera without its own SkillPerformFinish must not be assumed to complete the entire action.",
+      "Future boundary: wait registrations and inserted actions remain independent; unknown equal-time ordering rejects a deterministic native-order claim.",
+      "Explicit WaitSkillPerformAbilityFinish before SkillPerformFinish is preserved and rejected as a runtime barrier until its predicate/resume contract closes.",
+      "Task SUCCESS must not be treated as a native AbilityInstanceState enumerator."
+    ],
+    "expected_coverage_gain": {
+      "immediate_executable_records": 0,
+      "immediate_executable_operations": 0,
+      "registry_classification_operations": 4125,
+      "unique_definition_candidate_operations": 2665,
+      "report_visible_trigger_operations": 4111,
+      "canonical_calls_pruned_or_absent_from_report": 14,
+      "unique_candidate_onstart_currently_executable_operations": 164,
+      "warning": "Counts are retained observations, not rebuild results. Even 164 locally executable callee ONSTARTs do not establish a call boundary. Census blocked-record counts are overlapping exposure, never predicted record gains."
+    },
+    "terra_ready": "PARTIAL",
+    "confidence": "STRONG_RECONSTRUCTION",
+    "generic_executable_runtime_model_justified": false,
+    "pass_3_implementation_boundary": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "state_reads": "Safe infrastructure reads canonical definitions, provenance, selectors, field presence and boundary-contract metadata. Runtime reads of waiting-list members, ability/perform state and completion flags remain unspecified.",
+      "state_writes": "Safe infrastructure writes immutable invocation/dependency plans and diagnostics only. No battle-state, RNG, wait-list, task-state or scheduler mutation is authorized by this evidence.",
+      "identity": "Separate definition identity, receiver-bound loaded ability, execution instance, wait registration and owning perform/action. Proposed IDs are diagnostic slots, not recovered native keys.",
+      "compiler_lowering_condition": "Historical Pass-3 condition retained: no executable calls until its registration/activation questions and current TA-P4-Q1..Q3 barrier questions plus transitive effect/context closure are proved.",
+      "executor_behavior": "Reject unproved invocation/barrier before any effect. Do not recursively inline full child, synthesize success, skip waits, assume an empty queue, or make omitted flag false.",
+      "scheduler_boundary": "No inserted-action/AV advancement lowering. Waiting-list predicate/refresh and task barrier form the only newly evidenced scheduler-adjacent surfaces; concrete transitions remain rejected.",
+      "context_inheritance": "No default copy-all/copy-none. Preserve receiver, inherent target, callee TargetInfo, dynamic bindings, caller context slots and skill/action ownership independently until Q2.",
+      "ordering_and_determinism": "Persist causal partial orders as constraints, not a total order. Do not use sorted ability name, launch index or equal animation time to invent sibling wakeup order.",
+      "lifecycle": "Registration != activation != explicit barrier != marker != natural ability end != outer action end. No executable lifecycle until completion/abort/reentrancy behavior is covered.",
+      "strict_rejection_condition": [
+        "missing or ambiguous target",
+        "unique candidate without receiver ownership",
+        "unproved IsSkillPerform/default branch",
+        "unproved child activation/context transfer",
+        "unproved wait identity/predicate/removal",
+        "explicit barrier without resume contract",
+        "unproved marker task/perform owner",
+        "unproved cancellation/reentrancy or equal-time ordering",
+        "unhandled native-schema payload fields"
+      ],
+      "expected_new_executable_coverage": 0
+    },
+    "execution_readiness": "NO",
+    "pass_4_implementation_boundary": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "safe_now": [
+        "Definition registry, provenance, immutable invocation/target metadata and field-presence preservation.",
+        "Separate explicit barrier dependency and evidence-block diagnostics.",
+        "Strict pre-effect rejection of unproved invocation and barrier execution."
+      ],
+      "must_reject": [
+        "All current TriggerAbility runtime lowering without a proven activation/context/registration contract.",
+        "WaitSkillPerformAbilityFinish success/pending/polling/event implementations without TA-P4-Q1..Q3 closure.",
+        "Using action-task SUCCESS as native ability completion.",
+        "Using SetSkillPerformFinish name or _SelfSkillPerformState declaration as a proven wait-release mutation.",
+        "Advancing to SkillPerformFinish or an outer parent based solely on source array order."
+      ],
+      "state_reads": "Infrastructure reads definitions/metadata only. Runtime list input, predicate reads and owner scopes unknown.",
+      "state_writes": "No new runtime wait-list, task, RNG, battle or scheduler writes justified.",
+      "identity": "No concrete native token/element/equality key recovered.",
+      "ordering": "Known causal/source constraints only; no deterministic native total order recovered.",
+      "lifecycle": "Launch, local continuation, barrier pending/release, marker and outer completion remain distinct.",
+      "coverage_gain": 0,
+      "runtime_model": "NONE JUSTIFIED; no speculative generic executor is offered."
+    }
+  },
+  "strict_rejections": [
+    "Missing or ambiguous AbilityName",
+    "Unique definition with no receiver-bound loaded-ability proof",
+    "Any current source family lacking a selected invocation boundary",
+    "IsSkillPerform=true silently ignored",
+    "Omitted flag silently interpreted as false",
+    "Caller target copied into callee AbilityTarget without TargetInfo resolution",
+    "Scheduler/lifecycle change without explicit owner and ordering model",
+    "Stateful waits flattened to synchronous calls",
+    "Dynamic context/provider/marker identity guessed",
+    "Recursive/reentrant invocation silently capped",
+    "Child callback bodies executed as part of arbitrary ONSTART",
+    "Claims based on the current mismatched DLL at old snapshot RVAs"
+  ],
+  "best_current_models": [
+    {
+      "model": "A",
+      "description": "Parent task synchronous nested execution",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "status": "COMPLETE_BLOCKING_FORM_RULED_OUT_FOR_SAMPLED_PHASES",
+      "limit": "Inline start-to-first-yield and independently proved wait-free families remain possible."
+    },
+    {
+      "model": "B",
+      "description": "Parent registers wait; independent child completion resumes parent",
+      "confidence": "PLAUSIBLE_MODEL",
+      "status": "POSSIBLE_AT_A_LATER_BARRIER_OR_OUTER_GATE",
+      "limit": "Universal suspension at TriggerAbility is contradicted by sampled causality; actual registration owner and resume edge unknown."
+    },
+    {
+      "model": "C",
+      "description": "Child participates in scheduler-visible skill perform lifecycle",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "status": "GAME_MODE_WAIT_AND_EXPLICIT_BARRIER_SURFACES_SUPPORTED",
+      "limit": "Does not prove a new perform instance, action queue entry, new AV turn or deferred startup."
+    },
+    {
+      "model": "D",
+      "description": "Different payload/context families use different execution models",
+      "confidence": "PLAUSIBLE_MODEL",
+      "status": "VIABLE_NOT_PROVEN",
+      "limit": "Observed families are not closed native branch classes; true/omission alone is insufficient."
+    },
+    {
+      "model": "E",
+      "description": "AddWaitAbility handles bookkeeping without itself defining scheduling",
+      "confidence": "PLAUSIBLE_MODEL",
+      "status": "LEADING_COMPATIBLE_ROLE_FOR_ADDWAITABILITY",
+      "limit": "Body absent; not proof that AddWaitAbility has no additional side effects."
+    }
+  ],
+  "next_distinguishing_questions": [
+    {
+      "id": "TA-P4-Q1",
+      "confidence": "UNKNOWN",
+      "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+      "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+      "required_evidence": [
+        "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+        "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+        "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+        "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+      ],
+      "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+    },
+    {
+      "id": "TA-P4-Q2",
+      "confidence": "UNKNOWN",
+      "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+      "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+      "required_evidence": [
+        "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+        "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+        "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+        "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+      ],
+      "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+    },
+    {
+      "id": "TA-P4-Q3",
+      "confidence": "UNKNOWN",
+      "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+      "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+      "required_evidence": [
+        "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+        "M509930 Tick 0x15AAB390 complete body including result/state writes",
+        "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+        "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+      ],
+      "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+    }
+  ],
+  "evidence": [
+    {
+      "id": "CORPUS",
+      "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "sha256_kind": "embedded corpus_sha256",
+      "sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d"
+    },
+    {
+      "id": "DISTRIBUTION",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/observed_distribution",
+      "origin": "Prior read-only census persisted in this continuation"
+    },
+    {
+      "id": "COMPILER",
+      "path": "src/hsr_battle_agent/game_data/behavior_compiler.py",
+      "artifact_file_sha256": "40279656333257bf190c5805f0919d1116b40b89f5341b135f2e3f63405d1fb1"
+    },
+    {
+      "id": "EXECUTOR",
+      "path": "src/hsr_battle_agent/game_data/reference_execution.py",
+      "artifact_file_sha256": "8a5155f21b8efeaf31688d98c586407755e7e514781f89677a8709c639b6a6c1"
+    },
+    {
+      "id": "BLACKSWAN_ABILITY",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+      "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "ASTA_ABILITY",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+      "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "AML_ABILITY",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json",
+      "raw_sha256": "2fc7f56a85db2b682822c0cd36f4c3032ab88587523b4ce8e8e5f5dd7c5f9bb3",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "BLACKSWAN_CONFIG",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigCharacter/Avatar/Avatar_BlackSwan_00_Config.json",
+      "raw_sha256": "784dd8189821fe0d2110d3115f62709a304a6aaf7ed0d883361bc8dd33e22142",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "ASTA_CONFIG",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigCharacter/Avatar/Avatar_Asta_00_Config.json",
+      "raw_sha256": "7cd835526f0f39d5e3fff96d7010ed8946fe9cce8ceb19ebfd04b2f3503307b1",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "SCHEDULER_CANDIDATE",
+      "path": "data/semantics/4.4.54/full_reconstruction/scheduler_candidate_state_packet_001.json",
+      "artifact_file_sha256": "ca7cbe6dd8ab746095e08f32e3b63f43df3ed08e8fef5e84d203d6a6a22b81e2"
+    },
+    {
+      "id": "SCHEDULER_ORDINARY",
+      "path": "data/semantics/4.4.54/full_reconstruction/scheduler_ordinary_av_composition_packet_001.json",
+      "artifact_file_sha256": "fe5cca23695f5170a5eadc482f603c2cae6c13c033af1f2a05cce6a05cb3d50f"
+    },
+    {
+      "id": "SCHEDULER_FINISH",
+      "path": "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json",
+      "artifact_file_sha256": "16fe52fff8f24f2339a5d06588ec147bd8b26d083a2397fb0046b8f783eab220"
+    },
+    {
+      "id": "SAVED_TRIGGER_BRIDGE",
+      "path": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+      "locator": "matched_rows: config_candidates contains RPG.GameCore.TriggerAbility",
+      "executor": "MCNOKKNBMEH",
+      "type_index": 55846,
+      "method_index": 509479,
+      "rva": "0xB99B440",
+      "use": "Historical identity bridge only; body semantics not recovered; requires saved snapshot hash.",
+      "artifact_file_sha256": "a6bf86003ac3039f1e156da1ad4cb035a4d35aa01f5c55a885c64f3ee258cb97"
+    },
+    {
+      "id": "SAVED_TRIGGER_SHORTLIST",
+      "path": "data/raw/4.4.54/action_execution_shortlist_06.json",
+      "locator": "rows: method_index=509479",
+      "use": "Historical bounded call topology, not proof of returned task lifecycle.",
+      "artifact_file_sha256": "6a2b12cba14c4d6e96d7e8f5f663d8f2ed9bd417c1d5e6a58c52a65bac582caf"
+    },
+    {
+      "id": "AML_MINION_ABILITY",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json",
+      "raw_sha256": "6d2ef55fd1b9f0f58377316f1771a2f387ee6ade17b8e14fb321e76ea118f35d",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "cache_hash_verified": true
+    },
+    {
+      "id": "SCHEDULER_START",
+      "path": "data/semantics/4.4.54/full_reconstruction/scheduler_skill_execution_start_packet_001.json",
+      "artifact_file_sha256": "7aa3f91251ddd3359e2458c86b93291de8ba76ef837489815a2f90885c45faae"
+    },
+    {
+      "id": "SCHEDULER_DAMAGE_FINISH",
+      "path": "data/semantics/4.4.54/full_reconstruction/scheduler_damage_perform_finish_packet_001.json",
+      "artifact_file_sha256": "1bb4a63ce211d9b91d35ffd2a7fcd7cce342abb37c6c1cacc902734fbe76b21e"
+    },
+    {
+      "id": "SAVED_TRIGGER_DISCOVERY",
+      "path": "data/raw/4.4.54/action_execution_discovery_06.json",
+      "locator": "/ontaskbegin_callers/637",
+      "use": "Saved 1024-byte call topology, no complete body or branch guard.",
+      "artifact_file_sha256": "e18d4160d61e7954b14a9d691cbd97ed286d2fd6f01a7591bf0f893ccc941b4f"
+    },
+    {
+      "id": "SAVED_METHODS",
+      "path": "data/normalized/4.4.54/methods.json",
+      "locator": "method_index in [499776,499777,499780,499781,499782,505873,506457,509479,509480]"
+    },
+    {
+      "id": "SAVED_TYPES",
+      "path": "data/normalized/4.4.54/types.json",
+      "locator": "type_index in [53772,55009,55846]"
+    },
+    {
+      "id": "SAVED_FIELDS",
+      "path": "data/normalized/4.4.54/fields.json",
+      "locator": "field_index in [255878,255897,255919]"
+    },
+    {
+      "id": "SAVED_GAME_MODE_TYPE",
+      "path": "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json",
+      "locator": "/types/1",
+      "artifact_file_sha256": "1d8995c1a42731eb1e59aa1b7c131df7820eedff557bb4986f41fdbb6f08d9fc"
+    },
+    {
+      "id": "SAVED_NATIVE_MANIFEST",
+      "path": "data/normalized/4.4.54/manifest.json",
+      "use": "Historical binary/version authority, not current on-disk DLL identity.",
+      "artifact_file_sha256": "5ac97324297767eaec9bfafd53c41297e82657f0a3c7f40041a602f00075e2db"
+    },
+    {
+      "id": "P3_SERPENT",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_Serpent_01_Ability.json",
+      "artifact_file_sha256": "f8c3f1b25f8e20ffda10c13e70768aa1c305220a30372e6fddfb40abcef844fc",
+      "raw_sha256": "f8c3f1b25f8e20ffda10c13e70768aa1c305220a30372e6fddfb40abcef844fc",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "locator": "/AbilityList/20",
+      "scope": "Only invocation/wait/completion sequence, not surrounding battle mechanics"
+    },
+    {
+      "id": "P3_SAM",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W3_Sam_01_Ability.json",
+      "artifact_file_sha256": "a94b118f3b8b5202cec66e73aaa3034ea7ddc47ed6c6a4478e9b0be6ce1de567",
+      "raw_sha256": "a94b118f3b8b5202cec66e73aaa3034ea7ddc47ed6c6a4478e9b0be6ce1de567",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "locator": "/AbilityList/13",
+      "scope": "Only invocation/wait/completion sequence, not surrounding battle mechanics"
+    },
+    {
+      "id": "P3_BLACKSWAN_CAMERA",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Camera/Avatar_BlackSwan_00_Camera.json",
+      "artifact_file_sha256": "a5177c35f4f9ea8b87c9c1dc12db9bc72ad31b88c62f9ed4e3c79d200c2347e8",
+      "raw_sha256": "a5177c35f4f9ea8b87c9c1dc12db9bc72ad31b88c62f9ed4e3c79d200c2347e8",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "locator": "/AbilityList/0",
+      "scope": "Only invocation/wait/completion sequence, not surrounding battle mechanics"
+    },
+    {
+      "id": "P3_WAIT_CONSUMER_METADATA",
+      "path": "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json",
+      "artifact_file_sha256": "1d8995c1a42731eb1e59aa1b7c131df7820eedff557bb4986f41fdbb6f08d9fc",
+      "locator": "/types/1 methods M499778,M499779,M499890,M499891",
+      "scope": "Saved identity metadata only, no predicate bodies"
+    },
+    {
+      "id": "P3_MARKER_RESOLVED_METHODS",
+      "path": "data/normalized/4.4.54/methods.json",
+      "artifact_file_sha256": "9901fab8ef2ccae6a0827d279eccd2f91f486ffa013af30a1e16721bc2f27154",
+      "locator": "M499784,M506904,M506655,M506637,M723050,M732322",
+      "scope": "Exact saved method-index/RVA joins; no direct-call ordering inferred"
+    },
+    {
+      "id": "P3_CANONICAL_SELECTION",
+      "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "sha256_kind": "embedded corpus_sha256",
+      "sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+      "locator": "records selected by exact behavior_id ending BattleEvent_W4_Serpent_01_Phase01 and BattleEvent_BattleEvent20029_Phase01",
+      "scope": "Two named canonical records only, with source_refs matching source hashes; no census"
+    },
+    {
+      "id": "P3_SEARCH_COVERAGE",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "locator": "/pass_3_evidence/search_coverage",
+      "scope": "Bounded saved-artifact inventory; negative observations are not runtime absence claims"
+    },
+    {
+      "id": "P3_SAVED_ACTION_CONFIG_RUNTIME_BRIDGE_06",
+      "path": "data/raw/4.4.54/action_config_runtime_bridge_06.json",
+      "artifact_file_sha256": "a6bf86003ac3039f1e156da1ad4cb035a4d35aa01f5c55a885c64f3ee258cb97",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "scope": "Historical saved snapshot; normalized manifest and exact method/RVA correspondence retained. No live binary accessed."
+    },
+    {
+      "id": "P3_SAVED_ACTION_EXECUTION_SHORTLIST_06",
+      "path": "data/raw/4.4.54/action_execution_shortlist_06.json",
+      "artifact_file_sha256": "6a2b12cba14c4d6e96d7e8f5f663d8f2ed9bd417c1d5e6a58c52a65bac582caf",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "scope": "Historical saved snapshot; normalized manifest and exact method/RVA correspondence retained. No live binary accessed."
+    },
+    {
+      "id": "P3_SAVED_ACTION_EXECUTION_DISCOVERY_06",
+      "path": "data/raw/4.4.54/action_execution_discovery_06.json",
+      "artifact_file_sha256": "e18d4160d61e7954b14a9d691cbd97ed286d2fd6f01a7591bf0f893ccc941b4f",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "scope": "Historical saved snapshot; normalized manifest and exact method/RVA correspondence retained. No live binary accessed."
+    },
+    {
+      "id": "P3_SAVED_TARGET_SELECTOR_XREFS_05",
+      "path": "data/raw/4.4.54/target_selector_xrefs_05.json",
+      "artifact_file_sha256": "4457c290dbd54015f73ea0eb98caccc654a153dff6ea7ed395e6658cb60f6cf2",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "scope": "Historical saved snapshot; normalized manifest and exact method/RVA correspondence retained. No live binary accessed."
+    }
+  ],
+  "reverse_safety_constraints": [
+    {
+      "confidence": "FACT",
+      "path": "D:/StarRail_4.4.53/GameAssembly.dll",
+      "saved_snapshot_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "observed_current_sha256": "4aac69526d1654c278ad641cbce71f728d3030d48f03694096b5778552d12660",
+      "evidence": "data/normalized/4.4.54/manifest.json",
+      "consequence": "Old snapshot RVAs MUST NOT be used against the current file. Current binary version and method mapping are not established by the directory name."
+    },
+    {
+      "confidence": "FACT",
+      "rule": "Existing saved reverse evidence is usable only for its recorded binary hash, version and method provenance. Discard the mismatched live-file TriggerAbility window attempted before the mismatch was identified; it supplies no TriggerAbility semantics."
+    },
+    {
+      "confidence": "FACT",
+      "rule": "Do not reverse the current binary in this continuation. Future native work requires a separately verified binary-hash/version/RVA correspondence."
+    }
+  ],
+  "do_not_reason_again": [
+    {
+      "id": "DNR-TA-COUNT",
+      "settled": "4125 TriggerAbility; 4064 explicit true; 0 explicit false; 61 omitted.",
+      "scope": "Pinned corpus hash in authority",
+      "reopen_only_if": "Corpus provenance changes or a reproducible canonical traversal defect is demonstrated."
+    },
+    {
+      "id": "DNR-TA-RESOLUTION",
+      "settled": "2665 unique candidates / 1460 missing / no observed ambiguity; resolution does not establish runtime eligibility.",
+      "reopen_only_if": "Source set or identity schema changes."
+    },
+    {
+      "id": "DNR-TA-SYNC",
+      "settled": "Never universally lower by name uniqueness or discard IsSkillPerform.",
+      "reopen_only_if": "Independent lifecycle and ordering evidence proves a particular family."
+    },
+    {
+      "id": "DNR-TA-CONTEXT",
+      "settled": "Receiver target, inherent target and callee TargetInfo are distinct.",
+      "reopen_only_if": "New field schema evidence, not an implementation convenience."
+    },
+    {
+      "id": "DNR-TA-BINARY",
+      "settled": "Current DLL hash mismatches saved native evidence; old RVAs cannot be applied.",
+      "reopen_only_if": "Matching binary hash/version/RVA correspondence is established."
+    },
+    {
+      "id": "DNR-TA-CAUSALITY",
+      "settled": "Sampled phase callees wait for caller-started animations; complete synchronous inlining is unsafe.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09",
+        "TA-F10"
+      ]
+    },
+    {
+      "id": "DNR-TA-WAIT-LINK",
+      "settled": "Saved M509479 directly calls AddWaitAbility at 0xB99B801; flag guard still UNKNOWN. Do not rediscover linkage or invent guard.",
+      "evidence": [
+        "TA-F11",
+        "TA-F12"
+      ]
+    },
+    {
+      "id": "DNR-TA-OMITTED-FINISH",
+      "settled": "Asta omitted-flag Phase02 emits SkillPerformFinish; omission is not a lifecycle-free classifier.",
+      "evidence": [
+        "TA-F09"
+      ]
+    },
+    {
+      "id": "DNR-TA-LAUNCH-START",
+      "settled": "AML_Minion01 explicit true launches before a later SkillExecutionStart; launch is not the marker.",
+      "evidence": [
+        "TA-F10"
+      ]
+    },
+    {
+      "id": "DNR-TA-P3-BARRIER",
+      "confidence": "FACT",
+      "settled": "Separate WaitSkillPerformAbilityFinish -> M499778 predicate task is found. M499890 refresh and M509930 Tick are the next completion discriminators. Do not rediscover the symbol path.",
+      "evidence": [
+        "TA-P3-F04",
+        "TA-P3-F05",
+        "TA-P3-F06"
+      ]
+    },
+    {
+      "id": "DNR-TA-P3-NOT-AWAIT",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "settled": "Distinguish caller continuation after launch from a later explicit barrier and outer perform completion. No universal local await.",
+      "evidence": [
+        "TA-P3-R01"
+      ]
+    },
+    {
+      "id": "DNR-TA-P3-ABILITY-STATE",
+      "confidence": "FACT",
+      "settled": "Saved native AbilityInstanceState lacks SUCCESS; reference action-task SUCCESS does not supply a wait completion predicate.",
+      "evidence": [
+        "TA-P3-F02"
+      ]
+    },
+    {
+      "id": "DNR-TA-P3-HELPER",
+      "confidence": "FACT",
+      "settled": "M509480 has EvaluateTarget call; it is not a proved child-start helper.",
+      "evidence": [
+        "TA-P3-F07"
+      ]
+    },
+    {
+      "id": "DNR-TA-P3-MARKER-SYMBOLS",
+      "confidence": "FACT",
+      "settled": "SkillPerformFinish shortlist maps 0xE6CDE60 to SetSkillPerformFinish and 0xE74B3B0 to ResetCharmAction. ProcessOnAfterSkillPerformFinish is 0xE749DD0; no direct call to it in that shortlist.",
+      "evidence": [
+        "TA-P3-F01"
+      ]
+    },
+    {
+      "id": "DNR-TA-P4-EVIDENCE-STOP",
+      "confidence": "FACT",
+      "settled": "Pass 4 cannot recover waited identity, completion mutation or barrier pending/release from saved signatures/call lists. Missing complete bodies were already recorded in Pass 3; do not repeat search or open Pass 5. A field declaration is not a write, Tick declaration is not a polling contract, and source order is not a resume implementation.",
+      "reopen_only_if": "Concrete provenance-matched M499778/M499890/M506904/M509929/M509930 body/dataflow or an ordered identity-bearing native trace becomes available."
+    }
+  ],
+  "continuation_scope": {
+    "full_corpus_census_rerun": false,
+    "new_native_binary_reverse": false,
+    "later_domain_analysis": false,
+    "production_implementation": false,
+    "pass": 4,
+    "canonical_lookup": "Exactly two named records; no TriggerAbility counts recomputed.",
+    "source_scope": "Prior phase/camera examples and two explicit wait-marker sequences; surrounding Monster mechanics not analyzed.",
+    "subagents_used": false,
+    "completed_fact_searches_repeated": false
+  },
+  "targeted_source_examples": [
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+      "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_BlackSwan_00_Skill01_Phase01",
+      "pointer": "/AbilityList/0",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/0/OnStart/0",
+          "source_type": "RPG.GameCore.LookAt",
+          "TargetType": "AbilityTargetEntity"
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/1",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_BlackSwan_00_Skill01_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/2",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_BlackSwan_00_Skill01_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/3",
+          "source_type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/4",
+          "source_type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/5",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.02
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/6",
+          "source_type": "RPG.GameCore.FindClosestAttachPoint",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/7",
+          "source_type": "RPG.GameCore.SetAttachmentScale",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/8",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.68
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/9",
+          "source_type": "RPG.GameCore.SetAttachmentScale",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+      "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_BlackSwan_00_Skill01_Phase02",
+      "pointer": "/AbilityList/1",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/1/OnStart/0",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.348
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/1",
+          "source_type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/2",
+          "source_type": "RPG.GameCore.DamagePerformFinish"
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/3",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.371
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/4",
+          "source_type": "RPG.GameCore.PredicateTaskList"
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/5",
+          "source_type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Camera/Avatar_BlackSwan_00_Camera.json",
+      "raw_sha256": "a5177c35f4f9ea8b87c9c1dc12db9bc72ad31b88c62f9ed4e3c79d200c2347e8",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_BlackSwan_00_Skill01_Camera",
+      "pointer": "/AbilityList/0",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/0/OnStart/0",
+          "source_type": "RPG.GameCore.VCameraConfigChange"
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/1",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchCaster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.33
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/2",
+          "source_type": "RPG.GameCore.VCameraConfigChange"
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/3",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetFetchCaster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.348
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/0/OnStart/4",
+          "source_type": "RPG.GameCore.VCameraConfigChange"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+      "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_Asta_00_Skill03_Phase01",
+      "pointer": "/AbilityList/5",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/5/OnStart/0",
+          "source_type": "RPG.GameCore.SyncCharLightAndCameraDir"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/1",
+          "source_type": "RPG.GameCore.LookAt",
+          "TargetType": "AbilityTargetEntity"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/2",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Asta_00_Skill03_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/3",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Avatar_Asta_00_Skill03_Phase02"
+          }
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/4",
+          "source_type": "RPG.GameCore.ShowBattleUI"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/5",
+          "source_type": "RPG.GameCore.HideLevelStage"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/6",
+          "source_type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill03"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/7",
+          "source_type": "RPG.GameCore.WaitTimelineFinish",
+          "TimelineName": "Character_Asta_00_Skill03_TimeLine"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/8",
+          "source_type": "RPG.GameCore.HideLevelStage"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/9",
+          "source_type": "RPG.GameCore.ShowBattleUI"
+        },
+        {
+          "pointer": "/AbilityList/5/OnStart/10",
+          "source_type": "RPG.GameCore.MoveToTargetPosition",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "TeamFormation"
+          }
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+      "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_Asta_00_Skill03_Phase02",
+      "pointer": "/AbilityList/6",
+      "TargetInfo": {
+        "TargetType": "AllTeamMember"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/6/OnStart/0",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill03",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.77
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/6/OnStart/1",
+          "source_type": "RPG.GameCore.TriggerEffect",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllTeamMember"
+          }
+        },
+        {
+          "pointer": "/AbilityList/6/OnStart/2",
+          "source_type": "RPG.GameCore.AddModifier",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AllTeamMember"
+          }
+        },
+        {
+          "pointer": "/AbilityList/6/OnStart/3",
+          "source_type": "RPG.GameCore.ModifySPNew",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        },
+        {
+          "pointer": "/AbilityList/6/OnStart/4",
+          "source_type": "RPG.GameCore.PredicateTaskList"
+        },
+        {
+          "pointer": "/AbilityList/6/OnStart/5",
+          "source_type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Camera/Avatar_Asta_00_Camera.json",
+      "raw_sha256": "5495651bcaea0e5daba838f4e22885afdd52b892ad97b25846b5a31166ca6e3a",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_Asta_00_Skill03_Camera",
+      "pointer": "/AbilityList/2",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/2/OnStart/0",
+          "source_type": "RPG.GameCore.VCameraConfigChange"
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/1",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "AnimStateName": "Skill03",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.63
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/2",
+          "source_type": "RPG.GameCore.VCameraConfigChange"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json",
+      "raw_sha256": "6d2ef55fd1b9f0f58377316f1771a2f387ee6ade17b8e14fb321e76ea118f35d",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Monster_AML_Minion01_00_Skill01_Phase01",
+      "pointer": "/AbilityList/1",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/1/OnStart/0",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_AML_Minion01_00_Skill01_Phase02"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/1",
+          "source_type": "RPG.GameCore.TriggerAbility",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AbilityName": {
+            "Value": "Monster_AML_Minion01_00_Skill01_Camera"
+          },
+          "IsSkillPerform": true
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/2",
+          "source_type": "RPG.GameCore.LookAt",
+          "TargetType": "AbilityTargetEntity"
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/3",
+          "source_type": "RPG.GameCore.TriggerAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/4",
+          "source_type": "RPG.GameCore.TriggerAnimState"
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/5",
+          "source_type": "RPG.GameCore.LookAt",
+          "TargetType": "TeamFormation"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Minion01_00_Ability.json",
+      "raw_sha256": "6d2ef55fd1b9f0f58377316f1771a2f387ee6ade17b8e14fb321e76ea118f35d",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Monster_AML_Minion01_00_Skill01_Phase02",
+      "pointer": "/AbilityList/2",
+      "TargetInfo": {
+        "TargetType": "SkillTargetEntityList"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/2/OnStart/0",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          },
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.15
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/1",
+          "source_type": "RPG.GameCore.SkillExecutionStart"
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/2",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.22
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/3",
+          "source_type": "RPG.GameCore.StartAim",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "SkillPointEntity"
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/4",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.49
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/5",
+          "source_type": "RPG.GameCore.DamageByAttackProperty",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/6",
+          "source_type": "RPG.GameCore.DamagePerformFinish"
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/7",
+          "source_type": "RPG.GameCore.WaitAnimState",
+          "AnimStateName": "Skill01",
+          "NormalizedTimeEnd": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.6
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/8",
+          "source_type": "RPG.GameCore.StopAim"
+        },
+        {
+          "pointer": "/AbilityList/2/OnStart/9",
+          "source_type": "RPG.GameCore.SkillPerformFinish"
+        }
+      ]
+    },
+    {
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Topaz_00_Ability.json",
+      "raw_sha256": "d1cc935c0d293c5006ca34ebf35f85e5042e32d21fcc4caf3902b4f3a732aae2",
+      "manifest_hash_verified": true,
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "ability_name": "Avatar_Topaz_Rank04_ReduceDelay",
+      "pointer": "/AbilityList/0",
+      "TargetInfo": {
+        "TargetType": "Caster"
+      },
+      "onstart_order": [
+        {
+          "pointer": "/AbilityList/0/OnStart/0",
+          "source_type": "RPG.GameCore.ModifyActionDelay",
+          "TargetType": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "Caster"
+          }
+        }
+      ]
+    }
+  ],
+  "models_ruled_out": [
+    {
+      "claim": "Uniqueness proves a synchronous call.",
+      "reason": "Only definition existence is proved."
+    },
+    {
+      "claim": "IsSkillPerform is cosmetic.",
+      "reason": "Dropping it is unsupported in the evidenced performance-tracked architecture."
+    },
+    {
+      "claim": "Only explicit true permits SkillPerformFinish.",
+      "reason": "Omitted Asta Phase02 has that marker."
+    },
+    {
+      "claim": "IsSkillPerform=true itself marks action start.",
+      "reason": "AML_Minion01 has a later explicit marker after a wait."
+    },
+    {
+      "claim": "Existing marker tests establish invocation ownership.",
+      "reason": "Their task IDs are supplied fixture context."
+    }
+  ],
+  "saved_native_linkage": {
+    "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "version_provenance": "data/normalized/4.4.54/manifest.json",
+    "confidence": "FACT",
+    "executor_method_index": 509479,
+    "executor_type": "MCNOKKNBMEH",
+    "executor_rva": "0xB99B440",
+    "window_bytes": 1024,
+    "first_ret_offset": null,
+    "selected_direct_calls": [
+      {
+        "site_rva": "0xB99B6E2",
+        "dest_rva": "0xE6F1530"
+      },
+      {
+        "site_rva": "0xB99B7B8",
+        "dest_rva": "0xE728DD0"
+      },
+      {
+        "site_rva": "0xB99B801",
+        "dest_rva": "0xE767290"
+      },
+      {
+        "site_rva": "0xB99B821",
+        "dest_rva": "0xB99BDE0"
+      }
+    ],
+    "resolved_callees": {
+      "0xE6F1530": "M505873 TaskContext.EvaluateTarget",
+      "0xE728DD0": "M506457 TurnBasedAbilityComponent.FindAbilityInstance",
+      "0xE767290": "M499776 TurnBasedGameMode.AddWaitAbility",
+      "0xB99BDE0": "M509480 MCNOKKNBMEH.NAGBMNBECCI; directly calls EvaluateTarget, startup role UNKNOWN"
+    },
+    "missing": [
+      "Branch guard",
+      "Argument/object dataflow",
+      "Remaining executor body",
+      "IsSkillPerform field/default association",
+      "Native child activation call and separate explicit-barrier Tick/result transition"
+    ],
+    "do_not_infer": "Increasing call-site addresses do not prove all calls execute in this order on every path.",
+    "scope": "Saved call topology only; no complete control/dataflow."
+  },
+  "pass": 4,
+  "wait_lifecycle": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "registration": {
+      "confidence": "FACT",
+      "statement": "M509479 has the saved M499776 AddWaitAbility call path.",
+      "evidence": [
+        "TA-F11"
+      ]
+    },
+    "registration_guard_and_time": {
+      "confidence": "UNKNOWN",
+      "statement": "Exact guard/default, receiver-derived owner, registration-before-activation and duplicate handling are Q1."
+    },
+    "wait_identity": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Registration accepts an ability-reference-shaped value: parameter type_reference 265335 is also get_OwnerAbilityRef return type_reference. Do not replace it with AbilityName, entity ID, or a fabricated per-parent token.",
+      "evidence": [
+        "TA-P3-F03"
+      ],
+      "exact_key": "UNKNOWN; type_reference equality is not concrete generic/wrapper type recovery or argument dataflow"
+    },
+    "storage": {
+      "confidence": "FACT",
+      "statement": "Game-mode _WaitingAbilityList F255878 exists separately from parallel and inserted-ability lists.",
+      "evidence": [
+        "TA-F12"
+      ]
+    },
+    "multiple_children": {
+      "confidence": "FACT",
+      "statement": "Black Swan and AML_Minion01 callers launch both phase and camera before their animation tasks.",
+      "evidence": [
+        "TA-F08",
+        "TA-F10"
+      ],
+      "simultaneous_per_parent_wait_registration": "UNKNOWN"
+    },
+    "explicit_barrier": {
+      "confidence": "FACT",
+      "statement": "WaitSkillPerformAbilityFinish has its own OnTaskBegin -> IsAllWaittingAbilitiesFinished call and Tick method.",
+      "evidence": [
+        "TA-P3-F04"
+      ]
+    },
+    "possible_join_scope": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "statement": "Game-mode/perform/entity aggregate, possibly polled; it need not be the invocation parent. One predicate overload accepts the same type reference as an owner entity.",
+      "evidence": [
+        "TA-P3-F06"
+      ]
+    },
+    "completion_and_removal": {
+      "confidence": "UNKNOWN",
+      "statement": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+      "question_id": "TA-P4-Q2"
+    },
+    "no_await_inference": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "AddWaitAbility is insufficient to infer that the TriggerAbility task suspends until child completion.",
+      "evidence": [
+        "TA-P3-R01"
+      ]
+    },
+    "pass_4_identity_contract": {
+      "contract": "wait_identity",
+      "confidence": "UNKNOWN",
+      "known": "Named game-mode list and ability-reference-shaped AddWaitAbility parameter; barrier calls overload M499778.",
+      "missing": "Concrete element/wrapper type, actual barrier argument, equality and ownership scope.",
+      "question_id": "TA-P4-Q1"
+    }
+  },
+  "completion_contract": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "native_marker_topology": {
+      "id": "TA-P3-F01",
+      "confidence": "FACT",
+      "statement": "Saved SkillPerformFinish executor M509173 (NLNBMBIHCGA.OnTaskBegin) has direct-callee entries 0xE6CDE60 = M506904 SkillCharacterComponent.SetSkillPerformFinish and 0xE74B3B0 = M506655 TurnBasedAbilityComponent.ResetCharmAction. This is call topology, not branch reachability, argument identity or event ordering; it does not show a direct ProcessOnAfterSkillPerformFinish call.",
+      "evidence": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/2969",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621",
+        "data/normalized/4.4.54/methods.json#method_index=506904,506655"
+      ]
+    },
+    "native_ability_state": {
+      "id": "TA-P3-F02",
+      "confidence": "FACT",
+      "statement": "Saved AbilityInstanceState type T54569 declares EUnkonw, Ready, Executing and value__; no SUCCESS member. The scheduler finish packet writes SUCCESS to an explicitly supplied reference action task, not a recovered native ability state.",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=258185..258188",
+        "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json",
+        "data/semantics/4.4.54/full_reconstruction/source_backed_skill_perform_finish_component_reference_001.json"
+      ]
+    },
+    "reference_task_state": {
+      "confidence": "FACT",
+      "statement": "Existing scheduler packet selects EXECUTING -> SUCCESS for a supplied action_task_id. It is PARTIAL_R3_REFERENCE and does not bind child invocation IDs or implement wait removal.",
+      "evidence": [
+        "SCHEDULER_FINISH"
+      ]
+    },
+    "own_marker_not_universal": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Explicit-true cameras without SkillPerformFinish and omitted-flag stateful phase with it prevent using marker presence/flag alone as an ability completion classifier.",
+      "evidence": [
+        "TA-P3-R03"
+      ]
+    },
+    "barrier_before_marker": {
+      "confidence": "FACT",
+      "statement": "Two selected canonical sequences place WaitSkillPerformAbilityFinish before their own SkillPerformFinish.",
+      "evidence": [
+        "TA-P3-F05"
+      ]
+    },
+    "marker_as_sole_release": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Do not require the later marker in those same waiting sequences as the sole cause that releases their preceding barrier; such a lowering creates a causal cycle.",
+      "evidence": [
+        "TA-P3-F05"
+      ],
+      "limit": "The actual barrier set may concern other abilities; this is not proof that every child ends independently of perform state."
+    },
+    "actual_release_signal": {
+      "confidence": "UNKNOWN",
+      "statement": "No native completion write/read or event-to-wait-release edge established; see TA-P4-Q2."
+    },
+    "callbacks": {
+      "confidence": "UNKNOWN",
+      "statement": "ProcessOnAfterSkillPerformFinish exists at M506637/0xE749DD0, but a path from this TriggerAbility child finish through it to wait release is not recovered. Do not infer event order from symbol names or callee-list position."
+    },
+    "pass_4_mutation_contract": {
+      "contract": "completion_mutation",
+      "confidence": "UNKNOWN",
+      "known": "SetSkillPerformFinish method and _SelfSkillPerformState field declarations; refresh/predicate symbols.",
+      "missing": "Executed write -> predicate-read join and removal/clear/finished-state transition.",
+      "question_id": "TA-P4-Q2"
+    }
+  },
+  "remaining_unknowns": [
+    {
+      "id": "TA-P4-Q1",
+      "confidence": "UNKNOWN",
+      "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+      "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+      "required_evidence": [
+        "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+        "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+        "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+        "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+      ],
+      "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+    },
+    {
+      "id": "TA-P4-Q2",
+      "confidence": "UNKNOWN",
+      "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+      "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+      "required_evidence": [
+        "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+        "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+        "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+        "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+        "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+      ],
+      "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+    },
+    {
+      "id": "TA-P4-Q3",
+      "confidence": "UNKNOWN",
+      "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+      "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+      "required_evidence": [
+        "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+        "M509930 Tick 0x15AAB390 complete body including result/state writes",
+        "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+        "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+      ],
+      "exact_existing_paths": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+      ],
+      "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+    }
+  ],
+  "child_start_contract": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "resolution": {
+      "confidence": "FACT",
+      "statement": "Retain existing exact-name candidate resolution and saved EvaluateTarget -> FindAbilityInstance call-site identities; static uniqueness does not establish entity ownership or an activation path.",
+      "evidence": [
+        "TA-F01",
+        "TA-F03",
+        "TA-F11"
+      ]
+    },
+    "creation_or_reuse": {
+      "confidence": "UNKNOWN",
+      "statement": "FindAbilityInstance names lookup, not creation. Whether child invocation reuses a loaded instance or constructs a new execution object is Q2."
+    },
+    "first_execution": {
+      "confidence": "UNKNOWN",
+      "statement": "Inline start-to-first-yield and deferred dispatch are both consistent with inspected evidence. No queue or event activation edge is recovered."
+    },
+    "marker_separation": {
+      "confidence": "FACT",
+      "statement": "AML child waits before SkillExecutionStart; its launch is earlier. Start marker has a saved game-mode event call.",
+      "evidence": [
+        "TA-F10",
+        "TA-P3-F08"
+      ]
+    },
+    "is_skill_perform_effect": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "statement": "Flag likely participates in skill-performance wait bookkeeping, but no recovered field read proves which registration/start branch differs."
+    },
+    "context_inheritance": {
+      "confidence": "UNKNOWN",
+      "statement": "Keep receiver, caller caster/provider, inherent targets, callee TargetInfo, skill targets, ParamEntity slots, dynamics and perform/action ownership separate; copy/share/recompute rules await Q2."
+    },
+    "helper_limit": {
+      "confidence": "FACT",
+      "statement": "M509480 evaluates targets; it is not yet identified as the startup routine.",
+      "evidence": [
+        "TA-P3-F07"
+      ]
+    },
+    "pass_4_scope_note": "Inherited unresolved activation/context/start timing retained; not re-searched in this barrier-focused pass."
+  },
+  "parent_resume_contract": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "launch_site": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "In sampled phase/camera family, parent must progress to animation startup before child reaches its animation-gated effect/finish. Parent is not universally held at TriggerAbility until child completion.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09",
+        "TA-F10"
+      ]
+    },
+    "explicit_wait_unit": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "WaitSkillPerformAbilityFinish is an explicit task-level completion-check boundary with a Tick method; subsequent same-sequence operations should not be lowered across it without a proven predicate.",
+      "evidence": [
+        "TA-P3-F04",
+        "TA-P3-F05"
+      ],
+      "exact_native_task_success_and_tick_behavior": "UNKNOWN"
+    },
+    "operations_that_follow_wait": {
+      "confidence": "FACT",
+      "statement": "Serpent /AbilityList/20/OnStart/15 and Sam /AbilityList/13/OnStart/18 are SkillPerformFinish immediately after the explicit wait.",
+      "evidence": [
+        "TA-P3-F05"
+      ]
+    },
+    "suspension_scope": {
+      "confidence": "UNKNOWN",
+      "statement": "Task success, containing CallbackList/OnStart sequencing, ability frame finalization and outer game-mode gating are not yet joined. No recovered parent-continuation callback edge."
+    },
+    "known_partial_order": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Respect the sampled causal relation launch -> parent animation startup -> child animation-gated operations; within AML Phase02, start marker precedes damage-finish marker and later skill-finish marker. Explicit barrier site precedes its following finish marker.",
+      "evidence": [
+        "TA-F08",
+        "TA-F10",
+        "TA-P3-F05"
+      ]
+    },
+    "total_order": {
+      "confidence": "UNKNOWN",
+      "statement": "No native total order for child natural finish, wait-list refresh, task success, parent next operation, sibling callbacks/events or next-action arbitration. Black Swan phase and camera both have a 0.348 animation gate, so timestamp/source launch order alone is insufficient.",
+      "evidence": [
+        "TA-F08",
+        "P3_BLACKSWAN_CAMERA"
+      ]
+    },
+    "parent_final_completion": {
+      "confidence": "UNKNOWN",
+      "statement": "Whether parent entrypoint end implicitly joins children, or only an outer perform/game-mode gate waits, remains Q3."
+    },
+    "pass_4_pending_release_ordering": [
+      {
+        "contract": "barrier_pending_behavior",
+        "confidence": "UNKNOWN",
+        "known": "Separate OnTaskBegin and Tick declarations.",
+        "missing": "False branch task/result write and revisit/wakeup mechanism.",
+        "question_id": "TA-P4-Q3"
+      },
+      {
+        "contract": "barrier_release",
+        "confidence": "UNKNOWN",
+        "known": "Predicate-call edge and explicit barrier source site.",
+        "missing": "True branch task completion/release write and wait-registration cleanup.",
+        "question_id": "TA-P4-Q3"
+      },
+      {
+        "contract": "continuation_ordering",
+        "confidence": "UNKNOWN",
+        "known": "Same source sequence places barrier before SkillPerformFinish; sampled caller continues locally after launch.",
+        "missing": "Dispatch order to next operation, callbacks, containing frame and outer parent.",
+        "question_id": "TA-P4-Q3"
+      }
+    ]
+  },
+  "semantic_families": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "classification": "Observed source shapes and boundary requirements, not proven mutually exclusive native execution families.",
+    "families": [
+      {
+        "id": "PHASE_TRUE_INTERLEAVED",
+        "confidence": "FACT",
+        "examples": [
+          "TA-F08",
+          "TA-F10"
+        ],
+        "discriminators": [
+          "explicit true",
+          "child animation wait",
+          "caller later animation launch",
+          "child perform markers"
+        ],
+        "runtime_status": "REJECT_Q1_Q2_Q3"
+      },
+      {
+        "id": "CAMERA_TRUE_WITHOUT_OWN_FINISH",
+        "confidence": "FACT",
+        "examples": [
+          "P3_BLACKSWAN_CAMERA",
+          "TA-F09"
+        ],
+        "discriminators": [
+          "explicit true",
+          "child camera/animation wait body",
+          "no own explicit SkillPerformFinish in sampled OnStart"
+        ],
+        "runtime_status": "REJECT_Q1_Q2_Q3; do not equate camera role with harmless omission"
+      },
+      {
+        "id": "OMITTED_FLAG_STATEFUL_PHASE",
+        "confidence": "FACT",
+        "examples": [
+          "TA-F09"
+        ],
+        "discriminators": [
+          "flag absent",
+          "stateful child",
+          "child explicit SkillPerformFinish"
+        ],
+        "runtime_status": "REJECT_DEFAULT_AND_CONTEXT_AND_LIFECYCLE"
+      },
+      {
+        "id": "EXPLICIT_AGGREGATE_BARRIER",
+        "confidence": "FACT",
+        "examples": [
+          "TA-P3-F05"
+        ],
+        "discriminators": [
+          "separate WaitSkillPerformAbilityFinish task",
+          "wait then enclosing sequence SkillPerformFinish",
+          "Serpent has earlier explicit-true cross-entity camera launch"
+        ],
+        "runtime_status": "REJECT_WAIT_PREDICATE_AND_RESUME_ORDER"
+      },
+      {
+        "id": "OMITTED_FLAG_WAIT_FREE_HELPER_CANDIDATE",
+        "confidence": "PLAUSIBLE_MODEL",
+        "examples": [
+          "Avatar_Topaz_Rank04_ReduceDelay from prior targeted_source_examples"
+        ],
+        "discriminators": [
+          "short callee body without local waits or markers"
+        ],
+        "runtime_status": "REJECT; local body simplicity does not prove invocation boundary"
+      }
+    ],
+    "native_branch_discriminators": {
+      "confidence": "UNKNOWN",
+      "statement": "No true native guard is established. Investigate IsSkillPerform presence/value/default plus runtime context, receiver binding, loaded-instance state and completion-marker context. Predicate/dynamic fields and SkipAttackSettlement must be retained if present; declaration alone does not prove branching."
+    }
+  },
+  "negative_evidence": [
+    {
+      "id": "TA-P3-N01",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "TriggerAbility is followed by parent animation startup needed by a waiting child. Universal await child-to-completion at launch would deadlock the sampled causal model.",
+      "evidence": [
+        "TA-F08",
+        "TA-F09",
+        "TA-F10"
+      ]
+    },
+    {
+      "id": "TA-P3-N02",
+      "confidence": "FACT",
+      "statement": "Explicit-true sampled camera OnStart bodies have no explicit SkillExecutionStart or SkillPerformFinish, while omitted Asta phase has SkillPerformFinish.",
+      "evidence": [
+        "P3_BLACKSWAN_CAMERA",
+        "TA-F09"
+      ],
+      "limit": "Does not prove true without registration, lifecycle-free camera, or omitted=false."
+    },
+    {
+      "id": "TA-P3-N03",
+      "confidence": "FACT",
+      "statement": "Selected explicit barrier occurs before the same sequence SkillPerformFinish. Launch registration, wait predicate and outer finish marker are separate source sites.",
+      "evidence": [
+        "TA-P3-F05"
+      ]
+    },
+    {
+      "id": "TA-P3-N04",
+      "confidence": "FACT",
+      "statement": "No RemoveWaitAbility/FinishWaitAbility named method appeared in the targeted saved method-name search; _RefreshWaittingAbilityList and predicate methods do exist.",
+      "evidence": [
+        "P3_SEARCH_COVERAGE"
+      ],
+      "limit": "Obfuscated, inline, indirect and refresh removal remain possible; absence of symbol is not absence of removal."
+    },
+    {
+      "id": "TA-P3-N05",
+      "confidence": "UNKNOWN",
+      "statement": "No provenance-matched executed trace proves IsSkillPerform=true without wait registration, nor AddWaitAbility registration of a child that never participates in a perform. Existing call tables do not associate dynamic paths with payload cases."
+    },
+    {
+      "id": "TA-P3-N06",
+      "confidence": "FACT",
+      "statement": "Native AbilityInstanceState has no SUCCESS member; scheduler SUCCESS is a separately selected task model.",
+      "evidence": [
+        "TA-P3-F02"
+      ]
+    },
+    {
+      "id": "TA-P3-N07",
+      "confidence": "FACT",
+      "statement": "M509480 directly evaluates targets. Treating this helper as a proved launch routine solely because it follows an AddWaitAbility call-site address is unsupported.",
+      "evidence": [
+        "TA-P3-F07"
+      ]
+    },
+    {
+      "id": "TA-P3-N08",
+      "confidence": "FACT",
+      "statement": "No OnStart operation after SkillPerformFinish was found in the bounded BlackSwan/Asta/AML_Minion01 source inspection.",
+      "evidence": [
+        "P3_SEARCH_COVERAGE"
+      ],
+      "limit": "Only this selected set; does not prove SkillPerformFinish is universally terminal or that child lifetime equals marker completion."
+    }
+  ],
+  "is_skill_perform_contract": {
+    "confidence": "PLAUSIBLE_MODEL",
+    "statement": "Likely skill-performance wait participation/bookkeeping; exact registration/start guard, omission default and object identity remain unproved (Q1).",
+    "counterexamples": [
+      "true camera without own explicit marker",
+      "omitted stateful phase with explicit finish",
+      "true launch precedes later SkillExecutionStart"
+    ],
+    "do_not_lower": "Never translate to await child, new turn, implicit SkillExecutionStart, or omitted=false."
+  },
+  "pass_3_evidence": {
+    "confidence": "FACT",
+    "authority": {
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "binary_version_manifest": "data/normalized/4.4.54/manifest.json",
+      "current_binary_used": false,
+      "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58"
+    },
+    "verified_existing_artifact_hashes": [
+      "SCHEDULER_FINISH",
+      "SAVED_TRIGGER_BRIDGE",
+      "SAVED_TRIGGER_SHORTLIST",
+      "SCHEDULER_START",
+      "SAVED_TRIGGER_DISCOVERY",
+      "SAVED_GAME_MODE_TYPE",
+      "SAVED_NATIVE_MANIFEST"
+    ],
+    "selected_source_snapshots": [
+      {
+        "evidence_id": "P3_SERPENT",
+        "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_Serpent_01_Ability.json",
+        "raw_sha256": "f8c3f1b25f8e20ffda10c13e70768aa1c305220a30372e6fddfb40abcef844fc",
+        "manifest_hash_verified": true,
+        "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+        "ability_name": "BattleEvent_W4_Serpent_01_Phase01",
+        "pointer": "/AbilityList/20",
+        "selected_operations": [
+          {
+            "pointer": "/AbilityList/20/OnStart/10",
+            "payload": {
+              "$type": "RPG.GameCore.TriggerAbility",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetSequence",
+                "Sequence": [
+                  {
+                    "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                    "UniqueName": "W4_Serpent_01"
+                  }
+                ]
+              },
+              "AbilityName": {
+                "Value": "Monster_W4_Serpent_01_Skill06_3_Camera"
+              },
+              "IsSkillPerform": true
+            }
+          },
+          {
+            "pointer": "/AbilityList/20/OnStart/11",
+            "payload": {
+              "$type": "RPG.GameCore.TriggerAnimStateWithMove",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                "UniqueName": "W4_Serpent_01"
+              },
+              "AnimStateName": "Skill06_3",
+              "NormalizedTimeEnd": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 1
+                }
+              },
+              "NormalizedTransitionDuration": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.15
+                }
+              },
+              "EventList": [
+                {
+                  "NormalizedTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.PlayTimeline",
+                      "TimelineName": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Timeline.playable"
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                        "UniqueName": "W4_Serpent_01"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Blood.prefab",
+                      "ForceImmediateFadeOut": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                        "UniqueName": "W4_Serpent_01"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Blood_01.prefab",
+                      "ForceImmediateFadeOut": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                        "UniqueName": "W4_Serpent_01"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Blood_04.prefab",
+                      "ForceImmediateFadeOut": false
+                    },
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                        "UniqueName": "W4_Serpent_01"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Blood_02.prefab",
+                      "ForceImmediateFadeOut": false
+                    }
+                  ]
+                },
+                {
+                  "NormalizedTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.153
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.RemoveEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                        "UniqueName": "W4_Serpent_01"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Loop.prefab",
+                      "ForceImmediateFadeOut": false
+                    }
+                  ]
+                },
+                {
+                  "NormalizedTime": {
+                    "IsDynamic": false,
+                    "FixedValue": {
+                      "Value": 0.188
+                    }
+                  },
+                  "TaskList": [
+                    {
+                      "$type": "RPG.GameCore.AddModifier",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AbilityTargetEntity"
+                      },
+                      "ModifierName": {
+                        "Value": "MMonster_W4_Serpent_01_Charge02_Target"
+                      },
+                      "InheritCaster": "TargetSelf"
+                    },
+                    {
+                      "$type": "RPG.GameCore.PredicateTaskList",
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByCheckCustomValueBool",
+                        "TargetType": {
+                          "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                          "UniqueName": "W4_Serpent_01"
+                        },
+                        "Key": {
+                          "Hash": 1563013071
+                        }
+                      },
+                      "SuccessTaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "AbilityTargetEntity"
+                          },
+                          "ModifierName": {
+                            "Value": "Monster_W4_Serpent_01_RLBoss_Skill06Choose"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.RetargetList",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeamWithAllLightTeamUnselectable.RemoveServant"
+                      },
+                      "Predicate": {
+                        "$type": "RPG.GameCore.ByAnd",
+                        "PredicateList": [
+                          {
+                            "$type": "RPG.GameCore.ByIsContainModifier",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity"
+                            },
+                            "ModifierName": {
+                              "Value": "MMonster_W4_Serpent_01_Charge02_Target"
+                            },
+                            "Inverse": true
+                          },
+                          {
+                            "$type": "RPG.GameCore.ByTargetEntityType",
+                            "TargetType": {
+                              "$type": "RPG.GameCore.TargetAlias",
+                              "Alias": "ParamEntity"
+                            },
+                            "EntityTypeMask": "Avatar"
+                          }
+                        ]
+                      },
+                      "IncludeLimbo": true,
+                      "TaskList": [
+                        {
+                          "$type": "RPG.GameCore.AddModifier",
+                          "TargetType": {
+                            "$type": "RPG.GameCore.TargetAlias",
+                            "Alias": "ParamEntityList"
+                          },
+                          "ModifierName": {
+                            "Value": "MMonster_W4_Serpent_01_Charge02_Target_Sub"
+                          },
+                          "InheritCaster": "TargetSelf"
+                        }
+                      ]
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerAnimState",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeam.RemoveServant"
+                      },
+                      "AnimLogicState": "OnHit",
+                      "AnimStateName": "Hit_H"
+                    },
+                    {
+                      "$type": "RPG.GameCore.TriggerEffect",
+                      "TargetType": {
+                        "$type": "RPG.GameCore.TargetAlias",
+                        "Alias": "AllLightTeam.RemoveServant"
+                      },
+                      "EffectPath": "Effects/Eff_Prefab/Eff_Monster/Eff_W4_Serpent_01/Eff_Monster_W4_Serpent_01_Skill06_Hit.prefab",
+                      "ForceSimulateImmediately": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "pointer": "/AbilityList/20/OnStart/12",
+            "payload": {
+              "$type": "RPG.GameCore.TriggerAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetSequence",
+                "Sequence": [
+                  {
+                    "$type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+                    "UniqueName": "W4_Serpent_01"
+                  }
+                ]
+              },
+              "AnimLogicState": "Idle"
+            }
+          },
+          {
+            "pointer": "/AbilityList/20/OnStart/13",
+            "payload": {
+              "$type": "RPG.GameCore.SetEntityForbidCameraDither",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetAlias",
+                "Alias": "AllLightTeam.RemoveServant"
+              }
+            }
+          },
+          {
+            "pointer": "/AbilityList/20/OnStart/14",
+            "payload": {
+              "$type": "RPG.GameCore.WaitSkillPerformAbilityFinish"
+            }
+          },
+          {
+            "pointer": "/AbilityList/20/OnStart/15",
+            "payload": {
+              "$type": "RPG.GameCore.SkillPerformFinish"
+            }
+          }
+        ]
+      },
+      {
+        "evidence_id": "P3_SAM",
+        "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W3_Sam_01_Ability.json",
+        "raw_sha256": "a94b118f3b8b5202cec66e73aaa3034ea7ddc47ed6c6a4478e9b0be6ce1de567",
+        "manifest_hash_verified": true,
+        "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+        "ability_name": "BattleEvent_BattleEvent20029_Phase01",
+        "pointer": "/AbilityList/13",
+        "selected_operations": [
+          {
+            "pointer": "/AbilityList/13/OnStart/17",
+            "payload": {
+              "$type": "RPG.GameCore.WaitSkillPerformAbilityFinish"
+            }
+          },
+          {
+            "pointer": "/AbilityList/13/OnStart/18",
+            "payload": {
+              "$type": "RPG.GameCore.SkillPerformFinish"
+            }
+          }
+        ]
+      },
+      {
+        "evidence_id": "P3_BLACKSWAN_CAMERA",
+        "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Camera/Avatar_BlackSwan_00_Camera.json",
+        "raw_sha256": "a5177c35f4f9ea8b87c9c1dc12db9bc72ad31b88c62f9ed4e3c79d200c2347e8",
+        "manifest_hash_verified": true,
+        "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+        "ability_name": "Avatar_BlackSwan_00_Skill01_Camera",
+        "pointer": "/AbilityList/0",
+        "selected_operations": [
+          {
+            "pointer": "/AbilityList/0/OnStart/0",
+            "payload": {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "NormalConfig": {
+                  "CameraState": "CasterToTargetPerform",
+                  "AttackType": "RangeAttack",
+                  "IsLocalOffset": true,
+                  "AnchorOffset": {
+                    "X": 0.84,
+                    "Y": 0.17,
+                    "Z": -1.48
+                  },
+                  "AimOffset": {
+                    "X": -0.81,
+                    "Y": -0.71,
+                    "Z": -0.2
+                  },
+                  "AimRatio": 1,
+                  "FollowDamp": 1,
+                  "AimDamp": 1,
+                  "Dutch": 3
+                },
+                "BlendConfig": {
+                  "BlendType": "Custom",
+                  "CustomCurveName": "BlendCut_00to1",
+                  "BlendTime": 0.75
+                }
+              }
+            }
+          },
+          {
+            "pointer": "/AbilityList/0/OnStart/1",
+            "payload": {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchCaster"
+              },
+              "AnimStateName": "Skill01",
+              "NormalizedTimeEnd": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.33
+                }
+              }
+            }
+          },
+          {
+            "pointer": "/AbilityList/0/OnStart/2",
+            "payload": {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "NormalConfig": {
+                  "CameraState": "CasterToTargetPerform",
+                  "AttackType": "RangeAttack",
+                  "IsLocalOffset": true,
+                  "AnchorOffset": {
+                    "X": 1.12,
+                    "Y": 0.09,
+                    "Z": -1.99
+                  },
+                  "AimOffset": {
+                    "X": -0.8,
+                    "Y": -0.71,
+                    "Z": -0.2
+                  },
+                  "AimRatio": 1,
+                  "FollowDamp": 2,
+                  "AimDamp": 2,
+                  "Dutch": 3
+                },
+                "BlendConfig": {
+                  "BlendType": "Custom",
+                  "CustomCurveName": "BlendCut_00to1",
+                  "BlendTime": 0.1
+                }
+              }
+            }
+          },
+          {
+            "pointer": "/AbilityList/0/OnStart/3",
+            "payload": {
+              "$type": "RPG.GameCore.WaitAnimState",
+              "TargetType": {
+                "$type": "RPG.GameCore.TargetFetchCaster"
+              },
+              "AnimStateName": "Skill01",
+              "NormalizedTimeEnd": {
+                "IsDynamic": false,
+                "FixedValue": {
+                  "Value": 0.348
+                }
+              }
+            }
+          },
+          {
+            "pointer": "/AbilityList/0/OnStart/4",
+            "payload": {
+              "$type": "RPG.GameCore.VCameraConfigChange",
+              "CameraConfig": {
+                "ShakeTemplateName": "OneShake_Normal_03s_XY",
+                "OverrideShakeConfigV2": {
+                  "ShakeScale": 1,
+                  "ShakeDir": {
+                    "X": 0.1,
+                    "Y": 0,
+                    "Z": 0.3
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "selected_native_metadata": {
+      "methods.json": [
+        {
+          "method_index": 124845,
+          "declaring_type_index": 22410,
+          "name": ".ctor",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 12213,
+          "flags_0x0C_decoded": "0x3811C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 22,
+          "native_rva": 492179248,
+          "native_va": 6934630192,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499776,
+          "declaring_type_index": 53772,
+          "name": "AddWaitAbility",
+          "parameter_start": 458774,
+          "parameter_count": 1,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0xDD37C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242643600,
+          "native_va": 6685094544,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499777,
+          "declaring_type_index": 53772,
+          "name": "GetWaitingAbilityList",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 265334,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0xB7BFC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242643792,
+          "native_va": 6685094736,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499778,
+          "declaring_type_index": 53772,
+          "name": "IsAllWaittingAbilitiesFinished",
+          "parameter_start": 458775,
+          "parameter_count": 1,
+          "return_type_reference": 424,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0xE131C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242643872,
+          "native_va": 6685094816,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499779,
+          "declaring_type_index": 53772,
+          "name": "IsAllWaittingAbilitiesFinished",
+          "parameter_start": 458776,
+          "parameter_count": 1,
+          "return_type_reference": 424,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0xB0BBC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242644352,
+          "native_va": 6685095296,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499784,
+          "declaring_type_index": 53772,
+          "name": "TriggerModifierAnySkillExecutionEvent",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0x1AF0C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242645888,
+          "native_va": 6685096832,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499890,
+          "declaring_type_index": 53772,
+          "name": "_RefreshWaittingAbilityList",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 424,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14258,
+          "flags_0x0C_decoded": "0x412EC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242682960,
+          "native_va": 6685133904,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 499891,
+          "declaring_type_index": 53772,
+          "name": "_IsAllWaittingAbilitiesFinished",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 431609,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14258,
+          "flags_0x0C_decoded": "0x4E9EC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242632048,
+          "native_va": 6685082992,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 500087,
+          "declaring_type_index": 53772,
+          "name": "get_WaitingAbilityList",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 265334,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 16309,
+          "flags_0x0C_decoded": "0x882FC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242722096,
+          "native_va": 6685173040,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 505656,
+          "declaring_type_index": 54916,
+          "name": "get_OwnerAbilityRef",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 265335,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 16309,
+          "flags_0x0C_decoded": "0x2E40C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 196807344,
+          "native_va": 6639258288,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 506457,
+          "declaring_type_index": 55009,
+          "name": "FindAbilityInstance",
+          "parameter_start": 465455,
+          "parameter_count": 1,
+          "return_type_reference": 286703,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0x7E51C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242388432,
+          "native_va": 6684839376,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 506637,
+          "declaring_type_index": 55009,
+          "name": "ProcessOnAfterSkillPerformFinish",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0x0EECC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242523600,
+          "native_va": 6684974544,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 506655,
+          "declaring_type_index": 55009,
+          "name": "ResetCharmAction",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0xFA77C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242529200,
+          "native_va": 6684980144,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 506904,
+          "declaring_type_index": 55022,
+          "name": "SetSkillPerformFinish",
+          "parameter_start": 465991,
+          "parameter_count": 1,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0x9B4FC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242015840,
+          "native_va": 6684466784,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509166,
+          "declaring_type_index": 55758,
+          "name": "OnTaskBegin",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14325,
+          "flags_0x0C_decoded": "0xB70E3EC2",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 357825568,
+          "native_va": 6800276512,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509173,
+          "declaring_type_index": 55759,
+          "name": "OnTaskBegin",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14325,
+          "flags_0x0C_decoded": "0x64E93EC2",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 198675200,
+          "native_va": 6641126144,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509479,
+          "declaring_type_index": 55846,
+          "name": "OnTaskBegin",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14325,
+          "flags_0x0C_decoded": "0x53253EC2",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 194622528,
+          "native_va": 6637073472,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509480,
+          "declaring_type_index": 55846,
+          "name": "NAGBMNBECCI",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 204323,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14258,
+          "flags_0x0C_decoded": "0x1C03C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 194624992,
+          "native_va": 6637075936,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509929,
+          "declaring_type_index": 55946,
+          "name": "OnTaskBegin",
+          "parameter_start": -1,
+          "parameter_count": 0,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14325,
+          "flags_0x0C_decoded": "0x7C953EC2",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 363508272,
+          "native_va": 6805959216,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 509930,
+          "declaring_type_index": 55946,
+          "name": "Tick",
+          "parameter_start": 468471,
+          "parameter_count": 1,
+          "return_type_reference": 416617,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14325,
+          "flags_0x0C_decoded": "0xD8583ECC",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 363508624,
+          "native_va": 6805959568,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 723050,
+          "declaring_type_index": 80868,
+          "name": "__Gen_Wrap_30",
+          "parameter_start": 626017,
+          "parameter_count": 1,
+          "return_type_reference": 71,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14133,
+          "flags_0x0C_decoded": "0x6523C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 364187984,
+          "native_va": 6806638928,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        },
+        {
+          "method_index": 732322,
+          "declaring_type_index": 80871,
+          "name": "GetPatch",
+          "parameter_start": 655059,
+          "parameter_count": 1,
+          "return_type_reference": 406416,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14117,
+          "flags_0x0C_decoded": "0xD17BC13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 368997456,
+          "native_va": 6811448400,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "fields.json": [
+        {
+          "field_index": 97082,
+          "declaring_type_index": 22348,
+          "name": "SkipAttackSettlement",
+          "type_reference": 432424,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97382,
+          "declaring_type_index": 22410,
+          "name": "TargetType",
+          "type_reference": 481136,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97383,
+          "declaring_type_index": 22410,
+          "name": "AbilityInherentTargetType",
+          "type_reference": 481136,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97384,
+          "declaring_type_index": 22410,
+          "name": "AbilityInherentTargetPredicate",
+          "type_reference": 480840,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97385,
+          "declaring_type_index": 22410,
+          "name": "AbilityName",
+          "type_reference": 483870,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97386,
+          "declaring_type_index": 22410,
+          "name": "IsSkillPerform",
+          "type_reference": 432424,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 97387,
+          "declaring_type_index": 22410,
+          "name": "DynamicValues",
+          "type_reference": 488738,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 255878,
+          "declaring_type_index": 53772,
+          "name": "_WaitingAbilityList",
+          "type_reference": 605517,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 258185,
+          "declaring_type_index": 54569,
+          "name": "EUnkonw",
+          "type_reference": 607767,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 258186,
+          "declaring_type_index": 54569,
+          "name": "Ready",
+          "type_reference": 607767,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 258187,
+          "declaring_type_index": 54569,
+          "name": "Executing",
+          "type_reference": 607767,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 258188,
+          "declaring_type_index": 54569,
+          "name": "value__",
+          "type_reference": 432203,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "parameters.json": [
+        {
+          "parameter_index": 458774,
+          "method_index": 499776,
+          "name_key": "0xFFFFFFFF",
+          "name": "",
+          "type_reference": 265335,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "PARAMETER_NAME_STRIPPED"
+        },
+        {
+          "parameter_index": 458775,
+          "method_index": 499778,
+          "name_key": "0xFFFFFFFF",
+          "name": "",
+          "type_reference": 605568,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "PARAMETER_NAME_STRIPPED"
+        },
+        {
+          "parameter_index": 458776,
+          "method_index": 499779,
+          "name_key": "0xFFFFFFFF",
+          "name": "",
+          "type_reference": 202024,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "PARAMETER_NAME_STRIPPED"
+        },
+        {
+          "parameter_index": 465991,
+          "method_index": 506904,
+          "name_key": "0xFFFFFFFF",
+          "name": "",
+          "type_reference": 433618,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "PARAMETER_NAME_STRIPPED"
+        }
+      ]
+    },
+    "marker_and_barrier_shortlist_rows": [
+      {
+        "pointer": "/rows/1071",
+        "row": {
+          "config_candidates": [
+            "RPG.GameCore.WaitSkillPerformAbilityFinish"
+          ],
+          "executor_type": "IAPDLAIIKHO",
+          "executor_type_index": 55946,
+          "method_index": 509929,
+          "native_rva": "0x15AAB230",
+          "gap_bytes": 352,
+          "window_bytes": 352,
+          "instruction_count": 92,
+          "conditional_branch_count": 12,
+          "direct_call_count": 9,
+          "callee_rvas": [
+            "0xE7673A0",
+            "0x15FE7450",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C64210",
+            "0x3C02340",
+            "0x3C6ECF0",
+            "0x3C02340"
+          ],
+          "target_eval_call_sites": [],
+          "calls_evaluate_target": false,
+          "calls_evaluate_single_target": false
+        }
+      },
+      {
+        "pointer": "/rows/1555",
+        "row": {
+          "config_candidates": [
+            "RPG.GameCore.SkillExecutionStart"
+          ],
+          "executor_type": "FNALAGPDLFK",
+          "executor_type_index": 55758,
+          "method_index": 509166,
+          "native_rva": "0x1553FC20",
+          "gap_bytes": 496,
+          "window_bytes": 496,
+          "instruction_count": 117,
+          "conditional_branch_count": 17,
+          "direct_call_count": 18,
+          "callee_rvas": [
+            "0xE767B80",
+            "0x3C736B0",
+            "0x15FE7450",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x15FE7450",
+            "0x15B51150",
+            "0xE767B80",
+            "0x15FE7450",
+            "0x15B3CBB0",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340"
+          ],
+          "target_eval_call_sites": [],
+          "calls_evaluate_target": false,
+          "calls_evaluate_single_target": false
+        }
+      },
+      {
+        "pointer": "/rows/1621",
+        "row": {
+          "config_candidates": [
+            "RPG.GameCore.SkillPerformFinish"
+          ],
+          "executor_type": "NLNBMBIHCGA",
+          "executor_type_index": 55759,
+          "method_index": 509173,
+          "native_rva": "0xBD78B00",
+          "gap_bytes": 512,
+          "window_bytes": 512,
+          "instruction_count": 117,
+          "conditional_branch_count": 17,
+          "direct_call_count": 22,
+          "callee_rvas": [
+            "0x15630970",
+            "0xB429D40",
+            "0xE6CDE60",
+            "0xB429D40",
+            "0xE74B3B0",
+            "0x15FE7450",
+            "0x3C65DE0",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x15FE7450",
+            "0x15B51150",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C64210",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C02340",
+            "0x3C6ECF0",
+            "0x3C02340",
+            "0x3C02340"
+          ],
+          "target_eval_call_sites": [],
+          "calls_evaluate_target": false,
+          "calls_evaluate_single_target": false
+        }
+      }
+    ],
+    "search_coverage": {
+      "saved_symbol_query": [
+        "AddWaitAbility",
+        "RemoveWaitAbility",
+        "FinishWaitAbility",
+        "WaitAbility",
+        "AbilityFinish",
+        "AbilityEnd",
+        "AbilityComplete",
+        "SkillExecutionStart",
+        "SkillPerformFinish",
+        "IsAllWaittingAbilitiesFinished",
+        "_RefreshWaittingAbilityList"
+      ],
+      "paths": [
+        "data/raw/4.4.54 (saved JSON/TXT evidence)",
+        "data/normalized/4.4.54 (specific method/type/field/parameter metadata)",
+        "data/semantics/4.4.54/full_reconstruction/scheduler_* (explicit marker packets only)",
+        "pinned cache (existing phase/camera sample files plus two wait-marker sequences)"
+      ],
+      "not_found": [
+        "Full M509479 TriggerAbility control/dataflow",
+        "M499776 AddWaitAbility body",
+        "M499778/M499779/M499890/M499891 predicate/refresh bodies",
+        "M509930 explicit wait Tick body/result writes",
+        "Native ordered parent-child wait-release trace"
+      ],
+      "name_absence_limit": "No RemoveWaitAbility/FinishWaitAbility named-method hit does not exclude indirect/obfuscated/inlined removal.",
+      "negative_source_probe": "No operation after SkillPerformFinish in selected BlackSwan/Asta/AML_Minion01 OnStart arrays; not a full corpus claim.",
+      "stop_rule": "No blind binary sweep, stale RVA use, rebuild, census rerun or later-domain expansion."
+    },
+    "validation": {
+      "json_parse": "PASS",
+      "metadata_identity_and_rva_joins": "PASS",
+      "selected_cache_hashes": "PASS",
+      "retained_native_evidence_hashes": "PASS",
+      "counts_recomputed": false,
+      "runtime_semantics_tested": false,
+      "reason": "Artifact-only analysis; runtime transitions remain unknown, no production code changed."
+    }
+  },
+  "pass_3_persistence": {
+    "status": "REPAIRED",
+    "confidence": "FACT",
+    "finding": "Both JSON artifacts already held complete Pass-3 facts/contracts/questions/evidence. Markdown handoff was stale after its earlier replacement failed; repaired before Pass-4 analysis.",
+    "repair_date": "2026-09-14"
+  },
+  "pass_4": {
+    "status": "COMPLETE",
+    "scope": [
+      "wait identity/data structure",
+      "completion mutation/removal",
+      "barrier pending/release/continuation"
+    ],
+    "new_finding": {
+      "id": "TA-P4-F01",
+      "confidence": "FACT",
+      "statement": "Saved T55022 SkillCharacterComponent metadata declares _SelfSkillPerformState F259373 (type_reference 608932), get_SelfPerformState M506958 (return reference 608937), and SetSkillPerformFinish M506904. Its parameter P465991 is reference 433618, not an identified wait-token parameter. The artifact contains declarations/signatures, not the setter body or a field-write link to waiting-list predicates.",
+      "evidence": [
+        "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+        "pass_3_evidence/selected_native_metadata/parameters.json#parameter_index=465991"
+      ]
+    },
+    "accepted_prior_search_result": [
+      "Full M509479 TriggerAbility control/dataflow",
+      "M499776 AddWaitAbility body",
+      "M499778/M499779/M499890/M499891 predicate/refresh bodies",
+      "M509930 explicit wait Tick body/result writes",
+      "Native ordered parent-child wait-release trace"
+    ],
+    "evidence_policy": "No repeat search of missing bodies or rediscovery of established symbols. Declarations do not prove field writes, predicate dataflow or task-result branches.",
+    "observed_date": "2026-09-14",
+    "architecture_status": "BLOCKED_BY_EVIDENCE",
+    "semantic_closure_status": "PARTIAL",
+    "pass_3_persistence": "REPAIRED",
+    "closure_checks": [
+      {
+        "contract": "wait_identity",
+        "confidence": "UNKNOWN",
+        "known": "Named game-mode list and ability-reference-shaped AddWaitAbility parameter; barrier calls overload M499778.",
+        "missing": "Concrete element/wrapper type, actual barrier argument, equality and ownership scope.",
+        "question_id": "TA-P4-Q1"
+      },
+      {
+        "contract": "completion_mutation",
+        "confidence": "UNKNOWN",
+        "known": "SetSkillPerformFinish method and _SelfSkillPerformState field declarations; refresh/predicate symbols.",
+        "missing": "Executed write -> predicate-read join and removal/clear/finished-state transition.",
+        "question_id": "TA-P4-Q2"
+      },
+      {
+        "contract": "barrier_pending_behavior",
+        "confidence": "UNKNOWN",
+        "known": "Separate OnTaskBegin and Tick declarations.",
+        "missing": "False branch task/result write and revisit/wakeup mechanism.",
+        "question_id": "TA-P4-Q3"
+      },
+      {
+        "contract": "barrier_release",
+        "confidence": "UNKNOWN",
+        "known": "Predicate-call edge and explicit barrier source site.",
+        "missing": "True branch task completion/release write and wait-registration cleanup.",
+        "question_id": "TA-P4-Q3"
+      },
+      {
+        "contract": "continuation_ordering",
+        "confidence": "UNKNOWN",
+        "known": "Same source sequence places barrier before SkillPerformFinish; sampled caller continues locally after launch.",
+        "missing": "Dispatch order to next operation, callbacks, containing frame and outer parent.",
+        "question_id": "TA-P4-Q3"
+      }
+    ],
+    "lifecycle_chain": [
+      {
+        "edge": "registration",
+        "confidence": "FACT",
+        "established": "Saved TriggerAbility -> AddWaitAbility call site.",
+        "unresolved": "Guard, passed instance, storage equality and runtime timing."
+      },
+      {
+        "edge": "child launch",
+        "confidence": "UNKNOWN",
+        "established": "FindAbilityInstance lookup call site only.",
+        "unresolved": "Actual activation/reuse/context/first-dispatch call."
+      },
+      {
+        "edge": "caller local continuation",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "established": "Sampled caller must reach animation startup while child waits.",
+        "unresolved": "Immediate child first-yield versus deferred dispatch."
+      },
+      {
+        "edge": "explicit wait barrier",
+        "confidence": "FACT",
+        "established": "WaitSkillPerformAbilityFinish -> M499778 call; distinct source operation.",
+        "unresolved": "Actual input scope and predicate."
+      },
+      {
+        "edge": "completion signal",
+        "confidence": "UNKNOWN",
+        "established": "SetSkillPerformFinish symbol/call and declared perform state.",
+        "unresolved": "Which event/state write satisfies the tested condition."
+      },
+      {
+        "edge": "barrier release",
+        "confidence": "UNKNOWN",
+        "established": "No result-write or cleanup edge recovered.",
+        "unresolved": "Pending and release branches, list removal/clear, scheduling of continuation."
+      },
+      {
+        "edge": "SkillPerformFinish",
+        "confidence": "FACT",
+        "established": "Immediately follows explicit wait in two selected source sequences; saved marker calls SetSkillPerformFinish and ResetCharmAction.",
+        "unresolved": "Executed path, marker ownership and event order."
+      },
+      {
+        "edge": "parent continuation",
+        "confidence": "UNKNOWN",
+        "established": "Source next-operation order only.",
+        "unresolved": "Containing task/frame finalization or outer join after marker."
+      }
+    ],
+    "remaining_exact_unknowns": [
+      {
+        "id": "TA-P4-Q1",
+        "confidence": "UNKNOWN",
+        "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+        "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+        "required_evidence": [
+          "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+          "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+          "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+          "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+        ],
+        "exact_existing_paths": [
+          "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+          "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+          "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+        ],
+        "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+      },
+      {
+        "id": "TA-P4-Q2",
+        "confidence": "UNKNOWN",
+        "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+        "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+        "required_evidence": [
+          "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+          "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+          "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+          "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+        ],
+        "exact_existing_paths": [
+          "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+          "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+          "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+        ],
+        "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+      },
+      {
+        "id": "TA-P4-Q3",
+        "confidence": "UNKNOWN",
+        "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+        "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+        "required_evidence": [
+          "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+          "M509930 Tick 0x15AAB390 complete body including result/state writes",
+          "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+          "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+        ],
+        "exact_existing_paths": [
+          "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+          "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+          "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+        ],
+        "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+      }
+    ],
+    "evidence_block": {
+      "status": "BLOCKED_BY_EVIDENCE",
+      "confidence": "FACT",
+      "reason": "Persisted evidence supplies metadata/signatures, bounded call tables and source causal order; complete argument dataflow, completion field mutation, wait-list removal and barrier result/continuation bodies are missing. Pass-3 absence results were accepted without repeating searches.",
+      "required_binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "provenance_rule": "Every new native body must have a verified binary hash/version/method mapping for this saved snapshot, or an independent trace with explicit matching provenance. Historical RVAs cannot be applied to the previously mismatched live DLL.",
+      "next_most_discriminating_symbol": "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0: recover parameter type/actual input and tested field, then join M499890 and M506904 writes.",
+      "stop_condition": "Pass 4 stops here. No Pass 5 or speculative runtime implementation. Reopen only when concrete matching body/dataflow or ordered trace evidence is supplied.",
+      "inherited_not_closed": "TriggerAbility registration guard/default, child activation/reuse/context and first-dispatch timing remain unresolved from Pass 3; this focused barrier pass does not waive them."
+    },
+    "searches_repeated": false,
+    "census_recomputed": false,
+    "live_binary_accessed": false,
+    "production_code_changed": false,
+    "next_pass_authorized": false,
+    "targeted_metadata_evidence": {
+      "path": "data/raw/4.4.54/mvp_skill_character_component_type_31.json",
+      "artifact_file_sha256": "fec81379c95898b04c7a01841b2d552d77e69796581437ab18552194f95633b6",
+      "locator": "/types/0",
+      "confidence": "FACT",
+      "scope": "Saved declarations only, no native instructions or state writes.",
+      "fields": [
+        {
+          "field_index": 259352,
+          "name": "<TaskContext>k__BackingField",
+          "type_reference": 586147
+        },
+        {
+          "field_index": 259360,
+          "name": "_TargetPerformTimeCounter",
+          "type_reference": 436878
+        },
+        {
+          "field_index": 259373,
+          "name": "_SelfSkillPerformState",
+          "type_reference": 608932
+        }
+      ],
+      "methods": [
+        {
+          "method_index": 506904,
+          "name": "SetSkillPerformFinish",
+          "parameter_count": 1,
+          "parameter_start": 465991,
+          "return_type_reference": 416617,
+          "native_rva": "0xE6CDE60"
+        },
+        {
+          "method_index": 506958,
+          "name": "get_SelfPerformState",
+          "parameter_count": 0,
+          "parameter_start": -1,
+          "return_type_reference": 608937,
+          "native_rva": "0xE6D3E70"
+        },
+        {
+          "method_index": 506981,
+          "name": "get_TaskContext",
+          "parameter_count": 0,
+          "parameter_start": -1,
+          "return_type_reference": 417116,
+          "native_rva": "0xE6D4020"
+        },
+        {
+          "method_index": 506982,
+          "name": "set_TaskContext",
+          "parameter_count": 1,
+          "parameter_start": 466061,
+          "return_type_reference": 416617,
+          "native_rva": "0xE6D4030"
+        }
+      ],
+      "provenance_limit": "Retains saved snapshot identity context; this pass did not re-read a binary or recover concrete type references."
+    }
+  },
+  "pass_3_remaining_questions": [
+    {
+      "id": "TA-P3-Q1",
+      "confidence": "UNKNOWN",
+      "question": "At M509479 -> M499776, which guard (including IsSkillPerform omission/default and runtime mode) registers which ability reference, and what exact equality/lifetime key does AddWaitAbility store?",
+      "required_evidence": "Complete original-hash M509479 control/dataflow around FindAbilityInstance and AddWaitAbility; M499776 body; config T22410 constructor/default decoding and the saved type-reference mapping for 265335/286703/605517.",
+      "next_artifact_or_symbol": [
+        "data/raw/4.4.54/action_execution_discovery_06.json#/ontaskbegin_callers/637",
+        "M509479 MCNOKKNBMEH.OnTaskBegin 0xB99B440 (saved prefix only; 1024 of 2464 inter-method gap bytes)",
+        "M499776 TurnBasedGameMode.AddWaitAbility 0xE767290",
+        "T22410 TriggerAbility / F97386 IsSkillPerform / M124845 .ctor",
+        "data/normalized/4.4.54/parameters.json#parameter_index=458774"
+      ],
+      "distinguishes": "Conditional tracking versus common registration; ability reference versus entity/name/token; duplicate/reentrant calls and multi-child ownership."
+    },
+    {
+      "id": "TA-P3-Q2",
+      "confidence": "UNKNOWN",
+      "question": "After receiver-bound FindAbilityInstance, what call actually activates/reuses the child, with which inherited/recomputed context, and does child OnStart first run before caller continuation or after a deferred dispatch?",
+      "required_evidence": "Original-hash M509479 uncaptured tail and full call arguments, plus M509480 only as a target-evaluation/helper lead; or ordered parent/child trace showing creation/activation, first operation/yield and next parent operation with instance and context identities.",
+      "next_artifact_or_symbol": [
+        "M509479 OnTaskBegin tail after saved window end 0xB99B840",
+        "M506457 TurnBasedAbilityComponent.FindAbilityInstance 0xE728DD0",
+        "M509480 NAGBMNBECCI 0xB99BDE0 (EvaluateTarget call at 0xB99BE5C; startup role NOT established)",
+        "data/raw/4.4.54/target_selector_xrefs_05.json#/targets/5/rel32_refs/88",
+        "Avatar_BlackSwan_00_Skill01_Phase01 OnStart[1,2,3] with Phase02 and camera first operations"
+      ],
+      "distinguishes": "Synchronous start-to-first-yield versus deferred activation; reuse versus per-call instance; target/context transport; launch versus explicit SkillExecutionStart."
+    },
+    {
+      "id": "TA-P3-Q3",
+      "confidence": "UNKNOWN",
+      "question": "Which exact predicate makes a registered ability finished, and where do M499890 refresh and M509929/M509930 barrier success remove/release it relative to SkillPerformFinish, callback/event dispatch and caller continuation?",
+      "required_evidence": "Original-hash M499890 and M499778/499779 predicate bodies, M509929/M509930 task-result writes, and their caller edge/order; M509173/M506904 if they write a tested completion flag. Observe natural finish, repeated registration and abort/dispose paths.",
+      "next_artifact_or_symbol": [
+        "M499890 _RefreshWaittingAbilityList 0xE770C50 (first discriminator)",
+        "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0; M499779 overload 0xE767580",
+        "M499891 _IsAllWaittingAbilitiesFinished 0xE764570",
+        "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230; M509930 Tick 0x15AAB390",
+        "M509173 SkillPerformFinish.OnTaskBegin 0xBD78B00; M506904 SetSkillPerformFinish 0xE6CDE60",
+        "P3_SERPENT /AbilityList/20/OnStart/10..15"
+      ],
+      "distinguishes": "Own-sequence completion versus shared perform flag versus other predicate; event-driven release versus polling/list refresh; task barrier versus parent-frame join; deterministic wakeup and callback order."
+    }
+  ],
+  "semantic_closure_status": "PARTIAL",
+  "evidence_block": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "confidence": "FACT",
+    "reason": "Persisted evidence supplies metadata/signatures, bounded call tables and source causal order; complete argument dataflow, completion field mutation, wait-list removal and barrier result/continuation bodies are missing. Pass-3 absence results were accepted without repeating searches.",
+    "required_binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "provenance_rule": "Every new native body must have a verified binary hash/version/method mapping for this saved snapshot, or an independent trace with explicit matching provenance. Historical RVAs cannot be applied to the previously mismatched live DLL.",
+    "next_most_discriminating_symbol": "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0: recover parameter type/actual input and tested field, then join M499890 and M506904 writes.",
+    "stop_condition": "Pass 4 stops here. No Pass 5 or speculative runtime implementation. Reopen only when concrete matching body/dataflow or ordered trace evidence is supplied.",
+    "inherited_not_closed": "TriggerAbility registration guard/default, child activation/reuse/context and first-dispatch timing remain unresolved from Pass 3; this focused barrier pass does not waive them."
+  }
+}

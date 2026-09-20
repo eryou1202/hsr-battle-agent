@@ -1,0 +1,1103 @@
+{
+  "schema": "hsr_battle_agent.astra_equipment_trace_eidolon/1",
+  "domain": "equipment_trace_eidolon",
+  "pass": 1,
+  "status": "PASS_1_COMPLETE",
+  "architecture": "CLOSED",
+  "architecture_scope": "Lossless evidence-gated mapping/activation architecture; native behavior remains partial.",
+  "mapping_status": "PARTIAL",
+  "native_activation": "PARTIAL",
+  "semantic_status": [
+    "BLOCKED_BY_CONTENT_COVERAGE",
+    "BLOCKED_BY_EVIDENCE"
+  ],
+  "terra_ready": "PARTIAL",
+  "gate": "ONE_TERRA_CONTENT_FOLLOWUP",
+  "authority": {
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "observed_date": "2026-09-19",
+    "target_version": "4.4.54",
+    "static_source": "Existing SQLite/Nanoka 4.4.54, accepted unchanged; C0_EXTERNAL_ONLY is not native validation",
+    "behavior_source": "TurnBasedGameData b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "input_hashes": {
+      "database": {
+        "path": "data/db/hsr_content_4.4.54.sqlite",
+        "sha256": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692"
+      },
+      "mapping": {
+        "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_mapping_001.json",
+        "sha256": "50d89805a47282b7804fd0b842af0bed82b6035900cd10b935be37ab9900bfa1"
+      },
+      "corpus": {
+        "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+        "sha256": "5695d4a4abf397ab79c0e148469c110be8cee78feb981b2a15146838182848ca"
+      },
+      "normalized_manifest": {
+        "path": "data/normalized/4.4.54/manifest.json",
+        "sha256": "5ac97324297767eaec9bfafd53c41297e82657f0a3c7f40041a602f00075e2db"
+      },
+      "native_metadata_files": [
+        {
+          "path": "data/normalized/4.4.54/types.json",
+          "sha256": "afa4405d89ac082a040d6861668adba645e4e29f76e96fb00c580328619cddd4"
+        },
+        {
+          "path": "data/normalized/4.4.54/fields.json",
+          "sha256": "cd5a457b241fa57a53a656f4d0440a26b0bc96692240815c22c52385312193f6"
+        },
+        {
+          "path": "data/normalized/4.4.54/methods.json",
+          "sha256": "9901fab8ef2ccae6a0827d279eccd2f91f486ffa013af30a1e16721bc2f27154"
+        }
+      ]
+    },
+    "native_provenance": {
+      "schema": "unpack_pipeline_manifest/1",
+      "pipeline_schema_version": 1,
+      "pipeline_version": "1.0.0",
+      "generated_at": "2026-08-16T08:46:39Z",
+      "game_root": "D:\\StarRail_4.4.53",
+      "game_version": "4.4.54",
+      "binary_version": "4.4.54",
+      "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+      "platform": "windows",
+      "version_source": "StarRail_Data\\StreamingAssets\\BinaryVersion.bytes",
+      "version_source_sha256": "ebee1005eb0b18bf33dbbc3e6f05448649b86371d460bd523d9f1df48cbf161a",
+      "version_source_size": 245,
+      "version_discovery_rule": "BinaryVersion.bytes token only; directory name is never trusted",
+      "GameAssembly": {
+        "path": "D:\\StarRail_4.4.53\\GameAssembly.dll",
+        "exists": true,
+        "size": 535482160,
+        "sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc"
+      },
+      "global_metadata": {
+        "path": "D:\\StarRail_4.4.53\\StarRail_Data\\il2cpp_data\\Metadata\\global-metadata.dat",
+        "exists": true,
+        "size": 100182380,
+        "sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7"
+      }
+    },
+    "working_tree": "Pre-existing dirty and untracked files preserved. No production runtime edited."
+  },
+  "scope": {
+    "frozen_domains": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "consumed_contracts": [
+      "astra_triggerability_v1.json: definition/receiver/context separation and lifecycle UNKNOWN",
+      "astra_modifier_v1.json: immutable definition ref versus instance/source/provider identity; no dedup by name",
+      "astra_formation_boss_v1.json: runtime entity versus content identity",
+      "astra_scheduler_arbitration_v1.json: loadout binding supplies behavior input, not scheduler execution",
+      "astra_monster_ai_v1.json: parent/override candidates are not effective config without merge proof",
+      "astra_damage_survival_v1.json: preserve property/value inputs without arithmetic",
+      "astra_target_retarget_v1.json: TargetAlias is not runtime owner and needs explicit contextual resolution"
+    ],
+    "excluded": [
+      "production runtime",
+      "Domains 9 and 10",
+      "subagents",
+      "Nanoka rebuild",
+      "compiler census",
+      "broad recapture",
+      "live DLL / stale RVAs"
+    ]
+  },
+  "content_identity_model": {
+    "contract": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "ContentDefinitionRef, RuntimeEntityRef, BehaviorDefinitionRef, EquippedInstanceRef, ActivationSourceRef and ParameterSourceRef are different identities."
+    },
+    "identities": {
+      "Avatar": "version + AvatarID; EnhancedID/variant and AvatarConfig reference remain separate",
+      "Trace": "owner AvatarID + PointID + row Level + source/EnhancedID variant; DB entity_id is an owner:anchor:level projection, not native PointID",
+      "Eidolon": "RankID + owner AvatarID + explicit rank field; never decode suffix into threshold",
+      "LightCone": "EquipmentID; SkillID, EquipmentSkill Level and ability name are distinct keys",
+      "RelicSet": "SetID; effect key includes exact RequireNum; item ID and item instance UID remain distinct",
+      "Behavior": "source namespace/path + structured Name or modifier-map key + payload/version; textual name is lookup input, not runtime identity",
+      "DynamicValue": "definition scope + Floats/other scope + signed hash + ReadInfo; hashes are not content IDs"
+    },
+    "collision_example": {
+      "confidence": "FACT",
+      "statement": "Trace 1001:point01:1 has PointID 1001001 and LevelUpSkillID 100101; Eidolon 100101 is a separate family identity. Equality across families is not a join.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/trace_classification_ledger"
+      ]
+    }
+  },
+  "runtime_binding_model": {
+    "architecture": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "ProgressionLoadoutState -> ContentActivationSource -> exact binding/requirement/value edges -> BehaviorActivation -> EffectiveBehaviorSet. Every source ends with ENABLED, DISABLED_WITH_PROOF or UNRESOLVED; never disappear an unknown source."
+    },
+    "stages": [
+      "Capture immutable source packet as a sandbox boundary policy; preserve native mutability as UNKNOWN",
+      "Resolve versioned content rows and any explicitly proven effective config",
+      "Retain activation requirements independent of effect predicates",
+      "Resolve behavior/property/skill-level destinations by exact structured references",
+      "Bind receiver/owner/caster/provider/value context only when proved",
+      "Bind rank/level/point/threshold parameter record with presence semantics",
+      "Emit full provenance-bearing activation records or strict rejection"
+    ],
+    "behavior_activation_fields": [
+      "activation_source_id",
+      "source_content_refs",
+      "requirement_evidence",
+      "definition_availability",
+      "behavior_definition_ref",
+      "owner_context_binding",
+      "parameter_bindings",
+      "enabled_status",
+      "effect_predicate_refs",
+      "unresolved_reasons"
+    ],
+    "no_boolean_collapse": "Definition present, object created, registration enabled, runtime predicate true and hook triggered are separate states."
+  },
+  "lightcone_binding": {
+    "schema_chain": {
+      "confidence": "FACT",
+      "statement": "EquipmentRow F60791 EquipmentID and F60789 SkillID -> EquipmentSkillRow F60821 SkillID / F60822 Level -> F60820 AbilityName plus F60818 AbilityProperty and F60819 ParamList. This proves distinct schema fields, not actual row equality or loader execution.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "current_static_boundary": {
+      "confidence": "FACT",
+      "statement": "169 LightCone definitions, 845 rank rows and 1183 promotion rows exist. Current LightCone projection supplies base_type and refinements, but no explicit SkillID/AbilityName link.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/coverage/LightCone",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+      ]
+    },
+    "legacy_join": {
+      "confidence": "FACT",
+      "statement": "All 165 legacy EXACT_CONFIG_ID links derive numeric tokens from names such as Ability20000. They remain historical candidates, not Domain 8 promoted mappings. Existing report is unchanged.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/legacy_lightcone_candidates",
+        "src/hsr_battle_agent/game_data/content_behavior_mapping.py#_exact_config_id_candidate"
+      ]
+    },
+    "behavior_example": {
+      "confidence": "FACT",
+      "statement": "EquipmemtAbility.json /AbilityList/1 explicitly defines Ability20000, refers to MEquip_20000_Main, targets Caster and reads SkillEquip indices 0 and 1. No inspected Equipment row proves that content 20000 selects it.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/equipment_and_selected_avatar_definitions",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/explicit_modifier_edges",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/parameter_reader_bindings"
+      ]
+    },
+    "path": {
+      "confidence": "UNKNOWN",
+      "statement": "EquipmentRow.AvatarBaseType and static detail.base_type exist, but can-equip, stat contribution, effect enablement, and partial enablement on wrong Path remain independent unknowns. UI or text cannot supply the execution gate.",
+      "question": "D8-Q2"
+    },
+    "runtime_owner": {
+      "confidence": "UNKNOWN",
+      "statement": "Wearer, equipment entity, virtual component or another receiver is not established. Caster aliases in behavior are insufficient.",
+      "question": "D8-Q2"
+    }
+  },
+  "lightcone_rank_binding": {
+    "known": {
+      "confidence": "FACT",
+      "statement": "The DB explicitly relates each lightcone_id to rank strings 1..5 and a param_list. Source behaviors declare ReadInfo Type SkillEquip / Index; EquipmentSkillRow is keyed by SkillID and Level. These are three separate edges.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/coverage/LightCone",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/parameter_reader_bindings",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "example": {
+      "content_id": "20000",
+      "source_table": "lightcone_superimpositions",
+      "rank_records": {
+        "1": [
+          0.12,
+          3
+        ],
+        "2": [
+          0.15,
+          3
+        ],
+        "3": [
+          0.18,
+          3
+        ],
+        "4": [
+          0.21,
+          3
+        ],
+        "5": [
+          0.24,
+          3
+        ]
+      },
+      "candidate_behavior": "Ability20000",
+      "candidate_dynamic_hashes": {
+        "-1330896030": {
+          "Type": "SkillEquip",
+          "TriggerKey": "",
+          "Index": 0
+        },
+        "-1970381737": {
+          "Type": "SkillEquip",
+          "TriggerKey": "",
+          "Index": 1
+        }
+      },
+      "status": "STATIC_RECORDS_AND_READER_PROVED; content-to-behavior and rank-to-EquipmentSkill.Level remain MISSING"
+    },
+    "variant_selection": {
+      "confidence": "UNKNOWN",
+      "statement": "S1-S5 selecting a shared definition versus a variant, effective extra rank, Level lookup, config override and parameter provider all require Q1/Q2. No value = table[rank] runtime lowering.",
+      "question": "D8-Q2"
+    },
+    "layer_boundary": "Rank is not a modifier stack/layer count."
+  },
+  "trace_model": {
+    "source_fields": {
+      "confidence": "FACT",
+      "statement": "Current rows preserve PointID, owner_avatar_id, trace_level, default_unlock, pre_point, avatar level/promotion limits, LevelUpSkillID, StatusAddList, param_list and point_trigger_key.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/trace_classification_ledger",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+      ]
+    },
+    "counts": {
+      "static_rows": 5018,
+      "rows_with_explicit_runtime_binding": 0,
+      "exactly_mapped_content_to_behavior": 0,
+      "ambiguous_exact_content_to_behavior": 0,
+      "missing_content_to_behavior": 5018,
+      "stat_only_proven_complete": 0,
+      "behavior_bearing_proven_by_exact_content_join": 0,
+      "full_behavior_classification_unknown": 5018,
+      "blocked_by_content_availability": 5018,
+      "blocked_by_merge_semantics_exclusive_count": 0,
+      "merge_exposure": "UNKNOWN; missing source/selection edges prevent quantifying affected rows",
+      "activation_execution_ready": 0,
+      "unique_point_ids": 1771,
+      "static_surface_classification": {
+        "SKILL_LEVEL_TARGET": 3755,
+        "UNRESOLVED_PROGRESSION_EFFECT": 293,
+        "PROPERTY_CONTRIBUTION": 970
+      },
+      "skill_target_edges": 4561,
+      "skill_target_edges_missing": 318,
+      "missing_skill_ids": [
+        "1140201",
+        "1140203",
+        "1140205",
+        "1140206",
+        "1140701",
+        "1140702",
+        "1140710",
+        "1140711",
+        "1140703",
+        "1140712",
+        "1140706",
+        "1140705",
+        "1140901",
+        "1140903",
+        "1140905",
+        "1140906",
+        "1141301",
+        "1141307",
+        "1141303",
+        "1141305",
+        "1141306",
+        "1141501",
+        "1141502",
+        "1141513",
+        "1141514",
+        "1141515",
+        "1141516",
+        "1141517",
+        "1141518",
+        "1141519",
+        "1141520",
+        "1141521",
+        "1141522",
+        "1141523",
+        "1141524",
+        "1141525",
+        "1141526",
+        "1141503",
+        "1141505",
+        "1151201",
+        "1151203",
+        "1151205",
+        "1151206",
+        "1800701",
+        "1800707",
+        "1800703",
+        "1800705",
+        "1800706"
+      ]
+    },
+    "kinds": {
+      "property_surface": "970 rows have exact property_type/value contributions. STATIC_PROPERTY_CONTRIBUTION, not proven STAT_ONLY across the missing AbilityName boundary.",
+      "skill_level_surface": "3755 rows reference SkillIDs; 4561 target edges, 4243 resolve exactly and 318 are missing. Do not invent per-level offsets from the transformer.",
+      "other_surface": "293 rows have neither StatusAddList nor LevelUpSkillID; retain as UNRESOLVED_PROGRESSION_EFFECT. Do not label from icons/descriptions.",
+      "native_enum": "AvatarSkillTreePointType declares Attribute, Skill, Extra, Servant, Special. Numerical enum values are not recovered from declaration order; DB point_type integers retained verbatim."
+    },
+    "graph": {
+      "confidence": "UNKNOWN",
+      "statement": "pre_point and level/promotion limits supply explicit requirements; their AND/OR/comparison semantics, default-unlock interaction, level selection and runtime application remain unproved. Preserve them as source constraints.",
+      "question": "D8-Q3"
+    },
+    "skill_category_boundary": "Normal/skill/ultimate/passive/maze/servant/special families have named native trigger keys, but numeric PointTriggerKey conversion and content-to-CharacterConfig skill identity must be proven. Do not infer basic/technique/talent solely from UI.",
+    "stat_only_policy": "Ordinary property mapping for these 970 rows is Terra-ready as a contribution edge. Whole-node activation cannot silently omit an unknown AbilityName."
+  },
+  "trace_activation": {
+    "observed": {
+      "confidence": "FACT",
+      "statement": "Selected March 7th source has BySkillPointActivated(PointB1/PointB2) inside Skill02 Phase02 and PointB3 inside Skill03 Phase02. This is an explicit runtime progression gate within an ordinary ability.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_progression_predicates"
+      ]
+    },
+    "separate_setup": {
+      "confidence": "FACT",
+      "statement": "AvatarDataComponent declares SetupInitialAbility, _SetupSkillTreeAbility and _ResetSkillTreeAndRelatedProperty; AvatarRowData declares trigger-key maps and changed skill-tree lists.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "timing": {
+      "confidence": "UNKNOWN",
+      "statement": "These declarations do not show battle initialization order, whether objects preexist unlock, whether all behaviors are loaded, or whether progression can change mid-battle. Gated source tasks do not prove that the enclosing object exists before unlock.",
+      "question": "D8-Q3"
+    }
+  },
+  "eidolon_model": {
+    "schema": {
+      "confidence": "FACT",
+      "statement": "582 RankID rows preserve owner and explicit rank. Native AvatarRankConfigRow separately has RankAbility, SkillAddLevelList, Param, Trigger, Rank and RankID; the current DB projection omits RankAbility/Trigger/SkillAddLevelList.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/coverage/Eidolon",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "no_suffix_mapping": "RankID suffix, RankNN ability name and numerical rank are not joined by appearance.",
+    "families": [
+      "direct rank ability reference (schema-backed, row values missing)",
+      "skill level adjustment (schema-backed, target/offset values missing)",
+      "runtime rank predicate in existing ability (source-backed)",
+      "rank parameter source (source-backed ReadInfo declaration; row resolver missing)"
+    ],
+    "variant": {
+      "confidence": "UNKNOWN",
+      "statement": "AvatarConfig RankIDList/EnhancedID selection and effective variant row are absent; no universal same-avatar config merge.",
+      "question": "D8-Q1"
+    }
+  },
+  "eidolon_activation": {
+    "source_gate": {
+      "confidence": "FACT",
+      "statement": "ByRankActivated is used repeatedly in the selected ordinary skill/passive source with TriggerKey.Hash values -1445815962, 2089636447 and 1686351920. Preserve those hashes; their rank-row relationship is missing.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_progression_predicates"
+      ]
+    },
+    "native_distinction": {
+      "confidence": "FACT",
+      "statement": "ByRankActivated has TargetType and TriggerKey; ByRankActivatedFromLineup separately has AvatarID and Rank. Do not treat them as one resolved predicate.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "cumulative": {
+      "confidence": "UNKNOWN",
+      "statement": "Owning E4 or E6 implies earlier ranks only after map construction/predicate comparisons are proved. Neither UI convention nor the method name establishes cumulative thresholds. E6-only filtering is also unjustified.",
+      "question": "D8-Q3"
+    }
+  },
+  "skill_level_overrides": {
+    "contract": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Store source RankID + explicit threshold field + target SkillID + offset/value + provenance + unresolved activation status; retain actual skill level/cap separately. Never rewrite SkillConfig."
+    },
+    "exact_recovered_eidolon_offsets": 0,
+    "reason": "Current projection lacks SkillAddLevelList. Cached transform_avatar_rank iterates the explicit map into id/num, proving schema intent only; actual rows are unavailable. No offsets were parsed from localized descriptions.",
+    "trace_targets": "4561 explicit target references in ledger; 318 edges / 48 SkillIDs MISSING. Skill level effect size/cap not derived from UI or transformer hardcoded num=1.",
+    "evidence": [
+      "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger",
+      ".external_refs/HSR-Mapping-DATA/files/src/transformers/characters_transformer.py#transform_avatar_rank",
+      "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+    ]
+  },
+  "relic_set_model": {
+    "content": {
+      "confidence": "FACT",
+      "statement": "60 sets have 92 explicit require_num records. Set 101 separately contains keys 2 and 4; these preserve distinct parameter records, not runtime activation semantics.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/coverage/RelicSet",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+      ]
+    },
+    "items": {
+      "confidence": "FACT",
+      "statement": "184 static relic item definition IDs exactly match RelicConfig.ID, giving SetID, Type, Mode and Rarity. They are definition rows, not a character inventory or valid equipped-instance multiset.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/relic_item_config_joins"
+      ]
+    },
+    "schema": {
+      "confidence": "FACT",
+      "statement": "RelicSetConfigRow has SetSkillList/SetID. RelicSetSkillConfigRow has SetID/RequireNum/AbilityName/PropertyList/AbilityParamList. Static projection omits those behavior/property columns.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "reader": {
+      "confidence": "FACT",
+      "statement": "Equip30 Ability51231 declares SkillRelic with literal TriggerKey 123_4 and indices 0,1,2. Parsing that string into SetID 123 and threshold 4 requires a proved key rule; M537530/M537531 are key-generator declarations only.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/parameter_reader_bindings",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/targeted_native_methods"
+      ]
+    },
+    "independent_thresholds": {
+      "confidence": "UNKNOWN",
+      "statement": "Separate 2/4 rows must be preserved. Count 4 -> both effects, only one effect, or 4pc containing 2pc are all unproved.",
+      "question": "D8-Q4"
+    },
+    "count_rules": {
+      "confidence": "UNKNOWN",
+      "statement": "Duplicate concrete pieces, one-per-slot validation, relic mode eligibility, count overrides and attachment receiver remain unproved. Do not count rows in static RelicConfig or deduplicate by SetID.",
+      "question": "D8-Q4"
+    }
+  },
+  "equipment_instance_boundary": {
+    "definition_fields": [
+      "EquipmentID / SkillID / AbilityName refs",
+      "promotion/property curves and source rank records",
+      "RelicConfig ID / SetID / Type / Mode / affix groups"
+    ],
+    "input_fields": {
+      "confidence": "FACT",
+      "statement": "BattleLineupEquipmentConfig explicitly declares Id, Level, Rank. BattleLineupAvatarConfig carries Level, Promotion, Rank, EnhancedId, SkillTreePointList and EquipmentConfigList. AvatarRowData additionally stores EquipExtraRank and a BattleEquipmentList.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "unique_id": {
+      "confidence": "UNKNOWN",
+      "statement": "Ordinary LightCone unique-instance ID battle relevance is not demonstrated; retain optional opaque ID/source-instance association instead of declaring it irrelevant or mandatory for arithmetic.",
+      "question": "D8-Q2"
+    },
+    "special_mode_limit": {
+      "confidence": "FACT",
+      "statement": "BattleGridFightEquipData separately declares UniqueID, IsDynamicCreate, _AbilityInstance, AdditionalPropertyMap, AdditionalParamProtoMap, DeepClone and SetupAbilityInstance. This blocks a universal immutable-equipment schema assumption; it does not prove ordinary LightCone mutation or authorize Domain 9 analysis.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+      ]
+    },
+    "immutable_normalization": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Prefer a lossless frozen input packet for sandbox construction; label this boundary policy, not a native claim. Preserve mutation/lifetime extensions until their irrelevance is proved."
+    }
+  },
+  "owner_context_binding": {
+    "fields": [
+      "equipped_avatar_content_ref",
+      "equipped_runtime_entity_ref",
+      "equipment_definition_ref",
+      "equipment_instance_ref",
+      "behavior_registration_receiver",
+      "behavior_owner",
+      "caster",
+      "provider_or_source",
+      "modifier_owner",
+      "parameter_read_context"
+    ],
+    "status": "UNKNOWN_FOR_CONTENT_REGISTRATION",
+    "evidence": {
+      "confidence": "FACT",
+      "statement": "Equipment source AddModifier operations explicitly target Caster, CasterServant and ModifierOwnerEntity in different contexts. These are symbolic target consumers, not a native mapping from equipped wearer to behavior owner.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/explicit_modifier_edges"
+      ]
+    },
+    "domain2_boundary": "Consume frozen Modifier identity/provider rules. Domain 8 passes the actually proved source context or rejects; it never substitutes wearer for all identity slots."
+  },
+  "behavior_binding_families": [
+    {
+      "kind": "EXACT_CONTENT_ID_RELATION",
+      "status": "OBSERVED_STATIC",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+    },
+    {
+      "kind": "PROPERTY_CONTRIBUTION",
+      "status": "OBSERVED_STATIC",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+    },
+    {
+      "kind": "SKILL_LEVEL_TARGET",
+      "status": "OBSERVED_EXPLICIT_REFERENCE_WITH_MISSING_DESTINATIONS",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/static_edge_ledger"
+    },
+    {
+      "kind": "DIRECT_ABILITY_NAME",
+      "status": "OBSERVED_CHARACTER_CONFIG_TO_DEFINITION_REFERENCE; progression-row join missing",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_config_bindings"
+    },
+    {
+      "kind": "DIRECT_MODIFIER_NAME",
+      "status": "OBSERVED_BEHAVIOR_REFERENCE; runtime owner unresolved",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/explicit_modifier_edges"
+    },
+    {
+      "kind": "BEHAVIOR_GROUP",
+      "status": "OBSERVED_SkillAbilityList; no native registration/dedup rule",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_config_bindings"
+    },
+    {
+      "kind": "DYNAMIC_VALUE_SOURCE",
+      "status": "OBSERVED_ReadInfo; final row resolver missing",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/parameter_reader_bindings"
+    },
+    {
+      "kind": "RUNTIME_PREDICATE_GATE",
+      "status": "OBSERVED_SOURCE; progression map/threshold not proved",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_progression_predicates"
+    },
+    {
+      "kind": "SKILL_LEVEL_OVERRIDE",
+      "status": "SCHEMA_ONLY_EIDOLON",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/native_metadata"
+    },
+    {
+      "kind": "INHERITED_CONFIG",
+      "status": "UNKNOWN; explicit mixed refs are not a merge rule",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/inheritance_inspection"
+    }
+  ],
+  "config_inheritance": {
+    "inspected": {
+      "confidence": "FACT",
+      "statement": "143 cached AvatarConfig roots and 16 equipment behavior files were checked for binding-relevant parent/override root fields. None of the selected parent keys was found. Collider-camera override fields were excluded from behavior inheritance.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/inheritance_inspection"
+      ]
+    },
+    "variant_counterexample": {
+      "confidence": "FACT",
+      "statement": "Advanced Black Swan SkillAbilityList explicitly mixes Avatar_BlackSwan base camera names with Avatar_Advanced_BlackSwan skill names. Variant resolution cannot be implemented by blanket renaming or replacing every reference with an advanced prefix.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_config_bindings"
+      ]
+    },
+    "unresolved": {
+      "confidence": "UNKNOWN",
+      "statement": "No observed parent field does not prove native merge absence. AvatarID/EnhancedID -> config selection, omitted-vs-empty behavior list semantics and per-row override precedence are missing. Keep base, override and effective refs separate.",
+      "question": "D8-Q5"
+    }
+  },
+  "parameter_binding": {
+    "source_reader_types": {
+      "confidence": "FACT",
+      "statement": "Equipment files contain 424 SkillEquip and 150 SkillRelic ReadInfo entries, plus 49 None entries in the scoped definition sample. March CharacterConfig independently declares SkillTreeParam PointB2/PointB3 and SkillRank Rank01/02/04/06 readers.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/parameter_reader_bindings",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_config_bindings"
+      ]
+    },
+    "scope_limit": "Counts describe reader declarations in the bounded equipment/selected-avatar sample, not all game DynamicValues or executable parameter coverage.",
+    "binding_fields": [
+      "source content row + original field pointer",
+      "explicit rank/level/point/threshold selector",
+      "raw parameter record",
+      "definition-scoped dynamic hash",
+      "ReadInfo.Type",
+      "TriggerKey including empty string/hash/symbol distinctions",
+      "Index including explicit zero",
+      "owner/value-source context",
+      "resolution and ambiguity"
+    ],
+    "missing_value_policy": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Keep ABSENT, NULL, EXPLICIT_ZERO, EMPTY_ARRAY and PRESENT_VALUE distinct. Do not repair truncated arrays or reuse adjacent rank/level values. Type None is not automatically zero."
+    },
+    "evaluation_boundary": "No formulas, stat arithmetic, hash-name inversion or DynamicValue evaluation performed."
+  },
+  "activation_predicates": {
+    "content_requirements": [
+      "loadout association",
+      "equipment Path eligibility/activation (unknown connection)",
+      "trace unlock/level and graph prerequisites",
+      "rank activation threshold",
+      "eligible relic count and threshold",
+      "effective variant selection"
+    ],
+    "observed_runtime_progression_gates": [
+      "BySkillPointActivated",
+      "ByRankActivated"
+    ],
+    "registration_candidates": [
+      "M520487 SetupInitialAbility",
+      "M520488 _SetupSkillTreeAbility",
+      "M520489 _SetupRankConfigAbility",
+      "M520490 _SetupEquipmentAbility",
+      "M520491 _SetupEquipmentAddedProperty",
+      "M520494 _SetupRelicAbility"
+    ],
+    "effect_condition_boundary": "HP, attack, crit, turn and event trigger conditions stay in frozen behavior domains. Keep them separate from enabling the content source.",
+    "unknown_policy": "No unproved requirement may become a default true/false or an omitted activation."
+  },
+  "battle_input_contract": {
+    "status": "LOSSLESS_PACKET_ARCHITECTURE_CLOSED; minimally sufficient executable subset not proved",
+    "packet": {
+      "authority": [
+        "target version",
+        "content DB hash",
+        "behavior source version/commit/hash",
+        "native contract version"
+      ],
+      "avatar_progression": {
+        "required_preservation": [
+          "avatar_id",
+          "level",
+          "promotion",
+          "eidolon_rank",
+          "EnhancedID/variant presence",
+          "each trace PointID + source level + unlock evidence/presence",
+          "uninterpreted source progression fields"
+        ],
+        "requirement_evidence": "T17896 BattleLineupAvatarConfig, T17891 BattleLineupSkillTreePoint, native rows and static payloads; unlock=true is not invented from level>0"
+      },
+      "loadout": {
+        "required_preservation": [
+          "equipment source list with definition ID, supplied level/rank/promotion and their presence",
+          "EquipExtraRank if supplied",
+          "source instance association / optional opaque unique ID",
+          "concrete relic instance refs when available, definition ID, slot, SetID, mode/eligibility data, level and affix state",
+          "raw supplied property/parameter override records"
+        ],
+        "no_lossy_replacement": "Derived set counts or final stats cannot replace source pieces and activation identities; EquipmentConfigList cannot be reduced to one item without proof."
+      },
+      "bindings": [
+        "ContentActivationSource[]",
+        "BehaviorBinding[]",
+        "ParameterBinding[]",
+        "TraceActivationState[]",
+        "EidolonActivationState[]",
+        "RelicSetActivationState[]",
+        "EffectiveBehaviorSet with provenance and unresolved source ledger"
+      ],
+      "owner_context": "Separate runtime entity, wearer, equipment instance, behavior receiver/owner, caster/provider, modifier owner and value-read context; UNKNOWN remains tagged."
+    },
+    "determinism_invariants": [
+      "Every input content source is accounted for exactly once as a source record, with all contribution edges retained",
+      "Same definition enabled by two sources yields two activation provenance records unless a separate native merge rule is proved",
+      "Stable explicit ordering or proven order-insensitivity is required before canonical sorting can erase input order",
+      "Input source version and all presence tags survive round trip",
+      "Reject unresolved activation in executable build; a partial packet is usable for analysis only"
+    ],
+    "account_save_boundary": "This packet can preserve the provided progression/loadout without an entire account save. No field is declared battle-irrelevant merely because it is absent from the current DB; opaque source extensions remain retained."
+  },
+  "clone_snapshot_hash": {
+    "immutable_input": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Freeze the normalized input packet for a chosen sandbox construction. Native immutability remains UNKNOWN."
+    },
+    "mutable_battle_state": {
+      "confidence": "UNKNOWN",
+      "statement": "ChangedSkillTreeDataList, reset methods and separate dynamic equipment declarations show boundaries needing a lifetime contract, not proved execution of mutation.",
+      "question": "D8-Q5"
+    },
+    "derived_state": [
+      "candidate/effective behavior activation records",
+      "skill level/property maps",
+      "validated set counts",
+      "resolved parameter records"
+    ],
+    "snapshot": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Persist the source packet and all identity-bearing activation/context bindings needed to rebuild state. If mutation is later supported, snapshot mutations explicitly; never conflate a derived cache with authoritative progression."
+    },
+    "hash": {
+      "confidence": "ARCHITECTURE_CONTRACT_NOT_NATIVE_FACT",
+      "statement": "Hash preserved source identities, progression/rank/level/threshold inputs, presence tags, variant/provenance and resolved activation records, not only resulting stats. Do not erase unresolved state to manufacture an executable hash."
+    },
+    "reset_clone": "Copy/rebuild must preserve source-instance association and activation provenance. Exact native reset/mutation/deep-clone timing remains Q5."
+  },
+  "mapping_coverage": {
+    "interpretation": "Mapping coverage only. Static rows are neither runtime semantic coverage nor full executable coverage. Zero exact complete content-to-behavior links under this strict policy does not erase the proved static and source-local edges.",
+    "families": {
+      "LightCone": {
+        "static_rows": 169,
+        "rows_with_explicit_runtime_binding": 0,
+        "exactly_mapped_content_to_behavior": 0,
+        "ambiguous_exact_content_to_behavior": 0,
+        "missing_content_to_behavior": 169,
+        "stat_only_proven_complete": 0,
+        "behavior_bearing_proven_by_exact_content_join": 0,
+        "full_behavior_classification_unknown": 169,
+        "blocked_by_content_availability": 169,
+        "blocked_by_merge_semantics_exclusive_count": 0,
+        "merge_exposure": "UNKNOWN; missing source/selection edges prevent quantifying affected rows",
+        "activation_execution_ready": 0,
+        "legacy_numeric_token_candidates_not_promoted": 165,
+        "static_rank_parameter_records": 845,
+        "static_promotion_records": 1183
+      },
+      "RelicSet": {
+        "static_rows": 60,
+        "rows_with_explicit_runtime_binding": 0,
+        "exactly_mapped_content_to_behavior": 0,
+        "ambiguous_exact_content_to_behavior": 0,
+        "missing_content_to_behavior": 60,
+        "stat_only_proven_complete": 0,
+        "behavior_bearing_proven_by_exact_content_join": 0,
+        "full_behavior_classification_unknown": 60,
+        "blocked_by_content_availability": 60,
+        "blocked_by_merge_semantics_exclusive_count": 0,
+        "merge_exposure": "UNKNOWN; missing source/selection edges prevent quantifying affected rows",
+        "activation_execution_ready": 0,
+        "static_threshold_records": 92,
+        "item_definition_rows": 184,
+        "item_exact_config_matches": 184
+      },
+      "Trace": {
+        "static_rows": 5018,
+        "rows_with_explicit_runtime_binding": 0,
+        "exactly_mapped_content_to_behavior": 0,
+        "ambiguous_exact_content_to_behavior": 0,
+        "missing_content_to_behavior": 5018,
+        "stat_only_proven_complete": 0,
+        "behavior_bearing_proven_by_exact_content_join": 0,
+        "full_behavior_classification_unknown": 5018,
+        "blocked_by_content_availability": 5018,
+        "blocked_by_merge_semantics_exclusive_count": 0,
+        "merge_exposure": "UNKNOWN; missing source/selection edges prevent quantifying affected rows",
+        "activation_execution_ready": 0,
+        "unique_point_ids": 1771,
+        "static_surface_classification": {
+          "SKILL_LEVEL_TARGET": 3755,
+          "UNRESOLVED_PROGRESSION_EFFECT": 293,
+          "PROPERTY_CONTRIBUTION": 970
+        },
+        "skill_target_edges": 4561,
+        "skill_target_edges_missing": 318,
+        "missing_skill_ids": [
+          "1140201",
+          "1140203",
+          "1140205",
+          "1140206",
+          "1140701",
+          "1140702",
+          "1140710",
+          "1140711",
+          "1140703",
+          "1140712",
+          "1140706",
+          "1140705",
+          "1140901",
+          "1140903",
+          "1140905",
+          "1140906",
+          "1141301",
+          "1141307",
+          "1141303",
+          "1141305",
+          "1141306",
+          "1141501",
+          "1141502",
+          "1141513",
+          "1141514",
+          "1141515",
+          "1141516",
+          "1141517",
+          "1141518",
+          "1141519",
+          "1141520",
+          "1141521",
+          "1141522",
+          "1141523",
+          "1141524",
+          "1141525",
+          "1141526",
+          "1141503",
+          "1141505",
+          "1151201",
+          "1151203",
+          "1151205",
+          "1151206",
+          "1800701",
+          "1800707",
+          "1800703",
+          "1800705",
+          "1800706"
+        ]
+      },
+      "Eidolon": {
+        "static_rows": 582,
+        "rows_with_explicit_runtime_binding": 0,
+        "exactly_mapped_content_to_behavior": 0,
+        "ambiguous_exact_content_to_behavior": 0,
+        "missing_content_to_behavior": 582,
+        "stat_only_proven_complete": 0,
+        "behavior_bearing_proven_by_exact_content_join": 0,
+        "full_behavior_classification_unknown": 582,
+        "blocked_by_content_availability": 582,
+        "blocked_by_merge_semantics_exclusive_count": 0,
+        "merge_exposure": "UNKNOWN; missing source/selection edges prevent quantifying affected rows",
+        "activation_execution_ready": 0
+      }
+    },
+    "static_edge_records": 8233,
+    "static_edges_with_missing_destination": 318,
+    "fully_resolved_static_edges": 7915,
+    "source_local": {
+      "equipment_files": 16,
+      "explicit_modifier_reference_sites": 677,
+      "progression_predicate_sites_in_one_selected_avatar": 9,
+      "all_source_versions": "CLOSE_4.4.0_TO_4.4.54; no full 4.4.54 semantic mapping promotion"
+    },
+    "blockers_note": "Content-availability counts mean required columns/rows absent from inspected DB/cache, not absent in upstream. Native activation additionally blocked for all four families. No row has an established merge-only blocker; actual merge exposure remains UNKNOWN.",
+    "legacy_report_policy": "Existing EXACT_CONFIG_ID report retained verbatim; Domain 8 excludes its numeric-name-token candidates from exact binding coverage."
+  },
+  "cross_family_duplication": {
+    "check": {
+      "confidence": "FACT",
+      "statement": "No repeated AbilityList.Name was observed among 16 equipment files plus the selected March ability file. Selected CharacterConfigs repeat Avatar_Common_PassiveSkill as an explicit reference.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/duplicate_definition_names",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json#/selected_config_bindings"
+      ]
+    },
+    "limit": "This is not a proof that Trace/Eidolon/LightCone/Relic cannot enable the same definition: static content->behavior edges are missing. Multiple calls of a modifier reference also do not establish activation-source merging.",
+    "policy": "Never deduplicate activation records merely by ability/modifier name. Definition sharing and contribution merging are distinct contracts."
+  },
+  "negative_evidence": [
+    {
+      "assumption": "LightCone behavior owner = wearer",
+      "result": "UNPROVED",
+      "evidence": "Caster is a symbolic source target; setup receiver/context dataflow missing (Q2)."
+    },
+    {
+      "assumption": "wrong Path completely disables every contribution",
+      "result": "UNPROVED",
+      "evidence": "AvatarBaseType field and separate equipment ability/property setup methods exist; actual gate missing (Q2)."
+    },
+    {
+      "assumption": "S1-S5 select different abilities",
+      "result": "UNPROVED_AND_NOT_REQUIRED_BY_OBSERVED_SOURCE",
+      "evidence": "A single Ability20000 contains SkillEquip readers; source rank record resolver missing. This is not proof all ranks share it."
+    },
+    {
+      "assumption": "Trace unlock = behavior object creation",
+      "result": "REJECTED_EQUIVALENCE",
+      "evidence": "BySkillPointActivated occurs inside ordinary skill bodies; object creation timing remains UNKNOWN."
+    },
+    {
+      "assumption": "all trace nodes are behavior-bearing",
+      "result": "UNSUPPORTED_UNIVERSAL",
+      "evidence": "970 rows explicitly carry property contributions and 3755 skill-level targets; projection omission prevents declaring all of them fully stat-only."
+    },
+    {
+      "assumption": "E6 means only E6 effect exists",
+      "result": "UNSUPPORTED",
+      "evidence": "Source has several independent rank predicate sites; exact activation thresholds still missing."
+    },
+    {
+      "assumption": "Eidolon cumulative activation is automatic",
+      "result": "UNPROVED",
+      "evidence": "Rank maps and predicates declared; no executed rank comparison recovered."
+    },
+    {
+      "assumption": "4pc effect includes 2pc",
+      "result": "UNPROVED",
+      "evidence": "Separate static require_num 2 and 4 records exist; no composition/count rule."
+    },
+    {
+      "assumption": "Relic count = number of same SetID rows",
+      "result": "COUNTEREXAMPLE_TO_STATIC_ROW_COUNTING",
+      "evidence": "RelicConfig rows include distinct Type/Rarity/Mode definition records; 184 static items are not an equipped-instance list."
+    },
+    {
+      "assumption": "same behavior name from two sources should deduplicate",
+      "result": "UNPROVED",
+      "evidence": "Repeated config references exist; source activation provenance and native merge policy are different identities."
+    },
+    {
+      "assumption": "content ID suffix directly maps to behavior name",
+      "result": "REJECTED_JOIN_METHOD",
+      "evidence": "165 historical candidates use regex tokens; source row SkillID/AbilityName chain is missing. Equip30 contains both relic and equipment readers."
+    },
+    {
+      "assumption": "all progression compiled into static Avatar config",
+      "result": "COUNTEREXAMPLE_TO_SOURCE_REPRESENTATION",
+      "evidence": "Source BySkillPointActivated/ByRankActivated and ReadInfo SkillTreeParam/SkillRank express runtime progression queries, while native row maps remain separate."
+    },
+    {
+      "assumption": "equipment immutable in every mode",
+      "result": "UNPROVED_UNIVERSAL",
+      "evidence": "BattleGridFightEquipData declares IsDynamicCreate/AdditionalParamProtoMap and setup/clone methods; this does not prove ordinary LightCone mutation."
+    },
+    {
+      "assumption": "Advanced variant replaces all base behavior references",
+      "result": "SOURCE_COUNTEREXAMPLE",
+      "evidence": "Advanced Black Swan explicitly keeps base camera references alongside advanced skill references."
+    },
+    {
+      "assumption": "same integer is the same content object",
+      "result": "SOURCE_COUNTEREXAMPLE",
+      "evidence": "SkillID 100101 and RankID 100101 belong to different tables/families."
+    }
+  ],
+  "terra_contract": {
+    "ready": "PARTIAL",
+    "allowed": [
+      "lossless source packet and presence-tagged identities",
+      "exact static property/value edges",
+      "explicit skill target references with missing destination ledger",
+      "source-local named definition/reference storage",
+      "strict unresolved activation rejection",
+      "one bounded content ticket"
+    ],
+    "not_ready": [
+      "production activation",
+      "rank-to-runtime-value selection",
+      "wrong-Path effect/stat result",
+      "cumulative rank activation",
+      "set counting/threshold implication",
+      "native owner/caster/provider binding",
+      "native config merge/reset/clone semantics"
+    ],
+    "ticket": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json"
+  },
+  "strict_rejections": [
+    "MISSING_OR_AMBIGUOUS_CONTENT_BEHAVIOR_JOIN",
+    "UNKNOWN_OWNER_CONTEXT",
+    "UNKNOWN_RANK_LEVEL_PARAMETER_ROW_SELECTION",
+    "UNPROVED_CONFIG_INHERITANCE_OR_OVERRIDE",
+    "UNPROVED_UNLOCK_OR_CUMULATIVE_RANK_THRESHOLD",
+    "UNPROVED_RELIC_ELIGIBILITY_COUNT_THRESHOLD",
+    "PATH_EQUIP_RULE_CONFLATED_WITH_EFFECT_ENABLEMENT",
+    "UNRESOLVED_STAT_ONLY_VS_BEHAVIOR_BEARING_CLASSIFICATION",
+    "MISSING_SKILL_TARGET_OR_OFFSET",
+    "SILENTLY_DROPPED_UNKNOWN_PROGRESSION_SOURCE",
+    "SOURCE_VERSION_CLOSENESS_PROMOTED_TO_EXACT_NATIVE_PROOF"
+  ],
+  "remaining_unknowns": [
+    {
+      "id": "D8-Q1",
+      "blocker": "CONTENT_COVERAGE",
+      "exact_families": [
+        "EquipmentRow / EquipmentSkillRow",
+        "AvatarSkillTreeRow / AvatarRankConfigRow / AvatarConfig",
+        "RelicSetConfigRow / RelicSetSkillConfigRow",
+        "AvatarSkillConfig: 48 exact missing SkillIDs"
+      ],
+      "missing_relationship": "Original rows carrying SkillID, AbilityName, RankAbility, Trigger, SkillAddLevelList, AbilityProperty, SetSkillList, PropertyList, EnhancedID and the Avatar-to-config reference are absent from the current projection. Consequently numeric content IDs cannot be connected to behavior names or runtime trigger keys without guessing.",
+      "best_evidence_source": "Pinned TurnBasedGameData b11066beacc4de454b625fafc7ea3dd540c5bbf3 raw tables, retaining CLOSE_4.4.0_TO_4.4.54. Existing authoritative_mapping_index explicitly identifies AvatarConfig.json, AvatarSkillTreeConfig.json, AvatarRankConfig.json and AvatarSkillConfig.json.",
+      "followup": "One bounded progression-table ticket below; equipment/set table schema known but no positively saved exact source path for their missing table files was found, so no broad acquisition ticket for them."
+    },
+    {
+      "id": "D8-Q2",
+      "blocker": "EVIDENCE",
+      "exact_families": [
+        "AvatarDataComponent._SetupEquipmentAbility M520490",
+        "_SetupEquipmentAddedProperty M520491",
+        "GetRealEquipmentSkillParams M520501",
+        "GetRealEquipmentSkillName M520502",
+        "GetEquipment M520511",
+        "AvatarRowData._InitData M521227"
+      ],
+      "missing_relationship": "Which equipment record and effective rank/extra rank are selected; which Path/BaseType comparison gates behavior versus properties; which runtime receiver, caster, provider and parameter context are passed when the equipment ability is registered. Does wrong Path preserve some/all base stats, and can multiple equipment sources be supplied?",
+      "best_evidence_source": "Provenance-matched complete method bodies / ordered identity-bearing trace for the saved 4.4.54 binary hash 7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc. Saved signatures are locally available and inspected; complete bodies are not."
+    },
+    {
+      "id": "D8-Q3",
+      "blocker": "EVIDENCE",
+      "exact_families": [
+        "AvatarDataComponent._SetupSkillTreeAbility M520488",
+        "_SetupRankConfigAbility M520489",
+        "AvatarRowData._InitData M521227",
+        "GetRankRowMap M521292 / GetSkillTreeRowMap M521291",
+        "GamePlayStatic.GetAbilityPropertyAndSkillLevelByAvatarSkillTreeAndRank M537512",
+        "ByRankActivated T22778 / ByRankActivatedFromLineup T22779 / BySkillPointActivated T23254"
+      ],
+      "missing_relationship": "Unlock filtering versus loaded-but-gated registration; rank >= N cumulative activation versus another rule; trigger hash-to-row resolution; numerical PointTriggerKey-to-enum values; graph prerequisites and level offsets/caps. Predicate source use is proved, but predicate implementation, map population and registration timing are not.",
+      "best_evidence_source": "Matching native map-building/setup/predicate bodies plus Q1 row data. Field declarations and method names do not prove comparisons, default values, enum constants or execution order."
+    },
+    {
+      "id": "D8-Q4",
+      "blocker": "EVIDENCE",
+      "exact_families": [
+        "AvatarDataComponent._SetupRelicAbility M520494",
+        "GetBattleRelicModule M520497",
+        "GamePlayStatic.GenRelicSetAbilityKey M537530/M537531",
+        "RelicSetConfigRow.SetSkillList / RelicSetSkillConfigRow.RequireNum",
+        "RelicConfig.ID / SetID / Type / Mode"
+      ],
+      "missing_relationship": "Eligible concrete pieces and slot/duplicate validation -> effective count -> independently enabled threshold rows -> behavior attachment context. Does count 4 activate both rows? How is the literal SkillRelic TriggerKey 123_4 generated/resolved? Are overrides possible for the selected battle input?",
+      "best_evidence_source": "Matching native setup/key-generator/count-provider bodies and complete Q1 set-effect rows. Existing 184 exact item-to-RelicConfig joins establish definition slots/sets, not instance counting."
+    },
+    {
+      "id": "D8-Q5",
+      "blocker": "EVIDENCE",
+      "exact_families": [
+        "AvatarRowData._InitData M521227 / EnhancedID / EquipExtraRank",
+        "AvatarDataComponent._ResetSkillTreeAndRelatedProperty M520505",
+        "TurnBasedAbilityComponent._SetupAbilityParams M506618 / _SetupJsonConfigAbility M506619",
+        "CharacterConfig.SkillAbilityList and selected Advanced configs",
+        "BattleGridFightEquipData T56415"
+      ],
+      "missing_relationship": "Effective config/override selection, source provenance merging, parameter ReadInfo -> selected row/index and missing-entry behavior, activation duplicate handling, loadout/progression mutability and reset/clone/snapshot/hash lifetime. A changed-skill-tree list and reset method prevent treating all state as proved immutable; mode-specific equipment fields do not establish ordinary LightCone semantics.",
+      "best_evidence_source": "Provenance-matched loader/readers/reset/snapshot dataflow. Explicit advanced-config references already examined locally do not require another pass and do not prove a native merge rule."
+    }
+  ],
+  "do_not_reason_again": [
+    "169/60/5018/582 static denominators measured from current DB, not executable coverage",
+    "165 numeric-token LightCone candidates are insufficient under this pass exact-join policy",
+    "970 property contribution rows are exact static edges, not complete stat-only proof",
+    "318 Trace skill target edges / 48 exact SkillIDs missing; do not guess servant/variant identity from numeric prefixes",
+    "Explicit progression predicates and SkillEquip/SkillRelic/SkillTreeParam/SkillRank input declarations are recovered; no need to repeat a behavior census",
+    "No native owner/path/rank cumulative/relic counting implementation recovered from signatures",
+    "No source-parent root field observed in bounded config sample is not a native merge rule",
+    "Current DLL cannot be inspected with saved mismatched RVAs",
+    "No Astra Pass 2: locally available high-discrimination source samples have been examined; missing native bodies do not justify repetition",
+    "Stop before Domains 9 and 10"
+  ],
+  "end_of_domain_gate": {
+    "selected": "ONE_TERRA_CONTENT_FOLLOWUP",
+    "reason": "A bounded four-table progression-content ticket has exact known repository, commit, paths and ID selectors. Missing native activation is not a reason to open Pass 2.",
+    "pass2_justified": false
+  },
+  "artifacts": [
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_analyze_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+  ],
+  "validation": {
+    "status": "PASSED",
+    "checks": [
+      "JSON parses and coverage partitions reconcile",
+      "Domains 1-7 master objects and historical master authority deep-equal pre-pass snapshot",
+      "8233 static edge records including 318 missing SkillID destinations retained",
+      "All selected source definition and parameter-reader pointers validated against cached raw JSON",
+      "677 explicit Modifier references and local definition pointers validated",
+      "9 progression predicate pointers and payloads validated",
+      "184 relic item definition IDs exactly match cached RelicConfig IDs",
+      "Selected raw SHA256 values match pinned source manifest",
+      "No production runtime edits; no compiler/Nanoka/native DLL execution"
+    ],
+    "evidence_sha256": "d26df52591f09d8b8fa84d9b0768bd0b3725bea97496178b95c013d2037a30c6"
+  }
+}

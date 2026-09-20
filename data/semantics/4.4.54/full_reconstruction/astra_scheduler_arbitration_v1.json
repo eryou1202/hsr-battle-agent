@@ -1,0 +1,1424 @@
+{
+  "schema": "hsr_battle_agent.astra_scheduler_arbitration/1",
+  "domain": "scheduler_arbitration",
+  "pass": 1,
+  "status": "DOMAIN_4_PASS_1_COMPLETE",
+  "architecture": "PARTIAL",
+  "authority": {
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "observed_date": "2026-09-15",
+    "native_snapshot_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54"
+  },
+  "scope": "Domain 4 Pass 1 only; no production implementation; Domains 1/2/3 frozen",
+  "scheduler_state": {
+    "storage_domains": [
+      {
+        "role": "ordinary action members",
+        "field": "F255881 _ActionEntityList",
+        "scope": "native named storage; full admission unknown"
+      },
+      {
+        "role": "inserted ability instances",
+        "field": "F255919 _InsertAbilityList",
+        "scope": "list name does not establish FIFO/LIFO/stack"
+      },
+      {
+        "role": "Ultra skill parameter work",
+        "field": "F255863 _InsertUltraSkillParamsQueue",
+        "scope": "queue API family; _FindInsertIndex means do not assume chronological FIFO"
+      },
+      {
+        "role": "immediate-action entity domain",
+        "field": "F255895 _ImmediateActionEntities",
+        "scope": "may overlap ordinary actors; full relation unknown"
+      },
+      {
+        "role": "turn finite-state machine",
+        "field": "F255888 _TurnStateFSM",
+        "scope": "several insertion, execution and end phases declared"
+      },
+      {
+        "role": "delay change ordering data",
+        "fields": [
+          "F255872 _ActionDelayChangeStamp",
+          "F255912 _ActionDelayOrderTrigger",
+          "F255921 _ActionEntityListSnapshot"
+        ],
+        "scope": "named dependencies; no inferred dirty-flag contract"
+      }
+    ],
+    "identity_domains": {
+      "current_action_actor": "F255879 _CurrentTurnActionEntity",
+      "ordinary_turn_owner": "F255911 CurrentTurnOwnerEntity",
+      "current_skill_character": "F255858 _CurrentSkillCharacter",
+      "reference_action_task": "Explicit action_task_id supplied to baseline markers",
+      "reference_damage_task": "Separate damage_task_id",
+      "pending_instance": "Reference owner + source operation + enqueue_index; native concrete identity UNKNOWN"
+    },
+    "gating_domains": [
+      "F256002 PendingInsertAbility",
+      "F256011 _PendingInsertAbilityPriority",
+      "F255984 TurnOwnerActionPhaseEnd",
+      "F256003 SkipTurnOwnerActionFlag",
+      "F255931 IsUseSkillOneMore",
+      "F255982 TurnEndKeep",
+      "F255991 TurnActionDelayCostRatio"
+    ],
+    "constraints": [
+      "A storage field is not its element schema or algorithm.",
+      "No arbitrary integer/rank assigned to UNKNOWN priority.",
+      "No automatically disjoint class partition: an immediate actor can potentially also be an ordinary participant."
+    ],
+    "evidence": [
+      "SA-F01",
+      "SA-F05",
+      "SA-F07"
+    ]
+  },
+  "candidate_model": {
+    "architecture": "Candidate discovery is a read projection; classification preserves mechanism plus optional gameplay labels; arbitration is a separate state/phase-gated decision.",
+    "phases": [
+      "SchedulerState",
+      "CandidateDiscovery",
+      "CandidateClassification",
+      "Arbitration",
+      "SelectedAction",
+      "ActionExecutionState",
+      "ActionConsumption / turn release",
+      "Refresh / re-arbitrate at proven boundary"
+    ],
+    "readiness_dimensions": {
+      "timeline_participation": "Ordinary actor admitted to timeline; independent of target selectability.",
+      "timeline_position": "Remaining property38 can be positive; earliest frontier requires advance.",
+      "request_visibility": "Pending record can be visible while admission or scheduling gate is unresolved.",
+      "scheduler_admission": "Family/phase/guard validation; often UNKNOWN natively.",
+      "selection": "An ArbitrationResult with evidence chooses an actor/request.",
+      "execution": "The selected action actually starts; may wait on input/prepare/performance.",
+      "gameplay_legality": "External PlayerLegalAction or AI choice; excluded from this pass."
+    },
+    "logical_record_fields": [
+      {
+        "field": "actor_ref",
+        "support": "Ordinary actor or explicit insertion owner; unresolved alias remains unresolved."
+      },
+      {
+        "field": "mechanism",
+        "support": "Preserve TurnInsertAction vs TurnInsertAbility vs Ultra parameter queue vs ordinary membership."
+      },
+      {
+        "field": "source_ref",
+        "support": "Source operation/config identity or native declaration/body provenance."
+      },
+      {
+        "field": "readiness",
+        "support": "Structured dimensions above, not AV == 0 boolean."
+      },
+      {
+        "field": "priority_evidence",
+        "support": "Raw named priority, conditional override, mapping dependency; effective rank UNKNOWN unless recovered."
+      },
+      {
+        "field": "ordering_evidence",
+        "support": "Family-local comparator/sequence only; no invented total key."
+      },
+      {
+        "field": "consumption_contract_ref",
+        "support": "Reference ordinary contract or unresolved family Q3; no default consumes_turn=false."
+      },
+      {
+        "field": "actor_relation_ref",
+        "support": "Optional owner/turn-owner/related actor join; missing relation is explicit UNKNOWN."
+      },
+      {
+        "field": "provenance",
+        "support": "Evidence level, version, scope and native/reference distinction."
+      }
+    ],
+    "candidate_set": {
+      "ordinary": "Existing ordinary projection",
+      "inserted_ability_requests": "Bounded reference pending list",
+      "ultra_requests": "Native distinct queue declared; reference execution unclosed",
+      "immediate_actor_membership": "Native distinct actor domain declared",
+      "other_requests": "TurnInsertAction/OneMore/assistant mechanisms retained without forced mapping"
+    },
+    "arbitration_result": {
+      "selected_candidate": "Only when selection relation is supported",
+      "reason": "Admission/phase/order evidence",
+      "deterministic_order_evidence": "Actual recovered relation or explicitly labeled ordinary reference policy",
+      "unresolved": "Return blocked arbitration with competing requests/evidence request; never silently choose ordinary."
+    },
+    "evidence": [
+      "SA-F01",
+      "SA-F02",
+      "SA-F03",
+      "SA-F05"
+    ]
+  },
+  "candidate_families": [
+    {
+      "kind": "ORDINARY_TURN",
+      "status": "CONFIRMED_SCOPED_REFERENCE_WITH_NATIVE_PICK_ANCHOR",
+      "mechanism": "Action-entity membership + property38 ordering + TurnPrepare pick/advance",
+      "evidence": [
+        "SA-F03"
+      ],
+      "native_full_admission": "UNKNOWN"
+    },
+    {
+      "kind": "ULTRA_SKILL_REQUEST",
+      "user_label": "ULTIMATE / active skill insertion",
+      "status": "NATIVE_DECLARATION_FAMILY",
+      "mechanism": "SkillType.Ultra and _InsertUltraSkillParamsQueue with enqueue/dequeue/find-index/try-insert methods",
+      "evidence": [
+        "T17942",
+        "F255863",
+        "M499677",
+        "M499678",
+        "M499920",
+        "M499692"
+      ],
+      "not_inferred": "Ultra readiness does not auto-enqueue or auto-execute; active TurnInsertAction is separate."
+    },
+    {
+      "kind": "INSERTED_ABILITY",
+      "status": "CONFIRMED_SOURCE_FAMILY_AND_BOUNDED_REFERENCE_VISIBILITY",
+      "mechanism": "TurnInsertAbility -> source intent; native _InsertAbilityList and InsertAbilityState",
+      "evidence": [
+        "SA-S01",
+        "SA-S06",
+        "SA-S07",
+        "T22389",
+        "T56354",
+        "F255919"
+      ]
+    },
+    {
+      "kind": "INSERTED_ACTION_REQUEST",
+      "user_label": "EXTRA_ACTION candidate path",
+      "status": "CONFIRMED_SOURCE_FAMILY_NATIVE_EXECUTION_UNKNOWN",
+      "mechanism": "TurnInsertAction; skill/preparation/AutoCast/custom tags/abort configuration",
+      "evidence": [
+        "SA-S02",
+        "SA-S04",
+        "SA-S05",
+        "T22383"
+      ],
+      "not_inferred": "Bonus/Seele source supports this path; not all extra actions have this mechanism or known turn costs."
+    },
+    {
+      "kind": "ONE_MORE_SKILL_CONTINUATION_REQUEST",
+      "status": "CONFIRMED_SOURCE_AND_DECLARATION",
+      "mechanism": "UseSkillOneMore separate from TurnInsertAction",
+      "evidence": [
+        "SA-S03",
+        "T22334",
+        "F255931"
+      ],
+      "not_inferred": "Continuation cannot be relabeled as a new ordinary turn or universal extra action."
+    },
+    {
+      "kind": "IMMEDIATE_ACTION",
+      "status": "NATIVE_DECLARATION_AND_AUXILIARY_CALL_EDGE",
+      "mechanism": "SetImmediateAction config / M508893 call-table target M500064 / _ImmediateActionEntities",
+      "evidence": [
+        "T22426",
+        "F255895",
+        "M500064",
+        "M500066"
+      ],
+      "not_inferred": "No canonical sample located in selected operation traversal; immediate name does not prove preemption, zero AV, or Ultimate equivalence."
+    },
+    {
+      "kind": "FOLLOW_UP_ATTACK",
+      "status": "GAMEPLAY_UMBRELLA_UNRESOLVED",
+      "mechanism": "Herta attack-insertion sample retained as INSERTED_ABILITY with AvatarInsertAttackSelf; no universal native FUA candidate class proven",
+      "evidence": [
+        "SA-S06"
+      ],
+      "execution": "UNKNOWN"
+    },
+    {
+      "kind": "SUMMON_MEMOSPRITE_ACTOR",
+      "status": "ACTOR_RELATION_BOUNDARY_NOT_EXCLUSIVE_ACTION_CLASS",
+      "mechanism": "SchedulerActorRelation plus mechanism evidence; native SkillType.Servant and source servant/BattleEvent alias references",
+      "evidence": [
+        "T17942",
+        "SA-S09",
+        "SA-S10",
+        "SA-N499867"
+      ],
+      "execution": "UNKNOWN"
+    },
+    {
+      "kind": "INTERRUPT_REACTION",
+      "status": "REQUEST_OR_CALLBACK_ROLE_NOT_PROVEN_UNIFIED_QUEUE",
+      "mechanism": "Callback-origin inserts and Ultra/immediate APIs are separate; callback timing alone does not prove interruption",
+      "evidence": [
+        "SA-S06",
+        "SA-S08",
+        "SA-S09",
+        "SA-F08"
+      ],
+      "execution": "UNKNOWN"
+    },
+    {
+      "kind": "ASSISTANT_INSERTION_REQUEST",
+      "status": "CONFIRMED_SOURCE_ONLY",
+      "mechanism": "TurnInsertAssistantAbility",
+      "evidence": [
+        "SA-S12"
+      ],
+      "execution": "UNKNOWN"
+    },
+    {
+      "kind": "CAMERA_PRESENTATION_TASK",
+      "status": "EXCLUDED_FROM_DISCOVERY_BY_TASK_OR_NAME_ALONE",
+      "mechanism": "Presentation child/task is not automatically a top-level scheduler action; a presentation-bearing TurnInsertAbility remains an explicit insertion request",
+      "evidence": [
+        "SA-F06",
+        "SA-F08"
+      ],
+      "limit": "Presentation/hold-frame work may gate completion. Exclusion is not permission to discard it or reopen Domain 1."
+    }
+  ],
+  "ordinary_turn_contract": {
+    "scope": "Accept existing ordinary reference; add native arbitration boundary without promoting reference policy to native completeness.",
+    "discovery": {
+      "confidence": "FACT",
+      "statement": "Project only prior ordinary action_order entries whose explicit ordinary_action_eligible is true and settled survival.alive is true. This admits timeline participants, not necessarily currently ready/executable skills.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/scheduler_ordinary_eligibility_visibility_packet_001.json"
+      ]
+    },
+    "inspected_dependencies": [
+      {
+        "dependency": "current AV / property38 remaining delay",
+        "result": "Native leading comparison key when checkActionDelay is true; selected actor delay advances admitted list.",
+        "evidence": [
+          "SA-N499867",
+          "SA-N499877"
+        ]
+      },
+      {
+        "dependency": "behavior ActionDelayState",
+        "result": "Accepted separate normalized holder. Mapping to property38 / skip-turn consumption UNKNOWN.",
+        "question_id": "SA-Q3"
+      },
+      {
+        "dependency": "alive / active",
+        "result": "Settled alive required by reference. Native HasActionTurn internals and complete stage/activity filters UNKNOWN.",
+        "question_id": "SA-Q1"
+      },
+      {
+        "dependency": "team / side",
+        "result": "Native current-team field exists; no recovered comparator side key or general side exclusion. Reference participation is explicit.",
+        "question_id": "SA-Q1"
+      },
+      {
+        "dependency": "turn state",
+        "result": "Native TurnPrepare sort/pick and separate FSM execution/insertion phases; full transition guards UNKNOWN.",
+        "evidence": [
+          "SA-N499799",
+          "T17991"
+        ],
+        "question_id": "SA-Q4"
+      },
+      {
+        "dependency": "pending action state",
+        "result": "Ordinary projection does not consume/ignore pending insertion; cross-family arbiter must block until resolved.",
+        "question_id": "SA-Q2"
+      },
+      {
+        "dependency": "already executing state",
+        "result": "Separate current actor/current skill and completion gates; do not delete an executing actor from all candidate views or select another solely from AV.",
+        "evidence": [
+          "SA-F01",
+          "SA-F06"
+        ]
+      },
+      {
+        "dependency": "summon state / actor relation",
+        "result": "No universal registration, shared/independent-turn or alias-to-timeline mapping.",
+        "question_id": "SA-Q5"
+      },
+      {
+        "dependency": "speed / recharge data",
+        "result": "Accept reference positive speed property32 and 10000/speed ordinary recharge. Native general consumption timing and ratio writes not closed.",
+        "question_id": "SA-Q3"
+      },
+      {
+        "dependency": "lock and optional include/exclude sets",
+        "result": "M499876 reads two membership-filter inputs and HasActionTurn, then can skip on lock predicate plus component+230 positive. Meaning/population of +230 UNKNOWN.",
+        "evidence": [
+          "SA-N499876"
+        ],
+        "question_id": "SA-Q1"
+      }
+    ],
+    "zero_av": "AV==0 is a timeline position, not immediate execution. Native pick can choose an actor with positive remaining AV and then advance it to zero; phase/legal/request gates remain separate.",
+    "reference_completion": {
+      "preconditions": [
+        "Explicit ordinary action task SUCCESS",
+        "Task owner equals active ordinary actor",
+        "Effects and resource post-commit settled by caller",
+        "Closed ordinary participant scope; no unresolved special arbitration"
+      ],
+      "writes": [
+        "Completed actor remaining delay = 10000 / positive speed",
+        "Stable remaining-delay sort; equal delays retain prior list order as reference policy",
+        "Subtract selected delay from eligible ordinary entries",
+        "Update action_order/current_actor_id/elapsed_action_delay/turn_index"
+      ],
+      "excludes": "No general native SkillPerformFinish -> recharge theorem; no inserted/Ultimate/FUA/skip-turn consumption."
+    }
+  },
+  "inserted_action_contract": {
+    "model_choice": "E: several separately represented request/action families are supported. A single A/B/C/D model is not established.",
+    "enqueue_identity": {
+      "reference": "Immutable PendingInsertedAction retains owner_id, operation/source identity, AbilityName, AbilityTarget intent, priority/flags and zero-based append index in explicit state.",
+      "native": "Concrete instance/parameter key, allocation/reuse and duplicate relation UNKNOWN.",
+      "question_id": "SA-Q2"
+    },
+    "queue_owner": {
+      "reference": "ReferenceBattleState.pending_inserted_actions; request owner resolved from explicit outer Caster in accepted shape.",
+      "native": "TurnBasedGameMode declares separate _InsertAbilityList and _InsertUltraSkillParamsQueue; actor ownership is not container ownership."
+    },
+    "visible_when": {
+      "reference": "Synchronous append at the selected canonical task position; copied by read-only candidate projection.",
+      "native": "WaitUse/pending/next-unused symbols exist; exact request admission and visibility transitions UNKNOWN.",
+      "question_id": "SA-Q2"
+    },
+    "relative_to_ordinary": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q2"
+    },
+    "remove_after_selection": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q3"
+    },
+    "consume_ordinary_turn": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q3"
+    },
+    "change_av": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q3"
+    },
+    "nested_insertion": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q4"
+    },
+    "simultaneous_insert_order": {
+      "reference": "Append order is preserved for diagnostics only.",
+      "native": "_SortTurnInsertAbility/_CompareByInsertAbilityInstance, mapped priority and conditional priority are declared. Direction, ties, revalidation and stable order UNKNOWN.",
+      "question_id": "SA-Q2"
+    },
+    "ultra_queue": "Enqueue/dequeue/peek/count names coexist with _FindInsertIndex. Do not assign FIFO/LIFO from Queue naming.",
+    "source_guards": [
+      "PreCheck (including AbilityOwnerInsertUnusedCount)",
+      "ActivePredicate",
+      "OwnerAliveState/TargetAliveState",
+      "CanRunOnUnselectableTarget",
+      "AbortBehaviorFlags",
+      "InsertConditionPriority",
+      "IgnoreMuteAction",
+      "CanRunAfterFightFinish"
+    ],
+    "guard_timing": "Declaration/source existence only; enqueue-time vs selection-time vs execution-time check/abort schedule UNKNOWN.",
+    "presentation_visibility": "ShowInActionBar is preserved UI intent, not scheduler readiness.",
+    "evidence": [
+      "SA-F01",
+      "SA-F04",
+      "SA-F05",
+      "SA-S01",
+      "SA-S07",
+      "SA-S08"
+    ]
+  },
+  "arbitration_contract": {
+    "native_entity_comparator": {
+      "status": "PARTIAL_BUSINESS_MEANING_WITH_RECOVERED_BASE_COMPARISON",
+      "chain": "M499865 -> M499866 -> M499867(left/right) -> M516740",
+      "key_order": [
+        {
+          "order": 1,
+          "key": "packed +0x00 FixPoint remaining delay",
+          "direction": "ASCENDING",
+          "guard": "M499867 property38 read only when requested; M499865 requests true"
+        },
+        {
+          "order": 2,
+          "key": "packed +0x08 boolean",
+          "direction": "TRUE_FIRST",
+          "population": "actor == mode+0x200 and component+0x10c unsigned-less-than mode+0x2b4; business meaning remains partially reconstructed"
+        },
+        {
+          "order": 3,
+          "key": "packed +0x09 boolean",
+          "direction": "TRUE_FIRST",
+          "guard": "equal delay == 0",
+          "population": "collection/helper result; exact named storage join UNKNOWN"
+        },
+        {
+          "order": 4,
+          "key": "packed +0x0c signed integer",
+          "direction": "DESCENDING",
+          "guard": "equal delay == 0",
+          "population": "normal branch derives 0/1 from lookup result; related-entity branch inherits this key"
+        },
+        {
+          "order": 5,
+          "key": "packed +0x10 signed integer",
+          "direction": "ASCENDING",
+          "population": "lookup result; related-entity branch inherits this key"
+        },
+        {
+          "order": 6,
+          "key": "packed +0x14 signed integer",
+          "direction": "ASCENDING",
+          "population": "zero normally; M514479 result on related-entity branch"
+        }
+      ],
+      "related_entity_rule": "M499867 recursively packs entity returned by M514486 under M514489 guard, copies only +0x0c/+0x10 and obtains +0x14 from M514479. It does not copy related actor AV or +0x08/+0x09. Relation identity UNKNOWN.",
+      "evidence": [
+        "SA-N499866",
+        "SA-N499867",
+        "SA-N516740"
+      ],
+      "correction": "Supersedes turn_av_semantics_29.json native_key_order/2: exact zero, and descending +0x0c. Base-body guard analyzed for negative values too; no claim negative delay is reachable."
+    },
+    "factors": [
+      {
+        "factor": "candidate class priority",
+        "native": "UNKNOWN; no recovered global ordering across storage families"
+      },
+      {
+        "factor": "insertion priority",
+        "native": "Named string + conditional override + mapping exist; effective rank and relative-to-ordinary order UNKNOWN"
+      },
+      {
+        "factor": "AV / remaining AV",
+        "native": "Confirmed leading packed entity key in selected mode"
+      },
+      {
+        "factor": "creation / insertion order",
+        "native": "UNKNOWN; source append order belongs only to reference pending visibility"
+      },
+      {
+        "factor": "entity formation order",
+        "native": "UNKNOWN; no named-to-offset tie-key proof"
+      },
+      {
+        "factor": "team side",
+        "native": "UNKNOWN as arbitration key"
+      },
+      {
+        "factor": "runtime ID",
+        "native": "No direct runtime-ID read in inspected comparator; opaque lookup/helper key ancestry remains UNKNOWN"
+      },
+      {
+        "factor": "skill priority",
+        "native": "Separate action/ability priority fields; no universal numeric interpretation"
+      },
+      {
+        "factor": "interrupt level",
+        "native": "UNKNOWN; no universal interrupt-level contract"
+      },
+      {
+        "factor": "FIFO / LIFO / stack",
+        "native": "UNKNOWN per family; no global container algorithm"
+      },
+      {
+        "factor": "source order",
+        "native": "Not a global scheduler order"
+      }
+    ],
+    "global_selection": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q2"
+    },
+    "execution_gate": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q4"
+    }
+  },
+  "tie_break_contract": {
+    "native_all_keys_equal": "Comparator returns 0; underlying List.Sort tie behavior and repeated-sort stability UNKNOWN.",
+    "same_av": "Equal AV still compares additional keys; AV tie is not a final comparator tie.",
+    "reference_policy": "Ordinary reference stable prior action-list order remains explicitly accepted within its scope, without native equivalence.",
+    "prohibited": "No runtime/entity ID fallback, no formation-order fallback, no lexical priority-token sort.",
+    "evidence": [
+      "SA-F02",
+      "SA-N516740",
+      "data/semantics/4.4.54/full_reconstruction/scheduler_ordinary_av_composition_packet_001.json"
+    ],
+    "question_id": "SA-Q1"
+  },
+  "action_consumption": {
+    "contract": "ActionConsumptionContract separates action-task completion, request removal, ordinary-turn accounting, property38 cost/recharge, actor/owner release and candidate refresh.",
+    "effects": [
+      "reference_action_task_state",
+      "native_execution_state",
+      "pending_instance_state/removal",
+      "ordinary_turn_owner/accounting",
+      "property38 remaining delay/cost",
+      "behavior_delay_skip_flag",
+      "current_action_actor",
+      "current_skill_character",
+      "candidate_order_refresh"
+    ],
+    "per_family": [
+      {
+        "family": "ORDINARY_TURN_REFERENCE",
+        "consume_ordinary_turn": true,
+        "av_recharge": "10000/speed under accepted ordinary completion preconditions",
+        "pending_removal": "NONE by this reference boundary",
+        "actor_change": "Select next ordinary only in closed ordinary scope",
+        "release": "Explicit task SUCCESS + caller-settled action boundary",
+        "scope": "REFERENCE_ONLY"
+      },
+      {
+        "family": "INSERTED_ABILITY",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "TURN_INSERT_ACTION / bonus / Windfury",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "ULTRA_SKILL",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "FOLLOW_UP_ATTACK umbrella",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "ONE_MORE_SKILL_CONTINUATION",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "IMMEDIATE_ACTION",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "SUMMON_MEMOSPRITE",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "family": "INTERRUPT_REACTION",
+        "consume_ordinary_turn": "UNKNOWN",
+        "av_recharge_or_cost": "UNKNOWN",
+        "pending_removal": "UNKNOWN or family-dependent representation",
+        "original_actor_turn_preserved": "UNKNOWN",
+        "release": "UNKNOWN",
+        "question_id": "SA-Q3"
+      }
+    ],
+    "boundary_facts": [
+      {
+        "confidence": "FACT",
+        "statement": "SkillPerformFinish reference marker writes only its supplied action task; it does not consume a native turn.",
+        "evidence": [
+          "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Native GoTurnEnd requests a separate FSM transition to 20; no direct property38 recharge/removal in that body. FSM transition effects remain unknown.",
+        "evidence": [
+          "SA-N499649"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Native turn-cost ratio/source writes are separate from actor property38 mutation and from action-task state.",
+        "evidence": [
+          "SA-N499795",
+          "SA-N499796"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "OnAttackFinishComplete performs guarded collection cleanup, not a recovered generic recharge.",
+        "evidence": [
+          "SA-N506519"
+        ]
+      }
+    ],
+    "consume_once": "Terra must require the selected action identity and an explicit family consumption contract before applying irreversible scheduler state transitions; this is an architecture requirement, not a recovered native once-only algorithm.",
+    "request": "SA-Q3"
+  },
+  "start_finish_release": {
+    "distinct_boundaries": [
+      "CANDIDATE_VISIBLE",
+      "CANDIDATE_ADMITTED",
+      "SELECT",
+      "ACTION_START",
+      "SKILL_EXECUTION_START_MARKER",
+      "SKILL_PERFORM_EXECUTION",
+      "DAMAGE_PERFORM_FINISH",
+      "SKILL_PERFORM_FINISH",
+      "ACTION_PHASE_RELEASE",
+      "TURN_END / CONSUMPTION",
+      "NEXT_ARBITRATION"
+    ],
+    "partial_orders": [
+      {
+        "scope": "accepted supplied action-task reference",
+        "order": "caller selects/creates READY action task -> SkillExecutionStart EXECUTING -> SkillPerformFinish SUCCESS",
+        "limit": "Not every source action has these markers; exact native dispatch/start and skill perform start remain unknown."
+      },
+      {
+        "scope": "closed ordinary reference",
+        "order": "settled effects + task SUCCESS -> ordinary completion acknowledgement -> recharge -> stable ordinary sort -> select/advance next",
+        "limit": "No special-family generalization."
+      },
+      {
+        "scope": "native ordinary TurnPrepare base body",
+        "order": "sort -> pick actor -> set action actor/turn owner -> advance AV -> snapshot",
+        "evidence": [
+          "SA-N499799",
+          "SA-N499877"
+        ]
+      },
+      {
+        "scope": "native completion gate",
+        "order": "skill/limbo/add-buff/hold-frame checks -> branch-dependent after-perform/refresh/false-or-success return",
+        "evidence": [
+          "SA-N499626",
+          "SA-N499808"
+        ],
+        "limit": "Exact perform marker -> tested skill state and FSM continuation edge inherited UNKNOWN; Domain 1 not reopened."
+      },
+      {
+        "scope": "pinned source requests",
+        "order": "Boothill TurnInsertAction before its SkillPerformFinish; Acheron UseSkillOneMore before its SkillPerformFinish",
+        "evidence": [
+          "SA-S02",
+          "SA-S03"
+        ],
+        "limit": "Source task placement is not global execution ordering."
+      }
+    ],
+    "universal_linear_chain": "SELECT -> START -> EXECUTION -> PERFORM FINISH -> TURN RELEASE -> RE-ARBITRATE is a conceptual separation only, not a recovered universal native sequence. Insert/continuation phases can intervene; which ones/when remains UNKNOWN.",
+    "damage_boundary": "Independent accepted damage task; damage finish neither selects next action nor proves action/turn end.",
+    "reference_task_SUCCESS_is_not_native_ability_SUCCESS": true,
+    "release_binding": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q3"
+    },
+    "interrupt_points": {
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question_id": "SA-Q4"
+    }
+  },
+  "re_arbitration": {
+    "model": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Hybrid explicit FSM selection, event-driven reordering, and tick-serviced request work; a single continuous priority queue model is unsupported.",
+      "evidence": [
+        "SA-F07"
+      ]
+    },
+    "proven_paths": [
+      {
+        "trigger": "TurnPrepare work",
+        "path": "M499799 -> M499907 sort -> M499877 pick/advance",
+        "effect": "Ordinary selection in scoped path",
+        "evidence": [
+          "SA-N499799",
+          "SA-N499877"
+        ]
+      },
+      {
+        "trigger": "matching action-delay-change event, event+28 false",
+        "path": "M499909 -> M499751 -> M499907 + notify helpers",
+        "effect": "Reorder/notify, not proven active-actor replacement",
+        "evidence": [
+          "SA-N499909",
+          "SA-N499751"
+        ]
+      },
+      {
+        "trigger": "game-mode Tick path",
+        "path": "M499654 -> M499844 _TickGameModeState; M499654 -> M499928 _TickQueuedUltraSkill",
+        "effect": "Work servicing; eligibility and dispatch guards not fully recovered",
+        "evidence": [
+          "SA-N499654"
+        ]
+      },
+      {
+        "trigger": "action participant addition/batch end",
+        "path": "Saved M499727/M499728 call tables contain M499907 sort",
+        "effect": "Local order refresh anchor; caller/event and precise selection timing UNKNOWN",
+        "evidence": [
+          "data/raw/4.4.54/turn_av_topology_census_29.json#/root_methods"
+        ]
+      }
+    ],
+    "read_dependency_matrix": [
+      {
+        "change": "action/perform finish",
+        "reads": "native completion predicates/FSM and current skill; reference explicit successful action task",
+        "selection_time": "After explicit reference completion only; native continuation UNKNOWN",
+        "question_id": "SA-Q3"
+      },
+      {
+        "change": "AV mutation",
+        "reads": "property38; guarded delay-change event; packed order dependencies",
+        "selection_time": "Sort/notify established, pick only separately",
+        "question_id": "SA-Q1"
+      },
+      {
+        "change": "insert queue mutation",
+        "reads": "WaitUse/pending/priority/ActivePredicate/liveness masks",
+        "selection_time": "UNKNOWN",
+        "question_id": "SA-Q2"
+      },
+      {
+        "change": "entity death or activity removal",
+        "reads": "settled reference alive; native action membership/HasActionTurn/lock and owner-target masks",
+        "selection_time": "Native callback timing UNKNOWN",
+        "question_id": "SA-Q5"
+      },
+      {
+        "change": "summon creation",
+        "reads": "actor registration and owner/related-actor join",
+        "selection_time": "UNKNOWN",
+        "question_id": "SA-Q5"
+      },
+      {
+        "change": "extra/one-more grant",
+        "reads": "request family + continuation state, not just property38",
+        "selection_time": "UNKNOWN",
+        "question_id": "SA-Q4"
+      },
+      {
+        "change": "Ultra readiness/input",
+        "reads": "queued Ultra parameters and insertion gate separately from resource/skill legality",
+        "selection_time": "UNKNOWN; readiness alone does not imply auto-execution",
+        "question_id": "SA-Q4"
+      },
+      {
+        "change": "phase/wave transition or formation refresh",
+        "reads": "externally supplied action membership, liveness and relation updates only",
+        "selection_time": "UNKNOWN; Domain 3 not reopened",
+        "question_id": "SA-Q5"
+      },
+      {
+        "change": "speed/recharge",
+        "reads": "property32 -> remaining-delay calculation; existing ratio/source fields",
+        "selection_time": "Generic cost/refresh trigger ordering UNKNOWN",
+        "question_id": "SA-Q3"
+      }
+    ],
+    "dirty_flag": "_ActionDelayChangeStamp/_ActionDelayOrderTrigger names do not prove dirty-flag scheduling. No global dirty-flag loop is claimed.",
+    "candidate_snapshot_rule": "A projection can be recomputed without releasing the current action. Refresh, admission, selection and execution must remain separate."
+  },
+  "legal_actions_boundary": {
+    "SchedulerCandidate": "Entity timeline opportunity or visible requested action subject to scheduler admission/phase/order.",
+    "PlayerLegalAction": "Choice permitted by skill/resource/target/input rules; produced outside this pass for the appropriate decision context.",
+    "distinctions": [
+      "A selected ordinary actor does not make every skill legal.",
+      "A ready Ultra option is not an automatic execution request.",
+      "An inserted ability request is not necessarily a player choice.",
+      "Monster scheduler actor is not a PlayerLegalAction; AI decisions are Domain 5.",
+      "Target selectability is independent of action participation and source CanRunOnUnselectableTarget."
+    ],
+    "terra_interface": "legal_actions() consumes a supported scheduler decision context; scheduler_candidate_state() can expose unresolved candidates without promising playability.",
+    "status": "ARCHITECTURE_BOUNDARY_CLOSED; gameplay legality intentionally not reconstructed",
+    "evidence": [
+      "SA-F03",
+      "SA-S08",
+      "data/semantics/4.4.54/full_reconstruction/scheduler_candidate_state_packet_001.json"
+    ]
+  },
+  "summon_actor_boundary": {
+    "relation_model": "SchedulerActorRelation",
+    "logical_fields": {
+      "actor_ref": "Actual schedulable/runtime identity when known",
+      "owner_ref": "Source owner or summoned-owner relation with provenance",
+      "turn_owner_ref": "Independent current ordinary-turn owner",
+      "related_order_actor_ref": "Native M499867 relation result when recovered",
+      "timeline_membership": "TRUE/FALSE/UNKNOWN; never infer from actor kind",
+      "av_binding": "SELF/SHARED/DERIVED/UNKNOWN with evidence",
+      "request_mechanism": "Ordinary/inserted/other/UNKNOWN"
+    },
+    "facts": [
+      {
+        "confidence": "FACT",
+        "statement": "Native SkillType declares Servant alongside Normal/Skill/Ultra; this is a skill-type declaration, not independent timeline proof.",
+        "evidence": [
+          "T17942"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Topaz source mutates delay on Topaz_BattleEventEntity rather than Caster; alias identity-to-timeline membership remains unresolved.",
+        "evidence": [
+          "SA-S10"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Servant-related force-kill is a TurnInsertAbility path; no ordinary action-family conclusion follows.",
+        "evidence": [
+          "SA-S09"
+        ]
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Native comparator can inherit some ordering keys from a related entity without copying its AV; relationship manager business identity is unknown.",
+        "evidence": [
+          "SA-N499867"
+        ]
+      }
+    ],
+    "independent_av": "UNKNOWN per actor family",
+    "independent_candidate": "UNKNOWN per actor family",
+    "owner_linked_or_shared_turn": "UNKNOWN",
+    "special_queue": "UNKNOWN",
+    "execution": "UNKNOWN",
+    "question_id": "SA-Q5"
+  },
+  "interrupt_boundary": {
+    "evidence_supported": "A request can occur before enclosing perform finish (source); queue-like Ultra, inserted-ability working phases and ImmediateAction actors are separately represented (native declarations).",
+    "cases": [
+      {
+        "family": "TurnInsertAbility",
+        "queued_only": "Reference pending-only; native activation UNKNOWN",
+        "immediate_nested_execution": "UNKNOWN",
+        "interrupt_current": "UNKNOWN",
+        "wait_perform_finish": "UNKNOWN",
+        "wait_turn_end": "UNKNOWN"
+      },
+      {
+        "family": "TurnInsertAction / ExtraAction-like bonus",
+        "queued_only": "Source request and prepare/delay flags; native activation UNKNOWN",
+        "immediate_nested_execution": "UNKNOWN",
+        "interrupt_current": "UNKNOWN",
+        "wait_perform_finish": "UNKNOWN",
+        "wait_turn_end": "UNKNOWN"
+      },
+      {
+        "family": "Ultra",
+        "queued_only": "Distinct parameter queue and Tick service declared/anchored",
+        "immediate_nested_execution": "UNKNOWN",
+        "interrupt_current": "UNKNOWN",
+        "wait_perform_finish": "UNKNOWN",
+        "wait_turn_end": "UNKNOWN"
+      },
+      {
+        "family": "FUA label",
+        "queued_only": "No universal mapping; evaluate concrete source mechanism",
+        "immediate_nested_execution": "UNKNOWN",
+        "interrupt_current": "UNKNOWN",
+        "wait_perform_finish": "UNKNOWN",
+        "wait_turn_end": "UNKNOWN"
+      },
+      {
+        "family": "ImmediateAction / OneMore",
+        "queued_only": "Separate entity/continuation domains, not automatically an inserted queue",
+        "immediate_nested_execution": "UNKNOWN",
+        "interrupt_current": "UNKNOWN",
+        "wait_perform_finish": "UNKNOWN",
+        "wait_turn_end": "UNKNOWN"
+      }
+    ],
+    "reentrant_request_vs_execution": "Do not turn an insertion request encountered during a current action into recursive execution. Do not forbid native nesting either; retain UNKNOWN gate until Q4 evidence.",
+    "suspension_context": "Original action actor, turn owner, current skill and request identity must be preservable independently. Stack/FIFO storage design is not fixed by this packet.",
+    "evidence": [
+      "SA-F01",
+      "SA-F05",
+      "SA-F08",
+      "SA-N499654",
+      "T17991"
+    ],
+    "question_id": "SA-Q4"
+  },
+  "negative_evidence": [
+    {
+      "id": "SA-NEG01",
+      "hypothesis": "Same AV means runtime-ID ordering",
+      "result": "STATIC_COUNTERMODEL; equal AV still compares +08/+09/+0c/+10/+14. Runtime-ID tie ancestry not recovered; no literal game-trace contrary-ID pair claimed.",
+      "evidence": [
+        "SA-N516740",
+        "SA-N499867"
+      ]
+    },
+    {
+      "id": "SA-NEG02",
+      "hypothesis": "After-perform notification immediately switches scheduler",
+      "result": "NATIVE_BASE_BODY_COUNTEREXAMPLE: M499626 0E751954 calls OnAfterSkillPerform and 0E75195C clears eax (false). Skill/limbo/hold-frame guards and FSM check exist.",
+      "evidence": [
+        "SA-N499626"
+      ]
+    },
+    {
+      "id": "SA-NEG03",
+      "hypothesis": "Candidate visibility immediately means execution",
+      "result": "REFERENCE_COUNTEREXAMPLE: source-backed Black Swan pending record is visible beside ordinary candidates; action tasks/delays remain unchanged and arbitration unresolved.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/source_backed_insert_ability_queue_component_reference_001.json",
+        "data/semantics/4.4.54/full_reconstruction/scheduler_candidate_state_packet_001.json"
+      ]
+    },
+    {
+      "id": "SA-NEG04",
+      "hypothesis": "Every insertion is chronological FIFO",
+      "result": "DECLARATION/SOURCE CHALLENGE: separate sort/comparator/mapping/conditional-priority mechanisms and Ultra _FindInsertIndex exist. This is not a runtime proof of non-FIFO order.",
+      "evidence": [
+        "M499935",
+        "M499936",
+        "M499920",
+        "SA-S07"
+      ]
+    },
+    {
+      "id": "SA-NEG05",
+      "hypothesis": "Insertion only requested after action finish",
+      "result": "SOURCE_COUNTEREXAMPLE: Boothill request precedes own SkillPerformFinish; Acheron OneMore precedes own finish. Native child start timing remains UNKNOWN.",
+      "evidence": [
+        "SA-S02",
+        "SA-S03"
+      ]
+    },
+    {
+      "id": "SA-NEG06",
+      "hypothesis": "All candidates must use ordinary alive/selectable filter",
+      "result": "SOURCE_COUNTEREXAMPLE TO UNIVERSAL FILTER: inserted requests declare OwnerAliveState/TargetAliveState including limbo/revivable and CanRunOnUnselectableTarget. Exact native guard evaluation still UNKNOWN.",
+      "evidence": [
+        "SA-S08",
+        "SA-S09"
+      ]
+    },
+    {
+      "id": "SA-NEG07",
+      "hypothesis": "Ready ordinary loses to inserted / inserted preserves ordinary turn / extra does not recharge / FUA runs mid-action / Ultra runs outside its turn",
+      "result": "NOT_ESTABLISHED by inspected native bodies or a matched runtime trace. These requested witnesses remain Q2/Q3/Q4; do not invent gameplay examples."
+    },
+    {
+      "id": "SA-NEG08",
+      "hypothesis": "Summon always has independent AV and turn",
+      "result": "NOT_ESTABLISHED. Distinct alias delay operation and partial related-key inheritance require an actor relation; no universal independent or shared timeline execution witness.",
+      "evidence": [
+        "SA-S10",
+        "SA-N499867"
+      ]
+    }
+  ],
+  "terra_contract": {
+    "ready": "PARTIAL",
+    "architecture_ready": "YES for separating state, discovery, mechanism, arbitration, consumption and refresh; NO for full native action execution policy.",
+    "safe_components": [
+      "Keep existing bounded primitive and ordinary reference contracts.",
+      "Expose ordinary and pending requests separately without cross-family selection.",
+      "Keep actor/turn-owner/current-skill/action-task/request identities separate.",
+      "Represent UNKNOWN admission, effective priority and consumption explicitly.",
+      "Maintain actor relation independently of action mechanism and gameplay label.",
+      "Return blocked arbitration with exact competing evidence when native order is absent."
+    ],
+    "required_boundaries": [
+      "SchedulerState",
+      "CandidateDiscovery",
+      "ActionCandidate with evidence",
+      "Family-aware ArbitrationResult",
+      "ActionExecutionState",
+      "ActionConsumptionContract",
+      "ReArbitrationTrigger"
+    ],
+    "fail_closed_cases": [
+      "Any cross-family competition without native order contract",
+      "Native all-keys-equal tie or unbound packed keys when native equivalence is requested",
+      "Special-action completion without proven pending removal and turn/AV cost",
+      "Nested/interrupt request with unresolved suspension/release gate",
+      "Summon alias-to-timeline relation not supplied by evidence"
+    ],
+    "distinction": "Fail-closed native execution does not prevent read-only visibility or deliberate ordinary reference simulation in its already-frozen scope.",
+    "prohibited_implementation": "This pass writes semantic artifacts only; no production scheduler, test suite, or compiler changes."
+  },
+  "strict_rejections": [
+    "same AV -> runtime ID sorting",
+    "inserted action always FIFO",
+    "FUA = inserted action",
+    "Ultimate = immediate action",
+    "ExtraAction consumes ordinary turn",
+    "ExtraAction never consumes ordinary turn without per-family evidence",
+    "every action finish = turn end",
+    "scheduler candidate = legal action",
+    "formation order = scheduler tie-break",
+    "summon always independent AV",
+    "action task SUCCESS = native ability finish",
+    "source operation order = global scheduler order",
+    "reference prior-list stable ties = native List.Sort stability",
+    "behavior ActionDelayState = native property38",
+    "ShowInActionBar = scheduler admission",
+    "all pending/active/finished inserted states collapsed into one queue entry boolean",
+    "priority tokens sorted lexically or assigned guessed numbers",
+    "SetImmediateAction means immediate recursive execution",
+    "all families share one consuming priority_queue.pop()",
+    "M499867 related-key inheritance means shared AV",
+    "native comparator zero-only guard widened to <=0",
+    "native packed +0x0c key sorted ascending",
+    "absence of a call in a truncated shortlist proves no call"
+  ],
+  "remaining_unknowns": [
+    {
+      "id": "SA-Q1",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Ordinary native admission and complete ordering/ties",
+      "exact_methods_fields": [
+        "M530650 HasActionTurn",
+        "M506678 IsAnyLockActionDelay and component+0x230",
+        "M499867 PackActionDelayCompareData: mode+0x180/+0x1a8/+0x250 and component+0x10c",
+        "M499907 native List.Sort comparator binding/equal-key behavior"
+      ],
+      "missing_relationship": "Named fields/collection population -> packed comparison keys -> full eligible actor set; all-keys-equal ordering. Team, formation and runtime-ID ancestry cannot be assumed.",
+      "best_evidence_source": "Matching-snapshot helper bodies and field-layout map, plus ordered same-AV/all-packed-keys-equal trace carrying original list and complete keys."
+    },
+    {
+      "id": "SA-Q2",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Inserted ability identity/admission/priority and relative-to-ordinary selection",
+      "exact_methods_fields": [
+        "M509752 TurnInsertAbility executor full 3728-byte body",
+        "M499705 TryInsertAbility",
+        "M499935 _SortTurnInsertAbility",
+        "M499936 _CompareByInsertAbilityInstance",
+        "M499787/M499788 priority mapping",
+        "M499852 _TickInsertAbility",
+        "M499853 _TryPendingInsertAbility",
+        "M499858 _IsInsertAbilityCanRun",
+        "F255919 _InsertAbilityList / F256011 _PendingInsertAbilityPriority"
+      ],
+      "missing_relationship": "Concrete enqueue instance identity + source/conditional/mapped priority -> runnable state -> winner across ordinary and pending families; duplicate/FIFO/tie policy and check timing.",
+      "best_evidence_source": "Provenance-matched listed bodies + priority mapping initialization/config + trace with two pending requests and ready ordinary actor, all queue/phase/priority values."
+    },
+    {
+      "id": "SA-Q3",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "ActionConsumption and native turn release",
+      "exact_methods_fields": [
+        "M499861 _FinishInsertAbility",
+        "M499860 _FinishInsertAbilityAborted",
+        "M499859 _ResetInsertAbilityList",
+        "M499809 CheckSelfActionExecuting1Working",
+        "M499649 GoTurnEnd and FSM TurnEnd transition handlers",
+        "M499795/M499796 turn-cost ratio/source writes",
+        "F255879 current actor / F255911 turn owner / F255984 phase-end / F255991 cost ratio",
+        "TurnInsertAction / UseSkillOneMore / Ultra finish paths"
+      ],
+      "missing_relationship": "Selected family identity -> native execution finish -> pending mark/remove -> ordinary turn ownership/counter -> AV recharge/cost/skip flag -> release. Exact timing and original-turn preservation unknown.",
+      "best_evidence_source": "Matched finish/abort and FSM handler bodies; identity-bearing trace before/after ordinary, inserted, bonus and Ultra actions with property38, speed, ratio, turn counter and both actor/owner slots."
+    },
+    {
+      "id": "SA-Q4",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Ultra/immediate/continuation arbitration and nested interruption gates",
+      "exact_methods_fields": [
+        "M499677 EnqueueInsertUltraSkillQueue",
+        "M499920 _FindInsertIndex",
+        "M499928 _TickQueuedUltraSkill",
+        "M499692/M499694/M499695 Ultra try/do/high-priority methods",
+        "M499804/M499805 phase gates",
+        "M499811/M499812 Ultra executing gates",
+        "M500064/M500066/M500068 immediate set/can/remove",
+        "M509759 TurnInsertAction",
+        "M509825 UseSkillOneMore full body"
+      ],
+      "missing_relationship": "During which current FSM/perform state can a request be queued, selected, nested, interrupt, or wait; how suspended action/turn owner resumes and which family can outrank another.",
+      "best_evidence_source": "Matched gate/queue/continuation bodies or ordered trace injecting Ultra, concrete attack-insert, bonus and immediate requests before damage finish, before perform finish and before turn end."
+    },
+    {
+      "id": "SA-Q5",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "SchedulerActorRelation and actor-change candidate refresh dependencies",
+      "exact_methods_fields": [
+        "M499867 relation branch",
+        "M514489 GFMFIIEEACK / M514486 ADBAJBEHIOF / M514479 OAEONMOMFDI on T56082",
+        "M499727/M499728/M499729 action membership mutation callers",
+        "M499909 delay-change event type/+0x28/+0x2c",
+        "SA-S09 MCommon_Servant / SA-S10 Topaz_BattleEventEntity"
+      ],
+      "missing_relationship": "Actor/owner/related-entity mapping and independent/shared AV/turn membership; event-to-refresh/pick timing for death, creation and externally supplied phase/formation membership changes. No Domain 3 or AI semantics requested.",
+      "best_evidence_source": "Matched relation helper and action-membership event caller bodies; scheduler-only trace with actor IDs/owner refs/action list/property38 and selected actor around creation/death/refresh."
+    }
+  ],
+  "do_not_reason_again": [
+    "Domains 1 TriggerAbility, 2 Modifier, 3 Formation/Boss remain frozen; consume their outputs only.",
+    "Accepted marker/delay/ordinary AV/pending visibility reference packets are input; no primitive reimplementation.",
+    "Native TurnBasedGameMode declares distinct ordinary, Ultra queue, inserted-ability and immediate domains; preserve actor vs turn-owner identity.",
+    "Packed native entity comparator base path is established at SA-N516740 with correct operand orientation: zero-only special block, +0x0c descending. Do not repeat broad AV census.",
+    "Native all-keys-equal List.Sort stability and field business identities remain Q1, not runtime-ID fallbacks.",
+    "OnAfterSkillPerform can be reached while CheckExecutingFinished returns false; performance marker/notification is not turn release.",
+    "Insertion/OneMore request before enclosing finish is source evidence, not proof of nested execution.",
+    "No matched runtime counterexample for special turn/AV preservation or cross-family winner recovered in Pass 1.",
+    "Saved full insert/Ultra/immediate/finish bodies are missing in inspected evidence; use the five exact evidence requests, not repeated metadata searches or live DLL RVAs.",
+    "Stop after Domain 4 Pass 1; do not enter AI, Damage, Retarget, Equipment or Stage/Mode."
+  ],
+  "persistence_note": "Early skeleton and second checkpoint preceded final synthesis; supporting evidence and validation are durable.",
+  "native_semantic_status": "BLOCKED_BY_EVIDENCE",
+  "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json",
+  "evidence_model": {
+    "FACT": "Direct saved declaration, scoped source fact, saved machine-code fact, or explicitly selected reference fact; evidence_kind/scope controls promotion.",
+    "STRONG_RECONSTRUCTION": "Architecture constraint justified by several independent scoped facts; not native execution closure.",
+    "UNKNOWN": "No native contract; do not default to false, FIFO, source order, runtime ID, or ordinary execution.",
+    "native_scope": "Only saved snapshot 7b44379b...; base-body conclusions exclude IFix replacement branches.",
+    "references": "SA-N* and SA-S* resolve in evidence_artifact; SA-F* resolve below. No game/GOLDEN runtime trace recovered."
+  },
+  "accepted_baseline": [
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_skill_execution_start_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Explicit supplied action-task READY -> EXECUTING; neither selection nor AV/turn consumption.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Explicit supplied action-task EXECUTING -> SUCCESS; not native AbilityInstanceState SUCCESS or turn end.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_damage_perform_finish_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Separate damage-task finish; no action release inference.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_delay_add_normalized_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Fixed normalized delay-state mutation.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_dynamic_delay_add_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Dynamic normalized delay-state mutation.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_set_reset_action_delay_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Set/reset/SkipTargetTurn storage; no property38 arbitration bridge.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_insert_ability_queue_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Bounded Black Swan immutable pending append only.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_ordinary_eligibility_visibility_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Existing timeline membership + explicit ordinary participation + settled alive, preserving prior list order.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_ordinary_av_composition_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Ordinary reference completion/recharge/advance and deliberate stable prior-list ties.",
+      "native_scheduler_equivalence": false
+    },
+    {
+      "artifact": "data/semantics/4.4.54/full_reconstruction/scheduler_candidate_state_packet_001.json",
+      "evidence_kind": "ACCEPTED_REFERENCE_BOUNDARY",
+      "scope": "Read-only ordinary + pending visibility; unresolved cross-category arbitration.",
+      "native_scheduler_equivalence": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "SA-F01",
+      "confidence": "FACT",
+      "statement": "Candidate domains, current action entity, turn owner and skill character have separate native fields; do not collapse their lifetimes.",
+      "evidence": [
+        "F255881",
+        "F255863",
+        "F255919",
+        "F255895",
+        "F255879",
+        "F255911",
+        "F255858"
+      ]
+    },
+    {
+      "id": "SA-F02",
+      "confidence": "FACT",
+      "statement": "Native entity ordering is a packed comparator, not AV + runtime ID. All-keys-equal sorting stability is unknown. Two prior summary details are corrected from saved instructions.",
+      "evidence": [
+        "SA-N499866",
+        "SA-N499867",
+        "SA-N516740"
+      ]
+    },
+    {
+      "id": "SA-F03",
+      "confidence": "FACT",
+      "statement": "Native ordinary pick checks membership inputs, HasActionTurn and a conditional delay-lock filter; it can select before advancing remaining AV. AV zero alone is neither complete admission nor execution.",
+      "evidence": [
+        "SA-N499876",
+        "SA-N499877"
+      ]
+    },
+    {
+      "id": "SA-F04",
+      "confidence": "FACT",
+      "statement": "InsertAbilityPriority is a string-named config key; separate conditional override and global mapping declarations prevent treating raw source tokens as one global numeric sort.",
+      "evidence": [
+        "F97289",
+        "F97290",
+        "F97308",
+        "F97309",
+        "F255876",
+        "M499787",
+        "M499788",
+        "SA-S07"
+      ]
+    },
+    {
+      "id": "SA-F05",
+      "confidence": "FACT",
+      "statement": "WaitUse/InsertAbilityWorking/SelfDeathProcess/AllFinish declarations and separate pending/current/next accessors require visibility, running state and finished state to remain distinct.",
+      "evidence": [
+        "T56354",
+        "F256002",
+        "F256011",
+        "M500040",
+        "M500041"
+      ]
+    },
+    {
+      "id": "SA-F06",
+      "confidence": "FACT",
+      "statement": "Ordinary skill-execution completion is guarded; OnAfterSkillPerform is present on a path that returns false. TurnEnd is a separate FSM transition.",
+      "evidence": [
+        "SA-N499626",
+        "SA-N499808",
+        "SA-N499649"
+      ]
+    },
+    {
+      "id": "SA-F07",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Reorder has an explicit event-driven path, TurnPrepare has an explicit sort/pick path, and Tick services queued Ultra work. A hybrid FSM/event/tick design is supported; immediate global selection after every mutation is not.",
+      "evidence": [
+        "SA-N499909",
+        "SA-N499751",
+        "SA-N499799",
+        "SA-N499654"
+      ]
+    },
+    {
+      "id": "SA-F08",
+      "confidence": "FACT",
+      "statement": "Source insertion/continuation requests can appear before their enclosing perform-finish marker. This supports request-versus-execution separation, not a proved nested execution or preemption point.",
+      "evidence": [
+        "SA-S02",
+        "SA-S03"
+      ]
+    },
+    {
+      "id": "SA-F09",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Actor relation must be distinct from candidate mechanism: special alias delay mutation and related-entity comparator-key inheritance exist, without a universal independent summon AV contract.",
+      "evidence": [
+        "SA-S09",
+        "SA-S10",
+        "SA-N499867"
+      ]
+    }
+  ],
+  "scope_validation": {
+    "production_implementation_changed": false,
+    "compiler_census_run": false,
+    "full_project_audit_run": false,
+    "live_dll_opened": false,
+    "subagents_used": false,
+    "frozen_domains_reanalyzed": false,
+    "git_head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "git_status": "Existing damage artifacts and untracked reverse/source work retained; only scheduler semantic artifacts and master intended for delivery."
+  },
+  "validation": {
+    "status": "PASS",
+    "frozen_domains": {
+      "cross_behavior": {
+        "unchanged": true,
+        "before_value_sha256": "16b32c4a34f5d7e6d1cbc803e2c959fee2740db914bb76dfed8f75317ab6ea95",
+        "after_value_sha256": "16b32c4a34f5d7e6d1cbc803e2c959fee2740db914bb76dfed8f75317ab6ea95"
+      },
+      "modifier": {
+        "unchanged": true,
+        "before_value_sha256": "a8009019c0b13764d1d5110d6ae84c5f8726c68e20602cb8d33a4764d4e91429",
+        "after_value_sha256": "a8009019c0b13764d1d5110d6ae84c5f8726c68e20602cb8d33a4764d4e91429"
+      },
+      "damage_survival": {
+        "unchanged": true,
+        "before_value_sha256": "b76b39c4d3797c84edeb2ee230054ee728738a8a217d3ab741e50dea180f4527",
+        "after_value_sha256": "b76b39c4d3797c84edeb2ee230054ee728738a8a217d3ab741e50dea180f4527"
+      },
+      "formation_boss": {
+        "unchanged": true,
+        "before_value_sha256": "045a2bd305874ffe039f79aba01c7235052f42cc7f9a7bddc9535f6940bb2eae",
+        "after_value_sha256": "045a2bd305874ffe039f79aba01c7235052f42cc7f9a7bddc9535f6940bb2eae"
+      }
+    },
+    "evidence_file_sha256": "160961f58071a8facbef5a250f76629c44782b58d8333d9477022b0cb544a20c",
+    "source_samples_validated": 12,
+    "native_body_spans_validated": 15,
+    "native_individual_hash_matches": 7,
+    "remaining_exact_unknowns": 5,
+    "internal_evidence_and_question_refs_validated": true,
+    "production_tests_run": false,
+    "compiler_run": false
+  }
+}

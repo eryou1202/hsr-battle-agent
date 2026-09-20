@@ -1,0 +1,1050 @@
+{
+  "schema": "hsr_battle_agent.astra_formation_boss/1",
+  "domain": "formation_boss",
+  "pass": 1,
+  "status": "PASS_1_COMPLETE",
+  "authority": {
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "game_version": "4.4.54",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "corpus_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+    "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+    "observed_date": "2026-09-14",
+    "native_manifest": "data/normalized/4.4.54/manifest.json",
+    "native_binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "native_metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+    "native_limit": "Saved metadata and bridge/call summaries only. Bridge files lack their own embedded binary hash; correspondence is inherited from saved normalized snapshot lineage, not independently re-proven against a DLL. No live DLL accessed.",
+    "source_limit": "Pinned 4.4.0 close-version design source, not an exact 4.4.54 native trace."
+  },
+  "formation_model": {
+    "meaning": {
+      "statement": "Team-scoped spatial arrangement with ordered/indexed entity formation records and normal/custom/camera representations. It is neither exclusively presentation nor a complete combat topology.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "FB-E03",
+        "FB-E04",
+        "FB-E05",
+        "FB-E15"
+      ]
+    },
+    "owner": {
+      "statement": "TeamFormationComponent carries _Team and team-level state. Represent the owner as a team-entity/component reference within a battle. Do not attach it solely to the calling boss or wave. Exact resolution of omitted Team and explicit FormationTarget is FB-Q1.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "FB-E01",
+        "FB-E03",
+        "FB-E18"
+      ]
+    },
+    "identity": {
+      "native_stable_formation_id": "UNKNOWN; no explicit per-request formation ID is observed",
+      "asset_identity": "CustomFormationName and FormationConfigName are configuration names, not runtime entity/group IDs. FormationType is a mode discriminator.",
+      "terra_identity": "Locally allocated FormationInstanceRef scoped by battle + owner-component + representation, explicitly not a recovered native ID."
+    },
+    "ordered_slots": {
+      "statement": "Represent logical formation index, row index, spatial location and location-list ordering separately from entity ID and LineupIndex. Index/adjacency APIs establish ordered topology; direction, holes, duplicate rules and multi-row projection are FB-Q2.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "FB-E04",
+        "FB-E05",
+        "FB-E11"
+      ]
+    },
+    "concept_distinctions": {
+      "combat_team": "Separate affiliation and team entity",
+      "enemy_lineup": "A member/index view, not all battle entities",
+      "boss_parts": "PartID relation separate from formation",
+      "summon_group": "Summoner/creator relation separate",
+      "wave": "Wave runtime ID/context separate from team/formation identity",
+      "active_inactive": "Representation-specific activity plus independent combat lifecycle",
+      "target_selection": "Selectors may map/sort by formation; legality remains separate",
+      "presentation_arrangement": "Strong spatial/camera evidence; safe omission not proven"
+    },
+    "membership_cardinality": {
+      "slot_to_entity": "Entity-index access is supported; strict one-to-one bijection and slot capacity are UNKNOWN",
+      "one_entity_multiple_views": "Model multiple views/relations without copying entity state; simultaneous membership in multiple native formations/teams is UNKNOWN",
+      "multiple_relation_kinds": "Supported: part/summon/shared-state/alias membership may coexist. Do not assume a single parent tree."
+    }
+  },
+  "entity_topology": {
+    "node": {
+      "EntityRef": "Stable identity in BattleEntityRegistry; definition MonsterID, MonsterUniqueID, PartID, LineupIndex and formation index remain different identifier domains.",
+      "roles": "Entity with evidence-qualified roles: combat entity, aggregate/controller candidate, body part, summoned entity, helper, target proxy candidate. Roles are not mutually exclusive subclasses.",
+      "controller_policy": "A controller may be a component/role on an entity. Never invent one extra root entity per boss.",
+      "state_ownership": "Store independent combat state or an explicit shared-state relation; missing sharing evidence does not prove independent HP."
+    },
+    "relations": [
+      {
+        "kind": "PART_OF",
+        "key": "(root_entity, PartID) -> entity reference",
+        "evidence": [
+          "FB-E08",
+          "FB-E11"
+        ],
+        "confidence": "STRONG_RECONSTRUCTION",
+        "limit": "Part map known for Feixiao; complete constructor/runtime ID binding unresolved"
+      },
+      {
+        "kind": "SUMMONED_BY",
+        "key": "summoned entity -> summoner",
+        "evidence": [
+          "FB-E09",
+          "FB-E10",
+          "FB-E11"
+        ],
+        "confidence": "STRONG_RECONSTRUCTION",
+        "limit": "Do not equate to body part or AI owner"
+      },
+      {
+        "kind": "CREATED_BY",
+        "key": "entity -> creator",
+        "evidence": [
+          "FB-E11"
+        ],
+        "confidence": "FACT_DECLARATION",
+        "limit": "Creator and Summoner are separately declared; concrete assignments unknown"
+      },
+      {
+        "kind": "HP_SHARED_MEMBER",
+        "key": "group/main reference + sub-entity references + explicit flags",
+        "evidence": [
+          "FB-E09",
+          "FB-E10",
+          "FB-E11"
+        ],
+        "confidence": "STRONG_RECONSTRUCTION",
+        "limit": "No HP calculation, death propagation or flag defaults reconstructed"
+      },
+      {
+        "kind": "FORMATION_MEMBERSHIP",
+        "key": "entity -> formation representation + spatial/index record",
+        "evidence": [
+          "FB-E03",
+          "FB-E04",
+          "FB-E06"
+        ],
+        "confidence": "STRONG_RECONSTRUCTION"
+      },
+      {
+        "kind": "PHASE_ASSOCIATION",
+        "key": "entity -> declared phase/config/state transition provenance",
+        "evidence": [
+          "FB-E14"
+        ],
+        "confidence": "SOURCE_ASSOCIATION_ONLY",
+        "limit": "Not proof of a phase-member collection or automatic topology replacement"
+      },
+      {
+        "kind": "ALIAS_VIEW",
+        "key": "selector definition -> resolved references/order at evaluation",
+        "evidence": [
+          "FB-E08",
+          "FB-E12",
+          "FB-E15"
+        ],
+        "confidence": "FACT_SOURCE",
+        "limit": "Not ownership, entity creation or legal-target eligibility"
+      }
+    ],
+    "reserved_unproved_relations": [
+      "AI_OWNER",
+      "TARGET_PROXY_FOR",
+      "GENERIC_PARENT_OF",
+      "BOSS_CONTROLLER_OF"
+    ],
+    "topology_constraints": [
+      "No body=summon shortcut",
+      "No root=visible target shortcut",
+      "No HP sharing by visual appearance",
+      "No hardcoded tree; support typed graph and set-valued relations",
+      "No duplicate combat state when multiple aliases reference the same entity"
+    ]
+  },
+  "formation_membership": {
+    "model": "FormationMembership(entity_ref, formation_ref, record_ref?, logical_index?, row_index?, position_ref?, membership_state, active_in_this_view?, source_operation, evidence)",
+    "membership_state": "Explicit UNKNOWN/observed membership facts; distinguish active record, retained/removed index history and custom-position participation where proven.",
+    "separate_membership_apis": [
+      "AddEntityToTeamFormation",
+      "RemoveEntityFromTeamFormation(RemainInTeam presence/value)",
+      "AddTeammateEntity",
+      "RemoveTeammateEntity",
+      "MarkMemberUseCustomPostion"
+    ],
+    "evidence": [
+      "FB-E03",
+      "FB-E04",
+      "FB-E06",
+      "FB-E07"
+    ],
+    "rejections": [
+      "No global entity deletion on membership removal",
+      "No team reassignment inferred from custom layout selection",
+      "No universal active/alive equivalence",
+      "No single list shared by entity registry, legal targets and scheduler"
+    ]
+  },
+  "set_team_formation_contract": {
+    "contract_level": "Declarative request and dependencies are Terra-ready; native mutation delta is blocked.",
+    "inputs": {
+      "request_context": "Caller context/provenance retained; not assumed to own the affected team",
+      "team": "Explicit TeamLight/TeamDark or MISSING; receiver resolution unknown when omitted",
+      "formation_selector": "FormationTarget is the affected entity selector, not canonical operation.target (null in all 1505 nodes)",
+      "center_selector": "CustomCenterTargetType is a spatial anchor selector; can address an unselectable helper",
+      "configuration": "Retain FormationType, FormationConfigName and CustomFormationName independently; priority when combined unknown",
+      "entity_list": "No literal member-ID array. Selector results can be singletons or ordered/multiple entities; evaluation/default rules blocked.",
+      "index_or_slot": "No explicit slot/index in observed SetTeamFormation payloads; supplied by formation asset/calculation, not source array inference",
+      "flags": "Preserve presence and value of all 13 declared fields, including unobserved UseLevelAreaRoot/TeamMemberCountingOption."
+    },
+    "missing_defaults": {
+      "FormationType": "Omitted in many named-custom requests; cannot infer enum zero or default from presence of a name",
+      "Team": "327 requests omit Team; five selector requests also specify Team. Precedence/owner resolution UNKNOWN.",
+      "CustomFormationIgnoreDying": "Explicit false occurs; omission and false must remain distinct",
+      "RemoveDying": "Eight explicit true samples; whether it filters/marks/removes records and which collection is affected UNKNOWN",
+      "all_other_fields": "No constructor/body-based defaults recovered; do not fill with language zero values"
+    },
+    "candidate_mutations": {
+      "SET_MEMBERS": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "REPLACE_ALL": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "APPEND": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "REMOVE": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "SWAP": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "ACTIVATE_ENTITY": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "DEACTIVATE_ENTITY": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION",
+      "REORDER_MEMBERS": "NOT_ESTABLISHED_FOR_SETTEAMFORMATION"
+    },
+    "supported_interpretation": {
+      "statement": "Mode/template/custom-layout refresh request on existing team/entity references. Normal/custom geometry and selection order can interact, but no exact collection mutation or gameplay side-effect is licensed by this interpretation.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "FB-E01",
+        "FB-E03",
+        "FB-E04",
+        "FB-E17"
+      ]
+    },
+    "native_boundary": {
+      "wrapper": "M517681",
+      "helpers": [
+        "M517683",
+        "M517682",
+        "M517686"
+      ],
+      "defaults": "T22635 .ctor M125518 and reader M125519",
+      "completion": "Tick M517685 exists; no completion/timing behavior recovered",
+      "body_availability": "BLOCKED_BY_EVIDENCE",
+      "no_direct_target_eval_limit": "Wrapper call summary cannot establish helper target-evaluation or absence thereof"
+    },
+    "runtime_eligibility": "Strict execution rejects unresolved mutation semantics; neither a silent no-op nor inferred membership overwrite is permitted."
+  },
+  "phase_transition_boundary": {
+    "classification": "B: where co-occurring, formation work is one substep; it is not the phase transition itself. Many SetTeamFormation calls are skill choreography without an observed boss phase switch.",
+    "evidence": [
+      "FB-E14",
+      "FB-E13",
+      "FB-E17"
+    ],
+    "phase_name_warning": "1165 lexical Skill*Phase caller operations are not 1165 boss phase transitions.",
+    "native_event_order": "UNKNOWN; source list order is retained, not elevated to a scheduler/parallel execution order.",
+    "source_association_only": [
+      "CharacterChangePhase separately changes declared phase/animation configuration",
+      "Cocolia insert separately uses membership, visibility and summon primitives",
+      "Death callbacks/mode callbacks are distinct dependencies"
+    ],
+    "wave_transition": "WaveOfMonsterRuntimeID exists; no exact SetTeamFormation-to-wave membership edge established.",
+    "do_not_infer": "No phase start/end, body enable/disable, death/revive or wave event automatically rewrites formations."
+  },
+  "targetability_dependency": {
+    "legal_target": "Independent query/policy boundary; membership does not by itself imply legality.",
+    "selectable_unselectable": "Distinct source collections are used. Unselectable entity can be spatial center and part-map root.",
+    "alive_active": "Formation sorting and alive-row filter declarations are not alive-state writes; do not derive alive/active/selectability from membership.",
+    "actual_dependency": "Formation-relative sorting/adjacency exists. Preserve a selector dependency on the exact formation representation once identified.",
+    "same_collection_read_after_write": "UNKNOWN: SetTeamFormation helper writes -> TargetSortByFormation M537942 / TargetMapTeamFormation M538137 reads are not joined.",
+    "no_visual_noop": "Because selection order may read formation data, spatial evidence alone does not license dropping the task.",
+    "evidence": [
+      "FB-E08",
+      "FB-E15",
+      "FB-E18"
+    ],
+    "blocker": "FB-Q3"
+  },
+  "scheduler_dependency": {
+    "scope": "Boundary only; Domain 4 not opened.",
+    "observed_direction": "Declared handlers suggest active entity/skill/turn/camera -> formation refresh; not proof of reverse eligibility effects.",
+    "action_candidate_eligibility": "UNKNOWN",
+    "ordinary_AV_queue_membership": "UNKNOWN",
+    "inserted_action_owner": "UNKNOWN",
+    "AI_actor_set": "UNKNOWN",
+    "terra_rule": "Keep scheduler state/ownership independent. Record unresolved formation notification dependencies; do not enqueue, dequeue or transfer actor ownership from membership alone.",
+    "evidence": [
+      "FB-E16"
+    ],
+    "blocker": "FB-Q3"
+  },
+  "entity_lifecycle_dependency": {
+    "SetTeamFormation": "Affected entity references appear pre-existing by selector/team use; no evidence it creates/spawns/destroys. Full no-side-effect guarantee is not recovered.",
+    "separate_primitives": [
+      "SummonMonster",
+      "CreateBodyPart native declaration",
+      "RemoveEntityFromTeamFormation",
+      "AddEntityToTeamFormation",
+      "SetEntityVisible"
+    ],
+    "proof_boundary": "Cocolia old-caster use and Feixiao remove/rejoin prevent destructive lowering; RemainInTeam=true separates team affiliation from formation removal.",
+    "creation_refresh": "IronTomb summon explicitly has RefreshTeamLocation=false. Joining/positioning, entity creation and refresh are distinct operations even if native lifecycle may coordinate them.",
+    "evidence": [
+      "FB-E06",
+      "FB-E07",
+      "FB-E11",
+      "FB-E13",
+      "FB-E17"
+    ]
+  },
+  "terra_contract": {
+    "readiness": "PARTIAL: architecture/data contracts and strict rejections are ready; full native mutation execution is blocked.",
+    "BattleEntityTopology": {
+      "nodes": "EntityRef -> EntityTopologyNode, with independent identifiers, roles and lifecycle state",
+      "relations": "Evidence-qualified typed edges for part/summoner/creator/shared-state/membership and alias query dependencies",
+      "unknowns": "Explicit UNKNOWN edges/identities; never invent a parent/controller/shared-HP relation"
+    },
+    "FormationState": {
+      "identity": "battle_ref + owner_component_ref + representation_ref; local stable ID only",
+      "collections": "Preserve all-teammate references, indexed formation records, normal records, custom update/member participation, camera ordering and removed-index history as distinct concepts; do not assume exact native containers.",
+      "layout": "mode, template name, custom name, center ref/position, ordered location data, row/index projection, servant mode",
+      "membership": "Separate from registry/team affiliation/legal targets/action participants"
+    },
+    "FormationMutationRequest": {
+      "fields": [
+        "source_operation_id",
+        "source_hash/commit/version_relation",
+        "caller_context_ref",
+        "team_presence/value",
+        "formation_target_selector_presence/value",
+        "center_selector_presence/value",
+        "formation_type_presence/value",
+        "template_name_presence/value",
+        "custom_name_presence/value",
+        "flags_presence/value",
+        "resolved_owner?",
+        "resolved_entity_refs_in_order?",
+        "mutation_semantics_status"
+      ],
+      "operation": "Source primitive SET_TEAM_FORMATION_LAYOUT_REQUEST; no inferred REPLACE_ALL opcode"
+    },
+    "TopologyTransition": {
+      "before": "References/snapshot of affected team/formation representations and entity relations, not a copied global entity list",
+      "mutation": "Resolved evidence-qualified ordered deltas; unresolved delta rejects execution",
+      "side_effect_dependencies": "Explicit dependency ledger for positions, membership indices, selectors, visibility, lifecycle, sharing, phase and scheduler; each side effect has separate proof/status",
+      "after": "Entity registry identities persist unless an independently established lifecycle primitive changes them"
+    },
+    "request_pipeline": [
+      {
+        "step": 1,
+        "name": "capture request/provenance",
+        "reads": "Raw field presence/value and source context",
+        "rule": "Lossless; no defaults"
+      },
+      {
+        "step": 2,
+        "name": "resolve formation owner",
+        "reads": "Team field, caller context, team/entity lookup and FormationTarget presence",
+        "rule": "Exact Team/selector precedence blocked by FB-Q1"
+      },
+      {
+        "step": 3,
+        "name": "resolve involved entities and anchor",
+        "reads": "FormationTarget, CustomCenterTargetType, team query results; retain their different roles/order",
+        "rule": "No spawn; no target legality assumption; missing resolver blocked"
+      },
+      {
+        "step": 4,
+        "name": "validate topology and layout inputs",
+        "reads": "Registry references, declared relation/index state, selected asset/template, capacity/slot mapping and flags",
+        "rule": "Schema/provenance validation now; native duplicate/missing/capacity policy blocked by FB-Q2"
+      },
+      {
+        "step": 5,
+        "name": "apply ordered mutation",
+        "reads": "Before formation state, current normal/custom records, index and center state",
+        "rule": "Preserve observed primitive ordering; actual deltas/clear/add/remove order require FB-Q1/Q2; strict reject otherwise"
+      },
+      {
+        "step": 6,
+        "name": "process proven dependent updates",
+        "reads": "Dependency ledger and executed delta",
+        "rule": "Never infer alive, selectable, action eligibility, AI ownership or HP-sharing writes from membership; actual notifications/read-write joins blocked by FB-Q3"
+      }
+    ],
+    "state_change_matrix": {
+      "layout/config/center/position": "STRONGLY_SUPPORTED_INTENDED_EFFECT; exact writes unknown",
+      "formation collection/order": "MAY_CHANGE; branch and representation unknown",
+      "alive_or_active_combat": "NO_PROVEN_WRITE",
+      "selectable_or_targetable": "NO_PROVEN_WRITE; selector ordering dependency exists",
+      "AI_ownership": "NO_PROVEN_WRITE",
+      "boss_phase_membership": "NO_PROVEN_WRITE",
+      "AV_queue_or_action_participation": "NO_PROVEN_WRITE",
+      "entity_creation_destruction": "NO_PROVEN_WRITE",
+      "HP_sharing": "SEPARATE_DECLARATION"
+    },
+    "strict_execution_policy": "Terra may implement these structures and reject unresolved requests. It may not claim deterministic full-content execution for any payload family solely from this pass."
+  },
+  "boss_topology_families": [
+    {
+      "id": "EXPLICIT_PART_MAP_WITH_UNSELECTABLE_ANCHOR",
+      "samples": [
+        "Feixiao / FeixiaoPart"
+      ],
+      "shape": "Unselectable part root -> PartID 1/2/3; separately addressed source phase operations and custom centers; separately declared HP group.",
+      "evidence": [
+        "FB-E08",
+        "FB-E09"
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "unknown": "Native entity construction, independent target legality/HP for each part and root/main join not complete",
+      "runtime_eligibility": "TOPOLOGY_SCHEMA_ONLY"
+    },
+    {
+      "id": "SHARED_STATE_WITH_SUMMONED_SET",
+      "samples": [
+        "Sunday"
+      ],
+      "shape": "Main entity and CasterSummonedMinions linked by explicit HP group, with ResolveShield=true.",
+      "evidence": [
+        "FB-E10"
+      ],
+      "confidence": "FACT_SOURCE",
+      "unknown": "Summon list identity/order, exact sharing module behavior",
+      "runtime_eligibility": "RELATION_DESCRIPTION_ONLY"
+    },
+    {
+      "id": "MULTIPLE_ID_SELECTED_BOSS_ENTITIES",
+      "samples": [
+        "IronTombCore"
+      ],
+      "shape": "Core/part-named/phantom references use distinct selector bases and monster unique IDs, not an observed PartID mapping.",
+      "evidence": [
+        "FB-E12",
+        "FB-E17"
+      ],
+      "confidence": "FACT_SOURCE",
+      "unknown": "Parent/creator/HP relationships not supplied by those aliases",
+      "runtime_eligibility": "DO_NOT_INFER_PARENT_OR_SHARED_HP"
+    },
+    {
+      "id": "OLD_ENTITY_LEAVES_FORMATION_SEPARATE_SUMMON",
+      "samples": [
+        "Cocolia P1 -> P2 insert source"
+      ],
+      "shape": "Remove old caster membership; separately change visibility and summon; old caster still referenced.",
+      "evidence": [
+        "FB-E13"
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "unknown": "Whether the new entity replaces a logical boss role and what state is transferred",
+      "runtime_eligibility": "LIFECYCLE_BOUNDARY_ONLY"
+    }
+  ],
+  "semantic_families": [
+    {
+      "id": "NORMAL_TEAM_LAYOUT",
+      "count": 889,
+      "owner_distribution": {
+        "Avatar": 261,
+        "Modifier": 8,
+        "Monster": 620
+      },
+      "payload_fields": [
+        "CustomFormationIgnoreDying",
+        "FormationConfigName",
+        "FormationType",
+        "ImmediatelyStopHeadLookAt",
+        "RemoveDying",
+        "ServantState",
+        "Team"
+      ],
+      "samples": [
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/8/entrypoints/0/operations/21",
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/8/entrypoints/0/operations/22"
+      ],
+      "likely_relation": "Select/refresh TeamLight or TeamDark normal/select-target spatial arrangement, possibly using a named template.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "native_branch_identity": "UNKNOWN",
+      "runtime_eligibility": "REJECT_EXACT_NATIVE_EXECUTION_PENDING_FB_Q1_Q2_Q3",
+      "evidence": [
+        "FB-E01",
+        "FB-E03",
+        "FB-E05",
+        "FB-E17"
+      ]
+    },
+    {
+      "id": "NAMED_CUSTOM_TEAM_LAYOUT",
+      "count": 284,
+      "owner_distribution": {
+        "Avatar": 83,
+        "Modifier": 1,
+        "Monster": 200
+      },
+      "payload_fields": [
+        "CustomCenterTargetType",
+        "CustomFormationIgnoreDying",
+        "CustomFormationName",
+        "FormationType",
+        "RefreshFormationCenter",
+        "ServantState",
+        "Team"
+      ],
+      "samples": [
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/8/entrypoints/0/operations/2",
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/8/entrypoints/0/operations/3"
+      ],
+      "likely_relation": "Apply a named arrangement with team-scoped input; optional explicit center.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "native_branch_identity": "UNKNOWN",
+      "runtime_eligibility": "REJECT_EXACT_NATIVE_EXECUTION_PENDING_FB_Q1_Q2_Q3",
+      "evidence": [
+        "FB-E01",
+        "FB-E03",
+        "FB-E05",
+        "FB-E17"
+      ]
+    },
+    {
+      "id": "NAMED_CUSTOM_SELECTOR_LAYOUT",
+      "count": 332,
+      "owner_distribution": {
+        "Avatar": 60,
+        "Modifier": 5,
+        "Monster": 267
+      },
+      "payload_fields": [
+        "CustomCenterTargetType",
+        "CustomFormationIgnoreDying",
+        "CustomFormationName",
+        "FormationTarget",
+        "FormationType",
+        "Team"
+      ],
+      "samples": [
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/52/entrypoints/0/operations/0",
+        "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/52/entrypoints/0/operations/8"
+      ],
+      "likely_relation": "Apply a named arrangement to a selector-produced entity set/order; Team may be present or absent.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "native_branch_identity": "UNKNOWN",
+      "runtime_eligibility": "REJECT_EXACT_NATIVE_EXECUTION_PENDING_FB_Q1_Q2_Q3",
+      "evidence": [
+        "FB-E01",
+        "FB-E03",
+        "FB-E05",
+        "FB-E17"
+      ]
+    }
+  ],
+  "negative_evidence": [
+    {
+      "id": "FB-N01",
+      "rejected_equivalence": "removed from formation = destroyed",
+      "evidence": [
+        "FB-E07",
+        "FB-E13"
+      ],
+      "strength": "STRONG_SOURCE_COUNTEREXAMPLE",
+      "limit": "No native lifetime trace"
+    },
+    {
+      "id": "FB-N02",
+      "rejected_equivalence": "formation center = selectable/legal combat target",
+      "evidence": [
+        "FB-E08"
+      ],
+      "strength": "EXPLICIT_SOURCE_COUNTEREXAMPLE"
+    },
+    {
+      "id": "FB-N03",
+      "rejected_equivalence": "formation membership = combat team affiliation",
+      "evidence": [
+        "FB-E06"
+      ],
+      "strength": "EXPLICIT_REMAIN_IN_TEAM_FLAG",
+      "limit": "Exact membership storage and flag default missing"
+    },
+    {
+      "id": "FB-N04",
+      "rejected_equivalence": "phase switch = SetTeamFormation",
+      "evidence": [
+        "FB-E14"
+      ],
+      "strength": "LOCAL_SOURCE_COUNTEREXAMPLE",
+      "limit": "Nested invocation semantics not analyzed"
+    },
+    {
+      "id": "FB-N05",
+      "rejected_equivalence": "all boss part-named units = native PartID children",
+      "evidence": [
+        "FB-E08",
+        "FB-E12"
+      ],
+      "strength": "DISTINCT_SOURCE_MAPPING_STRATEGIES"
+    },
+    {
+      "id": "FB-N06",
+      "rejected_equivalence": "shared HP = formation collection",
+      "evidence": [
+        "FB-E09",
+        "FB-E10"
+      ],
+      "strength": "EXPLICIT_SEPARATE_RELATION"
+    },
+    {
+      "id": "FB-N07",
+      "rejected_equivalence": "spawn = refresh formation positions",
+      "evidence": [
+        "FB-E17"
+      ],
+      "strength": "EXPLICIT_FALSE_REFRESH_FLAG"
+    },
+    {
+      "id": "FB-N08",
+      "rejected_equivalence": "every formation call edits membership",
+      "evidence": [
+        "FB-E14",
+        "FB-E17"
+      ],
+      "strength": "SPATIAL_ONLY_CALLER_CANDIDATES",
+      "limit": "Not a proved runtime no-membership-change trace"
+    },
+    {
+      "id": "FB-N09",
+      "question": "Same SetTeamFormation changes only order and no members?",
+      "result": "NOT_PROVEN",
+      "evidence": [
+        "FB-E04"
+      ],
+      "limit": "InverseFormationEntityList exists but no SetTeamFormation call edge is recovered"
+    },
+    {
+      "id": "FB-N10",
+      "question": "Body part independently legal-targetable / formation change without synchronized targetability change?",
+      "result": "NOT_PROVEN_AT_RUNTIME",
+      "evidence": [
+        "FB-E08",
+        "FB-E15"
+      ],
+      "limit": "Independent alias addressability is not legal-target proof; exact read/write trace required"
+    }
+  ],
+  "strict_rejections": [
+    {
+      "rule": "SetTeamFormation = destroy/spawn",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "formation membership = targetability",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "formation membership = scheduler eligibility",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "Set = clear-all-then-append",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "slot order = action order",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "boss body = summon",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "boss root = visible target",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "phase switch = formation switch",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "custom formation asset name = native stable group/entity ID",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "absent payload field = false/zero/native enum default",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "source alias addressability = legal combat target",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "spatial arrangement = safe presentation-only no-op",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "missing HP-sharing declaration in sampled files = proved independent HP",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    },
+    {
+      "rule": "part-named alias = native parent/PartID relationship",
+      "status": "REJECT_WITHOUT_SEPARATE_EVIDENCE"
+    }
+  ],
+  "remaining_unknowns": [
+    {
+      "id": "FB-Q1",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_target": "T22635 constructor M125518/reader M125519; executor M517681 -> M517683/M517682 and helper M517686; Tick M517685",
+      "question": "Which Team/FormationTarget/FormationType/CustomFormationName/default branches resolve which owner and entity list, and what ordered field/collection writes and completion result occur?",
+      "missing_relationship": "Payload presence/value -> resolved team/anchor/entities -> concrete native deltas",
+      "best_evidence_source": "Complete matching 7b44379b... binary method bodies with branch/argument dataflow or an identity-bearing ordered native trace; saved wrapper call summary is insufficient."
+    },
+    {
+      "id": "FB-Q2",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_target": "TeamFormationComponent F274167/F274172/F274176/F274177; M529967 UseCustomFormation, M529971 RefreshLocationList, M529944/M529956/M529958; FormationData T16923 Name/LocationList",
+      "question": "Which records/slots are normal vs custom vs retained-removed, how do asset locations map to ordered entities/rows, and how do duplicates, missing entities, RemoveDying, CustomFormationIgnoreDying, servant flags and capacity behave?",
+      "missing_relationship": "Named asset + ordered entity references -> spatial/index/member records; stable identity/cardinality",
+      "best_evidence_source": "Pinned formation asset definitions (not present in cached manifest) plus matching component bodies/trace; sample names Monster_AML_Boss_00_Skill01, Monster_W2_Feixiao_00_Skill05, Monster_4035010_Skill02."
+    },
+    {
+      "id": "FB-Q3",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_target": "SetTeamFormation helpers; TargetSortByFormation M537942, TargetMapTeamFormation M538137; Add/Remove executors M506025/M508337; LevelTeamFormationListChange T56847 and LevelEntityTeamFormationStateChange T56915",
+      "question": "Which concrete formation writes are read by selection/adjacency and which membership/activity/targetability or action-eligibility notifications follow?",
+      "missing_relationship": "Write -> same collection/state read and emitted-event dependency; scheduler arbitration remains excluded",
+      "best_evidence_source": "Provenance-matched read/write/call dataflow or before/after entity-ID trace, including RemainInTeam=true and normal/custom changes; do not infer from names."
+    },
+    {
+      "id": "FB-Q4",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "exact_target": "TargetMapPartEntity Transform M537868; CreateBodyPart M530476; CharacterDataComponent Summoner F268662/Creator F268665/IsBodyPart F268682; DefineHPSharedGroup T22546; Feixiao and IronTomb sample aliases",
+      "question": "What runtime IDs bind boss roots, PartID children, summons and ID-selected part-named entities, which are independently legal targets, and which sharing/phase relations actually connect them?",
+      "missing_relationship": "Source aliases/config IDs -> instantiated typed topology with independently justified HP and target roles",
+      "best_evidence_source": "Matching character/boss creation config and methods or identity-bearing creation/part-map/sharing trace. No generic controller/parent/proxy link is established by visual/name evidence."
+    }
+  ],
+  "do_not_reason_again": [
+    "Domain 1/2 remain frozen; this pass read source declarations involving them only as Domain 3 boundary evidence, without reopening execution semantics.",
+    "SetTeamFormation is an explicit spatial/layout request with 13 declared fields, not evidence for flat entity-list replacement.",
+    "Keep team affiliation, entity registry, formation records, part mapping, summons, HP sharing, target query views and scheduler participants distinct.",
+    "Do not re-run full census to reconcile the saved 796/1072 failure cluster with targeted canonical totals; the retained operation IDs are only a 12-item sample.",
+    "M517681 wrapper and helper identities already located. Further speculation from the same signatures/call list cannot recover argument/default/write semantics.",
+    "Never apply saved RVAs to the mismatched live DLL; reopen only with verified binary/version/method provenance.",
+    "Feixiao explicit unselectable center/PartID mapping, DawnsEye RemainInTeam=true, Cocolia old-caster reference and separate Sunday HP group settle architectural separation.",
+    "No safe no-op/runtime eligibility is granted by presentation evidence; the formation-relative selector read/write join is still missing.",
+    "Stop after Domain 3 Pass 1; do not enter Scheduler arbitration, Monster AI, Damage, Retarget, Equipment or Stage/Mode."
+  ],
+  "architecture": "PARTIAL",
+  "architecture_decomposition": "CLOSED_FOR_SAFE_TERRA_BOUNDARIES",
+  "native_semantic_completion": "PARTIAL",
+  "evidence_status": "BLOCKED_BY_EVIDENCE",
+  "terra_ready": "PARTIAL",
+  "evidence": {
+    "FB-E01": {
+      "statement": "SetTeamFormation T22635 declares Team, FormationTarget, FormationType, ServantState, FormationConfigName, RemoveDying, CustomFormationName, UseLevelAreaRoot, CustomCenterTargetType, CustomFormationIgnoreDying, ImmediatelyStopHeadLookAt, RefreshFormationCenter and TeamMemberCountingOption. No explicit entity creation specification, member array, slot/index, append/remove/swap opcode is declared here.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=98218",
+        "data/normalized/4.4.54/fields.json#field_index=98219",
+        "data/normalized/4.4.54/fields.json#field_index=98220",
+        "data/normalized/4.4.54/fields.json#field_index=98221",
+        "data/normalized/4.4.54/fields.json#field_index=98222",
+        "data/normalized/4.4.54/fields.json#field_index=98223",
+        "data/normalized/4.4.54/fields.json#field_index=98224",
+        "data/normalized/4.4.54/fields.json#field_index=98225",
+        "data/normalized/4.4.54/fields.json#field_index=98226",
+        "data/normalized/4.4.54/fields.json#field_index=98227",
+        "data/normalized/4.4.54/fields.json#field_index=98228",
+        "data/normalized/4.4.54/fields.json#field_index=98229",
+        "data/normalized/4.4.54/fields.json#field_index=98230"
+      ]
+    },
+    "FB-E02": {
+      "statement": "Saved bridge identifies executor AMJKHOCLEGG T56558. OnTaskBegin M517681 has a 112-byte call summary with M517683 at 0x15321A50 and M517682 at 0x15321B20, plus GetPatch M732322. Helper M517686 at 0x15321E70 is declared separately. No helper body/dataflow is available in inspected saved artifacts; callee-list order is not executed order. Absence of direct EvaluateTarget in the wrapper is not absence of target evaluation in helpers.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/2501",
+        "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/225",
+        "data/normalized/4.4.54/methods.json#method_index=517681",
+        "data/normalized/4.4.54/methods.json#method_index=517682",
+        "data/normalized/4.4.54/methods.json#method_index=517683",
+        "data/normalized/4.4.54/methods.json#method_index=517686",
+        "data/normalized/4.4.54/methods.json#method_index=732322"
+      ]
+    },
+    "FB-E03": {
+      "statement": "TeamFormationComponent has separate _Team, _AllTeammate, _TeamFormationDatas, _FormationDatasNormal, _CustomUpdateFormationDatas, _UseCustomFormationMembers and _FormationInCameraSpace; world centers, width, rotation, row filters and wave runtime ID are separate fields. This establishes distinct declared representations, not their exact element types or aliasing.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=274206",
+        "data/normalized/4.4.54/fields.json#field_index=274177",
+        "data/normalized/4.4.54/fields.json#field_index=274167",
+        "data/normalized/4.4.54/fields.json#field_index=274172",
+        "data/normalized/4.4.54/fields.json#field_index=274176",
+        "data/normalized/4.4.54/fields.json#field_index=274166",
+        "data/normalized/4.4.54/fields.json#field_index=274173",
+        "data/normalized/4.4.54/fields.json#field_index=274174",
+        "data/normalized/4.4.54/fields.json#field_index=274200",
+        "data/normalized/4.4.54/fields.json#field_index=274191",
+        "data/normalized/4.4.54/fields.json#field_index=274192"
+      ]
+    },
+    "FB-E04": {
+      "statement": "Formation membership/index/geometry APIs are distinct: AddTeammateEntity, RemoveTeammateEntity, SetEntityFormationIndex, GetEntityByFormationIndex, GetTeamAdjoinEntity, SortEntityByFormationIndexIncludeRemoved, InverseFormationEntityList, UseCustomFormation, MarkMemberUseCustomPostion and RefreshLocationList. EntityFormationSortData stores Entity, Active, FormationIndex and RemoveVersion separately; this is not proof that SetTeamFormation calls every API.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/normalized/4.4.54/methods.json#method_index=529943",
+        "data/normalized/4.4.54/methods.json#method_index=529946",
+        "data/normalized/4.4.54/methods.json#method_index=529944",
+        "data/normalized/4.4.54/methods.json#method_index=529958",
+        "data/normalized/4.4.54/methods.json#method_index=529954",
+        "data/normalized/4.4.54/methods.json#method_index=529949",
+        "data/normalized/4.4.54/methods.json#method_index=529951",
+        "data/normalized/4.4.54/methods.json#method_index=529967",
+        "data/normalized/4.4.54/methods.json#method_index=529969",
+        "data/normalized/4.4.54/methods.json#method_index=529971",
+        "data/normalized/4.4.54/fields.json#field_index=274242",
+        "data/normalized/4.4.54/fields.json#field_index=274243",
+        "data/normalized/4.4.54/fields.json#field_index=274244",
+        "data/normalized/4.4.54/fields.json#field_index=274245"
+      ]
+    },
+    "FB-E05": {
+      "statement": "FormationData has Name, LocationList, RootOffset, ServantMode and IsIncludeTempLeave. TeamFormationType declares normal/select-target/custom modes. NormalTeamFormationServantState declares Default/DefaultFollow/UniformFollow. Field declarations do not recover serialized omission defaults or numeric enum values.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=81424",
+        "data/normalized/4.4.54/fields.json#field_index=81425",
+        "data/normalized/4.4.54/fields.json#field_index=81426",
+        "data/normalized/4.4.54/fields.json#field_index=81427",
+        "data/normalized/4.4.54/fields.json#field_index=81428",
+        "data/normalized/4.4.54/fields.json#field_index=81429",
+        "data/normalized/4.4.54/fields.json#field_index=81430",
+        "data/normalized/4.4.54/fields.json#field_index=78866",
+        "data/normalized/4.4.54/fields.json#field_index=78867",
+        "data/normalized/4.4.54/fields.json#field_index=78868",
+        "data/normalized/4.4.54/fields.json#field_index=78869",
+        "data/normalized/4.4.54/fields.json#field_index=78870",
+        "data/normalized/4.4.54/fields.json#field_index=78871",
+        "data/normalized/4.4.54/fields.json#field_index=78872",
+        "data/normalized/4.4.54/fields.json#field_index=103740",
+        "data/normalized/4.4.54/fields.json#field_index=103741",
+        "data/normalized/4.4.54/fields.json#field_index=103742",
+        "data/normalized/4.4.54/fields.json#field_index=103743"
+      ]
+    },
+    "FB-E06": {
+      "statement": "RemoveEntityFromTeamFormation has TargetType and RemainInTeam; AddEntityToTeamFormation is a separate task. DawnsEye explicitly uses RemainInTeam=true. Therefore membership removal and team retention must be expressible independently; exact implementation/default remain unproved.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=97155",
+        "data/normalized/4.4.54/fields.json#field_index=97156",
+        "data/normalized/4.4.54/fields.json#field_index=97157",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_DawnsEye_00_Ability.json#/GlobalModifiers/MMonster_W4_DawnsEye_00_PartBlock/_CallbackList/1/CallbackConfig/3"
+      ]
+    },
+    "FB-E07": {
+      "statement": "Feixiao source declares an OnCreate RemoveEntityFromTeamFormation and OnDestroy AddEntityToTeamFormation for the same ModifierOwnerEntity, plus a later phase callback removing that declaration. This is a source-level remove/rejoin lifecycle, not evidence for entity destruction. No Modifier lifecycle semantics are reconstructed in this pass.",
+      "confidence": "FACT",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json#/GlobalModifiers/Monster_W2_Feixiao_00_Unselectable"
+      ]
+    },
+    "FB-E08": {
+      "statement": "FeixiaoPart Self resolves from AllUnselectable with a marker filter; Head/Limb/Tail separately apply TargetMapPartEntity with PartID 1/2/3. That unselectable Self is explicitly used as CustomCenterTargetType. A spatial center/alias reference need not be a selectable combat target.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_FeixiaoPart_00_Ability.json#/GlobalTargetAlias",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_FeixiaoPart_00_Ability.json#/AbilityList/5/OnStart/3"
+      ]
+    },
+    "FB-E09": {
+      "statement": "Feixiao separately declares SummonMonster and DefineHPSharedGroup(MainTarget=Caster, SubTargets=ParamEntityList). The enclosing source selector requests AllUnselectableWithAllTeammate filtered to TeamDark. This records a shared-state relation distinct from formation or part mapping; exact HP behavior is out of scope.",
+      "confidence": "FACT",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json#/AbilityList/0/OnAdd/3/SuccessTaskList/0",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json#/AbilityList/0/OnStart/8/SuccessTaskList/3"
+      ]
+    },
+    "FB-E10": {
+      "statement": "Sunday separately declares HP sharing from ModifierOwnerEntity to CasterSummonedMinions with ResolveShield=true. Summoned membership and shared-state membership may overlap explicitly; they must not be collapsed into one relation.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W3_Sunday_00_Ability.json#/GlobalModifiers/MMonster_W3_Sunday_00_PassiveSkillInitiate_EnterBattle/_CallbackList/0/CallbackConfig/8"
+      ]
+    },
+    "FB-E11": {
+      "statement": "CharacterDataComponent declares Summoner, Creator, SummonAbilityInst, IsBodyPart and LineupIndex independently. CreateBodyPart M530476 and IsPartEntity M530653 are separate native declarations. TeamDataComponent has an HpSharedModule field. None proves that every boss root has an extra invisible controller entity.",
+      "confidence": "FACT",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=268662",
+        "data/normalized/4.4.54/fields.json#field_index=268665",
+        "data/normalized/4.4.54/fields.json#field_index=268671",
+        "data/normalized/4.4.54/fields.json#field_index=268682",
+        "data/normalized/4.4.54/fields.json#field_index=268678",
+        "data/normalized/4.4.54/fields.json#field_index=274148",
+        "data/normalized/4.4.54/methods.json#method_index=530476",
+        "data/normalized/4.4.54/methods.json#method_index=530653"
+      ]
+    },
+    "FB-E12": {
+      "statement": "IronTomb source resolves core from BattleAllEntity by unique ID 403501; two part-named entities from AllDarkTeam by unique IDs 403206/403207; phantom from AllUnselectable by unique ID 403502. It does not use TargetMapPartEntity for those two part-named aliases. A body-part-looking name does not establish native parent/PartID membership.",
+      "confidence": "FACT",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_IronTombCore_00_Ability.json#/GlobalTargetAlias"
+      ]
+    },
+    "FB-E13": {
+      "statement": "Cocolia Boss_Cocolia_P2_insertAbility orders RemoveEntityFromTeamFormation(Caster), SetEntityVisible(Caster), SummonMonster, then another SetEntityVisible(Caster). The old caster remains referenced after removal and after a separate summon task; removal cannot safely be lowered as destruction.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W1_CocoliaP1_00_Ability.json#/AbilityList/23"
+      ]
+    },
+    "FB-E14": {
+      "statement": "AML Skill01_Phase01 declares CharacterChangePhase(Caster,Phase2) without local SetTeamFormation; Skill07_Phase01 declares SetTeamFormation(TeamLight,LightTeamNormal) before animation without local CharacterChangePhase. SkillXX_PhaseYY suffix denotes ability segmentation and is not evidence of a boss health phase transition.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json#/AbilityList/1",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json#/AbilityList/13"
+      ]
+    },
+    "FB-E15": {
+      "statement": "Feixiao Skill05_Target is AllLightTeam -> marker filter -> TargetSortByFormation(HighestFirst=true), and FeixiaoPart supplies it as FormationTarget. Native bridge identifies sorter Transform M537942. Formation-relative target ordering is therefore a real dependency, but which normal/custom collection it reads, and whether a particular SetTeamFormation updates that collection, remain unresolved.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_Feixiao_00_Ability.json#/GlobalTargetAlias/Monster_W2_Feixiao_00_Skill05_Target",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W2_FeixiaoPart_00_Ability.json#/AbilityList/7/OnStart/5/SuccessTaskList/0",
+        "data/raw/4.4.54/target_config_runtime_bridge_05.json#/matched_rows/111"
+      ]
+    },
+    "FB-E16": {
+      "statement": "TeamFormationComponent declares handlers for battle active-entity, turn-state, camera and skill changes. This supplies candidate incoming dependencies. No inspected saved call path proves a SetTeamFormation write to AV queues, action candidates, inserted owner, or AI actor eligibility.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "data/normalized/4.4.54/methods.json#method_index=529917",
+        "data/normalized/4.4.54/methods.json#method_index=529918",
+        "data/normalized/4.4.54/methods.json#method_index=529919",
+        "data/normalized/4.4.54/methods.json#method_index=529920",
+        "data/normalized/4.4.54/methods.json#method_index=529921",
+        "data/normalized/4.4.54/methods.json#method_index=529923"
+      ]
+    },
+    "FB-E17": {
+      "statement": "IronTombCore Skill02_Phase01 applies two named custom layouts to Caster and AllLightTeam before the animation. Its separate SummonMonster request uses RefreshTeamLocation=false. Formation can address selected existing entities on different sides, and spawning and spatial refresh have separate source controls.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_IronTombCore_00_Ability.json#/AbilityList/2",
+        ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Monster/Monster_W4_IronTombCore_00_Ability.json#/AbilityList/18/OnAdd/2"
+      ]
+    },
+    "FB-E18": {
+      "statement": "EntityManager has _AllEntityDictionary, while unselectable bookkeeping is separately declared on TurnBasedGameMode. TeamData and TeamFormation are distinct native components. Do not make formation the sole registry or substitute its list for all query domains.",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "evidence": [
+        "data/normalized/4.4.54/fields.json#field_index=267223",
+        "data/normalized/4.4.54/fields.json#field_index=255871",
+        "data/normalized/4.4.54/fields.json#field_index=255873",
+        "data/normalized/4.4.54/fields.json#field_index=274148",
+        "data/normalized/4.4.54/fields.json#field_index=274149",
+        "data/normalized/4.4.54/fields.json#field_index=274206"
+      ]
+    }
+  },
+  "scope": {
+    "allowed": "Domain 3 Pass 1 topology/formation reconstruction only",
+    "frozen": [
+      "Domain 1 TriggerAbility",
+      "Domain 2 Modifier"
+    ],
+    "not_started": [
+      "Scheduler arbitration",
+      "Monster AI",
+      "Damage",
+      "Retarget semantics",
+      "Equipment",
+      "Stage/Mode semantics"
+    ],
+    "production_changes": false,
+    "subagents": false,
+    "corpus_or_compiler_rebuild": false
+  },
+  "corpus_clustering": {
+    "historical_blocker": {
+      "census_pointer": "/failure_clusters/2",
+      "metadata": {
+        "blocking_dependency": "NO_EXECUTABLE_LOWERING",
+        "operation_count": 1072,
+        "operation_kind": "FORMATION_CHANGE",
+        "owner_kind": "Monster",
+        "sample_behavior_ids": [
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Skill07_Phase01",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Skill08_Phase01",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Skill09_Phase01",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Ability.json:Monster_AML_Boss_00_Skill10_Phase01",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability.json:Monster_AML_Boss_00_Part1_Skill02_Phase02",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability.json:Monster_AML_Boss_00_Part1_Skill03_Phase02",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability_IF.json:Monster_AML_Boss_00_Part1_IF_Skill02_Phase02",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability_IF.json:Monster_AML_Boss_00_Part1_IF_Skill03_Phase02",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability_IF.json:Monster_AML_Boss_00_Part1_IF_SkillP01_ReflexInsert",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part1_Ability_IF.json:Monster_AML_Boss_00_Part1_IF_SkillP01_WeaknessChange",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part2_Ability.json:Monster_AML_Boss_00_Part2_Skill07_Phase01",
+          "external:TurnBasedGameData:Config/ConfigAbility/Monster/Monster_AML_Boss_00_Part2_Ability.json:Monster_AML_Boss_00_Part2_Skill08_Phase01"
+        ],
+        "source_type": "RPG.GameCore.SetTeamFormation",
+        "static_family": "Monster",
+        "unlockable_record_count": 796
+      },
+      "matched_count": 12,
+      "matched_record_count": 10,
+      "scope_correction": "Existing census operation_ids contains only 12 examples, not all 1072. matched_count is only retained-sample join. Historical blocker count is not replaced by targeted canonical total 1087 Monster-owned operations / 804 records; compiler eligibility/projection difference not re-audited."
+    },
+    "targeted_observation": {
+      "operations": 1505,
+      "records": 1050,
+      "monster_owned_operations": 1087,
+      "monster_owned_records": 804,
+      "entrypoint_operations": 1503,
+      "template_definition_operations": 2,
+      "distinct_shapes": 22
+    },
+    "count_interpretation": "Historical 796/1072 is a compiler failure cluster. Targeted traversal includes all canonical SetTeamFormation nodes including nested nodes and templates, and is not an updated compiler count. Only 12 operation IDs are retained in the historical cluster; 12/10 sample join does not enumerate its full population. No compiler census rerun or claimed unlock gain.",
+    "source_distribution": {
+      "source_path_family_operations": {
+        "Avatar": 411,
+        "Monster": 1094
+      },
+      "boss_filename_token_operations": 83,
+      "level": 0,
+      "stage": 0,
+      "limit": "Only selected canonical SetTeamFormation payloads. Boss is a lexical subcategory of Monster; named bosses such as Feixiao are not covered by Boss token."
+    },
+    "caller_distribution": {
+      "skill_phase_named": 1165,
+      "insert_named": 258,
+      "modifier_owner": 14,
+      "limit": "Overlapping lexical caller tags, not runtime phase classifications."
+    },
+    "shape_evidence": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json#/payload_shapes",
+    "static_family_warning": "The following families describe payload discriminators, not proven distinct native branches."
+  },
+  "artifacts": [
+    "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+  ],
+  "validation": {
+    "source_samples": "All retained JSON pointers/payloads and selected cached source SHA256 values checked against pinned manifest.",
+    "cluster_partition": "Three disjoint payload families cover 1505 targeted nodes, with 22 field shapes; not compiler execution gains.",
+    "native": "Metadata indices and saved bridge pointers checked; no executable native bodies or runtime trace recovered.",
+    "tests": "Artifact consistency checks only; no production code or runtime tests changed/run.",
+    "canonical_operation_pointer_checks": 1505,
+    "claim_source_and_native_reference_checks": "PASSED",
+    "saved_bridge_row_checks": 9,
+    "native_type_field_method_identity_checks": "PASSED",
+    "bookkeeping_checks": "Domain 1/2 frozen; modifier CLOSED/PARTIAL retained; Domain 3 complete; Domain 4 and later deferred."
+  }
+}

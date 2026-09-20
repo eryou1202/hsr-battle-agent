@@ -1,0 +1,1477 @@
+{
+  "audit": "TERRA_LOCAL_REPOSITORY_AUDIT_001",
+  "audit_kind": "READ_ONLY_LOCAL_REPOSITORY_AUDIT",
+  "model_role": "CHEAP_FAST_AUDITOR",
+  "session_timestamp": "2026-09-20T16:51:20+08:00",
+  "game_version": "4.4.54",
+  "native_reverse_performed": false,
+  "internal_network_fetch_performed": false,
+  "internal_full_compiler_or_census_run": false,
+  "production_code_modified": false,
+  "tests_modified": false,
+  "frozen_semantic_artifact_modified": false,
+  "commits_created": false,
+
+  "repository": {
+    "root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "vcs": "git",
+    "branch": "main",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "head_subject": "reconstruct: checkpoint expanded full-content baseline",
+    "upstream_ahead_behind": "NOT_AVAILABLE_NO_LOCAL_REMOTE_TRACKING_DATA_COLLECTED",
+    "dirty_baseline": {
+      "modified_tracked_files": 2,
+      "modified_tracked_list": [
+        "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+        "docs/agent/handoffs/damage_request_dispatch_resolution_18.md"
+      ],
+      "untracked_entries": 104,
+      "untracked_by_area": {
+        "data/raw/4.4.54": 66,
+        "data/semantics/4.4.54/full_reconstruction": 30,
+        "docs/agent": 2,
+        "hsr_design_data_hashes.csv": 1,
+        "hsr_design_data_inventory.csv": 1,
+        "tools/reference/ (dir)": 1,
+        "tools/reverse/scripts": 2,
+        "tools/reverse/vendor/ (dir)": 1
+      },
+      "src_and_tests_are_pristine_vs_head": true,
+      "src_tests_diff_vs_head": "EMPTY",
+      "untracked_files_under_src_or_tests": 0,
+      "note": "No production Python file, test file, or semantic artifact inside src/ or tests/ differs from HEAD. All working-tree drift is inside data/, docs/, tools/."
+    },
+    "tracking_state_of_authoritative_docs": {
+      "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json": "UNTRACKED_WORKING_TREE_ONLY",
+      "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json": "UNTRACKED_WORKING_TREE_ONLY",
+      "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md": "UNTRACKED_WORKING_TREE_ONLY"
+    }
+  },
+
+  "authority": {
+    "read_completely": [
+      "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+      "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+      "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json (inventory/authority scope only)"
+    ],
+    "freeze_self_check": {
+      "schema": "hsr_battle_agent.astra_semantic_freeze/1",
+      "program": "ASTRA_SEMANTIC_CLOSURE_SPRINT",
+      "status": "SEMANTIC_SPRINT_COMPLETE",
+      "round": "10/10",
+      "native_reconstruction_status": "INCOMPLETE_EVIDENCE_AND_CONTENT_BLOCKED",
+      "frozen_head_matches_current_head": true,
+      "frozen_head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+      "golden": 0
+    },
+    "precedence_applied": [
+      "1 astra_semantic_freeze_v1.json",
+      "2 frozen Domain 1-9 contracts",
+      "3 exact Terra followup artifacts",
+      "4 historical packets/reports",
+      "5 current implementation"
+    ],
+    "conflict_handling": "IMPLEMENTATION_CONFLICTS_RECORDED_NOT_REPAIRED"
+  },
+
+  "implementation_inventory": {
+    "package_layout": {
+      "src_root": "src/hsr_battle_agent",
+      "production_packages": {
+        "battle_ir": "17 files - canonical immutable IR / specs / provenance / catalog loader (no execution)",
+        "battle_runtime": "10 files - proven-leaf primitive implementations operating on BattleState dicts",
+        "battle_sandbox": "11 files - kernel: BattleState, ExecutionContext, RNG, registry, executor, snapshot, hash, trace",
+        "game_data": "25 files - content DB, external reconstruction, behavior compiler, reference semantics modules, reference executor"
+      },
+      "declared_empty_placeholders": [
+        "src/hsr_battle_agent/contracts/ (README only)",
+        "src/hsr_battle_agent/models/ (README only)",
+        "src/hsr_battle_agent/planning/ (README only)",
+        "src/hsr_battle_agent/runtime/ (README only)",
+        "src/hsr_battle_agent/simulator/ (README only)"
+      ],
+      "packages_find": "src (pyproject.toml, setuptools, no runtime dependencies)"
+    },
+    "relevant_modules_by_keyword": {
+      "BattleState": [
+        "src/hsr_battle_agent/battle_sandbox/state.py::BattleState",
+        "src/hsr_battle_agent/game_data/reference_execution.py::ReferenceBattleState",
+        "src/hsr_battle_agent/game_data/cross_family_execution_reference.py::ReferenceBattleState"
+      ],
+      "state": [
+        "src/hsr_battle_agent/battle_sandbox/state.py",
+        "src/hsr_battle_agent/game_data/dynamic_value_reference.py::DynamicValueStore",
+        "src/hsr_battle_agent/game_data/property_contribution_reference.py::PropertyState",
+        "src/hsr_battle_agent/game_data/toughness_break_reference.py::ToughnessState",
+        "src/hsr_battle_agent/game_data/damage_survival_reference.py::SurvivalState",
+        "src/hsr_battle_agent/game_data/scheduler_semantics_reference.py::ActionDelayState,OrdinaryTurnTimeline",
+        "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py::ModifierInstance"
+      ],
+      "snapshot": ["src/hsr_battle_agent/battle_sandbox/snapshot.py::SandboxSnapshot,capture_snapshot"],
+      "clone": [
+        "src/hsr_battle_agent/battle_sandbox/state.py::BattleState.clone",
+        "src/hsr_battle_agent/battle_sandbox/context.py::ExecutionContext.clone",
+        "src/hsr_battle_agent/battle_sandbox/sandbox.py::Sandbox.clone",
+        "src/hsr_battle_agent/battle_sandbox/rng.py::SandboxRng.clone",
+        "src/hsr_battle_agent/battle_ir/targets.py::EntityRef.clone,TargetSet.clone"
+      ],
+      "hash": [
+        "src/hsr_battle_agent/battle_sandbox/hash.py::stable_json_hash,logical_battle_hash",
+        "src/hsr_battle_agent/battle_sandbox/state.py::BattleState.state_hash",
+        "src/hsr_battle_agent/battle_sandbox/snapshot.py::SandboxSnapshot.state_hash"
+      ],
+      "RNG": [
+        "src/hsr_battle_agent/battle_sandbox/rng.py::SandboxRng",
+        "src/hsr_battle_agent/game_data/reference_execution.py::SandboxRng (SECOND, DIFFERENT CLASS)",
+        "src/hsr_battle_agent/game_data/rng_semantics_reference.py::select_weighted_index,rng_01_from_seed"
+      ],
+      "identity": [
+        "src/hsr_battle_agent/battle_ir/targets.py::EntityRef (single int runtime_id)",
+        "src/hsr_battle_agent/battle_ir/values.py::ObjectRef (single int ref_id)",
+        "src/hsr_battle_agent/battle_ir/modifiers.py::ModifierRef, ModifierState.instance_ordinal"
+      ],
+      "registry": [
+        "src/hsr_battle_agent/battle_sandbox/registry.py::PrimitiveRegistry",
+        "src/hsr_battle_agent/battle_ir/catalog.py::SemanticCatalog",
+        "src/hsr_battle_agent/game_data/modifier_catalog.py::modifier_catalog_from_corpus"
+      ],
+      "provenance": [
+        "src/hsr_battle_agent/battle_ir/provenance.py::SourceProvenance",
+        "src/hsr_battle_agent/battle_ir/semantic_artifact.py::RecoveredPrimitive"
+      ],
+      "evidence": [
+        "battle_ir/provenance.py (evidence_level = single fixed literal E4_STATIC_MACHINE_CODE)",
+        "game_data/behavior_compiler.py (compile_status label only)"
+      ],
+      "executor": [
+        "src/hsr_battle_agent/battle_sandbox/executor.py::PrimitiveExecutor",
+        "src/hsr_battle_agent/game_data/reference_execution.py::SemanticExecutor"
+      ],
+      "reference_execution": ["src/hsr_battle_agent/game_data/reference_execution.py"],
+      "compiler": [
+        "src/hsr_battle_agent/game_data/behavior_compiler.py",
+        "src/hsr_battle_agent/game_data/scenario_compiler.py"
+      ],
+      "modifier": [
+        "src/hsr_battle_agent/battle_ir/modifiers.py",
+        "src/hsr_battle_agent/battle_runtime/modifiers.py",
+        "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py",
+        "src/hsr_battle_agent/game_data/modifier_catalog.py"
+      ],
+      "target": [
+        "src/hsr_battle_agent/battle_ir/targets.py",
+        "src/hsr_battle_agent/battle_runtime/targets.py",
+        "src/hsr_battle_agent/game_data/target_semantics_reference.py"
+      ],
+      "scheduler": [
+        "src/hsr_battle_agent/battle_runtime/turns.py",
+        "src/hsr_battle_agent/game_data/scheduler_semantics_reference.py"
+      ],
+      "AI": ["ABSENT_IN_PRODUCTION (no monster-AI module, no policy/AI-state store; AI content described only as blockers in game_data/nanoka_content.py)"],
+      "damage": [
+        "src/hsr_battle_agent/game_data/damage_survival_reference.py",
+        "src/hsr_battle_agent/battle_runtime/hp.py",
+        "src/hsr_battle_agent/battle_ir/hp.py"
+      ],
+      "scenario": [
+        "src/hsr_battle_agent/game_data/scenario_compiler.py",
+        "src/hsr_battle_agent/game_data/nanoka_content.py (stage/wave entity+relation records)"
+      ],
+      "legal_actions": ["src/hsr_battle_agent/battle_sandbox/sandbox.py::Sandbox.legal_actions (STUB)"],
+      "step": ["src/hsr_battle_agent/battle_sandbox/sandbox.py::Sandbox.step (STUB)"],
+      "reset": ["src/hsr_battle_agent/battle_sandbox/sandbox.py::Sandbox.reset (PRODUCTION_TRIVIAL)"],
+      "is_terminal": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox.py::Sandbox.is_terminal (STUB)",
+        "no terminal/win/loss model anywhere in production src/"
+      ]
+    }
+  },
+
+  "api_status": {
+    "BattleApiStatusLegend": [
+      "ABSENT", "STUB", "REFERENCE_ONLY", "PARTIAL_PRODUCTION", "PRODUCTION", "UNKNOWN"
+    ],
+    "reset": {
+      "status": "PARTIAL_PRODUCTION",
+      "file": "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+      "symbol": "Sandbox.reset (L46-L51)",
+      "behavior": "Rebinds ExecutionContext to a brand-new BattleState() plus SandboxRng(seed) plus empty ExecutionTrace. No gating, no initial-state spec, no allocator init, no validation, no evidence/profile selection, no structured rejection.",
+      "evidence_profile": "NONE_DECLARED",
+      "freeze_gap": "Freeze reset() requires immutable source/initial-state spec + selected mode/profile, all bindings gated, atomic replacement, deterministic initial allocator and RNG states, and blocked-as-rejection when unproved. Current reset always succeeds."
+    },
+    "legal_actions": {
+      "status": "STUB",
+      "file": "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+      "symbol": "Sandbox.legal_actions (L93-L95)",
+      "behavior": "Always raises StubNotImplementedError('NOT_IMPLEMENTED: legal_actions needs recovered action semantics'). Returns None type annotation.",
+      "evidence_profile": "NONE",
+      "freeze_gap": "No COMPLETE_FOR_SUPPORTED_SCOPE / BLOCKED outcome type exists."
+    },
+    "step": {
+      "status": "STUB",
+      "file": "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+      "symbol": "Sandbox.step (L97-L100)",
+      "behavior": "Always raises StubNotImplementedError. No action intent, no revision binding, no preflight, no staging.",
+      "evidence_profile": "NONE"
+    },
+    "is_terminal": {
+      "status": "STUB",
+      "file": "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+      "symbol": "Sandbox.is_terminal (L102-L104)",
+      "behavior": "Always raises StubNotImplementedError. No terminal-rule contract, no BLOCKED_UNRESOLVED_TERMINAL outcome.",
+      "evidence_profile": "NONE"
+    },
+    "clone": {
+      "status": "PARTIAL_PRODUCTION",
+      "file": "src/hsr_battle_agent/battle_sandbox/sandbox.py + context.py + state.py + rng.py",
+      "symbol": "Sandbox.clone (L53-L58) -> ExecutionContext.clone (context.py L34-L49) -> BattleState.clone (state.py L106-L123) + SandboxRng.clone (rng.py L67-L68)",
+      "behavior": "Deep-copies the six BattleState JSON stores, copies RNG MT state, resets trace by default. Registry is shared by reference. Transient context entities copied by value. No alias-graph concept, no allocator (none exists), no opaque payload.",
+      "evidence_profile": "NONE_DECLARED / LOCAL_KERNEL_01",
+      "freeze_gap": "Freeze requires same logical identities + alias graph + order + pending work + opaque bytes and explicitly forbids re-running registration/activation and re-allocating logical IDs. Current clone satisfies pure deep-copy but has no identity/alias/allocator surface to preserve."
+    },
+    "snapshot": {
+      "status": "PARTIAL_PRODUCTION",
+      "file": "src/hsr_battle_agent/battle_sandbox/snapshot.py",
+      "symbol": "SandboxSnapshot (L31-L155), capture_snapshot (L158-L168), Sandbox.snapshot (sandbox.py L80-L81), Sandbox.restore (L83-L88)",
+      "behavior": "Versioned (SNAPSHOT_SCHEMA_VERSION=1) defensive deep-copy of {battle_state, rng_state, trace}. from_dict refuses unknown schema_version. Trace included in snapshot payload but EXCLUDED from hash.",
+      "evidence_profile": "NONE_DECLARED / LOCAL_KERNEL_01",
+      "freeze_gap": "No evidence mode / contract / extension versions; no definitions-by-hash; no absent-vs-null preservation for omitted BattleState keys (from_dict defaults missing keys to {}); no executability status."
+    },
+    "hash": {
+      "status": "PARTIAL_PRODUCTION",
+      "file": "src/hsr_battle_agent/battle_sandbox/hash.py",
+      "symbol": "stable_json_hash (L23-L33), logical_battle_hash (L36-L48), BattleState.state_hash (state.py L270-L271), ExecutionContext.state_hash (context.py L51-L52), Sandbox.state_hash (sandbox.py L90-L91)",
+      "behavior": "SHA-256 over canonical compact JSON with sort_keys=True; payload = {schema: battle_sandbox_logical_state/1, battle_state, rng_state}. allow_nan=False. Python object identity never enters the hash. Binds state+RNG together at the context level.",
+      "evidence_profile": "NONE_DECLARED / LOCAL_KERNEL_01",
+      "freeze_gap": "Hash covers only the 6 JSON stores + RNG; no opaque/unresolved index, no revision, no contract/evidence versions, no executability status. No claim of native hash compatibility (correct)."
+    },
+    "execute_primitive": {
+      "status": "PRODUCTION",
+      "file": "src/hsr_battle_agent/battle_sandbox/executor.py",
+      "symbol": "PrimitiveExecutor.execute (L49-L84), Sandbox.execute (sandbox.py L60-L78)",
+      "behavior": "Resolves a single IR primitive against a frozen, catalog-validated registry, validates and orders declared inputs, calls the registered implementation against the LIVE ExecutionContext, then writes trace start/finish. Unknown primitive id -> UnsupportedPrimitiveError.",
+      "evidence_profile": "PER_PRIMITIVE_SourceProvenance (E4_STATIC_MACHINE_CODE literal)",
+      "note": "This is the only implemented execution surface. It is a single-primitive, ungated, non-transactional path."
+    },
+    "reference_execution": {
+      "status": "REFERENCE_ONLY",
+      "file": "src/hsr_battle_agent/game_data/reference_execution.py",
+      "symbol": "SemanticExecutor.execute_entrypoint (L512-L524), _execute_operations (L526-L539)",
+      "behavior": "Executes only operations whose compiler disposition is EXECUTABLE_REFERENCE; rejects everything else with SemanticExecutionError. Functional fold over an immutable ReferenceBattleState. No revision, no staging certificate, no dependency-closure preflight.",
+      "evidence_profile": "REFERENCE_MODEL_ONLY (module docstring: 'intentionally not the production battle runtime')"
+    }
+  },
+
+  "state_model": {
+    "primary_model": {
+      "file": "src/hsr_battle_agent/battle_sandbox/state.py",
+      "class": "BattleState",
+      "schema_version": 4,
+      "shape": "Frozen-shape dataclass whose entire content is JSON: extensions, modifier_state_by_entity, entity_property_entries, modifier_property_contributions, component_lock_hp_records, turn_timeline",
+      "storage": "All six fields are dict/list/primitive JSON. Not one typed store exists.",
+      "entity_key": "Raw int runtime id stringified: str(entity_runtime_id) - a single generic entity-id type reused for property owners, modifier owners and turn timeline participants",
+      "validated_versions": "1,2,3 accepted by from_dict and silently upgraded to 4"
+    },
+    "represented_concepts": {
+      "entities": "IMPLICIT_ONLY - entity ids appear as dict keys; there is no entity record, definition binding, lifecycle, role flag or registry membership",
+      "teams": "ABSENT as state - team identity exists only as a field on RuntimeEntity in the reference layer",
+      "formation_topology": "ABSENT_IN_BATTLE_STATE - reference layer carries (row,column) position tuples only; bytecode_ir has no formation store",
+      "properties": "PRESENT (entity_property_entries keyed by (entity_runtime_id, property_id)); property entries carry source slots, generations and materialized values",
+      "modifiers": "PRESENT but ad-hoc: modifier_state_by_entity[str(owner)] = list[dict]; no separate provider/owner/caster/receiver distinction beyond the fields inside the dict",
+      "targets": "PRESENT in battle_ir as ordered tuple-backed TargetSet with EntityRef|None elements; NOT present as BattleState state",
+      "scheduler": "SPLIT: battle_runtime/turns.py stores an ordered id list + current actor + elapsed delay + phase + turn index in BattleState.turn_timeline; game_data/reference_execution.py stores action_delays/action_tasks/damage_tasks/pending_inserted_actions/ordinary_turn_timeline in ReferenceBattleState",
+      "ai_state": "ABSENT",
+      "damage_resource_state": "PARTIAL: SurvivalState/ToughnessState/TeamSkillPointState/special_resources and component_lock_hp_records exist, but pending damage requests and outstanding resolution are not stored",
+      "scenario_wave_mode": "ABSENT_IN_BATTLE_STATE; a flat wave_count int exists only in the reference layer",
+      "rng": "PRESENT but OUTSIDE BattleState: ExecutionContext.rng (MT19937 full state). Reference layer keeps rng inside ReferenceBattleState as a frozen value",
+      "pending_callbacks_tasks": "PARTIAL_REFERENCE_ONLY: pending_inserted_actions tuple and action/damage task maps exist in the reference layer; battle_sandbox has no event/callback store",
+      "unknown_opaque_state": "ABSENT as a typed store. Opaque values may be stored untyped inside extensions JSON, but there is no owner/type/version/presence/digest envelope"
+    },
+    "dangerous_collapsing_observed": [
+      {
+        "id": "SM-C1",
+        "collapse": "ONE_GENERIC_ENTITY_ID_TYPE",
+        "where": "src/hsr_battle_agent/battle_ir/targets.py::EntityRef.runtime_id; src/hsr_battle_agent/battle_sandbox/state.py::str(entity_runtime_id) keys; src/hsr_battle_agent/game_data/reference_execution.py entity_id: str",
+        "conflicts_with": "freeze identity_contract (24+ distinct identity kinds; no equality across identity types without an evidenced relation)",
+        "classification": "PRODUCTION_CONFLICT"
+      },
+      {
+        "id": "SM-C2",
+        "collapse": "MODIFIER_OWNER_IS_THE_ONLY_RELEVANT_REFERENCE (provider/caster/receiver/context not separately stored)",
+        "where": "src/hsr_battle_agent/battle_runtime/modifiers.py:_container_from_battle_state / _write_container_to_battle_state (keyed only by target EntityRef)",
+        "conflicts_with": "FREEZE-DNR-MOD ('provider differs from caster'), freeze battle_state_contract modifier store",
+        "classification": "PRODUCTION_CONFLICT"
+      },
+      {
+        "id": "SM-C3",
+        "collapse": "WAVE_AS_INT_COUNTER",
+        "where": "src/hsr_battle_agent/game_data/reference_execution.py::ReferenceBattleState.wave_count: int = 1; game_data/predicate_semantics_reference.py::PredicateContext.wave_count: int = 1",
+        "conflicts_with": "freeze scenario_runtime required shape (wave occurrence+generation, graph cursors, pending/spawned/completed identities)",
+        "classification": "REFERENCE_MODEL_ALLOWED (wave_count is a supplied predicate input) but MUST_NOT_BE_PROMOTED_TO_NATIVE_WAVE_STATE"
+      },
+      {
+        "id": "SM-C4",
+        "collapse": "FORMATION_ADJACENCY_DERIVED_FROM_INT_POSITION_ARITHMETIC",
+        "where": "src/hsr_battle_agent/game_data/target_semantics_reference.py::_adjoin (L105-L121) uses abs(column-1) within equal row; _team_entities (L83-L92) sorts by (row, column, entity_id)",
+        "conflicts_with": "SC-10 / FREEZE-DNR-TARGET ('No ... adjacency arithmetic, ID ties')",
+        "classification": "REFERENCE_MODEL_ALLOWED_BUT_QUARANTINE_REQUIRED"
+      },
+      {
+        "id": "SM-C5",
+        "collapse": "TARGET_LIST_COLLAPSIBLE_TO_OPTIONAL_ENTITY",
+        "where": "src/hsr_battle_agent/battle_runtime/targets.py::collapse_single_or_null, collapse_required_single_or_null (registered production primitives)",
+        "conflicts_with": "SC-10 'No Optional<EntityId> collapse' as a native target-list model",
+        "classification": "PRODUCTION_PRIMITIVE_BOUND_TO_A_NAMED_NATIVE_METHOD (recovered named leaves), ACCEPTABLE_ONLY_WHILE_NEVER_USED_AS_A_GENERAL_TARGET_REPRESENTATION"
+      },
+      {
+        "id": "SM-C6",
+        "collapse": "ABSENT_KEY_DEFAULTED_TO_EMPTY_CONTAINER",
+        "where": "src/hsr_battle_agent/battle_sandbox/state.py::BattleState.from_dict uses data.get(key, {}) for every optional store",
+        "conflicts_with": "freeze serialization_policy 'Preserve absent/null/false/zero/empty' and F01 '[] vs [null], ABSENT vs NULL vs FALSE vs ZERO'",
+        "classification": "PRODUCTION_CONFLICT"
+      },
+      {
+        "id": "SM-C7",
+        "collapse": "ABSENT_RESET_VALUE_DEFAULTED_TO_ZERO",
+        "where": "src/hsr_battle_agent/game_data/dynamic_value_reference.py::DynamicValueStore.define (L343-L344: 'if reset is None: reset = Decimal(\"0\")')",
+        "conflicts_with": "F01 presence-aware value requirement",
+        "classification": "REFERENCE_MODEL_ALLOWED (documented selected model) BUT_PRESENCE_LOSS"
+      },
+      {
+        "id": "SM-C8",
+        "collapse": "NO_STATE_REVISION_OR_TRANSACTION_SEQUENCE",
+        "where": "BattleState has no revision/sequence field; Sandbox has no published revision; PrimitiveExecutor never checks a revision",
+        "conflicts_with": "freeze revision_and_transaction_sequence (MUTABLE_STATE) and step_transaction_contract CAPTURE phase",
+        "classification": "ABSENT"
+      },
+      {
+        "id": "SM-C9",
+        "collapse": "NO_IDENTITY_ALLOCATOR",
+        "where": "Only ad-hoc ordinal allocation exists: battle_runtime/modifiers.py::_next_instance_ordinal (max+1), reference_execution.py L1201 f'{target}:{name}:{len+1}' instance ids",
+        "conflicts_with": "freeze identity_allocators (per-type namespace/generation/non-reused next token + tombstones, included in clone/snapshot/hash; failure consumes no IDs)",
+        "classification": "EXISTS_PARTIAL / PRODUCTION_CONFLICT"
+      },
+      {
+        "id": "SM-C10",
+        "collapse": "RNG_OUTSIDE_THE_STATE_AGGREGATE",
+        "where": "SandboxRng lives on ExecutionContext, not BattleState; BattleState.state_hash() therefore excludes RNG while logical_battle_hash includes it",
+        "conflicts_with": "freeze rng_streams (MUTABLE_STATE, owner RNG, include losslessly in snapshot and semantic hash)",
+        "classification": "PARTIAL (two inconsistent hash surfaces) - HASH_SURFACE_INCONSISTENCY"
+      }
+    ],
+    "duplicate_state_models": {
+      "count": 3,
+      "members": [
+        "battle_sandbox.state.BattleState (JSON dict aggregate)",
+        "game_data.reference_execution.ReferenceBattleState (frozen dataclass, entity-id keyed)",
+        "game_data.cross_family_execution_reference.ReferenceBattleState (test-scaffold frozen dataclass)"
+      ],
+      "shared_name_collisions": [
+        "SandboxRng defined in BOTH battle_sandbox.rng and game_data.reference_execution (different implementations, different state shape)",
+        "ExecutionContext defined in BOTH battle_sandbox.context and game_data.reference_execution",
+        "ReferenceBattleState defined in BOTH game_data.reference_execution and game_data.cross_family_execution_reference",
+        "ModifierState defined in BOTH battle_ir.modifiers (enum) and game_data.modifier_lifecycle_reference (IntEnum)",
+        "TaskState defined in BOTH battle_ir.actions and game_data.scheduler_semantics_reference"
+      ]
+    }
+  },
+
+  "ticket_gap_analysis": {
+    "TERRA-F01": {
+      "title": "Versioned evidence profiles, lossless values and provenance",
+      "freeze_execution_status": "PLANNED_NOT_IMPLEMENTED",
+      "required_concepts": {
+        "EvidenceMode": {
+          "classification": "ABSENT",
+          "nearest": "game_data/behavior_compiler.py compile_status string (EXECUTABLE_REFERENCE / COMPILED_STRUCTURE_ONLY / REJECTED); game_data/external_behavior.py OPERATION_MAP semantic_status tuple",
+          "note": "A 4-class readiness vocabulary (SAFE_TO_IMPLEMENT / SAFE_TO_REPRESENT_ONLY / SAFE_REFERENCE_MODEL_ONLY / STRICT_REJECT_UNTIL_NEW_EVIDENCE) exists nowhere in code."
+        },
+        "ContractRef": {
+          "classification": "ABSENT",
+          "nearest": "battle_ir/provenance.py::SourceProvenance.source_reference() string and executor trace semantic_provenance_ref"
+        },
+        "UnknownHandle": {
+          "classification": "ABSENT",
+          "nearest": "untyped opaque JSON that may be parked inside BattleState.extensions; no owner/type/version/presence/digest envelope"
+        },
+        "SourceProvenance": {
+          "classification": "EXISTS_PARTIAL",
+          "file": "src/hsr_battle_agent/battle_ir/provenance.py",
+          "fields": ["game_version", "runtime_type", "method", "method_index", "native_rva", "evidence_level", "note"],
+          "gap": "Binary-evidence provenance only. No source commit, no version relation (CLOSE vs NATIVE), no artifact sha256, no per-value/numeric envelope."
+        },
+        "VersionRelation": {
+          "classification": "ABSENT",
+          "note": "CLOSE_4.4.0_TO_4.4.54 exists only inside the freeze authority block and astra followup JSON. No code surface distinguishes CLOSE from EXACT/NATIVE."
+        },
+        "presence_aware_value_representation": {
+          "classification": "EXISTS_CONFLICTING",
+          "evidence": [
+            "battle_sandbox/state.py::BattleState.from_dict data.get(key, {}) defaults absent stores to empty",
+            "game_data/dynamic_value_reference.py::DynamicValueStore.define defaults absent ResetValue to Decimal('0')",
+            "battle_sandbox/state.py strict JSON model: None/bool/int/finite float/str/list/dict only (no tagged presence cell)"
+          ]
+        },
+        "lossless_ids_over_2_pow_53": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": [
+            "hash.py serialises through json.dumps on Python ints (exact arbitrary-precision), so >2^53 identity survives the hash path",
+            "battle_ir/targets.py EntityRef.runtime_id requires int; battle_ir/values.py int64 bounds enforced",
+            "risk: game_data/reference_execution.py::instance_id embeds f'{target}:{name}:{len+1}' strings and game_data/external_reconstruction.py normalises numeric source fields through float (_number) - NOT lossless"
+          ]
+        },
+        "absent_vs_null_vs_false_vs_zero": {
+          "classification": "ABSENT",
+          "evidence": "No representation exists. Concrete losses: SM-C6 (absent store -> {}), SM-C7 (absent reset -> 0), TargetSet/None is conflated with 'no target' inside battle_runtime target collapse primitives."
+        },
+        "empty_list_vs_list_of_null": {
+          "classification": "EXISTS_COMPATIBLE_IN_BATTLE_IR_ONLY",
+          "evidence": "battle_ir/targets.py documents and preserves [] vs [None] for TargetSet (duplicates, order and nulls are semantic). Not preserved in BattleState JSON stores, in reference_execution target resolution, or in snapshots."
+        },
+        "structured_rejection_type": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "battle_sandbox/errors.py provides a typed error hierarchy (BattleSandboxError, UnsupportedPrimitiveError, InvalidPrimitiveInputError, DuplicatePrimitiveError, FrozenRegistryError, UnsupportedStateVersionError, StubNotImplementedError); game_data reference modules raise SemanticExecutionError / per-domain *SemanticError / NotImplementedError. No reason code, no owner, no evidence request, no pending obligations."
+        },
+        "round_trip_absent_null_false_zero_and_big_int_tests": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "tests/battle_sandbox/test_kernel.py and tests/battle_ir/test_targets.py cover strict JSON model, clone independence and TargetSet null/duplicate preservation. No test covers the F01 presence matrix or >2^53 identity end-to-end."
+        }
+      },
+      "summary": {
+        "EXISTS_COMPATIBLE": ["empty_list_vs_list_of_null (battle_ir only)"],
+        "EXISTS_PARTIAL": ["SourceProvenance", "lossless_ids_over_2_pow_53", "structured_rejection_type", "F01 tests"],
+        "EXISTS_CONFLICTING": ["presence_aware_value_representation"],
+        "ABSENT": ["EvidenceMode", "ContractRef", "UnknownHandle", "VersionRelation", "absent_vs_null_vs_false_vs_zero"]
+      }
+    },
+
+    "TERRA-F02": {
+      "title": "Typed identities and complete snapshot/clone/hash contract",
+      "freeze_execution_status": "PLANNED_NOT_IMPLEMENTED",
+      "required_concepts": {
+        "typed_identity_wrappers": {
+          "classification": "ABSENT",
+          "nearest": "battle_ir/targets.py::EntityRef (single int), battle_ir/values.py::ObjectRef (single int), battle_ir/modifiers.py::ModifierRef",
+          "gap": "Freeze identity_contract lists 24 identity kinds with distinct authorities (LOCAL_DESIGN_IDENTITY vs SOURCE_DEFINITION_IDENTITY). Only 3 generic refs exist and all are interchange-comparable ints."
+        },
+        "local_deterministic_id_allocation": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "battle_runtime/modifiers.py::_next_instance_ordinal = max(existing ordinals)+1 (documented deterministic, never reused after removal); reference_execution.py instance ids derive from current list length (REUSES ordinals after removal).",
+          "gap": "No per-type namespace, no generation, no tombstone, no failure-consumes-no-ID rule, no allocator in clone/snapshot/hash."
+        },
+        "BattleState_aggregate_separately_owned_stores": {
+          "classification": "EXISTS_CONFLICTING",
+          "evidence": "battle_sandbox/state.py exposes 6 undifferentiated JSON dicts; freeze battle_state_contract requires ~30 separately owned and classified fields (IMMUTABLE_INPUT / MUTABLE_STATE / DERIVED_CACHE / OPAQUE_UNRESOLVED_STATE) across Kernel, Content, Progression, Scenario, Behavior, Entity, Modifier, Property, Invocation, Scheduler, MonsterAI, Damage, Event, Target, RNG owners.",
+          "gap_size": "26 of 30 freeze field families have no home in BattleState."
+        },
+        "state_ownership_boundaries": {
+          "classification": "ABSENT",
+          "evidence": "No owner field anywhere; the same generic entity id key is used for property owners, modifier owners and turn participants."
+        },
+        "clone_implementation": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "BattleState.clone (deep JSON copy), ExecutionContext.clone (state+rng, fresh trace), Sandbox.clone (shares frozen registry), SandboxRng.clone (from getstate()).",
+          "gap": "No logical-identity or alias graph to preserve; no allocator state; no pending-work concept beyond what is already inside the JSON dicts; no rejection path for unavailable external state."
+        },
+        "snapshot_implementation": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "SandboxSnapshot v1 with defensive deep copy, schema gate, from_dict/to_dict/restore_context.",
+          "gap": "No evidence/contract/extension versions, no definitions-by-hash, no executability status, no absent-vs-empty preservation, no opaque payload envelope."
+        },
+        "canonical_serialization": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "hash.py::_canonical_jsonable sorts mapping keys and converts tuples to lists; state.py forbids tuples and non-finite floats; nanoka_content.stable_hash exists for content artifacts.",
+          "gap": "sorted(mapping) is applied recursively to ALL mappings, including ordered semantic maps; freeze orders 'no map iteration assumption' for progression and serialization_is_not_order forbids using sorted keys to fill an unknown semantic order. Not currently used to fill order, but the shared helper is one refactor away from being one."
+        },
+        "hash_implementation": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "SHA-256, canonical compact JSON, sort_keys=True, allow_nan=False, trace excluded; schema tag battle_sandbox_logical_state/1.",
+          "gap": "Two competing hash surfaces (BattleState.state_hash excludes RNG; logical_battle_hash includes it). No decision-affecting pending/opaque coverage, no versioned evidence/contract revision, no executability flag."
+        },
+        "rng_cloning_and_state_serialization": {
+          "classification": "EXISTS_COMPATIBLE_FOR_THE_SELECTED_GENERATOR",
+          "evidence": "battle_sandbox/rng.py: full 625-entry MT19937 state in to_dict/from_dict, strict validation, clone(); CLIENT_RNG_ALGORITHM explicitly 'UNKNOWN'; SANDBOX_RNG_ALGORITHM 'PYTHON_RANDOM_MT19937' matching freeze selected_reference_generator.",
+          "gap": "Only one stream; no stream namespace/identity, no draw position, no committed draw ledger, no no-draw-on-rejection guard."
+        },
+        "opaque_unresolved_state_preservation": {
+          "classification": "ABSENT",
+          "evidence": "No opaque slot type. Freeze reserves 8 OPAQUE_UNRESOLVED_STATE families (native_wait_lifecycle, native_modifier_lifecycle, native_target_lifecycle, native_scheduler_lifecycle, native_ai_lifecycle, native_progression_mutation, native_scenario_persistence, unknown_extensions)."
+        },
+        "allocator_state_preservation": {
+          "classification": "ABSENT",
+          "evidence": "No allocator exists to preserve; ordinal derivation is recomputed from list contents inside primitives, so removal silently frees an ordinal in the reference executor."
+        },
+        "revision_version_handling": {
+          "classification": "ABSENT",
+          "evidence": "Only schema_version integers exist (BattleState 4, SandboxSnapshot 1, RNG state 1, trace schema, IR schema strings). No published state revision, no action/revision staleness check."
+        }
+      },
+      "summary": {
+        "EXISTS_COMPATIBLE": ["rng_cloning_and_state_serialization (single selected MT19937 stream, native algorithm correctly labelled UNKNOWN)"],
+        "EXISTS_PARTIAL": ["local_deterministic_id_allocation", "clone_implementation", "snapshot_implementation", "canonical_serialization", "hash_implementation"],
+        "EXISTS_CONFLICTING": ["BattleState_aggregate_separately_owned_stores"],
+        "ABSENT": [
+          "typed_identity_wrappers",
+          "state_ownership_boundaries",
+          "opaque_unresolved_state_preservation",
+          "allocator_state_preservation",
+          "revision_version_handling"
+        ]
+      }
+    },
+
+    "TERRA-R01": {
+      "title": "Behavior registry and cross-domain request descriptors",
+      "freeze_execution_status": "PLANNED_NOT_IMPLEMENTED",
+      "interpretation": "The repository DOES contain a mature behavior-compiler and cross-domain adapter layer, but as a REFERENCE/EXECUTABLE_REFERENCE classification surface, not as Astra lossless descriptors. The existing registry is an IR-primitive registry, not a behavior registry.",
+      "required_models": {
+        "InvocationPlan": {
+          "classification": "missing",
+          "nearest": "behavior_compiler PRIMITIVE_BINDINGS['INVOKE_BEHAVIOR'] = {packet: KERNEL-EVENT-001, execution_scope: STRUCTURAL_CALL_ONLY}",
+          "note": "TriggerAbility becomes a structural child-call marker that makes the whole record non-executable. No receiver/callee target-context, barrier or resume plan is represented - which is conservative and therefore not a FALSE promotion, but it is not the Astra descriptor either."
+        },
+        "Modifier_request_query_transition": {
+          "classification": "runtime_implementation + historical/reference model (mixed)",
+          "lossless_descriptor": false,
+          "evidence": [
+            "battle_ir/modifiers.py::ModifierMatchKey / ModifierState / ModifierContainer (typed IR, closest to lossless)",
+            "battle_runtime/modifiers.py (proven-leaf runtime against BattleState dicts)",
+            "game_data/modifier_lifecycle_reference.py (reference model with StackingPolicy enum)",
+            "game_data/modifier_catalog.py::ModifierDefinition (canonical definition catalog with payload sha256 + source refs)"
+          ],
+          "astra_separation_violations": [
+            "R01-V1: modifier instance stored under the target entity id only (provider/caster/receiver not separately owned) - violates ownership boundary",
+            "R01-V2: reference executor sets source_provider_id = context.caster_id (provider collapsed to caster) - directly contradicted by FREEZE-DNR-MOD",
+            "R01-V3: StackingPolicy has no notion of 'Refresh is not Replace' (see freeze_conflicts FC-02)"
+          ]
+        },
+        "Formation_topology_request": {
+          "classification": "missing",
+          "nearest": "behavior_compiler PRIMITIVE_BINDINGS['FORMATION_CHANGE'] = {packet: TARGET-001, execution_scope: STRUCTURAL_PACKET_ONLY}; external_behavior OPERATION_MAP['RPG.GameCore.SetTeamFormation'] = ('FORMATION_CHANGE','REQUIRES_PACKET','UNKNOWN','POSSIBLE_STATE_COMMIT')",
+          "note": "Correctly treated as an unexploded layout request. No formation/topology descriptor model."
+        },
+        "Scheduler_requests_candidates": {
+          "classification": "runtime implementation + reference model",
+          "evidence": [
+            "game_data/scheduler_semantics_reference.py::TaskStep, ActionDelayState, OrdinaryTurnTimeline, InsertedActionSpec, DelayTransition, LoopSpec",
+            "game_data/reference_execution.py::PendingInsertedAction, SchedulerCandidateState (arbitration_status='UNRESOLVED_PENDING_INSERT_ACTION_ARBITRATION')",
+            "battle_runtime/turns.py (single ordinary timeline in BattleState)"
+          ],
+          "note": "Scheduler families are NOT collapsed into one queue: pending inserted actions, ordinary property-38 candidates and action/damage task maps are separate, and SchedulerCandidateState explicitly refuses to arbitrate. This satisfies the freeze's 'no shared queue' rule for the represented scope."
+        },
+        "Monster_AI_policy_representation": {
+          "classification": "missing",
+          "evidence": "No monster-AI module, no policy/option/leaf/sequence model, no AI state store. game_data/nanoka_content.py only lists AI as an unresolved blocker category."
+        },
+        "DamageRequest": {
+          "classification": "reference model",
+          "evidence": "game_data/damage_survival_reference.py::DamageMultiplierContext + initial_damage/normal_damage/dot_damage/break_damage/super_break_damage/dot_chance_multiplier; reference_execution._execute_damage; behavior_compiler DAMAGE_REQUEST allowlist (explicitly excludes HitSplitRatio and hostile scalar lowering).",
+          "note": "Decomposed request/root/hit/component identity is NOT modelled."
+        },
+        "TargetIntent_ResolvedTargetSet_Retarget": {
+          "classification": "lossless descriptor (partial) + reference model",
+          "evidence": [
+            "battle_ir/targets.py::TargetSet is genuinely lossless for order/duplicates/nulls",
+            "game_data/target_semantics_reference.py::resolve_target_alias returns a flat ordered id tuple (collapses the null/duplicate structure)",
+            "reference_execution._execute_retarget restricted to ModifierOwnerAdjoinEntity + fixed positive MaxNumber + one TaskList child"
+          ],
+          "note": "TargetIntent (symbolic selector + provenance) is not modelled; only resolved id tuples and a single alias resolver."
+        },
+        "Progression_loadout_activation": {
+          "classification": "historical/reference model",
+          "evidence": "game_data/external_reconstruction.py::materialize_loadout applies only explicit static base stats + declared trace status_add_list + relic affix values; LightCone/RelicSet contextual effects and Eidolon mechanics are explicitly retained as metadata and not guessed into properties; scenario_compiler._compile_players carries eidolon_rank/trace_ids/relics as loadout input.",
+          "note": "No ENABLED/DISABLED_WITH_PROOF/UNRESOLVED activation state exists."
+        },
+        "Scenario_wave_global_mode_terminal_descriptors": {
+          "classification": "historical/reference model (partial)",
+          "evidence": [
+            "game_data/scenario_compiler.py emits a ScenarioPackage with players/waves/buff_bindings/rules/unresolved_behavior/execution_status/golden_eligible",
+            "game_data/nanoka_content.py preserves stage_wave/wave_monster source rows with group_index and slot"
+          ],
+          "astra_separation_violations": [
+            "R01-V4: scenario_compiler sorts waves by wave_index (numeric group sort) and flattens enemy groups into one enemies list",
+            "R01-V5: golden_eligible is derived from static assembly",
+            "R01-V6: no global-effect / environment-mode / terminal descriptor family exists"
+          ]
+        }
+      },
+      "registry_model_audit": {
+        "existing_registry": "src/hsr_battle_agent/battle_sandbox/registry.py::PrimitiveRegistry",
+        "kind": "FROZEN_NUMERIC_PREDICATE_MODIFIER_PROPERTY_HP_TURN_IR_PRIMITIVE_REGISTRY",
+        "bootstrap": "catalog.json -> schema + sha256 + enabled validation -> explicit per-primitive implementation binding -> freeze()",
+        "counts": "13 catalog artifacts / 13 enabled; 92 enabled primitives loaded (test assertion expects 91); see test_inventory R3",
+        "missing": "No behavior/entrypoint registry, no cross-domain request-descriptor registry, no resolution/unresolved edge ledger."
+      },
+      "summary": {
+        "EXISTS_COMPATIBLE": ["separate scheduler request families (no single shared queue)"],
+        "EXISTS_PARTIAL": ["target descriptor losslessness in battle_ir only", "scenario static assembly", "progression loadout input preservation"],
+        "EXISTS_CONFLICTING": [
+          "modifier provider/caster ownership",
+          "modifier Refresh vs Replace policy",
+          "scenario numeric wave sort + flatten",
+          "golden_eligible static derivation"
+        ],
+        "ABSENT": ["InvocationPlan", "formation/topology descriptor", "Monster AI policy/state", "DamageRequest decomposition identity", "TargetIntent", "activation state", "global/environment/mode/terminal descriptors"]
+      }
+    },
+
+    "TERRA-G01": {
+      "title": "Transitive preflight and atomic commit protocol",
+      "freeze_execution_status": "PLANNED_NOT_IMPLEMENTED",
+      "required_concepts": {
+        "preflight_dependency_checks": {
+          "classification": "ABSENT",
+          "evidence": "PrimitiveExecutor.execute performs no dependency walk; it resolves one primitive and calls it. SemanticExecutor._execute_operations walks operations sequentially and discovers an unsupported operation at the moment it reaches it (reference_execution.py L526-L539, _execute_operation L590-L657)."
+        },
+        "structured_rejection": {
+          "classification": "EXISTS_PARTIAL",
+          "evidence": "battle_sandbox/errors.py typed hierarchy + semantic_provenance_ref in trace; game_data raises SemanticExecutionError with operation_id-prefixed messages and behavior_compiler produces named diagnostics (EXECUTABLE_REFERENCE_* reason codes).",
+          "gap": "No rejection object carrying affected state families / evidence request / pending obligations; diagnostics never reach the sandbox API because step() is a stub."
+        },
+        "transaction_or_staged_delta": {
+          "classification": "ABSENT",
+          "evidence": "No staging buffer, no private delta, no transaction-owned RNG object anywhere in src/."
+        },
+        "atomic_state_commit": {
+          "classification": "ABSENT",
+          "evidence": "battle_runtime primitives write directly into BattleState and ExecutionContext.trace (e.g. turns.py::advance_to_next_actor mutates state.turn_timeline in place; property/hp primitives write lists into state dicts)."
+        },
+        "state_revision": {
+          "classification": "ABSENT",
+          "evidence": "No revision field, no staleness check."
+        },
+        "rng_rollback_no_draw_on_rejection": {
+          "classification": "ABSENT_AS_A_GUARD_BUT_MOSTLY_SAFE_BY_CONSTRUCTION_IN_THE_REFERENCE_LAYER",
+          "evidence": [
+            "game_data/reference_execution.py::SandboxRng.draw_01 RETURNS a new frozen rng value instead of mutating, so a rejected reference fold leaks no RNG advance",
+            "battle_sandbox.rng.SandboxRng IS mutable and public (randint/uniform/next_u64) - a rejected primitive that drew before raising would leak a draw"
+          ]
+        },
+        "allocator_no_consume_on_rejection": {
+          "classification": "ABSENT",
+          "evidence": "battle_runtime/modifiers.py::_next_instance_ordinal is computed from current list contents just before the write, so a mid-flight failure after one target was appended leaves that target's container already written (see the per-target loop in reference_execution._execute_add_modifier L1199-L1225 and battle_runtime._modifier_state_write_impl)."
+        },
+        "queue_no_mutation_on_rejection": {
+          "classification": "EXISTS_COMPATIBLE_IN_THE_REFERENCE_LAYER",
+          "evidence": "PendingInsertedAction append enforces enqueue_index == current pending queue length and returns a new state (reference_execution.py L319-L322); battle_sandbox has no queue."
+        },
+        "dependency_closure": {
+          "classification": "ABSENT",
+          "evidence": "The closest behaviour is behavior_compiler's whole-record 'structural_only' flag: if any node binds to STRUCTURAL_CALL_ONLY / STRUCTURAL_PACKET_ONLY, the entire behavior becomes non-executable. That is a coarse global deny, not a per-action reachable-closure certificate."
+        }
+      },
+      "incremental_mutation_before_unsupported_operation": {
+        "verdict": "YES_IN_BATTLE_SANDBOX_RUNTIME_NO_IN_REFERENCE_EXECUTOR",
+        "production_conflict_paths": [
+          {
+            "path": "src/hsr_battle_agent/battle_sandbox/executor.py::PrimitiveExecutor.execute (L49-L84) -> registered.implementation(context, ordered_inputs)",
+            "why": "The live ExecutionContext (and therefore BattleState) is handed straight to the implementation. There is no staging object, so any raise inside the implementation occurs after writes already applied."
+          },
+          {
+            "path": "src/hsr_battle_agent/battle_sandbox/trace.py + battle_runtime/property.py boundary_sink",
+            "why": "Property primitives attach a boundary sink that records PropertyChangeBoundary events into the live trace as mutations are accepted; a later rejection leaves accepted boundary events in the branch trace."
+          },
+          {
+            "path": "src/hsr_battle_agent/battle_runtime/turns.py::advance_to_next_actor (L172-L221)",
+            "why": "Mutates state.turn_timeline in place and rewrites property 38 for every participant in a loop; UnsupportedTurnParticipantError / TurnSemanticError raised on any later participant leaves earlier participants already recharged. It also raises TurnCompletionRequiredError only after the phase read, and _delay_entry can raise inside the sort."
+          },
+          {
+            "path": "src/hsr_battle_agent/game_data/reference_execution.py::_execute_add_modifier (L1197-L1226)",
+            "why": "Iterates resolved targets and commits per-target modifier state; a failure on target N returns only after targets 1..N-1 were folded, and the reference model has no rollback (reference-model scope only)."
+          },
+          {
+            "path": "src/hsr_battle_agent/game_data/reference_execution.py::_execute_retarget (L689-L710)",
+            "why": "Runs one child TaskList per selected target; a rejection in a later child leaves the earlier child effects folded into the private state."
+          }
+        ],
+        "non_conflicts": [
+          "reference_execution._execute_operations returns state only on success, so callers of SemanticExecutor observe no partial state (but also no partial-effect diagnostics and no rejection certificate).",
+          "Reference-layer dataclasses are frozen and every transition uses dataclasses.replace, so aliasing is not a mutation hazard.",
+          "battle_sandbox.state.BattleState.__post_init__ deep-copies all inputs, so caller-owned containers never alias kernel state."
+        ],
+        "repaired_by_audit": false
+      },
+      "summary": {
+        "EXISTS_COMPATIBLE": ["queue no-mutation-on-rejection (reference layer)"],
+        "EXISTS_PARTIAL": ["structured rejection"],
+        "EXISTS_CONFLICTING": ["incremental mutation before unsupported-operation discovery (see production_conflict_paths)"],
+        "ABSENT": [
+          "preflight_dependency_checks",
+          "transaction_or_staged_delta",
+          "atomic_state_commit",
+          "state_revision",
+          "dependency_closure",
+          "allocator_no_consume_on_rejection",
+          "rng no-draw-on-rejection guard (mutable sandbox RNG)"
+        ]
+      }
+    }
+  },
+
+  "freeze_conflicts": [
+    {
+      "id": "FC-01",
+      "freeze_item": "modifier provider collapsed to caster",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_MUST_BE_QUARANTINED",
+      "location": "src/hsr_battle_agent/game_data/reference_execution.py:1207 (source_provider_id=context.caster_id) inside _execute_add_modifier",
+      "detail": "The reference ADD_MODIFIER adapter uses the caster id as the source-provider identity; _matches in modifier_lifecycle_reference.py:104 treats a null incoming provider as a wildcard match. FREEZE-DNR-MOD forbids 'provider=caster' as an inference.",
+      "impact": "Every reference-executed AddModifier record carries a locally invented provider identity. Safe only while labelled REFERENCE.",
+      "action_for_planner": "Wrap or rename; do not reuse as a provider model in F02/R01."
+    },
+    {
+      "id": "FC-02",
+      "freeze_item": "Refresh treated as Replace/Count/OnReplace; missing Stacking default guessed",
+      "classification": "PRODUCTION_CONFLICT",
+      "location": "src/hsr_battle_agent/battle_runtime/modifiers.py:371-L380 (_apply_redd_life_core) called by the registered primitive battle.ir.modifier.lifecycle_process_redd; plus src/hsr_battle_agent/battle_ir/modifiers.py:50 (ModifierStacking.REFRESH = 2)",
+      "detail": "REFRESH is grouped with REPLACE/REPLACE_BY_CASTER/REPLACE_BY_CASTER_OR_UNSTACK/REPLACE_BY_CASTER_ABILITY and the branch writes `count = new_count` and `previous_life = current_life`. Freeze SC-07 records the final claim that the Refresh direct arm writes life/previous life and has NO direct Count setter and NO OnReplace in that arm.",
+      "impact": "A registered production primitive currently implements the superseded Refresh semantics.",
+      "action_for_planner": "Freeze wins. Record; do not repair in this audit. Any Terra work touching modifier lifecycle must re-derive this gate."
+    },
+    {
+      "id": "FC-03",
+      "freeze_item": "Refresh overwritten dynamics / stacking default guessed",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_QUARANTINED",
+      "location": "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py:125-L127 (policy set {2,5,7,8,12} -> REFRESH_REPLACE writing current_life, count and dynamic_values)",
+      "detail": "The reference lifecycle model also writes Count and overwrites dynamic values for ordinal 2, and _policy() has no ordinal 1 (UNIQUE) or 9 (ENTITY_UNIQUE) mapping, so unknown names raise NotImplementedError (safe) while unknown ints raise ValueError (safe).",
+      "impact": "Reference-only. Contradicts SC-07 for ordinal 2.",
+      "action_for_planner": "Quarantine with FC-02; do not treat the reference action names as Astra policy names."
+    },
+    {
+      "id": "FC-04",
+      "freeze_item": "adjacency implemented as array index +/-1",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_MUST_BE_QUARANTINED",
+      "location": "src/hsr_battle_agent/game_data/target_semantics_reference.py:105-L121 (_adjoin), also L91 and L120 sorting by entity_id",
+      "detail": "+-1 adjacency is computed from a (row,column) position pair supplied by the caller, and both _team_entities and _adjoin break ties by entity_id. This is exactly the SC-10 quarantined convenience.",
+      "impact": "It is reachable from production code: behavior_compiler allows RETARGET with Alias == ModifierOwnerAdjoinEntity, and reference_execution._execute_retarget consumes it.",
+      "action_for_planner": "Keep behind the explicit reference profile; never present as native adjacency."
+    },
+    {
+      "id": "FC-05",
+      "freeze_item": "entity-ID target tie break",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_MUST_BE_QUARANTINED",
+      "location": "src/hsr_battle_agent/game_data/target_semantics_reference.py:91, 120",
+      "detail": "sorted(key=(row, column, entity_id)) and sorted(key=(row, column, entity_id)).",
+      "impact": "As FC-04. The production scheduler comparator (battle_runtime/turns.py::_compare_entities L160-L169) correctly returns 0 and relies on Python stable sort / prior action-list order, which matches SC-11.",
+      "action_for_planner": "Do not add an ID tie-break to the scheduler; the target reference module must stay quarantined."
+    },
+    {
+      "id": "FC-06",
+      "freeze_item": "target represented as Optional<EntityId>; target null elements removed",
+      "classification": "PRODUCTION_PRIMITIVE_BOUND_TO_NAMED_NATIVE_LEAVES (acceptable only in that narrow scope)",
+      "location": "src/hsr_battle_agent/battle_runtime/targets.py:59-L70 (collapse_single_or_null, collapse_required_single_or_null) and :48-L50 (select_caster appends an unconditionally-null element)",
+      "detail": "The collapse primitives lose order/cardinality by design, but they are bound to named recovered native methods (AbilityStatic.GetTaskSingleTarget, TaskContext.EvaluateSingleTarget) and battle_ir/targets.py separately preserves [] vs [None] and duplicates.",
+      "impact": "Not a promotion, but any new consumer that routes general target handling through these primitives would create SC-10's Optional<EntityId> collapse.",
+      "action_for_planner": "Keep the lossless TargetSet as the only target representation for new descriptors."
+    },
+    {
+      "id": "FC-07",
+      "freeze_item": "legacy waves treated as native executable waves; no native wave progression",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_MUST_BE_QUARANTINED (mixed with a soft production risk)",
+      "location": "src/hsr_battle_agent/game_data/scenario_compiler.py:148-L177 (_compile_waves) and :202-L205 (_waves_from_template)",
+      "detail": "Waves are compiled into a flat list and `sorted(compiled, key=lambda row: row['wave_index'])` performs the numeric group sort that ordering_contract forbids; _waves_from_template discards the enemy_groups nesting and re-derives per-enemy template_position. nanoka_content.py does preserve group_index/slot at ingestion.",
+      "impact": "Static assembly only; no wave execution exists.",
+      "action_for_planner": "Do not reuse ScenarioCompiler waves as native wave state; R01 must preserve source groups."
+    },
+    {
+      "id": "FC-08",
+      "freeze_item": "static assembly / golden_eligible treated as runnable; no default native mode",
+      "classification": "REFERENCE_MODEL_ALLOWED_BUT_MUST_BE_QUARANTINED",
+      "location": "src/hsr_battle_agent/game_data/scenario_compiler.py:77 (golden_eligible) and :55-L61 (execution_status BEHAVIOR_RESOLVED / DEBUG_OPAQUE_DISABLED_ONLY)",
+      "detail": "golden_eligible = (not unresolved_behavior) and unsupported_policy != 'opaque-disabled'. SC-15 states static assembly is representation only and opaque-disabled content is invalid for execution success, planner/training validation and Golden.",
+      "impact": "The flag name implies eligibility; the freeze keeps Golden at 0.",
+      "action_for_planner": "Treat scenario_compiler output strictly as a representation artifact; do not consume golden_eligible."
+    },
+    {
+      "id": "FC-09",
+      "freeze_item": "SkillPerformFinish SUCCESS treated as native ability completion",
+      "classification": "REFERENCE_MODEL_ALLOWED (explicitly documented boundary)",
+      "location": "src/hsr_battle_agent/game_data/reference_execution.py:1266-L1299 (_execute_action_completion_marker) with docstring at L1272-L1276",
+      "detail": "SkillPerformFinish is lowered only with an explicit action_task_id and an EXECUTING task, and the docstring states AV recharge is separate. This matches SC-12's warning rather than violating it.",
+      "impact": "No native promotion. Residual risk is the disposition name ACTION_COMPLETION_MARKED_SUCCESS being read as native ability completion.",
+      "action_for_planner": "Keep; rename only if a Terra naming pass is authorized."
+    },
+    {
+      "id": "FC-10",
+      "freeze_item": "TriggerAbility lowered as synchronous child await",
+      "classification": "FALSE_POSITIVE",
+      "location": "src/hsr_battle_agent/game_data/behavior_compiler.py:27 (INVOKE_BEHAVIOR -> STRUCTURAL_CALL_ONLY, sets structural_only) ; src/hsr_battle_agent/game_data/external_behavior.py:44",
+      "detail": "TriggerAbility is never lowered as an await. It marks the record structurally incomplete and therefore non-executable. This is conservative and consistent with SC/DNR-TA, though coarser than a transitive closure gate.",
+      "impact": "No conflict."
+    },
+    {
+      "id": "FC-11",
+      "freeze_item": "LightCone 165 candidates treated as exact activation",
+      "classification": "REFERENCE_MODEL_ALLOWED_WITH_NAMING_RISK",
+      "location": "src/hsr_battle_agent/game_data/content_behavior_mapping.py:129-L144 (_exact_config_id_candidate) and :166-L177 (_record_link)",
+      "detail": "Numeric-token matches are classified EXACT_CONFIG_ID, a distinct class from EXACT_ID, and the literal-EXACT_ID branch explicitly notes current close-version owner refs do not satisfy it. No 165 count is asserted in code. However the class name contains 'EXACT'.",
+      "impact": "Matches SC-01's intent (candidates, not joins) while risking a future reader promoting the label.",
+      "action_for_planner": "No semantic change needed; consider renaming only under explicit authorization."
+    },
+    {
+      "id": "FC-12",
+      "freeze_item": "Eidolon cumulative activation guessed; 4pc relic implies native 2pc+4pc",
+      "classification": "FALSE_POSITIVE",
+      "location": "src/hsr_battle_agent/game_data/external_reconstruction.py:1132-L1150 (materialize_loadout docstring) and the relic loop at L1194-L1238",
+      "detail": "LightCone/RelicSet contextual effects and Eidolon mechanics are explicitly retained as metadata and not guessed into properties; only explicit static base stats, caller-declared unlocked trace status_add_list and relic affix base/level values are materialised. relic_set_counts is computed for provenance but no 2pc/4pc threshold behaviour is applied.",
+      "impact": "No conflict."
+    },
+    {
+      "id": "FC-13",
+      "freeze_item": "HitSplitRatio flattened to scalar multiplier; IsNonlethal implemented as max(1, hp-damage) without profile gate",
+      "classification": "FALSE_POSITIVE",
+      "location": "no occurrence of HitSplitRatio or IsNonlethal anywhere under src/",
+      "detail": "The only max(1, ...) expressions are battle_ir/modifiers.py::max_layer (max(1, slot+slot), a named native MaxLayer leaf), battle_runtime/modifiers.py:402 (is_max_layer comparison) and damage_survival_reference.dot_chance_multiplier's stack floor.",
+      "impact": "No conflict."
+    },
+    {
+      "id": "FC-14",
+      "freeze_item": "no_alive_enemies => native next wave; last wave empty => native victory; player dead => universal native defeat",
+      "classification": "FALSE_POSITIVE",
+      "location": "no terminal/advance logic anywhere under src/; game_data/nanoka_content.py:1115 and game_data/external_reconstruction.py:1391 record DEATH_AND_VICTORY / LVQ-DEATH-VICTORY only as unresolved blockers",
+      "impact": "No conflict. is_terminal remains an explicit stub."
+    },
+    {
+      "id": "FC-15",
+      "freeze_item": "StageCommonTemplate assumed available",
+      "classification": "FALSE_POSITIVE",
+      "location": "no occurrence of StageCommonTemplate under src/",
+      "impact": "No conflict."
+    },
+    {
+      "id": "FC-16",
+      "freeze_item": "Historical EXECUTABLE_REFERENCE interpreted as native-safe",
+      "classification": "REFERENCE_MODEL_ALLOWED_WITH_LABEL_RISK",
+      "location": "src/hsr_battle_agent/game_data/behavior_compiler.py:191-L199 (compile_status / executable flag) and src/hsr_battle_agent/game_data/reference_execution.py:1-L9 (module docstring)",
+      "detail": "The compile_status value 'EXECUTABLE_REFERENCE' and the boolean field 'executable' are produced by static compilation. The freeze states a compiler EXECUTABLE_REFERENCE flag alone is insufficient. Both modules document the reference-only scope, but the field name 'executable' carries no evidence-mode qualifier.",
+      "impact": "A future consumer reading `executable` without the freeze in hand would over-promote.",
+      "action_for_planner": "Treat the flag as representation-only; do not let G01 read it as a gate certificate."
+    },
+    {
+      "id": "FC-17",
+      "freeze_item": "scheduler AV tie broken by entity ID; all scheduler families sharing one queue/priority",
+      "classification": "FALSE_POSITIVE (both already respected)",
+      "location": "src/hsr_battle_agent/battle_runtime/turns.py:160-L169 (_compare_entities returns 0, comment names the deliberate prior-action-list policy); src/hsr_battle_agent/game_data/reference_execution.py::SchedulerCandidateState (ordinary vs pending inserted kept separate, arbitration_status left UNRESOLVED)",
+      "impact": "No conflict; these are the closest existing matches to the frozen contracts and should be preserved as-is."
+    },
+    {
+      "id": "FC-18",
+      "freeze_item": "one generic current_target; one generic queue for all scheduler request families",
+      "classification": "FALSE_POSITIVE",
+      "location": "no single current_target field exists; scheduler state is split (turn_timeline vs action_delays vs action_tasks vs damage_tasks vs pending_inserted_actions)",
+      "impact": "No conflict."
+    },
+    {
+      "id": "FC-19",
+      "freeze_item": "presence unwrapping: absent store defaulted to empty; tuples silently normalised",
+      "classification": "PRODUCTION_CONFLICT",
+      "location": "src/hsr_battle_agent/battle_sandbox/state.py:186-L267 (BattleState.from_dict data.get(key, {})) and src/hsr_battle_agent/battle_sandbox/hash.py:16-L20 (_canonical_jsonable converts tuple -> list)",
+      "detail": "Serialisation cannot distinguish 'key absent' from 'key present and empty'. hash._canonical_jsonable also silently coerces tuples.",
+      "impact": "Directly contradicts the F01/F02 presence requirement.",
+      "action_for_planner": "F01 must introduce a presence-aware envelope before F02 snapshot/hash can satisfy the freeze."
+    }
+  ],
+
+  "test_inventory": {
+    "framework": "python unittest (stdlib). Zero pytest usage anywhere.",
+    "config_files": "NONE (no pytest.ini, setup.cfg, tox.ini, conftest.py, no [tool.pytest] in pyproject.toml)",
+    "dependency_state": "No project runtime dependencies and no dev dependency file. numpy and jsonschema are NOT installed, so tests/unpacker and tests/cross_version cannot import.",
+    "venv": ".venv exists in the repo listing but contains no Scripts/python.exe / pyvenv.cfg usable interpreter (empty or foreign layout)",
+    "documented_command": "python -m unittest discover -s tests -p \"test_*.py\" -v (docs/agent/project_index.md:244)",
+    "documented_command_currently_broken": {
+      "reason": "tests/ has no __init__.py, so `discover -s tests -t .` raises ImportError: Start directory is not importable. Full-suite discovery in one invocation is impossible today.",
+      "consequence": "Per-directory discovery is the only reliable runner, which is why the stale assertions in R3 go unnoticed."
+    },
+    "static_test_function_count": 679,
+    "per_suite_results": [
+      {
+        "suite": "tests/battle_sandbox",
+        "command": "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"",
+        "tests": 170,
+        "failures": 0,
+        "errors": 0,
+        "wall_clock_s": 0.078,
+        "runtime": "OK",
+        "relevant_to": ["state", "clone", "snapshot", "hash", "RNG", "executor", "modifier", "target", "scheduler", "damage"]
+      },
+      {
+        "suite": "tests/battle_runtime",
+        "command": "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"",
+        "tests": 185,
+        "failures": 0,
+        "errors": 0,
+        "wall_clock_s": 0.193,
+        "runtime": "OK",
+        "relevant_to": ["modifier", "target", "property", "scheduler", "damage", "predicate"]
+      },
+      {
+        "suite": "tests/battle_ir",
+        "command": "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"",
+        "tests": 130,
+        "failures": 3,
+        "errors": 0,
+        "wall_clock_s": 3.1,
+        "runtime": "FAILED",
+        "failing_tests": [
+          "tests.battle_ir.test_semantic_batch_catalog.TestPropertyArtifactValidation.test_catalog_schema_and_entries (13 != 12)",
+          "tests.battle_ir.test_semantic_batch_catalog.TestPropertyArtifactValidation.test_default_catalog_loads_vertical_slice_plus_batches (92 != 91)",
+          "tests.battle_ir.test_semantic_batch_catalog.TestPropertyArtifactValidation.test_disabled_entry_is_skipped (81 != 80)"
+        ],
+        "root_cause": "data/semantics/4.4.54/catalog.json gained a 13th enabled artifact (turn_av_semantics_29.json) in commit dc35457 'sandbox: add deterministic Turn and AV runtime', but the count assertions in tests/battle_ir/test_semantic_batch_catalog.py were never updated. Both files are clean versus HEAD, so this is a committed, reproducible baseline defect, not working-tree drift and not caused by this audit.",
+        "numbers": {
+          "catalog_artifacts": 13,
+          "catalog_enabled": 13,
+          "loaded_primitives": 92,
+          "test_expectations": {"artifacts": 12, "primitives": 91, "with_second_entry_disabled": 80}
+        }
+      },
+      {
+        "suite": "tests/game_data",
+        "command": "PYTHONPATH=\"src;.\" python -m unittest discover -s tests/game_data -t tests/game_data -p \"test_*.py\"",
+        "tests": 153,
+        "failures": 0,
+        "errors": 2,
+        "wall_clock_s": 85.5,
+        "runtime": "FAILED (errors=2)",
+        "erroring_tests": [
+          "test_external_reconstruction.ExternalReconstructionTest.test_external_records_stage_detail_and_static_loadout_round_trip",
+          "test_external_reconstruction.ExternalReconstructionTest.test_rebuild_is_deterministic_and_refuses_other_versions"
+        ],
+        "root_cause": "ENVIRONMENTAL: PermissionError [WinError 32] while tempfile.TemporaryDirectory cleanup tries to unlink content.sqlite / first.sqlite on Windows. Test bodies completed; only teardown failed. Not semantic.",
+        "relevant_to": ["reference models", "executor", "scenario", "damage", "target", "scheduler", "modifier", "content mapping"]
+      },
+      {
+        "suite": "tests/reverse",
+        "command": "python -m unittest discover -s tests/reverse -t . -p \"test_*.py\"",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "wall_clock_s": 0.003,
+        "runtime": "OK"
+      },
+      {
+        "suite": "tests/unpacker",
+        "command": "python -m unittest discover -s tests/unpacker -p \"test_*.py\"",
+        "tests": 1,
+        "failures": 0,
+        "errors": 1,
+        "runtime": "BLOCKED",
+        "root_cause": "ModuleNotFoundError: No module named 'numpy'"
+      },
+      {
+        "suite": "tests/cross_version",
+        "command": "python -m unittest discover -s tests/cross_version -p \"test_*.py\"",
+        "tests": 2,
+        "failures": 0,
+        "errors": 2,
+        "runtime": "BLOCKED",
+        "root_cause": "ModuleNotFoundError: numpy, jsonschema"
+      }
+    ],
+    "aggregate": {
+      "collected_and_run": 649,
+      "passed": 644,
+      "failed_semantic": 3,
+      "failed_environmental": 2,
+      "not_run_due_to_missing_deps": 3,
+      "not_discovered_instances": 30,
+      "note": "679 statically counted test functions include parametrised/looped cases that unittest reports differently, and the 30 undiscovered instances belong to tests/unpacker and tests/cross_version which never import."
+    },
+    "coverage_gap_for_terra": {
+      "exists": [
+        "strict JSON value-model and clone independence (test_kernel)",
+        "TargetSet order/duplicate/null preservation (test_targets)",
+        "per-primitive proven-leaf behaviour (battle_runtime + battle_sandbox suites)",
+        "reference-model per-domain behaviour (game_data reference tests, 46 tests in 0.04s)",
+        "reference executor end-to-end for EXECUTABLE_REFERENCE records (65 tests, 1.1s)"
+      ],
+      "missing": [
+        "no test for reset/legal_actions/step/is_terminal (stubs)",
+        "no test for absent-vs-null-vs-false-vs-zero or [] vs [null] at snapshot/hash level",
+        "no test for >2^53 identity round-trip",
+        "no test for RNG no-draw-on-rejection",
+        "no test for allocator non-consumption on rejection",
+        "no test for revision staleness",
+        "no test comparing hash surfaces (BattleState.state_hash vs logical_battle_hash)",
+        "no test that a mid-list rejection leaves battle_sandbox BattleState unchanged"
+      ]
+    }
+  },
+
+  "file_impact_map": {
+    "TERRA-F01": {
+      "existing_files_likely_extended": [
+        "src/hsr_battle_agent/battle_ir/provenance.py (extend SourceProvenance or add ContractRef/VersionRelation siblings)",
+        "src/hsr_battle_agent/battle_ir/semantic_artifact.py (evidence-level validation is here)",
+        "src/hsr_battle_agent/battle_ir/catalog.py (artifact schema/version registry)",
+        "src/hsr_battle_agent/battle_sandbox/state.py (presence envelope integration point)",
+        "src/hsr_battle_agent/battle_sandbox/errors.py (structured rejection type)",
+        "src/hsr_battle_agent/battle_ir/__init__.py (public re-exports)"
+      ],
+      "new_files_likely_required": [
+        "src/hsr_battle_agent/<new>/evidence.py (EvidenceMode, ContractRef, UnknownHandle, VersionRelation)",
+        "src/hsr_battle_agent/<new>/lossless_value.py (presence-aware value cell, lossless numeric lexeme)",
+        "tests/<new>/test_evidence_modes.py",
+        "tests/<new>/test_lossless_presence.py"
+      ],
+      "tests_likely_required": [
+        "round trip absent/null/false/0/[]/[null]",
+        ">2^53 id round trip through snapshot and hash",
+        "close-version mode and native mode cannot merge silently"
+      ],
+      "must_not_be_modified": [
+        "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_*_v1.json (all frozen domain contracts)",
+        "data/semantics/4.4.54/catalog.json and the 13 referenced artifacts (sha256-gated)",
+        "tests/battle_ir/test_semantic_batch_catalog.py expectations unless R3 is separately authorized"
+      ],
+      "wrap_or_quarantine_candidates": [
+        "src/hsr_battle_agent/game_data/content_behavior_mapping.py EXACT_CONFIG_ID label",
+        "src/hsr_battle_agent/game_data/behavior_compiler.py compile_status 'EXECUTABLE_REFERENCE' label"
+      ]
+    },
+    "TERRA-F02": {
+      "existing_files_likely_extended": [
+        "src/hsr_battle_agent/battle_sandbox/state.py (replace the JSON bag with the classified store aggregate)",
+        "src/hsr_battle_agent/battle_sandbox/snapshot.py (version 2 payload)",
+        "src/hsr_battle_agent/battle_sandbox/hash.py (opaque/index/version coverage, remove tuple coercion)",
+        "src/hsr_battle_agent/battle_sandbox/rng.py (stream id, draw position, ledger)",
+        "src/hsr_battle_agent/battle_sandbox/context.py (state/rng ownership boundary)",
+        "src/hsr_battle_agent/battle_sandbox/sandbox.py (clone/snapshot/hash surfaces)",
+        "src/hsr_battle_agent/battle_ir/targets.py (typed identity wrappers)",
+        "src/hsr_battle_agent/battle_ir/values.py (ObjectRef vs typed identity)",
+        "src/hsr_battle_agent/battle_ir/modifiers.py (per-family modifier identity)"
+      ],
+      "new_files_likely_required": [
+        "src/hsr_battle_agent/battle_sandbox/identity.py (typed wrappers + allocators)",
+        "src/hsr_battle_agent/battle_sandbox/opaque.py (opaque unresolved state envelope + index)",
+        "src/hsr_battle_agent/battle_sandbox/stores/ (one module per owner family)",
+        "src/hsr_battle_agent/battle_sandbox/revision.py",
+        "tests/battle_sandbox/test_state_stores_v2.py",
+        "tests/battle_sandbox/test_identity_allocator.py",
+        "tests/battle_sandbox/test_snapshot_v2.py"
+      ],
+      "tests_likely_required": [
+        "clone keeps alias graph and independently mutable RNG/stores",
+        "hash distinguishes queue / AI cursor / target null / order / terminal rule / unknown payload changes",
+        "failed construction consumes no IDs"
+      ],
+      "must_not_be_modified": [
+        "frozen contracts and catalog artifacts (as F01)",
+        "the 300+ proven-leaf primitives in battle_runtime/* in one step"
+      ],
+      "wrap_or_quarantine_candidates": [
+        "src/hsr_battle_agent/game_data/reference_execution.py::ReferenceBattleState (keep as a reference-model consumer, do not merge into BattleState)",
+        "src/hsr_battle_agent/game_data/cross_family_execution_reference.py::ReferenceBattleState (test-scaffold duplicate)",
+        "the duplicated SandboxRng / ExecutionContext / ModifierState / TaskState names"
+      ]
+    },
+    "TERRA-R01": {
+      "existing_files_likely_extended": [
+        "src/hsr_battle_agent/game_data/behavior_compiler.py (produce descriptors instead of only dispositions)",
+        "src/hsr_battle_agent/game_data/external_behavior.py (OPERATION_MAP becomes the descriptor family source)",
+        "src/hsr_battle_agent/game_data/content_behavior_mapping.py (resolution + unresolved edge ledger)",
+        "src/hsr_battle_agent/battle_sandbox/registry.py (register descriptors beside IR primitives)",
+        "src/hsr_battle_agent/game_data/scheduler_semantics_reference.py and target_semantics_reference.py (split descriptor from model)"
+      ],
+      "new_files_likely_required": [
+        "src/hsr_battle_agent/battle_ir/descriptors/ (invocation, modifier, formation, scheduler, ai, damage, target, progression, scenario families)",
+        "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
+        "tests/battle_ir/test_descriptor_losslessness.py"
+      ],
+      "tests_likely_required": [
+        "preserve IsSkillPerform absence and all target/context slots",
+        "[] != [null]; repeated wave/sequence occurrences persist",
+        "Multiple decision differs from found=>mutate; Refresh differs from Replace"
+      ],
+      "must_not_be_modified": [
+        "frozen contracts and catalog artifacts",
+        "src/hsr_battle_agent/game_data/nanoka_content.py ingestion record shapes (source of truth for group/slot identity)"
+      ],
+      "wrap_or_quarantine_candidates": [
+        "game_data/target_semantics_reference.py::_adjoin and entity_id tie breaks",
+        "game_data/modifier_lifecycle_reference.py::StackingPolicy and add_or_refresh REFRESH_REPLACE branch",
+        "game_data/scenario_compiler.py::_compile_waves numeric sort and _waves_from_template flattening"
+      ]
+    },
+    "TERRA-G01": {
+      "existing_files_likely_extended": [
+        "src/hsr_battle_agent/battle_sandbox/executor.py (introduce the preflight/stage/commit boundary)",
+        "src/hsr_battle_agent/battle_sandbox/sandbox.py (wire step()/legal_actions()/is_terminal() to the gate)",
+        "src/hsr_battle_agent/battle_sandbox/errors.py (rejection certificate)",
+        "src/hsr_battle_agent/battle_sandbox/trace.py (staged events)",
+        "src/hsr_battle_agent/battle_sandbox/context.py (transaction-owned RNG)"
+      ],
+      "new_files_likely_required": [
+        "src/hsr_battle_agent/battle_sandbox/preflight.py (dependency closure)",
+        "src/hsr_battle_agent/battle_sandbox/transaction.py (staged delta + commit)",
+        "src/hsr_battle_agent/battle_sandbox/gate_certificate.py",
+        "src/hsr_battle_agent/battle_sandbox/contract_registry.py (versioned supported gates / profile allowlists)",
+        "tests/battle_sandbox/test_preflight_rejection.py",
+        "tests/battle_sandbox/test_atomic_commit.py"
+      ],
+      "tests_likely_required": [
+        "each blocker placed after a supported effect in source order still rejects before the first effect",
+        "unsupported secondary target/event/global/terminal dependency blocks before resource debit",
+        "unknown random branch rejects with identical RNG state and draw count",
+        "abort at every staged write preserves state/hash/allocator/queues and discards staged draws",
+        "revision mismatch rejects and does not auto-retry"
+      ],
+      "must_not_be_modified": [
+        "frozen contracts and catalog artifacts",
+        "src/hsr_battle_agent/battle_runtime/* proven-leaf bodies until each is re-qualified under a named gate"
+      ],
+      "wrap_or_quarantine_candidates": [
+        "battle_runtime/turns.py::advance_to_next_actor (in-place mutation; wrap before exposing through step())",
+        "game_data/reference_execution.py::SemanticExecutor (keep as reference-only; do not make it the step() engine)"
+      ]
+    },
+    "commonly_must_not_be_modified": [
+      "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/*_terra_ticket_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/*_content_followup_001.json",
+      "data/semantics/4.4.54/full_reconstruction/monster_ai_*_001.json",
+      "data/semantics/4.4.54/catalog.json",
+      "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+      "docs/agent/astra_semantic_handoff_2026-09-10.md"
+    ]
+  },
+
+  "local_software_dependencies": [
+    {
+      "id": "LSD-01",
+      "edge": "battle_sandbox.executor -> battle_runtime.* (proven-leaf primitives) -> battle_sandbox.state.BattleState",
+      "kind": "tight_import / live-context write",
+      "consequence": "The executor hands the live ExecutionContext to each implementation, so any F02 state reshape immediately breaks every registered primitive. G01 cannot be built under F02 without touching battle_runtime."
+    },
+    {
+      "id": "LSD-02",
+      "edge": "battle_sandbox.registry.create_default -> battle_ir.catalog -> data/semantics/4.4.54/catalog.json (sha256 gated) -> 13 artifacts",
+      "kind": "boot-time disk dependency with hash pins",
+      "consequence": "Any new primitive or descriptor must be added to the catalog and its artifact sha256 must match, else the whole registry bootstrap raises. A new artifact changes the counts asserted in tests/battle_ir/test_semantic_batch_catalog.py."
+    },
+    {
+      "id": "LSD-03",
+      "edge": "battle_sandbox.state.BattleState.from_dict / to_dict <-> battle_sandbox.snapshot.SandboxSnapshot <-> battle_sandbox.hash.stable_json_hash",
+      "kind": "shared serialization contract",
+      "consequence": "Snapshot, hash and state all read the same 6 JSON keys. A presence-aware F01 model changes all three at once and invalidates SNAPSHOT_SCHEMA_VERSION=1."
+    },
+    {
+      "id": "LSD-04",
+      "edge": "battle_sandbox.hash.stable_json_hash sorts every mapping key recursively",
+      "kind": "ordering helper reused beyond its proof",
+      "consequence": "ordering_contract serialization_is_not_order forbids letting canonical map order fill a semantic order. One convenience call in a new descriptor builder would silently create the forbidden ID/lexical order."
+    },
+    {
+      "id": "LSD-05",
+      "edge": "game_data.reference_execution.SandboxRng owns RNG INSIDE ReferenceBattleState, while battle_sandbox.rng.SandboxRng lives on ExecutionContext (outside BattleState)",
+      "kind": "duplicated RNG ownership",
+      "consequence": "Two copy semantics: the reference RNG is a frozen value (no leak on rejection); the sandbox RNG is a mutable object (draw-then-raise leaks). G01 must adopt one policy."
+    },
+    {
+      "id": "LSD-06",
+      "edge": "game_data.behavior_compiler PRIMITIVE_BINDINGS <-> game_data.reference_execution.EXECUTABLE_OPERATION_CONTEXT_REQUIREMENTS <-> battle_sandbox registry primitive ids",
+      "kind": "three-way hand-maintained agreement",
+      "consequence": "Adding a descriptor or a gate touches three separate tables with no single source of truth and no test that cross-checks them."
+    },
+    {
+      "id": "LSD-07",
+      "edge": "game_data.scenario_compiler -> external_reconstruction.ReferenceEvaluator -> nanoka_content.ContentDatabase (SQLite)",
+      "kind": "runtime content-DB dependency",
+      "consequence": "Scenario compilation currently requires a materialised content database; its tests are the slowest in the repo (24s each). A Terra scenario descriptor must not require a DB build."
+    },
+    {
+      "id": "LSD-08",
+      "edge": "game_data.content_behavior_mapping -> external reconstruction JSON artifacts",
+      "kind": "artifact-shape coupling",
+      "consequence": "The resolution ledger R01 must build on the existing mapping output rather than re-deriving joins."
+    },
+    {
+      "id": "LSD-09",
+      "edge": "tests/battle_ir/test_semantic_batch_catalog.py -> data/semantics/4.4.54/catalog.json exact counts",
+      "kind": "brittle count assertion",
+      "consequence": "The suite is already failing red; any F01/F02/R01 catalog growth will add more failures. The three assertions must be repointed to a derived count or the suite stays unusable as a regression gate."
+    },
+    {
+      "id": "LSD-10",
+      "edge": "no package-level test runner / tests/ is not a package",
+      "kind": "missing infrastructure",
+      "consequence": "Full-suite discovery is impossible (ImportError). Creating tests/__init__.py is the smallest unblock and would immediately surface R3. Recorded as a planner prerequisite, not implemented by this audit."
+    },
+    {
+      "id": "LSD-11",
+      "edge": "duplicated module-level names (SandboxRng, ExecutionContext, ReferenceBattleState, ModifierState, TaskState) across four packages",
+      "kind": "namespace collision",
+      "consequence": "New Terra modules must import qualified; accidental cross-import of the wrong SandboxRng changes determinism and clone semantics."
+    },
+    {
+      "id": "LSD-12",
+      "edge": "battle_runtime.turns.advance_to_next_actor -> BattleState.turn_timeline in-place dict mutation",
+      "kind": "live-mutation boundary",
+      "consequence": "The only scheduler implementation cannot be staged without being rewritten or wrapped. G01 must decide wrap-vs-rewrite before F02 lands."
+    }
+  ],
+
+  "cheap_model_suitability": [
+    {
+      "unit": "EvidenceMode / ContractRef / UnknownHandle / VersionRelation schemas (F01)",
+      "difficulty": "CHEAP_MODEL_WITH_STRICT_PROMPT",
+      "why": "Pure dataclass/enum/validator work with an exact acceptance list; no cross-cutting state."
+    },
+    {
+      "unit": "Presence-aware value cell + lossless numeric envelope (F01)",
+      "difficulty": "CHEAP_MODEL_WITH_STRICT_PROMPT",
+      "why": "Mechanical but must not regress the existing strict JSON value model; requires the F01 acceptance matrix as the test."
+    },
+    {
+      "unit": "Structured rejection type + reason codes (F01/G01)",
+      "difficulty": "CHEAP_MODEL_OK",
+      "why": "Additive error hierarchy; existing battle_sandbox/errors.py is the template."
+    },
+    {
+      "unit": "Typed identity wrapper classes + per-type allocators (F02)",
+      "difficulty": "CHEAP_MODEL_WITH_STRICT_PROMPT",
+      "why": "Schema/allocator work with explicit tests (failed construction consumes no IDs; no cross-type equality)."
+    },
+    {
+      "unit": "Snapshot v2 / canonical serialization / hash coverage (F02)",
+      "difficulty": "STRONG_MODEL_REVIEW",
+      "why": "Touches three modules at once and must decide which fields are decision-affecting; a cheap model will silently under-cover opaque state."
+    },
+    {
+      "unit": "BattleState store aggregate split into separately owned stores (F02)",
+      "difficulty": "STRONG_MODEL_REQUIRED",
+      "why": "Cross-cutting redesign of the only state container, consumed by ~90 registered primitives and every reference module."
+    },
+    {
+      "unit": "Descriptor schema families for R01 (invocation/modifier/formation/scheduler/ai/damage/target/progression/scenario)",
+      "difficulty": "STRONG_MODEL_REQUIRED",
+      "why": "Requires correct partitioning decisions against nine frozen contracts; the failure mode is a plausible but wrongly collapsed descriptor."
+    },
+    {
+      "unit": "Mechanical registry adapters (register descriptor tables, re-export, add catalog entries)",
+      "difficulty": "CHEAP_MODEL_OK",
+      "why": "Explicit mapping work once the descriptor shapes are frozen."
+    },
+    {
+      "unit": "Resolution / unresolved-edge ledger assembly from existing mapping output (R01)",
+      "difficulty": "CHEAP_MODEL_WITH_STRICT_PROMPT",
+      "why": "Data plumbing with an explicit source and lossless-preservation tests."
+    },
+    {
+      "unit": "Preflight dependency-closure engine + gate certificate (G01)",
+      "difficulty": "STRONG_MODEL_REQUIRED",
+      "why": "New transaction architecture; must define what 'reachable' means for callbacks, loops and scenario terminals."
+    },
+    {
+      "unit": "Migration of battle_runtime proven-leaf primitives behind the strict gate (G01)",
+      "difficulty": "STRONG_MODEL_REQUIRED",
+      "why": "Requires conflict resolution across state, RNG, allocator, queue and trace subsystems simultaneously."
+    },
+    {
+      "unit": "atomic commit / staging buffer / transaction-owned RNG (G01)",
+      "difficulty": "STRONG_MODEL_REQUIRED",
+      "why": "Correctness-critical; the failure mode is a partial commit that looks plausible in tests."
+    },
+    {
+      "unit": "Rewriting battle_runtime/turns.py::advance_to_next_actor to be stageable",
+      "difficulty": "STRONG_MODEL_REVIEW",
+      "why": "Small file but it is the only scheduler; must preserve the deliberate prior-action-list tie policy exactly."
+    },
+    {
+      "unit": "Test construction for every acceptance row above",
+      "difficulty": "CHEAP_MODEL_OK",
+      "why": "The acceptance criteria are already written verbatim in the freeze tickets."
+    },
+    {
+      "unit": "Repair of the three stale catalog count assertions (LSD-09)",
+      "difficulty": "CHEAP_MODEL_OK",
+      "why": "Mechanical; requires only the decision to derive the count instead of hardcoding it."
+    },
+    {
+      "unit": "Creating tests/__init__.py so the documented full-suite command works (LSD-10)",
+      "difficulty": "CHEAP_MODEL_OK",
+      "why": "One file; must be a separately authorized change, not part of this audit."
+    },
+    {
+      "unit": "Quarantine wrappers around the reference/legacy modules (target adjacency, modifier Refresh, scenario wave sort)",
+      "difficulty": "CHEAP_MODEL_WITH_STRICT_PROMPT",
+      "why": "Mechanical renaming/documentation guard rails once the planner states the exact boundary."
+    },
+    {
+      "unit": "Resolving any native semantic UNKNOWN",
+      "difficulty": "OUT_OF_SCOPE_FOR_CHEAP_MODEL",
+      "why": "Freeze forbids inference; no software-difficulty classification applies."
+    }
+  ],
+
+  "risks": [
+    {
+      "id": "RK-01",
+      "risk": "Schema migration blast radius",
+      "detail": "F02 must reshape the single state container consumed by ~90 registered primitives plus five reference modules. The executor hands the live context to implementations (LSD-01), so there is no seam to migrate behind.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RK-02",
+      "risk": "Two incompatible RNG ownership models already coexist",
+      "detail": "Reference-layer RNG is a frozen value with no leak on rejection; sandbox RNG is a mutable public object. Choosing one silently determines whether G01's 'identical RNG state and draw count on rejection' test can pass.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RK-03",
+      "risk": "A registered production primitive implements one explicitly superseded rule",
+      "detail": "FC-02: battle_runtime.modifiers._apply_redd_life_core groups REFRESH with REPLACE and writes count. The freeze wins and the audit does not repair it, so the conflict stays live until Terra touches modifier lifecycle.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RK-04",
+      "risk": "Broken regression gate",
+      "detail": "tests/battle_ir is already failing (3 stale catalog count assertions) and full-suite discovery raises ImportError because tests/ is not a package. Terra cannot rely on a red/green signal until both are addressed.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-05",
+      "risk": "Authoritative freeze artifacts are untracked",
+      "detail": "astra_semantic_freeze_v1.json, astra_reverse_master_v1.json and the 2026-09-20 handoff exist only in the working tree. Any clean checkout or migration loses the authority this audit was performed against.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RK-06",
+      "risk": "Label over-promotion",
+      "detail": "The strings 'EXECUTABLE_REFERENCE' (compile_status), 'executable' (boolean), 'EXACT_CONFIG_ID' and 'golden_eligible' all read as stronger than their scope. The freeze explicitly warns a compiler flag is insufficient.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-07",
+      "risk": "Reference-model conveniences are reachable from production paths",
+      "detail": "behavior_compiler gates RETARGET to ModifierOwnerAdjoinEntity and the reference executor consumes target_semantics_reference._adjoin (position arithmetic + entity_id tie break). A future alias being added to that allowlist would promote the quarantined convenience.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "RK-08",
+      "risk": "Ordering helper shared across incompatible purposes",
+      "detail": "hash.stable_json_hash sorts every mapping recursively. Using it while building descriptors would satisfy the letter of canonical serialization while creating the exact order-from-keys failure the freeze forbids.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-09",
+      "risk": "Silent absence loss at the state boundary",
+      "detail": "BattleState.from_dict defaults every absent store to {} (FC-19). Once F01 introduces presence, every existing from_dict path becomes a lossy migration and needs an explicit decision per store.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-10",
+      "risk": "Scenario wave flattening leaks into descriptors",
+      "detail": "scenario_compiler already flattens groups and sorts by wave_index; if R01 reuses ScenarioPackage as its scenario descriptor, the freeze's SOURCE_ORDER_ONLY wave contract is violated at birth.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-11",
+      "risk": "Monster AI has no representation surface at all",
+      "detail": "R01 must create AI policy/state descriptors from scratch while D5 records native admission, precedence, DefaultDSE and commit as unknown. The descriptor must therefore be purely representational; nothing in the repo helps police that boundary.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "RK-12",
+      "risk": "Local dependencies not in the Astra graph",
+      "detail": "Twelve local software dependencies (LSD-01..LSD-12) sit outside the Astra F01->{F02,R01}->G01 graph. A planner that respects only the semantic graph will be surprised by LSD-01/LSD-09/LSD-10 on the first commit.",
+      "severity": "MEDIUM"
+    }
+  ],
+
+  "planner_inputs": [
+    "Freeze-derived dependency order F01 -> {F02, R01} -> G01 is confirmed as the correct *semantic* order and is respected by this audit. No Astra graph change is proposed.",
+    "F01 is the only ticket with zero blocked dependencies and it is the only place where the presence and identity vocabulary can be introduced before the state container is reshaped. Start there.",
+    "F01 must land the presence envelope BEFORE F02's snapshot/hash, because BattleState.from_dict, SandboxSnapshot and stable_json_hash form a single serialization contract (LSD-03) and hash.stable_json_hash also silently coerces tuples (FC-19).",
+    "F02's hardest decision is not the schema, it is the migration seam: executor.py hands the live ExecutionContext to ~90 registered primitives (LSD-01). Decide explicitly whether F02 keeps a compatibility adapter over the JSON store or freezes battle_runtime first.",
+    "Adopt exactly one RNG ownership model before G01 (LSD-05 / RK-02). The reference-layer frozen-value pattern is the one that already satisfies 'rejection leaves RNG unchanged'.",
+    "G01's preflight must not be built on behavior_compiler's coarse structural_only flag; that is a whole-record deny, not a reachable-closure certificate.",
+    "G01's acceptance tests are already written verbatim in terra_roadmap[3].tests and step_transaction_contract.acceptance_tests; use them as the ticket's definition of done without rewording.",
+    "R01 must produce descriptors that preserve [] vs [null], source group/slot identity and repeated occurrences; do not reuse ScenarioCompiler waves (RK-10) and do not reuse resolve_target_alias's flat id tuple as the lostless target descriptor.",
+    "Before R01, decide the fate of the three reachable reference conveniences (FC-04 target adjacency + entity_id ties, FC-02/FC-03 modifier Refresh, FC-07 scenario wave sort). The cheapest safe option is an explicit quarantine boundary plus a test that the production path cannot reach them.",
+    "Treat the following as authorized prerequisites that are NOT semantic work: (a) tests/__init__.py so the documented suite command runs, (b) repointing the three catalog count assertions in tests/battle_ir/test_semantic_batch_catalog.py to a derived count, (c) committing the untracked Astra authority artifacts.",
+    "Do not classify any unresolved native semantic question as work for a cheap model. Software-difficulty classification is provided only for implementation complexity (cheap_model_suitability).",
+    "Historical numbers to keep separate: 14042 canonical records / 10685 behavior-bearing / 19715 report entrypoints / 4738 historically executable / 59595 historical executable-bound operations / 1528 executable-reference records / 4 source-backed executed records / 27 components / Golden 0. Nothing in this audit re-measured them.",
+    "No new execution was measured by this audit; no compiler, census, reverse or acquisition run occurred."
+  ],
+
+  "unknowns": [
+    {
+      "id": "U-01",
+      "question": "Is a compatibility adapter over the existing JSON BattleState acceptable for F02, or must battle_runtime be frozen first?",
+      "why_unknown": "This is an architecture choice, not a repository fact. The audit can only report that no seam currently exists (LSD-01)."
+    },
+    {
+      "id": "U-02",
+      "question": "Which of the ~90 registered primitives are Terra-promotable and which must be re-qualified or wrapped?",
+      "why_unknown": "Requires a promotion decision against the freeze readiness classes; the audit only recorded their existence and the single FC-02 violation."
+    },
+    {
+      "id": "U-03",
+      "question": "Whether the reference/legacy modules should be wrapped, renamed or deleted.",
+      "why_unknown": "Out of scope for a read-only audit. The audit records reachability and conflicts only."
+    },
+    {
+      "id": "U-04",
+      "question": "Whether the 3 failing catalog assertions are intended to be updated (catalog growth accepted) or the catalog entry is unintended.",
+      "why_unknown": "Both files are committed and clean; intent is not recoverable from the repository."
+    },
+    {
+      "id": "U-05",
+      "question": "Whether the two data/raw and docs/agent handoff modifications are meaningful or stale scratch.",
+      "why_unknown": "Reading the raw reverse dump for the modification's meaning is forbidden by the audit brief ('do NOT broad-read raw reverse dumps')."
+    },
+    {
+      "id": "U-06",
+      "question": "Ahead/behind status versus any remote.",
+      "why_unknown": "No remote tracking data was fetched (fetch is forbidden by the audit brief)."
+    },
+    {
+      "id": "U-07",
+      "question": "Whether the intent of `tests/` lacking __init__.py is deliberate (to force per-suite runs) or an oversight.",
+      "why_unknown": "Not recoverable from the repository."
+    },
+    {
+      "id": "U-08",
+      "question": "Whether .venv in the repository root is meant to be the project interpreter.",
+      "why_unknown": "The directory exists but contains no usable interpreter; no documentation states its purpose."
+    },
+    {
+      "id": "U-09",
+      "question": "Whether any production module outside src/ (tools/, apps/, scripts/) is intended to become Terra runtime code.",
+      "why_unknown": "apps/ contains only READMEs; tools/ contains reverse and unpack tooling. No statement was found that maps them to Terra scope."
+    }
+  ],
+
+  "validation": {
+    "no_production_code_changed": true,
+    "no_tests_changed": true,
+    "no_frozen_semantic_artifact_changed": true,
+    "only_two_audit_artifacts_created_or_updated": true,
+    "no_native_reverse_occurred": true,
+    "no_external_fetch_occurred": true,
+    "no_full_compiler_or_census_occurred": true,
+    "no_commit_made": true,
+    "git_check": {
+      "method": "git status --porcelain plus git diff --stat HEAD -- src tests",
+      "src_tests_diff_vs_head": "EMPTY",
+      "new_untracked_files_introduced_by_this_session": [
+        "data/semantics/4.4.54/full_reconstruction/terra_local_repository_audit_001.json",
+        "docs/agent/terra_local_repository_audit_2026-09-20.md"
+      ],
+      "pre_existing_dirty_entries_preserved": true
+    }
+  },
+
+  "final_handoff": "TERRA_LOCAL_REPOSITORY_AUDIT_001 complete. Audit-only; the freeze remains authoritative and no conflict was repaired."
+}

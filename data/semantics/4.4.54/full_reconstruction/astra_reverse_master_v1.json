@@ -1,0 +1,2882 @@
+{
+  "schema": "hsr_battle_agent.astra_reverse_master/1",
+  "program": "ASTRA_SEMANTIC_CLOSURE_SPRINT",
+  "round": 10,
+  "total_rounds": 10,
+  "status": "ASTRA_SEMANTIC_CLOSURE_COMPLETE",
+  "authority": {
+    "repository_root": "D:/HSR_Battle_Agent/hsr-battle-agent",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "observed_date": "2026-09-10",
+    "corpus_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+    "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+    "compiler_report_path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_compiler_report_001.json",
+    "compiler_report_sha256": "26643b96b7daf90773f0e68a132f7e762b73822479c3792ac7dc3ed04f1f5ddb",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "dirty_work_preserved": [
+      "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+      "docs/agent/handoffs/damage_request_dispatch_resolution_18.md",
+      "Historical untracked reverse artifacts and tools/reference"
+    ],
+    "no_triggerability_implementation_partial_found": true
+  },
+  "domains": {
+    "cross_behavior": {
+      "status": "FROZEN",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "readiness": "PARTIAL_INFRASTRUCTURE_ONLY",
+      "remaining": "Three exact blockers: barrier argument/list identity; completion predicate mutation and cleanup; false/true task-result and continuation edges.",
+      "strongest_conclusion": "Separate nonblocking local launch progression, explicit aggregate wait check and skill-perform marker are supported; exact identity, completion mutation and pending/release mechanism require unavailable native evidence.",
+      "next_question_ids": [
+        "TA-P4-Q1",
+        "TA-P4-Q2",
+        "TA-P4-Q3"
+      ],
+      "pass": 4,
+      "pass_status": "COMPLETE",
+      "wait_lifecycle": {
+        "status": "BLOCKED_BY_EVIDENCE",
+        "registration": {
+          "confidence": "FACT",
+          "statement": "M509479 has the saved M499776 AddWaitAbility call path.",
+          "evidence": [
+            "TA-F11"
+          ]
+        },
+        "registration_guard_and_time": {
+          "confidence": "UNKNOWN",
+          "statement": "Exact guard/default, receiver-derived owner, registration-before-activation and duplicate handling are Q1."
+        },
+        "wait_identity": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "Registration accepts an ability-reference-shaped value: parameter type_reference 265335 is also get_OwnerAbilityRef return type_reference. Do not replace it with AbilityName, entity ID, or a fabricated per-parent token.",
+          "evidence": [
+            "TA-P3-F03"
+          ],
+          "exact_key": "UNKNOWN; type_reference equality is not concrete generic/wrapper type recovery or argument dataflow"
+        },
+        "storage": {
+          "confidence": "FACT",
+          "statement": "Game-mode _WaitingAbilityList F255878 exists separately from parallel and inserted-ability lists.",
+          "evidence": [
+            "TA-F12"
+          ]
+        },
+        "multiple_children": {
+          "confidence": "FACT",
+          "statement": "Black Swan and AML_Minion01 callers launch both phase and camera before their animation tasks.",
+          "evidence": [
+            "TA-F08",
+            "TA-F10"
+          ],
+          "simultaneous_per_parent_wait_registration": "UNKNOWN"
+        },
+        "explicit_barrier": {
+          "confidence": "FACT",
+          "statement": "WaitSkillPerformAbilityFinish has its own OnTaskBegin -> IsAllWaittingAbilitiesFinished call and Tick method.",
+          "evidence": [
+            "TA-P3-F04"
+          ]
+        },
+        "possible_join_scope": {
+          "confidence": "PLAUSIBLE_MODEL",
+          "statement": "Game-mode/perform/entity aggregate, possibly polled; it need not be the invocation parent. One predicate overload accepts the same type reference as an owner entity.",
+          "evidence": [
+            "TA-P3-F06"
+          ]
+        },
+        "completion_and_removal": {
+          "confidence": "UNKNOWN",
+          "statement": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+          "question_id": "TA-P4-Q2"
+        },
+        "no_await_inference": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "AddWaitAbility is insufficient to infer that the TriggerAbility task suspends until child completion.",
+          "evidence": [
+            "TA-P3-R01"
+          ]
+        },
+        "pass_4_identity_contract": {
+          "contract": "wait_identity",
+          "confidence": "UNKNOWN",
+          "known": "Named game-mode list and ability-reference-shaped AddWaitAbility parameter; barrier calls overload M499778.",
+          "missing": "Concrete element/wrapper type, actual barrier argument, equality and ownership scope.",
+          "question_id": "TA-P4-Q1"
+        }
+      },
+      "completion_contract": {
+        "status": "BLOCKED_BY_EVIDENCE",
+        "native_marker_topology": {
+          "id": "TA-P3-F01",
+          "confidence": "FACT",
+          "statement": "Saved SkillPerformFinish executor M509173 (NLNBMBIHCGA.OnTaskBegin) has direct-callee entries 0xE6CDE60 = M506904 SkillCharacterComponent.SetSkillPerformFinish and 0xE74B3B0 = M506655 TurnBasedAbilityComponent.ResetCharmAction. This is call topology, not branch reachability, argument identity or event ordering; it does not show a direct ProcessOnAfterSkillPerformFinish call.",
+          "evidence": [
+            "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/2969",
+            "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621",
+            "data/normalized/4.4.54/methods.json#method_index=506904,506655"
+          ]
+        },
+        "native_ability_state": {
+          "id": "TA-P3-F02",
+          "confidence": "FACT",
+          "statement": "Saved AbilityInstanceState type T54569 declares EUnkonw, Ready, Executing and value__; no SUCCESS member. The scheduler finish packet writes SUCCESS to an explicitly supplied reference action task, not a recovered native ability state.",
+          "evidence": [
+            "data/normalized/4.4.54/fields.json#field_index=258185..258188",
+            "data/semantics/4.4.54/full_reconstruction/scheduler_skill_perform_finish_packet_001.json",
+            "data/semantics/4.4.54/full_reconstruction/source_backed_skill_perform_finish_component_reference_001.json"
+          ]
+        },
+        "reference_task_state": {
+          "confidence": "FACT",
+          "statement": "Existing scheduler packet selects EXECUTING -> SUCCESS for a supplied action_task_id. It is PARTIAL_R3_REFERENCE and does not bind child invocation IDs or implement wait removal.",
+          "evidence": [
+            "SCHEDULER_FINISH"
+          ]
+        },
+        "own_marker_not_universal": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "Explicit-true cameras without SkillPerformFinish and omitted-flag stateful phase with it prevent using marker presence/flag alone as an ability completion classifier.",
+          "evidence": [
+            "TA-P3-R03"
+          ]
+        },
+        "barrier_before_marker": {
+          "confidence": "FACT",
+          "statement": "Two selected canonical sequences place WaitSkillPerformAbilityFinish before their own SkillPerformFinish.",
+          "evidence": [
+            "TA-P3-F05"
+          ]
+        },
+        "marker_as_sole_release": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "Do not require the later marker in those same waiting sequences as the sole cause that releases their preceding barrier; such a lowering creates a causal cycle.",
+          "evidence": [
+            "TA-P3-F05"
+          ],
+          "limit": "The actual barrier set may concern other abilities; this is not proof that every child ends independently of perform state."
+        },
+        "actual_release_signal": {
+          "confidence": "UNKNOWN",
+          "statement": "No native completion write/read or event-to-wait-release edge established; see TA-P4-Q2."
+        },
+        "callbacks": {
+          "confidence": "UNKNOWN",
+          "statement": "ProcessOnAfterSkillPerformFinish exists at M506637/0xE749DD0, but a path from this TriggerAbility child finish through it to wait release is not recovered. Do not infer event order from symbol names or callee-list position."
+        },
+        "pass_4_mutation_contract": {
+          "contract": "completion_mutation",
+          "confidence": "UNKNOWN",
+          "known": "SetSkillPerformFinish method and _SelfSkillPerformState field declarations; refresh/predicate symbols.",
+          "missing": "Executed write -> predicate-read join and removal/clear/finished-state transition.",
+          "question_id": "TA-P4-Q2"
+        }
+      },
+      "terra_ready": "PARTIAL",
+      "child_start_contract": {
+        "status": "BLOCKED_BY_EVIDENCE",
+        "resolution": {
+          "confidence": "FACT",
+          "statement": "Retain existing exact-name candidate resolution and saved EvaluateTarget -> FindAbilityInstance call-site identities; static uniqueness does not establish entity ownership or an activation path.",
+          "evidence": [
+            "TA-F01",
+            "TA-F03",
+            "TA-F11"
+          ]
+        },
+        "creation_or_reuse": {
+          "confidence": "UNKNOWN",
+          "statement": "FindAbilityInstance names lookup, not creation. Whether child invocation reuses a loaded instance or constructs a new execution object is Q2."
+        },
+        "first_execution": {
+          "confidence": "UNKNOWN",
+          "statement": "Inline start-to-first-yield and deferred dispatch are both consistent with inspected evidence. No queue or event activation edge is recovered."
+        },
+        "marker_separation": {
+          "confidence": "FACT",
+          "statement": "AML child waits before SkillExecutionStart; its launch is earlier. Start marker has a saved game-mode event call.",
+          "evidence": [
+            "TA-F10",
+            "TA-P3-F08"
+          ]
+        },
+        "is_skill_perform_effect": {
+          "confidence": "PLAUSIBLE_MODEL",
+          "statement": "Flag likely participates in skill-performance wait bookkeeping, but no recovered field read proves which registration/start branch differs."
+        },
+        "context_inheritance": {
+          "confidence": "UNKNOWN",
+          "statement": "Keep receiver, caller caster/provider, inherent targets, callee TargetInfo, skill targets, ParamEntity slots, dynamics and perform/action ownership separate; copy/share/recompute rules await Q2."
+        },
+        "helper_limit": {
+          "confidence": "FACT",
+          "statement": "M509480 evaluates targets; it is not yet identified as the startup routine.",
+          "evidence": [
+            "TA-P3-F07"
+          ]
+        },
+        "pass_4_scope_note": "Inherited unresolved activation/context/start timing retained; not re-searched in this barrier-focused pass."
+      },
+      "parent_resume_contract": {
+        "status": "BLOCKED_BY_EVIDENCE",
+        "launch_site": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "In sampled phase/camera family, parent must progress to animation startup before child reaches its animation-gated effect/finish. Parent is not universally held at TriggerAbility until child completion.",
+          "evidence": [
+            "TA-F08",
+            "TA-F09",
+            "TA-F10"
+          ]
+        },
+        "explicit_wait_unit": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "WaitSkillPerformAbilityFinish is an explicit task-level completion-check boundary with a Tick method; subsequent same-sequence operations should not be lowered across it without a proven predicate.",
+          "evidence": [
+            "TA-P3-F04",
+            "TA-P3-F05"
+          ],
+          "exact_native_task_success_and_tick_behavior": "UNKNOWN"
+        },
+        "operations_that_follow_wait": {
+          "confidence": "FACT",
+          "statement": "Serpent /AbilityList/20/OnStart/15 and Sam /AbilityList/13/OnStart/18 are SkillPerformFinish immediately after the explicit wait.",
+          "evidence": [
+            "TA-P3-F05"
+          ]
+        },
+        "suspension_scope": {
+          "confidence": "UNKNOWN",
+          "statement": "Task success, containing CallbackList/OnStart sequencing, ability frame finalization and outer game-mode gating are not yet joined. No recovered parent-continuation callback edge."
+        },
+        "known_partial_order": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "Respect the sampled causal relation launch -> parent animation startup -> child animation-gated operations; within AML Phase02, start marker precedes damage-finish marker and later skill-finish marker. Explicit barrier site precedes its following finish marker.",
+          "evidence": [
+            "TA-F08",
+            "TA-F10",
+            "TA-P3-F05"
+          ]
+        },
+        "total_order": {
+          "confidence": "UNKNOWN",
+          "statement": "No native total order for child natural finish, wait-list refresh, task success, parent next operation, sibling callbacks/events or next-action arbitration. Black Swan phase and camera both have a 0.348 animation gate, so timestamp/source launch order alone is insufficient.",
+          "evidence": [
+            "TA-F08",
+            "P3_BLACKSWAN_CAMERA"
+          ]
+        },
+        "parent_final_completion": {
+          "confidence": "UNKNOWN",
+          "statement": "Whether parent entrypoint end implicitly joins children, or only an outer perform/game-mode gate waits, remains Q3."
+        },
+        "pass_4_pending_release_ordering": [
+          {
+            "contract": "barrier_pending_behavior",
+            "confidence": "UNKNOWN",
+            "known": "Separate OnTaskBegin and Tick declarations.",
+            "missing": "False branch task/result write and revisit/wakeup mechanism.",
+            "question_id": "TA-P4-Q3"
+          },
+          {
+            "contract": "barrier_release",
+            "confidence": "UNKNOWN",
+            "known": "Predicate-call edge and explicit barrier source site.",
+            "missing": "True branch task completion/release write and wait-registration cleanup.",
+            "question_id": "TA-P4-Q3"
+          },
+          {
+            "contract": "continuation_ordering",
+            "confidence": "UNKNOWN",
+            "known": "Same source sequence places barrier before SkillPerformFinish; sampled caller continues locally after launch.",
+            "missing": "Dispatch order to next operation, callbacks, containing frame and outer parent.",
+            "question_id": "TA-P4-Q3"
+          }
+        ]
+      },
+      "semantic_families": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "classification": "Observed source shapes and boundary requirements, not proven mutually exclusive native execution families.",
+        "families": [
+          {
+            "id": "PHASE_TRUE_INTERLEAVED",
+            "confidence": "FACT",
+            "examples": [
+              "TA-F08",
+              "TA-F10"
+            ],
+            "discriminators": [
+              "explicit true",
+              "child animation wait",
+              "caller later animation launch",
+              "child perform markers"
+            ],
+            "runtime_status": "REJECT_Q1_Q2_Q3"
+          },
+          {
+            "id": "CAMERA_TRUE_WITHOUT_OWN_FINISH",
+            "confidence": "FACT",
+            "examples": [
+              "P3_BLACKSWAN_CAMERA",
+              "TA-F09"
+            ],
+            "discriminators": [
+              "explicit true",
+              "child camera/animation wait body",
+              "no own explicit SkillPerformFinish in sampled OnStart"
+            ],
+            "runtime_status": "REJECT_Q1_Q2_Q3; do not equate camera role with harmless omission"
+          },
+          {
+            "id": "OMITTED_FLAG_STATEFUL_PHASE",
+            "confidence": "FACT",
+            "examples": [
+              "TA-F09"
+            ],
+            "discriminators": [
+              "flag absent",
+              "stateful child",
+              "child explicit SkillPerformFinish"
+            ],
+            "runtime_status": "REJECT_DEFAULT_AND_CONTEXT_AND_LIFECYCLE"
+          },
+          {
+            "id": "EXPLICIT_AGGREGATE_BARRIER",
+            "confidence": "FACT",
+            "examples": [
+              "TA-P3-F05"
+            ],
+            "discriminators": [
+              "separate WaitSkillPerformAbilityFinish task",
+              "wait then enclosing sequence SkillPerformFinish",
+              "Serpent has earlier explicit-true cross-entity camera launch"
+            ],
+            "runtime_status": "REJECT_WAIT_PREDICATE_AND_RESUME_ORDER"
+          },
+          {
+            "id": "OMITTED_FLAG_WAIT_FREE_HELPER_CANDIDATE",
+            "confidence": "PLAUSIBLE_MODEL",
+            "examples": [
+              "Avatar_Topaz_Rank04_ReduceDelay from prior targeted_source_examples"
+            ],
+            "discriminators": [
+              "short callee body without local waits or markers"
+            ],
+            "runtime_status": "REJECT; local body simplicity does not prove invocation boundary"
+          }
+        ],
+        "native_branch_discriminators": {
+          "confidence": "UNKNOWN",
+          "statement": "No true native guard is established. Investigate IsSkillPerform presence/value/default plus runtime context, receiver binding, loaded-instance state and completion-marker context. Predicate/dynamic fields and SkipAttackSettlement must be retained if present; declaration alone does not prove branching."
+        }
+      },
+      "negative_evidence": [
+        {
+          "id": "TA-P3-N01",
+          "confidence": "STRONG_RECONSTRUCTION",
+          "statement": "TriggerAbility is followed by parent animation startup needed by a waiting child. Universal await child-to-completion at launch would deadlock the sampled causal model.",
+          "evidence": [
+            "TA-F08",
+            "TA-F09",
+            "TA-F10"
+          ]
+        },
+        {
+          "id": "TA-P3-N02",
+          "confidence": "FACT",
+          "statement": "Explicit-true sampled camera OnStart bodies have no explicit SkillExecutionStart or SkillPerformFinish, while omitted Asta phase has SkillPerformFinish.",
+          "evidence": [
+            "P3_BLACKSWAN_CAMERA",
+            "TA-F09"
+          ],
+          "limit": "Does not prove true without registration, lifecycle-free camera, or omitted=false."
+        },
+        {
+          "id": "TA-P3-N03",
+          "confidence": "FACT",
+          "statement": "Selected explicit barrier occurs before the same sequence SkillPerformFinish. Launch registration, wait predicate and outer finish marker are separate source sites.",
+          "evidence": [
+            "TA-P3-F05"
+          ]
+        },
+        {
+          "id": "TA-P3-N04",
+          "confidence": "FACT",
+          "statement": "No RemoveWaitAbility/FinishWaitAbility named method appeared in the targeted saved method-name search; _RefreshWaittingAbilityList and predicate methods do exist.",
+          "evidence": [
+            "P3_SEARCH_COVERAGE"
+          ],
+          "limit": "Obfuscated, inline, indirect and refresh removal remain possible; absence of symbol is not absence of removal."
+        },
+        {
+          "id": "TA-P3-N05",
+          "confidence": "UNKNOWN",
+          "statement": "No provenance-matched executed trace proves IsSkillPerform=true without wait registration, nor AddWaitAbility registration of a child that never participates in a perform. Existing call tables do not associate dynamic paths with payload cases."
+        },
+        {
+          "id": "TA-P3-N06",
+          "confidence": "FACT",
+          "statement": "Native AbilityInstanceState has no SUCCESS member; scheduler SUCCESS is a separately selected task model.",
+          "evidence": [
+            "TA-P3-F02"
+          ]
+        },
+        {
+          "id": "TA-P3-N07",
+          "confidence": "FACT",
+          "statement": "M509480 directly evaluates targets. Treating this helper as a proved launch routine solely because it follows an AddWaitAbility call-site address is unsupported.",
+          "evidence": [
+            "TA-P3-F07"
+          ]
+        },
+        {
+          "id": "TA-P3-N08",
+          "confidence": "FACT",
+          "statement": "No OnStart operation after SkillPerformFinish was found in the bounded BlackSwan/Asta/AML_Minion01 source inspection.",
+          "evidence": [
+            "P3_SEARCH_COVERAGE"
+          ],
+          "limit": "Only this selected set; does not prove SkillPerformFinish is universally terminal or that child lifetime equals marker completion."
+        }
+      ],
+      "remaining_unknowns": [
+        {
+          "id": "TA-P4-Q1",
+          "confidence": "UNKNOWN",
+          "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+          "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+          "required_evidence": [
+            "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+            "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+            "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+            "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+          ],
+          "exact_existing_paths": [
+            "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+            "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+          ],
+          "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+        },
+        {
+          "id": "TA-P4-Q2",
+          "confidence": "UNKNOWN",
+          "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+          "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+          "required_evidence": [
+            "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+            "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+            "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+            "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+          ],
+          "exact_existing_paths": [
+            "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+            "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+            "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+          ],
+          "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+        },
+        {
+          "id": "TA-P4-Q3",
+          "confidence": "UNKNOWN",
+          "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+          "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+          "required_evidence": [
+            "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+            "M509930 Tick 0x15AAB390 complete body including result/state writes",
+            "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+            "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+          ],
+          "exact_existing_paths": [
+            "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+            "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+          ],
+          "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+        }
+      ],
+      "is_skill_perform_contract": {
+        "confidence": "PLAUSIBLE_MODEL",
+        "statement": "Likely skill-performance wait participation/bookkeeping; exact registration/start guard, omission default and object identity remain unproved (Q1).",
+        "counterexamples": [
+          "true camera without own explicit marker",
+          "omitted stateful phase with explicit finish",
+          "true launch precedes later SkillExecutionStart"
+        ],
+        "do_not_lower": "Never translate to await child, new turn, implicit SkillExecutionStart, or omitted=false."
+      },
+      "terra_contract": {
+        "readiness": "PARTIAL",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_subset": [
+          "Analysis-only registry/index and immutable invocation plan types",
+          "Preserve IsSkillPerform presence as well as value",
+          "Preserve callee TargetInfo and provenance",
+          "Report missing, ambiguous, unique-but-boundary-unproven separately",
+          "Cross-record graph validation and strict compiler diagnostics",
+          "Retain explicit WaitSkillPerformAbilityFinish as a distinct opaque/barrier-required dependency; do not omit it or lower it to success.",
+          "Emit diagnostics for launch, explicit barrier, perform marker and native ability lifetime separately.",
+          "Preserve additional native-schema fields when present; reject unmodeled defaults/fields."
+        ],
+        "source_backed_executable_call_subset": [],
+        "implementation_boundary": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "state_reads": "Safe infrastructure reads canonical definitions, provenance, selectors, field presence and boundary-contract metadata. Runtime reads of waiting-list members, ability/perform state and completion flags remain unspecified.",
+          "state_writes": "Safe infrastructure writes immutable invocation/dependency plans and diagnostics only. No battle-state, RNG, wait-list, task-state or scheduler mutation is authorized by this evidence.",
+          "identity": "Separate definition identity, receiver-bound loaded ability, execution instance, wait registration and owning perform/action. Proposed IDs are diagnostic slots, not recovered native keys.",
+          "compiler_lowering_condition": "Keep current TriggerAbility families non-executable until Q1/Q2/Q3 closure and transitive effect/context closure. Preserve missing/false/true distinctly; explicit wait stays opaque. Existing marker component contract is usable only with its explicit supplied task context, never as child-wait glue.",
+          "executor_behavior": "Reject unproved invocation/barrier before any effect. Do not recursively inline full child, synthesize success, skip waits, assume an empty queue, or make omitted flag false.",
+          "scheduler_boundary": "No inserted-action/AV advancement lowering. Waiting-list predicate/refresh and task barrier form the only newly evidenced scheduler-adjacent surfaces; concrete transitions remain rejected.",
+          "context_inheritance": "No default copy-all/copy-none. Preserve receiver, inherent target, callee TargetInfo, dynamic bindings, caller context slots and skill/action ownership independently until Q2.",
+          "ordering_and_determinism": "Persist causal partial orders as constraints, not a total order. Do not use sorted ability name, launch index or equal animation time to invent sibling wakeup order.",
+          "lifecycle": "Registration != activation != explicit barrier != marker != natural ability end != outer action end. No executable lifecycle until completion/abort/reentrancy behavior is covered.",
+          "strict_rejection_condition": [
+            "missing or ambiguous target",
+            "unique candidate without receiver ownership",
+            "unproved IsSkillPerform/default branch",
+            "unproved child activation/context transfer",
+            "unproved wait identity/predicate/removal",
+            "explicit barrier without resume contract",
+            "unproved marker task/perform owner",
+            "unproved cancellation/reentrancy or equal-time ordering",
+            "unhandled native-schema payload fields"
+          ],
+          "expected_new_executable_coverage": 0
+        },
+        "pass_4_implementation_boundary": {
+          "confidence": "STRONG_RECONSTRUCTION",
+          "safe_now": [
+            "Definition registry, provenance, immutable invocation/target metadata and field-presence preservation.",
+            "Separate explicit barrier dependency and evidence-block diagnostics.",
+            "Strict pre-effect rejection of unproved invocation and barrier execution."
+          ],
+          "must_reject": [
+            "All current TriggerAbility runtime lowering without a proven activation/context/registration contract.",
+            "WaitSkillPerformAbilityFinish success/pending/polling/event implementations without TA-P4-Q1..Q3 closure.",
+            "Using action-task SUCCESS as native ability completion.",
+            "Using SetSkillPerformFinish name or _SelfSkillPerformState declaration as a proven wait-release mutation.",
+            "Advancing to SkillPerformFinish or an outer parent based solely on source array order."
+          ],
+          "state_reads": "Infrastructure reads definitions/metadata only. Runtime list input, predicate reads and owner scopes unknown.",
+          "state_writes": "No new runtime wait-list, task, RNG, battle or scheduler writes justified.",
+          "identity": "No concrete native token/element/equality key recovered.",
+          "ordering": "Known causal/source constraints only; no deterministic native total order recovered.",
+          "lifecycle": "Launch, local continuation, barrier pending/release, marker and outer completion remain distinct.",
+          "coverage_gain": 0,
+          "runtime_model": "NONE JUSTIFIED; no speculative generic executor is offered."
+        },
+        "execution_readiness": "NO"
+      },
+      "do_not_reason_again": [
+        {
+          "id": "DNR-TA-P3-BARRIER",
+          "confidence": "FACT",
+          "settled": "Separate WaitSkillPerformAbilityFinish -> M499778 predicate task is found. M499890 refresh and M509930 Tick are the next completion discriminators. Do not rediscover the symbol path.",
+          "evidence": [
+            "TA-P3-F04",
+            "TA-P3-F05",
+            "TA-P3-F06"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-NOT-AWAIT",
+          "confidence": "STRONG_RECONSTRUCTION",
+          "settled": "Distinguish caller continuation after launch from a later explicit barrier and outer perform completion. No universal local await.",
+          "evidence": [
+            "TA-P3-R01"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-ABILITY-STATE",
+          "confidence": "FACT",
+          "settled": "Saved native AbilityInstanceState lacks SUCCESS; reference action-task SUCCESS does not supply a wait completion predicate.",
+          "evidence": [
+            "TA-P3-F02"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-HELPER",
+          "confidence": "FACT",
+          "settled": "M509480 has EvaluateTarget call; it is not a proved child-start helper.",
+          "evidence": [
+            "TA-P3-F07"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-MARKER-SYMBOLS",
+          "confidence": "FACT",
+          "settled": "SkillPerformFinish shortlist maps 0xE6CDE60 to SetSkillPerformFinish and 0xE74B3B0 to ResetCharmAction. ProcessOnAfterSkillPerformFinish is 0xE749DD0; no direct call to it in that shortlist.",
+          "evidence": [
+            "TA-P3-F01"
+          ]
+        },
+        {
+          "id": "DNR-TA-P4-EVIDENCE-STOP",
+          "confidence": "FACT",
+          "settled": "Pass 4 cannot recover waited identity, completion mutation or barrier pending/release from saved signatures/call lists. Missing complete bodies were already recorded in Pass 3; do not repeat search or open Pass 5. A field declaration is not a write, Tick declaration is not a polling contract, and source order is not a resume implementation.",
+          "reopen_only_if": "Concrete provenance-matched M499778/M499890/M506904/M509929/M509930 body/dataflow or an ordered identity-bearing native trace becomes available."
+        }
+      ],
+      "evidence_checkpoint": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence",
+      "pass_3_persistence": {
+        "status": "REPAIRED",
+        "confidence": "FACT",
+        "finding": "Both JSON artifacts already held complete Pass-3 facts/contracts/questions/evidence. Markdown handoff was stale after its earlier replacement failed; repaired before Pass-4 analysis.",
+        "repair_date": "2026-09-14"
+      },
+      "pass_4": {
+        "status": "COMPLETE",
+        "scope": [
+          "wait identity/data structure",
+          "completion mutation/removal",
+          "barrier pending/release/continuation"
+        ],
+        "new_finding": {
+          "id": "TA-P4-F01",
+          "confidence": "FACT",
+          "statement": "Saved T55022 SkillCharacterComponent metadata declares _SelfSkillPerformState F259373 (type_reference 608932), get_SelfPerformState M506958 (return reference 608937), and SetSkillPerformFinish M506904. Its parameter P465991 is reference 433618, not an identified wait-token parameter. The artifact contains declarations/signatures, not the setter body or a field-write link to waiting-list predicates.",
+          "evidence": [
+            "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+            "pass_3_evidence/selected_native_metadata/parameters.json#parameter_index=465991"
+          ]
+        },
+        "accepted_prior_search_result": [
+          "Full M509479 TriggerAbility control/dataflow",
+          "M499776 AddWaitAbility body",
+          "M499778/M499779/M499890/M499891 predicate/refresh bodies",
+          "M509930 explicit wait Tick body/result writes",
+          "Native ordered parent-child wait-release trace"
+        ],
+        "evidence_policy": "No repeat search of missing bodies or rediscovery of established symbols. Declarations do not prove field writes, predicate dataflow or task-result branches.",
+        "observed_date": "2026-09-14",
+        "architecture_status": "BLOCKED_BY_EVIDENCE",
+        "semantic_closure_status": "PARTIAL",
+        "pass_3_persistence": "REPAIRED",
+        "closure_checks": [
+          {
+            "contract": "wait_identity",
+            "confidence": "UNKNOWN",
+            "known": "Named game-mode list and ability-reference-shaped AddWaitAbility parameter; barrier calls overload M499778.",
+            "missing": "Concrete element/wrapper type, actual barrier argument, equality and ownership scope.",
+            "question_id": "TA-P4-Q1"
+          },
+          {
+            "contract": "completion_mutation",
+            "confidence": "UNKNOWN",
+            "known": "SetSkillPerformFinish method and _SelfSkillPerformState field declarations; refresh/predicate symbols.",
+            "missing": "Executed write -> predicate-read join and removal/clear/finished-state transition.",
+            "question_id": "TA-P4-Q2"
+          },
+          {
+            "contract": "barrier_pending_behavior",
+            "confidence": "UNKNOWN",
+            "known": "Separate OnTaskBegin and Tick declarations.",
+            "missing": "False branch task/result write and revisit/wakeup mechanism.",
+            "question_id": "TA-P4-Q3"
+          },
+          {
+            "contract": "barrier_release",
+            "confidence": "UNKNOWN",
+            "known": "Predicate-call edge and explicit barrier source site.",
+            "missing": "True branch task completion/release write and wait-registration cleanup.",
+            "question_id": "TA-P4-Q3"
+          },
+          {
+            "contract": "continuation_ordering",
+            "confidence": "UNKNOWN",
+            "known": "Same source sequence places barrier before SkillPerformFinish; sampled caller continues locally after launch.",
+            "missing": "Dispatch order to next operation, callbacks, containing frame and outer parent.",
+            "question_id": "TA-P4-Q3"
+          }
+        ],
+        "lifecycle_chain": [
+          {
+            "edge": "registration",
+            "confidence": "FACT",
+            "established": "Saved TriggerAbility -> AddWaitAbility call site.",
+            "unresolved": "Guard, passed instance, storage equality and runtime timing."
+          },
+          {
+            "edge": "child launch",
+            "confidence": "UNKNOWN",
+            "established": "FindAbilityInstance lookup call site only.",
+            "unresolved": "Actual activation/reuse/context/first-dispatch call."
+          },
+          {
+            "edge": "caller local continuation",
+            "confidence": "STRONG_RECONSTRUCTION",
+            "established": "Sampled caller must reach animation startup while child waits.",
+            "unresolved": "Immediate child first-yield versus deferred dispatch."
+          },
+          {
+            "edge": "explicit wait barrier",
+            "confidence": "FACT",
+            "established": "WaitSkillPerformAbilityFinish -> M499778 call; distinct source operation.",
+            "unresolved": "Actual input scope and predicate."
+          },
+          {
+            "edge": "completion signal",
+            "confidence": "UNKNOWN",
+            "established": "SetSkillPerformFinish symbol/call and declared perform state.",
+            "unresolved": "Which event/state write satisfies the tested condition."
+          },
+          {
+            "edge": "barrier release",
+            "confidence": "UNKNOWN",
+            "established": "No result-write or cleanup edge recovered.",
+            "unresolved": "Pending and release branches, list removal/clear, scheduling of continuation."
+          },
+          {
+            "edge": "SkillPerformFinish",
+            "confidence": "FACT",
+            "established": "Immediately follows explicit wait in two selected source sequences; saved marker calls SetSkillPerformFinish and ResetCharmAction.",
+            "unresolved": "Executed path, marker ownership and event order."
+          },
+          {
+            "edge": "parent continuation",
+            "confidence": "UNKNOWN",
+            "established": "Source next-operation order only.",
+            "unresolved": "Containing task/frame finalization or outer join after marker."
+          }
+        ],
+        "remaining_exact_unknowns": [
+          {
+            "id": "TA-P4-Q1",
+            "confidence": "UNKNOWN",
+            "question": "Which concrete object/list is passed as P458775 (reference 605568) from WaitSkillPerformAbilityFinish to M499778, and how does it select the ability references registered by M499776 into _WaitingAbilityList F255878 (reference 605517)? What is the equality/ownership key?",
+            "known": "AddWaitAbility P458774 is reference 265335; GetWaitingAbilityList returns reference 265334. M499779 is a separate entity-reference overload; its signature cannot be substituted for the M499778 overload actually called by the barrier.",
+            "required_evidence": [
+              "M509929 IAPDLAIIKHO.OnTaskBegin 0x15AAB230 argument-producing instructions",
+              "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0 predicate body",
+              "M499776 AddWaitAbility 0xE767290 storage/equality writes",
+              "Saved concrete type/wrapper mapping for 265335,265334,605517,605568"
+            ],
+            "exact_existing_paths": [
+              "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+              "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+              "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_native_metadata"
+            ],
+            "boundary": "Signatures and a named list are not a recovered dataflow or parent/child membership rule."
+          },
+          {
+            "id": "TA-P4-Q2",
+            "confidence": "UNKNOWN",
+            "question": "Which field/state predicate does M499778 test, which completion path mutates it, and does M499890 remove/clear a registration or only inspect it? Does M506904 write the same tested state?",
+            "known": "SetSkillPerformFinish and _SelfSkillPerformState declarations exist; no recovered write/read edge ties them to wait completion. SkillPerformFinish call topology includes SetSkillPerformFinish and ResetCharmAction only as identified callees, not an observed release path.",
+            "required_evidence": [
+              "M499778/M499779 IsAllWaittingAbilitiesFinished 0xE7673A0/0xE767580 tested fields and branches",
+              "M499890 _RefreshWaittingAbilityList 0xE770C50 write/remove/clear instructions",
+              "M499891 _IsAllWaittingAbilitiesFinished 0xE764570 consumer logic",
+              "M506904 SetSkillPerformFinish 0xE6CDE60 body and value/receiver dataflow; compare any F259373 write to the predicate read"
+            ],
+            "exact_existing_paths": [
+              "data/raw/4.4.54/mvp_turn_based_game_mode_type_31.json#/types/1",
+              "data/raw/4.4.54/mvp_skill_character_component_type_31.json#/types/0",
+              "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1621"
+            ],
+            "boundary": "No evidence selects own ability completion, shared perform flag, counter decrement, event dispatch or list pruning as the release mechanism."
+          },
+          {
+            "id": "TA-P4-Q3",
+            "confidence": "UNKNOWN",
+            "question": "When the predicate is false/true, what task-state/result writes keep the barrier pending or release it, how is it revisited, and which containing sequence advances to SkillPerformFinish and any outer parent continuation?",
+            "known": "M509929 calls the predicate; Tick M509930 is declared. Canonical wait-before-finish source order is established. Tick declaration does not prove polling frequency, event subscription, task-success assignment, callback ownership or continuation timing.",
+            "required_evidence": [
+              "M509929 OnTaskBegin 0x15AAB230 false/true branches",
+              "M509930 Tick 0x15AAB390 complete body including result/state writes",
+              "Direct containing task/sequence consumer of that result, including continuation dispatch edge",
+              "An original-provenance ordered trace may substitute if it records predicate arguments/results, task/ability IDs, wait-list changes, child finish, next operation and outer continuation"
+            ],
+            "exact_existing_paths": [
+              "data/raw/4.4.54/action_config_runtime_bridge_06.json#/matched_rows/1359",
+              "data/raw/4.4.54/action_execution_shortlist_06.json#/rows/1071",
+              "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/pass_3_evidence/selected_source_snapshots"
+            ],
+            "boundary": "Source order proves neither pending implementation nor native release-to-next-task scheduling order."
+          }
+        ],
+        "evidence_block": {
+          "status": "BLOCKED_BY_EVIDENCE",
+          "confidence": "FACT",
+          "reason": "Persisted evidence supplies metadata/signatures, bounded call tables and source causal order; complete argument dataflow, completion field mutation, wait-list removal and barrier result/continuation bodies are missing. Pass-3 absence results were accepted without repeating searches.",
+          "required_binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+          "provenance_rule": "Every new native body must have a verified binary hash/version/method mapping for this saved snapshot, or an independent trace with explicit matching provenance. Historical RVAs cannot be applied to the previously mismatched live DLL.",
+          "next_most_discriminating_symbol": "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0: recover parameter type/actual input and tested field, then join M499890 and M506904 writes.",
+          "stop_condition": "Pass 4 stops here. No Pass 5 or speculative runtime implementation. Reopen only when concrete matching body/dataflow or ordered trace evidence is supplied.",
+          "inherited_not_closed": "TriggerAbility registration guard/default, child activation/reuse/context and first-dispatch timing remain unresolved from Pass 3; this focused barrier pass does not waive them."
+        },
+        "searches_repeated": false,
+        "census_recomputed": false,
+        "live_binary_accessed": false,
+        "production_code_changed": false,
+        "next_pass_authorized": false,
+        "targeted_metadata_evidence": {
+          "path": "data/raw/4.4.54/mvp_skill_character_component_type_31.json",
+          "artifact_file_sha256": "fec81379c95898b04c7a01841b2d552d77e69796581437ab18552194f95633b6",
+          "locator": "/types/0",
+          "confidence": "FACT",
+          "scope": "Saved declarations only, no native instructions or state writes.",
+          "fields": [
+            {
+              "field_index": 259352,
+              "name": "<TaskContext>k__BackingField",
+              "type_reference": 586147
+            },
+            {
+              "field_index": 259360,
+              "name": "_TargetPerformTimeCounter",
+              "type_reference": 436878
+            },
+            {
+              "field_index": 259373,
+              "name": "_SelfSkillPerformState",
+              "type_reference": 608932
+            }
+          ],
+          "methods": [
+            {
+              "method_index": 506904,
+              "name": "SetSkillPerformFinish",
+              "parameter_count": 1,
+              "parameter_start": 465991,
+              "return_type_reference": 416617,
+              "native_rva": "0xE6CDE60"
+            },
+            {
+              "method_index": 506958,
+              "name": "get_SelfPerformState",
+              "parameter_count": 0,
+              "parameter_start": -1,
+              "return_type_reference": 608937,
+              "native_rva": "0xE6D3E70"
+            },
+            {
+              "method_index": 506981,
+              "name": "get_TaskContext",
+              "parameter_count": 0,
+              "parameter_start": -1,
+              "return_type_reference": 417116,
+              "native_rva": "0xE6D4020"
+            },
+            {
+              "method_index": 506982,
+              "name": "set_TaskContext",
+              "parameter_count": 1,
+              "parameter_start": 466061,
+              "return_type_reference": 416617,
+              "native_rva": "0xE6D4030"
+            }
+          ],
+          "provenance_limit": "Retains saved snapshot identity context; this pass did not re-read a binary or recover concrete type references."
+        }
+      },
+      "semantic_closure_status": "PARTIAL",
+      "evidence_block": {
+        "status": "BLOCKED_BY_EVIDENCE",
+        "confidence": "FACT",
+        "reason": "Persisted evidence supplies metadata/signatures, bounded call tables and source causal order; complete argument dataflow, completion field mutation, wait-list removal and barrier result/continuation bodies are missing. Pass-3 absence results were accepted without repeating searches.",
+        "required_binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "provenance_rule": "Every new native body must have a verified binary hash/version/method mapping for this saved snapshot, or an independent trace with explicit matching provenance. Historical RVAs cannot be applied to the previously mismatched live DLL.",
+        "next_most_discriminating_symbol": "M499778 IsAllWaittingAbilitiesFinished 0xE7673A0: recover parameter type/actual input and tested field, then join M499890 and M506904 writes.",
+        "stop_condition": "Pass 4 stops here. No Pass 5 or speculative runtime implementation. Reopen only when concrete matching body/dataflow or ordered trace evidence is supplied.",
+        "inherited_not_closed": "TriggerAbility registration guard/default, child activation/reuse/context and first-dispatch timing remain unresolved from Pass 3; this focused barrier pass does not waive them."
+      },
+      "analysis_frozen": true,
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/cross_behavior"
+    },
+    "modifier": {
+      "status": "FROZEN",
+      "analysis_frozen": true,
+      "finding": {
+        "confidence": "FACT",
+        "statement": "Current reference implementation conflates stacking policy, existing-instance matching, and source/provider identity.",
+        "evidence": [
+          "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py::_policy",
+          "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py::_matches",
+          "src/hsr_battle_agent/game_data/reference_execution.py::SemanticExecutor._execute_add_modifier"
+        ]
+      },
+      "required_architecture": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "statement": "Request -> ModifierLookupQuery -> first match/none -> separate StackingTransition -> resolved mutation -> lifecycle/callback hooks. Same config may select query profile and transition; never merge query into primary identity.",
+        "evidence": [
+          "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/lookup_query_contract",
+          "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/policy_family_table"
+        ]
+      },
+      "retained_observations": {
+        "policy_names_are_not_stacking_flags": true,
+        "source_provider_is_not_automatically_caster_id": true,
+        "layer_is_not_count": true,
+        "missing_stacking_default": "UNKNOWN; do not infer Unique/Replace",
+        "conflict_free_definitions_missing_stacking": 7022,
+        "unsupported_named_policy_definitions": 65,
+        "scope": "Counts retained from already-read current catalog; no new Round-2 analysis."
+      },
+      "next_work": "NONE in this session. Domain 2 FROZEN; no Pass 3, broad helper search or other-domain work. Exact missing evidence is recorded under source_binding_pass2.remaining_binding_gaps.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/full_modifier_definition_catalog_001.json",
+      "pass": 2,
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+      "architecture": "PARTIAL",
+      "pass_status": "COMPLETE",
+      "terra_ready": "PARTIAL",
+      "lookup_query_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/lookup_query_contract",
+      "instance_identity_boundary": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/instance_identity_boundary",
+      "provider_caster_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/provider_caster_contract",
+      "policy_family_table": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/policy_family_table",
+      "multiple_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/multiple_contract",
+      "refresh_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/refresh_contract",
+      "missing_stacking_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/missing_stacking_contract",
+      "remaining_unknowns": [
+        {
+          "id": "MOD-Q1",
+          "confidence": "UNKNOWN",
+          "status": "BLOCKED_BY_EVIDENCE",
+          "exact_question": "How do AddModifier.InheritCaster F98608, StackingFlag F98599 and TaskContext source/caller produce M506463 provider typeref 286703, effective caster ID and param[+0x5c]?",
+          "missing_relationship": "Caller transport recovered, but M506052 InheritCaster field/enum branch; config[+0x70] cache/helper 0x158C21E0 provider/type relation; and source F98599 enum/absence-to-config[+0x3c] mapping remain unbound.",
+          "best_evidence_source": "Exact provenance-matched M506052.DINFDBMMMCD (0x16181C70, return typeref 286703), provider cache/helper 0x158C21E0 and named config/enum loader mapping; see source_binding_pass2.remaining_binding_gaps. These bodies/mappings are outside the authorized M506048 window; not claimed absent repository-wide."
+        },
+        {
+          "id": "MOD-Q2",
+          "confidence": "UNKNOWN",
+          "status": "BLOCKED_BY_EVIDENCE",
+          "exact_question": "What value reaches ModifierConfig.Stacking [+0x18] when the pinned source definition omits Stacking?",
+          "missing_relationship": "Source absence -> constructor/deserializer/inherited definition/caller precedence -> actual policy value.",
+          "best_evidence_source": "Provenance-matched definition loader/constructor + inheritance handling, or exact dumped native config from a selected missing-field definition. Saved M103117 layout and enum names alone cannot distinguish A/B/C/D."
+        },
+        {
+          "id": "MOD-Q3",
+          "confidence": "UNKNOWN",
+          "status": "BLOCKED_BY_EVIDENCE",
+          "exact_question": "How do constructor M506132, OnReplace M506158 and IncLayer M506304/OnStack M506305 transform Layer F259122, _LayerAddWhenStack F259116, dynamics and source resolver/cache fields, and order callback/property effects?",
+          "missing_relationship": "Request/definition initialization and matched life/count boundary -> exact layer/cap/force-set mutation -> source/dynamic update -> callback and keyed property recomputation.",
+          "best_evidence_source": "Matched saved constructor/OnReplace/IncLayer/OnStack and their property/callback dispatch bodies; MODIFIER_PROPERTY_EFFECT_09 only closes keyed contribution boundary."
+        },
+        {
+          "id": "MOD-Q4",
+          "confidence": "UNKNOWN",
+          "status": "BLOCKED_BY_EVIDENCE",
+          "exact_question": "What ordering governs GlobalFindModifierInstance M504365 across components and deferred/post-add paths M506465/M506672, including removal before new activation?",
+          "missing_relationship": "Global manager iteration order -> selected first object; delayed-add record -> drain trigger/order; RemoveUnStackModifier group fan-out -> affected identities and callback boundaries.",
+          "best_evidence_source": "Matched manager collection/order and queue-drain caller plus M506672 RemoveUnStackModifier argument/group dataflow. Existing bridge explicitly leaves global order and delayed drain unresolved."
+        },
+        {
+          "id": "MOD-Q5",
+          "confidence": "UNKNOWN",
+          "status": "BLOCKED_BY_EVIDENCE",
+          "exact_question": "How do ByIsContainModifier.CasterFilter/AddedOrAlive and RemoveModifier.OnlyRemoveCasterAdded select native filters, overloads and first/all cardinality?",
+          "missing_relationship": "Serialized query/remove caller context -> search key and state mask -> complete affected collection, independently of Add profile.",
+          "best_evidence_source": "Matched generated predicate/remove executors with full filter argument dataflow, anchored by MOD-C-BLACKSWAN-QUERY and MOD-C-ASTA-REMOVE. Name-only HasModifier M520246 is insufficient."
+        }
+      ],
+      "retained_conclusions": [
+        "Lookup query != native instance primary identity; native stable identity UNKNOWN.",
+        "Independent StackingFlag, policy-derived lookup profiles, first-match local scan.",
+        "Policy 7/8 provider argument is null; policy 12 passes provider object.",
+        "Multiple creates even when matched; Refresh is not Replace-family count/OnReplace arm.",
+        "Separate caster/provider/owner/caller slots; stored source mutation unresolved.",
+        "Static different-caller samples do not prove runtime coexistence; missing default UNKNOWN."
+      ],
+      "architecture_decomposition": "CLOSED",
+      "native_semantic_completion": "PARTIAL",
+      "completed_date": "2026-09-14",
+      "terra_contract": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/terra_contract",
+      "do_not_reason_again": [
+        "TriggerAbility is frozen BLOCKED_BY_EVIDENCE; no Pass 5 search.",
+        "Accept baseline conflation and catalog counts; no full census.",
+        "Do not use old RVAs on the mismatched live GameAssembly.",
+        "Do not reopen catalog/census or TriggerAbility during Modifier Pass 1 closeout.",
+        "ModifierLookupQuery != native instance primary identity; true native identity encoding remains UNKNOWN.",
+        "Lookup uses independent StackingFlag and local first-match behavior, not policy equality.",
+        "Policies 7/8 pass null provider; 12 passes provider. Null is an absent predicate constraint only within the inspected branch, never automatic provider=caster.",
+        "Caster -1/0 bypasses provider comparison after name/state/flag; preserve this ordering.",
+        "Multiple creates despite a lookup match; found does not force mutate.",
+        "Refresh arm differs from Replace-family: direct life/previous-life update, no direct Count setter or OnReplace in that arm.",
+        "Incoming policy chooses lookup/application decision; existing config chooses _ProcessModifierRedd arithmetic.",
+        "Missing Stacking default stays UNKNOWN; explicit Unknow ordinal 0 is not omission.",
+        "Static same-name cross-caller samples do not prove runtime coexistence.",
+        "Current Python and old bridge prose are not native truth where contradicted by saved code.",
+        "No production implementation, full tests, broad native reverse or other domains in this session.",
+        "Stop after Pass 1 completion; only the five exact questions justify future evidence work.",
+        "Pass 2 ONLY MOD-Q1. Pass-1 lookup, independent StackingFlag, first-match, 7/8-null and 12-provider arguments, caster wildcard bypass, Multiple, Refresh and missing Stacking default are fixed. Do not reopen Q2-Q5; do not start Pass 3.",
+        "M506048 body 6592 bytes was reconstituted and SHA-256 verified in Pass 2; do not re-prove it.",
+        "M506048 provider seed is M506052.DINFDBMMMCD(executor,target), possibly replaced by a cache entry/helper result before M506463 r9. Do not collapse seed and final provider.",
+        "M506048 directly copies config[+0x3c] to runtime param[+0x5c]; source F98599 enum/default mapping is not closed.",
+        "TaskContext get_SourceEntity -> param[+0x18] and TaskContext cached/virtual object -> param[+0x28] are separate from final provider.",
+        "MOD-Q1 is BLOCKED_BY_EVIDENCE at exact helper/field/type boundaries. Domain 2 FROZEN; no Pass 3 or other domain work in this session."
+      ],
+      "readiness_summary": "Pass 2 recovers M506048 provider seed/cache/helper -> r9 argument and native config[+0x3c] -> param[+0x5c] transport. Named InheritCaster, provider type/caster relation and flag enum/absence mapping remain BLOCKED_BY_EVIDENCE. Pass-1 infrastructure remains PARTIAL-ready; Q2-Q5 unchanged.",
+      "validation": {
+        "status": "PASS",
+        "q2_q5_unchanged": true,
+        "pass1_fixed_contracts_unchanged": true,
+        "master_outside_modifier_unchanged": true,
+        "implementation_changes": false,
+        "census_rerun": false
+      },
+      "pass1_status": "COMPLETE",
+      "active_question": null,
+      "frozen_questions": [
+        "MOD-Q2",
+        "MOD-Q3",
+        "MOD-Q4",
+        "MOD-Q5"
+      ],
+      "source_binding_pass2": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/source_binding_pass2",
+      "MOD_Q1": "BLOCKED_BY_EVIDENCE",
+      "source_binding_status": "BLOCKED_BY_EVIDENCE",
+      "artifact_sha256": "c8c0d097e09781615499f93be8160f1c64ce5d8c474b4c12fa8acf580848a47e",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/modifier"
+    },
+    "damage_survival": {
+      "status": "FROZEN",
+      "pass": 1,
+      "pass_status": "COMPLETE",
+      "architecture": "CLOSED",
+      "architecture_scope": "Lossless declarative request decomposition and strict rejection boundary for the measured canonical scope; native arithmetic and resolution schedule are not closed.",
+      "native_formulas": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "representation_ready": "YES_FOR_MEASURED_REQUESTS",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+      "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json",
+      "baseline_contract": "Accepted unchanged: normal HP/StanceValue/conditional Break and selected HP-before-toughness reference, not native Golden truth.",
+      "measured_scope": {
+        "operations": 3491,
+        "records": 1362,
+        "exact_field_shapes": 844,
+        "focus_field_families": 77,
+        "counts_are_not_executable_gain": true
+      },
+      "finding": "Formula/component/partition/resource/metadata/application/survival layers separated losslessly. Native special-field dataflow and ordering remain blocked by five exact questions.",
+      "next_question_ids": [
+        "DS-Q1",
+        "DS-Q2",
+        "DS-Q3",
+        "DS-Q4",
+        "DS-Q5"
+      ],
+      "next_work": "No automatic further pass or repeated missing-body reversal; use exact evidence questions only when new matched evidence is available.",
+      "frozen_domains_preserved": "Domains 1-5",
+      "production_runtime_implemented": false,
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/damage_survival"
+    },
+    "formation_boss": {
+      "status": "FROZEN",
+      "pass": 1,
+      "pass_status": "COMPLETE",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+      "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+      "architecture": "PARTIAL",
+      "architecture_decomposition": "CLOSED_FOR_SAFE_TERRA_BOUNDARIES",
+      "native_semantic_completion": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "formation_model": "Team-scoped ordered spatial records, normal/custom/camera representations; separate registry and team affiliation.",
+      "entity_topology": "Typed part/summoner/creator/HP-sharing/membership/alias relations; no invented universal boss controller.",
+      "set_team_formation_contract": "Three payload families; exact defaults/owner/write order unresolved. No flat list replacement or safe no-op.",
+      "phase_boundary": "Distinct substep, not boss phase transition itself.",
+      "targetability_boundary": "Formation-relative sort dependency exists; legal-target equivalence rejected; same-state write/read join missing.",
+      "scheduler_boundary": "Incoming actor/turn/skill refresh declarations only; no proven AV/eligibility/ownership mutation.",
+      "remaining_question_ids": [
+        "FB-Q1",
+        "FB-Q2",
+        "FB-Q3",
+        "FB-Q4"
+      ],
+      "do_not_reason_again": [
+        "Domain 1/2 remain frozen; this pass read source declarations involving them only as Domain 3 boundary evidence, without reopening execution semantics.",
+        "SetTeamFormation is an explicit spatial/layout request with 13 declared fields, not evidence for flat entity-list replacement.",
+        "Keep team affiliation, entity registry, formation records, part mapping, summons, HP sharing, target query views and scheduler participants distinct.",
+        "Do not re-run full census to reconcile the saved 796/1072 failure cluster with targeted canonical totals; the retained operation IDs are only a 12-item sample.",
+        "M517681 wrapper and helper identities already located. Further speculation from the same signatures/call list cannot recover argument/default/write semantics.",
+        "Never apply saved RVAs to the mismatched live DLL; reopen only with verified binary/version/method provenance.",
+        "Feixiao explicit unselectable center/PartID mapping, DawnsEye RemainInTeam=true, Cocolia old-caster reference and separate Sunday HP group settle architectural separation.",
+        "No safe no-op/runtime eligibility is granted by presentation evidence; the formation-relative selector read/write join is still missing.",
+        "Stop after Domain 3 Pass 1; do not enter Scheduler arbitration, Monster AI, Damage, Retarget, Equipment or Stage/Mode."
+      ],
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/formation_boss"
+    },
+    "scheduler_arbitration": {
+      "status": "FROZEN",
+      "pass": 1,
+      "pass_status": "COMPLETE",
+      "architecture": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+      "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json",
+      "strongest_conclusion": "Explicit mechanism taxonomy and separated discovery/selection/consumption/refresh boundaries; saved native composite comparator corrected; native cross-family ordering, consumption and interrupt gates need five exact evidence packets.",
+      "ordinary_turn": "Existing scoped reference retained; native HasActionTurn/lock pick anchor; native full eligibility/ties unresolved.",
+      "inserted_actions": "Multiple request domains; reference pending append/visibility only; no FIFO/global priority/ordinary-turn cost inferred.",
+      "consumption": "Reference ordinary completion only; native perform notification can precede false completion, and turn owner is separate from action actor.",
+      "re_arbitration": "Explicit TurnPrepare sort/pick; guarded delay-event reorder/notify; queued-Ultra Tick service.",
+      "native_comparator_correction": "Equal delay == 0 special block, +0x0c descending; no ID fallback or native stable-tie claim.",
+      "next_question_ids": [
+        "SA-Q1",
+        "SA-Q2",
+        "SA-Q3",
+        "SA-Q4",
+        "SA-Q5"
+      ],
+      "remaining": "Five BLOCKED_BY_EVIDENCE requests: admission/order; insert priority/selection; consumption/release; Ultra/immediate/nesting; actor relation/refresh.",
+      "frozen_input_domains": [
+        "cross_behavior",
+        "modifier",
+        "formation_boss"
+      ],
+      "do_not_reason_again": [
+        "Domains 1 TriggerAbility, 2 Modifier, 3 Formation/Boss remain frozen; consume their outputs only.",
+        "Accepted marker/delay/ordinary AV/pending visibility reference packets are input; no primitive reimplementation.",
+        "Native TurnBasedGameMode declares distinct ordinary, Ultra queue, inserted-ability and immediate domains; preserve actor vs turn-owner identity.",
+        "Packed native entity comparator base path is established at SA-N516740 with correct operand orientation: zero-only special block, +0x0c descending. Do not repeat broad AV census.",
+        "Native all-keys-equal List.Sort stability and field business identities remain Q1, not runtime-ID fallbacks.",
+        "OnAfterSkillPerform can be reached while CheckExecutingFinished returns false; performance marker/notification is not turn release.",
+        "Insertion/OneMore request before enclosing finish is source evidence, not proof of nested execution.",
+        "No matched runtime counterexample for special turn/AV preservation or cross-family winner recovered in Pass 1.",
+        "Saved full insert/Ultra/immediate/finish bodies are missing in inspected evidence; use the five exact evidence requests, not repeated metadata searches or live DLL RVAs.",
+        "Stop after Domain 4 Pass 1; do not enter AI, Damage, Retarget, Equipment or Stage/Mode."
+      ],
+      "validation": {
+        "status": "PASS",
+        "artifact_sha256": "9081d6c4fd09610d7cba009bbc47e12843d6293c26cc20d2f9b4cb0ab38fd5c6",
+        "evidence_sha256": "160961f58071a8facbef5a250f76629c44782b58d8333d9477022b0cb544a20c",
+        "frozen_domain_values_unchanged": true
+      },
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/scheduler_arbitration"
+    },
+    "monster_ai": {
+      "status": "FROZEN",
+      "pass": 2,
+      "architecture": "PARTIAL",
+      "interface_decomposition": "CLOSED_AS_CONTRACT",
+      "native_semantic_status": "BLOCKED_BY_EVIDENCE",
+      "content_status": "SCOPED_CONTENT_UNBLOCKED",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+      "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+      "terra_ready": "PARTIAL",
+      "ai_policy_binding": "Four acquired policy bodies and five character configs; direct static bindings closed, effective override/parent merge unknown.",
+      "candidate_generation": "55 declared UseSkill leaves and one sequence leaf; 293 direct edges; 19 direct misses with exact parent candidates. Runtime admission UNKNOWN.",
+      "conditions": "Phase/AIFlag/modifier Predicate ASTs and sequenced axis recovered at separate group/option levels.",
+      "priority_weight_script": "DefaultDSE on all 64 nodes; Priority/Weight absent; winner/tie/fallback/RNG UNKNOWN.",
+      "persistent_state": "43 DefineDynamicValue and 2 SetDynamicValueByAddValue descriptors; initial variables and AIFlag 5/10/13; commit/reset UNKNOWN.",
+      "target_boundary": "Skill-only leaves bind raw TargetInfo; no explicit selector task; Domain 7 owns resolution.",
+      "scheduler_boundary": "Actor/opportunity supplied; action intent returned; no AV/turn/arbitration ownership.",
+      "content_coverage": {
+        "cached_factor_group_assets": 2,
+        "complete_main_ai_policy_bodies": 4,
+        "targeted_templates": 6,
+        "targeted_monster_rows": 14,
+        "ai_coverage_percentage": null,
+        "scoped_main_policy_bodies_recovered": 4,
+        "full_ai_content_coverage": "PARTIAL",
+        "scoped_character_configs_recovered": 5,
+        "unique_use_skill_leaves": 55,
+        "unique_sequenced_skill_leaves": 1,
+        "expanded_exact_bindings": 293,
+        "expanded_direct_missing": 19,
+        "exact_parent_candidates_for_missing": 19,
+        "effective_inheritance_promotions": 0
+      },
+      "remaining": "Native precedence/parent merge, admission/evaluator/winner, state commit and target/request handoff remain evidence-blocked. Scoped acquisition and all 11 ID/15 occurrence bindings CLOSED; no content ticket pending.",
+      "next_question_ids": [
+        "MA-Q01",
+        "MA-Q02",
+        "MA-Q03",
+        "MA-Q04",
+        "MA-Q05"
+      ],
+      "strongest_conclusion": "Concrete nested stepper/sequence policies close the scoped declarative model. Declared leaves are distinct from eligible candidates and selected actions. Raw source availability is closed; runtime semantics and full AI corpus remain partial.",
+      "content_acquisition_checkpoint": {
+        "task": "MA-Q01",
+        "status": "CONTENT_UNBLOCKED_FOR_ASTRA_PASS_2",
+        "scope": "Static content availability and exact joins only. MA-Q02 through MA-Q05 remain BLOCKED_BY_EVIDENCE.",
+        "artifacts": [
+          "data/semantics/4.4.54/full_reconstruction/monster_ai_content_acquisition_001.json",
+          "data/semantics/4.4.54/full_reconstruction/monster_ai_binding_ledger_001.json",
+          "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json"
+        ],
+        "source_availability": "CLOSED",
+        "pass2_status": "ANALYZED_DECLARATIVELY"
+      },
+      "content_unblocked_pass2": {
+        "status": "POLICY_BODY_ANALYSIS_COMPLETE",
+        "source_availability": "CLOSED",
+        "scoped_main_policy_bodies_recovered": 4,
+        "full_ai_content_coverage": "PARTIAL",
+        "acquired_paths": 9,
+        "verified_absent": 0,
+        "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3"
+      },
+      "declarative_architecture": "CLOSED_FOR_SCOPED_FAMILIES",
+      "full_ai_content_coverage": "PARTIAL",
+      "domain_gate": "FROZEN",
+      "pass2_evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+      "ma_q01": {
+        "source_availability": "CLOSED",
+        "policy_precedence": "BLOCKED_BY_EVIDENCE",
+        "character_parent_merge": "BLOCKED_BY_EVIDENCE",
+        "sequence_id_binding": "CLOSED",
+        "original_requested_paths_acquired": 9,
+        "scoped_main_policy_bodies_recovered": 4
+      },
+      "end_of_domain_gate": {
+        "decision": "FROZEN",
+        "reason": "The exact pinned MonsterSkillConfig table closed all 11 ID and 15 current occurrence bindings. Remaining Domain 5 unknowns are native-evidence blockers.",
+        "ticket": "SEQUENCE-ID-BINDING-ACQUISITION",
+        "astra_analysis_status": "STOPPED_AFTER_PASS_2",
+        "pass3_allowed_by_default": false,
+        "pass3_justified": false,
+        "new_local_high_discrimination_native_body_available": false,
+        "after_terra": "Exact ID edges persisted; Domain 5 is frozen. No Astra Pass 3 is justified.",
+        "next_astra_domain_after_freeze": "Domain 6 Damage / Survival."
+      },
+      "validation": {
+        "status": "PASS",
+        "artifact_sha256": "6e742e8cf8e6ebb391f4debe324cc6645971d0bbc503d5b2dabf18216b483198",
+        "pass2_evidence_sha256": "238f13846fd0d27c00a48cef22853aa03f570bce1be2441116dc0221a56ca41f",
+        "sequence_id_binding_artifact": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+        "sequence_id_binding_sha256": "4794e3ee99eb159885eb794918835d01aa1b8645c3fd602b4f2aa365ed08f0a8",
+        "frozen_domains_1_4_unchanged": true,
+        "terra_001_artifacts_unchanged": true
+      },
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/monster_ai"
+    },
+    "target_retarget": {
+      "status": "FROZEN",
+      "pass": 1,
+      "pass_status": "COMPLETE",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+      "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json",
+      "architecture": "CLOSED",
+      "architecture_scope": "Lossless target definition/context/universe/result/mutation/consumer/legal-target decomposition; no claim of native selector completion",
+      "native_selector_details": "PARTIAL",
+      "native_retarget_execution": "PARTIAL_STRUCTURAL_AND_CALL_IDENTITY_ONLY",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "domain_gate": "FROZEN",
+      "remaining": "Five exact questions: ordered alias/universe/topology resolution; random/aggro; Retarget owner/slot writes; lifetime/child/sequence pairing; stale-target validation and consumption.",
+      "next_question_ids": [
+        "TR-Q1",
+        "TR-Q2",
+        "TR-Q3",
+        "TR-Q4",
+        "TR-Q5"
+      ],
+      "strongest_conclusion": "Ordered nullable result shape and distinct consumer cardinality contracts are explicit. Retarget/List/PerSequence request, result, owner-slot mutation and lifetime remain separate. Missing native write/restore contracts strictly reject execution.",
+      "domain6_dependency": "Target cardinality/list interface improved only; DS-Q4 NOT_CLOSED",
+      "content_followup": null,
+      "validation": "Required sections complete; 1442 saved pointers valid; no repeated traversal/census; frozen files and master domains unchanged",
+      "pass2_justification": "NOT_JUSTIFIED_WITH_CURRENT_EVIDENCE; reopen only on new provenance-matched body/dataflow or identity-bearing trace answering TR-Q1..TR-Q5",
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/target_retarget"
+    },
+    "equipment_trace_eidolon": {
+      "status": "FROZEN",
+      "pass": 1,
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+      "architecture": "CLOSED",
+      "mapping_coverage": "PARTIAL",
+      "native_activation": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_CONTENT_COVERAGE_AND_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "gate": "DOMAIN_8_FROZEN",
+      "next_question_ids": [
+        "D8-Q1",
+        "D8-Q2",
+        "D8-Q3",
+        "D8-Q4",
+        "D8-Q5"
+      ],
+      "terra_ticket": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json",
+      "strict_policy": "No numeric-suffix joins; unknown activation never silently skipped.",
+      "validation": "PASSED",
+      "content_followup": {
+        "ticket": "D8-TERRA-CONTENT-001",
+        "status": "COMPLETE_BOUNDED_CONTENT_ACQUISITION",
+        "artifact": "data/semantics/4.4.54/full_reconstruction/equipment_trace_eidolon_content_followup_001.json",
+        "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+        "coverage_delta": {
+          "trace_exact_raw_joins": {
+            "EXACT": 4696,
+            "AMBIGUOUS": 0,
+            "MISSING": 322
+          },
+          "trace_rows_with_explicit_AbilityName": 78,
+          "trace_rows_with_explicit_PointTriggerKey": 4696,
+          "missing_skill_ids_resolved": 0,
+          "eidolon_raw_rows_found": 546,
+          "eidolon_exact_skill_level_override_edges": 488
+        },
+        "remaining_q1_content_blockers": [
+          {
+            "portion": "D8-Q1 EquipmentRow / EquipmentSkillRow",
+            "status": "STILL_CONTENT_BLOCKED",
+            "reason": "Astra established no positive exact source paths; this ticket forbids filename guessing or repository search."
+          },
+          {
+            "portion": "D8-Q1 RelicSetConfigRow / RelicSetSkillConfigRow",
+            "status": "STILL_CONTENT_BLOCKED",
+            "reason": "Astra established no positive exact source paths; this ticket forbids filename guessing or repository search."
+          },
+          {
+            "portion": "D8-Q1 missing SkillIDs",
+            "status": "SOURCE_VERSION_LIMITED",
+            "reason": "All 48 selected 4.4.54 SkillIDs are absent from the pinned declared 4.4.0 AvatarSkillConfig table."
+          }
+        ]
+      },
+      "bookkeeping_repair": "Bounded D8-TERRA-CONTENT-001 completion confirmed; semantic artifact and remaining native blockers unchanged.",
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/equipment_trace_eidolon"
+    },
+    "stage_environment_mode": {
+      "status": "FROZEN",
+      "pass": 1,
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+      "targeted_evidence": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json",
+      "architecture": "CLOSED",
+      "native_scenario_execution": "PARTIAL",
+      "content_coverage": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_CONTENT_COVERAGE_AND_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "gate": "FROZEN_CONTENT_FOLLOWUP_ATTEMPT_COMPLETE_GRAPH_ABSENT",
+      "terra_ticket": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+      "next_question_ids": [
+        "D9-Q1",
+        "D9-Q2",
+        "D9-Q3",
+        "D9-Q4",
+        "D9-Q5",
+        "D9-Q6"
+      ],
+      "validation": "PASSED",
+      "content_followup": {
+        "ticket": "D9-TERRA-CONTENT-001",
+        "status": "BLOCKED_BY_CONTENT_COVERAGE",
+        "artifact": "data/semantics/4.4.54/full_reconstruction/stage_environment_mode_content_followup_001.json",
+        "graph_presence": "ABSENT_AT_PINNED_COMMIT",
+        "raw_sha256": null,
+        "structural_coverage_delta": {
+          "graph_document_acquired": false,
+          "node_index_entries": 0,
+          "edge_index_entries": 0,
+          "stage_config_key_refs": 0,
+          "wave_spawn_refs": 0,
+          "terminal_refs": 0,
+          "behavior_refs": 0,
+          "external_dependency_refs": 0
+        },
+        "remaining_content_blockers": [
+          {
+            "portion": "D9-Q1 StageCommonTemplate graph",
+            "status": "BLOCKED_BY_CONTENT_COVERAGE",
+            "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+            "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+            "exact_requested_path": "Config/Level/StageCommonTemplate.json",
+            "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+            "lookup_result": "ABSENT_AT_PINNED_COMMIT"
+          },
+          {
+            "portion": "MazeBuff ID 3110018",
+            "status": "EXCLUDED_BY_TICKET"
+          },
+          {
+            "portion": "EliteGroup row missing for Stage 420514",
+            "status": "EXCLUDED_BY_TICKET"
+          },
+          {
+            "portion": "Stage Ability / StageBuff ability unresolved references",
+            "status": "EXCLUDED_BY_TICKET"
+          },
+          {
+            "portion": "StageInfinite, StageBattleEvent, and mode-embedded rows",
+            "status": "EXCLUDED_BY_TICKET"
+          }
+        ],
+        "attempt_status": "COMPLETE_EXACT_PATH_LOOKUP_NO_CONTENT_ACQUIRED"
+      },
+      "analysis_frozen": true,
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/stage_environment_mode"
+    }
+  },
+  "pending_domains": {},
+  "reverse_safety_constraints": [
+    {
+      "confidence": "FACT",
+      "path": "D:/StarRail_4.4.53/GameAssembly.dll",
+      "saved_snapshot_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "observed_current_sha256": "4aac69526d1654c278ad641cbce71f728d3030d48f03694096b5778552d12660",
+      "evidence": "data/normalized/4.4.54/manifest.json",
+      "consequence": "Old snapshot RVAs MUST NOT be used against the current file. Current binary version and method mapping are not established by the directory name."
+    },
+    {
+      "confidence": "FACT",
+      "rule": "Existing saved reverse evidence is usable only for its recorded binary hash, version and method provenance. Discard the mismatched live-file TriggerAbility window attempted before the mismatch was identified; it supplies no TriggerAbility semantics."
+    },
+    {
+      "confidence": "FACT",
+      "rule": "Do not reverse the current binary in this continuation. Future native work requires a separately verified binary-hash/version/RVA correspondence."
+    }
+  ],
+  "do_not_reason_again": [
+    {
+      "id": "FREEZE-DNR-TA",
+      "settled_fact": "Launch, receiver/inherent/callee target context, explicit barrier, perform marker and natural ability lifetime are separate; 4125 calls/2665 unique candidates are retained observations.",
+      "forbidden_inference": "No universal synchronous await, camera no-op, omitted=false, SUCCESS-as-native-ability or inferred release. No Pass 5.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/9",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/10",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/11",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/12",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/13",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/14"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-MOD",
+      "settled_fact": "Lookup query differs from instance identity; StackingFlag differs from policy; Layer differs from Count; provider differs from caster; Multiple creates and Refresh differs from Replace.",
+      "forbidden_inference": "No default stacking, match=>mutate shortcut, provider=caster, automatic dynamic overwrite/Layer increment/global order or inverse query/remove.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/9",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/10",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/11",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/12",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/13",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/14",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/15",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/16",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/17",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/18",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/19",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/20",
+        "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/21"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-TOPOLOGY",
+      "settled_fact": "Registry/team/formation/part/summoner/creator/HP-sharing/target/scheduler are independent typed relations; SetTeamFormation is a layout request.",
+      "forbidden_inference": "No boss controller tree, flat replacement, spawn/destroy inference, presentation no-op, slot-to-action order or HP independence from missing sample declaration.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/8"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-SCHEDULER",
+      "settled_fact": "Discovery, arbitration, execution, consumption and release remain separate; native packed zero-only/+0c-descending comparison is settled, final ties unproved.",
+      "forbidden_inference": "No ID tie-break, global FIFO, priority-token sort, universal FUA/Ultra equivalence, special-turn cost, shared AV or marker-as-turn-end.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/9"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-AI",
+      "settled_fact": "4 policies and 5 configs recovered; 293 direct edges and 19 parent candidates; 11 exact IDs bind 15 sequence occurrences; labels are nonunique; AIFlag is shared entity state.",
+      "forbidden_inference": "No renewed source acquisition for resolved ticket, max-score/first-valid/default score/implicit random, parent merge, sequence dedup or selection-time writes.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/9",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/10",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/11",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/12",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/13"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-DAMAGE",
+      "settled_fact": "3491 measured requests/1362 records; HP+toughness is selected reference; formula/channel/hit partition/SP resource/metadata/HitSource remain separate.",
+      "forbidden_inference": "No special scalar lowering, SPHit=team BP, DamageValue=true damage, enum-name equation, guessed split/crit/nonlethal or native HP/toughness total order.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/9",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/10"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-TARGET",
+      "settled_fact": "[] differs from [null]; ordered nullable duplicates and consumer cardinality survive; local mask keeps survivors; Retarget/List/PerSequence are distinct.",
+      "forbidden_inference": "No Optional<EntityId> collapse, dedup, first-target fallback, adjacency arithmetic, ID ties, IncludeLimbo equivalence, guessed save/restore or automatic revalidation.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/9",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/10",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/11",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/12",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/13",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/14",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/15"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-PROGRESSION",
+      "settled_fact": "165 LightCone numeric-token candidates are not strict joins; static property edges/136 behavior-name candidates do not prove full activation; source input immutability is local design.",
+      "forbidden_inference": "No numeric-suffix join, cumulative rank/set threshold/path gating, owner/context/default parameter or config-merge inference; no unknown source silently omitted.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/8",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/9"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-SCENARIO",
+      "settled_fact": "Legacy waves are containers; Stage/Level/graph/wave identities differ; StageBuff battle refs and adventure modifiers differ; graph absent at pinned commit; field persistence unknown.",
+      "forbidden_inference": "No enemy-count official advance/victory, reset-all/retain-all, fake Stage/owner IDs, arbitrary missing-path search, initialization order or automatic global activation.",
+      "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+      "inherited_rule_refs": [
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/0",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/1",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/2",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/3",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/4",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/5",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/6",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/7",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/8"
+      ],
+      "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+    },
+    {
+      "id": "FREEZE-DNR-EVIDENCE",
+      "settled_fact": "Unknown native semantics and missing content are separate; version-close content is not exact native proof.",
+      "forbidden_inference": "Do not repeat source analysis or broad reverse because UNKNOWN remains.",
+      "reopen_condition": "New exact content/native/independent trace with matching version/hash/method provenance.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+    },
+    {
+      "id": "FREEZE-DNR-BINARY",
+      "settled_fact": "Saved binary provenance differs from the previously observed live DLL.",
+      "forbidden_inference": "Never use saved RVAs against an unverified live image.",
+      "reopen_condition": "Explicit matching binary-hash/version/method mapping supplied.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/reverse_safety_constraints"
+    },
+    {
+      "id": "FREEZE-DNR-COVERAGE",
+      "settled_fact": "Historical record/entrypoint/operation/source-backed/Golden levels differ.",
+      "forbidden_inference": "No compiler success or source fixture promotes a whole record or native accuracy.",
+      "reopen_condition": "Actual gated execution plus correctly scoped independent validation.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_coverage_census_001.json"
+    },
+    {
+      "id": "FREEZE-DNR-IDENTITY",
+      "settled_fact": "All new runtime tokens are LOCAL_DESIGN_IDENTITY and preserve logical aliasing.",
+      "forbidden_inference": "No native token claim or identity-derived ordering.",
+      "reopen_condition": "Exact native identity/equality/owner dataflow.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/instance_identity_boundary"
+    },
+    {
+      "id": "FREEZE-DNR-RNG",
+      "settled_fact": "Native RNG contracts remain unknown; no draw on rejection.",
+      "forbidden_inference": "No random.choice/shuffle/weight normalization as native fallback; no trial draw to discover support.",
+      "reopen_condition": "Exact per-surface draw/stream/order evidence.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/random_boundary"
+    },
+    {
+      "id": "FREEZE-DNR-STATE",
+      "settled_fact": "Decision-sensitive pending/opaque state participates in snapshot/hash.",
+      "forbidden_inference": "No current-actors-only clone, opaque omission or executable claim from a hash.",
+      "reopen_condition": "Complete state/lifecycle/ownership evidence for affected profile.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/snapshot_clone_hash"
+    },
+    {
+      "id": "FREEZE-DNR-CUSTOM",
+      "settled_fact": "Custom terminal/initialization rules are explicitly selected SANDBOX_EXTENSION.",
+      "forbidden_inference": "No custom convenience rule as native official evidence or silent substitute.",
+      "reopen_condition": "Independent native evidence plus a separately reviewed native contract.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/normalized_scenario_model"
+    },
+    {
+      "id": "FREEZE-DNR-STOP",
+      "settled_fact": "Domain 10 completes the semantic sprint; Domains 1–9 stay FROZEN.",
+      "forbidden_inference": "No implementation, new domain, reverse/fetch/compiler run or commit in this audit.",
+      "reopen_condition": "Separate user-authorized Terra implementation phase; native reopening still requires exact new evidence.",
+      "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+    }
+  ],
+  "future_rounds": [
+    {
+      "round": 1,
+      "domain": "cross_behavior",
+      "status": "FROZEN",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/cross_behavior"
+    },
+    {
+      "round": 2,
+      "domain": "modifier",
+      "status": "FROZEN",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/modifier"
+    },
+    {
+      "round": 3,
+      "domain": "formation_boss",
+      "status": "FROZEN",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/formation_boss"
+    },
+    {
+      "round": 4,
+      "domain": "scheduler_arbitration",
+      "status": "FROZEN",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/scheduler_arbitration"
+    },
+    {
+      "round": 5,
+      "domain": "monster_ai",
+      "status": "FROZEN",
+      "architecture": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "content_status": "SCOPED_CONTENT_UNBLOCKED",
+      "full_ai_content_coverage": "PARTIAL",
+      "gate": "FROZEN",
+      "declarative_architecture": "CLOSED_FOR_SCOPED_FAMILIES",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/monster_ai"
+    },
+    {
+      "round": 6,
+      "domain": "damage_survival",
+      "status": "FROZEN",
+      "architecture": "CLOSED",
+      "native_formulas": "PARTIAL",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/damage_survival"
+    },
+    {
+      "round": 7,
+      "domain": "target_retarget",
+      "status": "FROZEN",
+      "pass_status": "PASS_1_COMPLETE",
+      "architecture": "CLOSED",
+      "semantic_status": "BLOCKED_BY_EVIDENCE",
+      "terra_ready": "PARTIAL",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/target_retarget"
+    },
+    {
+      "round": 8,
+      "domain": "equipment_trace_eidolon",
+      "status": "FROZEN",
+      "architecture": "CLOSED",
+      "mapping_coverage": "PARTIAL",
+      "native_activation": "PARTIAL",
+      "gate": "FROZEN",
+      "content_followup_status": "COMPLETE_BOUNDED_CONTENT_ACQUISITION",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/equipment_trace_eidolon"
+    },
+    {
+      "round": 9,
+      "domain": "stage_environment_mode",
+      "status": "FROZEN",
+      "architecture": "CLOSED",
+      "native_scenario_execution": "PARTIAL",
+      "content_coverage": "PARTIAL",
+      "gate": "FROZEN",
+      "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/stage_environment_mode"
+    },
+    {
+      "round": 10,
+      "status": "COMPLETE",
+      "artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    }
+  ],
+  "scope_constraints": [
+    "Final audit consumes Domains 1–9 unchanged; all FROZEN",
+    "No new semantic research, content fetch, corpus capture, Nanoka rebuild or compiler/full census",
+    "Architecture and handoff only; no production implementation or commit",
+    "Stop after validated freeze; implementation is a separate Terra phase"
+  ],
+  "artifacts": [
+    "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+    "docs/agent/astra_semantic_handoff_2026-09-10.md",
+    "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_analyze_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_analyze_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_close_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_validate_v1.cjs",
+    "data/semantics/4.4.54/full_reconstruction/monster_ai_content_acquisition_001.json",
+    "data/semantics/4.4.54/full_reconstruction/monster_ai_binding_ledger_001.json",
+    "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+    "data/semantics/4.4.54/full_reconstruction/equipment_trace_eidolon_content_followup_001.json",
+    "data/semantics/4.4.54/full_reconstruction/stage_environment_mode_content_followup_001.json",
+    "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+    "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md"
+  ],
+  "persistence_status": "DOMAIN_10_FREEZE_AND_HANDOFF_VALIDATED",
+  "continuation_completed": "Domain 10 final semantic audit complete; Domains 1–9 frozen. Safe infrastructure/representation/reference/strict-reject frontier, state/identity/order/RNG/transaction contracts, blockers and ordered Terra tickets recorded. No production runtime, reverse, fetch, compiler/census or commit.",
+  "active_domain": null,
+  "current_semantic_domain": null,
+  "final_freeze_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+  "final_handoff": "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+  "implementation_frontier": {
+    "status": "EVIDENCE_GATED_ARCHITECTURE_READY_RUNTIME_IMPLEMENTATION_SEPARATE",
+    "artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+    "first_phase": [
+      "TERRA-F01",
+      "TERRA-F02",
+      "TERRA-R01",
+      "TERRA-G01"
+    ],
+    "production_implementation_started": false
+  },
+  "final_audit_timestamp": "2026-09-20T07:35:31.394Z",
+  "semantic_sprint_complete": true,
+  "full_native_behavior_reconstruction_complete": false,
+  "native_reconstruction_status": "INCOMPLETE_EVIDENCE_AND_CONTENT_BLOCKED",
+  "final_audit_bookkeeping_changes": [
+    {
+      "pointer": "/round",
+      "old_value_present": true,
+      "old_value": 9,
+      "final_value": 10,
+      "reason": "Authorized final audit",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/status",
+      "old_value_present": true,
+      "old_value": "DOMAIN_9_PASS_1_COMPLETE",
+      "final_value": "ASTRA_SEMANTIC_CLOSURE_COMPLETE",
+      "reason": "Sprint complete; native reconstruction remains incomplete",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/cross_behavior/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/cross_behavior",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/modifier/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/modifier",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/formation_boss/status",
+      "old_value_present": true,
+      "old_value": "PASS_1_COMPLETE",
+      "final_value": "FROZEN",
+      "reason": "All nine domains consumed unchanged and closed to new analysis",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/formation_boss/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/formation_boss/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/formation_boss",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/scheduler_arbitration/status",
+      "old_value_present": true,
+      "old_value": "PASS_1_COMPLETE",
+      "final_value": "FROZEN",
+      "reason": "All nine domains consumed unchanged and closed to new analysis",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/scheduler_arbitration/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/scheduler_arbitration/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/scheduler_arbitration",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/monster_ai/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/monster_ai/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/monster_ai",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/damage_survival/status",
+      "old_value_present": true,
+      "old_value": "PASS_1_COMPLETE",
+      "final_value": "FROZEN",
+      "reason": "All nine domains consumed unchanged and closed to new analysis",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/damage_survival/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/damage_survival/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/damage_survival",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/target_retarget/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/target_retarget/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/target_retarget",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/equipment_trace_eidolon/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/equipment_trace_eidolon/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/equipment_trace_eidolon",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/stage_environment_mode/status",
+      "old_value_present": true,
+      "old_value": "PASS_1_COMPLETE",
+      "final_value": "FROZEN",
+      "reason": "All nine domains consumed unchanged and closed to new analysis",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/stage_environment_mode/analysis_frozen",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "No domain reopened",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/stage_environment_mode/final_frontier_ref",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/stage_environment_mode",
+      "reason": "Authoritative post-Astra factual readiness",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/monster_ai/remaining",
+      "old_value_present": true,
+      "old_value": "One exact Terra table/11-ID mapping ticket; five bounded question groups retain native admission/precedence/operator/state/handoff blockers.",
+      "final_value": "Native precedence/parent merge, admission/evaluator/winner, state commit and target/request handoff remain evidence-blocked. Scoped acquisition and all 11 ID/15 occurrence bindings CLOSED; no content ticket pending.",
+      "reason": "SC-03",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/stage_environment_mode/gate",
+      "old_value_present": true,
+      "old_value": "ONE_TERRA_CONTENT_FOLLOWUP",
+      "final_value": "FROZEN_CONTENT_FOLLOWUP_ATTEMPT_COMPLETE_GRAPH_ABSENT",
+      "reason": "SC-05",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/domains/stage_environment_mode/content_followup/attempt_status",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "COMPLETE_EXACT_PATH_LOOKUP_NO_CONTENT_ACQUIRED",
+      "reason": "SC-05; status remains BLOCKED_BY_CONTENT_COVERAGE",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/pending_domains",
+      "old_value_present": true,
+      "old_value": {
+        "modifier": {
+          "status": "FROZEN",
+          "analysis_frozen": true,
+          "finding": {
+            "confidence": "FACT",
+            "statement": "Current reference implementation conflates stacking policy, existing-instance matching, and source/provider identity.",
+            "evidence": [
+              "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py::_policy",
+              "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py::_matches",
+              "src/hsr_battle_agent/game_data/reference_execution.py::SemanticExecutor._execute_add_modifier"
+            ]
+          },
+          "required_architecture": {
+            "confidence": "STRONG_RECONSTRUCTION",
+            "statement": "Define duplicate lookup independently of post-match stacking arithmetic. Do not extend with another stacking if/else before separating caster, provider, owner and stacking_flag.",
+            "evidence": [
+              "data/semantics/4.4.54/modifier_lifecycle_bridge_08.json#/duplicate_match_identity",
+              "data/semantics/4.4.54/modifier_lifecycle_bridge_08.json#/duplicate_application_cases"
+            ]
+          },
+          "retained_observations": {
+            "policy_names_are_not_stacking_flags": true,
+            "source_provider_is_not_automatically_caster_id": true,
+            "layer_is_not_count": true,
+            "missing_stacking_default": "UNKNOWN; do not infer Unique/Replace",
+            "conflict_free_definitions_missing_stacking": 7022,
+            "unsupported_named_policy_definitions": 65,
+            "scope": "Counts retained from already-read current catalog; no new Round-2 analysis."
+          },
+          "next_work": "FROZEN; no Domain 2 continuation authorized in this session. Historical observations retained.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/full_modifier_definition_catalog_001.json",
+          "semantic_status": "BLOCKED_BY_EVIDENCE"
+        },
+        "damage_survival": {
+          "status": "PASS_1_COMPLETE",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "next_question_ids": [
+            "DS-Q1",
+            "DS-Q2",
+            "DS-Q3",
+            "DS-Q4",
+            "DS-Q5"
+          ]
+        }
+      },
+      "final_value": {},
+      "reason": "SC-16; remaining blockers are frozen evidence dependencies, not pending domains",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/future_rounds",
+      "old_value_present": true,
+      "old_value": [
+        {
+          "round": 1,
+          "domain": "cross_behavior",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE"
+        },
+        {
+          "round": 2,
+          "domain": "modifier",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE"
+        },
+        {
+          "round": 3,
+          "domain": "formation_boss",
+          "status": "PASS_1_COMPLETE",
+          "semantic_status": "BLOCKED_BY_EVIDENCE"
+        },
+        {
+          "round": 4,
+          "domain": "scheduler_arbitration",
+          "status": "PASS_1_COMPLETE",
+          "semantic_status": "BLOCKED_BY_EVIDENCE"
+        },
+        {
+          "round": 5,
+          "domain": "monster_ai",
+          "status": "FROZEN",
+          "architecture": "PARTIAL",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "content_status": "SCOPED_CONTENT_UNBLOCKED",
+          "full_ai_content_coverage": "PARTIAL",
+          "gate": "FROZEN",
+          "declarative_architecture": "CLOSED_FOR_SCOPED_FAMILIES"
+        },
+        {
+          "round": 6,
+          "domain": "damage_survival",
+          "status": "PASS_1_COMPLETE",
+          "architecture": "CLOSED",
+          "native_formulas": "PARTIAL",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "terra_ready": "PARTIAL"
+        },
+        {
+          "round": 7,
+          "domain": "target_retarget",
+          "status": "FROZEN",
+          "pass_status": "PASS_1_COMPLETE",
+          "architecture": "CLOSED",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "terra_ready": "PARTIAL"
+        },
+        {
+          "round": 8,
+          "domain": "equipment_trace_eidolon",
+          "status": "FROZEN",
+          "architecture": "CLOSED",
+          "mapping_coverage": "PARTIAL",
+          "native_activation": "PARTIAL",
+          "gate": "DOMAIN_8_FROZEN",
+          "content_followup_status": "COMPLETE_BOUNDED_CONTENT_ACQUISITION"
+        },
+        {
+          "round": 9,
+          "domain": "stage_environment_mode",
+          "status": "PASS_1_COMPLETE",
+          "architecture": "CLOSED",
+          "native_scenario_execution": "PARTIAL",
+          "content_coverage": "PARTIAL",
+          "gate": "ONE_TERRA_CONTENT_FOLLOWUP"
+        },
+        {
+          "round": 10,
+          "status": "DEFERRED_DO_NOT_START_IN_THIS_SESSION"
+        }
+      ],
+      "final_value": [
+        {
+          "round": 1,
+          "domain": "cross_behavior",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/cross_behavior"
+        },
+        {
+          "round": 2,
+          "domain": "modifier",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/modifier"
+        },
+        {
+          "round": 3,
+          "domain": "formation_boss",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/formation_boss"
+        },
+        {
+          "round": 4,
+          "domain": "scheduler_arbitration",
+          "status": "FROZEN",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/scheduler_arbitration"
+        },
+        {
+          "round": 5,
+          "domain": "monster_ai",
+          "status": "FROZEN",
+          "architecture": "PARTIAL",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "content_status": "SCOPED_CONTENT_UNBLOCKED",
+          "full_ai_content_coverage": "PARTIAL",
+          "gate": "FROZEN",
+          "declarative_architecture": "CLOSED_FOR_SCOPED_FAMILIES",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/monster_ai"
+        },
+        {
+          "round": 6,
+          "domain": "damage_survival",
+          "status": "FROZEN",
+          "architecture": "CLOSED",
+          "native_formulas": "PARTIAL",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "terra_ready": "PARTIAL",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/damage_survival"
+        },
+        {
+          "round": 7,
+          "domain": "target_retarget",
+          "status": "FROZEN",
+          "pass_status": "PASS_1_COMPLETE",
+          "architecture": "CLOSED",
+          "semantic_status": "BLOCKED_BY_EVIDENCE",
+          "terra_ready": "PARTIAL",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/target_retarget"
+        },
+        {
+          "round": 8,
+          "domain": "equipment_trace_eidolon",
+          "status": "FROZEN",
+          "architecture": "CLOSED",
+          "mapping_coverage": "PARTIAL",
+          "native_activation": "PARTIAL",
+          "gate": "FROZEN",
+          "content_followup_status": "COMPLETE_BOUNDED_CONTENT_ACQUISITION",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/equipment_trace_eidolon"
+        },
+        {
+          "round": 9,
+          "domain": "stage_environment_mode",
+          "status": "FROZEN",
+          "architecture": "CLOSED",
+          "native_scenario_execution": "PARTIAL",
+          "content_coverage": "PARTIAL",
+          "gate": "FROZEN",
+          "final_frontier_ref": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json#/domain_matrix/stage_environment_mode"
+        },
+        {
+          "round": 10,
+          "status": "COMPLETE",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+        }
+      ],
+      "reason": "SC-16; no future semantic round remains",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/scope_constraints",
+      "old_value_present": true,
+      "old_value": [
+        "Semantic reconstruction only; no production runtime",
+        "Domains 1-8 frozen; Domain 8 bookkeeping repaired only",
+        "Targeted Domain 9 local evidence; no compiler census, recapture, subagents or live/stale RVA use",
+        "Stop before Domain 10 and final audit"
+      ],
+      "final_value": [
+        "Final audit consumes Domains 1–9 unchanged; all FROZEN",
+        "No new semantic research, content fetch, corpus capture, Nanoka rebuild or compiler/full census",
+        "Architecture and handoff only; no production implementation or commit",
+        "Stop after validated freeze; implementation is a separate Terra phase"
+      ],
+      "reason": "SC-16",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/do_not_reason_again",
+      "old_value_present": true,
+      "old_value": [
+        {
+          "id": "DNR-TA-COUNT",
+          "settled": "4125 TriggerAbility; 4064 explicit true; 0 explicit false; 61 omitted.",
+          "scope": "Pinned corpus hash in authority",
+          "reopen_only_if": "Corpus provenance changes or a reproducible canonical traversal defect is demonstrated."
+        },
+        {
+          "id": "DNR-TA-RESOLUTION",
+          "settled": "2665 unique candidates / 1460 missing / no observed ambiguity; resolution does not establish runtime eligibility.",
+          "reopen_only_if": "Source set or identity schema changes."
+        },
+        {
+          "id": "DNR-TA-SYNC",
+          "settled": "Never universally lower by name uniqueness or discard IsSkillPerform.",
+          "reopen_only_if": "Independent lifecycle and ordering evidence proves a particular family."
+        },
+        {
+          "id": "DNR-TA-CONTEXT",
+          "settled": "Receiver target, inherent target and callee TargetInfo are distinct.",
+          "reopen_only_if": "New field schema evidence, not an implementation convenience."
+        },
+        {
+          "id": "DNR-TA-BINARY",
+          "settled": "Current DLL hash mismatches saved native evidence; old RVAs cannot be applied.",
+          "reopen_only_if": "Matching binary hash/version/RVA correspondence is established."
+        },
+        {
+          "id": "DNR-MODIFIER-ORTHOGONAL",
+          "settled": "Stacking policy, instance matching and source/provider identity require independent contracts.",
+          "next_round": 2
+        },
+        {
+          "id": "DNR-DAMAGE-BASE",
+          "settled": "Bounded HP+toughness already exists. Reclassify remaining damage blockers by fields, including SPHitRatio/HitSplitRatio.",
+          "next_round": 6
+        },
+        {
+          "id": "DNR-TA-CAUSALITY",
+          "settled": "Sampled phase callees wait for caller-started animations; complete synchronous inlining is unsafe.",
+          "evidence": [
+            "TA-F08",
+            "TA-F09",
+            "TA-F10"
+          ]
+        },
+        {
+          "id": "DNR-TA-WAIT-LINK",
+          "settled": "Saved M509479 directly calls AddWaitAbility at 0xB99B801; flag guard still UNKNOWN. Do not rediscover linkage or invent guard.",
+          "evidence": [
+            "TA-F11",
+            "TA-F12"
+          ]
+        },
+        {
+          "id": "DNR-TA-OMITTED-FINISH",
+          "settled": "Asta omitted-flag Phase02 emits SkillPerformFinish; omission is not a lifecycle-free classifier.",
+          "evidence": [
+            "TA-F09"
+          ]
+        },
+        {
+          "id": "DNR-TA-LAUNCH-START",
+          "settled": "AML_Minion01 explicit true launches before a later SkillExecutionStart; launch is not the marker.",
+          "evidence": [
+            "TA-F10"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-BARRIER",
+          "confidence": "FACT",
+          "settled": "Separate WaitSkillPerformAbilityFinish -> M499778 predicate task is found. M499890 refresh and M509930 Tick are the next completion discriminators. Do not rediscover the symbol path.",
+          "evidence": [
+            "TA-P3-F04",
+            "TA-P3-F05",
+            "TA-P3-F06"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-NOT-AWAIT",
+          "confidence": "STRONG_RECONSTRUCTION",
+          "settled": "Distinguish caller continuation after launch from a later explicit barrier and outer perform completion. No universal local await.",
+          "evidence": [
+            "TA-P3-R01"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-ABILITY-STATE",
+          "confidence": "FACT",
+          "settled": "Saved native AbilityInstanceState lacks SUCCESS; reference action-task SUCCESS does not supply a wait completion predicate.",
+          "evidence": [
+            "TA-P3-F02"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-HELPER",
+          "confidence": "FACT",
+          "settled": "M509480 has EvaluateTarget call; it is not a proved child-start helper.",
+          "evidence": [
+            "TA-P3-F07"
+          ]
+        },
+        {
+          "id": "DNR-TA-P3-MARKER-SYMBOLS",
+          "confidence": "FACT",
+          "settled": "SkillPerformFinish shortlist maps 0xE6CDE60 to SetSkillPerformFinish and 0xE74B3B0 to ResetCharmAction. ProcessOnAfterSkillPerformFinish is 0xE749DD0; no direct call to it in that shortlist.",
+          "evidence": [
+            "TA-P3-F01"
+          ]
+        },
+        {
+          "id": "DNR-TA-P4-EVIDENCE-STOP",
+          "confidence": "FACT",
+          "settled": "Pass 4 cannot recover waited identity, completion mutation or barrier pending/release from saved signatures/call lists. Missing complete bodies were already recorded in Pass 3; do not repeat search or open Pass 5. A field declaration is not a write, Tick declaration is not a polling contract, and source order is not a resume implementation.",
+          "reopen_only_if": "Concrete provenance-matched M499778/M499890/M506904/M509929/M509930 body/dataflow or an ordered identity-bearing native trace becomes available."
+        },
+        {
+          "id": "DNR-MA-P2-STOP",
+          "settled": "Four raw main policies now analyzed. Source availability CLOSED; 55 named leaves/1 sequenced leaf; 293 direct edges and 19 parent candidates retained separately. Only bounded MonsterSkillConfig/11-ID Terra mapping remains as content followup. Native UNKNOWN does not authorize Pass 3.",
+          "evidence": [
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json"
+          ]
+        },
+        {
+          "id": "DNR-DS-P1-REFERENCE",
+          "settled": "The ordinary damage+toughness reference is accepted unchanged, not Golden native ordering. Special requests must never silently lower to ordinary damage."
+        },
+        {
+          "id": "DNR-DS-P1-FIVE-QUESTIONS",
+          "settled": "Five exact questions DS-Q1..DS-Q5 bound native SP, split, formulas/value/channels, behavior/origin and survival/Break order. Preserve symbolic payloads; do not repeatedly reverse missing dispatch/method bodies.",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/remaining_unknowns"
+        },
+        {
+          "id": "DNR-TR-P1-CLOSED",
+          "settled": "Preserve nullable ordered targets, consumer cardinality, independent owner/slot mutation and evidence-gated lifetime. Local mask order does not imply universal late revalidation. No repeated traversal or native name search; reopen only with evidence for TR-Q1..TR-Q5.",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json"
+        },
+        {
+          "id": "DNR-D8-P1-CLOSED",
+          "settled": "Domain 8 evidence-gated architecture CLOSED; mapping/native activation PARTIAL. Five exact questions and one bounded Terra content followup. Do not reopen numeric-suffix joins or native blockers without new evidence.",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json"
+        },
+        {
+          "id": "DNR-D9-P1-CLOSED",
+          "settled": "Do not equate legacy waves with native wave instances, StageBuff with AdventureModifier, or wave-clear with victory. Preserve unknown persistence/owners/terminal semantics. Only one exact graph retrieval authorized.",
+          "artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json"
+        }
+      ],
+      "final_value": [
+        {
+          "id": "FREEZE-DNR-TA",
+          "settled_fact": "Launch, receiver/inherent/callee target context, explicit barrier, perform marker and natural ability lifetime are separate; 4125 calls/2665 unique candidates are retained observations.",
+          "forbidden_inference": "No universal synchronous await, camera no-op, omitted=false, SUCCESS-as-native-ability or inferred release. No Pass 5.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/9",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/10",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/11",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/12",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/13",
+            "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/do_not_reason_again/14"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-MOD",
+          "settled_fact": "Lookup query differs from instance identity; StackingFlag differs from policy; Layer differs from Count; provider differs from caster; Multiple creates and Refresh differs from Replace.",
+          "forbidden_inference": "No default stacking, match=>mutate shortcut, provider=caster, automatic dynamic overwrite/Layer increment/global order or inverse query/remove.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/9",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/10",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/11",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/12",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/13",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/14",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/15",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/16",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/17",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/18",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/19",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/20",
+            "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/do_not_reason_again/21"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-TOPOLOGY",
+          "settled_fact": "Registry/team/formation/part/summoner/creator/HP-sharing/target/scheduler are independent typed relations; SetTeamFormation is a layout request.",
+          "forbidden_inference": "No boss controller tree, flat replacement, spawn/destroy inference, presentation no-op, slot-to-action order or HP independence from missing sample declaration.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json#/do_not_reason_again/8"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-SCHEDULER",
+          "settled_fact": "Discovery, arbitration, execution, consumption and release remain separate; native packed zero-only/+0c-descending comparison is settled, final ties unproved.",
+          "forbidden_inference": "No ID tie-break, global FIFO, priority-token sort, universal FUA/Ultra equivalence, special-turn cost, shared AV or marker-as-turn-end.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json#/do_not_reason_again/9"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-AI",
+          "settled_fact": "4 policies and 5 configs recovered; 293 direct edges and 19 parent candidates; 11 exact IDs bind 15 sequence occurrences; labels are nonunique; AIFlag is shared entity state.",
+          "forbidden_inference": "No renewed source acquisition for resolved ticket, max-score/first-valid/default score/implicit random, parent merge, sequence dedup or selection-time writes.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/9",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/10",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/11",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/12",
+            "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json#/do_not_reason_again/13"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-DAMAGE",
+          "settled_fact": "3491 measured requests/1362 records; HP+toughness is selected reference; formula/channel/hit partition/SP resource/metadata/HitSource remain separate.",
+          "forbidden_inference": "No special scalar lowering, SPHit=team BP, DamageValue=true damage, enum-name equation, guessed split/crit/nonlethal or native HP/toughness total order.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/9",
+            "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json#/do_not_reason_again/10"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-TARGET",
+          "settled_fact": "[] differs from [null]; ordered nullable duplicates and consumer cardinality survive; local mask keeps survivors; Retarget/List/PerSequence are distinct.",
+          "forbidden_inference": "No Optional<EntityId> collapse, dedup, first-target fallback, adjacency arithmetic, ID ties, IncludeLimbo equivalence, guessed save/restore or automatic revalidation.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/9",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/10",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/11",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/12",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/13",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/14",
+            "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/do_not_reason_again/15"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-PROGRESSION",
+          "settled_fact": "165 LightCone numeric-token candidates are not strict joins; static property edges/136 behavior-name candidates do not prove full activation; source input immutability is local design.",
+          "forbidden_inference": "No numeric-suffix join, cumulative rank/set threshold/path gating, owner/context/default parameter or config-merge inference; no unknown source silently omitted.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/8",
+            "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json#/do_not_reason_again/9"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-SCENARIO",
+          "settled_fact": "Legacy waves are containers; Stage/Level/graph/wave identities differ; StageBuff battle refs and adventure modifiers differ; graph absent at pinned commit; field persistence unknown.",
+          "forbidden_inference": "No enemy-count official advance/victory, reset-all/retain-all, fake Stage/owner IDs, arbitrary missing-path search, initialization order or automatic global activation.",
+          "reopen_condition": "Only new exact provenance-qualified evidence answering this domain’s existing blocker; content followup closure never closes native execution.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+          "inherited_rule_refs": [
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/0",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/1",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/2",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/3",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/4",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/5",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/6",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/7",
+            "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/do_not_reason_again/8"
+          ],
+          "historical_session_notes": "Old stop-before-next-domain instructions remain historical; current authorization closes Domain 10 only. Apply explicit SC corrections to stale pending/count assertions."
+        },
+        {
+          "id": "FREEZE-DNR-EVIDENCE",
+          "settled_fact": "Unknown native semantics and missing content are separate; version-close content is not exact native proof.",
+          "forbidden_inference": "Do not repeat source analysis or broad reverse because UNKNOWN remains.",
+          "reopen_condition": "New exact content/native/independent trace with matching version/hash/method provenance.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+        },
+        {
+          "id": "FREEZE-DNR-BINARY",
+          "settled_fact": "Saved binary provenance differs from the previously observed live DLL.",
+          "forbidden_inference": "Never use saved RVAs against an unverified live image.",
+          "reopen_condition": "Explicit matching binary-hash/version/method mapping supplied.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json#/reverse_safety_constraints"
+        },
+        {
+          "id": "FREEZE-DNR-COVERAGE",
+          "settled_fact": "Historical record/entrypoint/operation/source-backed/Golden levels differ.",
+          "forbidden_inference": "No compiler success or source fixture promotes a whole record or native accuracy.",
+          "reopen_condition": "Actual gated execution plus correctly scoped independent validation.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_coverage_census_001.json"
+        },
+        {
+          "id": "FREEZE-DNR-IDENTITY",
+          "settled_fact": "All new runtime tokens are LOCAL_DESIGN_IDENTITY and preserve logical aliasing.",
+          "forbidden_inference": "No native token claim or identity-derived ordering.",
+          "reopen_condition": "Exact native identity/equality/owner dataflow.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_modifier_v1.json#/instance_identity_boundary"
+        },
+        {
+          "id": "FREEZE-DNR-RNG",
+          "settled_fact": "Native RNG contracts remain unknown; no draw on rejection.",
+          "forbidden_inference": "No random.choice/shuffle/weight normalization as native fallback; no trial draw to discover support.",
+          "reopen_condition": "Exact per-surface draw/stream/order evidence.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json#/random_boundary"
+        },
+        {
+          "id": "FREEZE-DNR-STATE",
+          "settled_fact": "Decision-sensitive pending/opaque state participates in snapshot/hash.",
+          "forbidden_inference": "No current-actors-only clone, opaque omission or executable claim from a hash.",
+          "reopen_condition": "Complete state/lifecycle/ownership evidence for affected profile.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/snapshot_clone_hash"
+        },
+        {
+          "id": "FREEZE-DNR-CUSTOM",
+          "settled_fact": "Custom terminal/initialization rules are explicitly selected SANDBOX_EXTENSION.",
+          "forbidden_inference": "No custom convenience rule as native official evidence or silent substitute.",
+          "reopen_condition": "Independent native evidence plus a separately reviewed native contract.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json#/normalized_scenario_model"
+        },
+        {
+          "id": "FREEZE-DNR-STOP",
+          "settled_fact": "Domain 10 completes the semantic sprint; Domains 1–9 stay FROZEN.",
+          "forbidden_inference": "No implementation, new domain, reverse/fetch/compiler run or commit in this audit.",
+          "reopen_condition": "Separate user-authorized Terra implementation phase; native reopening still requires exact new evidence.",
+          "source_artifact": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json"
+        }
+      ],
+      "reason": "Merged concise final registry; original rules remain in unchanged domain artifacts and this change ledger",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/final_freeze_artifact",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+      "reason": "Authoritative final manifest",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/final_handoff",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md",
+      "reason": "Terra implementation handoff",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/implementation_frontier",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": {
+        "status": "EVIDENCE_GATED_ARCHITECTURE_READY_RUNTIME_IMPLEMENTATION_SEPARATE",
+        "artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "first_phase": [
+          "TERRA-F01",
+          "TERRA-F02",
+          "TERRA-R01",
+          "TERRA-G01"
+        ],
+        "production_implementation_started": false
+      },
+      "reason": "Evidence-gated handoff only",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/final_audit_timestamp",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "2026-09-20T07:35:31.394Z",
+      "reason": "Final audit time in UTC",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/semantic_sprint_complete",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": true,
+      "reason": "All requested audit outputs validated",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/full_native_behavior_reconstruction_complete",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": false,
+      "reason": "Open content/native/validation blockers remain",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/native_reconstruction_status",
+      "old_value_present": false,
+      "old_value": null,
+      "final_value": "INCOMPLETE_EVIDENCE_AND_CONTENT_BLOCKED",
+      "reason": "No full native coverage claim",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/persistence_status",
+      "old_value_present": true,
+      "old_value": "DOMAIN_9_PASS_1_COMPLETE_ARTIFACTS_VALIDATED",
+      "final_value": "DOMAIN_10_FREEZE_AND_HANDOFF_VALIDATED",
+      "reason": "Artifact checks below",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/continuation_completed",
+      "old_value_present": true,
+      "old_value": "Domain 9 architecture closed as lossless evidence-gated scenario representation; one bounded graph content followup. Native wave/persistence/context/terminal execution remains blocked. Domains 1-8 consumed frozen; no runtime or Domain 10 work.",
+      "final_value": "Domain 10 final semantic audit complete; Domains 1–9 frozen. Safe infrastructure/representation/reference/strict-reject frontier, state/identity/order/RNG/transaction contracts, blockers and ordered Terra tickets recorded. No production runtime, reverse, fetch, compiler/census or commit.",
+      "reason": "Replace old Domain 9 session summary",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/active_domain",
+      "old_value_present": true,
+      "old_value": "stage_environment_mode",
+      "final_value": null,
+      "reason": "No next Astra domain",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/current_semantic_domain",
+      "old_value_present": true,
+      "old_value": "stage_environment_mode",
+      "final_value": null,
+      "reason": "Semantic sprint complete",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    },
+    {
+      "pointer": "/artifacts",
+      "old_value_present": true,
+      "old_value": [
+        "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+        "docs/agent/astra_semantic_handoff_2026-09-10.md",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_analyze_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_analyze_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_close_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_validate_v1.cjs"
+      ],
+      "final_value": [
+        "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+        "docs/agent/astra_semantic_handoff_2026-09-10.md",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_analyze_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_analyze_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_close_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_validate_v1.cjs",
+        "data/semantics/4.4.54/full_reconstruction/monster_ai_content_acquisition_001.json",
+        "data/semantics/4.4.54/full_reconstruction/monster_ai_binding_ledger_001.json",
+        "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+        "data/semantics/4.4.54/full_reconstruction/equipment_trace_eidolon_content_followup_001.json",
+        "data/semantics/4.4.54/full_reconstruction/stage_environment_mode_content_followup_001.json",
+        "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
+        "docs/agent/astra_semantic_freeze_handoff_2026-09-20.md"
+      ],
+      "reason": "Include final outputs and consumed Terra followups",
+      "superseding_artifact": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json"
+    }
+  ],
+  "final_freeze_sha256": "04801259a1cf677c762a604d58c40c16c4e14347ccefe1185a2bbdec6c18cc7e",
+  "final_handoff_sha256": "215c400a2849e24d9c2037309f8950ac94daef2c22cadfae42a0657d5cb5bc71"
+}

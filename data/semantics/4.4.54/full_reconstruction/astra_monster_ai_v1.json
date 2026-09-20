@@ -1,0 +1,2282 @@
+{
+  "schema": "hsr_battle_agent.astra_monster_ai/1",
+  "domain": "monster_ai",
+  "pass": 2,
+  "status": "FROZEN",
+  "authority": {
+    "repository_root": "D:\\HSR_Battle_Agent\\hsr-battle-agent",
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "date": "2026-09-15",
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "native_snapshot_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+    "note": "Cached close-version data and saved 4.4.54 declarations have different provenance; no native behavior equivalence is inferred. Historical dirty work retained.",
+    "pass2_observed_date": "2026-09-15"
+  },
+  "scope": "Semantic reconstruction only; Domains 1-4 frozen; no production implementation",
+  "baseline": {
+    "Monster_static_denominator": 628,
+    "MonsterSkill_static_denominator": 12873,
+    "close_version_monster_behavior_records_approx": 3983,
+    "ai_coverage_percentage": null,
+    "direct_behavior_joins": "INCOMPLETE"
+  },
+  "ai_policy_binding": {
+    "status": "PARTIAL",
+    "representation_answer": "Layered config FACT: template/variant paths reference three stepper policies and one sequenced-skill decision policy; five character configs provide SkillList/EntryAbility/TargetInfo. Two reusable global scoring groups remain unbound. No universal selector or runtime precedence inferred.",
+    "identities": [
+      "static MonsterID",
+      "MonsterTemplateID",
+      "MonsterSkillID",
+      "SkillConfig.Name / EntryAbility",
+      "runtime actor EntityRef",
+      "AI policy path and asset hash",
+      "policy-local state identity",
+      "phase context",
+      "boss/controller reference"
+    ],
+    "source_edges": [
+      {
+        "evidence": [
+          "MA-S02#/482",
+          "MA-S02#/483",
+          "MA-S02#/484"
+        ],
+        "fact": "Templates 5014030 and 5014031 name Monster_W5_Painter_00_AI.json and the same ordinary character config; 5014032 names separate GridFight AI and character config. These are data references; no mode semantics analyzed."
+      },
+      {
+        "evidence": [
+          "MA-S02#/583",
+          "MA-S02#/584",
+          "MA-S02#/585"
+        ],
+        "fact": "Templates 8015030, 8015040, 8015050 share Monster_W5_AsatPramad_00_AI.json but name different character configs and different nonempty AISkillSequence arrays."
+      },
+      {
+        "evidence": [
+          "MA-S01#/2453",
+          "MA-S01#/2454"
+        ],
+        "fact": "Monster 801503001 references template 8015030, keeps the same 14 SkillList IDs as base 8015030, and explicitly overrides AIPath to Monster_Common_SequenceThree_AI.json and sequence to [801503001,801503002,801503002,801503001]."
+      }
+    ],
+    "declarations": [
+      "T14071 F68149 AISkillSequence / F68156 AIPath / F68154 JsonConfig",
+      "T14073 F68192 OverrideAISkillSequence / F68200 OverrideAIPath / F68209 MonsterTemplateID",
+      "T57734 M529164 GetAISkillSequence",
+      "T15304 AIConfig: AIName, VariableList, GlobalVariableList, DecisionList, TransitionTable, RootState, OnInit, OnDisable",
+      "T17958 SkillConfig F85282 ComplexSkillAIPreCheck / F85283 ComplexSkillAI",
+      "T15384 ComplexSkillAIConfig F75192 Groups -> T15383 GroupName/Weight/ParamString -> T15385 GroupsMap: shape-compatible reference, no sampled concrete consumer"
+    ],
+    "binding_kinds": {
+      "config_field": "OBSERVED static template and variant references",
+      "component": "MonsterDataComponent holds MonsterRowData and exposes GetAISkillSequence; runtime initialization/precedence UNKNOWN",
+      "ability": "New policy bodies directly read/write AIFlag; companion behavior writes stay existing evidence. Neither writes nor filename similarity bind an AI asset.",
+      "stage_provided": "UNKNOWN, not inspected",
+      "phase_provided": "UNKNOWN override relationship",
+      "runtime_override": "Static override fields proven; runtime replacement lifetime UNKNOWN",
+      "boss_controller": "UNKNOWN policy owner-to-acting-entity join; never infer from shared asset or template group"
+    },
+    "unresolved": "Effective AIPath and sequence override precedence, CharacterOverrideConfig.SkillList merge, sequence ID->SkillTriggerKey binding and runtime candidate admission. Declared direct name->SkillConfig->EntryAbility edges are closed for 293 expanded bindings.",
+    "monsterskill_list_is_candidate_list": false
+  },
+  "decision_context": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "pipeline": [
+      "SchedulerDecisionContext",
+      "MonsterAIState + bound MonsterAIPolicy",
+      "candidate source discovery",
+      "condition/score input evaluation",
+      "family-specific priority / score / weight / sequence arbitration",
+      "SelectedMonsterActionIntent + TargetIntent",
+      "Scheduler request boundary and Domain 7 target service"
+    ],
+    "required_inputs": [
+      "actor_ref supplied by Scheduler",
+      "scheduler_context_ref and allowed action mechanism",
+      "policy_ref + hash + version relation + effective override evidence",
+      "phase/topology/context refs supplied by frozen Domain 3",
+      "visible BattleState fact snapshot/version",
+      "policy-local memory snapshot/version",
+      "rng_ref and current RNG state identity",
+      "available skill-instance/slot view supplied by Skill runtime",
+      "target-query context and ordered result evidence if requested"
+    ],
+    "limits": "Conceptual separation does not prove native filter-before-score, skill-before-target, or one-pass evaluation. Target-dependent scores may require a Domain 7 query before final action intent. Record exact partial order only when supplied.",
+    "blocked_result": "BLOCKED_BY_EVIDENCE or BLOCKED_BY_CONTENT_COVERAGE with question/source refs; no selected skill or fabricated RNG draw."
+  },
+  "candidate_generation": {
+    "status": "DECLARED_LEAVES_RECOVERED_RUNTIME_ADMISSION_UNKNOWN",
+    "sources": [
+      {
+        "family": "EXPLICIT_SKILL_TASK",
+        "fields": [
+          "T22164 UseSkill.SkillName",
+          "T15299 AIDecisionConfig.RootTask"
+        ],
+        "evidence_kind": "PINNED_POLICY_BODY_AND_CHARACTER_CONFIG",
+        "missing": "Runtime eligible set and selected option unknown; body/RootTask and 293 direct static bindings recovered.",
+        "evidence": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/declared_action_leaf_binding"
+      },
+      {
+        "family": "SEQUENCED_SKILL_TASK",
+        "fields": [
+          "MonsterTemplateRow.AISkillSequence",
+          "MonsterRow.OverrideAISkillSequence",
+          "T15332 ChoseSequencedSkillAxis",
+          "T22165 UseSequencedSkill",
+          "T54504 AISequenceSkillIDList / LastSequenceSkillIdx"
+        ],
+        "evidence": [
+          "MA-S01#/2454",
+          "MA-S02#/583",
+          "M504227",
+          "MA2-S09#/DecisionList/0"
+        ],
+        "missing": "Numeric sequence values -> internal trigger key, effective sequence precedence, progression/skip/retry/wrap and availability handling remain unresolved. Concrete UseSequencedSkill body now recovered."
+      },
+      {
+        "family": "COMPLEX_SKILL_TRAVERSAL",
+        "fields": [
+          "T22166 UseSkillByComplexSkillAI",
+          "T17958 CanTraversalByComplexSkillAIWhenNotInSlot",
+          "T57760 get_CanTraversalByComplexSkillAI",
+          "SkillData.ComplexAI",
+          "StandaloneComplexSkillAIConfig.SkillMap"
+        ],
+        "evidence_kind": "METADATA_AND_TASK_BRIDGE_ONLY",
+        "missing": "Exact skill pool/slot traversal, precheck admission, skill-target pairing, complete selection and fallback unavailable."
+      }
+    ],
+    "restrictions": [
+      {
+        "kind": "enabled/disabled and target existence",
+        "fields": [
+          "SkillConfig.UsableConditions",
+          "VisibleCondition",
+          "DefaultTargetSelector",
+          "TargetInfo",
+          "SkillData.UsableConditionDatas",
+          "SkillCharacterComponent._DisableBySkillNameCount"
+        ],
+        "status": "DECLARED; visibility is distinct from usability; actual candidate filter and target-existence gate UNKNOWN"
+      },
+      {
+        "kind": "cooldown/use count",
+        "fields": [
+          "MonsterSkillRow.AI_CD / AI_ICD",
+          "CheckSkillUsabilityAxis.InitialCD / CD",
+          "SkillConfig.InitCoolDown / CoolDown / MaxCastTimes",
+          "SkillData.CurrentCoolDown / LeftCastTimes"
+        ],
+        "status": "DECLARED; precedence, update clock, zero and omitted semantics UNKNOWN"
+      },
+      {
+        "kind": "phase",
+        "fields": [
+          "CheckCurrentAIPhaseAxis.CurrentPhaseRef / TargetPhaseName",
+          "MonsterSkillRow.PhaseList"
+        ],
+        "status": "ByCompareMonsterPhase Equal predicates occur in every observed stepper group; phase reads consume Domain 3. Their role as hard admission versus score descriptor is UNKNOWN."
+      },
+      {
+        "kind": "HP/toughness/status",
+        "fields": [
+          "CheckHPPercentAxis",
+          "ComplexSkillAISourcePropertyCompareRatio",
+          "ComplexSkillAISourceCompareHPRatioIncludeShield",
+          "ComplexSkillAIContainModifier",
+          "SkillConfig.UsableConditions"
+        ],
+        "status": "Painter option axes contain concrete modifier-presence Predicate ASTs; HP/shield factor groups remain unbound. No toughness or HP axis in the four main policies."
+      },
+      {
+        "kind": "team count/resource",
+        "fields": [
+          "CheckTeamEntityNumberAxis",
+          "CheckSkillSPAxis",
+          "CheckSkillBPAxis"
+        ],
+        "status": "DECLARED; no cached monster rule instance"
+      },
+      {
+        "kind": "previous action/script",
+        "fields": [
+          "CheckSkillDependencyAxis.DependencyConfigList",
+          "AISkillDependencyConfig.AfterUsedTurnCount",
+          "AISkillSequence",
+          "AIConfig.TransitionTable"
+        ],
+        "status": "Concrete AIFlag-read/write option task graphs and sequence policy are present; executed sequence and state transitions remain UNKNOWN."
+      },
+      {
+        "kind": "priority/weight",
+        "fields": [
+          "AIDecisionBaseConfig.Weight / ScoreEvaluatorType",
+          "SkillConfig.AutoSelectPriority",
+          "ComplexSkillAIConfig.SkillBasicPower / AISkillPrecheckPriority",
+          "ComplexSkillAIFactorGroupWeight.Weight"
+        ],
+        "status": "Separate fields, not one numeric priority comparator"
+      }
+    ],
+    "current_decision_candidate_count": "UNKNOWN: 55 declared UseSkill leaves and 1 UseSequencedSkill leaf are config occurrences, not a runtime eligible count."
+  },
+  "condition_model": {
+    "status": "PARTIAL",
+    "distinction": "Consideration axes and ComplexSkillAI sources may produce scores/values rather than boolean admission. Keep hard conditions, numeric feature extraction, mapper transformation and postprocessing distinct.",
+    "existing_contracts": {
+      "Predicate": "data/semantics/4.4.54/full_reconstruction/predicate_semantics_packet_001.json",
+      "DynamicValue": "data/semantics/4.4.54/full_reconstruction/dynamic_value_semantics_packet_001.json",
+      "rule": "CheckPredicateAxis.Predicate can delegate supported Predicate AST to its existing contract once context is bound. Dynamic fields/value expressions use existing value contracts when the representation is matched. Do not reinterpret every AI Source/Mapper as a Predicate or extend old defaults into missing AI fields."
+    },
+    "families": [
+      {
+        "id": "MA-C01",
+        "family": "HP_PROPERTY_RATIO",
+        "evidence_level": "CACHED_CONFIG",
+        "types": [
+          "ComplexSkillAISourcePropertyCompareRatio",
+          "ComplexSkillAIMapperMultiRange"
+        ],
+        "inputs": [
+          "CurrentHP",
+          "MaxHP",
+          "FromTargetA/FromTargetB presence",
+          "range coordinates"
+        ],
+        "comparison_or_operator": "Serialized ratio feature and four ranges: xmax .3; xmin .3 xmax .35 ymax 1000; xmin .35 ymin 1000 xmax .45 ymax 2000; xmin .45 ymin 2000 xmax 1 ymax 3000. Exact arithmetic/interpolation unproved.",
+        "missing_default_semantics": "FromTargetA/B omitted; coordinate omissions remain absent, not zero. Zero denominator, out-of-range and shared endpoints UNKNOWN.",
+        "evaluation_time": "UNKNOWN scoring invocation point/re-evaluation; no turn-time inference",
+        "confidence": "FACT_FOR_SHAPE_ONLY",
+        "evidence": [
+          "MA-S04#/GroupsMap/AddPp_Painter_CommonSkill_BpSkillHPPercent"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C02",
+        "family": "TEAM_TARGET_HP_SHIELD_AGGREGATE",
+        "evidence_level": "CACHED_CONFIG",
+        "types": [
+          "ComplexSkillAIAllTeamMemberCombine",
+          "ComplexSkillAISourceCompareHPRatioIncludeShield",
+          "ComplexSkillAIMapperMultiRange"
+        ],
+        "inputs": [
+          "TeamType=TeamLight",
+          "Evaluator.IsTarget=true",
+          "shield-related HP ratio",
+          "ListCombineType=Min"
+        ],
+        "comparison_or_operator": "Min token explicit; two ranges around .55, upper range xmax 1 ymax 1000. Shield normalization formula and range endpoint/interpolation UNKNOWN.",
+        "missing_default_semantics": "OnlyShieldFromCaster and several range endpoints omitted; empty team result and IsTarget context UNKNOWN.",
+        "evaluation_time": "UNKNOWN; team members and score samples must come from an explicit context snapshot",
+        "confidence": "FACT_FOR_SHAPE_ONLY",
+        "evidence": [
+          "MA-S03#/GroupsMap/AddPp_W5_AsatPramad_00_CommonSkill_Bomb"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C03",
+        "family": "SELF_HP_PHASE_TURN",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "CheckHPPercentAxis",
+          "CheckCurrentAIPhaseAxis",
+          "CheckTurnStateAxis"
+        ],
+        "inputs": [
+          "EquationType / TargetPercent",
+          "CurrentPhaseRef / TargetPhaseName",
+          "TargetTurnState",
+          "CheckScore"
+        ],
+        "comparison_or_operator": "Comparison/phase/turn check fields declared; CheckScore is distinct from a boolean.",
+        "missing_default_semantics": "All omitted/default values and AI-phase vs boss-phase relation UNKNOWN.",
+        "evaluation_time": "UNKNOWN decision axis evaluation point",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15319",
+          "T15320",
+          "T15325"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C04",
+        "family": "SKILL_USABILITY_RESOURCE",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "CheckSkillUsabilityAxis",
+          "CheckSkillSPAxis",
+          "CheckSkillBPAxis"
+        ],
+        "inputs": [
+          "SkillName",
+          "InitialCD",
+          "CD",
+          "skill resources",
+          "CheckScore"
+        ],
+        "comparison_or_operator": "Usability/resource checks declared; thresholds and decrements UNKNOWN.",
+        "missing_default_semantics": "Missing skill, cooldown and resource defaults UNKNOWN.",
+        "evaluation_time": "UNKNOWN filter/evaluate ordering and cooldown clock",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15321",
+          "T15322",
+          "T15323",
+          "T14080",
+          "T17958",
+          "T57760"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C05",
+        "family": "TEAM_COUNT",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "CheckTeamEntityNumberAxis"
+        ],
+        "inputs": [
+          "TargetType",
+          "TargetCharacterID",
+          "EquationType",
+          "TargetNumber",
+          "CheckScore"
+        ],
+        "comparison_or_operator": "EquationType field; target scope and counting rule UNKNOWN.",
+        "missing_default_semantics": "Empty target/absent ID and default comparison UNKNOWN.",
+        "evaluation_time": "UNKNOWN axis point",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15326"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C06",
+        "family": "COUNTER_MEMORY_PREVIOUS_ACTION_SCRIPT",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "CheckAIVariableIntAxis",
+          "CheckSkillDependencyAxis",
+          "AISkillDependencyConfig",
+          "ChoseSequencedSkillAxis"
+        ],
+        "inputs": [
+          "VarName",
+          "EquationType",
+          "TargetValue",
+          "SkillName",
+          "DependencyConfigList.Name / AfterUsedTurnCount",
+          "sequence cursor"
+        ],
+        "comparison_or_operator": "Integer comparison and turn-since-use restriction shape; cursor admissibility UNKNOWN.",
+        "missing_default_semantics": "Uninitialized variables, missing use records, duplicate sequence entries, exhausted sequence UNKNOWN.",
+        "evaluation_time": "UNKNOWN read vs mutation/selected/started/finished timing",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15328",
+          "T15324",
+          "T15430",
+          "T15332",
+          "T54504"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C07",
+        "family": "RANDOM",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "CheckRandomChanceAxis",
+          "ComplexSkillAISourceRandom01"
+        ],
+        "inputs": [
+          "Chance",
+          "SuccessScore",
+          "FailScore",
+          "FromRecord"
+        ],
+        "comparison_or_operator": "Chance scoring vs random-value feature are separate declarations.",
+        "missing_default_semantics": "Chance bounds, FromRecord default, cached draw identity UNKNOWN.",
+        "evaluation_time": "UNKNOWN number, reuse and ordering of draws",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15327",
+          "T15368"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C08",
+        "family": "CUSTOM_PREDICATE",
+        "evidence_level": "PINNED_POLICY_BODY",
+        "types": [
+          "CheckPredicateAxis"
+        ],
+        "inputs": [
+          "ByAnd/ByAny/ByCompareMonsterPhase/ByCompareDynamicValue/ByIsContainModifier ASTs",
+          "SuccessScore .5 or 1",
+          "FailScore absent",
+          "unresolved AI invocation/context"
+        ],
+        "comparison_or_operator": "Delegate a supported Predicate AST to the existing contract; native AI wrapper scoring still unknown.",
+        "missing_default_semantics": "Missing AST/scores/context UNKNOWN; unsupported predicate blocks rather than false.",
+        "evaluation_time": "UNKNOWN AI invocation; retain existing selected evaluator scope once invoked",
+        "confidence": "FACT_FOR_CONFIG_AST",
+        "evidence": [
+          "MA2-S01",
+          "MA2-S03",
+          "MA2-S05"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      },
+      {
+        "id": "MA-C09",
+        "family": "DYNAMIC_STATUS_TARGET_FACTS",
+        "evidence_level": "METADATA_ONLY",
+        "types": [
+          "ComplexSkillAISourceDynamicValue",
+          "ComplexSkillAISourceAITag",
+          "ComplexSkillAIContainModifier",
+          "ComplexSkillAIContainModifierLayer"
+        ],
+        "inputs": [
+          "IsTarget",
+          "DynamicValueKey",
+          "ModifilerName (native spelling)",
+          "StringFromParam",
+          "SumAllTarget"
+        ],
+        "comparison_or_operator": "Read/tag/presence/layer feature fields; scoring and reduction UNKNOWN.",
+        "missing_default_semantics": "Missing key/owner/target/param lookup UNKNOWN; no copied default namespaces.",
+        "evaluation_time": "UNKNOWN; source behavior AIFlag writes do not prove this reader binding",
+        "confidence": "FACT_FOR_DECLARATION_ONLY",
+        "evidence": [
+          "T15349",
+          "T15350",
+          "T15360",
+          "T15361",
+          "MA-S05-STATE0",
+          "MA-S06-STATE0"
+        ],
+        "runtime_semantics": "BLOCKED_BY_EVIDENCE"
+      }
+    ],
+    "not_recovered": "Native CheckPredicateAxis wrapper/default/evaluation timing, group-option admission and winner remain unknown. Concrete Predicate ASTs and sequenced axis are recovered; see decision_condition_contract.",
+    "pass2_body_families_ref": "decision_condition_contract"
+  },
+  "priority_weight_ordering": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "observed_layers": [
+      {
+        "layer": "decision scoring",
+        "fields": [
+          "AIDecisionBaseConfig.ScoreEvaluatorType",
+          "Weight",
+          "ConsiderAxisList"
+        ],
+        "meaning": "DefaultDSE and one axis per observed group/decision are explicit. Weight/Priority omitted in all four policies; no implied defaults or winner rule."
+      },
+      {
+        "layer": "decision script/order",
+        "fields": [
+          "AIStepperDecisionGroupConfig.DecisionList",
+          "AISwitchDecisionGroupConfig.Switch / CaseDecisions / DefaultDecision",
+          "AIConfig.TransitionTable / RootState"
+        ],
+        "meaning": "Concrete ordered stepper group/option task graphs and direct sequence task recovered. Switch/StateTree remain metadata-only; no universal operator."
+      },
+      {
+        "layer": "skill sequence",
+        "fields": [
+          "AISkillSequence",
+          "OverrideAISkillSequence",
+          "LastSequenceSkillIdx"
+        ],
+        "meaning": "Preserve serialization order/duplicates; progression, invalid-step behavior and fallback UNKNOWN."
+      },
+      {
+        "layer": "skill-local priority",
+        "fields": [
+          "SkillConfig.AutoSelectPriority",
+          "ComplexSkillAIConfig.AISkillPrecheckPriority",
+          "SkillExtensionComplexSkillAIConfig.AIUltraSkillPriority"
+        ],
+        "meaning": "Distinct declared names and contexts; no universal numeric max or missing=0 rule."
+      },
+      {
+        "layer": "ComplexSkillAI scoring",
+        "fields": [
+          "SkillBasicPower",
+          "Groups[].GroupName / Weight / ParamString",
+          "Factors[].CombineOperator / Source / Mapper / PostProcess",
+          "ComplexSkillAIPostProcessUpperGroup.AIUpperGroupPriority"
+        ],
+        "meaning": "Reusable feature/mapper/combination/postprocessing layers supported. Weight may scale score; no evidence it is a probability."
+      }
+    ],
+    "selection_families": {
+      "first_valid": "UNKNOWN",
+      "highest_priority_valid": "UNKNOWN direction/ties",
+      "weighted_random_among_valid": "UNKNOWN; no explicit random or Weight field in four main policies; unbound factors do not establish sampling.",
+      "priority_group_then_random": "UNKNOWN",
+      "state_machine": "Guarded AIFlag task updates are serialized in stepper decisions. No RootState/TransitionTable nodes in the four main bodies; no native winner/state update contract.",
+      "scripted_sequence": "UseSequencedSkill with ChoseSequencedSkillAxis and explicit row sequences present; executor semantics UNKNOWN."
+    },
+    "range_default_warning": "Painter and AsatPramad omitted coordinates are preserved. ComplexSkillAILinearItem and FromBinary/constructor bodies needed before interpolating or defaulting.",
+    "list_order": "Keep order as source provenance. It is not proved execution order. Never sort lexically or by SkillID.",
+    "fallback": "DefaultDecision field exists at T15302; no evidence default=random or no-valid=first-owned-skill. T57856 separately declares NoNeed, Success, NoValidDecision, Exception.",
+    "do_not_infer": "No complete native winner, tie rule, filter-before-weight ordering, shared-endpoint handling or fallback recovered.",
+    "pass2_observations_ref": "score_priority_weight_observations"
+  },
+  "rng_boundary": {
+    "contract_ref": "data/semantics/4.4.54/full_reconstruction/rng_semantics_packet_001.json",
+    "sandbox_contract": "Preserve seeded SandboxRng PYTHON_RANDOM_MT19937 and clone/snapshot/hash. Route each supported AI draw through it with trace evidence; native client PRNG UNKNOWN.",
+    "native_draws": "UNKNOWN",
+    "sources": [
+      "CheckRandomChanceAxis",
+      "ComplexSkillAISourceRandom01.FromRecord",
+      "StateTreeSelectStateConfig Behavior with SelectStateAtRandom and Weight declarations",
+      "AIModifierNameSelector.RandomWhenEquals declaration"
+    ],
+    "limits": "No explicit random source/axis/task in four main policies or two unbound groups. This does not prove zero implicit draws. Preserve deterministic seeded RNG contract; draw order/count/reuse still requires evidence.",
+    "blocked_behavior": "Unresolved draw timing/count/reuse or weighted filter order blocks native-equivalent decision; do not consume a speculative draw."
+  },
+  "persistent_ai_state": {
+    "status": "PERSISTENCE_SUPPORTED_LIFECYCLE_UNKNOWN",
+    "policy_local": [
+      {
+        "fields": [
+          "T54504 F258035 AISequenceSkillIDList",
+          "F258045 LastSequenceSkillIdx",
+          "M503945/M503946 get/set_LastSequenceSkillIdx"
+        ],
+        "meaning": "Sequence list/cursor stored separately from static skill inventory; initialization, increment, retry, reset and wrap UNKNOWN."
+      },
+      {
+        "fields": [
+          "T54504 F258042 AIActionTurnCount",
+          "M503939/M503940 set/get_AIActionTurnCount"
+        ],
+        "meaning": "AI action count declared; must not stand in for Scheduler turn consumption or assume update point."
+      },
+      {
+        "fields": [
+          "T54504 F258039 AISkillTargetEntityList",
+          "F258043 HasAvailableSkill",
+          "F258044 OnlyUltraFlag"
+        ],
+        "meaning": "Cached targets/availability/mode storage declared; cross-decision persistence versus recomputation UNKNOWN."
+      },
+      {
+        "fields": [
+          "T54504 F258033 VariableForbidClearSkillUseRecordRefKey",
+          "T22168 ClearAISkillUseRecord",
+          "M507222 OnTaskBegin"
+        ],
+        "meaning": "Use-record clearing has an explicit task and forbid-key reference. Exact record container, guard, counters and clearing scope UNKNOWN."
+      },
+      {
+        "fields": [
+          "T15422 AIVariable.Name / IsPrivate",
+          "T15423..15427 typed Values",
+          "AIConfig.VariableList / GlobalVariableList / RootState",
+          "T54504 F258037 GlobalVars"
+        ],
+        "meaning": "Typed local/shared variable and graph state representation supported. Ownership, sharing, init/reset and state transition writes UNKNOWN."
+      }
+    ],
+    "external_battle_facts": [
+      {
+        "fields": [
+          "SkillData.CurrentCoolDown",
+          "LeftCastTimes",
+          "MaxCastTimes",
+          "SkillData.Config",
+          "SkillCharacterComponent skill disable/slot views"
+        ],
+        "owner": "Skill runtime, referenced by AI; do not duplicate mutable truth in MonsterAIState."
+      },
+      {
+        "fields": [
+          "CurrentHP",
+          "MaxHP",
+          "shield/status views",
+          "phase_id",
+          "team/entity membership",
+          "summon/boss-part state"
+        ],
+        "owner": "BattleState and frozen Domain 2/3 views, not policy-local memory."
+      },
+      {
+        "fields": [
+          "AIFlag dynamic key writes in Painter and AsatPramad behavior"
+        ],
+        "owner": "Existing entity DynamicValue/custom store. New AsatPramad policy explicitly reads/writes Caster/TargetEntity AIFlag; Painter writes Caster but comparison TargetType is omitted. Preserve shared-store owner refs; see persistent_state_updates.",
+        "evidence": [
+          "MA-S05-STATE0",
+          "MA-S05-STATE1",
+          "MA-S05-STATE2",
+          "MA-S06-STATE0",
+          "MA-S06-STATE1",
+          "MA-S06-STATE2"
+        ]
+      }
+    ],
+    "serialization_contract": "All decision-sensitive persistent values or stable owner references must be captured by clone/snapshot/hash, including typed variable scope, effective policy/override version, original sequence order + cursor, use-record/counter state, RNG state, and cached target state if retained. Semantic state identity must not depend on native addresses.",
+    "commit_contract": "State delta timing is UNKNOWN: selection, request acceptance, ability start, finish, abort and phase reset must remain separate. No speculative state mutation on blocked decisions.",
+    "phase_reset": "No universal automatic reset inferred. ClearAISkillUseRecord declaration is not evidence it runs on every phase switch.",
+    "pass2_updates_ref": "persistent_state_updates"
+  },
+  "target_intent_boundary": {
+    "status": "STATIC_TARGET_METADATA_RECOVERED_RUNTIME_HANDOFF_UNKNOWN",
+    "evidence": [
+      "T22163 SelectAISkillTarget.SkillName / UseDefault / Selector",
+      "T17958 SkillConfig.DefaultTargetSelector / TargetInfo / AutoLockType / AutoLockBySource",
+      "T15409 AIComposeSelector.SelectorList / ComposeType",
+      "T15411 AIPropertySelector.PropertyStrategy / Property / CompareType",
+      "T15420 AIComplexSkillAISelector.UseSourceInSkillConfig / Source",
+      "T54504 AISkillTargetEntityList",
+      "MA-S03 nested evaluator IsTarget=true"
+    ],
+    "intent_kinds": {
+      "explicit_entity": "Runtime target-list storage exists; no concrete selected entity recovered.",
+      "policy_type": "DECLARED selector/type refs",
+      "target_alias": "Caster aliases appear in policy predicate/write contexts; do not promote them to action-output targets.",
+      "random_target": "Selector RandomWhenEquals declaration only; no sampled runtime choice.",
+      "lowest_highest_property": "PropertyStrategy and target scoring/reduction declarations; exact bound policy UNKNOWN. Group Min does not prove targeting the lowest-HP member.",
+      "aggro": "NOT_RECOVERED; no default aggro fallback inferred.",
+      "skill_defined": "Direct leaf->SkillConfig.TargetInfo recovered; runtime selection/selector/handoff precedence UNKNOWN.",
+      "none_at_ai_layer": "Four bodies have skill-only or sequenced leaves, no explicit selector or entity task field. This is source absence, not proof the native executor never chooses a target."
+    },
+    "output": {
+      "name": "SelectedMonsterActionIntent",
+      "skill_ref": "Evidence-bound SkillData/SkillConfig/MonsterSkill/ability relation; keep original reference kind.",
+      "target_intent": {
+        "kind": "EXPLICIT_ENTITIES | SELECTOR_REF | SKILL_DEFAULT | NO_AI_TARGET | UNKNOWN",
+        "selector_ref": "Original selector/type/alias when explicitly bound",
+        "entity_refs": "Only if supplied by a proven selector result",
+        "context_ref": "Provider snapshot/owner/query identity",
+        "status": "RESOLVED_INTENT | DEFERRED_TO_DOMAIN_7 | BLOCKED_BY_EVIDENCE"
+      },
+      "requested_action_mechanism": "Scheduler-owned mechanism reference, only if requested with evidence",
+      "provenance": [
+        "policy path/hash",
+        "decision/task pointer",
+        "candidate pointer",
+        "condition/score evidence",
+        "state snapshot ref",
+        "RNG trace refs if applicable"
+      ]
+    },
+    "important_separation": "Feature aggregation over TeamLight with Min is numeric score input, not a selected target entity. ComplexSkillAI target-dependent scores can query Domain 7 before final action selection; do not impose a universal target-after-skill execution order.",
+    "domain_7_owns": [
+      "selector execution and legal target set",
+      "aggro policy resolution",
+      "advanced Target/Retarget behavior",
+      "tie/ordering inside target selectors",
+      "target invalidation/revalidation"
+    ],
+    "unknowns_ref": "MA-Q05",
+    "pass2_evidence_ref": "target_intent_from_skill_config"
+  },
+  "scheduler_boundary": {
+    "status": "INTERFACE_CLOSED_CONSUME_FROZEN_DOMAIN_4",
+    "contract_ref": "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json",
+    "input": "Scheduler supplies actor_ref, decision opportunity/context and allowed mechanism; actor selection already belongs to Scheduler.",
+    "output": "AI returns a selected action intent or explicit blocked/no-valid outcome only when its semantics are established. Scheduler receives skill/action request plus target intent and evidence.",
+    "requested_action_mechanism": "Keep any explicit Ultra/insert/continuation request as a typed request to Domain 4. OnlyUltraFlag or AIUltraSkillPriority declarations do not authorize AI to enqueue, execute or prioritize across scheduler families.",
+    "forbidden": [
+      "advance AV",
+      "select turn actor",
+      "consume or end turn",
+      "recharge AV",
+      "arbitrary Ultimate/insert enqueue or immediate execution",
+      "cross-family scheduler priority decisions",
+      "equate AIActionTurnCount with Scheduler turn cost"
+    ],
+    "frozen_unknowns": "SA-Q1..SA-Q5 retained untouched; no native scheduler analysis in this pass.",
+    "ability_execution_boundary": {
+      "pipeline": "AI selection -> scheduler/action request -> ability resolution -> TriggerAbility/behavior execution",
+      "contract_ref": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json",
+      "rule": "Semantically resolved AI choice can still fail execution. Unsupported selected behavior remains strict-reject; skill ownership/name uniqueness is not execution success."
+    }
+  },
+  "phase_topology_dependencies": {
+    "contract_ref": "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+    "read_only_inputs": [
+      "phase ID/view supplied by owner",
+      "boss part/entity relation views",
+      "summon existence",
+      "team/formation/topology views",
+      "runtime acting entity ref supplied by Scheduler"
+    ],
+    "separations": [
+      "phase transition != AI action selection",
+      "SetTeamFormation != AI policy switch",
+      "boss root/controller != automatic acting entity",
+      "shared AIPath != shared AIState",
+      "template group != proven runtime root/part ownership"
+    ],
+    "phase_policy_override": "No cached sample proving phase -> AI asset override or reset. AIConfig graph-state and CheckCurrentAIPhaseAxis must not be identified with boss phase without a relation.",
+    "source_scope": "AsatPramad templates 8015030/8015040/8015050 have a shared AIPath and different sequences; this establishes data sharing only. Frozen Domain 3 supplies entity identity/topology."
+  },
+  "terra_contract": {
+    "ready": "PARTIAL",
+    "allowed_now": "Lossless config-driven declaration model, exact leaf bindings, parent candidate ledger, source-initialized variables and raw task write descriptors, evidence-qualified target metadata and strict blocked decisions. This pass implements no runtime.",
+    "MonsterAIPolicy": {
+      "fields": [
+        "policy_ref = source commit/path/hash",
+        "AIName raw label",
+        "decision_groups in source order",
+        "direct_decision_options",
+        "VariableList and GlobalVariableList with field presence",
+        "sequence policy/body and unresolved effective sequence reference",
+        "parent/override binding candidates",
+        "provenance",
+        "operator_evidence_status"
+      ],
+      "rule": "Do not key assets by AIName; Painter/GridFight names duplicate and AsatPramad AIName is W4_Boss_00_AI. Use source identity. No inherited defaults or implicit global group attachment."
+    },
+    "MonsterAIState": {
+      "fields": [
+        "state_id and actor_ref",
+        "effective policy/override ref",
+        "typed policy-local/global variable refs",
+        "sequence source order and cursor",
+        "AIActionTurnCount and use-record refs",
+        "retained target/mode state with lifecycle status",
+        "external fact owner refs",
+        "rng_ref",
+        "AIFlag shared DynamicValue owner reference (not duplicated policy-private storage)"
+      ],
+      "rule": "Persist evidence-backed slots and stable owning-store refs. Raw initialization is not current state. Snapshot/clone/hash requires actual sequence cursor, use records, counters, scoped variables and retained target state if decision-sensitive; no inferred reset or commit timing."
+    },
+    "MonsterDecisionContext": {
+      "fields": [
+        "actor_ref",
+        "scheduler_context_ref",
+        "phase_context_ref",
+        "topology_context_ref",
+        "visible_battle_facts_ref",
+        "skill_instance_view_ref",
+        "policy_state_snapshot_ref",
+        "target_query_context_ref",
+        "rng_ref"
+      ],
+      "rule": "No actor choice or AV progression; missing decision-sensitive input blocks."
+    },
+    "MonsterSkillCandidate": {
+      "fields": [
+        "candidate_id with policy/source pointer",
+        "skill_ref with reference kind and join status",
+        "admission conditions",
+        "numeric score features",
+        "priority raw presence/value and mapping ref",
+        "weight raw presence/value and role",
+        "source_order and sequence_step separately",
+        "target_intent/selector_ref",
+        "provenance"
+      ],
+      "rule": "Candidate identity is not SkillID alone; repeated sequence steps remain distinct. UNKNOWN differs from false and omitted differs from zero."
+    },
+    "MonsterAIDecision": {
+      "fields": [
+        "status",
+        "selected_candidate or null",
+        "decision_reason and family",
+        "condition/score ledger",
+        "arbitration evidence",
+        "RNG draw/reuse ledger if applicable",
+        "input state snapshot identity",
+        "proposed_state_delta with commit-boundary evidence",
+        "requested_action_mechanism",
+        "target_intent",
+        "provenance",
+        "blocker refs"
+      ],
+      "statuses": [
+        "SELECTED_WITH_EVIDENCE",
+        "NO_VALID_CANDIDATE_WITH_EVIDENCE",
+        "BLOCKED_BY_EVIDENCE",
+        "BLOCKED_BY_CONTENT_COVERAGE"
+      ],
+      "rule": "NO_VALID is not a substitute for missing evidence. A blocked decision has null selected_candidate; no guessed fallback or speculative RNG/state commit."
+    },
+    "determinism_inputs": [
+      "candidate identity and original order",
+      "condition values plus context snapshot",
+      "all distinct priority/weight/score roles",
+      "RNG state, draw order/count/reuse",
+      "policy-local and shared persistent state",
+      "target intent and any target-scoring query result/order",
+      "phase/topology snapshot and override identity",
+      "state delta commit/abort rules"
+    ],
+    "execution_readiness": "DECLARATIVE_MODEL_READY; runtime selection winner, admission, effective merge, state commits and request attachment remain blocked. No complete native-equivalent decision is executable from these bodies alone.",
+    "plugins": "Observed families are config-driven stepper/sequence declarations. No per-monster handwritten policy plugin or production selection implementation is justified.",
+    "MonsterDecisionGroup": {
+      "fields": [
+        "node_ref = policy source + JSON pointer",
+        "DecisionGroupName raw label",
+        "source_index",
+        "declared_options",
+        "group ConsiderAxisList raw AST",
+        "group ScoreEvaluatorType descriptor",
+        "separate priority/weight presence values",
+        "source ordering",
+        "provenance"
+      ],
+      "rule": "Preserve groups even if names repeat. Group axes and option axes must not be flattened into a presumed hard filter."
+    },
+    "MonsterDecisionOption": {
+      "fields": [
+        "node_ref",
+        "DecisionName label",
+        "nested source index",
+        "conditions/descriptors AST",
+        "ScoreEvaluatorType descriptor",
+        "priority/weight field presence separately",
+        "RootTask/TaskList graph with source order",
+        "declared action leaf refs",
+        "provenance"
+      ],
+      "rule": "Declared score-bearing option is not a runtime eligible candidate or a selected step. Keep write tasks in original source position without inventing commit behavior."
+    },
+    "MonsterDecisionCondition": {
+      "fields": [
+        "node_ref",
+        "axis $type",
+        "Predicate AST if present",
+        "SuccessScore/FailScore/CheckScore raw presence/value",
+        "inputs and scope refs",
+        "evaluation time status",
+        "hard admission vs score role status",
+        "provenance"
+      ],
+      "rule": "Reuse existing Predicate/DynamicValue contracts for supported representations after context binding; unknown wrapper/default/time stays blocked."
+    },
+    "DeclaredActionLeaf": {
+      "fields": [
+        "policy path/hash/commit and pointer",
+        "group and option indices",
+        "SkillName with original reference kind",
+        "exact SkillConfig ref or explicit missing/parent candidate refs",
+        "EntryAbility",
+        "TargetInfo raw presence/value",
+        "task_source_order",
+        "binding context MonsterID/MonsterTemplateID",
+        "provenance"
+      ],
+      "rule": "293 direct binding edges closed; 19 remain direct-missing with exact static parent candidates and unresolved inheritance. UseSequencedSkill remains symbolic until effective sequence and numeric-ID binding is supplied."
+    },
+    "EligibleMonsterCandidate": {
+      "fields": [
+        "declared_leaf_ref",
+        "runtime_actor_and_skill_instance_ref",
+        "effective_policy/config evidence",
+        "admission result and axis context snapshot",
+        "target context ref",
+        "provenance"
+      ],
+      "creation_requires": "MA-Q01 precedence and MA-Q02 admission/evaluator evidence; cannot instantiate by merely enumerating declared leaves."
+    },
+    "SelectedMonsterAction": {
+      "fields": [
+        "eligible_candidate_ref",
+        "decision reason",
+        "winner/ordering evidence",
+        "requested_action_mechanism if evidenced",
+        "target intent",
+        "state_delta with commit evidence",
+        "RNG ledger if applicable",
+        "scheduler context ref"
+      ],
+      "creation_requires": "MA-Q03/MA-Q04/MA-Q05 evidence; strict blocked decision otherwise."
+    }
+  },
+  "semantic_families": [
+    {
+      "id": "MA-F01",
+      "name": "COMPLEX_SKILL_AI_GLOBAL_FACTOR_GROUP",
+      "availability": "CACHED_CONFIG",
+      "samples": [
+        "MA-S03",
+        "MA-S04"
+      ],
+      "shape": "GroupsMap -> named group -> Factors[] -> Source / Mapper(MultiRange)",
+      "monster_policy_binding": "Named AsatPramad and Painter factor assets; actual skill GroupName consumer missing.",
+      "candidate_fields": "NONE in these bodies",
+      "conditions": [
+        "MA-C01",
+        "MA-C02"
+      ],
+      "selection_operator": "NONE established: feature and mapper input only",
+      "target_policy_field": "AsatPramad source TeamType=TeamLight / nested IsTarget=true; not output targeting",
+      "persistent_state": "None serialized in these two assets; runtime state not therefore absent",
+      "confidence": "FACT_FOR_TWO_ASSET_SHAPES",
+      "complete_policy": false
+    },
+    {
+      "id": "MA-F02",
+      "name": "TEMPLATE_AND_VARIANT_SKILL_SEQUENCE",
+      "availability": "PINNED_SEQUENCE_BODY_PLUS_ROWS_AND_METADATA",
+      "samples": [
+        "MA-S02#/583",
+        "MA-S02#/584",
+        "MA-S02#/585",
+        "MA-S01#/2454"
+      ],
+      "monster_policy_binding": "Explicit AIPath / OverrideAIPath and sequence fields",
+      "candidate_fields": [
+        "AISkillSequence[].MNAHFIGOHML",
+        "OverrideAISkillSequence[].MNAHFIGOHML"
+      ],
+      "conditions": "Concrete ChoseSequencedSkillAxis.CheckScore=1; cursor admission UNKNOWN.",
+      "selection_operator": "Preserved ordered sequence data; native progression and invalid-step fallback UNKNOWN",
+      "target_policy_field": "No target in sampled sequence elements; SelectAISkillTarget/skill defaults separate",
+      "persistent_state": [
+        "AISequenceSkillIDList",
+        "LastSequenceSkillIdx",
+        "AIActionTurnCount"
+      ],
+      "confidence": "FACT_FOR_COMPLETE_SCOPED_CONFIG_BODY; RUNTIME_UNKNOWN",
+      "complete_policy": true
+    },
+    {
+      "id": "MA-F03",
+      "name": "STEPPER_DECISION_GROUP_WITH_PREDICATE_AXES",
+      "availability": "THREE_PINNED_POLICY_BODIES",
+      "samples": [
+        "MA2-S01",
+        "MA2-S03",
+        "MA2-S05"
+      ],
+      "monster_policy_binding": "Explicit template paths now resolve to raw policies; effective override still unproved.",
+      "candidate_fields": [
+        "AIDecisionConfig.RootTask",
+        "DecisionList",
+        "UseSkill.SkillName"
+      ],
+      "conditions": [
+        "CheckPredicateAxis with phase, AIFlag and modifier ASTs"
+      ],
+      "selection_operator": "DefaultDSE token on groups and options; winner UNKNOWN.",
+      "target_policy_field": "UseSkill only specifies SkillName; exact SkillConfig supplies TargetInfo.",
+      "persistent_state": [
+        "Entity DynamicValue AIFlag",
+        "serialized initial variables",
+        "separate runtime state slots with unknown lifecycle"
+      ],
+      "confidence": "FACT_FOR_SCOPED_CONFIG_DECLARATIONS",
+      "complete_policy": true
+    },
+    {
+      "id": "MA-F04",
+      "name": "SKILL_LOCAL_COMPLEX_AI_WITH_GLOBAL_OR_STANDALONE_GROUPS",
+      "availability": "METADATA_ONLY",
+      "samples": [
+        "T17958",
+        "T15384..15387",
+        "T54502",
+        "T22166"
+      ],
+      "monster_policy_binding": "Declarations retained; no explicit ComplexSkillAI/GroupName consumer in the five inspected character configs or four policies.",
+      "candidate_fields": [
+        "StandaloneComplexSkillAIConfig.SkillMap",
+        "SkillData.get_CanTraversalByComplexSkillAI",
+        "CanTraversalByComplexSkillAIWhenNotInSlot"
+      ],
+      "conditions": [
+        "ComplexSkillAIPreCheck",
+        "Source/Mapper/PostProcess"
+      ],
+      "selection_operator": "Unknown winner across score/priority/precheck/target pairs; no proved weighted-random policy",
+      "target_policy_field": [
+        "AutoLockBySource",
+        "AutoLockType",
+        "TargetInfo"
+      ],
+      "persistent_state": "May consult AI state, skill state and Random01.FromRecord; lifetime UNKNOWN",
+      "confidence": "FACT_FOR_DECLARATIONS_AND_TASK_BRIDGE_ONLY",
+      "complete_policy": false
+    }
+  ],
+  "negative_evidence": [
+    {
+      "assumption": "First listed skill is always chosen",
+      "outcome": "UNSUPPORTED; sequence data contains repeated entries and alternative steps",
+      "evidence": [
+        "MA-S01#/2454",
+        "T22165"
+      ],
+      "limit": "No native trace proves the exact step chosen; do not report this as an observed executed winner."
+    },
+    {
+      "assumption": "Highest numeric priority always wins",
+      "outcome": "UNSUPPORTED; priority keys, decision weights, factor scores, script branches are separate",
+      "evidence": [
+        "T15298",
+        "T15384",
+        "T15380",
+        "T17958"
+      ],
+      "limit": "No comparator body; numeric direction UNKNOWN."
+    },
+    {
+      "assumption": "Every owned MonsterSkill is an AI candidate",
+      "outcome": "COUNTEREXAMPLE_TO_LIST_IDENTITY: base and variant own the same 14 skills; override sequence has four slots with only two distinct IDs",
+      "evidence": [
+        "MA-S01#/2453",
+        "MA-S01#/2454"
+      ],
+      "limit": "This disproves inventory=serialized sequence, not proof of all possible runtime candidates."
+    },
+    {
+      "assumption": "AI always chooses target itself",
+      "outcome": "UNSUPPORTED: separate target task and skill-default selector declarations",
+      "evidence": [
+        "T22163",
+        "T17958"
+      ],
+      "limit": "No complete target-handoff trace."
+    },
+    {
+      "assumption": "Missing priority or mapper coordinate equals zero",
+      "outcome": "UNSUPPORTED: both cached groups omit fields; schema declaration is not constructor default",
+      "evidence": [
+        "MA-S03",
+        "MA-S04",
+        "T15373"
+      ],
+      "limit": "Need parser/constructor body; no fabricated numeric counterexample."
+    },
+    {
+      "assumption": "AI is stateless",
+      "outcome": "COUNTEREXAMPLE_TO_STATELESS_REPRESENTATION: stored sequence cursor/count/target list and typed variables",
+      "evidence": [
+        "T54504",
+        "T15422..15427"
+      ],
+      "limit": "Exact lifetime of each cache and counter updates UNKNOWN."
+    },
+    {
+      "assumption": "Phase switch automatically resets AI state",
+      "outcome": "UNSUPPORTED: explicit ClearAISkillUseRecord task and forbid-clear reference are separate",
+      "evidence": [
+        "T22168",
+        "F258033",
+        "M507222"
+      ],
+      "limit": "No proven phase-reset call or absence thereof."
+    },
+    {
+      "assumption": "Weighted choice occurs before condition filtering",
+      "outcome": "UNSUPPORTED: separate precheck, weight, source and postprocess declarations",
+      "evidence": [
+        "T17958",
+        "T15383",
+        "T15379"
+      ],
+      "limit": "No complete control-flow/dataflow evidence."
+    },
+    {
+      "assumption": "Fallback means random",
+      "outcome": "UNSUPPORTED: switch DefaultDecision, state select-at-random and NoValidDecision are distinct declarations",
+      "evidence": [
+        "T15302",
+        "T15312",
+        "T57856"
+      ],
+      "limit": "No cached default action."
+    },
+    {
+      "assumption": "Monster AI owns scheduler timing",
+      "outcome": "REJECTED_BY_FROZEN_INTERFACE",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json"
+      ],
+      "limit": "AIActionTurnCount does not confer AV/turn arbitration ownership."
+    },
+    {
+      "assumption": "Boss controller is always the acting monster",
+      "outcome": "REJECTED_BY_FROZEN_INTERFACE",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json",
+        "MA-S02#/583",
+        "MA-S02#/584",
+        "MA-S02#/585"
+      ],
+      "limit": "Shared AIPath and template group cannot bind runtime acting entity."
+    },
+    {
+      "assumption": "ComplexSkillAI path is a complete per-monster candidate policy",
+      "outcome": "DIRECT_CONFIG_COUNTEREXAMPLE: both files contain only GroupsMap and scoring factors",
+      "evidence": [
+        "MA-S03",
+        "MA-S04"
+      ],
+      "limit": "No SkillMap, SkillName, EntryAbility or candidate IDs in these bodies."
+    },
+    {
+      "assumption": "Min HP feature means target the lowest-HP entity",
+      "outcome": "DIRECT_SHAPE_SEPARATION: Min aggregates evaluator values into a mapper input",
+      "evidence": [
+        "MA-S03"
+      ],
+      "limit": "It does not emit the minimizing entity as a target intent."
+    },
+    {
+      "assumption": "Weight necessarily means probability",
+      "outcome": "UNSUPPORTED: GroupWeight participates in a score factor architecture",
+      "evidence": [
+        "T15383",
+        "T15381",
+        "T15384"
+      ],
+      "limit": "No recovered RNG call/order or distribution for this weight."
+    },
+    {
+      "assumption": "AI phase equals boss phase, or formation mutation switches policy",
+      "outcome": "REJECTED_BY_INTERFACE_AND_UNBOUND_RELATION",
+      "evidence": [
+        "T15319",
+        "data/semantics/4.4.54/full_reconstruction/astra_formation_boss_v1.json"
+      ],
+      "limit": "No phase identity/override/reset edge recovered."
+    },
+    {
+      "assumption": "AIName / DecisionGroupName / DecisionName uniquely identify policy nodes",
+      "outcome": "COUNTEREXAMPLE: Painter and GridFight share AIName; GridFight groups 0 and 1 share group label but compare phases 1 and 2; AsatPramad repeats decision labels.",
+      "evidence": [
+        "MA2-S01#/AIName",
+        "MA2-S03#/DecisionList/0",
+        "MA2-S03#/DecisionList/1",
+        "MA2-S05#/DecisionList/0"
+      ]
+    },
+    {
+      "assumption": "DecisionName tells which skill is used",
+      "outcome": "COUNTEREXAMPLE: GridFight group 1 option 0 is named UseSkill01 but leaf SkillName is Skill03; option 1 named UseSkill02 selects Skill01 at the declaration layer.",
+      "evidence": [
+        "MA2-S03#/DecisionList/1/DecisionList/0",
+        "MA2-S03#/DecisionList/1/DecisionList/1"
+      ]
+    },
+    {
+      "assumption": "Every missing child SkillList edge is absent source content",
+      "outcome": "COUNTEREXAMPLE: all 19 direct misses have exact-name entries in the explicitly referenced acquired parent; effective inheritance still unproved.",
+      "evidence": [
+        "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/declared_action_leaf_binding/missing_direct_edges_with_parent_evidence"
+      ]
+    },
+    {
+      "assumption": "Empty AIConfig.VariableList proves stateless AI",
+      "outcome": "COUNTEREXAMPLE: AsatPramad VariableList=[] yet 31 option tasks read/write AIFlag and three character configs initialize AIFlag to 5/10/13.",
+      "evidence": [
+        "MA2-S05",
+        "MA2-S06#/CustomValues/AIFlag",
+        "MA2-S07#/CustomValues/AIFlag",
+        "MA2-S08#/CustomValues/AIFlag"
+      ]
+    },
+    {
+      "assumption": "SequenceThree implies exactly three entries or a three-turn loop",
+      "outcome": "UNSUPPORTED: generic task body contains no length or turn rule; bound override array has four entries, retaining duplicates.",
+      "evidence": [
+        "MA2-S09",
+        "MA-S01#/2454/OverrideAISkillSequence"
+      ]
+    },
+    {
+      "assumption": "AsatPramad final option is a default fallback because its label is 空过",
+      "outcome": "COUNTEREXAMPLE_TO_UNCONDITIONAL_FALLBACK: option explicitly tests AIFlag Equal 12, writes 12, and requests Skill09; no DefaultDecision or fallback field.",
+      "evidence": [
+        "MA2-S05#/DecisionList/2/DecisionList/4"
+      ]
+    }
+  ],
+  "strict_rejections": [
+    "Select any owned skill without a proven candidate source",
+    "Resolve missing binding to the first owned skill",
+    "Treat GroupsMap-only assets as complete policies",
+    "Sort unresolved candidates lexically or by SkillID",
+    "Deduplicate repeated sequence steps",
+    "Default omitted priority, range endpoint, target flag or weight to zero/false/one",
+    "Treat every axis/score feature as a boolean gate",
+    "Assume highest numeric score/priority or first-valid selection",
+    "Normalize factor weights into probabilities without distribution evidence",
+    "Invent RNG draw count/order or copy RandomConfig timing to AI",
+    "Commit sequence/cooldown/use-count changes on selection without lifecycle evidence",
+    "Reset AI state automatically on boss phase or formation changes",
+    "Copy external skill cooldown/dynamic state into a conflicting AI-owned store",
+    "Infer lowest-HP target from a Min score aggregate",
+    "Infer auto-aggro or random fallback target",
+    "Let AI own AV, actor choice, turn consumption or cross-family scheduler arbitration",
+    "Assume shared AI asset means shared runtime state/acting entity",
+    "Treat selected skill as successful TriggerAbility/behavior execution",
+    "Treat close 4.4.0 content as proven 4.4.54 native runtime behavior",
+    "Treat a declared leaf or parent candidate as runtime-eligible without admission/merge evidence",
+    "Key or deduplicate policies/groups/options by display labels instead of source path/pointer",
+    "Use localized skill_name or numeric suffixes to construct SkillTriggerKey",
+    "Commit source-declared AIFlag task writes at selection/finish without timing evidence"
+  ],
+  "remaining_unknowns": [
+    {
+      "id": "MA-Q01",
+      "status": "SOURCE_AVAILABILITY_CLOSED_RELATIONSHIPS_PARTIAL",
+      "source_availability": "CLOSED",
+      "policy_precedence": "BLOCKED_BY_EVIDENCE",
+      "sequence_id_binding": "CLOSED",
+      "contract": "Effective source/config precedence and sequence ID binding",
+      "exact_config_method_type_field": [
+        "M529159 MonsterDataComponent._InitCommonDataFromMonsterRows",
+        "M529164 MonsterDataComponent.GetAISkillSequence",
+        "MonsterRow.OverrideAIPath / OverrideAISkillSequence",
+        "MonsterTemplateRow.AIPath / AISkillSequence",
+        "CharacterOverrideConfig.ParentConfigPath / SkillList",
+        "MonsterSkillRow F68270 SkillID / F68260 SkillTriggerKey",
+        "ExcelOutput/MonsterSkillConfig.json"
+      ],
+      "question": "What exact loader rule selects base vs override policy/sequence and merges child SkillList with its parent?",
+      "missing_relationship": "Nine source paths and the scoped numeric sequence ID bindings are CLOSED. Runtime override and inheritance precedence remain unproved; the 19 direct child SkillList misses retain exact parent candidates but no effective inheritance proof.",
+      "best_evidence_source": "Saved 7b44379b... provenance-matched M529159/M529164 and the exact CharacterOverrideConfig reader.",
+      "content_ticket_ref": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json"
+    },
+    {
+      "id": "MA-Q02",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Runtime admission and axis evaluation context",
+      "exact_config_method_type_field": [
+        "AIStepperDecisionGroupConfig.DecisionList / ConsiderAxisList",
+        "AIDecisionConfig.ConsiderAxisList / RootTask",
+        "CheckPredicateAxis.Predicate / SuccessScore / FailScore",
+        "M529495 SkillData.get_IsUsableConditionMeet",
+        "M529501 SkillData.get_CanTraversalByComplexSkillAI",
+        "SkillConfig.UsableConditions",
+        "MonsterSkillRow.AI_CD / AI_ICD"
+      ],
+      "question": "Does the concrete stepper executor hard-filter, score all options, or short-circuit, and how does it bind omitted predicate targets and combine skill usability/cooldowns with group and option axes?",
+      "missing_relationship": "Declared phase/status/AIFlag score descriptors and task leaves -> eligible ordered candidate instances; declaration existence is not admission.",
+      "best_evidence_source": "Complete matched stepper/DefaultDSE axis invocation and SkillData admission bodies or a supplied-context trace identifying group, option, input values and rejected/eligible leaves. No complete body was located by the bounded saved-reader check."
+    },
+    {
+      "id": "MA-Q03",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Evaluator/default/winner/RNG operator",
+      "exact_config_method_type_field": [
+        "AIDecisionBaseConfig.ScoreEvaluatorType=DefaultDSE",
+        "AIDecisionBaseConfig.Weight / ConsiderAxisList",
+        "CheckPredicateAxis.SuccessScore / omitted FailScore",
+        "ChoseSequencedSkillAxis.CheckScore",
+        "ComplexSkillAIMapperMultiRange.Ranges / ComplexSkillAILinearItem",
+        "M504236 UseSkillByComplexSkillAI.OnTaskBegin (other family only)"
+      ],
+      "question": "What exact DefaultDSE operator maps axes to group/option results and a winner, including missing FailScore, ties, no-valid fallback and any RNG draws?",
+      "missing_relationship": "Config scores are explicit (.5/1); direction, aggregation, threshold, ordering, ties and implicit defaults are not. Priority/Weight are absent in this sample; global factor groups remain unbound.",
+      "best_evidence_source": "Matched DefaultDSE constructor/parser and dispatch-to-evaluator body plus equal-score/no-valid trace with RNG ledger; prior ComplexSkillAI mapper/operator question stays scoped to its separate unbound family."
+    },
+    {
+      "id": "MA-Q04",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Persistent state and task commit lifecycle",
+      "exact_config_method_type_field": [
+        "T54504.AISequenceSkillIDList / LastSequenceSkillIdx / AIActionTurnCount / AISkillTargetEntityList",
+        "M504227 UseSequencedSkill.OnTaskBegin",
+        "M507222 ClearAISkillUseRecord.OnTaskBegin",
+        "AIConfig.VariableList (CurrentPhase / ForbidClearSkillUseRecord)",
+        "CharacterConfig.CustomValues.AIFlag",
+        "SequenceConfig.TaskList -> DefineDynamicValue / SetDynamicValueByAddValue -> UseSkill"
+      ],
+      "question": "When do sequence cursor/use record/counter and declared AIFlag writes commit, roll back or reset relative to request acceptance, execution failure/abort and external phase changes?",
+      "missing_relationship": "Initializer values and 45 source write descriptors are proven, but effective initialization, write timing, sequence skip/wrap/reset, record retention and target-cache lifetime are not.",
+      "best_evidence_source": "Matched sequence executor and task/context write dataflow or identity-bearing before/after trace across success, failure, abort and phase/override changes; consume frozen execution contracts without reopening them."
+    },
+    {
+      "id": "MA-Q05",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "contract": "Selected action/target metadata/request handoff",
+      "exact_config_method_type_field": [
+        "UseSkill.SkillName",
+        "SkillConfig.TargetInfo / DefaultTargetSelector",
+        "T54504.AISkillTargetEntityList",
+        "M504221 SelectAISkillTarget.OnTaskBegin (other family declaration)",
+        "M504227 UseSequencedSkill.OnTaskBegin",
+        "M504236 UseSkillByComplexSkillAI.OnTaskBegin (other family declaration)"
+      ],
+      "question": "How does a selected leaf attach skill TargetInfo or retained target state to the scheduler-supplied action request, and at what point is that context read?",
+      "missing_relationship": "Direct leaf-to-SkillConfig-to-TargetInfo chain is closed for 293 edges, but no native selected entity or complete action request was observed. No explicit AI selector task occurs in these four bodies.",
+      "best_evidence_source": "Matched UseSkill/UseSequencedSkill handoff dataflow or actor/skill/TargetInfo/request identity trace. Domain 7 alone resolves selectors/legal targets/aggro/retarget; Domain 4 alone owns scheduling."
+    }
+  ],
+  "do_not_reason_again": [
+    "Domains 1-4 remain frozen; consume their contracts only.",
+    "MA-Q01 nine paths are acquired at the pinned commit; four main policies and five character configs are present. Do not repeat Pass 1/cache acquisition or report zero bodies.",
+    "Three main policies are stepper decision groups with predicate axes and task graphs; one is a direct sequenced-skill decision. No universal selection operator is proven.",
+    "55 UseSkill occurrences and 1 UseSequencedSkill occurrence expand to 293 exact direct bindings plus 19 child-list misses; counts are not AI coverage or runtime eligibility.",
+    "All 19 misses have exact parent-path/name candidates. CharacterOverrideConfig inheritance/merge remains evidence-blocked; do not fuzzy-fill or silently union SkillList.",
+    "Priority/Weight are absent in all four policies; DefaultDSE/SuccessScore/CheckScore do not prove max/first-valid/probability/default=zero.",
+    "AIName and decision labels are nonunique and may disagree with filename or leaf SkillName. Preserve path/pointer/index identity and all original order.",
+    "AIFlag has explicit source read/write descriptors and AsatPramad custom initial values; this is shared entity DynamicValue state, not a guessed private blackboard.",
+    "SequenceThree source is present; index/wrap/invalid-step/reset and turn-count relationships remain MA-Q04. Keep override duplicates.",
+    "The two global ComplexSkillAI groups remain unbound: zero exact GroupName consumers in acquired policies/configs.",
+    "TargetInfo is declarative skill target intent only. Domain 7 resolves targets; Domain 4 schedules; Domain 1 resolves/executes ability behaviors.",
+    "One bounded Terra ticket remains: ExcelOutput/MonsterSkillConfig.json, 11 exact IDs, SkillTriggerKey. Local display names are not internal config names.",
+    "No new high-discrimination provenance-matched native body was located. Native UNKNOWN alone does not justify Astra Pass 3.",
+    "Stop after this Pass 2 and the single Terra handoff. Do not start Domain 6 in this session."
+  ],
+  "architecture": "PARTIAL",
+  "evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json",
+  "interface_decomposition": "CLOSED_AS_CONTRACT; native decision algorithm remains PARTIAL",
+  "native_semantic_status": "BLOCKED_BY_EVIDENCE",
+  "content_status": "SCOPED_CONTENT_UNBLOCKED",
+  "terra_ready": "PARTIAL",
+  "evidence_model": {
+    "FACT": "Exact source field/value or saved metadata declaration; scope must be retained.",
+    "STRONG_RECONSTRUCTION": "Supported architecture/data separation, not a native executed algorithm.",
+    "UNKNOWN": "Unrecovered reader, default, ordering or transition; must not synthesize a result.",
+    "references": "MA2-S01..09 resolve in Pass-2 targeted evidence sources. MA-S01..06 and T/F/M retain Pass-1 targeted evidence identity. All new policy-body facts are pinned close-version config facts, not exact-build native execution proof.",
+    "native_limit": "No complete saved AI method bodies or identity-bearing decision trace found in the targeted inspection. Shortlist callees do not establish branch order, argument values, or complete call absence."
+  },
+  "content_coverage": {
+    "semantic_model_coverage": "DECLARATIVE_MODEL_CLOSED_FOR_SCOPED_BODIES; RUNTIME_SELECTION_PARTIAL_BLOCKED_BY_EVIDENCE",
+    "full_ai_content_coverage": "PARTIAL",
+    "cached_monster_ai_assets": 6,
+    "cached_ai_source_families": [
+      "COMPLEX_SKILL_AI_GLOBAL_FACTOR_GROUP",
+      "STEPPER_DECISION_GROUP_WITH_PREDICATE_AXES",
+      "SEQUENCED_SKILL_DECISION"
+    ],
+    "cached_groups": 2,
+    "cached_factors": 2,
+    "complete_cached_monster_policy_bodies": 4,
+    "complete_runtime_decisions_recovered": 0,
+    "scoped_binding_templates": [
+      5014030,
+      5014031,
+      5014032,
+      8015030,
+      8015040,
+      8015050
+    ],
+    "scoped_binding_monsters": [
+      5014030,
+      501403001,
+      501403002,
+      501403003,
+      5014031,
+      5014032,
+      8015030,
+      801503001,
+      801503002,
+      801503003,
+      801503004,
+      801503005,
+      8015040,
+      8015050
+    ],
+    "scoped_binding_counts": {
+      "templates": 6,
+      "monster_rows": 14
+    },
+    "policy_paths_represented": [
+      "Config/ConfigAI/Monster_W5_Painter_00_AI.json",
+      "Config/ConfigAI/GridFight/Monster_GridFight_W5_Painter_00_AI.json",
+      "Config/ConfigAI/Monster_W5_AsatPramad_00_AI.json",
+      "Config/ConfigAI/Monster_Common_SequenceThree_AI.json"
+    ],
+    "counts_warning": "Six templates and fourteen Monster rows are a targeted close-version join around two asset stems, not a new denominator, full static remapping or AI coverage percentage. Baselines 628/12873/~3983 retained unchanged.",
+    "binding_to_cached_global_groups": "ZERO explicit GroupName consumer edges; reusable groups remain unbound.",
+    "discovery_limit": "Pinned recursive tree is truncated; no absence-in-source conclusion from not discovered or not cached.",
+    "later_bulk_work": [
+      "Perform only the one bounded sequence ID mapping ticket before freeze.",
+      "Broader monster/variant and other policy-family ingestion is later full-content work; no 628-monster coverage percentage inferred.",
+      "Acquire exact-build equivalents later; pinned 4.4.0 source is not silently promoted to 4.4.54 native content."
+    ],
+    "content_fetch_this_pass": false,
+    "scoped_main_policy_bodies_recovered": 4,
+    "pass1_missing_paths_resolved": [
+      {
+        "path": "Config/ConfigAI/Monster_W5_Painter_00_AI.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigCharacter/Monster/Monster_W5_Painter_00_Config.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigAI/GridFight/Monster_GridFight_W5_Painter_00_AI.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigCharacter/GridFight/4.4/Monster_GridFight_W5_Painter_00_Config.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigAI/Monster_W5_AsatPramad_00_AI.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigCharacter/Monster/Monster_W5_AsatPramad_00_Config.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigCharacter/Monster/Monster_W5_AsatPramad_01_Config.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigCharacter/Monster/Monster_W5_AsatPramad_02_Config.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      },
+      {
+        "path": "Config/ConfigAI/Monster_Common_SequenceThree_AI.json",
+        "cached": true,
+        "in_pinned_manifest": true,
+        "status": "ACQUIRED_BY_TERRA_001"
+      }
+    ],
+    "exact_missing_paths": [],
+    "scoped_character_configs_recovered": 5,
+    "remaining_mapping_request": {
+      "id": "SEQUENCE-ID-BINDING-ACQUISITION",
+      "owner": "TERRA",
+      "status": "NEEDS_TERRA_CONTENT",
+      "source_repository": "DimbreathBot/TurnBasedGameData",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "exact_path": "ExcelOutput/MonsterSkillConfig.json",
+      "path_evidence": "data/semantics/4.4.54/external_reconstruction/authoritative_mapping_index.json#/8/turn_based_game_data/table",
+      "exact_ids": [
+        801503001,
+        801503002,
+        801503005,
+        801503006,
+        801504001,
+        801504002,
+        801504003,
+        801505005,
+        801505006,
+        801505003,
+        801505004
+      ],
+      "required_fields": [
+        "SkillID",
+        "SkillTriggerKey",
+        "PhaseList",
+        "AI_CD",
+        "AI_ICD",
+        "all other present raw row fields"
+      ],
+      "missing_relation": "numeric sequence value -> MonsterSkillRow.SkillID -> serialized SkillTriggerKey -> exact CharacterConfig.SkillList.Name, only where equality is explicit. Do not equate localized SkillName with internal trigger key.",
+      "local_check": "Exact filename absent in data and .external_refs; absent from pinned manifest. Not verified absent upstream. Targeted nanoka rows preserve IDs and localized labels but contain no internal trigger-key edge.",
+      "acquisition_rule": "Cache first, then one pinned exact table if absent; retain raw bytes/hash. Extract only listed IDs; no full corpus/compiler census or replacement revision. Preserve each sequence occurrence including duplicates. If row field absent/obfuscated, report raw field and missing interpretation, not suffix-based mapping.",
+      "stop_rule": "Return exact joins or bounded evidence blocker; this does not authorize new Astra Pass 3 or native analysis."
+    }
+  },
+  "success_questions": {
+    "policy_object": "CLOSED_DECLARATIVE: concrete AIConfig stepper/sequence policy bodies, variables and task graphs.",
+    "candidate_production": "DECLARED_LEAVES_CLOSED; eligible runtime set UNKNOWN.",
+    "conditions": "CONFIG_AST_CLOSED; AI wrapper defaults/context/invocation UNKNOWN.",
+    "priority_weight_script": "CONFIG_FIELDS_CLOSED; DefaultDSE winner/ties/fallback/RNG UNKNOWN.",
+    "persistent_state": "SOURCE_INITIALIZERS_AND_WRITES_RECOVERED; commit/sequence/reset lifecycle UNKNOWN.",
+    "target_intent": "DIRECT_LEAF_TO_TARGETINFO_CLOSED; native selected request/target UNKNOWN.",
+    "scheduler_target_handoff": "BOUNDARY_CONTRACT_CLOSED; native attachment MA-Q05."
+  },
+  "scope_validation": {
+    "production_implementation_changed": false,
+    "compiler_census_run": false,
+    "full_project_audit_run": false,
+    "live_dll_opened": false,
+    "subagents_used": false,
+    "frozen_domains_reanalyzed": false,
+    "git_commands": [
+      "git status --short",
+      "git rev-parse HEAD"
+    ],
+    "git_head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "production_tests_run": false,
+    "source_refetch_run": false,
+    "other_domain_work": false,
+    "pass2_scope": "Only four new raw policy bodies, five character configs, Terra ledger, prior Domain 5 metadata, targeted saved reader lookup and 11 sequence IDs in existing static records. No production implementation."
+  },
+  "persistence_note": "Domain 5 frozen after the final bounded Terra sequence-ID binding followup. Source availability and scoped ID bindings are closed; raw policy AST and exact binding evidence remain durable. Native blockers remain and do not justify Pass 3.",
+  "validation": {
+    "status": "PASS",
+    "raw_sources_hash_verified": 9,
+    "raw_policy_documents_compared": 4,
+    "raw_character_skill_entries_compared": 57,
+    "direct_exact_leaf_skill_target_edges_verified": 293,
+    "direct_missing_edges_retained": 19,
+    "exact_parent_candidates_verified": 19,
+    "parent_effective_binding_promotions": 0,
+    "raw_state_write_descriptors_verified": 45,
+    "source_array_order_preserved": true,
+    "duplicate_override_sequence_preserved": true,
+    "frozen_domain_artifact_hashes_unchanged": true,
+    "frozen_master_domain_values_unchanged": true,
+    "terra_acquisition_and_binding_ledger_hashes_unchanged": true,
+    "pass1_targeted_evidence_hash_unchanged": true,
+    "produced_json_parses": true,
+    "master_source_availability_bookkeeping_consistent": true,
+    "remaining_exact_question_groups": 5,
+    "bounded_terra_ticket_ids": 11,
+    "production_code_modified": false,
+    "production_tests_run": false,
+    "compiler_census_or_rebuild_run": false,
+    "full_corpus_scan_run": false,
+    "network_fetch_run": false,
+    "live_native_binary_used": false,
+    "subagents_used": false,
+    "pass2_evidence_file_sha256": "238f13846fd0d27c00a48cef22853aa03f570bce1be2441116dc0221a56ca41f"
+  },
+  "final_terra_sequence_binding_validation": {
+    "status": "PASS",
+    "artifact": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+    "requested_ids": 11,
+    "rows_found": 11,
+    "exact_character_bindings": 15,
+    "duplicate_override_occurrences_preserved": true,
+    "pinned_table_hash_verified": true,
+    "frozen_domains_1_4_unchanged": true,
+    "MA_Q02_to_MA_Q05_unchanged": true,
+    "production_code_modified": false,
+    "compiler_census_or_rebuild_run": false,
+    "full_monster_corpus_scan_run": false
+  },
+  "content_unblocked_pass2": {
+    "status": "POLICY_BODY_ANALYSIS_COMPLETE",
+    "source_availability": "CLOSED",
+    "scoped_main_policy_bodies_recovered": 4,
+    "full_ai_content_coverage": "PARTIAL",
+    "acquired_paths": 9,
+    "verified_absent": 0,
+    "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3"
+  },
+  "policy_body_families": [
+    {
+      "source": {
+        "source_id": "MA2-S01",
+        "pointer": ""
+      },
+      "family": "STEPPER_DECISION_GROUP_WITH_PREDICATE_AXES",
+      "policy_path": "Config/ConfigAI/Monster_W5_Painter_00_AI.json",
+      "AIName": "Monster_W5_Painter_00_AI",
+      "groups": 2,
+      "nested_decisions_per_group": [
+        4,
+        6
+      ],
+      "direct_decisions": 0,
+      "declared_action_leaves": 10,
+      "confidence": "FACT_PINNED_CLOSE_VERSION_CONFIG",
+      "native_winner": "BLOCKED_BY_EVIDENCE"
+    },
+    {
+      "source": {
+        "source_id": "MA2-S03",
+        "pointer": ""
+      },
+      "family": "STEPPER_DECISION_GROUP_WITH_PREDICATE_AXES",
+      "policy_path": "Config/ConfigAI/GridFight/Monster_GridFight_W5_Painter_00_AI.json",
+      "AIName": "Monster_W5_Painter_00_AI",
+      "groups": 3,
+      "nested_decisions_per_group": [
+        4,
+        4,
+        6
+      ],
+      "direct_decisions": 0,
+      "declared_action_leaves": 14,
+      "confidence": "FACT_PINNED_CLOSE_VERSION_CONFIG",
+      "native_winner": "BLOCKED_BY_EVIDENCE"
+    },
+    {
+      "source": {
+        "source_id": "MA2-S05",
+        "pointer": ""
+      },
+      "family": "STEPPER_DECISION_GROUP_WITH_PREDICATE_AXES",
+      "policy_path": "Config/ConfigAI/Monster_W5_AsatPramad_00_AI.json",
+      "AIName": "W4_Boss_00_AI",
+      "groups": 3,
+      "nested_decisions_per_group": [
+        18,
+        8,
+        5
+      ],
+      "direct_decisions": 0,
+      "declared_action_leaves": 31,
+      "confidence": "FACT_PINNED_CLOSE_VERSION_CONFIG",
+      "native_winner": "BLOCKED_BY_EVIDENCE"
+    },
+    {
+      "source": {
+        "source_id": "MA2-S09",
+        "pointer": ""
+      },
+      "family": "SEQUENCED_SKILL_DECISION",
+      "policy_path": "Config/ConfigAI/Monster_Common_SequenceThree_AI.json",
+      "AIName": "Monster_Common_SequenceThree",
+      "groups": 0,
+      "nested_decisions_per_group": [],
+      "direct_decisions": 1,
+      "declared_action_leaves": 1,
+      "confidence": "FACT_PINNED_CLOSE_VERSION_CONFIG",
+      "native_winner": "BLOCKED_BY_EVIDENCE"
+    }
+  ],
+  "stepper_decision_group_contract": {
+    "status": "DECLARATIVE_CONTRACT_CLOSED_RUNTIME_OPERATOR_UNKNOWN",
+    "evidence": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/policy_bodies",
+    "representation": "AIConfig.DecisionList contains AIStepperDecisionGroupConfig objects. Each contains DecisionGroupName, ordered nested DecisionList, ScoreEvaluatorType and ConsiderAxisList. Nested AIDecisionConfig contains DecisionName, RootTask, its own ScoreEvaluatorType and ConsiderAxisList.",
+    "identity": "(source commit, source path, JSON pointer); names are retained labels. GridFight groups 0 and 1 share DecisionGroupName but have phase values 1 and 2; preserve both.",
+    "group_axes": "One CheckPredicateAxis per observed group; Predicate.ByAnd wraps ByCompareMonsterPhase, CompareType=Equal, fixed phase 1/2/3. SuccessScore.Value=1. This is a group score descriptor, not a proven hard admission gate.",
+    "option_axes": "One CheckPredicateAxis per observed nested decision. Predicate AST reads AIFlag and, for Painter, modifier presence. SuccessScore.Value=0.5 (both Painter bodies) or 1 (AsatPramad). Group and option descriptors occupy separate levels.",
+    "score_evaluator_descriptor": "All 8 groups and 55 nested options explicitly name DefaultDSE. Retain a separate evaluator binding per node; name does not establish max, product, threshold, rank, or traversal.",
+    "option_role": {
+      "proven": "DECLARED_SCORE_BEARING_DECISION_OPTION_WITH_TASK_GRAPH",
+      "not_proven": [
+        "runtime-eligible candidate",
+        "selected step",
+        "first-valid rule",
+        "fallback option",
+        "script cursor progression"
+      ]
+    },
+    "task_graph": "All 55 options serialize SequenceConfig.TaskList with one UseSkill; 45 include a preceding AIFlag write descriptor. Preserve task source order without promoting execution/commit timing.",
+    "distinct_slots": [
+      "group score descriptors",
+      "option score descriptors",
+      "hard admission predicate refs if independently evidenced",
+      "priority presence/value",
+      "weight presence/value",
+      "source indexes",
+      "task graph",
+      "action leaf"
+    ],
+    "admission_vs_scoring": "UNKNOWN whether native executor filters before scoring, scores every option, or short-circuits. Serialized Predicate under CheckPredicateAxis is not itself proof of hard filtering.",
+    "not_generic_behavior_tree_semantics": true
+  },
+  "declared_action_leaf_binding": {
+    "status": "DECLARED_ACTION_LEAF_BINDING_CLOSED_FOR_293_DIRECT_EDGES",
+    "evidence": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/declared_action_leaf_binding",
+    "counts": {
+      "unique_use_skill_leaves": 55,
+      "unique_sequenced_skill_leaves": 1,
+      "expanded_direct_exact": 293,
+      "expanded_direct_missing": 19,
+      "parent_candidate_exact": 19,
+      "promoted_missing_to_effective_exact": 0
+    },
+    "three_distinct_objects": {
+      "DeclaredPolicyLeaf": "Raw UseSkill.SkillName or UseSequencedSkill task at a policy pointer, with enclosing group/option and ordered task graph.",
+      "EligibleMonsterCandidate": "Requires runtime actor, effective policy/config, admission, resources/status/target conditions and evidence-qualified evaluator context. Not produced by this pass.",
+      "SelectedMonsterAction": "Requires native winner/tie/fallback and handoff evidence. Not produced by this pass."
+    },
+    "per_exact_edge_fields": [
+      "policy path/hash/commit",
+      "DecisionGroup and group index",
+      "nested decision index",
+      "task source order",
+      "SkillName",
+      "SkillConfig source pointer",
+      "EntryAbility",
+      "TargetInfo field presence and raw value",
+      "Monster/template and Terra ledger provenance"
+    ],
+    "missing_19": {
+      "unchanged_direct_missing": 19,
+      "monster_8015040": 8,
+      "monster_8015050": 11,
+      "classification": "All 19 exact names exist in the explicitly referenced already-cached parent AsatPramad_00 CharacterConfig.",
+      "static_parent_edges": "EXACT path plus exact Name equality; no filename inference.",
+      "effective_child_binding": "UNRESOLVED_PRECEDENCE: CharacterOverrideConfig.SkillList merge/replace semantics unproved.",
+      "phase_or_alias_explanation": "Not asserted; sharing a phase or similar display name is not binding.",
+      "new_content_needed_for_these_19": false
+    }
+  },
+  "override_precedence": {
+    "status": "BLOCKED_BY_EVIDENCE",
+    "sample_monster_id": 801503001,
+    "template_source": {
+      "source_path": "ExcelOutput/MonsterTemplateConfig.json",
+      "raw_pointer": "/583",
+      "MonsterTemplateID": 8015030
+    },
+    "monster_source": {
+      "source_path": "ExcelOutput/MonsterConfig.json",
+      "raw_pointer": "/2454",
+      "MonsterID": 801503001
+    },
+    "base_AIPath": "Config/ConfigAI/Monster_W5_AsatPramad_00_AI.json",
+    "OverrideAIPath": "Config/ConfigAI/Monster_Common_SequenceThree_AI.json",
+    "base_AISkillSequence": [
+      {
+        "MNAHFIGOHML": 801503001
+      },
+      {
+        "MNAHFIGOHML": 801503002
+      },
+      {
+        "MNAHFIGOHML": 801503005
+      },
+      {
+        "MNAHFIGOHML": 801503006
+      }
+    ],
+    "OverrideAISkillSequence": [
+      {
+        "MNAHFIGOHML": 801503001
+      },
+      {
+        "MNAHFIGOHML": 801503002
+      },
+      {
+        "MNAHFIGOHML": 801503002
+      },
+      {
+        "MNAHFIGOHML": 801503001
+      }
+    ],
+    "path_resolution": "Both named bodies are acquired. Source availability CLOSED.",
+    "policy_operator": "UNKNOWN: replace/layer/conditional/fallback all require loader dataflow. Override token alone proves none.",
+    "sequence_operator": "UNKNOWN independently; no proof of same precedence as AIPath.",
+    "empty_and_missing_overrides": "Preserve presence and empty strings/arrays; no inferred fallback rule.",
+    "reader_evidence": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/targeted_native_reader_check",
+    "exact_reader_requests": [
+      "M529159 MonsterDataComponent._InitCommonDataFromMonsterRows (RVA 241649472)",
+      "M529164 MonsterDataComponent.GetAISkillSequence (RVA 241652272)"
+    ],
+    "character_inheritance": "CharacterOverrideConfig.ParentConfigPath points to acquired _00 parent; SkillList inheritance/merge policy remains a separate exact reader question."
+  },
+  "sequence_policy_contract": {
+    "status": "DECLARATIVE_SEQUENCE_POLICY_BODY_CLOSED_EXECUTION_UNKNOWN",
+    "source": {
+      "source_id": "MA2-S09",
+      "pointer": ""
+    },
+    "raw_policy": {
+      "AIName": "Monster_Common_SequenceThree",
+      "VariableList": [
+        {
+          "$type": "RPG.GameCore.AIVariableString",
+          "Value": "Common_SequenceThree_Phase01",
+          "Name": "CurrentPhase"
+        },
+        {
+          "$type": "RPG.GameCore.AIVariableBool",
+          "Value": true,
+          "Name": "ForbidClearSkillUseRecord"
+        }
+      ],
+      "DecisionList": [
+        {
+          "$type": "RPG.GameCore.AIDecisionConfig",
+          "DecisionName": "UseSequenceSkill",
+          "RootTask": {
+            "$type": "RPG.GameCore.SequenceConfig",
+            "TaskList": [
+              {
+                "$type": "RPG.GameCore.UseSequencedSkill"
+              }
+            ]
+          },
+          "ScoreEvaluatorType": "DefaultDSE",
+          "ConsiderAxisList": [
+            {
+              "$type": "RPG.GameCore.ChoseSequencedSkillAxis",
+              "CheckScore": {
+                "Value": 1
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "declarative_chain": "Monster row/template sequence fields -> unresolved effective sequence -> AISequenceSkillIDList/LastSequenceSkillIdx boundary; acquired decision uses ChoseSequencedSkillAxis and UseSequencedSkill. Binding of numeric sequence values to config names remains separate.",
+    "body_fact": "One direct AIDecisionConfig named UseSequenceSkill, DefaultDSE, ChoseSequencedSkillAxis.CheckScore.Value=1, RootTask SequenceConfig with one UseSequencedSkill. Task has no SkillName or explicit selector.",
+    "initial_variables": "CurrentPhase string Common_SequenceThree_Phase01 and ForbidClearSkillUseRecord boolean true are serialized values only.",
+    "no_local_phase_test_or_transition": "No CurrentPhase reader, assignment, TransitionTable, RootState, OnInit or OnDisable is serialized in this body. String is not proven equal to MonsterPhase.",
+    "sequence_length": "The body does not encode a fixed three-entry length. Supplied sample override has four entries with duplicates.",
+    "unknown": [
+      "effective sequence source precedence",
+      "index initialization and advance/commit",
+      "invalid-step skip/retry/fallback",
+      "wrap/reset",
+      "skill-use history clearing guard",
+      "relationship to AIActionTurnCount or scheduler turns"
+    ]
+  },
+  "sequence_id_binding": {
+    "status": "CLOSED",
+    "existing_static_inspection": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/sequence_id_static_inspection",
+    "exact_ids": [
+      801503001,
+      801503002,
+      801503005,
+      801503006,
+      801504001,
+      801504002,
+      801504003,
+      801505005,
+      801505006,
+      801505003,
+      801505004
+    ],
+    "display_name_is_internal_name": false,
+    "artifact": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json",
+    "result": {
+      "requested_ids": 11,
+      "rows_found": 11,
+      "exact_trigger_keys": 11,
+      "exact_character_bindings": 15,
+      "sequence_occurrences": 15,
+      "duplicate_override_occurrences_preserved": true
+    },
+    "ticket": {
+      "id": "SEQUENCE-ID-BINDING-ACQUISITION",
+      "owner": "TERRA",
+      "status": "CLOSED",
+      "source_repository": "DimbreathBot/TurnBasedGameData",
+      "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "exact_path": "ExcelOutput/MonsterSkillConfig.json",
+      "path_evidence": "data/semantics/4.4.54/external_reconstruction/authoritative_mapping_index.json#/8/turn_based_game_data/table",
+      "exact_ids": [
+        801503001,
+        801503002,
+        801503005,
+        801503006,
+        801504001,
+        801504002,
+        801504003,
+        801505005,
+        801505006,
+        801505003,
+        801505004
+      ],
+      "required_fields": [
+        "SkillID",
+        "SkillTriggerKey",
+        "PhaseList",
+        "AI_CD",
+        "AI_ICD",
+        "all other present raw row fields"
+      ],
+      "missing_relation": "numeric sequence value -> MonsterSkillRow.SkillID -> serialized SkillTriggerKey -> exact CharacterConfig.SkillList.Name, only where equality is explicit. Do not equate localized SkillName with internal trigger key.",
+      "local_check": "Fetched exactly from the pinned commit. All 11 requested rows have serialized SkillTriggerKey values; exact CharacterConfig.SkillList.Name equality resolves all 15 current sequence occurrences.",
+      "acquisition_rule": "Cache first, then one pinned exact table if absent; retain raw bytes/hash. Extract only listed IDs; no full corpus/compiler census or replacement revision. Preserve each sequence occurrence including duplicates. If row field absent/obfuscated, report raw field and missing interpretation, not suffix-based mapping.",
+      "stop_rule": "Closed by monster_ai_sequence_id_binding_001.json. This does not authorize new Astra Pass 3 or native analysis."
+    }
+  },
+  "decision_condition_contract": {
+    "status": "AST_DESCRIPTORS_CLOSED_EVALUATOR_CONTEXT_PARTIAL",
+    "families": [
+      {
+        "family": "PHASE_PREDICATE_SCORE_DESCRIPTOR",
+        "types": [
+          "CheckPredicateAxis",
+          "ByAnd",
+          "ByCompareMonsterPhase"
+        ],
+        "inputs": [
+          "MonsterPhase view from frozen Domain 3",
+          "TargetType presence/value",
+          "CompareValue fixed 1/2/3"
+        ],
+        "comparison_or_operator": "CompareType=Equal; one phase predicate inside ByAnd; group SuccessScore.Value=1.",
+        "scope": "Group-level ConsiderAxisList; AsatPramad phase predicate explicitly targets Caster; Painter phase predicate omits TargetType.",
+        "default_semantics": "Omitted TargetType and FailScore unresolved at AI/context boundary; do not assume Caster or zero.",
+        "confidence": "FACT_FOR_CONFIG_AST; RUNTIME_WRAPPER_BLOCKED_BY_EVIDENCE",
+        "evaluation_time": "UNKNOWN AI evaluator invocation, caching and re-evaluation order; tied to supplied decision context, not a new scheduler opportunity."
+      },
+      {
+        "family": "ENTITY_DYNAMIC_MEMORY_SCORE_DESCRIPTOR",
+        "types": [
+          "CheckPredicateAxis",
+          "ByCompareDynamicValue"
+        ],
+        "inputs": [
+          "DynamicKey.Value=AIFlag",
+          "ContextScope=TargetEntity",
+          "fixed comparison value",
+          "TargetType presence/value"
+        ],
+        "comparison_or_operator": "CompareType=Equal; AsatPramad option SuccessScore.Value=1; Painter option score .5.",
+        "scope": "Option-level; AsatPramad explicitly targets Caster, Painter comparison omits TargetType.",
+        "default_semantics": "Missing AIFlag, omitted target and FailScore unresolved; no implicit initialization.",
+        "confidence": "FACT_FOR_CONFIG_AST; RUNTIME_WRAPPER_BLOCKED_BY_EVIDENCE",
+        "evaluation_time": "UNKNOWN AI evaluator invocation, caching and re-evaluation order; tied to supplied decision context, not a new scheduler opportunity."
+      },
+      {
+        "family": "MODIFIER_PRESENCE_SCORE_DESCRIPTOR",
+        "types": [
+          "CheckPredicateAxis",
+          "ByAnd",
+          "ByAny",
+          "ByIsContainModifier"
+        ],
+        "inputs": [
+          "Caster modifier view from frozen Domain 2",
+          "OneMore",
+          "MMonster_W5_Painter_00_Skill06Ready",
+          "MMonster_W5_Painter_00_Main_SpecialSkill",
+          "Inverse field presence"
+        ],
+        "comparison_or_operator": "Predicate presence / explicit Inverse=true; compose with AIFlag comparisons via ByAnd and ByAny.",
+        "scope": "Painter option ConsiderAxisList; status is predicate input, not Priority.",
+        "default_semantics": "Preserve omitted Inverse and FailScore; only delegate behavior supported by existing Predicate contract.",
+        "confidence": "FACT_FOR_CONFIG_AST; RUNTIME_WRAPPER_BLOCKED_BY_EVIDENCE",
+        "evaluation_time": "UNKNOWN AI evaluator invocation, caching and re-evaluation order; tied to supplied decision context, not a new scheduler opportunity."
+      },
+      {
+        "family": "SEQUENCE_SCORE_DESCRIPTOR",
+        "types": [
+          "ChoseSequencedSkillAxis"
+        ],
+        "inputs": [
+          "sequence state context not serialized in axis",
+          "CheckScore.Value=1"
+        ],
+        "comparison_or_operator": "Axis type and CheckScore observed; internal availability test/operator UNKNOWN.",
+        "scope": "SequenceThree direct decision ConsiderAxisList.",
+        "default_semantics": "Invalid/missing/exhausted sequence semantics UNKNOWN.",
+        "confidence": "FACT_FOR_CONFIG_AST; RUNTIME_WRAPPER_BLOCKED_BY_EVIDENCE",
+        "evaluation_time": "UNKNOWN AI evaluator invocation, caching and re-evaluation order; tied to supplied decision context, not a new scheduler opportunity."
+      }
+    ],
+    "proven_counts": {
+      "CheckPredicateAxis": 63,
+      "ChoseSequencedSkillAxis": 1
+    },
+    "existing_contracts": {
+      "Predicate": "data/semantics/4.4.54/full_reconstruction/predicate_semantics_packet_001.json",
+      "DynamicValue": "data/semantics/4.4.54/full_reconstruction/dynamic_value_semantics_packet_001.json",
+      "rule": "CheckPredicateAxis.Predicate can delegate supported Predicate AST to its existing contract once context is bound. Dynamic fields/value expressions use existing value contracts when the representation is matched. Do not reinterpret every AI Source/Mapper as a Predicate or extend old defaults into missing AI fields."
+    },
+    "hard_filter_vs_score": "UNKNOWN; no explicit standalone hard admission field occurs in these option bodies. CheckPredicateAxis holds a Predicate and SuccessScore, with FailScore omitted everywhere.",
+    "condition_vs_default": "Preserve Predicate AST, raw field presence and scores; an unsupported or context-unbound predicate is UNKNOWN, never false.",
+    "not_observed_in_four_bodies": [
+      "CheckSkillUsabilityAxis",
+      "HP/toughness/resource/team-count axes",
+      "CheckRandomChanceAxis",
+      "CheckSkillDependencyAxis",
+      "Priority",
+      "Weight"
+    ],
+    "evidence": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/policy_bodies"
+  },
+  "score_priority_weight_observations": {
+    "status": "DECLARED_FIELDS_CLOSED_WINNER_UNKNOWN",
+    "policy_shape_table": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/policy_shape_table",
+    "summary": [
+      {
+        "source": {
+          "source_id": "MA2-S01",
+          "pointer": ""
+        },
+        "groups": 2,
+        "nested_options": [
+          4,
+          6
+        ],
+        "Priority_occurrences": 0,
+        "Weight_occurrences": 0,
+        "ScoreEvaluatorType_occurrences": 12,
+        "ConsiderAxisList_occurrences": 12,
+        "group_SuccessScore": 1,
+        "option_SuccessScore": 0.5,
+        "sequence_CheckScore": "NOT_PRESENT",
+        "source_order_only_policy": false
+      },
+      {
+        "source": {
+          "source_id": "MA2-S03",
+          "pointer": ""
+        },
+        "groups": 3,
+        "nested_options": [
+          4,
+          4,
+          6
+        ],
+        "Priority_occurrences": 0,
+        "Weight_occurrences": 0,
+        "ScoreEvaluatorType_occurrences": 17,
+        "ConsiderAxisList_occurrences": 17,
+        "group_SuccessScore": 1,
+        "option_SuccessScore": 0.5,
+        "sequence_CheckScore": "NOT_PRESENT",
+        "source_order_only_policy": false
+      },
+      {
+        "source": {
+          "source_id": "MA2-S05",
+          "pointer": ""
+        },
+        "groups": 3,
+        "nested_options": [
+          18,
+          8,
+          5
+        ],
+        "Priority_occurrences": 0,
+        "Weight_occurrences": 0,
+        "ScoreEvaluatorType_occurrences": 34,
+        "ConsiderAxisList_occurrences": 34,
+        "group_SuccessScore": 1,
+        "option_SuccessScore": 1,
+        "sequence_CheckScore": "NOT_PRESENT",
+        "source_order_only_policy": false
+      },
+      {
+        "source": {
+          "source_id": "MA2-S09",
+          "pointer": ""
+        },
+        "groups": 0,
+        "nested_options": [],
+        "Priority_occurrences": 0,
+        "Weight_occurrences": 0,
+        "ScoreEvaluatorType_occurrences": 1,
+        "ConsiderAxisList_occurrences": 1,
+        "group_SuccessScore": "NOT_PRESENT",
+        "option_SuccessScore": "NOT_PRESENT",
+        "sequence_CheckScore": 1,
+        "source_order_only_policy": false
+      }
+    ],
+    "facts": [
+      "All 64 group/decision nodes explicitly use DefaultDSE and one consideration axis.",
+      "Priority and Weight occur zero times in all four main policy bodies. Raw Score field also absent; SuccessScore and CheckScore remain distinct named descriptors.",
+      "No selected-action default/fallback field, explicit random task or random axis occurs in these four bodies.",
+      "AsatPramad repeated DecisionName values and GridFight duplicate group labels are not identities.",
+      "No policy is evidenced to select solely by list position; absence of Priority/Weight does not establish first-valid."
+    ],
+    "unknown": [
+      "DefaultDSE binding and aggregation",
+      "fail-score/default parsing",
+      "group-to-option evaluation order",
+      "admission vs scoring",
+      "winner direction, tie, fallback",
+      "implicit RNG use, draw count/order/reuse"
+    ],
+    "strict_rule": "Do not select by numeric maximum or source-first; no invented priority=0 or weight=1 defaults. Preserve existing deterministic RNG interface but do not schedule draws without evidence."
+  },
+  "persistent_state_updates": {
+    "status": "INITIAL_VALUES_AND_DECLARED_WRITE_SITES_RECOVERED_COMMIT_UNKNOWN",
+    "initial_values": [
+      {
+        "source": {
+          "source_id": "MA2-S01",
+          "pointer": "/VariableList/0"
+        },
+        "raw_variable": {
+          "$type": "RPG.GameCore.AIVariableBool",
+          "Value": true,
+          "Name": "ForbidClearSkillUseRecord"
+        },
+        "fact": "SERIALIZED_INITIAL_VALUE_ONLY",
+        "ownership": "AI variable scope/private/default semantics unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S03",
+          "pointer": "/VariableList/0"
+        },
+        "raw_variable": {
+          "$type": "RPG.GameCore.AIVariableBool",
+          "Value": true,
+          "Name": "ForbidClearSkillUseRecord"
+        },
+        "fact": "SERIALIZED_INITIAL_VALUE_ONLY",
+        "ownership": "AI variable scope/private/default semantics unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S09",
+          "pointer": "/VariableList/0"
+        },
+        "raw_variable": {
+          "$type": "RPG.GameCore.AIVariableString",
+          "Value": "Common_SequenceThree_Phase01",
+          "Name": "CurrentPhase"
+        },
+        "fact": "SERIALIZED_INITIAL_VALUE_ONLY",
+        "ownership": "AI variable scope/private/default semantics unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S09",
+          "pointer": "/VariableList/1"
+        },
+        "raw_variable": {
+          "$type": "RPG.GameCore.AIVariableBool",
+          "Value": true,
+          "Name": "ForbidClearSkillUseRecord"
+        },
+        "fact": "SERIALIZED_INITIAL_VALUE_ONLY",
+        "ownership": "AI variable scope/private/default semantics unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S06",
+          "pointer": "/CustomValues/AIFlag"
+        },
+        "raw_value": 5,
+        "fact": "SERIALIZED_CHARACTER_CUSTOM_VALUE_ONLY",
+        "ownership": "Entity DynamicValue/custom store initialization input; effective inheritance and runtime copy timing unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S07",
+          "pointer": "/CustomValues/AIFlag"
+        },
+        "raw_value": 10,
+        "fact": "SERIALIZED_CHARACTER_CUSTOM_VALUE_ONLY",
+        "ownership": "Entity DynamicValue/custom store initialization input; effective inheritance and runtime copy timing unresolved"
+      },
+      {
+        "source": {
+          "source_id": "MA2-S08",
+          "pointer": "/CustomValues/AIFlag"
+        },
+        "raw_value": 13,
+        "fact": "SERIALIZED_CHARACTER_CUSTOM_VALUE_ONLY",
+        "ownership": "Entity DynamicValue/custom store initialization input; effective inheritance and runtime copy timing unresolved"
+      }
+    ],
+    "declared_write_tasks": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/declared_state_write_tasks",
+    "write_counts": {
+      "DefineDynamicValue": 43,
+      "SetDynamicValueByAddValue": 2
+    },
+    "read_write_relation": "AsatPramad explicitly reads and writes Caster/TargetEntity AIFlag. Painter writes Caster/TargetEntity AIFlag; its ByCompareDynamicValue reads the same key/context token with TargetType omitted, so exact resolved read owner remains evaluator-context dependent.",
+    "source_transition_examples": [
+      {
+        "source_id": "MA2-S05",
+        "option_pointer": "/DecisionList/0/DecisionList/0",
+        "declared_read": "AIFlag Equal 4",
+        "declared_write": "AIFlag ResetValue fixed 1",
+        "next_task": "UseSkill Skill02"
+      },
+      {
+        "source_id": "MA2-S05",
+        "option_pointer": "/DecisionList/0/DecisionList/1",
+        "declared_read": "AIFlag Equal 1",
+        "declared_write": "AIFlag ResetValue fixed 2",
+        "next_task": "UseSkill Skill01"
+      },
+      {
+        "source_id": "MA2-S05",
+        "option_pointer": "/DecisionList/2/DecisionList/4",
+        "declared_read": "AIFlag Equal 12",
+        "declared_write": "AIFlag ResetValue fixed 12",
+        "next_task": "UseSkill Skill09; label is not proof of fallback or no-op"
+      },
+      {
+        "source_id": "MA2-S01",
+        "option_pointer": "/DecisionList/1/DecisionList/1",
+        "declared_read": "OneMore Inverse=true AND (AIFlag Equal 1 OR AIFlag Equal 3), preserving ByAnd/ByAny AST.",
+        "declared_write": "SetDynamicValueByAddValue Key AIFlag, AddValue=1, Min=1, Max=4",
+        "next_task": "UseSkill Skill01"
+      }
+    ],
+    "transition_scope": "These are guard-to-task associations and source ordering, not an executed automaton trace. No claim the state update commits at selection, request acceptance, action start/finish, abort or phase change.",
+    "runtime_slots_from_pass1": [
+      "T54504.AISequenceSkillIDList",
+      "T54504.LastSequenceSkillIdx",
+      "T54504.AIActionTurnCount",
+      "T54504.AISkillTargetEntityList",
+      "T54504.GlobalVars",
+      "T54504.VariableForbidClearSkillUseRecordRefKey"
+    ],
+    "decision_local_values": [
+      "group/option axis result and score are descriptors here; materialization/lifetime is UNKNOWN, not serialized initial state"
+    ],
+    "forbid_flag": "true is a config initializer, not proof of universal record-retention or an executed clear guard.",
+    "missing_transitions": [
+      "sequence index update/wrap/reset",
+      "AIActionTurnCount update",
+      "AI variable reinitialization on phase/override",
+      "AIFlag write timing and rollback",
+      "use-record clear timing",
+      "target-list cache lifetime"
+    ],
+    "serialization": "Capture actual persistent values and stable owner refs in clone/snapshot/hash. AIFlag belongs to the shared entity DynamicValue view, not a guessed duplicate MonsterAIState field. Avoid native addresses. No write or RNG draw on blocked decision."
+  },
+  "target_intent_from_skill_config": {
+    "status": "STATIC_SKILL_TARGET_METADATA_CLOSED_RUNTIME_HANDOFF_UNKNOWN",
+    "source": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json#/declared_action_leaf_binding/exact_edges",
+    "expanded_direct_edges_by_TargetType": {
+      "EnemySelect": 88,
+      "Caster": 46,
+      "AllEnemy": 159
+    },
+    "leaf_fields": "Every observed UseSkill leaf has only $type and SkillName; UseSequencedSkill has only $type. No explicit entity, Selector, SelectAISkillTarget or UseSkillByComplexSkillAI task occurs in the four bodies.",
+    "intent_representation": "For an exact declared leaf, preserve deferred SkillConfig.TargetInfo metadata (EnemySelect, AllEnemy or Caster). A selected entity or executed selector is not produced.",
+    "target_modifiers": [
+      "AllowEnemyServant=Forbidden on Painter Skill02",
+      "IsDynamicTarget=true on Painter Skill03 and parent AsatPramad Skill04",
+      "AllowUnselectableTarget=true on AsatPramad Skill05_End, which is not a UseSkill leaf in these policies"
+    ],
+    "DefaultTargetSelector": "Absent in all five inspected SkillList arrays; do not supply a default selector.",
+    "predicate_target_vs_action_target": "Caster aliases in condition and AIFlag write nodes identify context views; they are not action-output targets.",
+    "GroupName_consumers": 0,
+    "global_factor_groups": "Remain reusable unbound scoring assets; no filename-derived consumer or TargetInfo-derived ComplexSkillAI binding.",
+    "domain_7_owner": [
+      "legal target set",
+      "selector execution",
+      "aggro",
+      "Retarget",
+      "target invalidation/revalidation"
+    ],
+    "scheduler_owner": "Frozen Domain 4 supplies actor/opportunity and receives action intent; source task names and SkillConfig.CanUseInInsertAction do not authorize AI turn timing or arbitrary insertion.",
+    "ability_owner": "EntryAbility binding is static. Domain 1 still owns ability resolution/execution and unsupported behavior strict rejection.",
+    "selection_and_target_order": "Only static skill-to-target metadata attachment closed. Native target score/context evaluation and request attachment timing remain MA-Q05."
+  },
+  "full_ai_content_coverage": "PARTIAL",
+  "ma_q01_checkpoint": {
+    "source_availability": "CLOSED",
+    "policy_precedence": "BLOCKED_BY_EVIDENCE",
+    "character_parent_merge": "BLOCKED_BY_EVIDENCE",
+    "sequence_id_binding": "CLOSED",
+    "original_requested_paths_acquired": 9,
+    "scoped_main_policy_bodies_recovered": 4
+  },
+  "end_of_domain_gate": {
+    "decision": "FROZEN",
+    "reason": "The exact pinned MonsterSkillConfig table closed all 11 ID and 15 current occurrence bindings. Remaining Domain 5 unknowns are native-evidence blockers.",
+    "ticket": "SEQUENCE-ID-BINDING-ACQUISITION",
+    "astra_analysis_status": "STOPPED_AFTER_PASS_2",
+    "pass3_allowed_by_default": false,
+    "pass3_justified": false,
+    "new_local_high_discrimination_native_body_available": false,
+    "after_terra": "Exact ID edges persisted; Domain 5 is frozen. No Astra Pass 3 is justified.",
+    "next_astra_domain_after_freeze": "Domain 6 Damage / Survival."
+  },
+  "declarative_architecture": "CLOSED_FOR_SCOPED_FAMILIES",
+  "domain_gate": "FROZEN",
+  "pass2_evidence_artifact": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json",
+  "final_terra_sequence_binding_artifact": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json"
+}

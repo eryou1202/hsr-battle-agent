@@ -1,0 +1,3195 @@
+{
+  "schema": "hsr_battle_agent.astra_modifier/1",
+  "domain": "modifier",
+  "pass": 2,
+  "pass_status": "COMPLETE",
+  "architecture": "PARTIAL",
+  "confidence_vocabulary": [
+    "FACT",
+    "STRONG_RECONSTRUCTION",
+    "PLAUSIBLE_MODEL",
+    "UNKNOWN"
+  ],
+  "scope": "Identity / matching / stacking decomposition only; TriggerAbility frozen; no implementation or census",
+  "authority": {
+    "head": "ce62dc0028d15cbdc7a332c3db860ed7fffb9c58",
+    "observed_date": "2026-09-14",
+    "reverse_safety": [
+      {
+        "confidence": "FACT",
+        "path": "D:/StarRail_4.4.53/GameAssembly.dll",
+        "saved_snapshot_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "observed_current_sha256": "4aac69526d1654c278ad641cbce71f728d3030d48f03694096b5778552d12660",
+        "evidence": "data/normalized/4.4.54/manifest.json",
+        "consequence": "Old snapshot RVAs MUST NOT be used against the current file. Current binary version and method mapping are not established by the directory name."
+      },
+      {
+        "confidence": "FACT",
+        "rule": "Existing saved reverse evidence is usable only for its recorded binary hash, version and method provenance. Discard the mismatched live-file TriggerAbility window attempted before the mismatch was identified; it supplies no TriggerAbility semantics."
+      },
+      {
+        "confidence": "FACT",
+        "rule": "Do not reverse the current binary in this continuation. Future native work requires a separately verified binary-hash/version/RVA correspondence."
+      }
+    ]
+  },
+  "definition_identity": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "inputs": [
+      "ModifierName expression + presence",
+      "resolved source definition namespace/record",
+      "source commit/version/content hash"
+    ],
+    "catalog_facts": {
+      "confidence": "FACT",
+      "identity_policy": "STRUCTURED_MODIFIER_MAP_KEY_ONLY",
+      "duplicate_policy": "FULL_SOURCE_PAYLOAD_EQUALITY_WITH_ALL_PROVENANCE_RETAINED",
+      "conflict_policy": "EXCLUDE_ALL_NON_EQUIVALENT_SAME_NAME_VARIANTS"
+    },
+    "terra_definition_ref": {
+      "name": "exact source map key",
+      "variant_ref": "source namespace + semantic payload hash + provenance",
+      "resolved_config_ref": "immutable definition reference, separate from lookup name"
+    },
+    "native_limit": "M520252 compares instance.Name, not config pointer or definition content hash. Do not make variant hash a native duplicate discriminator.",
+    "resolution": "Reuse unambiguous catalog definition. Equivalent source payloads can share definition while retaining all provenance. Conflicting same-name variants require explicit source-context resolution; current catalog excludes all such variants.",
+    "strict_rejection": "Missing/dynamic unresolved name, conflicting unresolved definition, or cross-version policy mapping without evidence.",
+    "evidence": [
+      "MOD-E05",
+      "MOD-E06",
+      "MOD-E01:M520252"
+    ]
+  },
+  "application_identity": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "name": "ModifierApplicationIdentity",
+    "fields": [
+      {
+        "name": "target_owner_ref",
+        "meaning": "Target entity and owning AbilityComponent collection; separate from caller."
+      },
+      {
+        "name": "definition_ref",
+        "meaning": "Resolved exact definition; preserve name + provenance."
+      },
+      {
+        "name": "application_caller_ref",
+        "meaning": "Task/context that issued application; audit/context, not proven duplicate key."
+      },
+      {
+        "name": "source_provider_ref",
+        "meaning": "Opaque stable object-reference token; source ability/provider passed as typeref 286703."
+      },
+      {
+        "name": "resolved_caster_ref",
+        "meaning": "Entity resolved from provider/context; retain direct RuntimeID and separately supplied effective matching ID."
+      },
+      {
+        "name": "ability_owner_ref",
+        "meaning": "Entity that owns source ability; do not equate with target or resolved caster."
+      },
+      {
+        "name": "source_ability_ref",
+        "meaning": "Optional ability instance identity, distinct from ability name."
+      },
+      {
+        "name": "source_modifier_instance_ref",
+        "meaning": "Exact originating callback modifier, if present; not its name or layer."
+      },
+      {
+        "name": "skill_action_owner_ref",
+        "meaning": "Preserved when supplied, not in inspected duplicate predicate."
+      },
+      {
+        "name": "inherit_caster",
+        "meaning": "Raw presence + raw value + resolution provenance; absence is not CasterSelf."
+      },
+      {
+        "name": "stacking_flag",
+        "meaning": "Caller/runtime param field independent of definition policy; retain presence, raw name and resolved numeric value."
+      },
+      {
+        "name": "application_site_ref",
+        "meaning": "Corpus behavior + JSON pointer for traceability; not a native key."
+      },
+      {
+        "name": "dynamic_context_ref",
+        "meaning": "Preserve contexts/injections/snapshot source; no additional key inferred."
+      }
+    ],
+    "non_identity_fields": [
+      "LifeTime",
+      "Count",
+      "Layer",
+      "MaxLayer",
+      "LayerAddWhenStack",
+      "DynamicValues values"
+    ],
+    "unknown_extensions": [
+      "ReferenceModifierName routing",
+      "custom key",
+      "creator distinct from source provider",
+      "per-layer source ownership"
+    ],
+    "evidence": [
+      "MOD-E01:M506463",
+      "MOD-E03:M506048",
+      "MOD-E08:AddModifier F98596..98608"
+    ]
+  },
+  "instance_matching": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "identity_vs_query": "ModifierLookupQuery is a wildcard-capable search specification, not instance primary identity. Persistent native instance identity encoding is UNKNOWN; query can match zero/one/multiple objects and Multiple may create despite a match.",
+    "persistent_instance_ref": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "contract": "Opaque stable per-instance token; non-reused allocator/generation is a Terra design choice. Collection index is ordering, not a stable identity after removals.",
+      "native_fact": "M520240 compares instance references; native stable ID encoding unrecovered."
+    },
+    "query_fields": [
+      "scope(local owner component / explicit global manager)",
+      "exact modifier name",
+      "state filter",
+      "stacking_flag filter",
+      "caster filter",
+      "provider filter"
+    ],
+    "predicate": [
+      {
+        "order": 1,
+        "confidence": "FACT",
+        "rule": "Ordinal Name equality. Same string pointer skips only the string comparison, not remaining filters.",
+        "evidence": "M520252 E432724..E43275D"
+      },
+      {
+        "order": 2,
+        "confidence": "FACT",
+        "rule": "state_filter 0 accepts unsigned State <= 1; 1 accepts State == 1; other values skip state filtering. Expose documented modes, reject unsourced raw modes.",
+        "evidence": "M520252 E43275D..E432781"
+      },
+      {
+        "order": 3,
+        "confidence": "FACT",
+        "rule": "Query stacking_flag 100 is wildcard; otherwise compare instance.StackingFlag [+0x88]. It is not Config.Stacking.",
+        "evidence": "M520252 E432781..E432794"
+      },
+      {
+        "order": 4,
+        "confidence": "FACT",
+        "rule": "Query caster -1 or 0 returns true after name/state/flag; provider check is skipped on this path.",
+        "evidence": "M520252 E432794..E43279D -> E432833"
+      },
+      {
+        "order": 5,
+        "confidence": "STRONG_RECONSTRUCTION",
+        "rule": "For concrete caster, accept direct resolved entity RuntimeID equality OR fallback effective ID equality. Fallback checks entity type [+0xd4], helper B429D40 and returned [+0x24], else direct [+0xd0]. Keep this resolver explicit; do not collapse it to bare context.caster_id.",
+        "evidence": "M520252 E4327A3..E432868; M506463 E7295F2..E729652 and E729794..E7297A0"
+      },
+      {
+        "order": 6,
+        "confidence": "STRONG_RECONSTRUCTION",
+        "rule": "Only after concrete caster path, non-null provider filter additionally requires resolver virtual slot [+0x130] return object pointer == requested provider. Null provider filter means no provider constraint.",
+        "evidence": "M520252 full_gap E43286D..E432898"
+      }
+    ],
+    "lookup_profiles": [
+      {
+        "id": "LOCAL_NAME_FLAG",
+        "incoming_policy_ordinals": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          9,
+          10
+        ],
+        "scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": null,
+        "state_filter": 0,
+        "flag": "request.runtime_param[+0x5c]",
+        "confidence": "FACT",
+        "evidence": "M506463 E729703..E72971F -> E7297D0"
+      },
+      {
+        "id": "LOCAL_CASTER_NAME_FLAG",
+        "incoming_policy_ordinals": [
+          7,
+          8
+        ],
+        "scope": "incoming target component",
+        "caster_filter": "provider-resolved effective entity runtime ID",
+        "provider_filter": null,
+        "state_filter": 0,
+        "flag": "request.runtime_param[+0x5c]",
+        "confidence": "FACT",
+        "evidence": "saved switch E72A244/E72A248 -> E7295DC -> E7297A7 writes zero"
+      },
+      {
+        "id": "LOCAL_CASTER_PROVIDER_NAME_FLAG",
+        "incoming_policy_ordinals": [
+          12
+        ],
+        "scope": "incoming target component",
+        "caster_filter": "provider-resolved effective entity runtime ID",
+        "provider_filter": "incoming provider object",
+        "state_filter": 0,
+        "flag": "request.runtime_param[+0x5c]",
+        "confidence": "FACT",
+        "evidence": "saved switch E72A258 -> E729724 -> E7297C1 writes r14"
+      },
+      {
+        "id": "GLOBAL_NAME_FLAG",
+        "incoming_policy_ordinals": [
+          11,
+          13
+        ],
+        "scope": "explicit manager/component collection domain",
+        "caster_filter": -1,
+        "provider_filter": null,
+        "state_filter": 0,
+        "flag": "request.runtime_param[+0x5c]",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "evidence": "M506463 E72965B..E7296B9; M504365",
+        "limit": "Global manager traversal order unresolved; no fabricated runtime-ID sorting."
+      }
+    ],
+    "lookup_result": {
+      "local": "Ordered matches; native M520243 returns first accepted item in forward collection order. Terra may expose all matches diagnostically, but native TryAdd consumes first.",
+      "global": "No match / first candidate under proven global order only; reject ambiguous multi-component selection until ordering is supplied.",
+      "pending": "State 0 match is eligible. Existing-instance processing routes to _AddModifierDelayParam M506465; do not mutate pending match immediately."
+    },
+    "same_name_same_target_distinctions": [
+      {
+        "case": "Different caster, ordinary LOCAL_NAME_FLAG profile",
+        "result": "Can match same existing object; caster is not a constraint."
+      },
+      {
+        "case": "Different concrete caster, profile 7/8",
+        "result": "Separate if neither direct nor effective caster match; new object when none matched."
+      },
+      {
+        "case": "Same caster, different provider, profile 7/8",
+        "result": "Can match same existing object; provider omitted by caller."
+      },
+      {
+        "case": "Same concrete caster, different provider, profile 12",
+        "result": "Fail provider equality; append if no other match. If caster is wildcard provider check is bypassed."
+      },
+      {
+        "case": "Different exact stacking flags",
+        "result": "Separate unless query flag is wildcard 100."
+      },
+      {
+        "case": "Same full lookup attributes, policy 4",
+        "result": "Still append distinct object; duplicate key is not unique identity."
+      },
+      {
+        "case": "Different ability/callback/site/dynamic values/lifetime",
+        "result": "No independent comparison in inspected predicate; may affect upstream bindings or downstream mutation, not an invented discriminator."
+      }
+    ],
+    "evidence": [
+      "MOD-E01",
+      "MOD-E02"
+    ]
+  },
+  "provider_caster_contract": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "native_inputs": "M506463 takes owner component as this, name, ModifierConfig, provider typeref 286703, runtime param typeref 608873 and bool. M506132 constructor call receives name/config/owner component/provider/runtime param as separate values.",
+    "persistent_reads": {
+      "caster": "Base get_CasterEntity M504757 cached [+0x58], resolves through [+0x48] when absent.",
+      "source_entity": "TurnBased get_SourceEntity M506280 cached [+0x100], also resolves through [+0x48] when absent.",
+      "provider": "Predicate compares object obtained through resolver virtual [+0x130]; concrete method/type and token materialization unresolved."
+    },
+    "new_instance": "Save all application identity roles separately. Provider must be an object token with explicit entity-resolution binding; a string entity ID is insufficient.",
+    "post_match": "Object identity survives process-existing path. Incoming provider is passed to OnReplace on selected policy branches; preservation/overwrite of caster/provider/source caches is not closed without OnReplace effects.",
+    "inherit_caster": {
+      "confidence": "UNKNOWN",
+      "field": "AddModifier.InheritCaster F98608",
+      "observed": "Provider seed is M506052(executor,target), not a recovered named InheritCaster branch.",
+      "missing": "M506052 body + exact source field/enum/default relation; CasterSelf, TargetSelf and absence each remain UNKNOWN.",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "evidence": [
+        "MOD-P2-F03"
+      ]
+    },
+    "asymmetry": "Application, existence query, removal and self-removal each need their own lookup request. Do not reuse application profile implicitly.",
+    "evidence": [
+      "MOD-E01:M506463 E729895..E7298AE",
+      "MOD-E03:M504757/M506280",
+      "MOD-E08:F98608"
+    ],
+    "slot_usage": [
+      {
+        "slot": "owner_target_component_ref",
+        "lookup": "Local scope; global search has separate scope.",
+        "stored": "Constructor gets owning component; native persistent representation partially recovered.",
+        "later_query_remove": "Explicit query target or exact callback owner; do not derive from caster."
+      },
+      {
+        "slot": "caster_ref",
+        "lookup": "Concrete/effective ID only in appropriate profiles; native -1/0 skips source constraints.",
+        "stored": "Native cached getters exist; exact initialization/replacement relation UNKNOWN.",
+        "later_query_remove": "CasterFilter / OnlyRemoveCasterAdded are explicit caller fields; mapping UNKNOWN."
+      },
+      {
+        "slot": "provider_ref",
+        "lookup": "7/8 pass null; 12 passes provider object, gated by concrete caster path.",
+        "stored": "Opaque object/resolver relation UNKNOWN; never provider=caster by default.",
+        "later_query_remove": "No general provider-filtered remove/query contract recovered."
+      },
+      {
+        "slot": "caller_ability_ref",
+        "lookup": "No independent ability-name comparison; may supply provider binding.",
+        "stored": "Preserve as separate provenance/context in Terra schema; native storage relation UNKNOWN.",
+        "later_query_remove": "No automatic equality with callback modifier, caster, or owner."
+      }
+    ],
+    "source_binding_pass2_ref": "#/source_binding_pass2",
+    "caller_provider_dataflow": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "native_call_value": "M506463 r9 = local[rbp+0x1a8], an opaque provider object reference of typeref 286703.",
+      "seed": "M506052.DINFDBMMMCD(executor, selected_target) returns typeref 286703; return is saved into provider local.",
+      "definition_condition": "Resolved definition config[+0x70] controls whether provider can be replaced through cache/helper. Field name remains UNKNOWN; do not infer source UseSnapshotEntity from offset.",
+      "paths": [
+        {
+          "condition": "config[+0x70] false",
+          "provider_ref": "Seed object retained in local[+0x1a8].",
+          "entity_observation": "Before branch, nested [[seed+0x38]+0x10] supplies rsi; no direct RuntimeID read here."
+        },
+        {
+          "condition": "config[+0x70] true, cache lookup hits",
+          "provider_ref": "Entry object from [items+index*40+0x40], stored E1618085C.",
+          "entity_observation": "Key is seed-derived rsi; cached associated value goes to local[+0x1d0]. Exact cache type/referent UNKNOWN."
+        },
+        {
+          "condition": "config[+0x70] true, cache misses",
+          "provider_ref": "Helper 0x158C21E0 result field at local[+0x118], stored E16180934.",
+          "entity_observation": "Helper receives original provider and context-derived object. Result entity/provider aliasing and concrete types UNKNOWN."
+        }
+      ],
+      "concrete_object_kind": "UNKNOWN. The return typeref matches the provider argument, but executor dataflow alone does not resolve ability instance vs another compatible native provider representation.",
+      "final_provider_vs_match_resolver": "Pass-1 resolver/filter contract is unchanged. This pass does not establish that final provider ref equals direct entity, effective ID, source ability name, TaskContext virtual object, or later resolver cache.",
+      "evidence": [
+        "MOD-P2-F02",
+        "MOD-P2-F03",
+        "MOD-P2-F04",
+        "MOD-P2-F06"
+      ]
+    },
+    "stacking_flag_transport": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "transport": {
+        "confidence": "FACT",
+        "chain": "executor[+0x20] config -> int32 config[+0x3c] -> runtime param[+0x5c] -> runtime param pointer supplied to M506463",
+        "write_sites": [
+          "0x16180BAC",
+          "0x16180C04",
+          "0x16180C07",
+          "0x16181028"
+        ],
+        "conversion": "No enum conversion on the observed config-slot-to-param assignment.",
+        "limit": "This is the direct caller write and same-object call transport, not proof that arbitrary external helpers have no side effects."
+      },
+      "named_field_mapping": {
+        "confidence": "UNKNOWN",
+        "field": "F98599/type_reference 500155",
+        "known": "The consumer slot feeds the independent runtime StackingFlag established in Pass 1.",
+        "missing": "Independent named-field layout and source enum/deserializer binding into config[+0x3c]."
+      },
+      "explicit_named_flag": "UNKNOWN source-name-to-number mapping; do not assign values from metadata declaration order.",
+      "explicit_Default": "UNKNOWN numeric mapping/default constructor relation; do not equate source explicit Default with absence.",
+      "explicit_Any": "UNKNOWN source-name-to-number mapping; native 100 wildcard remains a fixed downstream fact only.",
+      "decoded_numeric_100": "If a separately evidenced decoded config[+0x3c] is 100, observed direct copy writes 100 to param[+0x5c]; this does not prove source Any or missing maps to it.",
+      "missing_field": "UNKNOWN; decoded config transport cannot reveal serialized presence or its default.",
+      "unresolved": "Retain ABSENT / EXPLICIT_NAME / EXPLICIT_DECODED_NUMBER / UNRESOLVED distinctly; source binding must reject unresolved conversions."
+    }
+  },
+  "stacking_policies": [
+    {
+      "names": [
+        "Unknow",
+        "Unique",
+        "EntityUnique"
+      ],
+      "ordinals": [
+        0,
+        1,
+        9
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "Default/config-copy branch E72A741; no direct life/count assignment in this arm. NOT a proof of no effect.",
+      "callbacks": "Common tail still executes; downstream layer/callback behavior UNKNOWN.",
+      "evidence": [
+        "MOD-E01:M506464 E72A635..E72A657; E72A741"
+      ]
+    },
+    {
+      "names": [
+        "Refresh"
+      ],
+      "ordinals": [
+        2
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "CurrentLife = resolved_new_life; previous_life [+0x2e4] = CurrentLife. No direct set_Count call in this arm.",
+      "callbacks": "If life differs, _OnModifierValueChanged(3) before previous_life write. No direct OnReplace call in Refresh arm; common tail remains.",
+      "evidence": [
+        "MOD-E01:M506464 E72A6BD..E72A6D8 -> E72A710..E72A73C"
+      ]
+    },
+    {
+      "names": [
+        "Prolong"
+      ],
+      "ordinals": [
+        3
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "If resolved_new_life == -1 OR existing.previous_life [+0x2e4] == -1: new CurrentLife = -1; otherwise CurrentLife += resolved_new_life. Then previous_life = CurrentLife. No direct set_Count in this arm.",
+      "callbacks": "Conditional _OnModifierValueChanged(3); no direct OnReplace call in this arm; common tail remains.",
+      "evidence": [
+        "MOD-E01:M506464 E72A6DA..E72A73C"
+      ],
+      "strict_rejection": "Do not replace previous_life sentinel check with current_life-only check; units and overflow behavior require resolved inputs."
+    },
+    {
+      "names": [
+        "Multiple"
+      ],
+      "ordinals": [
+        4
+      ],
+      "confidence": "FACT",
+      "on_match": "APPEND_DUPLICATE_KEEP_EXISTING",
+      "direct_arithmetic": "No mutation of found instance through _ProcessModifierRedd on ordinary TryAdd path.",
+      "callbacks": "Creation path only; do not infer OnAdd/OnStack order from name.",
+      "evidence": [
+        "MOD-E01:M506463 E7297E0..E7297E7 -> E729839"
+      ]
+    },
+    {
+      "names": [
+        "Replace",
+        "ReplaceByCaster",
+        "ReplaceByCasterOrUnStack",
+        "ReplaceByCasterAbility"
+      ],
+      "ordinals": [
+        5,
+        7,
+        8,
+        12
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "Set CurrentLife to resolved_new_life (notify if changed); copy into previous_life; invoke set_Count(resolved_new_count); invoke OnReplace(existing, incoming_provider, runtime_param).",
+      "callbacks": "Direct call order: optional _OnModifierValueChanged(3) -> previous life write -> set_Count -> OnReplace. Effects inside these callees and common tail are not fully closed.",
+      "source_retention": "Existing instance reference stays. Owner/caster/provider/dynamics may be affected by OnReplace; do not assume immutable ownership or universal overwrite.",
+      "extra_policy_8": "After process/create and State == Alive, _PostProcessAfterModifierAdd M506672 can fan out to RemoveUnStackModifier. Exclusion-group and lifetime/callback effects not closed.",
+      "evidence": [
+        "MOD-E01:M506464 E72A659..E72A6B8",
+        "MOD-E01:M506463 E729D24..E729D33",
+        "MOD-E01:candidate M506672"
+      ]
+    },
+    {
+      "names": [
+        "Merge"
+      ],
+      "ordinals": [
+        6
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "If resolved_new_life == -1 OR previous_life == -1: CurrentLife = -1; otherwise CurrentLife = max(CurrentLife, resolved_new_life). Then previous_life = CurrentLife; no direct set_Count in this arm.",
+      "callbacks": "Optional _OnModifierValueChanged(3) -> previous_life write -> OnReplace(existing,incoming_provider,param) -> common tail.",
+      "evidence": [
+        "MOD-E01:M506464 E72A753..E72A7C2"
+      ]
+    },
+    {
+      "names": [
+        "ReplaceButKeepLifeTime"
+      ],
+      "ordinals": [
+        10
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "direct_arithmetic": "No direct life assignment; set_Count(resolved_new_count), then OnReplace(existing,incoming_provider,param).",
+      "callbacks": "Do not infer that callees have no additional life/source effects; direct arm preserves life.",
+      "evidence": [
+        "MOD-E01:M506464 E72A7CA..E72A7EF"
+      ]
+    },
+    {
+      "names": [
+        "RetainGlobalLatest"
+      ],
+      "ordinals": [
+        11
+      ],
+      "confidence": "FACT",
+      "on_match": "DESTROY_FOUND_INSTANCE_THEN_CREATE",
+      "direct_arithmetic": "M506463 calls Destroy on selected existing before entering allocation path. This is dirty removal request, not proof of physical unlink before new append.",
+      "callbacks": "Destroy/cleanup ordering and global candidate order remain dependencies.",
+      "evidence": [
+        "MOD-E01:M506463 E7297E9..E7297EC -> E72982F..E729839"
+      ]
+    },
+    {
+      "names": [
+        "RetainGlobalLatestUnique"
+      ],
+      "ordinals": [
+        13
+      ],
+      "confidence": "STRONG_RECONSTRUCTION",
+      "on_match": "Compare existing resolver virtual [+0x120] returned entity with incoming target owner component [+0x10]: equal -> process/queue existing; unequal -> Destroy then create.",
+      "direct_arithmetic": "If processing, dispatch uses EXISTING config policy; global match may be owned elsewhere. No migration rule inferred.",
+      "callbacks": "Do not replace comparison with incoming caster == old owner; exact saved operands must remain explicit.",
+      "evidence": [
+        "MOD-E01:M506463 E7297F7..E729829"
+      ]
+    }
+  ],
+  "missing_stacking_semantics": {
+    "confidence": "UNKNOWN",
+    "classification": "E_GENUINELY_UNKNOWN_IN_AVAILABLE_EVIDENCE",
+    "default": "UNKNOWN",
+    "retained_count": 7022,
+    "alternatives": [
+      {
+        "id": "A",
+        "meaning": "Native default",
+        "status": "UNKNOWN; native ordinal 0 existence does not bind omitted source field."
+      },
+      {
+        "id": "B",
+        "meaning": "Definition-level inherited policy",
+        "status": "UNKNOWN; source namespace/ReferenceModifierName relationship and inheritance precedence not established."
+      },
+      {
+        "id": "C",
+        "meaning": "Runtime caller supplied",
+        "status": "UNKNOWN for policy; caller StackingFlag and life/count overrides do NOT prove caller policy override."
+      },
+      {
+        "id": "D",
+        "meaning": "Context-dependent",
+        "status": "UNKNOWN; no discriminating source-to-runtime loader evidence."
+      },
+      {
+        "id": "E",
+        "meaning": "No closed relation",
+        "status": "RETAIN"
+      }
+    ],
+    "required_evidence": "Exact source-omission -> deserializer/constructor/inheritance/caller -> ModifierConfig.Stacking [+0x18] value chain for pinned version. M103117 binary parser layout alone is insufficient.",
+    "strict_rejection": "Absent, explicit null, unknown enum and ordinal 0 are distinct states; never assign Unique/Replace/Refresh/Independent/Unknow automatically.",
+    "question_id": "MOD-Q2"
+  },
+  "layer_contract": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "fields": {
+      "layer": {
+        "confidence": "FACT",
+        "storage": "TurnBasedModifierInstance [+0x288]",
+        "field": "F259122 _Layer",
+        "getter": "M506325"
+      },
+      "count": {
+        "confidence": "FACT",
+        "storage": "BaseModifierInstance [+0x7c]",
+        "field": "F258620 _Count",
+        "getter": "M504765",
+        "meaning": "Separate value; NOT application count or layer."
+      },
+      "stack_cap": {
+        "confidence": "FACT",
+        "getter": "M506327",
+        "arithmetic": "max(1, instance[+0x2e0] + instance[+0x270])",
+        "limit": "Exact binding/precedence of BaseMaxLayer, _ExtraMaxLayer, caller MaxLayer not closed."
+      },
+      "layer_increment": {
+        "confidence": "FACT",
+        "fields": [
+          "AddModifier.LayerAddWhenStack F98605",
+          "TurnBasedModifierInstance._LayerAddWhenStack F259116",
+          "_LayerForceSetWhenStack F259133"
+        ],
+        "meaning": "Fields exist independently of Count and Layer; update arithmetic and precedence UNKNOWN."
+      },
+      "application_count": {
+        "confidence": "UNKNOWN",
+        "meaning": "No recovered universal application counter. Terra trace count must not drive Layer."
+      },
+      "stack_source": {
+        "confidence": "UNKNOWN",
+        "meaning": "No recovered universal per-layer caster/provider record; retain source context without inventing ownership."
+      }
+    },
+    "observed_dependency": "M506464 reads prior Count and Layer separately, computes a guard partly from layer/cap, then later compares both prior values to current values for UI/notification conditions. There is also param/config flag gating of the cap check; not unconditional layer >= cap.",
+    "property_contribution": "Asta FireAddedRatio OnStack explicitly executes StackProperty. M506199/M506495 create keyed contributions tracked per modifier, M506312/M506496 remove those keys. This does not prove every layer change recomputes every property.",
+    "per_layer_dynamic_value": "MCommon_DOT_Electric OnStack reads Layer into a DynamicValue; BlackSwan AddModifier supplies independent dynamic LayerAddWhenStack/MaxLayer. Layer-derived formulas are payload-specific, not an implicit count multiplier.",
+    "refresh_duration": "Only via selected stacking/lifetime transitions; no universal refresh-on-layer-change rule.",
+    "callbacks_and_source_change": "Exact IncLayer M506304 -> OnStack M506305 -> dirty/recompute/OnReplace/caster cache behavior UNKNOWN.",
+    "question_id": "MOD-Q3",
+    "evidence": [
+      "MOD-E01:M506464",
+      "MOD-E03:M506325/M506327",
+      "MOD-E04",
+      "MOD-E08",
+      "MOD-C-ASTA-PROPERTY",
+      "MOD-C-ELECTRIC-LAYER",
+      "MOD-C-BLACKSWAN-ADD"
+    ]
+  },
+  "lifetime_dependencies": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "not_lookup_inputs": [
+      "duration/current life",
+      "turn count",
+      "action count",
+      "wave",
+      "dispel eligibility",
+      "remove event",
+      "death",
+      "owner removal",
+      "caster removal"
+    ],
+    "identity_effect": "No comparison of these fields in M520252. Their effect on State can indirectly change lookup eligibility; owner removal changes container availability.",
+    "stacking_transition_inputs": [
+      "CurrentLife",
+      "previous_life sentinel",
+      "caller/config life selection",
+      "LifeStepImmediately and other caller fields retained as separate effects"
+    ],
+    "scope_boundary": "Do not infer time unit, decrement hook, wave/reset behavior, dispel order, death/caster/owner cleanup. These are independent lifetime/event dependencies.",
+    "source_observation": "MCommon_DOT_Electric has LifeStepMoment=ModifierPhase1End; sampled BlackSwan submodifier has RemoveWhenCasterDead. These do not alter duplicate key by themselves.",
+    "strict_rejection": "Missing life is not proven permanent; None cannot replace native -1 sentinel; no blanket decrement-per-action."
+  },
+  "callback_dependencies": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "new_instance_order": [
+      "construct",
+      "append to ordered owner collection",
+      "native OnAdded M506175",
+      "conditional native OnActivate M506176"
+    ],
+    "native_vs_source_names": "OnAdded/OnActivate native methods are not automatically source OnAdd/OnCreate/OnStack events. Map names only through proven dispatch.",
+    "stacking_calls": "Policy-specific direct _OnModifierValueChanged(3), set_Count and OnReplace call edges/order are recorded in stacking_policies. No universal re-fire OnAdd or remove-then-add.",
+    "unknown": [
+      "Initial public callback order and registration point",
+      "OnStack / OnLayerChange dispatch for each transition and at cap",
+      "Property removal/re-add/recompute relative to layer/dynamic/source updates",
+      "Callback/event registration change on source/provider replacement",
+      "Destroy callbacks versus physical dirty removal"
+    ],
+    "supported_contribution_boundary": "Own property contributions by exact modifier instance token and returned component key. Do not identify contribution by ModifierName only.",
+    "strict_rejection": "No callback no-op placeholder or fabricated total order when transition requires effects.",
+    "question_id": "MOD-Q3",
+    "evidence": [
+      "MOD-E01:M506175/M506176/M506464",
+      "MOD-E04"
+    ]
+  },
+  "semantic_families": [
+    {
+      "id": "LOCAL_NAME_FLAG_LOOKUP",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "selector": "Explicit policies 0/1/2/3/4/5/6/9/10, bound target and flag",
+      "meaning": "Name + owner collection + exact/wildcard flag; no caster/provider filtering by caller.",
+      "count": "Not recounted."
+    },
+    {
+      "id": "LOCAL_CASTER_LOOKUP",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "selector": "ReplaceByCaster / ReplaceByCasterOrUnStack",
+      "catalog_observation": {
+        "ReplaceByCaster": 1462,
+        "ReplaceByCasterOrUnStack": 5
+      },
+      "meaning": "Add effective caster binding; provider filter remains null."
+    },
+    {
+      "id": "LOCAL_CASTER_PROVIDER_LOOKUP",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "selector": "Native ordinal 12 ReplaceByCasterAbility",
+      "meaning": "Concrete caster plus provider object equality; no selected corpus definition of this policy established.",
+      "count": "No count inferred."
+    },
+    {
+      "id": "GLOBAL_LOOKUP",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "selector": "RetainGlobalLatest / RetainGlobalLatestUnique",
+      "meaning": "Manager-wide scope; owner-specific target remains constructor destination; order unresolved."
+    },
+    {
+      "id": "MULTI_INSTANCE_ALLOWED",
+      "confidence": "FACT",
+      "selector": "Multiple",
+      "catalog_observation": 140,
+      "meaning": "Same lookup identity can coexist; no unique index on lookup tuple."
+    },
+    {
+      "id": "EXPLICIT_STACKING_POLICY",
+      "confidence": "FACT",
+      "selector": "Stacking field explicitly named",
+      "meaning": "Partition into lookup/decision/arithmetic descriptors; does not certify effects or runtime readiness."
+    },
+    {
+      "id": "MISSING_STACKING",
+      "confidence": "FACT",
+      "catalog_observation": 7022,
+      "meaning": "Conflict-free missing family. Default UNKNOWN; reject dependent application."
+    },
+    {
+      "id": "CONFLICTING_DEFINITION",
+      "confidence": "FACT",
+      "catalog_observation": 61,
+      "meaning": "Unresolved source variant must be rejected before request/lookup."
+    },
+    {
+      "id": "UNKNOWN_APPLICATION_BINDING",
+      "confidence": "UNKNOWN",
+      "selector": "Any policy with unresolved provider/caster/flag mapping or absent field semantics",
+      "meaning": "Cross-cutting rejection family, not an additional census bucket."
+    }
+  ],
+  "negative_evidence": [
+    {
+      "id": "MOD-N1",
+      "confidence": "FACT",
+      "statement": "Bridge duplicate_application_cases claims provider filters for 7/8; saved caller instructions instead write null. Actual provider filter is supplied for 12.",
+      "evidence": "M506463 E7297A7 vs E7297C1; saved switch rows"
+    },
+    {
+      "id": "MOD-N2",
+      "confidence": "FACT",
+      "statement": "Bridge groups Refresh(2) with Replace-family count writes. Saved arms differ: E72A6BD vs E72A659; Refresh has no direct set_Count/OnReplace in its arm.",
+      "evidence": "MOD-E01:M506464 + MOD-E02 redd_switch_evidence"
+    },
+    {
+      "id": "MOD-N3",
+      "confidence": "FACT",
+      "statement": "Name pointer equality is not full predicate success; caster wildcard is early return and bypasses provider. Independent unconditional AND of provider filter would change behavior.",
+      "evidence": "M520252 E43272B and E43279D"
+    },
+    {
+      "id": "MOD-N4",
+      "confidence": "FACT",
+      "statement": "Current Python _matches compares stacking policy where native compares StackingFlag, constrains caster/provider for all policies, omits effective entity alias resolution and lacks separate flag storage.",
+      "evidence": "MOD-E07 vs MOD-E01"
+    },
+    {
+      "id": "MOD-N5",
+      "confidence": "FACT",
+      "statement": "Python maps Replace and ReplaceByCaster both to numeric 2; saved native policy mapping distinguishes Refresh=2, Replace=5, ReplaceByCaster=7. Names must not be reused as ordinal aliases.",
+      "evidence": "MOD-E07::_policy; MOD-E02 switch evidence"
+    },
+    {
+      "id": "MOD-N6",
+      "confidence": "FACT",
+      "statement": "Python unconditionally overwrites dynamic_values on refresh-family and uses source_provider_id=context.caster_id. No inspected native evidence proves either generic rule.",
+      "evidence": "MOD-E07; MOD-E01:M506464"
+    },
+    {
+      "id": "MOD-N7",
+      "confidence": "FACT",
+      "statement": "Bridge instance ordinal is a sandbox projection, not a stable native token; shifting removals change collection indices. Name/owner/len+1 is not guaranteed collision-free after removals.",
+      "evidence": "MOD-E03:M520240; MOD-E01:M520247; MOD-E07:_execute_add_modifier"
+    },
+    {
+      "id": "MOD-N8",
+      "confidence": "FACT",
+      "statement": "Saved enum member-list ordinal of Any is not proof of its integer value. Native predicate explicitly tests flag 100; do not encode Any as list index 6.",
+      "evidence": "MOD-E02 enum_evidence; M520252 E432781"
+    },
+    {
+      "id": "MOD-N9",
+      "confidence": "FACT",
+      "statement": "No selected static sample is a provenance-matched E5 multi-caster execution trace. No selected missing-policy source was joined to a native default assignment.",
+      "evidence": "MOD-E06 samples"
+    },
+    {
+      "id": "MOD-N10",
+      "confidence": "FACT",
+      "statement": "Old source-backed inherited-lifetime fixture has a different reviewed-corpus hash and supplies caster/provider choices explicitly. Its success is not generic InheritCaster/provider evidence.",
+      "evidence": "data/semantics/4.4.54/full_reconstruction/source_backed_certain_self_caster_param_lifetime_add_modifier_components_reference_001.json"
+    }
+  ],
+  "strict_rejections": [
+    "Unresolved definition/name/variant provenance or mixing Adventure semantics with TurnBased automatically.",
+    "Missing Stacking, unrecognized named policy, or source name-to-native value mapping inferred only from English/member order.",
+    "Provider collapsed to caster entity ID; unresolved InheritCaster; unknown flag replaced by Default/Any.",
+    "Treating lookup query as unique instance primary key, or collection index as stable object identity.",
+    "Using native wildcard caster plus provider as an unconditional provider-only filter.",
+    "Selecting global first by invented sorting, refreshing pending instance synchronously, or suppressing required delayed/unstack effects.",
+    "Computing Layer from Count/application count; assuming initial Layer=1 or default cap/refresh duration.",
+    "Committing full transition from life/count arithmetic alone while OnReplace, dynamics, source update or callbacks remain unresolved.",
+    "Name-only removal when source requests caster filtering; assuming first/all cardinality or registration/dirty cleanup ordering.",
+    "Using current live GameAssembly with saved RVAs or treating reference execution success as native truth."
+  ],
+  "terra_contract": {
+    "readiness": "PARTIAL",
+    "confidence": "STRONG_RECONSTRUCTION",
+    "architecture_decomposition": "CLOSED_AS_ABSTRACTION; complete native behavior PARTIAL.",
+    "terminology": [
+      "ModifierApplicationRequest",
+      "ModifierLookupQuery",
+      "ModifierLookupResult",
+      "ModifierInstance",
+      "StackingTransition"
+    ],
+    "schemas": {
+      "ModifierApplicationRequest": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "inputs": {
+          "definition_ref": "Exact resolved definition and provenance; raw Stacking presence/name plus verified policy descriptor.",
+          "target_owner_ref": "Entity + owning component; explicit target selection result.",
+          "caller_ability_ref": "Optional caller ability INSTANCE/context identity, not definition name.",
+          "source_provider_ref": "Opaque provider object token + binding provenance, independent of entity ID.",
+          "caster_binding": "Direct caster entity, effective matching ID and resolver semantics retained independently.",
+          "ability_owner_ref": "Owning entity of caller ability, if known.",
+          "source_modifier_instance_ref": "Exact callback modifier token if applicable.",
+          "inherit_caster": "Raw source presence/value plus resolved binding status.",
+          "stacking_flag": "Raw source presence/name and separately resolved native query value.",
+          "runtime_parameters": "Count/LifeTime/MaxLayer/LayerAddWhenStack/dynamic values/strings/snapshot context, each explicit/absent/unresolved and with provenance.",
+          "application_site_ref": "Behavior/JSON pointer, separate from primary identity.",
+          "lifecycle_context": "Pending/activation gates, source callback context and effect adapters."
+        },
+        "safe_to_implement": "Lossless immutable request representation and validation.",
+        "strict_reject": "Do not produce a runnable request by assigning unknown default policy, provider, flag, layer, life or context.",
+        "unknown": "Source-to-native binding and full initialization of many fields; see Q1/Q2/Q3."
+      },
+      "ModifierLookupQuery": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "contract_ref": "#/lookup_query_contract",
+        "safe_to_implement": "Explicit local/global scope, name/state/flag/caster/provider query fields with native branch-sensitive filters.",
+        "strict_reject": "All-fields tuple as primary identity; omitted values converted into sentinel defaults.",
+        "unknown": "Unbound provider/effective caster and global traversal adapters."
+      },
+      "ModifierLookupResult": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "variants": [
+          "NONE(scope/order evidence)",
+          "FIRST_MATCH(instance_ref, owning_component_ref, collection_position, observed_state)",
+          "UNRESOLVED(reason, question_id)"
+        ],
+        "diagnostics": "Optional ordered matched references/cardinality only when an enumeration is explicitly performed; FIRST_MATCH alone does not assert there are no further matches.",
+        "safe_to_implement": "Local forward scan yields first or none; null/malformed instance entries require explicit handling rather than fabricated matches.",
+        "strict_reject": "Treating FIRST_MATCH as proof of uniqueness or automatically mutating all same-name objects.",
+        "unknown": "Native global component ordering; snapshot/reentrant lookup timing across callbacks."
+      },
+      "ModifierInstance": {
+        "confidence": "PLAUSIBLE_MODEL",
+        "fields": {
+          "instance_ref": "Opaque stable Terra token; native encoding UNKNOWN.",
+          "definition_ref": "Actual resolved config reference and name; retain existing config for post-match dispatch.",
+          "owner_component_ref": "Owning container plus explicit owner entity.",
+          "ordered_position": "Derived collection order only, not persistent identity.",
+          "stored_caster_binding": "Native cache/ref binding if supplied; otherwise UNKNOWN.",
+          "stored_provider_binding": "Native opaque object/resolver binding if supplied; otherwise UNKNOWN.",
+          "source_entity_binding": "Separate from caster cache and provider object.",
+          "application_provenance": "Caller ability/source modifier/site/history retained as model provenance; not asserted native fields.",
+          "stacking_flag": "Separate storage from definition.Stacking; exact initialized value must be resolved.",
+          "state": "ToBeAdded/Alive/ToBeRemoved/Removed with explicit lifecycle adapter.",
+          "layer": "Independent known/unknown Layer value.",
+          "count": "Independent known/unknown Count value.",
+          "lifetime": "CurrentLife, previous-life sentinel, units and update ownership separately represented.",
+          "dynamic_values": "Modifier-local store/injections and definition read-info with separate update policy.",
+          "contribution_refs": "Per-instance ordered property contribution keys and callback registration ownership."
+        },
+        "safe_to_implement": "Data separation and stable token/ordered collection infrastructure; explicit UNKNOWN values are representable.",
+        "strict_reject": "Claiming token format, universal source preservation, field defaults or direct contribution formula as native truth.",
+        "unknown": "True native primary identity encoding; initial and replacement stored source/dynamic/layer rules."
+      },
+      "StackingTransition": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "inputs": [
+          "Bound request",
+          "Lookup result",
+          "Incoming policy decision descriptor",
+          "Matched existing config policy when processing",
+          "Resolved parameter/value effects and lifecycle hooks"
+        ],
+        "variants": [
+          "CREATE_NEW",
+          "PROCESS_EXISTING",
+          "QUEUE_PENDING_EXISTING",
+          "DESTROY_SELECTED_THEN_CREATE",
+          "REJECT_UNRESOLVED"
+        ],
+        "outputs": [
+          "selected existing/new instance token as appropriate",
+          "ordered direct state-write plan",
+          "required source/dynamic/layer/lifetime effects",
+          "required callback/property/lifecycle hooks",
+          "evidence/confidence and unresolved question IDs"
+        ],
+        "safe_to_implement": "Separate dispatcher and declarative transition plan. Multiple maps found/none to CREATE_NEW. Refresh and Replace-family have separate direct-effect plans. Pending matches can produce QUEUE_PENDING_EXISTING descriptor.",
+        "strict_reject": "Do not commit a direct-write projection as a complete native transition when any required hook or parameter binding is unknown. Do not hide UNKNOWN with no-op hooks.",
+        "unknown": "General layer increment, dynamic overwrite, stored source change, new initialization and full callback/lifetime ordering."
+      }
+    },
+    "pipeline": [
+      {
+        "step": "A_RESOLVE_DEFINITION_AND_REQUEST",
+        "inputs": [
+          "ModifierName",
+          "source context",
+          "definition provenance",
+          "application fields"
+        ],
+        "reads": [
+          "Supplied definition catalog resolution",
+          "presence-aware bindings"
+        ],
+        "writes": [
+          "ModifierApplicationRequest only"
+        ],
+        "identity": "Definition identity/provenance separate from instance identity.",
+        "ordering": "Before query construction.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Unambiguous definition selection and request container.",
+        "strict_reject": "Unknown/conflicting name/definition, missing Stacking default, unresolved runtime source binding.",
+        "unknown": "Default/inheritance and some caller binding; Q1/Q2."
+      },
+      {
+        "step": "B_BUILD_LOOKUP_QUERY",
+        "inputs": [
+          "Bound request",
+          "incoming policy"
+        ],
+        "reads": [
+          "Lookup-profile descriptor",
+          "native filter values and owner scope"
+        ],
+        "writes": [
+          "ModifierLookupQuery only"
+        ],
+        "identity": "No instance allocation; no uniqueness key constructed.",
+        "ordering": "Before any instance mutation.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Compile explicit policy profiles including 7/8 null-provider vs 12 provider.",
+        "strict_reject": "Unknown policy, implicit default flags, provider=caster, universal independent AND filters.",
+        "unknown": "Concrete resolver object/effective-ID binding Q1."
+      },
+      {
+        "step": "C_FIND_FIRST_OR_NONE",
+        "inputs": [
+          "Query",
+          "ordered owner collection"
+        ],
+        "reads": [
+          "Name",
+          "State",
+          "StackingFlag",
+          "resolved caster/provider only on predicate-selected path"
+        ],
+        "writes": [
+          "ModifierLookupResult; no intended gameplay mutation"
+        ],
+        "identity": "Return existing instance reference, never substitute name/index.",
+        "ordering": "Forward local scan; first match only. Lazy resolution cache behavior is separate from canonical read-only adapter.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Local first-match lookup with explicit bound resolvers.",
+        "strict_reject": "Unresolved candidate order or filters; fabricated global sorting; first-result implies uniqueness.",
+        "unknown": "Global order and cache materialization details Q1/Q4."
+      },
+      {
+        "step": "D_CHOOSE_TRANSITION",
+        "inputs": [
+          "Request",
+          "result",
+          "incoming policy",
+          "existing config"
+        ],
+        "reads": [
+          "Found state",
+          "policy descriptors",
+          "special comparison for ordinal 13"
+        ],
+        "writes": [
+          "StackingTransition plan"
+        ],
+        "identity": "Reuse selected token for process; allocate new token only on create. Multiple creates despite match.",
+        "ordering": "After query result, before state writes.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Explicit create/process/queue/destroy-create/reject dispatcher.",
+        "strict_reject": "if found then mutate; dispatch existing arithmetic using incoming policy unconditionally.",
+        "unknown": "Global/deferred/unstack completion Q4."
+      },
+      {
+        "step": "E_APPLY_RESOLVED_STATE_EFFECTS",
+        "inputs": [
+          "Transition",
+          "resolved values",
+          "complete required hook contracts"
+        ],
+        "reads": [
+          "Existing life and previous-life sentinel",
+          "Count/Layer snapshots",
+          "incoming injections"
+        ],
+        "writes": [
+          "Only evidenced direct fields plus fully bound effects"
+        ],
+        "identity": "Selected instance is stable during reuse; source-slot update independent of lookup filtering.",
+        "ordering": "Respect recorded per-arm direct calls; no total effect order invented.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Direct Refresh/Replace/Prolong/Merge/keep-life projections as explicitly bounded plans, or execution only within supplied complete adapters.",
+        "strict_reject": "Unproved layer increment/dynamic overwrite/source retention/lifetime defaults; pending immediate mutation.",
+        "unknown": "Q3/Q4 effects and initialization."
+      },
+      {
+        "step": "F_LIFECYCLE_CALLBACK_PROPERTY_HOOKS",
+        "inputs": [
+          "Created/reused/destroy-requested objects",
+          "bound lifecycle context"
+        ],
+        "reads": [
+          "Native state",
+          "callback registrations",
+          "owned contribution refs"
+        ],
+        "writes": [
+          "Proven lifecycle state/registration/property effects only"
+        ],
+        "identity": "Registration/contribution ownership keyed by exact modeled instance, not name.",
+        "ordering": "New-object native append -> OnAdded -> conditional OnActivate; other public callback order is unresolved.",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "safe_to_implement": "Hook interfaces, explicit unresolved results, per-instance keyed contribution bookkeeping.",
+        "strict_reject": "Empty hook substitutes; automatic OnAdd/OnLayerChange; universal remove/re-add or dirty deregistration ordering.",
+        "unknown": "Q3/Q4 callback, recompute and delayed completion."
+      }
+    ],
+    "safe_now": [
+      "Schemas that preserve missing/explicit/unresolved values and separate source roles.",
+      "Opaque stable modeled instance token and ordered owner collections, labeled as Terra design.",
+      "Branch-sensitive local ModifierLookupQuery and first-match result with explicitly supplied native-equivalent resolver bindings.",
+      "Separate incoming-policy lookup profile and post-query decision dispatcher.",
+      "Multiple CREATE_NEW decision regardless of a match.",
+      "Refresh direct life/previous-life plan distinct from Replace-family set_Count/OnReplace plan.",
+      "Evidence-backed direct lifetime/count projections with sentinel and existing-config distinctions, without claiming full transition completion.",
+      "Strict rejection before unknown effects and callback/property ownership interfaces."
+    ],
+    "not_ready": [
+      "Generic source-driven application while InheritCaster/provider/StackingFlag bindings remain unknown.",
+      "Any implicit missing Stacking policy or unsupported name fallback.",
+      "New instance Layer/lifetime/dynamic/source/flag defaults.",
+      "Unproved stored provider/caster preservation or overwrite.",
+      "Universal dynamic-map overwrite or Layer increments based on Count/applications.",
+      "General public callback ordering, re-registration, property recomputation or lifetime expiry/refresh hooks.",
+      "Global first-match order, delayed drain, policy-8 unstack fan-out and full query/remove filtering."
+    ],
+    "validation_before_commit": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "statement": "Terra should validate required bindings/hooks before committing gameplay mutations so UNKNOWN remains a strict boundary. This is an implementation discipline, not a recovered native atomicity guarantee."
+    },
+    "handoff": "Domain 2 is frozen after Pass 2. Terra can implement the Pass-1 infrastructure and explicit native-slot/ABI boundaries, but generic source binding is BLOCKED_BY_EVIDENCE. Do not infer missing helper/type/enum/default relations or reopen Q2-Q5.",
+    "source_binding_pass2": {
+      "status": "BLOCKED_BY_EVIDENCE",
+      "confidence": "STRONG_RECONSTRUCTION",
+      "safe_to_implement": [
+        "Keep TaskContext source entity, context virtual object, target owner component, provider object and direct/effective IDs in separate request slots.",
+        "Represent conditional provider-selection dependency and exact call ABI without assigning unknown helper behavior.",
+        "Support already-validated decoded numeric flag transport as an adapter boundary; no source enum/default inference."
+      ],
+      "strict_reject": [
+        "Generic CasterSelf/TargetSelf/missing InheritCaster source binding until M506052 branch mapping is available.",
+        "Assuming provider always equals caller ability or target/source entity ID.",
+        "Inferring Any/Default/missing numeric flag from downstream wildcard or declaration order.",
+        "Claiming a complete source-binding implementation from direct config-slot copy alone."
+      ],
+      "lookup_infrastructure": "Pass-1 safe infrastructure retained unchanged; bound inputs are still required.",
+      "remaining_dependencies": "MOD-Q1-G1..G4; Q2-Q5 frozen and unchanged.",
+      "readiness": "PARTIAL"
+    }
+  },
+  "unknowns": [
+    {
+      "id": "MOD-Q1",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do AddModifier.InheritCaster F98608, StackingFlag F98599 and TaskContext source/caller produce M506463 provider typeref 286703, effective caster ID and param[+0x5c]?",
+      "missing_relationship": "Caller transport recovered, but M506052 InheritCaster field/enum branch; config[+0x70] cache/helper 0x158C21E0 provider/type relation; and source F98599 enum/absence-to-config[+0x3c] mapping remain unbound.",
+      "best_evidence_source": "Exact provenance-matched M506052.DINFDBMMMCD (0x16181C70, return typeref 286703), provider cache/helper 0x158C21E0 and named config/enum loader mapping; see source_binding_pass2.remaining_binding_gaps. These bodies/mappings are outside the authorized M506048 window; not claimed absent repository-wide.",
+      "strict_rejection": "Reject automatic source lowering for CasterSelf/TargetSelf/absence and named/missing flag without verified binding. Preserve Pass-1 query infrastructure only.",
+      "pass": 2,
+      "source_binding_contract_ref": "#/source_binding_pass2"
+    },
+    {
+      "id": "MOD-Q2",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "What value reaches ModifierConfig.Stacking [+0x18] when the pinned source definition omits Stacking?",
+      "missing_relationship": "Source absence -> constructor/deserializer/inherited definition/caller precedence -> actual policy value.",
+      "best_evidence_source": "Provenance-matched definition loader/constructor + inheritance handling, or exact dumped native config from a selected missing-field definition. Saved M103117 layout and enum names alone cannot distinguish A/B/C/D.",
+      "strict_rejection": "All unresolved missing-stacking definitions, including retained 7022 family."
+    },
+    {
+      "id": "MOD-Q3",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do constructor M506132, OnReplace M506158 and IncLayer M506304/OnStack M506305 transform Layer F259122, _LayerAddWhenStack F259116, dynamics and source resolver/cache fields, and order callback/property effects?",
+      "missing_relationship": "Request/definition initialization and matched life/count boundary -> exact layer/cap/force-set mutation -> source/dynamic update -> callback and keyed property recomputation.",
+      "best_evidence_source": "Matched saved constructor/OnReplace/IncLayer/OnStack and their property/callback dispatch bodies; MODIFIER_PROPERTY_EFFECT_09 only closes keyed contribution boundary.",
+      "strict_rejection": "Universal initial layer, auto-increment, dynamic map overwrite, provider retention/overwrite, inferred OnAdd/OnLayerChange order."
+    },
+    {
+      "id": "MOD-Q4",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "What ordering governs GlobalFindModifierInstance M504365 across components and deferred/post-add paths M506465/M506672, including removal before new activation?",
+      "missing_relationship": "Global manager iteration order -> selected first object; delayed-add record -> drain trigger/order; RemoveUnStackModifier group fan-out -> affected identities and callback boundaries.",
+      "best_evidence_source": "Matched manager collection/order and queue-drain caller plus M506672 RemoveUnStackModifier argument/group dataflow. Existing bridge explicitly leaves global order and delayed drain unresolved.",
+      "strict_rejection": "Ambiguous global selection, immediate pending refresh, guessed unstack fan-out or cleanup ordering."
+    },
+    {
+      "id": "MOD-Q5",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do ByIsContainModifier.CasterFilter/AddedOrAlive and RemoveModifier.OnlyRemoveCasterAdded select native filters, overloads and first/all cardinality?",
+      "missing_relationship": "Serialized query/remove caller context -> search key and state mask -> complete affected collection, independently of Add profile.",
+      "best_evidence_source": "Matched generated predicate/remove executors with full filter argument dataflow, anchored by MOD-C-BLACKSWAN-QUERY and MOD-C-ASTA-REMOVE. Name-only HasModifier M520246 is insufficient.",
+      "strict_rejection": "Treating remove/query as automatic inverse of application or discarding explicit source filters."
+    }
+  ],
+  "do_not_reason_again": [
+    "TriggerAbility is frozen BLOCKED_BY_EVIDENCE; no Pass 5 search.",
+    "Accept baseline conflation and catalog counts; no full census.",
+    "Do not use old RVAs on the mismatched live GameAssembly.",
+    "Do not reopen catalog/census or TriggerAbility during Modifier Pass 1 closeout.",
+    "ModifierLookupQuery != native instance primary identity; true native identity encoding remains UNKNOWN.",
+    "Lookup uses independent StackingFlag and local first-match behavior, not policy equality.",
+    "Policies 7/8 pass null provider; 12 passes provider. Null is an absent predicate constraint only within the inspected branch, never automatic provider=caster.",
+    "Caster -1/0 bypasses provider comparison after name/state/flag; preserve this ordering.",
+    "Multiple creates despite a lookup match; found does not force mutate.",
+    "Refresh arm differs from Replace-family: direct life/previous-life update, no direct Count setter or OnReplace in that arm.",
+    "Incoming policy chooses lookup/application decision; existing config chooses _ProcessModifierRedd arithmetic.",
+    "Missing Stacking default stays UNKNOWN; explicit Unknow ordinal 0 is not omission.",
+    "Static same-name cross-caller samples do not prove runtime coexistence.",
+    "Current Python and old bridge prose are not native truth where contradicted by saved code.",
+    "No production implementation, full tests, broad native reverse or other domains in this session.",
+    "Stop after Pass 1 completion; only the five exact questions justify future evidence work.",
+    "Pass 2 ONLY MOD-Q1. Pass-1 lookup, independent StackingFlag, first-match, 7/8-null and 12-provider arguments, caster wildcard bypass, Multiple, Refresh and missing Stacking default are fixed. Do not reopen Q2-Q5; do not start Pass 3.",
+    "M506048 body 6592 bytes was reconstituted and SHA-256 verified in Pass 2; do not re-prove it.",
+    "M506048 provider seed is M506052.DINFDBMMMCD(executor,target), possibly replaced by a cache entry/helper result before M506463 r9. Do not collapse seed and final provider.",
+    "M506048 directly copies config[+0x3c] to runtime param[+0x5c]; source F98599 enum/default mapping is not closed.",
+    "TaskContext get_SourceEntity -> param[+0x18] and TaskContext cached/virtual object -> param[+0x28] are separate from final provider.",
+    "MOD-Q1 is BLOCKED_BY_EVIDENCE at exact helper/field/type boundaries. Domain 2 FROZEN; no Pass 3 or other domain work in this session."
+  ],
+  "evidence_audit": {
+    "saved_bridge_hash": "76868325b89aad061a79160daeb32f4d294b25ec37b0e8027d53ba2c9e512e43",
+    "method_body_checks": [
+      {
+        "method_index": 506463,
+        "body_sha256": "52bf06f9b21da99906aab883fbb32497f98444253e8dbce1e938e9a69e7b472a",
+        "reconstructed_sha256": "52bf06f9b21da99906aab883fbb32497f98444253e8dbce1e938e9a69e7b472a",
+        "covered_bytes": 3424,
+        "expected_bytes": 3424,
+        "jump_table_reconstruction": true,
+        "verified": true
+      },
+      {
+        "method_index": 506464,
+        "body_sha256": "0ab5fb298a85d4029405456a00796d56413b70f0b8412d6d8e6675a98c7ab731",
+        "covered_bytes": 1804,
+        "expected_bytes": 1808,
+        "jump_table_reconstruction": true,
+        "verified": false,
+        "status": "INCOMPLETE_RECONSTRUCTION_NOT_A_PROVEN_HASH_MISMATCH",
+        "missing_bytes": "Last 4 bytes of full-gap window after switch table, RVA E72AACC..E72AACF, absent from saved disassembly",
+        "limit": "Do not fill missing bytes or claim full byte revalidation; retain snapshot-tagged instruction and switch evidence at STRONG_RECONSTRUCTION for transition behavior."
+      },
+      {
+        "method_index": 520243,
+        "body_sha256": "4e65b4a8c758d58e9e3ece5d33bb5b307a888af018497539a49fb3d3be822a33",
+        "reconstructed_sha256": "4e65b4a8c758d58e9e3ece5d33bb5b307a888af018497539a49fb3d3be822a33",
+        "covered_bytes": 327,
+        "expected_bytes": 327,
+        "jump_table_reconstruction": false,
+        "verified": true
+      },
+      {
+        "method_index": 520252,
+        "body_sha256": "732e747e5edaab0d85b5bf3e8099956ab49f1699a7ed39c1ec5bb4b1f8d4d7de",
+        "reconstructed_sha256": "732e747e5edaab0d85b5bf3e8099956ab49f1699a7ed39c1ec5bb4b1f8d4d7de",
+        "covered_bytes": 356,
+        "expected_bytes": 356,
+        "jump_table_reconstruction": false,
+        "verified": true
+      }
+    ],
+    "live_binary_read": false,
+    "predicate_tail": {
+      "path": "data/semantics/4.4.54/modifier_lifecycle_bridge_08.json#/candidate_table/3/native_evidence/full_gap_disassembly",
+      "span": "E432844..E432898",
+      "status": "Saved full-gap continuation in same provenance-matched record; body_sha256 covers first-ret projection only, not this tail.",
+      "confidence": "STRONG_RECONSTRUCTION"
+    }
+  },
+  "corpus_samples": [
+    {
+      "id": "MOD-COMMON-6",
+      "confidence": "FACT",
+      "record_index": 1816,
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Kafka_00_Ability.json:Avatar_Kafka_00_PassiveAtk_Ability",
+      "path": "/entrypoints/0/operations/23",
+      "name": "MCommon_DOT_Electric",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "Chance": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              -629140651
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "DynamicValues": {
+          "Modifier_Electric_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -2051134099
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          }
+        },
+        "LifeTime": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              105444080
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "ModifierName": {
+          "Value": "MCommon_DOT_Electric"
+        },
+        "StackingFlag": "CharacterSkill",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AbilityTargetEntity"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_Kafka_00_Ability.json",
+          "raw_sha256": "c9cc440f2dc843f46dcf1b3c264fa26a60aabe7d2738cc1340687be99cc13a24",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "limitation": "Static application site and source context only; no simultaneous runtime multi-caster trace.",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/1816/entrypoints/0/operations/23"
+    },
+    {
+      "id": "MOD-COMMON-7",
+      "confidence": "FACT",
+      "record_index": 1824,
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Kafka_00_Ability.json:Avatar_Kafka_00_Skill03_Phase02",
+      "path": "/entrypoints/0/operations/9",
+      "name": "MCommon_DOT_Electric",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "Chance": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              -1780491230
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "DynamicValues": {
+          "Modifier_Electric_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -2051134099
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          }
+        },
+        "LifeTime": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              105444080
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "ModifierName": {
+          "Value": "MCommon_DOT_Electric"
+        },
+        "StackingFlag": "CharacterSkill",
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AllEnemy"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_Kafka_00_Ability.json",
+          "raw_sha256": "c9cc440f2dc843f46dcf1b3c264fa26a60aabe7d2738cc1340687be99cc13a24",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "limitation": "Static application site and source context only; no simultaneous runtime multi-caster trace.",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/1824/entrypoints/0/operations/9"
+    },
+    {
+      "id": "MOD-COMMON-9",
+      "confidence": "FACT",
+      "record_index": 3979,
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999010",
+      "path": "/entrypoints/3/operations/0",
+      "name": "MCommon_DOT_Electric",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "Chance": {
+          "FixedValue": {
+            "Value": 1
+          },
+          "IsDynamic": false
+        },
+        "DynamicValues": {
+          "Modifier_Electric_DamagePercentage": {
+            "FixedValue": {
+              "Value": 0.5
+            },
+            "IsDynamic": false
+          }
+        },
+        "InheritCaster": "CasterSelf",
+        "LifeTime": {
+          "FixedValue": {
+            "Value": 3
+          },
+          "IsDynamic": false
+        },
+        "ModifierName": {
+          "Value": "MCommon_DOT_Electric"
+        },
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
+          "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "limitation": "Static application site and source context only; no simultaneous runtime multi-caster trace.",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/3979/entrypoints/3/operations/0"
+    },
+    {
+      "id": "MOD-COMMON-10",
+      "confidence": "FACT",
+      "record_index": 3992,
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Level/Level_MazeBuff_Ability.json:StageAbility_3999027",
+      "path": "/entrypoints/2/operations/0/arguments/TaskList/0",
+      "name": "MCommon_Element_Electric",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "Chance": {
+          "FixedValue": {
+            "Value": 1
+          },
+          "IsDynamic": false
+        },
+        "DynamicValues": {
+          "MDF_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                462955996
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          }
+        },
+        "InheritCaster": "CasterSelf",
+        "LifeTime": {
+          "FixedValue": {
+            "Value": 1
+          },
+          "IsDynamic": false
+        },
+        "ModifierName": {
+          "Value": "MCommon_Element_Electric"
+        },
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Level/Level_MazeBuff_Ability.json",
+          "raw_sha256": "d67a60ac747219df386481f3d37db82af75fe6be445f56a361f4938ff541f1da",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "limitation": "Static application site and source context only; no simultaneous runtime multi-caster trace.",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/3992/entrypoints/2/operations/0/arguments/TaskList/0"
+    },
+    {
+      "id": "MOD-C-ASTA-REMOVE",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json:Avatar_Asta_SkillTree02",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/832/modifier_payload/M_Asta_Tree02/_CallbackList/0/CallbackConfig/0",
+      "payload": {
+        "$type": "RPG.GameCore.RemoveModifier",
+        "ModifierName": {
+          "Value": "MAvatar_Asta_FireAddedRatio"
+        },
+        "OnlyRemoveCasterAdded": true,
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetConcat",
+          "Targets": [
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllTeamMember"
+            },
+            {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "AllUnselectable"
+            }
+          ]
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+          "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "RemoveModifier explicitly supplies OnlyRemoveCasterAdded=true; target set includes AllTeamMember and AllUnselectable.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-ASTA-ADD",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json:Avatar_Asta_SkillTree02",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/832/modifier_payload/M_Asta_Tree02/_CallbackList/1/CallbackConfig/0",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "DynamicValues": {
+          "MDF_PropertyValue": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -772698854
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          }
+        },
+        "ModifierName": {
+          "Value": "MAvatar_Asta_FireAddedRatio"
+        },
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "AllTeamMember"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+          "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "Same named buff is applied by OnStack to AllTeamMember; this source site does not itself encode the complete instance key.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-ASTA-PROPERTY",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json:GlobalModifiers:MAvatar_Asta_FireAddedRatio",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/837/modifier_definition_payload",
+      "payload": {
+        "DynamicValues": {
+          "Floats": {
+            "2128130574": {
+              "ReadInfo": {
+                "Index": 0,
+                "Type": "None"
+              }
+            }
+          }
+        },
+        "Stacking": "ReplaceByCaster",
+        "_CallbackList": [
+          {
+            "CallbackConfig": [
+              {
+                "$type": "RPG.GameCore.StackProperty",
+                "Property": "FireAddedRatio",
+                "PropertyValue": {
+                  "IsDynamic": true,
+                  "PostfixExpr": {
+                    "DynamicHashes": [
+                      2128130574
+                    ],
+                    "FixedValues": [],
+                    "OpCodes": "AQAR"
+                  }
+                },
+                "TargetType": {
+                  "$type": "RPG.GameCore.TargetAlias",
+                  "Alias": "ModifierOwnerEntity"
+                }
+              }
+            ],
+            "Event": "OnStack"
+          }
+        ]
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_Asta_00_Ability.json",
+          "raw_sha256": "82634643cf13d4290698b10d5b8f17e507e086d4d96770f9662513676d0e30ea",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "GlobalModifiers",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "ReplaceByCaster definition explicitly computes FireAddedRatio in OnStack.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-ELECTRIC-LAYER",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json:MCommon_DOT_Electric",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/13703/modifier_definition_payload/_CallbackList/2",
+      "payload": {
+        "CallbackConfig": [
+          {
+            "$type": "RPG.GameCore.SetDynamicValueByModifierValue",
+            "DynamicKey": "_Layer",
+            "Multiplier": {
+              "FixedValue": {
+                "Value": 1
+              },
+              "IsDynamic": false
+            },
+            "ReadTargetType": {
+              "$type": "RPG.GameCore.TargetAlias",
+              "Alias": "ModifierOwnerEntity"
+            },
+            "ValueType": "Layer"
+          }
+        ],
+        "Event": "OnStack"
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigGlobalModifier/GlobalModifier_Common_Specific.json",
+          "raw_sha256": "91446909e4a66beca5af78ff4fc608381a576a9416962af5682881f5394a1fbe",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "ModifierMap",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "OnStack reads Layer via SetDynamicValueByModifierValue.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-BLACKSWAN-ADD",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/906/modifier_payload/M_BlackSwan_P01_ListenAddPoison/_CallbackList/1/CallbackConfig/0/SuccessTaskList/1/FailedTaskList/0",
+      "payload": {
+        "$type": "RPG.GameCore.AddModifier",
+        "Chance": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              -2091397102
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "DynamicValues": {
+          "Basic_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -535368770
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          },
+          "Cast_By_Level": {
+            "FixedValue": {
+              "Value": 0
+            },
+            "IsDynamic": false
+          },
+          "DefenceIgnore": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -784066876
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          },
+          "ExtraLayer_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                902493956
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          },
+          "SecondLayer": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -1191419398
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          },
+          "Spread_DamagePercentage": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                1229408735
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          },
+          "ThirdLayer": {
+            "IsDynamic": true,
+            "PostfixExpr": {
+              "DynamicHashes": [
+                -518271451
+              ],
+              "FixedValues": [],
+              "OpCodes": "AQAR"
+            }
+          }
+        },
+        "LayerAddWhenStack": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              -499324361
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "MaxLayer": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "DynamicHashes": [
+              894700562
+            ],
+            "FixedValues": [],
+            "OpCodes": "AQAR"
+          }
+        },
+        "ModifierName": {
+          "Value": "MAvatar_BlackSwan_00_DOT"
+        },
+        "ShowUIMessageInternalTime": 0.2,
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+          "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "LayerAddWhenStack and MaxLayer are independently dynamic request fields, separate from DynamicValues.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-BLACKSWAN-QUERY",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/906/modifier_payload/M_BlackSwan_Rank04_Listener/_CallbackList/0/CallbackConfig/0/SuccessTaskList/0/Predicate/PredicateList/3",
+      "payload": {
+        "$type": "RPG.GameCore.ByIsContainModifier",
+        "AddedOrAlive": true,
+        "CasterFilter": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "Caster"
+        },
+        "Inverse": true,
+        "ModifierName": {
+          "Value": "M_BlackSwan_00_DOT_Rank04_HaveAddedSP"
+        },
+        "TargetType": {
+          "$type": "RPG.GameCore.TargetAlias",
+          "Alias": "ParamEntity"
+        }
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+          "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "Existence predicate explicitly supplies AddedOrAlive=true and CasterFilter=Caster.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome."
+    },
+    {
+      "id": "MOD-C-MISSING",
+      "confidence": "FACT",
+      "behavior": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json:Avatar_BlackSwan_00_PassiveSkill01",
+      "source_pointer": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json#/records/906/modifier_payload/M_BlackSwan_P01_ListenAddPoison_SubOnEnemy",
+      "payload": {
+        "Stacking_presence": false,
+        "BehaviorFlagList": [
+          "RemoveWhenCasterDead",
+          "ListenBattleEventSkill"
+        ],
+        "callback_events": [
+          "OnCreate",
+          "OnPhase1",
+          "OnBeforeBeingHitAll"
+        ]
+      },
+      "source_refs": [
+        {
+          "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+          "path": "Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+          "raw_sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+          "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+          "source": "TurnBasedGameData",
+          "source_container": "AbilityList",
+          "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+        }
+      ],
+      "statement": "Definition has callbacks and RemoveWhenCasterDead but no Stacking; absence cannot be treated as a harmless empty modifier.",
+      "limitation": "Pinned near-version static source, not executed runtime outcome.",
+      "projection": "Selected presence/flags/events from pointed definition; callback bodies omitted."
+    }
+  ],
+  "evidence_registry": [
+    {
+      "id": "MOD-E01",
+      "kind": "SAVED_NATIVE_SNAPSHOT",
+      "confidence": "FACT",
+      "path": "data/semantics/4.4.54/modifier_lifecycle_bridge_08.json",
+      "sha256": "76868325b89aad061a79160daeb32f4d294b25ec37b0e8027d53ba2c9e512e43",
+      "game_version": "4.4.54",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "manifest": "data/normalized/4.4.54/manifest.json",
+      "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+      "limit": "Only recorded 4.4.54 snapshot; never live file."
+    },
+    {
+      "id": "MOD-E02",
+      "kind": "SAVED_SWITCH_DATA",
+      "confidence": "FACT",
+      "path": "data/raw/4.4.54/modifier_lifecycle_discovery_08.json",
+      "sha256": "fc3383f6fd67c17100700281a32c2c677f1d80c287f4b373531f8ae1e9f669bd",
+      "limit": "Use saved switch deltas, not inferred English roles or enum declaration order as numeric flag values."
+    },
+    {
+      "id": "MOD-E03",
+      "kind": "SAVED_NATIVE_APPLICATION",
+      "confidence": "FACT",
+      "path": "data/semantics/4.4.54/modifier_application_bridge_07.json",
+      "sha256": "3d01b3e43fecba64fa75018fce4609b580f808a16aa8086005b5e448aa951d9d",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc"
+    },
+    {
+      "id": "MOD-E04",
+      "kind": "SAVED_PROPERTY_BOUNDARY",
+      "confidence": "FACT",
+      "path": "data/semantics/4.4.54/modifier_property_effect_09.json",
+      "sha256": "badd9ac393061e01c1523e361ac0e118aaeef8a96ed301166ec09090f2fb922d",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "limit": "Contribution ownership and keyed inverse only; universal lifecycle caller and recomputation order deferred."
+    },
+    {
+      "id": "MOD-E05",
+      "kind": "CATALOG_OBSERVATION",
+      "confidence": "FACT",
+      "path": "data/semantics/4.4.54/full_reconstruction/full_modifier_definition_catalog_001.json",
+      "file_sha256": "2a8462e3d7192a328bfabb74ab0608de9d0588edb6ffd30603f7d43a22fb6bd5",
+      "catalog_sha256": "bd59d8b1bb4d256365b0a34ac8f7cd771ec19011f4397e17409439f2f95cd97e",
+      "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+      "limit": "Existing counts copied; supported means current catalog acceptance, not native closure."
+    },
+    {
+      "id": "MOD-E06",
+      "kind": "PINNED_CORPUS",
+      "confidence": "FACT",
+      "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json",
+      "corpus_sha256": "c89e6f41e133d4b0444fce0388de0b88a66aa6520ae03ce145f212f66b83658d",
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+      "limit": "Static source site facts; no E5 runtime coexistence observation; no browsing or live source changes."
+    },
+    {
+      "id": "MOD-E07",
+      "kind": "REFERENCE_ONLY",
+      "confidence": "FACT",
+      "paths": [
+        "src/hsr_battle_agent/game_data/modifier_lifecycle_reference.py",
+        "src/hsr_battle_agent/game_data/reference_execution.py"
+      ],
+      "limit": "Facts about current Python choices only; no native authority."
+    },
+    {
+      "id": "MOD-E08",
+      "kind": "SAVED_EXACT_METADATA",
+      "confidence": "FACT",
+      "paths": [
+        "data/normalized/4.4.54/fields.json",
+        "data/normalized/4.4.54/methods.json"
+      ],
+      "limit": "Filtered named Modifier fields/methods only; field identity is not offset recovery or behavioral proof."
+    }
+  ],
+  "stacking_transition_contract": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "separation": "Resolve incoming policy into LookupProfile plus application decision strategy BEFORE lookup; apply transition AFTER lookup. The same serialized enum can configure both stages without merging their implementations.",
+    "dispatch_authority": "TryAdd decisions use incoming config [+0x18]; _ProcessModifierRedd dispatch uses existing.ConfigRef [+0xa0]->Stacking [+0x18]. Do not silently switch both to incoming policy when same-name configs differ.",
+    "no_match": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "action": "Create new TurnBasedModifierInstance then ordered append; all named policy branches reach common creation boundary.",
+      "constructor_inputs": [
+        "name",
+        "incoming config reference",
+        "owner AbilityComponent",
+        "provider reference",
+        "runtime param"
+      ],
+      "initial_layer": "UNKNOWN; no universal 1 or application-count fallback",
+      "initial_count": "UNKNOWN unless resolved initialization contract supplied",
+      "initial_lifetime": "UNKNOWN until caller override / config precedence, unit and sentinel are resolved",
+      "initial_dynamic_values": "Preserve incoming injections and definition read info; initialize exactly through a supplied validated adapter, not blind dict copy",
+      "initial_source_identity": "Persist separate roles plus stable instance token; exact native constructor cache setup not fully recovered",
+      "lifecycle": "Append -> native OnAdded -> conditional OnActivate is supported. Pending vs activation guards and public callback order remain UNKNOWN.",
+      "strict_rejection": "Unresolved new-state initialization or required effects means no committed runtime application."
+    },
+    "matched_state_0": {
+      "confidence": "FACT",
+      "action": "Queue parameter for existing instance through M506465; return existing reference.",
+      "evidence": "M506463 E729D51..E729D89",
+      "strict_rejection": "Do not synchronously apply stacking to ToBeAdded; processing trigger/order requires adapter."
+    },
+    "matched_multiple": "Local native first-match selection only; do not mutate every result. Multiple policy still appends. Global ordering must be known separately.",
+    "resolved_runtime_values": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "life": "M506464 E72A5E5..E72A608 uses runtime param nullable [+0x94], otherwise existing config [+0x38]. Field-name binding is partial; not proof of missing Stacking default.",
+      "count": "M506464 E72A608..E72A635 uses nested runtime param [+0x38]->nullable [+0x20], otherwise existing config [+0x14].",
+      "scope_limit": "These are explicit runtime override/config fallback observations for life/count only."
+    },
+    "layer_dynamic_source_effects": "UNKNOWN generic mutations; OnReplace and OnStack linkage must be supplied. Direct lifetime/count projection is not a fully executable stacking transition."
+  },
+  "corpus_sample_conclusions": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "same_name_different_source": "Canonical Kafka PassiveAtk and Skill03 use MCommon_DOT_Electric with CharacterSkill; StageAbility_3999010 uses the same name with explicit CasterSelf and omitted flag. These sites can address an overlapping enemy when targets are bound, but no runtime trace establishes identical target IDs, simultaneous active sources, or flag default.",
+    "same_name_definition": "MCommon_DOT_Electric definition has ReplaceByCaster, MaxLayer=1 and explicit LayerAddWhenStack=1. Generic native profile separates concrete caster/effective ID and exact flag, not provider object for ordinal 7.",
+    "not_evidence": "Advanced/canonical variant pairs were excluded from final examples; not treated as two coexisting casters. Static different source records do not prove runtime instance cardinality.",
+    "application_site": "Different ability name/site alone is not a key. Same resolved caster and flag under profile 7 can select the same object across sites."
+  },
+  "query_remove_contract": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "operations": [
+      {
+        "operation": "AbilityComponent.HasModifier M520246",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "scope": "owner collection",
+        "filters": "Name + State==1",
+        "cardinality": "boolean existential",
+        "evidence": "MOD-E03#/primitives/5",
+        "limit": "Native leaf does not imply all ByIsContainModifier DSL callers use this overload."
+      },
+      {
+        "operation": "AbilityComponent.FindModifierInstance M520243",
+        "confidence": "FACT",
+        "scope": "supplied collection",
+        "filters": "explicit match predicate fields",
+        "cardinality": "first or null",
+        "evidence": "MOD-E01#/primitives/1"
+      },
+      {
+        "operation": "ByIsContainModifier",
+        "confidence": "FACT",
+        "scope": "source TargetType",
+        "filters": "AddedOrAlive / CasterFilter independently appear in corpus",
+        "cardinality": "predicate; exact overload/state-mask lowering UNKNOWN",
+        "evidence": "MOD-C-BLACKSWAN-QUERY"
+      },
+      {
+        "operation": "RemoveModifier",
+        "confidence": "FACT",
+        "scope": "source TargetType",
+        "filters": "OnlyRemoveCasterAdded explicitly present in Asta source",
+        "cardinality": "native first/all/remove order UNKNOWN",
+        "evidence": "MOD-C-ASTA-REMOVE"
+      },
+      {
+        "operation": "RemoveSelfModifier",
+        "confidence": "STRONG_RECONSTRUCTION",
+        "scope": "exact callback instance token and owner",
+        "filters": "direct instance reference, not a name-wide sweep",
+        "cardinality": "one callback instance in reference contract; native cleanup order separate",
+        "evidence": "MOD-E07:reference_execution.py::_execute_remove_self_modifier",
+        "limit": "Reference binding is design boundary, not new native removal proof."
+      }
+    ],
+    "asymmetries": [
+      {
+        "confidence": "FACT",
+        "statement": "Native Add duplicate lookup includes ToBeAdded/Alive (state filter 0), while native HasModifier leaf considers Alive only."
+      },
+      {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "statement": "Add profile 12 can require provider identity; name-only HasModifier does not. Query/removal cannot be presumed inverse of Add."
+      },
+      {
+        "confidence": "FACT",
+        "statement": "Current reference Add uses _matches but RemoveModifier sweeps all names on target; SetModifierDynamicValue requires exactly one Alive named instance; predicate has_modifier lambda checks entity.modifier_names and ignores supplied alive/caster booleans. These are separate reference choices, not native equivalences.",
+        "evidence": "MOD-E07:reference_execution.py lines 888..893, 1426..1429, 1698"
+      }
+    ],
+    "strict_rejection": "Reject unbound caller filters, guessed first/all semantics, or name-only removal for a source request requiring caster filter.",
+    "question_id": "MOD-Q5"
+  },
+  "semantic_family_note": "Families overlap; counts are copied from existing catalog, never summed into a new census. Catalog includes Adventure/Level definitions; TurnBased native semantics are not automatically transferred to Adventure instances.",
+  "closeout_persistence_check": {
+    "date": "2026-09-14",
+    "confidence": "FACT",
+    "result": "All eleven continuation baseline conclusions were already present in detailed artifact; named closeout blocks, Terra contract and master summary still needed completion.",
+    "master_outside_modifier_sha256": "89385c2ac0622225bf7cbef4e97568e37f2d0b8cca5bcc8d6671c1443cc54d31",
+    "scope": "Read only the two requested durable artifacts during closeout; no new catalog/native/corpus search.",
+    "baseline_conclusion_locations": {
+      "1_reference_provider_and_first": "negative_evidence MOD-N4/MOD-N6; query_remove_contract; reference behavior alone is not native proof, first-match has separate saved native support",
+      "2_saved_native_provenance": "evidence_registry MOD-E01/MOD-E02/MOD-E03; evidence_audit records exact byte-verification limits",
+      "3_independent_stacking_flag": "lookup_query_contract.fields.stacking_flag",
+      "4_policy_lookup_parameters": "instance_matching.lookup_profiles; policy_family_table",
+      "5_separate_query_mutation_shared_config": "stacking_transition_contract.separation; terra_contract.pipeline",
+      "6_null_provider_7_8_provider_12": "lookup_query_contract.wildcard_semantics; negative_evidence MOD-N1",
+      "7_refresh_distinction": "refresh_contract; negative_evidence MOD-N2",
+      "8_query_not_primary_key": "instance_identity_boundary; lookup_query_contract.identity",
+      "9_first_match": "terra_contract.schemas.ModifierLookupResult; instance_matching.lookup_result",
+      "10_multiple_creates": "multiple_contract",
+      "11_static_samples_and_query_remove": "corpus_samples; corpus_sample_conclusions; query_remove_contract"
+    }
+  },
+  "lookup_query_contract": {
+    "name": "ModifierLookupQuery",
+    "confidence": "STRONG_RECONSTRUCTION",
+    "identity": "A query value, NEVER a primary key or uniqueness constraint on instances.",
+    "inputs": [
+      "Resolved modifier name and definition provenance",
+      "Explicit target owner/component or explicit global lookup scope",
+      "Lookup profile resolved from incoming config policy",
+      "Bound state/caster/provider/StackingFlag filter arguments"
+    ],
+    "fields": {
+      "definition_ref": "Resolution/provenance carried alongside query; native matcher compares name, not definition hash.",
+      "name": "Exact ordinal string comparison.",
+      "scope": "Local target-owner component, or proven global manager collection.",
+      "state_filter": "ADDED_OR_ALIVE(0) for inspected Add; ALIVE(1) and separately evidenced unrestricted query mode.",
+      "caster_filter": "NATIVE_ANY(-1/0) or concrete runtime-ID query; UNKNOWN is neither.",
+      "provider_filter": "NOT_PASSED_NATIVE_NULL or OPAQUE_PROVIDER_REF; apply only on concrete caster path.",
+      "stacking_flag": "EXACT(bound native numeric value) or NATIVE_ANY(100); raw source string and presence retained separately."
+    },
+    "wildcard_semantics": {
+      "provider_null_argument": {
+        "confidence": "FACT",
+        "meaning": "Policies 7/8 pass native zero in provider argument; policy 12 passes provider object.",
+        "evidence": "M506463 E7297A7 / E7297C1"
+      },
+      "provider_null_predicate": {
+        "confidence": "STRONG_RECONSTRUCTION",
+        "meaning": "On the saved concrete-caster path, a null provider argument skips provider equality; absent constraint in this predicate, not equality with an instance null-provider field. Do not generalize to every API.",
+        "evidence": "M520252 saved full-gap E432846..E432898"
+      },
+      "provider_empty_string": {
+        "confidence": "UNKNOWN",
+        "meaning": "No native empty-string provider meaning recovered. An entity string is not an object ref; reject as unresolved."
+      },
+      "caster_wildcard": {
+        "confidence": "FACT",
+        "meaning": "Native -1/0 returns after name/state/flag and bypasses provider filtering, even if a provider argument was supplied.",
+        "evidence": "M520252 E432794..E43279D -> E432833"
+      },
+      "stacking_flag_wildcard": {
+        "confidence": "FACT",
+        "meaning": "Query value 100 skips flag equality; source Any-to-integer mapping must be evidenced separately.",
+        "evidence": "M520252 E432781..E432794"
+      },
+      "missing_fields": {
+        "confidence": "UNKNOWN",
+        "meaning": "Omitted source field, explicit native null, wildcard sentinel, and unresolved value are distinct. Never coalesce them."
+      }
+    },
+    "execution": "Preserve predicate branch order. Forward local collection scan returns first matching reference or none; optional diagnostic collection is separate and cannot imply mutate-all.",
+    "safe_to_implement": [
+      "Query schema with explicit presence and bound filter variants",
+      "Ordinal-name/state/flag filters",
+      "Caster wildcard early return",
+      "Local forward first-match lookup with separately supplied direct/effective entity and provider resolver bindings"
+    ],
+    "strict_reject": [
+      "Unresolved source-to-native filter mapping",
+      "Provider-only filtering produced by ignoring caster-wildcard early return",
+      "Unknown global collection order",
+      "Comparison of policies instead of StackingFlag",
+      "Use of all query fields as native instance primary key"
+    ],
+    "evidence": [
+      "MOD-E01:M506463/M520243/M520252",
+      "MOD-E02"
+    ]
+  },
+  "instance_identity_boundary": {
+    "confidence": "UNKNOWN",
+    "native_primary_identity": "UNKNOWN",
+    "known": {
+      "confidence": "FACT",
+      "statement": "Native container stores object references; local lookup returns a reference; Multiple can append a distinct object with matching query attributes."
+    },
+    "not_primary_identity": [
+      "ModifierName",
+      "definition semantic hash",
+      "target + name",
+      "caster/provider/flag query tuple",
+      "collection index or current list length",
+      "application count / Layer / Count"
+    ],
+    "terra_storage": {
+      "confidence": "PLAUSIBLE_MODEL",
+      "safe_to_implement": "Opaque stable local instance token with non-reused allocation/generation; maps one-to-one to modeled objects and is explicitly a Terra storage choice.",
+      "required": "Keep token stable while object is reused; new allocation receives new token even if every query field matches. Preserve collection order separately."
+    },
+    "stored_source_identity": "Exact native constructor and replacement persistence/aliasing of provider/caster/source identity remains UNKNOWN; separate slots preserve data without claiming native assignment rules.",
+    "strict_rejection": "Never present a synthesized all-fields tuple as recovered native identity.",
+    "evidence": [
+      "MOD-E03:M520240/M520236",
+      "MOD-E01:M506463"
+    ]
+  },
+  "multiple_contract": {
+    "confidence": "FACT",
+    "policy": "Multiple",
+    "native_ordinal": 4,
+    "lookup_profile": "LOCAL_NAME_FLAG",
+    "match_found": "CREATE_NEW_INSTANCE; keep found object; do not apply process-existing branch merely because lookup succeeded.",
+    "no_match": "CREATE_NEW_INSTANCE through same new-object boundary.",
+    "ordering": "Query -> policy decision -> constructor/allocation -> append/lifecycle dependencies.",
+    "initialization": "Initial layer/count, stored provider/caster/flag assignment, dynamic/lifetime initialization and public callback ordering remain UNKNOWN; use common creation boundary.",
+    "terra_safe": "Implement decision CREATE_NEW for both found and none. End-to-end creation requires validated initialization/lifecycle hooks.",
+    "forbidden": "if found then mutate else create",
+    "evidence": [
+      "MOD-E01:M506463 E7297E0..E7297E7 -> E729839"
+    ]
+  },
+  "refresh_contract": {
+    "confidence": "STRONG_RECONSTRUCTION",
+    "policy": "Refresh",
+    "native_ordinal": 2,
+    "lookup_profile": "LOCAL_NAME_FLAG",
+    "matched_existing_policy_guard": "This arm is selected by existing.ConfigRef.Stacking, not blindly by incoming request name.",
+    "proven_direct_behavior": [
+      "Reuse selected existing object, or queue if it is ToBeAdded.",
+      "CurrentLife [+0x2c4] = resolved new life; call _OnModifierValueChanged(3) only if life differs.",
+      "previous_life [+0x2e4] = resulting CurrentLife.",
+      "No direct set_Count or OnReplace invocation in this arm; common tail and called effects remain."
+    ],
+    "duration_boundary": "Proven CurrentLife/previous-life field writes; unit, expiry/tick ownership and complete refresh lifecycle are not inferred.",
+    "count_boundary": "No direct Count setter in this arm; total transitive Count invariance UNKNOWN.",
+    "unknown_fields": [
+      "Layer update/cap effects",
+      "DynamicValues update/merge/overwrite",
+      "Caster/provider stored preservation or overwrite",
+      "Transitive callback/registration/property effects",
+      "Initial state for no-match creation"
+    ],
+    "deprecated_bridge_summary": "Discard grouping ordinal 2 with Replace-family (5/7/8/12) for life+Count+OnReplace. Do not copy Python mapping Replace=2.",
+    "no_match": "Common creation path with UNKNOWN initialization dependencies.",
+    "terra_safe": "Separate Refresh descriptor and direct life-write plan; do not commit as full gameplay transition without required hooks.",
+    "evidence": [
+      "MOD-E01:M506464 E72A6BD..E72A6D8 -> E72A710..E72A73C",
+      "MOD-E02 redd_switch_evidence"
+    ]
+  },
+  "missing_stacking_contract": {
+    "confidence": "UNKNOWN",
+    "MISSING_STACKING_DEFAULT": "UNKNOWN",
+    "can_prove_native_default": false,
+    "compiler_boundary": "Retain ABSENT distinct from explicit null/name/ordinal; reject unresolved missing policy before building source-derived application query.",
+    "runtime_boundary": "Do not execute by silently choosing Unique/Replace/Refresh/Unknow/Independent.",
+    "observation": "7022 retained conflict-free missing definitions; no census or per-definition reinterpretation.",
+    "question_id": "MOD-Q2"
+  },
+  "policy_family_table": [
+    {
+      "policy": "Unknow",
+      "native_ordinal": 0,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Default/config-copy branch E72A741; no direct life/count assignment in this arm. NOT a proof of no effect.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Common tail still executes; downstream layer/callback behavior UNKNOWN.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A635..E72A657; E72A741"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Unique",
+      "native_ordinal": 1,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Default/config-copy branch E72A741; no direct life/count assignment in this arm. NOT a proof of no effect.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Common tail still executes; downstream layer/callback behavior UNKNOWN.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A635..E72A657; E72A741"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "EntityUnique",
+      "native_ordinal": 9,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Default/config-copy branch E72A741; no direct life/count assignment in this arm. NOT a proof of no effect.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Common tail still executes; downstream layer/callback behavior UNKNOWN.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A635..E72A657; E72A741"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Refresh",
+      "native_ordinal": 2,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "CurrentLife = resolved_new_life; previous_life [+0x2e4] = CurrentLife. No direct set_Count call in this arm.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "If life differs, _OnModifierValueChanged(3) before previous_life write. No direct OnReplace call in Refresh arm; common tail remains.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A6BD..E72A6D8 -> E72A710..E72A73C"
+      ],
+      "count_effect": "No direct set_Count in this policy arm; total transitive invariance UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Prolong",
+      "native_ordinal": 3,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "If resolved_new_life == -1 OR existing.previous_life [+0x2e4] == -1: new CurrentLife = -1; otherwise CurrentLife += resolved_new_life. Then previous_life = CurrentLife. No direct set_Count in this arm.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Conditional _OnModifierValueChanged(3); no direct OnReplace call in this arm; common tail remains.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A6DA..E72A73C"
+      ],
+      "count_effect": "No direct set_Count in this policy arm; total transitive invariance UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Multiple",
+      "native_ordinal": 4,
+      "confidence": "FACT",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "APPEND_DUPLICATE_KEEP_EXISTING",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "Found instance is not processed by this branch; new instance initial Layer UNKNOWN.",
+      "lifetime_effect": "No mutation of found instance through _ProcessModifierRedd on ordinary TryAdd path.",
+      "dynamic_value_effect": "No direct process-existing overwrite; new initialization and callback effects UNKNOWN.",
+      "caster_effect": "Found object is kept; new stored caster initialization UNKNOWN.",
+      "provider_effect": "Found object is kept; new stored provider initialization UNKNOWN.",
+      "callback_effect": "Creation path only; do not infer OnAdd/OnStack order from name.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506463 E7297E0..E7297E7 -> E729839"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Replace",
+      "native_ordinal": 5,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Set CurrentLife to resolved_new_life (notify if changed); copy into previous_life; invoke set_Count(resolved_new_count); invoke OnReplace(existing, incoming_provider, runtime_param).",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Direct call order: optional _OnModifierValueChanged(3) -> previous life write -> set_Count -> OnReplace. Effects inside these callees and common tail are not fully closed.",
+      "special_dependency": "After process/create and State == Alive, _PostProcessAfterModifierAdd M506672 can fan out to RemoveUnStackModifier. Exclusion-group and lifetime/callback effects not closed.",
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A659..E72A6B8",
+        "MOD-E01:M506463 E729D24..E729D33",
+        "MOD-E01:candidate M506672"
+      ],
+      "count_effect": "Direct set_Count(resolved_new_count); transitive setter/callback effects UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "ReplaceByCaster",
+      "native_ordinal": 7,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": "provider-resolved effective entity runtime ID",
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Set CurrentLife to resolved_new_life (notify if changed); copy into previous_life; invoke set_Count(resolved_new_count); invoke OnReplace(existing, incoming_provider, runtime_param).",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Direct call order: optional _OnModifierValueChanged(3) -> previous life write -> set_Count -> OnReplace. Effects inside these callees and common tail are not fully closed.",
+      "special_dependency": "After process/create and State == Alive, _PostProcessAfterModifierAdd M506672 can fan out to RemoveUnStackModifier. Exclusion-group and lifetime/callback effects not closed.",
+      "evidence": [
+        "saved switch E72A244/E72A248 -> E7295DC -> E7297A7 writes zero",
+        "MOD-E01:M506464 E72A659..E72A6B8",
+        "MOD-E01:M506463 E729D24..E729D33",
+        "MOD-E01:candidate M506672"
+      ],
+      "count_effect": "Direct set_Count(resolved_new_count); transitive setter/callback effects UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "ReplaceByCasterOrUnStack",
+      "native_ordinal": 8,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": "provider-resolved effective entity runtime ID",
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Set CurrentLife to resolved_new_life (notify if changed); copy into previous_life; invoke set_Count(resolved_new_count); invoke OnReplace(existing, incoming_provider, runtime_param).",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Direct call order: optional _OnModifierValueChanged(3) -> previous life write -> set_Count -> OnReplace. Effects inside these callees and common tail are not fully closed.",
+      "special_dependency": "After process/create and State == Alive, _PostProcessAfterModifierAdd M506672 can fan out to RemoveUnStackModifier. Exclusion-group and lifetime/callback effects not closed.",
+      "evidence": [
+        "saved switch E72A244/E72A248 -> E7295DC -> E7297A7 writes zero",
+        "MOD-E01:M506464 E72A659..E72A6B8",
+        "MOD-E01:M506463 E729D24..E729D33",
+        "MOD-E01:candidate M506672"
+      ],
+      "count_effect": "Direct set_Count(resolved_new_count); transitive setter/callback effects UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "ReplaceByCasterAbility",
+      "native_ordinal": 12,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": "provider-resolved effective entity runtime ID",
+        "provider_filter": "incoming provider object",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "Set CurrentLife to resolved_new_life (notify if changed); copy into previous_life; invoke set_Count(resolved_new_count); invoke OnReplace(existing, incoming_provider, runtime_param).",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Direct call order: optional _OnModifierValueChanged(3) -> previous life write -> set_Count -> OnReplace. Effects inside these callees and common tail are not fully closed.",
+      "special_dependency": "After process/create and State == Alive, _PostProcessAfterModifierAdd M506672 can fan out to RemoveUnStackModifier. Exclusion-group and lifetime/callback effects not closed.",
+      "evidence": [
+        "saved switch E72A258 -> E729724 -> E7297C1 writes r14",
+        "MOD-E01:M506464 E72A659..E72A6B8",
+        "MOD-E01:M506463 E729D24..E729D33",
+        "MOD-E01:candidate M506672"
+      ],
+      "count_effect": "Direct set_Count(resolved_new_count); transitive setter/callback effects UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "Merge",
+      "native_ordinal": 6,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "If resolved_new_life == -1 OR previous_life == -1: CurrentLife = -1; otherwise CurrentLife = max(CurrentLife, resolved_new_life). Then previous_life = CurrentLife; no direct set_Count in this arm.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Optional _OnModifierValueChanged(3) -> previous_life write -> OnReplace(existing,incoming_provider,param) -> common tail.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A753..E72A7C2"
+      ],
+      "count_effect": "No direct set_Count in this policy arm; total transitive invariance UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "ReplaceButKeepLifeTime",
+      "native_ordinal": 10,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "incoming target component",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "PROCESS_EXISTING or QUEUE_IF_STATE_0",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "No direct life assignment; set_Count(resolved_new_count), then OnReplace(existing,incoming_provider,param).",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Do not infer that callees have no additional life/source effects; direct arm preserves life.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E729703..E72971F -> E7297D0",
+        "MOD-E01:M506464 E72A7CA..E72A7EF"
+      ],
+      "count_effect": "Direct set_Count(resolved_new_count); transitive setter/callback effects UNKNOWN.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "RetainGlobalLatest",
+      "native_ordinal": 11,
+      "confidence": "FACT",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "explicit manager/component collection domain",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "DESTROY_FOUND_INSTANCE_THEN_CREATE",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "M506463 calls Destroy on selected existing before entering allocation path. This is dirty removal request, not proof of physical unlink before new append.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Destroy/cleanup ordering and global candidate order remain dependencies.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E72965B..E7296B9; M504365",
+        "MOD-E01:M506463 E7297E9..E7297EC -> E72982F..E729839"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    },
+    {
+      "policy": "RetainGlobalLatestUnique",
+      "native_ordinal": 13,
+      "confidence": "STRONG_RECONSTRUCTION",
+      "lookup_query": {
+        "definition_name": "Resolved exact name; config provenance alongside, not compared as native primary key.",
+        "owner_scope": "explicit manager/component collection domain",
+        "caster_filter": -1,
+        "provider_filter": "NATIVE_NULL_ARGUMENT",
+        "stacking_flag": "Bound runtime param [+0x5c]; exact match except query sentinel 100.",
+        "wildcard_null_semantics": "lookup_query_contract.wildcard_semantics",
+        "selection": "Local first match or none; global first only under proven manager order."
+      },
+      "match_found_transition": "Compare existing resolver virtual [+0x120] returned entity with incoming target owner component [+0x10]: equal -> process/queue existing; unequal -> Destroy then create.",
+      "no_match_transition": {
+        "action": "CREATE_NEW through common M506463 path",
+        "initial_layer": "UNKNOWN",
+        "initial_caster": "Separate bound request caster/context retained; exact native stored assignment UNKNOWN.",
+        "initial_provider": "Provider passed to constructor; stored token/resolver representation UNKNOWN.",
+        "initial_stacking_flag": "Request/query flag known when bound; full creation assignment/default contract UNKNOWN.",
+        "lifetime_dynamic_initialization": "UNKNOWN unless exact input precedence and initialization adapter supplied.",
+        "callbacks": "Native append -> OnAdded -> conditional OnActivate boundary; public callback order UNKNOWN.",
+        "runtime_boundary": "Reject commit while required initialization/hooks unresolved."
+      },
+      "layer_effect": "UNKNOWN; no generic increment/decrement or Layer=Count inference.",
+      "lifetime_effect": "If processing, dispatch uses EXISTING config policy; global match may be owned elsewhere. No migration rule inferred.",
+      "dynamic_value_effect": "UNKNOWN; no generic dictionary overwrite.",
+      "caster_effect": "UNKNOWN stored preservation/overwrite; distinct from lookup constraint.",
+      "provider_effect": "UNKNOWN stored preservation/overwrite; null lookup argument does not erase provenance.",
+      "callback_effect": "Do not replace comparison with incoming caster == old owner; exact saved operands must remain explicit.",
+      "special_dependency": null,
+      "evidence": [
+        "M506463 E72965B..E7296B9; M504365",
+        "MOD-E01:M506463 E7297F7..E729829"
+      ],
+      "count_effect": "No generic Count mutation established.",
+      "safe_to_implement": "Query/decision descriptor and explicitly bounded direct-effect plan; full runtime commit requires resolved initialization/effects."
+    }
+  ],
+  "policy_family_table_scope": "Incoming policy selects query and create/process/destroy decision; any process-existing arithmetic uses EXISTING config policy. Per-row arithmetic assumes that existing policy matches the row, otherwise re-dispatch using existing config. Direct field effects do not imply transitive invariants. Explicit ordinal 0 is never a missing-field default.",
+  "remaining_unknowns": [
+    {
+      "id": "MOD-Q1",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do AddModifier.InheritCaster F98608, StackingFlag F98599 and TaskContext source/caller produce M506463 provider typeref 286703, effective caster ID and param[+0x5c]?",
+      "missing_relationship": "Caller transport recovered, but M506052 InheritCaster field/enum branch; config[+0x70] cache/helper 0x158C21E0 provider/type relation; and source F98599 enum/absence-to-config[+0x3c] mapping remain unbound.",
+      "best_evidence_source": "Exact provenance-matched M506052.DINFDBMMMCD (0x16181C70, return typeref 286703), provider cache/helper 0x158C21E0 and named config/enum loader mapping; see source_binding_pass2.remaining_binding_gaps. These bodies/mappings are outside the authorized M506048 window; not claimed absent repository-wide.",
+      "strict_rejection": "Reject automatic source lowering for CasterSelf/TargetSelf/absence and named/missing flag without verified binding. Preserve Pass-1 query infrastructure only.",
+      "pass": 2,
+      "source_binding_contract_ref": "#/source_binding_pass2"
+    },
+    {
+      "id": "MOD-Q2",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "What value reaches ModifierConfig.Stacking [+0x18] when the pinned source definition omits Stacking?",
+      "missing_relationship": "Source absence -> constructor/deserializer/inherited definition/caller precedence -> actual policy value.",
+      "best_evidence_source": "Provenance-matched definition loader/constructor + inheritance handling, or exact dumped native config from a selected missing-field definition. Saved M103117 layout and enum names alone cannot distinguish A/B/C/D.",
+      "strict_rejection": "All unresolved missing-stacking definitions, including retained 7022 family."
+    },
+    {
+      "id": "MOD-Q3",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do constructor M506132, OnReplace M506158 and IncLayer M506304/OnStack M506305 transform Layer F259122, _LayerAddWhenStack F259116, dynamics and source resolver/cache fields, and order callback/property effects?",
+      "missing_relationship": "Request/definition initialization and matched life/count boundary -> exact layer/cap/force-set mutation -> source/dynamic update -> callback and keyed property recomputation.",
+      "best_evidence_source": "Matched saved constructor/OnReplace/IncLayer/OnStack and their property/callback dispatch bodies; MODIFIER_PROPERTY_EFFECT_09 only closes keyed contribution boundary.",
+      "strict_rejection": "Universal initial layer, auto-increment, dynamic map overwrite, provider retention/overwrite, inferred OnAdd/OnLayerChange order."
+    },
+    {
+      "id": "MOD-Q4",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "What ordering governs GlobalFindModifierInstance M504365 across components and deferred/post-add paths M506465/M506672, including removal before new activation?",
+      "missing_relationship": "Global manager iteration order -> selected first object; delayed-add record -> drain trigger/order; RemoveUnStackModifier group fan-out -> affected identities and callback boundaries.",
+      "best_evidence_source": "Matched manager collection/order and queue-drain caller plus M506672 RemoveUnStackModifier argument/group dataflow. Existing bridge explicitly leaves global order and delayed drain unresolved.",
+      "strict_rejection": "Ambiguous global selection, immediate pending refresh, guessed unstack fan-out or cleanup ordering."
+    },
+    {
+      "id": "MOD-Q5",
+      "confidence": "UNKNOWN",
+      "status": "BLOCKED_BY_EVIDENCE",
+      "question": "How do ByIsContainModifier.CasterFilter/AddedOrAlive and RemoveModifier.OnlyRemoveCasterAdded select native filters, overloads and first/all cardinality?",
+      "missing_relationship": "Serialized query/remove caller context -> search key and state mask -> complete affected collection, independently of Add profile.",
+      "best_evidence_source": "Matched generated predicate/remove executors with full filter argument dataflow, anchored by MOD-C-BLACKSWAN-QUERY and MOD-C-ASTA-REMOVE. Name-only HasModifier M520246 is insufficient.",
+      "strict_rejection": "Treating remove/query as automatic inverse of application or discarding explicit source filters."
+    }
+  ],
+  "architecture_boundary": {
+    "decomposition": "CLOSED",
+    "native_semantic_completion": "PARTIAL",
+    "reason": "Request/query/result/instance/transition boundaries are stable. Exact source binding, stored instance identity, initialization/effects and some ordering are not closed."
+  },
+  "terra_ready": "PARTIAL",
+  "completed_date": "2026-09-14",
+  "validation": {
+    "status": "PASS",
+    "scope": "Durable artifact checks and saved M506048 byte audit only; no implementation/tests.",
+    "checks": [
+      "Required named closeout contracts populated",
+      "14 policy rows contain explicit query/found/none/effect/confidence fields",
+      "Five remaining exact questions",
+      "Only FACT/STRONG_RECONSTRUCTION/PLAUSIBLE_MODEL/UNKNOWN confidence values",
+      "Source samples retain provenance and pointers",
+      "No ModifierIdentityKey pseudo-primary-key terminology",
+      "Missing-stacking default and true native primary identity remain UNKNOWN",
+      "Master outside domains.modifier is unchanged"
+    ],
+    "implementation_changes": false,
+    "census_rerun": false,
+    "closeout_new_evidence_search": false,
+    "pass": 2,
+    "source_binding_pass2": "#/source_binding_pass2/validation"
+  },
+  "source_binding_pass2": {
+    "pass": 2,
+    "status": "BLOCKED_BY_EVIDENCE",
+    "scope": "ONLY MOD-Q1: saved M506048 source-to-M506463 argument binding",
+    "confidence": "STRONG_RECONSTRUCTION",
+    "pass1_status": "COMPLETE",
+    "frozen_q2_q5_sha256": "ce14fa6951c0928c95fe37e9c49bf6020cbd7e16d1a6cc3b5c982186c5a1a0bc",
+    "frozen_pass1_contracts_sha256": "aabd3748ffe56f3f1d675ffdff33d893a02f26b734789b4e23fadb23eed67e02",
+    "master_outside_modifier_sha256": "89385c2ac0622225bf7cbef4e97568e37f2d0b8cca5bcc8d6671c1443cc54d31",
+    "dataflow": [
+      {
+        "id": "MOD-P2-F01",
+        "confidence": "FACT",
+        "stage": "source context",
+        "trace": [
+          "Entry E161801ED: r15 = this executor.",
+          "E16180203..E16180215: rcx = [r15+0x18] TaskContext; call M505849/get_SourceEntity at E6EEFE0; rsi = return.",
+          "E161802EE: local [rbp+0x148] = source entity; E16180BEC..BF3: param[+0x18] = this saved source entity."
+        ],
+        "limit": "This source entity dataflow is separate from final provider argument and does not establish InheritCaster binding."
+      },
+      {
+        "id": "MOD-P2-F02",
+        "confidence": "FACT",
+        "stage": "context-provided object",
+        "trace": [
+          "E1618036D..37E: read TaskContext[+0x78], save [rbp+0x158].",
+          "If null: TaskContext virtual [+0x130] call at E161803A6, save returned object to same local at E161803A8.",
+          "E16180BF8..BFF: param[+0x28] = [rbp+0x158]."
+        ],
+        "limit": "Do not label object as source modifier/provider merely from virtual offset. TaskContext virtual [+0x130] is not automatically the instance resolver virtual [+0x130]. Concrete type/method identity unresolved."
+      },
+      {
+        "id": "MOD-P2-F03",
+        "confidence": "FACT",
+        "stage": "provider seed",
+        "trace": [
+          "Selected target object saved in [rbp+0x1d8] at E16180590.",
+          "E161806F7 loads selected target into rsi; E16180728..730 resolves target component via B429D40 and saves [rbp+0x150].",
+          "E16180737: rcx = r15 executor; E1618073A: rdx = rsi selected target; E1618073D calls 0x16181C70.",
+          "Saved metadata maps 0x16181C70 to M506052 JAJPDPAHFOA.DINFDBMMMCD, return_type_reference=286703, parameter_count=1.",
+          "Returned rax must be non-null; E1618074B..758 loads [[rax+0x38]+0x10] into rsi.",
+          "E16180765 saves provider seed rax into local [rbp+0x1a8]."
+        ],
+        "limit": "M506052 body is outside M506048 saved range. No CasterSelf/TargetSelf/default branch can be inferred from the target argument alone."
+      },
+      {
+        "id": "MOD-P2-F04",
+        "confidence": "FACT",
+        "stage": "conditional provider replacement",
+        "trace": [
+          "Branch tests resolved definition config[+0x70] at E161807EA/E161808A2. Semantic field binding not established in this pass.",
+          "False path E161808AC retains provider local; saves provider-derived entity rsi to [rbp+0x1d0].",
+          "True path probes temporary keyed collection with rsi at E16180821. Hit: index -> entry; E16180857 reads entry object at [items+index*40+0x40]; E1618085C replaces [rbp+0x1a8].",
+          "Miss: E161808CD..8E7 gets [[[executor+0x18]+0x10]+0xa0] as helper receiver/context.",
+          "E16180902..913: hidden result address rcx=&local[+0x108], rdx=context-derived object, r8=current provider; call helper 0x158C21E0.",
+          "E16180918..934: result local[+0x108] -> [rbp+0x1d0]; result local[+0x118] -> [rbp+0x1a8]. Result tuple then stored in keyed collection at E1618098C."
+        ],
+        "limit": "Exact collection element type, definition flag meaning, helper return shape and object alias relation are not recovered. This is a possible replacement path, not proof that returned object always differs."
+      },
+      {
+        "id": "MOD-P2-F05",
+        "confidence": "FACT",
+        "stage": "runtime flag transport",
+        "trace": [
+          "E161809A6: r12 = runtime param object returned by B42A0C0 after the provider/cache paths.",
+          "E16180BAC: rax = [r15+0x20], the serialized AddModifier config object.",
+          "No intervening redefinition of rax before E16180C04; E16180B99 earlier clobber of eax is followed by the E16180BAC reload.",
+          "E16180C04: eax = dword [rax+0x3c].",
+          "E16180C07: dword [r12+0x5c] = eax."
+        ],
+        "limit": "No numeric conversion on this direct assignment. F98599-to-offset binding and source enum/default deserialization are not established solely by this consumer. Later helper/notification effects are not proven absent."
+      },
+      {
+        "id": "MOD-P2-F06",
+        "confidence": "FACT",
+        "stage": "M506463 call ABI",
+        "trace": [
+          "Call site E16181043 -> M506463/0xE729500.",
+          "rcx = local[+0x150], target AbilityComponent (load E16181012).",
+          "rdx = local[+0x1c0], resolved name (load E16181032).",
+          "r8 = rdi, resolved ModifierConfig (E16181039; rdi restored from local[+0x1c8] at E16180ED1).",
+          "r9 = local[+0x1a8], final selected provider (E1618103C).",
+          "[rsp+0x20] = r12 runtime param (E16181028).",
+          "[rsp+0x28] = byte 0 (E1618102D); do not infer its semantic name."
+        ],
+        "limit": "Call is conditional; this ABI records the values when reached, not universal AddModifier success."
+      }
+    ],
+    "binding_table": [
+      {
+        "source_shape": "InheritCaster=CasterSelf",
+        "condition": "No proven enum/field-to-M506052 branch mapping",
+        "provider_ref": "UNKNOWN named binding; provider seed comes from M506052 and conditional provider replacement remains possible.",
+        "direct_caster": "UNKNOWN",
+        "effective_caster": "UNKNOWN",
+        "stacking_flag": "Independent config[+0x3c] transport only; source mapping separately required.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "InheritCaster=TargetSelf",
+        "condition": "Selected target is passed to M506052, but helper semantics are unrecovered",
+        "provider_ref": "UNKNOWN; target argument does not prove target is provider.",
+        "direct_caster": "UNKNOWN; do not substitute target owner.",
+        "effective_caster": "UNKNOWN",
+        "stacking_flag": "Independent config[+0x3c] transport only.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "InheritCaster missing",
+        "condition": "Serialized absence/default chain missing",
+        "provider_ref": "UNKNOWN; no default to CasterSelf.",
+        "direct_caster": "UNKNOWN",
+        "effective_caster": "UNKNOWN",
+        "stacking_flag": "Independent presence/default issue.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "StackingFlag explicit named value",
+        "condition": "Enum name-to-number and F98599-to-config[+0x3c] must be independently bound",
+        "provider_ref": "Independent InheritCaster/provider path.",
+        "direct_caster": "Independent binding",
+        "effective_caster": "Independent binding",
+        "stacking_flag": "UNKNOWN source conversion; native decoded int32 is copied without conversion.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "StackingFlag missing",
+        "condition": "No matched loader/constructor default relation",
+        "provider_ref": "Independent provider path",
+        "direct_caster": "UNKNOWN unless separately bound",
+        "effective_caster": "UNKNOWN unless separately bound",
+        "stacking_flag": "UNKNOWN; neither native wildcard 100 nor Default is inferred.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "StackingFlag=Any",
+        "condition": "Source enum conversion not supplied",
+        "provider_ref": "Independent provider path",
+        "direct_caster": "Independent binding",
+        "effective_caster": "Independent binding",
+        "stacking_flag": "Source mapping UNKNOWN; native 100 semantics accepted from Pass 1 without reanalysis.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "StackingFlag=Default explicitly",
+        "condition": "Source enum conversion not supplied",
+        "provider_ref": "Independent provider path",
+        "direct_caster": "Independent binding",
+        "effective_caster": "Independent binding",
+        "stacking_flag": "UNKNOWN integer; explicit Default is not absence.",
+        "confidence": "UNKNOWN"
+      },
+      {
+        "source_shape": "Already decoded native config[+0x3c]=n",
+        "condition": "Reached observed write at E16180C07, with supplied exact decoded config; no source default claimed",
+        "provider_ref": "Seed or cache/helper-selected object in local[+0x1a8].",
+        "direct_caster": "Not determined by flag transport",
+        "effective_caster": "Not determined by flag transport",
+        "stacking_flag": "Direct write param[+0x5c]=n; n=100 is transported unchanged.",
+        "confidence": "FACT"
+      }
+    ],
+    "negative_evidence": [
+      {
+        "confidence": "FACT",
+        "claim": "provider = caster ID",
+        "finding": "Rejected as representation conflation: final argument is opaque object ref r9; source entity is separately written into param[+0x18]. No integer/entity string conversion into provider is shown."
+      },
+      {
+        "confidence": "UNKNOWN",
+        "claim": "provider always = source ability",
+        "finding": "Not established. Seed concrete type is unresolved; possible cache/helper replacement prevents assuming original caller ability ref is always the final provider. This does not prove that every compatible result has a different concrete type."
+      },
+      {
+        "confidence": "UNKNOWN",
+        "claim": "absence InheritCaster = CasterSelf",
+        "finding": "Not established; helper and loader/default mapping missing."
+      },
+      {
+        "confidence": "UNKNOWN",
+        "claim": "missing StackingFlag = wildcard 100",
+        "finding": "Not established; no absent-source-to-100 path observed. Copying a decoded scalar does not determine absence."
+      },
+      {
+        "confidence": "UNKNOWN",
+        "claim": "TargetSelf = target owner automatically",
+        "finding": "Not established. Target is helper input and target component is separate M506463 receiver; helper result binding is missing."
+      },
+      {
+        "confidence": "FACT",
+        "claim": "same virtual offset means same provider",
+        "finding": "No such type join is present. TaskContext virtual[+0x130] output is stored into param[+0x28], while final provider is loaded from distinct local[+0x1a8]. Offset equality alone is insufficient."
+      }
+    ],
+    "remaining_binding_gaps": [
+      {
+        "id": "MOD-Q1-G1",
+        "confidence": "UNKNOWN",
+        "status": "BLOCKED_BY_EVIDENCE",
+        "exact_symbol": "M506052 JAJPDPAHFOA.DINFDBMMMCD, RVA 0x16181C70, return typeref 286703; AddModifier.InheritCaster F98608/type_reference 500156",
+        "missing_relationship": "Named CasterSelf/TargetSelf/absence -> actual config field read and branch -> provider object returned from executor+target context.",
+        "best_evidence_source": "Provenance-matched M506052 body plus named InheritCaster field layout/enum/deserializer mapping. It is not contained in the authorized M506048 body; no broad search performed."
+      },
+      {
+        "id": "MOD-Q1-G2",
+        "confidence": "UNKNOWN",
+        "status": "BLOCKED_BY_EVIDENCE",
+        "exact_symbol": "M506048 E161807EA/E161808A2 config[+0x70], cache entry +0x40, helper 0x158C21E0",
+        "missing_relationship": "Provider seed -> conditional returned/cached final provider object; concrete type, aliasing and entity/resolver relation.",
+        "best_evidence_source": "Exact matched helper body/type signature and cache element/definition flag mapping. Do not infer from raw offsets."
+      },
+      {
+        "id": "MOD-Q1-G3",
+        "confidence": "UNKNOWN",
+        "status": "BLOCKED_BY_EVIDENCE",
+        "exact_symbol": "AddModifier.StackingFlag F98599/type_reference 500155; AddModifier config[+0x3c] -> param[+0x5c] at E16180C04/E16180C07",
+        "missing_relationship": "Serialized named/Default/Any/absent field -> numeric config slot. Direct int32 copy is recovered; enum values and absence/default source chain are not.",
+        "best_evidence_source": "Matched AddModifier config serializer/constructor and enum value mapping (M126119/M126117 already identified in saved metadata/bridge), not matcher sentinel or declaration order."
+      },
+      {
+        "id": "MOD-Q1-G4",
+        "confidence": "UNKNOWN",
+        "status": "BLOCKED_BY_EVIDENCE",
+        "exact_symbol": "M506048 TaskContext[+0x78]/virtual[+0x130]; provider[+0x38]->[+0x10]; final provider passed as typeref 286703",
+        "missing_relationship": "Final provider -> direct caster and effective caster binding, including source ability/modifier/owner/context distinctions. Pass-1 resolver requirements stay fixed; caller-side object/type bridge is missing.",
+        "best_evidence_source": "Same exact provider helper/type relationship and TaskContext virtual method identity; no reanalysis of matching or Q3 stored-state updates."
+      }
+    ],
+    "body_evidence": {
+      "artifact": "data/semantics/4.4.54/modifier_application_bridge_07.json#/primitives/1/native_evidence",
+      "method_index": 506048,
+      "declaring_type_index": 54975,
+      "body_rva": "0x161801C0",
+      "body_length_bytes": 6592,
+      "body_sha256": "b78a1b709dd11bff8fd447861767d4762af361ffe9f91b9425356178fbaed3d0",
+      "reconstructed_sha256": "b78a1b709dd11bff8fd447861767d4762af361ffe9f91b9425356178fbaed3d0",
+      "full_saved_instruction_bytes_verified": true,
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "game_version": "4.4.54",
+      "live_binary_read": false
+    },
+    "inherit_caster_binding": {
+      "confidence": "UNKNOWN",
+      "field": "F98608 AddModifier.InheritCaster; type_reference 500156",
+      "direct_read_in_M506048": "No inspected config read can be independently bound to F98608 from the saved executor alone. Provider selection is delegated to M506052.",
+      "CasterSelf": "UNKNOWN: caller caster vs source ability owner vs source modifier caster vs TaskContext caster cannot be distinguished.",
+      "TargetSelf": "UNKNOWN: helper takes the selected target, but its body is absent from the authorized M506048 window; this is not proof of binding to target entity/owner.",
+      "absence": "UNKNOWN: no serialized absence/default branch is recoverable from the already-decoded config read/call.",
+      "rejection": "Do not lower any of these source shapes into provider/caster identities until the exact helper and enum/field mapping are supplied."
+    },
+    "provider_binding": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "native_call_value": "M506463 r9 = local[rbp+0x1a8], an opaque provider object reference of typeref 286703.",
+      "seed": "M506052.DINFDBMMMCD(executor, selected_target) returns typeref 286703; return is saved into provider local.",
+      "definition_condition": "Resolved definition config[+0x70] controls whether provider can be replaced through cache/helper. Field name remains UNKNOWN; do not infer source UseSnapshotEntity from offset.",
+      "paths": [
+        {
+          "condition": "config[+0x70] false",
+          "provider_ref": "Seed object retained in local[+0x1a8].",
+          "entity_observation": "Before branch, nested [[seed+0x38]+0x10] supplies rsi; no direct RuntimeID read here."
+        },
+        {
+          "condition": "config[+0x70] true, cache lookup hits",
+          "provider_ref": "Entry object from [items+index*40+0x40], stored E1618085C.",
+          "entity_observation": "Key is seed-derived rsi; cached associated value goes to local[+0x1d0]. Exact cache type/referent UNKNOWN."
+        },
+        {
+          "condition": "config[+0x70] true, cache misses",
+          "provider_ref": "Helper 0x158C21E0 result field at local[+0x118], stored E16180934.",
+          "entity_observation": "Helper receives original provider and context-derived object. Result entity/provider aliasing and concrete types UNKNOWN."
+        }
+      ],
+      "concrete_object_kind": "UNKNOWN. The return typeref matches the provider argument, but executor dataflow alone does not resolve ability instance vs another compatible native provider representation.",
+      "final_provider_vs_match_resolver": "Pass-1 resolver/filter contract is unchanged. This pass does not establish that final provider ref equals direct entity, effective ID, source ability name, TaskContext virtual object, or later resolver cache.",
+      "evidence": [
+        "MOD-P2-F02",
+        "MOD-P2-F03",
+        "MOD-P2-F04",
+        "MOD-P2-F06"
+      ]
+    },
+    "caster_binding": {
+      "confidence": "UNKNOWN",
+      "known_source_entity": {
+        "confidence": "FACT",
+        "chain": "TaskContext get_SourceEntity M505849 -> local[+0x148] -> param[+0x18]."
+      },
+      "known_seed_entity": {
+        "confidence": "FACT",
+        "chain": "M506052 return seed P -> [P+0x38] -> [+0x10] -> rsi before cache/provider replacement."
+      },
+      "direct_caster": "UNKNOWN for named InheritCaster cases and after conditional provider replacement; seed-derived entity is not automatically final direct caster.",
+      "effective_caster": "UNKNOWN caller-side binding. Keep required direct/effective IDs and final provider relation separate; do not rerun Pass-1 matcher analysis.",
+      "context_object": "TaskContext[+0x78] or its virtual[+0x130] return -> param[+0x28] is a separate object flow, not a proved source modifier identity.",
+      "target_owner": "Selected target -> component resolver -> local[+0x150] -> M506463 receiver is recovered; it is not automatically the provider or caster."
+    },
+    "stacking_flag_binding": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "transport": {
+        "confidence": "FACT",
+        "chain": "executor[+0x20] config -> int32 config[+0x3c] -> runtime param[+0x5c] -> runtime param pointer supplied to M506463",
+        "write_sites": [
+          "0x16180BAC",
+          "0x16180C04",
+          "0x16180C07",
+          "0x16181028"
+        ],
+        "conversion": "No enum conversion on the observed config-slot-to-param assignment.",
+        "limit": "This is the direct caller write and same-object call transport, not proof that arbitrary external helpers have no side effects."
+      },
+      "named_field_mapping": {
+        "confidence": "UNKNOWN",
+        "field": "F98599/type_reference 500155",
+        "known": "The consumer slot feeds the independent runtime StackingFlag established in Pass 1.",
+        "missing": "Independent named-field layout and source enum/deserializer binding into config[+0x3c]."
+      },
+      "explicit_named_flag": "UNKNOWN source-name-to-number mapping; do not assign values from metadata declaration order.",
+      "explicit_Default": "UNKNOWN numeric mapping/default constructor relation; do not equate source explicit Default with absence.",
+      "explicit_Any": "UNKNOWN source-name-to-number mapping; native 100 wildcard remains a fixed downstream fact only.",
+      "decoded_numeric_100": "If a separately evidenced decoded config[+0x3c] is 100, observed direct copy writes 100 to param[+0x5c]; this does not prove source Any or missing maps to it.",
+      "missing_field": "UNKNOWN; decoded config transport cannot reveal serialized presence or its default.",
+      "unresolved": "Retain ABSENT / EXPLICIT_NAME / EXPLICIT_DECODED_NUMBER / UNRESOLVED distinctly; source binding must reject unresolved conversions."
+    },
+    "allowed_search_stop": "M506048 argument transport is recovered to exact helper boundaries. Do not search wider artifacts or live binary for the missing helpers in this pass; do not open Pass 3.",
+    "MOD_Q1": "BLOCKED_BY_EVIDENCE",
+    "prior_MOD_Q1_status": "PARTIAL_SAVED_EVIDENCE",
+    "pass_status": "COMPLETE",
+    "domain_disposition": "FROZEN",
+    "next_pass": "NONE",
+    "validation": {
+      "status": "PASS",
+      "checks": [
+        "Saved M506048 6592-byte body SHA-256 matched",
+        "Six explicit register/local/argument traces saved",
+        "Eight binding-table cases preserve named/missing/decoded distinctions",
+        "Four exact MOD-Q1 helper/type/field gaps; no expanded reverse",
+        "MOD-Q1 BLOCKED_BY_EVIDENCE in both unknown lists",
+        "Q2-Q5 durable questions unchanged",
+        "Pass-1 fixed contracts unchanged",
+        "Master outside domains.modifier unchanged",
+        "Valid JSON and confidence vocabulary"
+      ],
+      "production_code_changes": false,
+      "catalog_or_census_run": false,
+      "triggerability_or_other_domain_analysis": false
+    },
+    "metadata_evidence": {
+      "method": "data/normalized/4.4.54/methods.json#method_index=506052",
+      "method_name": "JAJPDPAHFOA.DINFDBMMMCD",
+      "native_rva": "0x16181C70",
+      "return_type_reference": 286703,
+      "parameters": 1,
+      "source_fields": [
+        "data/normalized/4.4.54/fields.json#field_index=98599",
+        "data/normalized/4.4.54/fields.json#field_index=98608"
+      ],
+      "limit": "Metadata names/type references do not recover helper body, concrete generic type, enum numeric values or object field offsets."
+    }
+  },
+  "pass1_summary": {
+    "pass": 1,
+    "status": "COMPLETE",
+    "architecture_decomposition": "CLOSED",
+    "native_semantic_completion": "PARTIAL",
+    "terra_ready": "PARTIAL",
+    "contracts_unchanged_in_pass2": true
+  },
+  "status": "FROZEN",
+  "domain_status": "FROZEN",
+  "analysis_frozen": true
+}
