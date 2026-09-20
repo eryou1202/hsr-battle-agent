@@ -848,7 +848,7 @@
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Replace stale catalog constants with derived assertions",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -914,14 +914,61 @@
       ],
       "next_tasks": [
         "P0-D"
-      ]
+      ],
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": true,
+      "changed_files": [
+        "tests/battle_ir/test_semantic_batch_catalog.py"
+      ],
+      "change_summary": "Replaced the three stale catalog cardinality constants with assertions derived from the catalog under test, and added module-level helpers (read_default_catalog_data, catalog_entry_contract, materialize_catalog, primitive_ids_for_catalog, primitive_ids_for_entries, count_in_namespace) that build synthetic catalogs and load them through the public catalog API. The constants 12, 91 and 80 were NOT replaced by 13, 92 and 81; no catalog/primitive cardinality is hardcoded any more, and the per-namespace census numbers were converted to derived deltas. Added one focused test pinning the acceptance property that a synthetic catalog addition/removal needs no constant edit. No catalog file, semantic artifact or production module was touched.",
+      "implementation_detail": {
+        "test_catalog_schema_and_entries": "The parsed entry list must equal the catalog file under test projected onto the contract fields (path, schema, sha256, enabled), and the parsed length must equal the raw length. This replaces assertEqual(len(catalog.artifacts), 12) and is strictly stronger: it also proves validation neither drops, reorders nor rewrites entries.",
+        "test_default_catalog_loads_vertical_slice_plus_batches": "The unified load must equal the catalog-ordered concatenation of each enabled entry's own primitives loaded in isolation, with uniqueness asserted. This replaces len(ids) == 91 and len(set(ids)) == 91. The first-primitive identity and the vertical-slice byte-for-byte spec comparison are unchanged.",
+        "test_disabled_entry_is_skipped": "Disabling exactly one selected entry must remove exactly that entry's own primitive contribution and nothing else: the remaining id list equals the full id list minus that entry's ids, and every named namespace count equals full minus disabled. This replaces len(ids) == 80 and the eight hardcoded namespace censuses (compare 6, predicate 3+5, target 7, action 8, modifier 25, property 16, fixedpoint 3, hp 2). The asserted property is exactly the one the contract requires to be preserved.",
+        "test_derived_counts_survive_synthetic_catalog_change": "NEW. Synthetically drops entries 1 and 2, loads that catalog through the public API, and asserts the total equals baseline minus the dropped entries' own contribution and the id list equals baseline minus those ids. This directly pins the second acceptance criterion without any constant."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_semantic_batch_catalog  =>  Ran 53 tests, OK, exit 0",
+        "python -m unittest tests.battle_ir.test_semantic_batch_catalog.TestPropertyArtifactValidation -v  =>  Ran 10 tests, OK, exit 0 (includes the three formerly stale tests and the new derived-counts test)",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 131 tests, OK, exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 494 tests, OK, exit 0 (pre-P0-C baseline was Ran 493 tests, FAILED (failures=3))",
+        "Same full suite under the repository-resolved Python 3.11.9  =>  Ran 494 tests, OK, exit 0",
+        "Both resolvers agree; no platform-specific behaviour observed"
+      ],
+      "acceptance_rows": {
+        "The three formerly stale tests pass": "PASS - test_default_catalog_loads_vertical_slice_plus_batches, test_catalog_schema_and_entries and test_disabled_entry_is_skipped all pass; the previously failing assertions (13 != 12, 92 != 91, 81 != 80) no longer exist",
+        "A synthetic catalog addition/removal does not require changing numeric constants": "PASS - pinned by test_derived_counts_survive_synthetic_catalog_change; every expected total in the modified tests is computed from the catalog document under test"
+      },
+      "non_goals_respected": [
+        "No hash validation, enabled filtering or primitive-id check was weakened or removed.",
+        "No unrelated snapshot or expectation was updated.",
+        "No catalog artifact, frozen Astra artifact or production module was modified.",
+        "No production code was changed; this task is test-infrastructure only."
+      ],
+      "residual_brittleness_for_review": [
+        "The test file still contains artifact-specific cardinality assertions (for example len(self.raw['primitives']) == 11 and the per-batch class expectations in TestBatch02Artifact through TestGenericPropertyMutation11Artifact). Those are per-artifact expectations for immutable, SHA-256-pinned artifacts, not catalog-wide censuses; they were deliberately left unchanged because the task requires the catalog aggregate counts to be derived, and touching pinned per-artifact expectations would exceed the allowlist scope.",
+        "Sol should confirm this scoping: the stale catalog-level aggregates were derived, while per-artifact pinned expectations were left as recorded truth."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "The new helpers go through the public catalog API (load_catalog_primitives / load_semantic_catalog / CatalogArtifactEntry.to_dict) and do not import or use the private _LOADERS registry.",
+        "Synthetic catalogs are materialized under tempfile.TemporaryDirectory, so no scratch file is left in the repository.",
+        "Runtime cost of the derived loads is roughly +8s for the module; acceptable for the fast lane and still well inside the lane budget.",
+        "The 87 pre-existing untracked files and the 2 protected modified tracked files were neither staged, moved, cleaned nor classified."
+      ],
+      "checkpoint": {
+        "head_before_task": "945a26c6643ab0628b1bca56fb23770f6197514e",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "P0-E",
+        "next_command": "python -m unittest tests.battle_ir.test_semantic_batch_catalog"
+      }
     },
     {
       "task_id": "P0-D",
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Codify baseline test matrix and environmental policy",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -991,14 +1038,72 @@
       ],
       "next_tasks": [
         "F01-001"
-      ]
+      ],
+      "readiness_recomputed_at": "2026-09-20",
+      "readiness_basis": "dependencies P0-B and P0-C are both DONE",
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": true,
+      "changed_files": [
+        "docs/agent/terra_test_matrix.md",
+        "pyproject.toml"
+      ],
+      "change_summary": "Codified the trustworthy baseline test matrix in a new docs/agent/terra_test_matrix.md: the six lanes (FAST_UNIT, STRUCTURAL, REFERENCE_MODEL, SOURCE_BACKED, NATIVE_TRACE, GOLDEN) with no combined coverage, the exact deterministic FAST_UNIT command, measured per-suite counts, the environmental quarantine rules with body-pass evidence, the BLOCKED_OPTIONAL suites with exact import errors and re-entry conditions, and a newly identified discovery gap. Added a [project.optional-dependencies] test-optional extra to pyproject.toml (numpy, jsonschema) so the blocked suites have an explicit re-entry path; [project].dependencies remains empty, so no runtime dependency was added.",
+      "implementation_detail": {
+        "lanes_defined": "FAST_UNIT (battle_ir/battle_sandbox/battle_runtime, deterministic and DB-free); STRUCTURAL (schemas, hashes, presence, identity, descriptors, gates; includes the P0-E quarantine guard rails); REFERENCE_MODEL (explicit reference adapters, labels cannot count native); SOURCE_BACKED (real fixtures with exact provenance); NATIVE_TRACE (empty, none promoted); GOLDEN (count 0). Lane contents came from the master test_baseline.lanes and were not redefined.",
+        "fast_command": "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\" - unchanged, this is the master's existing fast_regression string and it names battle_ir, battle_sandbox and battle_runtime.",
+        "measured_baseline": "battle_ir 131 OK, battle_sandbox 208 OK, battle_runtime 185 OK = 524 tests green in about 9 s. Root run python -m unittest discover -s tests -t . -p \"test_*.py\" = 532 tests OK, which is FAST_UNIT plus tests/reverse (8).",
+        "determinism": "The FAST_UNIT command was executed four times in total (twice before and twice after the pyproject edit); every run produced identical counts 131/208/185 and OK, under both Python 3.11.9 and 3.13.12.",
+        "environmental_quarantine": "The two tests/game_data errors are Windows tempfile cleanup failures only. Exact symptom: PermissionError [WinError 32] while shutil.rmtree unlinks content.sqlite / first.sqlite inside tempfile.TemporaryDirectory.__exit__ in tests/game_data/test_external_reconstruction.py. Body-pass evidence: in test_external_records_stage_detail_and_static_loadout_round_trip every assertion (lines 106-125) precedes the with-block exit, and in test_rebuild_is_deterministic_and_refuses_other_versions the assertions (lines 136-138) are the last statements inside the with block; in both cases the outer traceback frame is tempfile.py __exit__, not an assertion. Classified ENVIRONMENTAL, not green: the suite exits non-zero. Measured 153 tests, ~89 s, errors=2, failures=0.",
+        "blocked_optional": "tests/unpacker/test_pipeline_units.py and tests/cross_version/test_find_il2cpp_api_table.py fail at import with ModuleNotFoundError: No module named 'numpy' (raised from tools/unpack_pipeline/mhy_core.py line 23); tests/cross_version/test_runtime_probe.py fails at import with No module named 'jsonschema'. All three are unittest.loader._FailedTest, so no body ran and no environmental quarantine applies. Recorded BLOCKED_OPTIONAL with exact reproduction and an extras-based re-entry condition.",
+        "discovery_gap": "python -m unittest discover -s tests -t . only walks importable packages. tests/battle_ir, tests/battle_sandbox, tests/battle_runtime and tests/reverse have __init__.py and are covered; tests/game_data (153 tests), tests/cross_version and tests/unpacker have no package marker and are silently invisible to the root command. They also cannot be run with an explicit -t . until a marker exists (ImportError: Start directory is not importable). Adding those markers was outside this task's allowlist and was deliberately not done.",
+        "pyproject_scope": "Only a [project.optional-dependencies] test-optional extra was added. [project].dependencies stays empty and [build-system] is unchanged, so no runtime dependency was introduced. TOML validated with tomllib."
+      },
+      "test_results": [
+        "FAST_UNIT run 1 (Python 3.13.12): battle_ir Ran 131 OK; battle_sandbox Ran 208 OK; battle_runtime Ran 185 OK; exit 0",
+        "FAST_UNIT run 2 (Python 3.13.12): identical counts 131/208/185, all OK; exit 0",
+        "FAST_UNIT runs 3 and 4 after the pyproject edit: identical counts 131/208/185, all OK; exit 0",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 532 tests, OK, exit 0 (both 3.11.9 and 3.13.12)",
+        "PYTHONPATH=src python -m unittest discover -s tests/game_data -p \"test_*.py\"  =>  Ran 153 tests in ~89 s, FAILED (errors=2), failures=0; both errors are the documented Windows tempfile cleanup failures",
+        "python -m unittest discover -s tests/unpacker -p \"test_*.py\"  =>  Ran 1 test, FAILED (errors=1): numpy missing at import",
+        "python -m unittest discover -s tests/cross_version -p \"test_*.py\"  =>  Ran 2 tests, FAILED (errors=2): numpy and jsonschema missing at import",
+        "Python import check: numpy MISSING, jsonschema MISSING for the managed 3.13.12 interpreter",
+        "tomllib parse of pyproject.toml  =>  PASS; project.dependencies == [] and optional-dependencies == {'test-optional': ['numpy', 'jsonschema']}",
+        "python -m json.tool data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json  =>  PASS (see P0-D acceptance)"
+      ],
+      "acceptance_rows": {
+        "Fast command is deterministic and green": "PASS - four runs, identical counts (131/208/185), zero failures and zero errors, under two interpreters",
+        "Each excluded suite has reason, owner, reproduction command and re-entry condition": "PASS - tests/game_data (DB-backed, 89 s, environmental cleanup errors, owner Terra P0 lane, reproduction and re-entry documented); tests/unpacker and tests/cross_version (BLOCKED_OPTIONAL on numpy/jsonschema with reproduction and extras-based re-entry)",
+        "Golden remains 0": "PASS - project_state.golden is unchanged at 0; the matrix records GOLDEN count 0 and forbids relabelling"
+      },
+      "master_fields_not_edited": [
+        "test_baseline.observed still reads the planning-time snapshot (run 649, passed 644, semantic_failures 3, environmental_errors 2, blocked_optional_imports 3). It is now superseded: P0-C removed the 3 semantic failures and the fresh measurements are recorded in docs/agent/terra_test_matrix.md section 2 and 3. It was NOT edited because test_baseline is outside the master field set this task is permitted to change. Sol should refresh it.",
+        "No lane definition, coverage definition, semantic gate, milestone, DAG entry, dependency or authority precedence was changed."
+      ],
+      "non_goals_respected": [
+        "The unpacker, cross_version and slow SQLite suites were measured for the matrix but are not added to any per-task requirement.",
+        "No test behaviour or semantic expectation was changed; the only source edit is a new documentation file plus an optional-extras block.",
+        "Golden stays 0. No native semantic inference, reverse engineering, content fetch or reference-to-native promotion occurred.",
+        "No unrelated failing test was fixed."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "The discovery gap is the most consequential finding: the root command's green result must not be reported as whole-tree green while tests/game_data is structurally invisible to it.",
+        "docs/agent/terra_test_matrix.md states explicitly that environmental exclusions are per-test and evidence-backed with no global ignore, and that BLOCKED_OPTIONAL is never reported as green.",
+        "The 87 pre-existing untracked files and the 2 protected modified tracked files were neither staged, moved, cleaned nor classified."
+      ],
+      "checkpoint": {
+        "head_before_task": "945a26c6643ab0628b1bca56fb23770f6197514e",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "P0-F",
+        "next_command": "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\" && python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\""
+      }
     },
     {
       "task_id": "P0-E",
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Install reference-quarantine guard rails",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -1068,7 +1173,59 @@
       ],
       "next_tasks": [
         "F01-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-20",
+      "sol_review_pending": true,
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+        "src/hsr_battle_agent/battle_sandbox/reference_boundary.py",
+        "tests/battle_sandbox/test_reference_quarantine.py"
+      ],
+      "change_summary": "Installed type-level reference-quarantine guard rails. evidence_boundary.py defines the four frozen evidence modes verbatim, sealed NativeContract/GateCertificate types, quarantined ReferenceProfile/ReferenceDescriptor/ReferenceResult types, and separate ReferenceRegistry/NativeContractRegistry marker types, with certify_native_contract/require_native_contract/issue_gate_certificate enforcing that reference wrappers can never satisfy a native gate API. reference_boundary.py is the single declared crossing point: it declares the quarantine list and strict-path package list, wraps reference material in a mode-carrying ReferenceEnvelope, refuses evidence-mode loss via preserve_evidence_mode, and refuses promotion unconditionally via promote_to_native. tests/battle_sandbox/test_reference_quarantine.py adds 38 guard-rail tests including an AST import-boundary scan. No execution was routed, no reference module was modified or renamed, and no battle behaviour was implemented.",
+      "implementation_detail": {
+        "evidence_modes": "NATIVE_EVIDENCED, REFERENCE_MODEL, SANDBOX_EXTENSION, UNSUPPORTED - spelled exactly as astra_semantic_freeze_v1.json records them, asserted by test_frozen_evidence_mode_spellings.",
+        "type_separation": "NativeContract and GateCertificate are frozen dataclasses sealed by a module-private token; construction without the seal raises. ReferenceProfile rejects NATIVE_EVIDENCED in __post_init__, so a reference object cannot claim native evidence. ReferenceDescriptor/ReferenceResult derive their evidence_mode from their profile and cannot set it independently.",
+        "registry_separation": "ReferenceRegistry and NativeContractRegistry are unrelated types (neither subclasses the other). ReferenceRegistry.native_contracts() raises; NativeContractRegistry.register() rejects reference wrappers and vice versa. Both are inert: an assertion checks they expose no execute/run/step/apply attribute.",
+        "crossing_point": "reference_boundary.REFERENCE_BOUNDARY_MODULE names hsr_battle_agent.battle_sandbox.reference_boundary. ReferenceEnvelope rejects a non-quarantined source_module and rejects NATIVE_EVIDENCED. preserve_evidence_mode raises when an output carries a different mode or no mode at all.",
+        "ast_import_guard": "test_strict_path_never_imports_a_quarantined_module AST-parses every .py under src/hsr_battle_agent/battle_sandbox (absolute and relative imports, including from-package-import-symbol forms) and asserts no quarantined module is imported. A second scan asserts only reference_boundary.py may even name a quarantined module in a string literal."
+      },
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_reference_quarantine -v  =>  Ran 38 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 208 tests, OK, exit 0 (was 170 before this task)",
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 532 tests, OK, exit 0",
+        "Same full suite under the repository-resolved Python 3.11.9  =>  Ran 532 tests, OK, exit 0",
+        "AST scan coverage self-check: the scan covers the whole battle_sandbox package including registry.py and reference_boundary.py, at least 10 files"
+      ],
+      "acceptance_rows": {
+        "NATIVE_EVIDENCED rejects reference wrappers": "PASS - issue_gate_certificate, require_native_contract and is_native_evidenced all reject ReferenceProfile, ReferenceDescriptor, ReferenceResult and ReferenceRegistry; a hand-rolled unsealed NativeContract and a non-native-mode GateCertificate are rejected too",
+        "Strict-path modules cannot import quarantined modules except through reference_boundary": "PASS - AST import scan over src/hsr_battle_agent/battle_sandbox finds zero quarantined imports; reference_boundary itself also imports none, so crossing is object-level only",
+        "Existing reference fixtures remain importable": "PASS - all five quarantined modules import successfully via importlib; the guard rails label the quarantine without breaking the modules"
+      },
+      "enforcement_honesty": [
+        "These are structural guard rails for a typed codebase, not a security sandbox. A caller who deliberately reads the private module attribute could still forge a seal. This limitation is documented in the evidence_boundary.py module docstring rather than being overclaimed.",
+        "The AST scan is static: dynamic importlib usage naming a quarantined module would evade it, which is why the string-literal scan is included as a second, narrower net."
+      ],
+      "non_goals_respected": [
+        "No quarantined module was modified or renamed.",
+        "No registry, gate certificate, executor or battle behaviour was implemented; both registries are inert containers.",
+        "FC-02 and FC-19 were not touched.",
+        "No execution routing was added and no reference-to-native promotion path was created.",
+        "battle_sandbox/__init__.py was not modified (not in the allowlist), so the new modules are imported by their full path; no existing export changed."
+      ],
+      "incident_recorded": "While creating the P0-E files, the reference_boundary.py content was first written by mistake to src/hsr_battle_agent/battle_sandbox/test_reference_quarantine.py, a path outside the allowlist. The mis-placed file was created by this session and was removed immediately in the same session; the correct file was written to reference_boundary.py. No pre-existing file was deleted and no other stray file was created. Verified: the mis-placed path no longer exists and left no __pycache__ entry.",
+      "forbidden_files_changed": false,
+      "notes": [
+        "The strict path was already clean before this task: no battle_sandbox module imported a quarantined module. The AST guard now prevents regression.",
+        "evidence_boundary.py imports only errors.py and stdlib, and reference_boundary.py imports only evidence_boundary.py, so no import cycle was introduced.",
+        "No new runtime dependency was added; the tests use stdlib unittest, ast, importlib and pathlib only.",
+        "The 87 pre-existing untracked files, the 2 protected modified tracked files and the P0-C test edit were neither staged, moved, cleaned nor classified."
+      ],
+      "checkpoint": {
+        "head_before_task": "945a26c6643ab0628b1bca56fb23770f6197514e",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "P0-D",
+        "next_command": "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\""
+      }
     },
     {
       "task_id": "P0-F",
@@ -6698,35 +6855,42 @@
   },
   "last_checkpoint": {
     "timestamp": "2026-09-20",
-    "status": "P0_B_DONE_P0_C_NEXT",
-    "head_at_task_start": "b0363562c0675839b47b804bd47bc78f6f0d589b",
+    "status": "P0_D_DONE_ONLY_SOL_TASK_REMAINS",
+    "head_at_run_start": "945a26c6643ab0628b1bca56fb23770f6197514e",
     "changed_files": [
-      "tests/__init__.py",
-      "docs/agent/project_index.md",
+      "tests/battle_ir/test_semantic_batch_catalog.py",
+      "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+      "src/hsr_battle_agent/battle_sandbox/reference_boundary.py",
+      "tests/battle_sandbox/test_reference_quarantine.py",
+      "docs/agent/terra_test_matrix.md",
+      "pyproject.toml",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Only the P0-B allowlist paths and the control-plane master changed. src/, frozen Astra artifacts, the two protected modified tracked files and all unrelated untracked reverse/evidence artifacts were not modified or staged.",
+    "worktree_note": "Only P0-C, P0-E and P0-D allowlist paths and the control-plane master changed. Git write operations were disabled for this session, so nothing was staged or committed; a manual commit plan was produced instead. Frozen Astra artifacts, the catalog, the two protected modified tracked files and all unrelated untracked artifacts were not modified.",
     "tests": [
-      "root discovery command with explicit -t .: discovery enters, Ran 493 tests, 3 known stale failures: PASS",
-      "root discovery without -t .: Ran 493 tests, 3 known stale failures, identical set: PASS",
-      "battle sandbox lane: Ran 170 tests, OK: PASS",
-      "no test expectation changed: PASS",
-      "two protected modified tracked files remain untouched and unstaged: PASS",
-      "git diff --stat HEAD -- src tests: EMPTY"
+      "P0-C exact test_command: Ran 53 tests, OK: PASS",
+      "P0-E exact test_command: Ran 38 tests, OK: PASS",
+      "P0-D FAST_UNIT determinism: four identical runs of 131/208/185 all OK: PASS",
+      "full root discovery: Ran 532 tests, OK under both Python 3.11.9 and 3.13.12: PASS",
+      "game_data: Ran 153 tests, 2 environmental Windows tempfile cleanup errors, 0 failures: recorded ENVIRONMENTAL with body-pass evidence",
+      "unpacker and cross_version: BLOCKED_OPTIONAL on numpy/jsonschema: recorded, not green",
+      "pyproject.toml TOML parse and empty runtime dependencies: PASS",
+      "frozen Astra artifacts and catalog.json unmodified: PASS",
+      "duplicate-key validator on the master: PASS"
     ],
     "blockers": [],
-    "cheap_tasks_executed": 1,
-    "cheap_tasks_remaining_ready": 2,
-    "remaining_ready_cheap": [
-      "P0-C",
-      "P0-E"
+    "cheap_tasks_executed": 4,
+    "cheap_tasks_remaining_ready": 0,
+    "remaining_ready_cheap": [],
+    "remaining_ready_any": [
+      "P0-F"
     ],
-    "recommended_executor": "CHEAP_MODEL_OK for P0-C",
-    "next_command": "Read master and docs/agent/terra_task_prompts/P0_C_catalog_counts.md, verify P0-A2 DONE, then execute P0-C only."
+    "long_run_stopped_reason": "All eligible cheap P0 tasks (P0-C, P0-E, P0-D) are DONE. The only remaining ready P0 task is P0-F, which is SOL_IMPLEMENT and explicitly out of scope for this session.",
+    "git_write_operations_by_agent": "NONE (disabled by session policy)",
+    "recommended_executor": "SOL for P0-F (ratify migration, RNG and quarantine ADRs and validate the DAG)",
+    "next_command": "Read master and docs/agent/terra_task_prompts/ for P0-F; SOL owns the ADR ratification."
   },
   "next_ready_tasks": [
-    "P0-C",
-    "P0-E",
     "P0-F"
   ],
   "change_history": [
@@ -6753,6 +6917,24 @@
       "date": "2026-09-20",
       "change": "P0-B DONE. Added the missing root package marker tests/__init__.py so the documented root discovery command with an explicit -t . top level no longer raises ImportError: Start directory is not importable. Updated docs/agent/project_index.md section 9 with the verified root invocation, the separate sandbox lane and the re-verified baseline. No test expectation, production file, frozen artifact or DAG entry was changed.",
       "review": "NO_EXTRA_REVIEW"
+    },
+    {
+      "revision": "1.0.4",
+      "date": "2026-09-20",
+      "change": "P0-C DONE. Replaced the three stale catalog cardinality constants (12, 91, 80) with assertions derived from the catalog under test, converted the eight hardcoded per-namespace censuses to derived deltas, and added a focused test pinning that a synthetic catalog addition/removal needs no constant edit. Full fast suite is now green (494 tests, OK) after being 3 failures. No catalog file, frozen artifact, production module or DAG entry was changed. P0-D readiness recomputed to READY because P0-B and P0-C are both DONE.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.5",
+      "date": "2026-09-20",
+      "change": "P0-E DONE. Added evidence_boundary.py and reference_boundary.py guard rails plus 38 guard-rail tests: sealed NativeContract/GateCertificate types, quarantined reference wrapper types that cannot claim NATIVE_EVIDENCED, separate native/reference registry markers, a single declared crossing point that refuses evidence-mode loss and promotion, and an AST import-boundary scan over the strict path. No execution routed, no quarantined module modified, no DAG or semantic gate changed. Next ready task is P0-D.",
+      "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.6",
+      "date": "2026-09-20",
+      "change": "P0-D DONE. Added docs/agent/terra_test_matrix.md codifying the six evidence lanes without combined coverage, the deterministic FAST_UNIT command and measured counts (131/208/185 = 524 green, four identical runs), the environmental quarantine rules with body-pass evidence for the two Windows tempfile cleanup errors, the BLOCKED_OPTIONAL numpy/jsonschema suites with reproduction and re-entry, and a newly identified discovery gap in which tests/game_data (153 tests), tests/cross_version and tests/unpacker are invisible to the root discovery command. Added a test-only optional extra to pyproject.toml without adding any runtime dependency. Golden remains 0. All remaining cheap P0 work is complete; only P0-F (SOL_IMPLEMENT) is ready.",
+      "review": "SOL_REVIEW_REQUIRED"
     }
   ],
   "validation_requirements": [
@@ -6775,10 +6957,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 3,
-      "NOT_STARTED": 59,
+      "READY": 1,
+      "NOT_STARTED": 58,
       "BLOCKED": 10,
-      "DONE": 3
+      "DONE": 6
     },
     "freeze_tickets": [
       "TERRA-F01",

@@ -38,6 +38,77 @@ from hsr_battle_agent.battle_ir.semantic_property import (  # noqa: E402
     validate_property_capability,
 )
 
+DEFAULT_CATALOG_PATH = REPO / "data" / "semantics" / "4.4.54" / "catalog.json"
+
+CATALOG_ENTRY_KEYS = ("path", "schema", "sha256", "enabled")
+
+# Primitive-id namespaces asserted for composition in the catalog tests below.
+# The namespaces are structural; the counts attributed to them are derived.
+NAMED_PRIMITIVE_NAMESPACES = (
+    "battle.ir.compare.",
+    "battle.ir.predicate.",
+    "battle.ir.target.",
+    "battle.ir.action.",
+    "battle.ir.modifier.",
+    "battle.ir.property.",
+    "battle.ir.fixedpoint.",
+    "battle.ir.hp.",
+)
+
+
+def read_default_catalog_data() -> dict:
+    """Return the raw default catalog document, unparsed by the loader."""
+    return json.loads(DEFAULT_CATALOG_PATH.read_text(encoding="utf-8"))
+
+
+def catalog_entry_contract(entry: dict) -> dict:
+    """Project a raw catalog entry onto the fields the contract defines."""
+    return {key: entry[key] for key in CATALOG_ENTRY_KEYS}
+
+
+def materialize_catalog(catalog_data: dict, tmp_path: Path) -> Path:
+    """Copy the referenced artifacts next to a catalog written into tmp_path.
+
+    The catalog loader reads artifacts relative to the catalog file, so a
+    synthetic catalog must be materialized together with the artifacts it
+    names.  Only the named artifacts are copied.
+    """
+    for entry in catalog_data["artifacts"]:
+        source = DEFAULT_CATALOG_PATH.parent / entry["path"]
+        target = tmp_path / entry["path"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(source.read_bytes())
+    catalog_path = tmp_path / "catalog.json"
+    catalog_path.write_text(json.dumps(catalog_data), encoding="utf-8")
+    return catalog_path
+
+
+def primitive_ids_for_catalog(catalog_data: dict) -> list[str]:
+    """Load a synthetic catalog document and return the primitive ids it yields."""
+    with tempfile.TemporaryDirectory() as tmp:
+        catalog_path = materialize_catalog(catalog_data, Path(tmp))
+        return [
+            primitive.spec.primitive_id
+            for primitive in load_catalog_primitives(catalog_path)
+        ]
+
+
+def primitive_ids_for_entries(entries: list[dict]) -> list[str]:
+    """Load a synthetic catalog containing exactly the given entries.
+
+    The catalog envelope (schema, game_version) comes from the real catalog
+    under test, so callers only choose the artifact subset.  Used to derive
+    expected counts from the catalog under test instead of hardcoding
+    cardinalities that go stale whenever the catalog legitimately grows.
+    """
+    catalog_data = read_default_catalog_data()
+    catalog_data["artifacts"] = entries
+    return primitive_ids_for_catalog(catalog_data)
+
+
+def count_in_namespace(ids: list[str], prefix: str) -> int:
+    return sum(1 for primitive_id in ids if primitive_id.startswith(prefix))
+
 
 class TestBatch02Artifact(unittest.TestCase):
     @classmethod
@@ -793,8 +864,28 @@ class TestPropertyArtifactValidation(unittest.TestCase):
         primitives = load_catalog_primitives()
         ids = [primitive.spec.primitive_id for primitive in primitives]
         self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-        self.assertEqual(len(ids), 91)
-        self.assertEqual(len(set(ids)), 91)
+        # Derived from the catalog under test: the unified load must be exactly
+        # the catalog-ordered concatenation of each enabled entry's own
+        # primitives, with no id silently dropped or duplicated.  No artifact or
+        # primitive cardinality is hardcoded, so a legitimate catalog change
+        # needs no edit here.
+        enabled_entries = [
+            entry
+            for entry in read_default_catalog_data()["artifacts"]
+            if entry["enabled"]
+        ]
+        per_entry_ids = [
+            primitive_ids_for_entries([entry]) for entry in enabled_entries
+        ]
+        self.assertEqual(
+            ids, [pid for group in per_entry_ids for pid in group]
+        )
+        self.assertEqual(len(ids), sum(len(group) for group in per_entry_ids))
+        self.assertEqual(len(set(ids)), len(ids))
+        # Every enabled entry must actually contribute something.
+        for entry, group in zip(enabled_entries, per_entry_ids):
+            with self.subTest(entry=entry["path"]):
+                self.assertTrue(group)
         # Vertical-slice loader stays byte-for-byte compatible.
         self.assertEqual(
             primitives[0].spec,
@@ -803,9 +894,17 @@ class TestPropertyArtifactValidation(unittest.TestCase):
 
     def test_catalog_schema_and_entries(self):
         catalog = load_semantic_catalog()
+        raw = read_default_catalog_data()
         self.assertEqual(catalog.schema, CATALOG_SCHEMA)
         self.assertEqual(catalog.game_version, "4.4.54")
-        self.assertEqual(len(catalog.artifacts), 12)
+        # Derived: the parsed entry list mirrors the catalog file under test
+        # verbatim, so validation neither drops, reorders nor rewrites entries.
+        # The expected length comes from the file itself, not a constant.
+        self.assertEqual(
+            [entry.to_dict() for entry in catalog.artifacts],
+            [catalog_entry_contract(entry) for entry in raw["artifacts"]],
+        )
+        self.assertEqual(len(catalog.artifacts), len(raw["artifacts"]))
         self.assertTrue(all(entry.enabled for entry in catalog.artifacts))
 
     def test_sha256_mismatch_rejected(self):
@@ -833,61 +932,78 @@ class TestPropertyArtifactValidation(unittest.TestCase):
                 load_catalog_primitives(catalog_path)
 
     def test_disabled_entry_is_skipped(self):
+        base = read_default_catalog_data()
+        disabled_index = 1
+        disabled_entry = base["artifacts"][disabled_index]
+
+        full_ids = [
+            primitive.spec.primitive_id
+            for primitive in load_catalog_primitives()
+        ]
+        disabled_ids = primitive_ids_for_entries([disabled_entry])
+
+        catalog_data = read_default_catalog_data()
+        catalog_data["artifacts"][disabled_index]["enabled"] = False
         with tempfile.TemporaryDirectory() as tmp:
-            tmp_path = Path(tmp)
-            catalog_data = json.loads(
-                (Path(REPO) / "data/semantics/4.4.54/catalog.json").read_text(
-                    encoding="utf-8"
-                )
-            )
-            for entry in catalog_data["artifacts"]:
-                source = (
-                    Path(REPO)
-                    / "data"
-                    / "semantics"
-                    / "4.4.54"
-                    / entry["path"]
-                )
-                target = tmp_path / entry["path"]
-                target.write_bytes(source.read_bytes())
-            catalog_data["artifacts"][1]["enabled"] = False
-            catalog_path = tmp_path / "catalog.json"
-            catalog_path.write_text(json.dumps(catalog_data), encoding="utf-8")
+            catalog_path = materialize_catalog(catalog_data, Path(tmp))
             primitives = load_catalog_primitives(catalog_path)
             ids = [primitive.spec.primitive_id for primitive in primitives]
-            self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
-            # vertical slice + FixPoint Batch 03 + Predicate Bridge Batch 04
-            # + Target Selector Batch 05 + Action Execution Bridge 06
-            # + Modifier Application Bridge 07 + Modifier Lifecycle Bridge 08
-            # + Property Effect Capability 09 + Property Materialization
-            # Bridge 10 + Property Mutation Bridge 11 + HP Transition 12
-            # (DynamicValue Batch 02 disabled)
-            self.assertEqual(len(ids), 80)
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.compare.")), 6
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.predicate.")),
-                3 + 5,
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.target.")), 7
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.action.")), 8
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.modifier.")), 25
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.property.")), 16
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.fixedpoint.")), 3
-            )
-            self.assertEqual(
-                sum(1 for pid in ids if pid.startswith("battle.ir.hp.")), 2
-            )
+
+        self.assertEqual(ids[0], "battle.ir.value.dynamic_value_equals")
+        # Derived: disabling exactly one selected entry removes exactly that
+        # entry's own primitive contribution -- and nothing else.  The expected
+        # total is computed from the catalog under test, never hardcoded.
+        self.assertTrue(disabled_ids)
+        removed = set(disabled_ids)
+        self.assertEqual(len(ids), len(full_ids) - len(disabled_ids))
+        self.assertEqual(ids, [pid for pid in full_ids if pid not in removed])
+        self.assertTrue(removed.isdisjoint(ids))
+        # Composition is preserved namespace by namespace: the disabled entry
+        # accounts for the whole difference in every namespace, so no other
+        # artifact is affected.
+        for prefix in NAMED_PRIMITIVE_NAMESPACES:
+            with self.subTest(prefix=prefix):
+                self.assertEqual(
+                    count_in_namespace(ids, prefix),
+                    count_in_namespace(full_ids, prefix)
+                    - count_in_namespace(disabled_ids, prefix),
+                )
+
+    def test_derived_counts_survive_synthetic_catalog_change(self):
+        """A synthetic catalog addition/removal must not need constant edits.
+
+        The catalog tests derive their expected artifact and primitive counts
+        from the document under test, so synthetically dropping entries changes
+        the expected totals automatically instead of contradicting a hardcoded
+        number.  This pins that property directly.
+        """
+        base = read_default_catalog_data()
+        baseline_ids = [
+            primitive.spec.primitive_id
+            for primitive in load_catalog_primitives()
+        ]
+
+        dropped_indexes = (1, 2)
+        dropped_entries = [base["artifacts"][index] for index in dropped_indexes]
+        dropped_ids = primitive_ids_for_entries(dropped_entries)
+
+        synthetic = copy.deepcopy(base)
+        synthetic["artifacts"] = [
+            entry
+            for index, entry in enumerate(base["artifacts"])
+            if index not in dropped_indexes
+        ]
+        synthetic_ids = primitive_ids_for_catalog(synthetic)
+
+        self.assertTrue(dropped_ids)
+        self.assertEqual(len(synthetic["artifacts"]), len(base["artifacts"]) - 2)
+        self.assertEqual(
+            len(synthetic_ids), len(baseline_ids) - len(dropped_ids)
+        )
+        self.assertEqual(
+            synthetic_ids,
+            [pid for pid in baseline_ids if pid not in set(dropped_ids)],
+        )
 
     def test_unsupported_artifact_schema_rejected(self):
         data = {

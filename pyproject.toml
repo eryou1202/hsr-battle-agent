@@ -9,6 +9,19 @@ description = "Versioned research skeleton for a Honkai: Star Rail battle strate
 requires-python = ">=3.11"
 dependencies = []
 
+# Test-only extras for suites that are BLOCKED_OPTIONAL without them.
+# These are deliberately NOT runtime dependencies: the production package and the
+# FAST_UNIT lane must keep working with no third-party imports at all.
+#   numpy      -> tests/unpacker, tests/cross_version (tools/unpack_pipeline/mhy_core.py)
+#   jsonschema -> tests/cross_version/test_runtime_probe.py
+# See docs/agent/terra_test_matrix.md section 4 for the exact blocked errors and the
+# re-entry condition.
+[project.optional-dependencies]
+test-optional = [
+    "numpy",
+    "jsonschema",
+]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
