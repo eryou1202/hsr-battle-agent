@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.7",
+  "plan_version": "1.0.8",
   "generated_date": "2026-09-20",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -1383,11 +1383,17 @@
       "current_repository_state": "HEAD ce62dc0028d15cbdc7a332c3db860ed7fffb9c58; src/ and tests/ pristine at planning time; current API/state limitations are recorded in repository_baseline.",
       "files_read": [
         "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
-        "data/semantics/4.4.54/full_reconstruction/terra_local_repository_audit_001.json"
+        "data/semantics/4.4.54/full_reconstruction/terra_local_repository_audit_001.json",
+        "docs/agent/terra_architecture_decisions_v1.md",
+        "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+        "src/hsr_battle_agent/battle_sandbox/reference_boundary.py",
+        "tests/battle_sandbox/test_reference_quarantine.py"
       ],
       "files_allowed_to_modify": [
         "src/hsr_battle_agent/battle_ir/evidence.py",
-        "tests/battle_ir/test_evidence.py"
+        "tests/battle_ir/test_evidence.py",
+        "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+        "tests/battle_sandbox/test_reference_quarantine.py"
       ],
       "files_forbidden_to_modify": [
         "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json",
@@ -1423,9 +1429,12 @@
       ],
       "acceptance_tests": [
         "All enum round trips",
-        "CLOSE and NATIVE never compare or merge as the same mode"
+        "CLOSE and NATIVE never compare or merge as the same mode",
+        "battle_ir.evidence.EvidenceMode is battle_sandbox.evidence_boundary.EvidenceMode is battle_sandbox.reference_boundary.EvidenceMode",
+        "battle_sandbox.evidence_boundary contains no local EvidenceMode class definition after migration",
+        "All P0-E reference-quarantine tests still pass"
       ],
-      "test_command": "python -m unittest tests.battle_ir.test_evidence -v",
+      "test_command": "powershell -NoProfile -Command \". .\\scripts\\python\\resolve_python.ps1; $Py = Resolve-PythonInterpreter; & $Py.Exe -m unittest tests.battle_ir.test_evidence tests.battle_sandbox.test_reference_quarantine -v\"",
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "representation coverage",
       "semantic_effect": "frozen vocabulary only",
@@ -1444,7 +1453,18 @@
         "F01-006"
       ],
       "readiness_recomputed_at": "2026-09-20",
-      "readiness_basis": "P0-D, P0-E and P0-F are DONE; canonical EvidenceMode migration is explicitly recorded but not yet implemented"
+      "readiness_basis": "P0-D, P0-E and P0-F are DONE; canonical EvidenceMode migration is explicitly recorded but not yet implemented",
+      "control_fix": {
+        "change_request_id": "CR-F01-001-CONTROL-20260920-001",
+        "newly_authorized": [
+          "src/hsr_battle_agent/battle_sandbox/evidence_boundary.py",
+          "tests/battle_sandbox/test_reference_quarantine.py"
+        ],
+        "intentionally_not_authorized": {
+          "src/hsr_battle_agent/battle_sandbox/reference_boundary.py": "Read and covered by identity/quarantine tests, but no edit is required: it imports EvidenceMode from battle_sandbox.evidence_boundary, whose identity-preserving re-export will bind the canonical class automatically."
+        },
+        "scope": "Control-plane authorization only; F01-001 remains READY and unimplemented."
+      }
     },
     {
       "task_id": "F01-002",
@@ -6994,6 +7014,23 @@
         "sol_authorization": "AUTHORIZED_BY_SOL_P0_FINAL_REVIEW_2026-09-20",
         "astra_reopen_required": false,
         "validation": "P0-E exact 38 OK; FAST_UNIT 524 OK; root documented scope 532 OK; duplicate-key, authority reconciliation and DAG validation PASS"
+      },
+      {
+        "change_request_id": "CR-F01-001-CONTROL-20260920-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "F01-001's files_allowed_to_modify omitted the sandbox evidence module and quarantine test required to replace the provisional EvidenceMode atomically and prove exact class identity, contradicting the ratified P0-F implementation requirement.",
+        "affected_task_ids": [
+          "F01-001"
+        ],
+        "files": [
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE",
+        "migration_impact": "Control authorization only. F01-001 may atomically relocate EvidenceMode to battle_ir/evidence.py, import/re-export the exact class from battle_sandbox/evidence_boundary.py, and update identity-sensitive quarantine tests. No evidence spelling, meaning, gate, dependency, milestone or runtime behavior changes in this control fix.",
+        "rollback": "Restore the prior F01-001 files_read, files_allowed_to_modify, acceptance_tests and test_command entries and remove this change-request/history record. Do not alter the ratified canonicalization requirement or any production/test Python file.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_CONTROL_REVIEW_2026-09-20",
+        "astra_reopen_required": false,
+        "validation": "Master parse and duplicate-key validation PASS; F01-001 remains READY with P0-D/P0-E/P0-F DONE; 75-task DAG remains acyclic; allowlist is exactly the two original files plus evidence_boundary.py and test_reference_quarantine.py; reference_boundary.py is read/tested but intentionally not authorized; production/test Python hashes unchanged."
       }
     ]
   },
@@ -7083,6 +7120,13 @@
       "change_request_id": "CR-P0-F-LOCAL-20260920-001",
       "change": "Sol final review completed P0-C/P0-D/P0-E, repaired the ReferenceRegistry scalar-mode inconsistency by making it REFERENCE_MODEL-only, made test-matrix interpreter examples consistent, selected ACCEPT_DOCUMENTED_LANE_DISCOVERY, preserved the planning-time three-failure snapshot separately while refreshing the current 524/532 baseline, ratified all three P0-F ADRs, recorded the F01-001 single-canonical-EvidenceMode migration rule, validated authority and the 75-task acyclic DAG, closed M0.5, and made F01-001 READY without executing it. Semantic impact NONE; frozen authority and battle runtime behavior unchanged.",
       "review": "SOL_RATIFIED"
+    },
+    {
+      "revision": "1.0.8",
+      "date": "2026-09-20",
+      "change_request_id": "CR-F01-001-CONTROL-20260920-001",
+      "change": "Control-plane-only repair of the F01-001 allowlist contradiction. Authorized battle_sandbox/evidence_boundary.py so the provisional enum can be deleted and the canonical class imported/re-exported atomically, and authorized test_reference_quarantine.py so exact identity and all P0-E guard rails are tested. reference_boundary.py remains read-only because it already imports EvidenceMode through evidence_boundary and therefore receives the canonical object without an edit. Expanded files_read and acceptance coverage and changed the exact command to run both evidence and quarantine suites through the repository resolver. No DAG, milestone, authority, semantic requirement, other task, or Python source/test file changed.",
+      "review": "SOL_CONTROL_FIX"
     }
   ],
   "validation_requirements": [
