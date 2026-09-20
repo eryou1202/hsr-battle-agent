@@ -737,7 +737,7 @@
       "freeze_ticket": null,
       "local_phase": "P0_REPOSITORY_STABILIZATION",
       "title": "Repair root unittest discovery",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "NO_EXTRA_REVIEW",
       "dependencies": [
@@ -804,7 +804,44 @@
       ],
       "next_tasks": [
         "P0-D"
-      ]
+      ],
+      "status_updated_at": "2026-09-20",
+      "changed_files": [
+        "tests/__init__.py",
+        "docs/agent/project_index.md"
+      ],
+      "change_summary": "Added the missing root test package marker tests/__init__.py containing only the project's standard coding header, matching tests/battle_ir/__init__.py, tests/battle_sandbox/__init__.py and tests/battle_runtime/__init__.py. Documented the verified root discovery invocation and the separate sandbox lane in docs/agent/project_index.md section 9, and recorded the re-verified baseline. No test body, expectation, production file or dependency was touched.",
+      "test_results": [
+        "python -m unittest discover -s tests -t . -p \"test_*.py\"  =>  Ran 493 tests, FAILED (failures=3), exit 1; all 3 are the separately recorded stale cardinality assertions in tests/battle_ir/test_semantic_batch_catalog.py (test_catalog_schema_and_entries 13 != 12, test_default_catalog_loads_vertical_slice_plus_batches 92 != 91, test_disabled_entry_is_skipped 81 != 80). Discovery now enters instead of raising ImportError. Owned by P0-C.",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 170 tests, OK, exit 0",
+        "Pre-change baseline via python -m unittest discover -s tests -p \"test_*.py\"  =>  Ran 493 tests, FAILED (failures=3), identical failure set",
+        "Pre-change failure: python -m unittest discover -s tests -t . -p \"test_*.py\" raised ImportError: Start directory is not importable: 'D:\\HSR_Battle_Agent\\hsr-battle-agent\\tests' (exit 1)",
+        "Both resolvers agree: repository-resolved Python 3.11.9 and managed Python 3.13.12 each report Ran 493 tests, FAILED (failures=3)",
+        "No line-ending change and no CR byte introduced by this task"
+      ],
+      "acceptance_rows": {
+        "python -m unittest discover -s tests -t . -p test_*.py can discover importable suites": "PASS - discovery runs; module names are now rooted at the repository, e.g. tests.battle_ir.test_semantic_batch_catalog",
+        "No test expectation changes": "PASS - the only test-tree change is the addition of tests/__init__.py; the 3 failures are pre-existing and unchanged"
+      },
+      "known_downstream_failures": [
+        "tests/battle_ir/test_semantic_batch_catalog.py::TestPropertyArtifactValidation::test_catalog_schema_and_entries expects len(catalog.artifacts) == 12, observed 13",
+        "tests/battle_ir/test_semantic_batch_catalog.py::TestPropertyArtifactValidation::test_default_catalog_loads_vertical_slice_plus_batches expects len(ids) == 91, observed 92",
+        "tests/battle_ir/test_semantic_batch_catalog.py::TestPropertyArtifactValidation::test_disabled_entry_is_skipped expects len(ids) == 80, observed 81",
+        "These are stale cardinality assertions owned by P0-C. They are NOT discovery failures and were deliberately not fixed here."
+      ],
+      "forbidden_files_changed": false,
+      "notes": [
+        "Only the missing package marker was added; no test framework or third-party dependency was introduced.",
+        "unittest remains the test framework.",
+        "The documented command in project_index.md section 9 was updated because the verified invocation requires an explicit -t . top level, which is exactly what the missing marker unblocked.",
+        "The 87 pre-existing untracked and 2 protected modified tracked files were neither staged, moved, cleaned nor classified."
+      ],
+      "checkpoint": {
+        "head_before_task": "b0363562c0675839b47b804bd47bc78f6f0d589b",
+        "state_rng_allocator_queues_traces_touched": false,
+        "next_task": "P0-C",
+        "next_command": "python -m unittest discover -s tests -t . -p \"test_*.py\""
+      }
     },
     {
       "task_id": "P0-C",
@@ -6661,37 +6698,33 @@
   },
   "last_checkpoint": {
     "timestamp": "2026-09-20",
-    "status": "P0_AUTHORITY_RECONCILED",
-    "head_at_investigation_start": "a505a25cf96bb718784faa85f4d962262d251ca5",
+    "status": "P0_B_DONE_P0_C_NEXT",
+    "head_at_task_start": "b0363562c0675839b47b804bd47bc78f6f0d589b",
     "changed_files": [
-      "data/semantics/4.4.54/full_reconstruction/authority_reconciliation_001.json",
-      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
-      "docs/agent/authority_reconciliation_2026-09-20.md",
-      "tools/control/validate_json_no_duplicate_keys.mjs"
+      "tests/__init__.py",
+      "docs/agent/project_index.md",
+      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Only the four authority/control-plane paths authorized by AUTHORITY_INTEGRITY_RECONCILIATION_001 changed in this session. src/, tests/, frozen Astra artifacts, Domain artifacts, the two protected modified tracked files, and unrelated untracked reverse/evidence artifacts were not modified or staged.",
+    "worktree_note": "Only the P0-B allowlist paths and the control-plane master changed. src/, frozen Astra artifacts, the two protected modified tracked files and all unrelated untracked reverse/evidence artifacts were not modified or staged.",
     "tests": [
-      "30 preservation-manifest paths exist: PASS",
-      "26 immutable manifest paths exactly match: PASS",
-      "3 Domain paths match the current SHA-256 recorded by AUTHORITY_RECONCILIATION_001: PASS",
-      "mutable implementation master treated as schema/version plus Git identity rather than perpetual self-hash: PASS",
-      "duplicate-key validator on master, reconciliation, and preservation manifest: PASS",
+      "root discovery command with explicit -t .: discovery enters, Ran 493 tests, 3 known stale failures: PASS",
+      "root discovery without -t .: Ran 493 tests, 3 known stale failures, identical set: PASS",
+      "battle sandbox lane: Ran 170 tests, OK: PASS",
+      "no test expectation changed: PASS",
       "two protected modified tracked files remain untouched and unstaged: PASS",
-      "git fsck --full reports no missing or corrupt objects: PASS",
       "git diff --stat HEAD -- src tests: EMPTY"
     ],
-    "resolved_blockers": [
-      "P0-A1-AUTHORITY-HASH-MISMATCH",
-      "P0-A2-PRESERVATION-COMMIT-CONTENT-DIVERGES-FROM-REVIEWED-MANIFEST"
+    "blockers": [],
+    "cheap_tasks_executed": 1,
+    "cheap_tasks_remaining_ready": 2,
+    "remaining_ready_cheap": [
+      "P0-C",
+      "P0-E"
     ],
-    "blocker_scope": null,
-    "cheap_tasks_executed": 0,
-    "cheap_tasks_remaining_ready": 3,
-    "recommended_executor": "CHEAP_MODEL_OK for P0-B",
-    "next_command": "Read master and docs/agent/terra_task_prompts/P0_B_test_discovery.md, verify P0-A2 DONE and authority reconciliation, then execute P0-B only."
+    "recommended_executor": "CHEAP_MODEL_OK for P0-C",
+    "next_command": "Read master and docs/agent/terra_task_prompts/P0_C_catalog_counts.md, verify P0-A2 DONE, then execute P0-C only."
   },
   "next_ready_tasks": [
-    "P0-B",
     "P0-C",
     "P0-E",
     "P0-F"
@@ -6714,6 +6747,12 @@
       "date": "2026-09-20",
       "change": "Authority integrity reconciliation. Retained the three original frozen expected hashes, recorded the current preserved hashes through AUTHORITY_RECONCILIATION_001 after local recovery and semantic-equivalence audit, established the mutable-control identity rule, surgically removed one identical duplicate JSON member, closed P0-A1/P0-A2, and made P0-B/P0-C/P0-E/P0-F READY. No frozen semantic artifact, Domain artifact, production file, or test was modified.",
       "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.3",
+      "date": "2026-09-20",
+      "change": "P0-B DONE. Added the missing root package marker tests/__init__.py so the documented root discovery command with an explicit -t . top level no longer raises ImportError: Start directory is not importable. Updated docs/agent/project_index.md section 9 with the verified root invocation, the separate sandbox lane and the re-verified baseline. No test expectation, production file, frozen artifact or DAG entry was changed.",
+      "review": "NO_EXTRA_REVIEW"
     }
   ],
   "validation_requirements": [
@@ -6736,10 +6775,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 4,
+      "READY": 3,
       "NOT_STARTED": 59,
       "BLOCKED": 10,
-      "DONE": 2
+      "DONE": 3
     },
     "freeze_tickets": [
       "TERRA-F01",

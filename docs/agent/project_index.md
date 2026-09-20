@@ -240,8 +240,24 @@ claiming that the existing runtime already implements them.
 Use the verified Python resolver described in
 `docs/agent/dsh_windows_environment.md`; do not use bare `python` or `py`.
 
+The verified root invocation is:
+
 ```powershell
-& "C:\Users\而忧\AppData\Local\Programs\Python\Python311\python.exe" -m unittest discover -s tests -p "test_*.py" -v
+& "C:\Users\而忧\AppData\Local\Programs\Python\Python311\python.exe" -m unittest discover -s tests -t . -p "test_*.py" -v
+```
+
+`tests/__init__.py` is required for this form.  Without that root package
+marker the explicit `-t .` top level makes unittest raise
+`ImportError: Start directory is not importable` for `tests/`, which is why
+the root command previously had to be run without `-t .` (giving module names
+such as `battle_ir.test_...`).  With the marker present, discovery succeeds and
+test module names are rooted at the repository, for example
+`tests.battle_ir.test_semantic_batch_catalog`.
+
+The battle sandbox lane is a separate, fast, deterministic lane:
+
+```powershell
+& "C:\Users\而忧\AppData\Local\Programs\Python\Python311\python.exe" -m unittest discover -s tests/battle_sandbox -t . -p "test_*.py"
 ```
 
 Audit result on 2026-08-24: **489 tests run; 486 passed; 3 failed**.  All
@@ -252,6 +268,13 @@ test still expects 12 / 91 (and 80 rather than 81 when Batch 02 is disabled).
 This is a test-maintenance issue, not evidence that the additional runtime
 artifact failed to load.  Do not silently call the test suite fully green
 until those expectations are updated and tests rerun.
+
+Re-verified on 2026-09-20 after adding the root package marker: **493 tests
+run; 490 passed; 3 failed**, under both the repository-resolved Python 3.11.9
+above and a managed 3.13.12 interpreter.  The failure set is unchanged and is
+exactly the three stale cardinality assertions listed above; no other suite
+failed and no test expectation was altered.  The sandbox lane above is green
+(170 tests, `OK`).
 
 Focused evidence also lives in `data/sandbox/*.json`, especially the real
 skill report, HP transition report, and the artifact-validation tests under
