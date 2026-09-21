@@ -40,12 +40,19 @@ __all__ = [
 
 OPAQUE_STORE_SCHEMA = "opaque_unresolved_store/1"
 
-OPAQUE_STORE_FAMILY = "opaque_handles"
+OPAQUE_STORE_FAMILY = "unknown_extensions"
 
 
-def opaque_store_definition() -> StoreDefinition:
+def opaque_store_definition(
+    field_family: str = OPAQUE_STORE_FAMILY,
+) -> StoreDefinition:
     """The declared definition of the opaque store family."""
-    return require_store_family(OPAQUE_STORE_FAMILY)
+    definition = require_store_family(field_family)
+    if definition.store_class.value != "OPAQUE_UNRESOLVED":
+        raise TypedStoreError(
+            f"field family {field_family!r} is not opaque unresolved"
+        )
+    return definition
 
 
 @dataclass(frozen=True)
@@ -57,9 +64,12 @@ class OpaqueUnresolvedStore:
     changed opaque payload changes the store identity.
     """
 
+    field_family: str = OPAQUE_STORE_FAMILY
     handles: tuple[UnknownHandle, ...] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
+        definition = opaque_store_definition(self.field_family)
+        object.__setattr__(self, "field_family", definition.name)
         if isinstance(self.handles, (str, bytes)) or not isinstance(
             self.handles, (tuple, list)
         ):
@@ -77,7 +87,7 @@ class OpaqueUnresolvedStore:
     # -- surface ---------------------------------------------------------
 
     def definition(self) -> StoreDefinition:
-        return opaque_store_definition()
+        return opaque_store_definition(self.field_family)
 
     def is_empty(self) -> bool:
         return len(self.handles) == 0
@@ -96,13 +106,16 @@ class OpaqueUnresolvedStore:
                 f"with_handle() requires an UnknownHandle, got "
                 f"{type(handle).__name__}"
             )
-        return OpaqueUnresolvedStore(handles=self.handles + (handle,))
+        return OpaqueUnresolvedStore(
+            field_family=self.field_family,
+            handles=self.handles + (handle,),
+        )
 
     def identity_hash(self) -> str:
         """Digest over every handle's identity hash, in order."""
         text = json.dumps(
             {
-                "family": OPAQUE_STORE_FAMILY,
+                "family": self.field_family,
                 "handles": [handle.identity_hash() for handle in self.handles],
             },
             sort_keys=True,
@@ -138,14 +151,14 @@ class OpaqueUnresolvedStore:
             )
             for index, handle in enumerate(self.handles)
         )
-        return TypedStore(definition=opaque_store_definition(), entries=entries)
+        return TypedStore(definition=self.definition(), entries=entries)
 
     # -- serialization ---------------------------------------------------
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "schema": OPAQUE_STORE_SCHEMA,
-            "definition": opaque_store_definition().to_dict(),
+            "definition": self.definition().to_dict(),
             "handles": [handle.to_dict() for handle in self.handles],
         }
 
@@ -167,14 +180,27 @@ class OpaqueUnresolvedStore:
                 f"unknown opaque store schema {schema!r}; expected "
                 f"{OPAQUE_STORE_SCHEMA!r}"
             )
-        raw = data["handles"] if "handles" in data else []
+        if set(data) != {"schema", "definition", "handles"}:
+            raise TypedStoreError(
+                "opaque store document must contain exactly schema, "
+                "definition and handles"
+            )
+        definition_data = data["definition"]
+        if not isinstance(definition_data, Mapping) or "name" not in definition_data:
+            raise TypedStoreError("opaque store definition must name its field family")
+        definition = opaque_store_definition(definition_data["name"])
+        if definition_data != definition.to_dict():
+            raise TypedStoreError(
+                "opaque store definition does not match the frozen ownership catalog"
+            )
+        raw = data["handles"]
         if isinstance(raw, (str, bytes)) or not isinstance(raw, (tuple, list)):
             raise TypedStoreError("opaque store handles must be a list")
         try:
             handles = tuple(UnknownHandle.from_dict(item) for item in raw)
         except EvidenceVocabularyError as exc:
             raise TypedStoreError(f"invalid opaque handle: {exc}") from exc
-        return cls(handles=handles)
+        return cls(field_family=definition.name, handles=handles)
 
     def empty_copy(self) -> "OpaqueUnresolvedStore":
-        return OpaqueUnresolvedStore()
+        return OpaqueUnresolvedStore(field_family=self.field_family)

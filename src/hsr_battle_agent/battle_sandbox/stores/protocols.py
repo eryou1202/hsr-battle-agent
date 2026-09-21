@@ -35,16 +35,18 @@ Ownership rules
 """
 from __future__ import annotations
 
-import dataclasses
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any, NoReturn
 
-from hsr_battle_agent.battle_sandbox.state import BattleState
-
 __all__ = [
+    "ALLOCATOR_FIELD_FAMILY",
+    "DERIVED_CACHE_FIELD_FAMILIES",
     "FROZEN_FIELD_FAMILIES",
+    "OPAQUE_FIELD_FAMILIES",
     "OWNERSHIP_CATALOG",
+    "REVISION_FIELD_FAMILY",
+    "RNG_FIELD_FAMILY",
     "STORE_CLASSES",
     "StoreClass",
     "StoreOwnershipError",
@@ -91,17 +93,13 @@ STORE_CLASSES: tuple[str, ...] = StoreClass.spellings()
 
 
 def frozen_field_families() -> tuple[str, ...]:
-    """The frozen ``BattleState`` field families, read from the live class.
+    """Exact field-family order from the frozen ``battle_state_contract``.
 
-    Read rather than hard-coded so the catalog can never silently drift away
-    from the frozen state shape.
+    Legacy ``state.py`` is deliberately not consulted: it is a quarantined
+    compatibility surface and contains only seven implementation fields, while
+    the frozen Terra contract names sixty-one authoritative families.
     """
-    if not dataclasses.is_dataclass(BattleState):
-        raise StoreOwnershipError("BattleState must be a dataclass")
-    return tuple(field.name for field in dataclasses.fields(BattleState))
-
-
-FROZEN_FIELD_FAMILIES: tuple[str, ...] = frozen_field_families()
+    return tuple(spec[0] for spec in _FROZEN_OWNER_SPECS)
 
 
 @dataclass(frozen=True)
@@ -111,6 +109,7 @@ class StoreOwner:
     field_family: str
     store_class: StoreClass
     namespace: str
+    authority_owner: str
     writable: bool
     rationale: str
 
@@ -137,6 +136,10 @@ class StoreOwner:
             raise StoreOwnershipError(
                 "StoreOwner.namespace must be a non-empty string"
             )
+        if not isinstance(self.authority_owner, str) or not self.authority_owner:
+            raise StoreOwnershipError(
+                "StoreOwner.authority_owner must be a non-empty string"
+            )
         if not isinstance(self.writable, bool):
             raise StoreOwnershipError("StoreOwner.writable must be a bool")
         if not isinstance(self.rationale, str) or not self.rationale:
@@ -157,69 +160,107 @@ class StoreOwner:
             "field_family": self.field_family,
             "store_class": self.store_class.value,
             "namespace": self.namespace,
+            "authority_owner": self.authority_owner,
             "writable": self.writable,
             "rationale": self.rationale,
         }
 
 
-#: The ownership catalog.  Exactly one entry per frozen field family.
-OWNERSHIP_CATALOG: tuple[StoreOwner, ...] = (
+# Verbatim field-family/classification/owner triples from
+# astra_semantic_freeze_v1.json#/battle_state_contract/state_fields.  This is
+# structural authority, not a native lifecycle implementation.
+_FROZEN_OWNER_SPECS: tuple[tuple[str, StoreClass, str], ...] = (
+    ("schema_and_numeric_profile", StoreClass.IMMUTABLE_INPUT, "Kernel"),
+    ("content_provenance", StoreClass.IMMUTABLE_INPUT, "Content"),
+    ("progression_loadout_input", StoreClass.IMMUTABLE_INPUT, "Progression"),
+    ("scenario_definition", StoreClass.IMMUTABLE_INPUT, "Scenario"),
+    ("behavior_definitions", StoreClass.IMMUTABLE_INPUT, "Behavior"),
+    ("contract_registry", StoreClass.IMMUTABLE_INPUT, "Kernel"),
+    ("initial_state_spec", StoreClass.IMMUTABLE_INPUT, "Kernel"),
+    ("revision_and_transaction_sequence", StoreClass.MUTABLE_STATE, "Kernel"),
+    ("identity_allocators", StoreClass.MUTABLE_STATE, "Kernel"),
+    ("entities", StoreClass.MUTABLE_STATE, "Entity"),
+    ("teams", StoreClass.MUTABLE_STATE, "Team"),
+    ("topology_relations", StoreClass.MUTABLE_STATE, "Topology"),
+    ("formations", StoreClass.MUTABLE_STATE, "Formation"),
+    ("survival", StoreClass.MUTABLE_STATE, "Survival"),
+    ("toughness", StoreClass.MUTABLE_STATE, "Damage"),
+    ("properties", StoreClass.MUTABLE_STATE, "Property"),
+    ("resources", StoreClass.MUTABLE_STATE, "Resource"),
+    ("skill_runtime", StoreClass.MUTABLE_STATE, "Behavior"),
+    ("behavior_instances", StoreClass.MUTABLE_STATE, "Behavior"),
+    ("invocation_frames", StoreClass.MUTABLE_STATE, "Invocation"),
+    ("task_states", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("continuations", StoreClass.MUTABLE_STATE, "Behavior"),
+    ("dynamic_value_stores", StoreClass.MUTABLE_STATE, "DynamicValue"),
+    ("property_snapshots", StoreClass.MUTABLE_STATE, "Property"),
+    ("modifier_instances", StoreClass.MUTABLE_STATE, "Modifier"),
+    ("modifier_order", StoreClass.MUTABLE_STATE, "Modifier"),
+    ("target_bindings", StoreClass.MUTABLE_STATE, "Target"),
+    ("target_contexts", StoreClass.MUTABLE_STATE, "Target"),
+    ("ordinary_timeline", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("behavior_action_delay", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("scheduler_owners", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("pending_insert_abilities", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("ultra_requests", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("turn_insert_actions", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("one_more_requests", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("immediate_actions", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("scheduler_phase", StoreClass.MUTABLE_STATE, "Scheduler"),
+    ("ai_runtime", StoreClass.MUTABLE_STATE, "MonsterAI"),
+    ("pending_damage", StoreClass.MUTABLE_STATE, "Damage"),
+    ("callback_registrations", StoreClass.MUTABLE_STATE, "Event"),
+    ("event_work", StoreClass.MUTABLE_STATE, "Event"),
+    ("activation_state", StoreClass.MUTABLE_STATE, "Progression"),
+    ("scenario_runtime", StoreClass.MUTABLE_STATE, "Scenario"),
+    ("global_effects", StoreClass.MUTABLE_STATE, "Scenario"),
+    ("environment_mode", StoreClass.MUTABLE_STATE, "Scenario"),
+    ("terminal_state", StoreClass.MUTABLE_STATE, "Scenario"),
+    ("rng_streams", StoreClass.MUTABLE_STATE, "RNG"),
+    ("unresolved_dependency_index", StoreClass.MUTABLE_STATE, "Kernel"),
+    ("native_wait_lifecycle", StoreClass.OPAQUE_UNRESOLVED, "Invocation"),
+    ("native_modifier_lifecycle", StoreClass.OPAQUE_UNRESOLVED, "Modifier"),
+    ("native_target_lifecycle", StoreClass.OPAQUE_UNRESOLVED, "Target"),
+    ("native_scheduler_lifecycle", StoreClass.OPAQUE_UNRESOLVED, "Scheduler"),
+    ("native_ai_lifecycle", StoreClass.OPAQUE_UNRESOLVED, "MonsterAI"),
+    ("native_progression_mutation", StoreClass.OPAQUE_UNRESOLVED, "Progression"),
+    ("native_scenario_persistence", StoreClass.OPAQUE_UNRESOLVED, "Scenario"),
+    ("unknown_extensions", StoreClass.OPAQUE_UNRESOLVED, "Kernel"),
+    ("definition_indexes", StoreClass.DERIVED_CACHE, "Content"),
+    ("target_query_cache", StoreClass.DERIVED_CACHE, "Target"),
+    ("candidate_visibility_cache", StoreClass.DERIVED_CACHE, "Scheduler"),
+    ("property_materialization_cache", StoreClass.DERIVED_CACHE, "Property"),
+    ("gate_plan_cache", StoreClass.DERIVED_CACHE, "Kernel"),
+)
+
+FROZEN_FIELD_FAMILIES: tuple[str, ...] = frozen_field_families()
+REVISION_FIELD_FAMILY = "revision_and_transaction_sequence"
+ALLOCATOR_FIELD_FAMILY = "identity_allocators"
+RNG_FIELD_FAMILY = "rng_streams"
+OPAQUE_FIELD_FAMILIES: tuple[str, ...] = tuple(
+    name for name, store_class, _owner in _FROZEN_OWNER_SPECS
+    if store_class is StoreClass.OPAQUE_UNRESOLVED
+)
+DERIVED_CACHE_FIELD_FAMILIES: tuple[str, ...] = tuple(
+    name for name, store_class, _owner in _FROZEN_OWNER_SPECS
+    if store_class is StoreClass.DERIVED_CACHE
+)
+
+# Exactly one owner per frozen field family. Namespaces are also unique so a
+# serialized aggregate cannot alias two authoritative families.
+OWNERSHIP_CATALOG: tuple[StoreOwner, ...] = tuple(
     StoreOwner(
-        field_family="schema_version",
-        store_class=StoreClass.IMMUTABLE_INPUT,
-        namespace="battle.state.schema",
-        writable=False,
+        field_family=name,
+        store_class=store_class,
+        namespace=f"battle.state.{name}",
+        authority_owner=authority_owner,
+        writable=store_class is StoreClass.MUTABLE_STATE,
         rationale=(
-            "the schema marker is fixed for the life of the state and is never "
-            "written during a transaction"
+            f"frozen battle_state_contract assigns {name} to "
+            f"{authority_owner} as {store_class.value}"
         ),
-    ),
-    StoreOwner(
-        field_family="extensions",
-        store_class=StoreClass.OPAQUE_UNRESOLVED,
-        namespace="battle.state.extensions",
-        writable=False,
-        rationale=(
-            "a generic extension bag carries material whose contents are "
-            "unresolved; it is preserved losslessly and must never accept "
-            "generic writes on the Terra path"
-        ),
-    ),
-    StoreOwner(
-        field_family="modifier_state_by_entity",
-        store_class=StoreClass.MUTABLE_STATE,
-        namespace="battle.modifier",
-        writable=True,
-        rationale="live modifier instances per entity are mutated by a transaction",
-    ),
-    StoreOwner(
-        field_family="entity_property_entries",
-        store_class=StoreClass.MUTABLE_STATE,
-        namespace="battle.property",
-        writable=True,
-        rationale="live property entries per entity are mutated by a transaction",
-    ),
-    StoreOwner(
-        field_family="modifier_property_contributions",
-        store_class=StoreClass.MUTABLE_STATE,
-        namespace="battle.property.contribution",
-        writable=True,
-        rationale="modifier contributions are staged and published with the state",
-    ),
-    StoreOwner(
-        field_family="component_lock_hp_records",
-        store_class=StoreClass.MUTABLE_STATE,
-        namespace="battle.component.lock_hp",
-        writable=True,
-        rationale="component lock records change as the battle progresses",
-    ),
-    StoreOwner(
-        field_family="turn_timeline",
-        store_class=StoreClass.MUTABLE_STATE,
-        namespace="battle.scheduler",
-        writable=True,
-        rationale="the turn timeline advances as turns are consumed",
-    ),
+    )
+    for name, store_class, authority_owner in _FROZEN_OWNER_SPECS
 )
 
 

@@ -2,7 +2,7 @@
 """State revision value object for the Terra local state path.
 
 TERRA F02-005.  A revision is an immutable, monotonically advancing counter that
-labels a state snapshot.  It is a **value object**: it holds no state mutation
+        labels a state snapshot.  It is a **value object**: it holds no state mutation
 capability, it exposes no clock and no object identity, and it can only advance
 through an explicit, named call.
 
@@ -18,9 +18,8 @@ Hard rules enforced here
 * **No object-address input.**  :meth:`StateRevision.from_object_address`
   refuses, so identity is never derived from ``id()`` or memory layout.
 * **Snapshot identity is recorded.**  Each revision carries the snapshot token it
-  labels, and staleness is only compared inside one snapshot lineage:
-  :meth:`StateRevision.require_same_snapshot` refuses a cross-snapshot
-  comparison rather than inventing an ordering between unrelated snapshots.
+  labels, and staleness is compared only inside one lineage. Different snapshot
+  tokens in the same lineage remain comparable; unrelated lineages are refused.
 """
 from __future__ import annotations
 
@@ -150,14 +149,15 @@ class StateRevision:
     def compare(self, other: "StateRevision") -> int:
         """Return -1, 0 or 1 within one snapshot lineage.
 
-        Ordering is defined by the counter alone.  Comparing across lineages or
-        snapshot identities is refused rather than guessed.
+        Ordering is defined by the counter alone. Comparing across lineages is
+        refused; different snapshot tokens in the same lineage are expected as
+        state advances and remain comparable.
         """
         if not isinstance(other, StateRevision):
             raise StateRevisionError(
                 f"compare() requires a StateRevision, got {type(other).__name__}"
             )
-        self.require_same_snapshot(other)
+        self.require_same_lineage(other)
         if self.counter < other.counter:
             return -1
         if self.counter > other.counter:
@@ -185,7 +185,16 @@ class StateRevision:
         )
 
     def require_same_snapshot(self, other: "StateRevision") -> None:
-        """Raise when two revisions belong to different snapshot identities."""
+        """Raise unless both values label the exact same snapshot token."""
+        self.require_same_lineage(other)
+        if self.snapshot_id != other.snapshot_id:
+            raise StateRevisionError(
+                f"snapshot identities differ: {self.snapshot_id!r} and "
+                f"{other.snapshot_id!r}"
+            )
+
+    def require_same_lineage(self, other: "StateRevision") -> None:
+        """Raise when two revisions belong to unrelated lineages."""
         if not isinstance(other, StateRevision):
             raise StateRevisionError(
                 f"expected a StateRevision, got {type(other).__name__}"
@@ -194,11 +203,6 @@ class StateRevision:
             raise StateRevisionError(
                 f"cannot compare revisions across lineages "
                 f"{self.lineage!r} and {other.lineage!r}"
-            )
-        if self.snapshot_id != other.snapshot_id:
-            raise StateRevisionError(
-                f"cannot compare revisions across snapshot identities "
-                f"{self.snapshot_id!r} and {other.snapshot_id!r}"
             )
 
     # -- guards ----------------------------------------------------------
@@ -234,18 +238,19 @@ class StateRevision:
             raise StateRevisionError(
                 f"revision document must be a mapping, got {type(data).__name__}"
             )
-        schema = data["schema"] if "schema" in data else REVISION_SCHEMA
+        required = {"schema", "counter", "snapshot_id", "lineage"}
+        if set(data) != required:
+            raise StateRevisionError(
+                "revision document must contain exactly schema, counter, "
+                "snapshot_id and lineage"
+            )
+        schema = data["schema"]
         if schema != REVISION_SCHEMA:
             raise StateRevisionError(
                 f"unknown revision schema {schema!r}; expected {REVISION_SCHEMA!r}"
             )
-        for name in ("counter", "snapshot_id"):
-            if name not in data:
-                raise StateRevisionError(
-                    f"revision document is missing required field {name!r}"
-                )
         return cls(
             counter=data["counter"],
             snapshot_id=data["snapshot_id"],
-            lineage=data["lineage"] if "lineage" in data else "default",
+            lineage=data["lineage"],
         )

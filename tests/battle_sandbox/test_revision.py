@@ -3,7 +3,8 @@
 
 Acceptance criteria: round trip and stale comparison.  The suite also proves the
 counter is monotonic, that no wall-clock or object-address input exists, and
-that cross-snapshot comparison is refused rather than guessed.
+that staleness is scoped to a lineage while exact snapshot identity remains
+observable.
 """
 from __future__ import annotations
 
@@ -219,13 +220,14 @@ class TestStaleComparison(unittest.TestCase):
         self.assertTrue(older.is_current_for(rev(counter=1)))
         self.assertFalse(older.is_current_for(newer))
 
-    def test_stale_comparison_across_snapshots_is_refused(self):
+    def test_stale_comparison_across_snapshots_in_one_lineage_is_supported(self):
+        older = rev(counter=1, snapshot_id="a", lineage="L")
+        newer = rev(counter=2, snapshot_id="b", lineage="L")
+        self.assertEqual(older.compare(newer), -1)
+        self.assertTrue(older.is_stale_against(newer))
+        self.assertFalse(older.same_snapshot(newer))
         with self.assertRaises(StateRevisionError):
-            rev(counter=1, snapshot_id="a").compare(rev(counter=2, snapshot_id="b"))
-        with self.assertRaises(StateRevisionError):
-            rev(counter=1, snapshot_id="a").is_stale_against(
-                rev(counter=2, snapshot_id="b")
-            )
+            older.require_same_snapshot(newer)
 
     def test_stale_comparison_across_lineages_is_refused(self):
         with self.assertRaises(StateRevisionError):
@@ -286,10 +288,18 @@ class TestSerialization(unittest.TestCase):
             "x",
             {},
             {"schema": "state_revision/2"},
+            {"counter": 0, "snapshot_id": "s", "lineage": "default"},
             {"counter": 0},
             {"snapshot_id": "s"},
             {"counter": -1, "snapshot_id": "s"},
             {"counter": 0, "snapshot_id": ""},
+            {
+                "schema": REVISION_SCHEMA,
+                "counter": 0,
+                "snapshot_id": "s",
+                "lineage": "default",
+                "extra": 1,
+            },
         ):
             with self.subTest(broken=repr(broken)):
                 with self.assertRaises(StateRevisionError):

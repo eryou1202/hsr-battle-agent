@@ -203,12 +203,12 @@ class TestStatePolicy(unittest.TestCase):
                 self.assertIsNot(state, ResolutionState.MISSING)
                 self.assertEqual(reason, REASON_UNRECOGNISED_CLASSIFICATION)
 
-    def test_unrecognised_classification_with_many_candidates_is_ambiguous(self):
+    def test_unrecognised_classification_with_many_candidates_is_blocked(self):
         state, reason = classify_record(
             record(classification="SOMETHING_NEW", candidates=("1", "2"))
         )
-        self.assertIs(state, ResolutionState.AMBIGUOUS)
-        self.assertEqual(reason, REASON_MULTIPLE_CANDIDATES)
+        self.assertIs(state, ResolutionState.BLOCKED)
+        self.assertEqual(reason, REASON_UNRECOGNISED_CLASSIFICATION)
 
     def test_missing_record_shape_is_blocked(self):
         for broken in ({}, {"behavior_id": "x"}, {"static_link": None}):
@@ -312,6 +312,21 @@ class TestEntryConstruction(unittest.TestCase):
             entry.provenance.value("source_ref.version_relation"),
             "CLOSE_4.4.0_TO_4.4.54",
         )
+        self.assertNotIn("commit", entry.provenance.absent_field_names())
+        self.assertNotIn("path", entry.provenance.absent_field_names())
+        self.assertNotIn("version_relation", entry.provenance.absent_field_names())
+
+    def test_provenance_rejects_non_string_keys_without_coercion(self):
+        with self.assertRaises(ResolutionLedgerError):
+            ResolutionProvenance(fields={1: "not-a-string-key"})
+
+    def test_unresolved_payload_distinguishes_absent_source_ref(self):
+        raw = record(classification="UNMAPPED", candidates=())
+        raw.pop("source_ref")
+        entry = ResolutionLedgerEntry.from_mapping_record(raw)
+        payload = entry.unknown_handle.payload
+        self.assertFalse(payload["source_ref_present"])
+        self.assertNotIn("source_ref", payload)
 
     def test_provenance_absence_is_observable(self):
         minimal = {"behavior_id": "b", "static_link": {"classification": "UNMAPPED"}}

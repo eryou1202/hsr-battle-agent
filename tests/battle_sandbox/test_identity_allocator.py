@@ -22,6 +22,7 @@ from hsr_battle_agent.battle_sandbox.identity import (  # noqa: E402
     PROVIDER,
     AllocationTicket,
     IdentityAllocator,
+    NamespaceState,
     TypedIdentity,
     TypedIdentityError,
 )
@@ -256,14 +257,14 @@ class TestReservationIsPrivateUntilCommit(unittest.TestCase):
 
 
 class TestGenerationAwareness(unittest.TestCase):
-    def test_begin_generation_starts_a_fresh_value_space(self):
+    def test_begin_generation_preserves_non_reuse_across_generations(self):
         allocator = IdentityAllocator()
         allocator.allocate(ENTITY, "ns")
         allocator.allocate(ENTITY, "ns")
         state = allocator.begin_generation("ns")
         self.assertEqual(state.generation, 1)
-        self.assertEqual(state.next_value, 0)
-        self.assertEqual(allocator.allocate(ENTITY, "ns").value, 0)
+        self.assertEqual(state.next_value, 2)
+        self.assertEqual(allocator.allocate(ENTITY, "ns").value, 2)
 
     def test_tombstones_survive_a_generation_change(self):
         allocator = IdentityAllocator()
@@ -271,6 +272,16 @@ class TestGenerationAwareness(unittest.TestCase):
         allocator.retire(first)
         state = allocator.begin_generation("ns")
         self.assertTrue(state.is_tombstoned(0))
+        # A preserved tombstone must not deadlock allocation in the new
+        # generation; the raw token is never reused.
+        self.assertEqual(allocator.allocate(ENTITY, "ns").value, 1)
+
+    def test_retire_rejects_a_stale_generation(self):
+        allocator = IdentityAllocator()
+        old = allocator.allocate(ENTITY, "ns")
+        allocator.begin_generation("ns")
+        with self.assertRaises(TypedIdentityError):
+            allocator.retire(old)
 
     def test_ticket_from_a_previous_generation_is_stale(self):
         allocator = IdentityAllocator()
@@ -344,6 +355,35 @@ class TestSnapshotAndSerialization(unittest.TestCase):
         payload = allocator.state_for("ns").to_dict()
         self.assertEqual(payload["tombstones"], [0])
         self.assertEqual(payload["issued"], [])
+        self.assertEqual(NamespaceState.from_dict(payload).to_dict(), payload)
+
+    def test_allocator_round_trip_and_clone_are_independent(self):
+        allocator = IdentityAllocator()
+        first = allocator.allocate(CASTER, "caster")
+        allocator.retire(first)
+        allocator.begin_generation("caster")
+        allocator.allocate(ENTITY, "entity")
+        payload = allocator.to_dict()
+        restored = IdentityAllocator.from_dict(payload)
+        cloned = allocator.clone()
+        self.assertEqual(restored.to_dict(), payload)
+        self.assertEqual(cloned.to_dict(), payload)
+        restored.allocate(CASTER, "caster")
+        self.assertEqual(allocator.to_dict(), payload)
+
+    def test_allocator_document_rejects_unknown_or_unsorted_state(self):
+        allocator = IdentityAllocator()
+        allocator.allocate(ENTITY, "b")
+        allocator.allocate(ENTITY, "a")
+        payload = allocator.to_dict()
+        broken = dict(payload)
+        broken["extra"] = True
+        with self.assertRaises(TypedIdentityError):
+            IdentityAllocator.from_dict(broken)
+        reversed_payload = dict(payload)
+        reversed_payload["namespaces"] = list(reversed(payload["namespaces"]))
+        with self.assertRaises(TypedIdentityError):
+            IdentityAllocator.from_dict(reversed_payload)
 
 
 if __name__ == "__main__":

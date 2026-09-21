@@ -37,6 +37,7 @@ from hsr_battle_agent.battle_sandbox.stores.core import (  # noqa: E402
 )
 from hsr_battle_agent.battle_sandbox.stores.protocols import (  # noqa: E402
     FROZEN_FIELD_FAMILIES,
+    OPAQUE_FIELD_FAMILIES,
     StoreClass,
 )
 
@@ -54,24 +55,25 @@ def handle(blocker_id="D8-Q2", payload=None, owner_family="MONSTER_AI"):
 class TestStoreFamilyCatalog(unittest.TestCase):
     def test_expected_family_names_are_present(self):
         for name in (
-            "definitions",
+            "schema_and_numeric_profile",
             "entities",
             "teams",
-            "topology",
-            "invocation",
-            "modifiers",
+            "topology_relations",
+            "invocation_frames",
+            "modifier_instances",
             "properties",
-            "targets",
-            "ai",
-            "damage",
+            "target_bindings",
+            "ai_runtime",
+            "pending_damage",
             "resources",
-            "events",
-            "scenario",
-            "mode",
-            "terminal",
-            "allocator",
-            "rng",
-            "opaque_handles",
+            "event_work",
+            "scenario_runtime",
+            "environment_mode",
+            "terminal_state",
+            "identity_allocators",
+            "rng_streams",
+            "unknown_extensions",
+            "definition_indexes",
         ):
             with self.subTest(name=name):
                 self.assertIn(name, STORE_FAMILY_NAMES)
@@ -108,37 +110,52 @@ class TestSeparateSchedulerStores(unittest.TestCase):
         self.assertEqual(
             names,
             (
-                "scheduler_timeline",
-                "scheduler_action_delay",
-                "scheduler_insert_queue",
+                "task_states",
+                "ordinary_timeline",
+                "behavior_action_delay",
+                "scheduler_owners",
+                "pending_insert_abilities",
+                "ultra_requests",
+                "turn_insert_actions",
+                "one_more_requests",
+                "immediate_actions",
+                "scheduler_phase",
+                "native_scheduler_lifecycle",
+                "candidate_visibility_cache",
             ),
         )
-        self.assertEqual(len(set(names)), 3)
+        self.assertEqual(len(set(names)), 12)
 
     def test_scheduler_stores_have_distinct_namespaces(self):
         namespaces = tuple(
             require_store_family(name).namespace
             for name in scheduler_store_family_names()
         )
-        self.assertEqual(len(namespaces), 3)
-        self.assertEqual(len(set(namespaces)), 3)
+        self.assertEqual(len(namespaces), 12)
+        self.assertEqual(len(set(namespaces)), 12)
 
     def test_scheduler_stores_are_independent(self):
         stores = empty_stores()
-        timeline = stores["scheduler_timeline"].append("t", 1)
-        delay = stores["scheduler_action_delay"].append("d", 1)
-        queue = stores["scheduler_insert_queue"].append("q", 1)
+        timeline = stores["ordinary_timeline"].append("t", 1)
+        delay = stores["behavior_action_delay"].append("d", 1)
+        queue = stores["pending_insert_abilities"].append("q", 1)
         self.assertEqual(timeline.keys(), ("t",))
         self.assertEqual(delay.keys(), ("d",))
         self.assertEqual(queue.keys(), ("q",))
         self.assertNotEqual(timeline.identity(), delay.identity())
         self.assertNotEqual(delay.identity(), queue.identity())
 
-    def test_timeline_maps_to_the_turn_timeline_state_field(self):
+    def test_timeline_maps_to_the_frozen_ordinary_timeline_field(self):
         self.assertEqual(
-            require_store_family("scheduler_timeline").state_field_family,
-            "turn_timeline",
+            require_store_family("ordinary_timeline").state_field_family,
+            "ordinary_timeline",
         )
+
+    def test_ultra_insert_and_turn_insert_are_not_merged(self):
+        names = set(scheduler_store_family_names())
+        self.assertIn("pending_insert_abilities", names)
+        self.assertIn("ultra_requests", names)
+        self.assertIn("turn_insert_actions", names)
 
 
 class TestEmptyStores(unittest.TestCase):
@@ -238,18 +255,21 @@ class TestPreservationRules(unittest.TestCase):
 
 class TestWritabilityRules(unittest.TestCase):
     def test_mutable_state_stores_accept_writes(self):
-        for name in ("entities", "modifiers", "properties", "rng", "allocator"):
+        for name in (
+            "entities", "modifier_instances", "properties", "rng_streams",
+            "identity_allocators",
+        ):
             with self.subTest(name=name):
                 self.assertTrue(empty_stores()[name].is_writable())
 
     def test_immutable_input_stores_refuse_writes(self):
-        store = empty_stores()["definitions"]
+        store = empty_stores()["schema_and_numeric_profile"]
         self.assertFalse(store.is_writable())
         with self.assertRaises(TypedStoreError):
             store.append("k", 1)
 
     def test_generic_writes_to_the_opaque_family_are_refused(self):
-        store = empty_stores()["opaque_handles"]
+        store = empty_stores()["unknown_extensions"]
         self.assertFalse(store.is_writable())
         with self.assertRaises(TypedStoreError):
             store.append("k", 1)
@@ -259,6 +279,7 @@ class TestWritabilityRules(unittest.TestCase):
         self.assertIn(StoreClass.IMMUTABLE_INPUT, used)
         self.assertIn(StoreClass.MUTABLE_STATE, used)
         self.assertIn(StoreClass.OPAQUE_UNRESOLVED, used)
+        self.assertIn(StoreClass.DERIVED_CACHE, used)
 
 
 class TestRoundTripPerFamily(unittest.TestCase):
@@ -336,6 +357,30 @@ class TestRoundTripPerFamily(unittest.TestCase):
             {"schema": "typed_store/2"},
             {"schema": CORE_STORE_SCHEMA},
             {"schema": CORE_STORE_SCHEMA, "definition": {"name": "x"}},
+            {
+                **empty_stores()["entities"].to_dict(),
+                "extra": "silently dropped before review",
+            },
+            {
+                "schema": CORE_STORE_SCHEMA,
+                "definition": {
+                    **empty_stores()["entities"].definition.to_dict(),
+                    "extra": "silently dropped before review",
+                },
+                "entries": [],
+            },
+            {
+                "schema": CORE_STORE_SCHEMA,
+                "definition": empty_stores()["entities"].definition.to_dict(),
+                "entries": [
+                    {
+                        "key": "k",
+                        "occurrence": 0,
+                        "value": PresenceValue.present(1).to_dict(),
+                        "extra": "silently dropped before review",
+                    }
+                ],
+            },
             {
                 "schema": CORE_STORE_SCHEMA,
                 "definition": {
@@ -482,17 +527,32 @@ class TestOpaqueUnresolvedStore(unittest.TestCase):
             .with_handle(handle("D8-Q2"))
         )
         typed = store.to_typed_store()
-        self.assertEqual(typed.name, "opaque_handles")
+        self.assertEqual(typed.name, "unknown_extensions")
         self.assertIs(typed.store_class, StoreClass.OPAQUE_UNRESOLVED)
         self.assertEqual(typed.keys(), ("D8-Q2", "D8-Q2"))
         self.assertEqual([e.occurrence for e in typed.entries], [0, 1])
         self.assertFalse(typed.is_writable())
 
     def test_definition_is_the_declared_opaque_family(self):
-        self.assertEqual(opaque_store_definition().name, "opaque_handles")
+        self.assertEqual(opaque_store_definition().name, "unknown_extensions")
         self.assertIs(
             opaque_store_definition().store_class, StoreClass.OPAQUE_UNRESOLVED
         )
+
+    def test_every_frozen_opaque_family_has_a_typed_store(self):
+        for field_family in OPAQUE_FIELD_FAMILIES:
+            with self.subTest(field_family=field_family):
+                store = OpaqueUnresolvedStore(field_family=field_family)
+                self.assertEqual(store.definition().name, field_family)
+                self.assertEqual(
+                    OpaqueUnresolvedStore.from_dict(store.to_dict()), store
+                )
+
+    def test_definition_tampering_is_rejected(self):
+        payload = OpaqueUnresolvedStore().to_dict()
+        payload["definition"]["namespace"] = "invented"
+        with self.assertRaises(TypedStoreError):
+            OpaqueUnresolvedStore.from_dict(payload)
 
     def test_schema_constant(self):
         self.assertEqual(OPAQUE_STORE_SCHEMA, "opaque_unresolved_store/1")

@@ -8,7 +8,7 @@ catalog cannot drift away from the frozen BattleState shape.
 """
 from __future__ import annotations
 
-import dataclasses
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -16,8 +16,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "src"))
 
-from hsr_battle_agent.battle_sandbox.state import BattleState  # noqa: E402
 from hsr_battle_agent.battle_sandbox.stores.protocols import (  # noqa: E402
+    DERIVED_CACHE_FIELD_FAMILIES,
     FROZEN_FIELD_FAMILIES,
     OWNERSHIP_CATALOG,
     STORE_CLASSES,
@@ -69,37 +69,53 @@ class TestOwnershipCatalogComplete(unittest.TestCase):
             sorted(catalogued), sorted(FROZEN_FIELD_FAMILIES)
         )
 
-    def test_frozen_families_come_from_the_live_battle_state(self):
-        live = tuple(field.name for field in dataclasses.fields(BattleState))
-        self.assertEqual(FROZEN_FIELD_FAMILIES, live)
-        self.assertEqual(frozen_field_families(), live)
-        # The catalog must track the live class, not a stale copy.
-        self.assertEqual(
-            sorted(field.name for field in dataclasses.fields(BattleState)),
-            sorted(owner.field_family for owner in OWNERSHIP_CATALOG),
-        )
+    def test_frozen_families_do_not_come_from_legacy_battle_state(self):
+        self.assertEqual(len(FROZEN_FIELD_FAMILIES), 61)
+        self.assertEqual(frozen_field_families(), FROZEN_FIELD_FAMILIES)
+        self.assertNotIn("extensions", FROZEN_FIELD_FAMILIES)
+        self.assertIn("unknown_extensions", FROZEN_FIELD_FAMILIES)
 
     def test_expected_frozen_family_set(self):
-        self.assertEqual(
-            set(FROZEN_FIELD_FAMILIES),
-            {
-                "schema_version",
-                "extensions",
-                "modifier_state_by_entity",
-                "entity_property_entries",
-                "modifier_property_contributions",
-                "component_lock_hp_records",
-                "turn_timeline",
-            },
+        freeze = json.loads(
+            (REPO / "data" / "semantics" / "4.4.54" / "full_reconstruction"
+             / "astra_semantic_freeze_v1.json").read_text(encoding="utf-8")
         )
+        authority = freeze["battle_state_contract"]["state_fields"]
+        self.assertEqual(
+            FROZEN_FIELD_FAMILIES,
+            tuple(row["name"] for row in authority),
+        )
+        class_map = {
+            "OPAQUE_UNRESOLVED_STATE": "OPAQUE_UNRESOLVED",
+        }
+        self.assertEqual(
+            [owner.store_class.value for owner in OWNERSHIP_CATALOG],
+            [class_map.get(row["classification"], row["classification"])
+             for row in authority],
+        )
+        self.assertEqual(
+            [owner.authority_owner for owner in OWNERSHIP_CATALOG],
+            [row["owner"] for row in authority],
+        )
+        self.assertIn("revision_and_transaction_sequence", FROZEN_FIELD_FAMILIES)
+        self.assertIn("rng_streams", FROZEN_FIELD_FAMILIES)
 
     def test_at_least_one_family_uses_each_relevant_class(self):
         used = {owner.store_class for owner in OWNERSHIP_CATALOG}
         self.assertIn(StoreClass.IMMUTABLE_INPUT, used)
         self.assertIn(StoreClass.MUTABLE_STATE, used)
         self.assertIn(StoreClass.OPAQUE_UNRESOLVED, used)
-        # DERIVED_CACHE is a declared class; the frozen families assign none.
-        self.assertNotIn(StoreClass.DERIVED_CACHE, used)
+        self.assertIn(StoreClass.DERIVED_CACHE, used)
+        self.assertEqual(
+            DERIVED_CACHE_FIELD_FAMILIES,
+            (
+                "definition_indexes",
+                "target_query_cache",
+                "candidate_visibility_cache",
+                "property_materialization_cache",
+                "gate_plan_cache",
+            ),
+        )
 
 
 class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
@@ -119,6 +135,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="not_a_real_field",
                 store_class=StoreClass.MUTABLE_STATE,
                 namespace="x",
+                authority_owner="Test",
                 writable=True,
                 rationale="invented",
             ),
@@ -151,6 +168,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="",
                 store_class=StoreClass.MUTABLE_STATE,
                 namespace="x",
+                authority_owner="Test",
                 writable=True,
                 rationale="r",
             )
@@ -159,6 +177,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="f",
                 store_class="NOT_A_CLASS",
                 namespace="x",
+                authority_owner="Test",
                 writable=True,
                 rationale="r",
             )
@@ -167,6 +186,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="f",
                 store_class=StoreClass.MUTABLE_STATE,
                 namespace="",
+                authority_owner="Test",
                 writable=True,
                 rationale="r",
             )
@@ -175,6 +195,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="f",
                 store_class=StoreClass.MUTABLE_STATE,
                 namespace="x",
+                authority_owner="Test",
                 writable="yes",
                 rationale="r",
             )
@@ -183,6 +204,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                 field_family="f",
                 store_class=StoreClass.MUTABLE_STATE,
                 namespace="x",
+                authority_owner="Test",
                 writable=True,
                 rationale="",
             )
@@ -199,6 +221,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
                         field_family="f",
                         store_class=store_class,
                         namespace="x",
+                        authority_owner="Test",
                         writable=True,
                         rationale="r",
                     )
@@ -208,6 +231,7 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
             field_family="f",
             store_class="MUTABLE_STATE",
             namespace="x",
+            authority_owner="Test",
             writable=True,
             rationale="r",
         )
@@ -216,25 +240,25 @@ class TestDuplicateAndUnclassifiedRejection(unittest.TestCase):
 
 class TestGenericExtensionWritesForbidden(unittest.TestCase):
     def test_extensions_is_not_writable(self):
-        owner = owner_for("extensions")
+        owner = owner_for("unknown_extensions")
         self.assertFalse(owner.is_writable())
         self.assertIs(owner.store_class, StoreClass.OPAQUE_UNRESOLVED)
 
     def test_require_writable_refuses_extension_writes(self):
         with self.assertRaises(StoreOwnershipError):
-            require_writable("extensions")
+            require_writable("unknown_extensions")
 
     def test_require_writable_refuses_the_schema_marker(self):
         with self.assertRaises(StoreOwnershipError):
-            require_writable("schema_version")
+            require_writable("schema_and_numeric_profile")
 
     def test_require_writable_accepts_owned_mutable_families(self):
         for field_family in (
-            "modifier_state_by_entity",
-            "entity_property_entries",
-            "modifier_property_contributions",
-            "component_lock_hp_records",
-            "turn_timeline",
+            "modifier_instances",
+            "properties",
+            "pending_damage",
+            "ordinary_timeline",
+            "rng_streams",
         ):
             with self.subTest(field_family=field_family):
                 owner = require_writable(field_family)
@@ -264,13 +288,15 @@ class TestOwnershipNamespaces(unittest.TestCase):
                 payload = owner.to_dict()
                 self.assertEqual(payload["field_family"], owner.field_family)
                 self.assertEqual(
-                    payload["store_class"], owner.store_class.value
+                payload["store_class"], owner.store_class.value
                 )
                 self.assertEqual(payload["writable"], owner.writable)
+                self.assertEqual(payload["authority_owner"], owner.authority_owner)
                 rebuilt = StoreOwner(
                     field_family=payload["field_family"],
                     store_class=payload["store_class"],
                     namespace=payload["namespace"],
+                    authority_owner=payload["authority_owner"],
                     writable=payload["writable"],
                     rationale=payload["rationale"],
                 )

@@ -25,8 +25,10 @@ from hsr_battle_agent.battle_ir.lossless_value import (
     PresenceValueError,
 )
 from hsr_battle_agent.battle_sandbox.stores.protocols import (
+    OWNERSHIP_CATALOG,
     StoreClass,
     StoreOwnershipError,
+    owner_for,
 )
 
 __all__ = [
@@ -97,156 +99,19 @@ class StoreDefinition:
         return payload
 
 
-#: Every store family.  The scheduler is deliberately split into separate
-#: stores rather than one blob; the three scheduler families below correspond to
-#: the recorded scheduler packet families (timeline composition, action-delay
-#: add/set/reset, and ability-queue insertion).
-STORE_FAMILIES: tuple[StoreDefinition, ...] = (
+# The authoritative families are one-for-one with the frozen ownership
+# catalog. Broad convenience groups are intentionally absent: they would merge
+# independently owned frozen families and make complete ownership impossible to
+# validate.
+STORE_FAMILIES: tuple[StoreDefinition, ...] = tuple(
     StoreDefinition(
-        name="definitions",
-        namespace="battle.definition",
-        store_class=StoreClass.IMMUTABLE_INPUT,
-        state_field_family="schema_version",
-        rationale="fixed content definitions; immutable during a transaction",
-    ),
-    StoreDefinition(
-        name="entities",
-        namespace="battle.entity",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live entities",
-    ),
-    StoreDefinition(
-        name="teams",
-        namespace="battle.team",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live teams",
-    ),
-    StoreDefinition(
-        name="topology",
-        namespace="battle.topology",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live formation/topology nodes",
-    ),
-    StoreDefinition(
-        name="invocation",
-        namespace="battle.invocation",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live ability invocation state",
-    ),
-    StoreDefinition(
-        name="modifiers",
-        namespace="battle.modifier",
-        store_class=StoreClass.MUTABLE_STATE,
-        state_field_family="modifier_state_by_entity",
-        rationale="live modifier instances",
-    ),
-    StoreDefinition(
-        name="properties",
-        namespace="battle.property",
-        store_class=StoreClass.MUTABLE_STATE,
-        state_field_family="entity_property_entries",
-        rationale="live property entries",
-    ),
-    StoreDefinition(
-        name="property_contributions",
-        namespace="battle.property.contribution",
-        store_class=StoreClass.MUTABLE_STATE,
-        state_field_family="modifier_property_contributions",
-        rationale="live modifier property contributions",
-    ),
-    StoreDefinition(
-        name="component_locks",
-        namespace="battle.component.lock_hp",
-        store_class=StoreClass.MUTABLE_STATE,
-        state_field_family="component_lock_hp_records",
-        rationale="live component lock records",
-    ),
-    StoreDefinition(
-        name="targets",
-        namespace="battle.target",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live target/selection state",
-    ),
-    StoreDefinition(
-        name="scheduler_timeline",
-        namespace="battle.scheduler.timeline",
-        store_class=StoreClass.MUTABLE_STATE,
-        state_field_family="turn_timeline",
-        rationale="live turn timeline",
-    ),
-    StoreDefinition(
-        name="scheduler_action_delay",
-        namespace="battle.scheduler.action_delay",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live action-delay state kept separate from the timeline",
-    ),
-    StoreDefinition(
-        name="scheduler_insert_queue",
-        namespace="battle.scheduler.insert_queue",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live ability-queue insertion records, separate from both above",
-    ),
-    StoreDefinition(
-        name="ai",
-        namespace="battle.ai",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live AI decision state",
-    ),
-    StoreDefinition(
-        name="damage",
-        namespace="battle.damage",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live damage records",
-    ),
-    StoreDefinition(
-        name="resources",
-        namespace="battle.resource",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live shared resources such as skill points",
-    ),
-    StoreDefinition(
-        name="events",
-        namespace="battle.event",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live event records",
-    ),
-    StoreDefinition(
-        name="scenario",
-        namespace="battle.scenario",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live scenario state",
-    ),
-    StoreDefinition(
-        name="mode",
-        namespace="battle.mode",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live environment/mode state",
-    ),
-    StoreDefinition(
-        name="terminal",
-        namespace="battle.terminal",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="live terminal-condition state",
-    ),
-    StoreDefinition(
-        name="allocator",
-        namespace="battle.allocator",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="identity allocation state",
-    ),
-    StoreDefinition(
-        name="rng",
-        namespace="battle.rng",
-        store_class=StoreClass.MUTABLE_STATE,
-        rationale="state-owned RNG; transaction-private until atomic commit",
-    ),
-    StoreDefinition(
-        name="opaque_handles",
-        namespace="battle.opaque",
-        store_class=StoreClass.OPAQUE_UNRESOLVED,
-        state_field_family="extensions",
-        rationale="unresolved material carried losslessly and never interpreted",
-    ),
+        name=owner.field_family,
+        namespace=owner.namespace,
+        store_class=owner.store_class,
+        state_field_family=owner.field_family,
+        rationale=owner.rationale,
+    )
+    for owner in OWNERSHIP_CATALOG
 )
 
 STORE_FAMILY_NAMES: tuple[str, ...] = tuple(
@@ -271,7 +136,8 @@ def scheduler_store_family_names() -> tuple[str, ...]:
     return tuple(
         definition.name
         for definition in STORE_FAMILIES
-        if definition.namespace.startswith("battle.scheduler.")
+        if definition.state_field_family is not None
+        and owner_for(definition.state_field_family).authority_owner == "Scheduler"
     )
 
 
@@ -312,11 +178,10 @@ class StoreEntry:
     def from_dict(cls, data: Mapping[str, Any]) -> "StoreEntry":
         if not isinstance(data, Mapping):
             raise TypedStoreError("StoreEntry document must be a mapping")
-        for name in ("key", "value"):
-            if name not in data:
-                raise TypedStoreError(
-                    f"StoreEntry document is missing required field {name!r}"
-                )
+        if set(data) != {"key", "occurrence", "value"}:
+            raise TypedStoreError(
+                "StoreEntry document must contain exactly key, occurrence and value"
+            )
         try:
             value = PresenceValue.from_dict(data["value"])
         except PresenceValueError as exc:
@@ -324,7 +189,7 @@ class StoreEntry:
         return cls(
             key=data["key"],
             value=value,
-            occurrence=data["occurrence"] if "occurrence" in data else 0,
+            occurrence=data["occurrence"],
         )
 
 
@@ -343,6 +208,13 @@ class TypedStore:
     def __post_init__(self) -> None:
         if not isinstance(self.definition, StoreDefinition):
             raise TypedStoreError("TypedStore.definition must be a StoreDefinition")
+        canonical = require_store_family(self.definition.name)
+        if self.definition != canonical:
+            raise TypedStoreError(
+                f"store definition for {self.definition.name!r} does not match "
+                "the frozen ownership catalog"
+            )
+        object.__setattr__(self, "definition", canonical)
         if isinstance(self.entries, (str, bytes)) or not isinstance(
             self.entries, (tuple, list)
         ):
@@ -456,31 +328,37 @@ class TypedStore:
             raise TypedStoreError(
                 f"store document must be a mapping, got {type(data).__name__}"
             )
-        schema = data["schema"] if "schema" in data else CORE_STORE_SCHEMA
+        if set(data) != {"schema", "definition", "entries"}:
+            raise TypedStoreError(
+                "store document must contain exactly schema, definition and entries"
+            )
+        schema = data["schema"]
         if schema != CORE_STORE_SCHEMA:
             raise TypedStoreError(
                 f"unknown store schema {schema!r}; expected {CORE_STORE_SCHEMA!r}"
             )
-        if "definition" not in data:
-            raise TypedStoreError("store document is missing its definition")
-        raw = data["entries"] if "entries" in data else []
+        raw = data["entries"]
         if isinstance(raw, (str, bytes)) or not isinstance(raw, (tuple, list)):
             raise TypedStoreError("store entries must be a list")
         definition_data = data["definition"]
         if not isinstance(definition_data, Mapping):
             raise TypedStoreError("store definition must be a mapping")
+        if set(definition_data) != {
+            "name",
+            "namespace",
+            "store_class",
+            "state_field_family",
+            "rationale",
+        }:
+            raise TypedStoreError(
+                "store definition must contain exactly the canonical fields"
+            )
         definition = StoreDefinition(
             name=definition_data["name"],
             namespace=definition_data["namespace"],
             store_class=definition_data["store_class"],
-            state_field_family=(
-                definition_data["state_field_family"]
-                if "state_field_family" in definition_data
-                else None
-            ),
-            rationale=definition_data["rationale"]
-            if "rationale" in definition_data
-            else "restored",
+            state_field_family=definition_data["state_field_family"],
+            rationale=definition_data["rationale"],
         )
         return cls(
             definition=definition,

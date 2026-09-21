@@ -202,11 +202,15 @@ class ResolutionProvenance:
             raise ResolutionLedgerError(
                 "ResolutionProvenance.fields must be a mapping"
             )
-        object.__setattr__(
-            self,
-            "fields",
-            {str(key): copy.deepcopy(value) for key, value in self.fields.items()},
-        )
+        copied: dict[str, Any] = {}
+        for key, value in self.fields.items():
+            if not isinstance(key, str):
+                raise ResolutionLedgerError(
+                    "ResolutionProvenance field names must be strings; "
+                    "keys are never coerced"
+                )
+            copied[key] = copy.deepcopy(value)
+        object.__setattr__(self, "fields", copied)
 
     def has(self, name: str) -> bool:
         return name in self.fields
@@ -225,7 +229,9 @@ class ResolutionProvenance:
 
     def absent_field_names(self) -> frozenset[str]:
         return frozenset(
-            name for name in SOURCE_REF_FIELDS if name not in self.fields
+            name
+            for name in SOURCE_REF_FIELDS
+            if f"source_ref.{name}" not in self.fields
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -257,7 +263,7 @@ class ResolutionProvenance:
             if isinstance(inputs, Mapping):
                 # Record the mapping's own input digests verbatim; no field is
                 # invented and nothing absent is filled in.
-                for name in sorted(inputs):
+                for name in inputs:
                     if isinstance(name, str) and name.endswith("_sha256"):
                         fields[f"inputs.{name}"] = inputs[name]
         static_link = record.get("static_link")
@@ -344,10 +350,6 @@ def classify_record(record: Mapping[str, Any]) -> tuple[ResolutionState, str | N
     if classification in BLOCKED_CLASSIFICATIONS:
         return ResolutionState.BLOCKED, REASON_OUT_OF_STATIC_FAMILY_SCOPE
 
-    if len(candidates) > 1:
-        # An unrecognised classification with several candidates is still
-        # ambiguous rather than silently missing.
-        return ResolutionState.AMBIGUOUS, REASON_MULTIPLE_CANDIDATES
     return ResolutionState.BLOCKED, REASON_UNRECOGNISED_CLASSIFICATION
 
 
@@ -359,7 +361,7 @@ class ResolutionLedgerEntry:
     state: ResolutionState
     classification: str
     owner_kind: str
-    static_family: str
+    static_family: str | None
     candidate_entity_ids: tuple[str, ...] = field(default_factory=tuple)
     evidence: str = ""
     mapping_method: str = ""
@@ -555,14 +557,26 @@ class ResolutionLedgerEntry:
                 "mapping record must be a mapping"
             )
         static_link = record.get("static_link")
-        static_link = static_link if isinstance(static_link, Mapping) else {}
-        classification = static_link.get("classification", "")
+        if not isinstance(static_link, Mapping):
+            raise ResolutionLedgerError(
+                "mapping record static_link must be a mapping"
+            )
+        classification = static_link.get("classification")
+        if not isinstance(classification, str) or not classification:
+            raise ResolutionLedgerError(
+                "mapping record classification must be a non-empty string"
+            )
         candidates_raw = static_link.get("candidate_entity_ids", ())
         if isinstance(candidates_raw, (str, bytes)) or not isinstance(
             candidates_raw, (tuple, list)
         ):
-            candidates_raw = ()
-        candidates = tuple(str(item) for item in candidates_raw)
+            raise ResolutionLedgerError(
+                "mapping record candidate_entity_ids must be a tuple or list"
+            )
+        candidates = tuple(
+            _require_non_empty(item, "candidate_entity_ids entry")
+            for item in candidates_raw
+        )
         state, reason = classify_record(record)
 
         owner_kind = record.get("owner_kind", "")
@@ -570,7 +584,27 @@ class ResolutionLedgerEntry:
         evidence = static_link.get("evidence", "")
         mapping_method = static_link.get("mapping_method", "")
         representation_tag = static_link.get("representation_tag", None)
-        behavior_id = record.get("behavior_id", "")
+        behavior_id = _require_non_empty(record.get("behavior_id"), "behavior_id")
+
+        for label, value in (
+            ("owner_kind", owner_kind),
+            ("evidence", evidence),
+            ("mapping_method", mapping_method),
+        ):
+            if not isinstance(value, str):
+                raise ResolutionLedgerError(
+                    f"mapping record {label} must be a string when present"
+                )
+        if static_family is not None and not isinstance(static_family, str):
+            raise ResolutionLedgerError(
+                "mapping record static_family must be a string or null"
+            )
+        if representation_tag is not None and not isinstance(
+            representation_tag, str
+        ):
+            raise ResolutionLedgerError(
+                "mapping record representation_tag must be a string or null"
+            )
 
         resolved_entity_id = candidates[0] if state is ResolutionState.EXACT else None
 
@@ -581,7 +615,7 @@ class ResolutionLedgerEntry:
                 if isinstance(static_family, str) and static_family
                 else (owner_kind if isinstance(owner_kind, str) and owner_kind else "UNKNOWN")
             )
-            payload = {
+            payload: dict[str, Any] = {
                 "classification": classification,
                 "candidate_entity_ids": list(candidates),
                 "evidence": evidence,
@@ -589,10 +623,10 @@ class ResolutionLedgerEntry:
                 "representation_tag": representation_tag,
                 "static_family": static_family,
                 "owner_kind": owner_kind,
-                "source_ref": copy.deepcopy(
-                    record.get("source_ref") if "source_ref" in record else {}
-                ),
+                "source_ref_present": "source_ref" in record,
             }
+            if "source_ref" in record:
+                payload["source_ref"] = copy.deepcopy(record["source_ref"])
             handle = UnknownHandle(
                 blocker_id=f"{classification or 'UNCLASSIFIED'}:{behavior_id}",
                 owner_family=str(owner_family),
@@ -613,14 +647,14 @@ class ResolutionLedgerEntry:
             )
 
         return cls(
-            behavior_id=behavior_id if behavior_id else "<missing-behavior-id>",
+            behavior_id=behavior_id,
             state=state,
-            classification=str(classification),
-            owner_kind=str(owner_kind),
-            static_family=str(static_family),
+            classification=classification,
+            owner_kind=owner_kind,
+            static_family=static_family,
             candidate_entity_ids=candidates,
-            evidence=str(evidence),
-            mapping_method=str(mapping_method),
+            evidence=evidence,
+            mapping_method=mapping_method,
             representation_tag=representation_tag,
             resolved_entity_id=resolved_entity_id,
             reason_code=reason,

@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.17",
+  "plan_version": "1.0.21",
   "generated_date": "2026-09-21",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -2605,7 +2605,8 @@
       "readiness_recomputed_at": "2026-09-21",
       "readiness_basis": "dependency F01-009 is DONE; status field aligned with the authoritative computed next_ready_tasks entry",
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - immutable family-tagged identity, explicit LOCAL_DESIGN_IDENTITY, exact integer identity above 2^53, no float/int coercion, cross-family inequality and stable serialization all satisfy F02-001. The append-only family declaration registry is accepted as local structural design and makes no native identity claim.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/identity.py",
         "tests/battle_sandbox/test_identity.py"
@@ -2722,7 +2723,8 @@
         "F02-006"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Entity, Actor, Team, FormationSlot and TopologyNode remain distinct declared families; source and runtime identity stay separate and all conversions require named contracts.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/identity.py",
         "tests/battle_sandbox/test_identity_families_a.py"
@@ -2824,7 +2826,8 @@
         "F02-006"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - all role and runtime families remain distinct; provider/caster, owner/actor and team/formation shortcuts are explicitly refused and RoleBundle introduces no implicit conversion.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/identity.py",
         "tests/battle_sandbox/test_identity_families_b.py"
@@ -2928,7 +2931,8 @@
         "F02-007"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - generation rollover previously reset next_value while retaining tombstones, which could deadlock the next commit. The allocator now never reuses a raw token across generations, validates stale retirement, and has strict deterministic clone/serialization. Reservations remain private and abort consumes zero IDs.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/identity.py",
         "tests/battle_sandbox/test_identity_allocator.py"
@@ -3030,7 +3034,8 @@
         "F02-006"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - comparison was incorrectly scoped to an exact snapshot token. StateRevision now compares different snapshot tokens within one lineage by monotonic counter, refuses cross-lineage comparison, and strictly deserializes its complete deterministic document.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/revision.py",
         "tests/battle_sandbox/test_revision.py"
@@ -3136,7 +3141,8 @@
         "F02-007"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - the original catalog classified seven legacy state.py fields instead of the 61 frozen BattleState families. Ownership is now one-to-one with all frozen families and owners; the five frozen derived-cache families remain structural, non-writable assignments rather than fabricated mutable state.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/stores/__init__.py",
         "src/hsr_battle_agent/battle_sandbox/stores/protocols.py",
@@ -3239,7 +3245,8 @@
         "F02-008"
       ],
       "status_updated_at": "2026-09-21",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - broad convenience stores merged independently owned frozen and scheduler families. The catalog now creates one typed store per frozen family, preserves all twelve Scheduler-owned families separately, rejects invented definitions and silently dropped document fields, and uses one explicit schema-marked store for each opaque family.",
       "changed_files": [
         "src/hsr_battle_agent/battle_sandbox/stores/core.py",
         "src/hsr_battle_agent/battle_sandbox/opaque.py",
@@ -3277,7 +3284,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Terra BattleState aggregate",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3349,14 +3356,34 @@
       ],
       "readiness_recomputed_at": "2026-09-21",
       "readiness_basis": "dependency F02-007 is DONE",
-      "status_note": "READY but deliberately NOT executed: F02-008 is SOL_IMPLEMENT and this session executes cheap tasks only."
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Sol implemented and reviewed the independent aggregate in the same strong-review session. All frozen field families have exactly one component owner; state/store/RNG/allocator/revision/opaque round trips are lossless and isolated; no legacy state projection or runtime behavior was introduced.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+        "tests/battle_sandbox/test_terra_state.py"
+      ],
+      "change_summary": "Created the first independent TerraBattleState aggregate. It composes 50 separately typed store families, eight separately typed opaque-unresolved stores, StateRevision, IdentityAllocator and owned SandboxRng state, accounting for all 61 frozen field families exactly once. Store documents cross the already-authorized F01 lossless envelope so tuple/list, presence and opaque identity survive JSON serialization. Legacy BattleState remains operational and is neither authoritative storage nor automatically projected.",
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_terra_state -q => Ran 14 tests, OK",
+        "reviewed foundation plus both new seams => Ran 373 tests, OK",
+        "FAST_UNIT => battle_ir 439 + battle_sandbox 565 + battle_runtime 185 = 1189 OK",
+        "root documented scope => Ran 1197 tests, OK"
+      ],
+      "acceptance_rows": {
+        "construct/round trip all stores": "PASS - all 61 field families are represented exactly once and the full aggregate survives dict, JSON and clone round trips with mutation isolation",
+        "unclassified field rejected": "PASS - missing, extra, duplicate and misregistered families fail closed; generic extension writes and free-form state are absent",
+        "legacy state unaffected": "PASS - legacy BattleState fixtures and round trip are unchanged; there is no automatic Terra/legacy projection"
+      },
+      "forbidden_files_changed": false,
+      "status_note": "DONE after the strong review gate passed. F02-009 and F02-010 are dependency-ready but were deliberately not entered."
     },
     {
       "task_id": "F02-009",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Legacy state compatibility adapter",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3432,7 +3459,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Snapshot v2 schema",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3810,7 +3837,8 @@
       ],
       "status_updated_at": "2026-09-21",
       "status_note": "Master readiness was computed (next_ready_tasks included R01-001) but the task status field still read NOT_STARTED. The status was advanced to READY and then IN_PROGRESS to make the recorded status consistent with the authoritative computed readiness. Dependencies F01-009 is DONE.",
-      "sol_review_pending": true,
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - unrecognised mapping classifications with multiple candidates could escape fail-closed handling as AMBIGUOUS, provenance presence checks used the wrong source_ref key and mapping input was lossy. Unknown classifications now always BLOCKED, published mapping order and exact source fields are preserved, and no join or executability claim is introduced. OUT_OF_STATIC_FAMILY_SCOPE -> BLOCKED is accepted as local structural design supported by the published mapping meaning.",
       "changed_files": [
         "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
         "tests/battle_ir/test_resolution_ledger.py"
@@ -3858,7 +3886,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Descriptor base and occurrence identity",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3937,14 +3965,35 @@
       ],
       "readiness_recomputed_at": "2026-09-21",
       "readiness_basis": "dependency R01-001 is DONE",
-      "status_note": "READY but deliberately NOT executed: R01-002 is SOL_IMPLEMENT and this session executes cheap tasks only."
+      "status_updated_at": "2026-09-21",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Sol implemented and reviewed the representation-only descriptor base in the same session. ContractRef mode identity, provenance, explicit presence, occurrence path/source order, repeated occurrences and ordered unknown fields round trip without creating a gate certificate or runtime action.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/__init__.py",
+        "src/hsr_battle_agent/battle_ir/descriptors/base.py",
+        "tests/battle_ir/test_descriptor_base.py"
+      ],
+      "change_summary": "Added DescriptorOccurrence and DescriptorBatch. Occurrence identity includes contract identity, explicit source path and source order, so equal payloads at different occurrences remain distinct; batch order is never sorted or deduplicated. Payload, known fields and unknown fields use PresenceValue and preserve tuple/list identity and source order. Mode mismatch and duplicate occurrence identity fail closed. Descriptors cannot satisfy NativeContract gates.",
+      "test_results": [
+        "python -m unittest tests.battle_ir.test_descriptor_base -q => Ran 13 tests, OK",
+        "R01-001 plus descriptor tests are included in the 373-test exact foundation/seam run",
+        "all F01 exact representation tests => Ran 374 tests, OK",
+        "FAST_UNIT => battle_ir 439 + battle_sandbox 565 + battle_runtime 185 = 1189 OK"
+      ],
+      "acceptance_rows": {
+        "repeat/order round trip": "PASS - identical payloads at different source occurrences remain distinct and caller order, occurrence path, source order, presence and unknown fields round trip",
+        "mode mismatch rejection": "PASS - descriptor EvidenceMode must be the exact canonical mode carried by ContractRef",
+        "descriptor cannot satisfy native execution gate": "PASS - require_native_contract rejects DescriptorOccurrence even when its evidence mode is NATIVE_EVIDENCED"
+      },
+      "forbidden_files_changed": false,
+      "status_note": "DONE after the strong review gate passed. R01-003 through R01-011 are dependency-ready but were deliberately not entered."
     },
     {
       "task_id": "R01-003",
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Invocation descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4019,7 +4068,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Modifier descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4094,7 +4143,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Formation and topology descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4169,7 +4218,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Scheduler descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4244,7 +4293,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Monster AI descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4319,7 +4368,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Damage descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4394,7 +4443,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Target and retarget descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4469,7 +4518,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Progression and loadout descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4544,7 +4593,7 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Scenario mode and terminal descriptor family",
-      "status": "NOT_STARTED",
+      "status": "READY",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -7798,61 +7847,123 @@
           "duplicate-key validator and DAG/readiness validator"
         ],
         "validation": "F01-001..F01-008 reviewed repairs plus P0-E quarantine: 313 OK; final all-F01 exact set including F01-009: 330 OK; P0-E quarantine alone: 45 OK; FAST_UNIT 816 OK; root documented scope 824 OK; master duplicate-key, DAG and readiness validation PASS; no frozen authority change"
+      },
+      {
+        "change_request_id": "CR-M1-FOUNDATION-REVIEW-20260921-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Strong Sol review found concrete local representation and control defects in R01-001 and F02-004..F02-007: an unrecognised mapping classification with multiple candidates is labelled AMBIGUOUS instead of failing closed as BLOCKED; resolution provenance coerces keys and misreports present source_ref fields as absent; allocator tombstones deadlock a new generation and the allocator lacks deterministic round-trip/clone support needed by F02-008; StateRevision compares only identical snapshot tokens rather than revisions within one lineage; and the ownership/store catalog substitutes seven legacy state.py fields for the frozen 61-field BattleState contract, thereby omitting all five DERIVED_CACHE assignments and merging distinct scheduler families. The computed next_ready_tasks list also omits READY task R01-002.",
+        "actual_defects": [
+          "R01-001 returns AMBIGUOUS for an unrecognised classification when several candidates are present, contradicting its own fail-closed policy; ResolutionProvenance string-coerces keys and absent_field_names checks unprefixed names against source_ref-prefixed keys.",
+          "F02-004 resets next_value to zero while preserving raw-value tombstones, so allocation can deadlock immediately after a generation change; it also has no validated serialization/clone surface for F02-008.",
+          "F02-005 requires identical snapshot_id values for staleness even when lineage matches, contradicting the snapshot-lineage-scoped requirement.",
+          "F02-006 derives its catalog from the seven-field legacy BattleState dataclass instead of the frozen 61-field battle_state_contract; its assertion that DERIVED_CACHE has zero assignments contradicts five frozen cache families.",
+          "F02-007 represents only three broad scheduler stores and omits distinct frozen task/owner/Ultra/TurnInsert/OneMore/immediate/phase families; typed-store deserialization accepts invented definitions, and opaque-store deserialization does not validate its declared definition.",
+          "The master next_ready_tasks list omits R01-002 even though both R01-002 and F02-008 are READY."
+        ],
+        "affected_task_ids": [
+          "R01-001",
+          "F02-004",
+          "F02-005",
+          "F02-006",
+          "F02-007",
+          "F02-008",
+          "R01-002"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
+          "tests/battle_ir/test_resolution_ledger.py",
+          "src/hsr_battle_agent/battle_sandbox/identity.py",
+          "tests/battle_sandbox/test_identity_allocator.py",
+          "src/hsr_battle_agent/battle_sandbox/revision.py",
+          "tests/battle_sandbox/test_revision.py",
+          "src/hsr_battle_agent/battle_sandbox/stores/protocols.py",
+          "src/hsr_battle_agent/battle_sandbox/stores/core.py",
+          "src/hsr_battle_agent/battle_sandbox/opaque.py",
+          "tests/battle_sandbox/test_store_protocols.py",
+          "tests/battle_sandbox/test_state_stores_v2.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE",
+        "migration_impact": "Local uncommitted foundation correction. Mapping UNKNOWN remains unresolved and now consistently fails closed; allocator/revision behavior becomes deterministic and usable by the new aggregate; the store catalog is aligned verbatim with the frozen architecture without adding lifecycle behavior or native claims. Legacy state.py remains operational and unchanged.",
+        "rollback": "Reverse only this change request's listed implementation/test edits and restore the prior master checkpoint. Do not modify frozen authority, legacy state.py, F02-008/R01-002 task dependencies, or promote any reference/native evidence class.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_M1_FOUNDATION_REVIEW_2026-09-21",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "R01-001 and F02-001..F02-007 exact tests",
+          "focused allocator generation/tombstone and round-trip tests",
+          "frozen 61-family ownership and distinct scheduler-family tests",
+          "F02-008 and R01-002 acceptance tests",
+          "all F01 representation tests, P0-E quarantine, FAST_UNIT, root documented scope, duplicate-key and DAG/readiness validation"
+        ],
+        "validation": "Reviewed foundation exact set plus F02-008/R01-002: 373 OK; all F01 exact representation tests: 374 OK; P0-E quarantine: 45 OK; FAST_UNIT 439 + 565 + 185 = 1189 OK; root documented scope 1197 OK; master duplicate-key, authority reconciliation, DAG and readiness validation PASS; no frozen authority or protected-file change."
       }
     ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-21",
-    "status": "POST_F01_CHEAP_LONG_RUN_COMPLETE_R01_001_AND_F02_001_007_DONE",
-    "head_at_run_start": "2286401e2896120f4bafa07879ec9c69be6b8cf3",
+    "status": "M1_FOUNDATION_STRONG_REVIEW_AND_TWO_ARCHITECTURE_SEAMS_COMPLETE",
+    "head_at_run_start": "e99de42a8433179a255cc1eb95d5d5abb4bfd5ab",
     "changed_files": [
+      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
       "src/hsr_battle_agent/battle_ir/resolution_ledger.py",
       "tests/battle_ir/test_resolution_ledger.py",
       "src/hsr_battle_agent/battle_sandbox/identity.py",
-      "tests/battle_sandbox/test_identity.py",
-      "tests/battle_sandbox/test_identity_families_a.py",
-      "tests/battle_sandbox/test_identity_families_b.py",
+      "tests/battle_sandbox/test_identity_allocator.py",
       "src/hsr_battle_agent/battle_sandbox/revision.py",
       "tests/battle_sandbox/test_revision.py",
-      "tests/battle_sandbox/test_identity_allocator.py",
-      "src/hsr_battle_agent/battle_sandbox/stores/__init__.py",
       "src/hsr_battle_agent/battle_sandbox/stores/protocols.py",
-      "tests/battle_sandbox/test_store_protocols.py",
       "src/hsr_battle_agent/battle_sandbox/stores/core.py",
       "src/hsr_battle_agent/battle_sandbox/opaque.py",
+      "tests/battle_sandbox/test_store_protocols.py",
       "tests/battle_sandbox/test_state_stores_v2.py",
-      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+      "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+      "tests/battle_sandbox/test_terra_state.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/__init__.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/base.py",
+      "tests/battle_ir/test_descriptor_base.py"
     ],
-    "worktree_note": "Git write operations were disabled for this session, so nothing was staged or committed. Frozen Astra artifacts, catalog artifacts, the two protected modified tracked files and all unrelated untracked artifacts were not modified.",
+    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. The two pre-existing protected tracked modifications and unrelated untracked reverse artifacts were preserved byte-identically. Frozen Astra authority was not modified.",
     "tests": [
-      "R01-001 exact: Ran 61 tests, OK: PASS",
-      "F02-001 exact: Ran 53 tests, OK: PASS",
-      "F02-002 exact: Ran 36 tests, OK: PASS",
-      "F02-003 exact: Ran 38 tests, OK: PASS",
-      "F02-004 exact: Ran 38 tests, OK: PASS",
-      "F02-005 exact: Ran 34 tests, OK: PASS",
-      "F02-006 exact: Ran 25 tests, OK: PASS",
-      "F02-007 exact: Ran 53 tests, OK: PASS",
-      "all F02 and R01 exact modules together: Ran 338 tests, OK",
+      "R01-001 and F02-001..F02-007 reviewed exact set after repair: Ran 346 tests, OK",
+      "F02-008 and R01-002 exact: Ran 27 tests, OK",
+      "reviewed foundation plus both architecture seams: Ran 373 tests, OK",
+      "all F01 exact representation tests: Ran 374 tests, OK",
       "P0-E reference quarantine regression: Ran 45 tests, OK",
-      "FAST_UNIT: 424 + 545 + 185 = 1154, OK (baseline was 816)",
-      "root documented scope: Ran 1162 tests, OK (baseline was 824)",
-      "duplicate-key validator on the master after every edit: PASS"
+      "FAST_UNIT: 439 + 565 + 185 = 1189, OK",
+      "root documented scope: Ran 1197 tests, OK",
+      "duplicate-key, authority reconciliation, DAG and readiness validation: PASS"
     ],
     "blockers": [],
-    "cheap_tasks_executed": 8,
-    "cheap_tasks_remaining_ready": 0,
     "remaining_ready_any": [
-      "R01-002",
-      "F02-008"
+      "F02-009",
+      "F02-010",
+      "R01-003",
+      "R01-004",
+      "R01-005",
+      "R01-006",
+      "R01-007",
+      "R01-008",
+      "R01-009",
+      "R01-010",
+      "R01-011"
     ],
-    "long_run_stopped_reason": "All reachable cheap tasks are DONE. R01-001 is DONE and the R01 branch stops because R01-002 is SOL_IMPLEMENT. F02-001 through F02-007 are DONE and the F02 branch stops because F02-008 is SOL_IMPLEMENT. G01 and C02 were not entered.",
+    "long_run_stopped_reason": "The requested strong review, F02-008 and R01-002 are complete. The session deliberately stopped before F02-009/F02-010, R01-003..R01-011, G01 and C02.",
     "git_write_operations_by_agent": "NONE (disabled by session policy)",
-    "recommended_executor": "SOL for R01-002 and F02-008",
-    "next_command": "Read master and the R01-002 / F02-008 task entries; SOL owns both."
+    "recommended_executor": "SOL for the READY F02 and R01 fan-out tasks",
+    "next_command": "Select exactly one READY task from computed dependency truth; do not infer readiness from suggestion lists."
   },
   "next_ready_tasks": [
-    "F02-008"
+    "F02-009",
+    "F02-010",
+    "R01-003",
+    "R01-004",
+    "R01-005",
+    "R01-006",
+    "R01-007",
+    "R01-008",
+    "R01-009",
+    "R01-010",
+    "R01-011"
   ],
   "change_history": [
     {
@@ -7982,6 +8093,12 @@
       "date": "2026-09-21",
       "change": "F02-004, F02-006 and F02-007 DONE, completing all reachable cheap F02 work. Added IdentityAllocator (deterministic, non-reusing, per-namespace, generation-aware, tombstone-aware, private until commit), the stores package with four store classifications and a seven-owner state ownership catalog that forbids generic extension writes, the twenty-three typed empty store families with separate scheduler stores, and the opaque unresolved store whose identity changes with its payload. Three defects were found by the invariant tests and fixed (a non-publishing reserve, a contradictory writability rule and a bogus Enum subclass). FAST_UNIT grew from 1038 to 1154 green and the root scope from 1046 to 1162. F02-008 readiness recomputed to READY and left unexecuted because it is SOL_IMPLEMENT.",
       "review": "SOL_REVIEW_REQUIRED"
+    },
+    {
+      "revision": "1.0.21",
+      "date": "2026-09-21",
+      "change": "Strong Sol review closed R01-001 and F02-001..F02-007 under CR-M1-FOUNDATION-REVIEW-20260921-001, repairing fail-closed mapping classification/provenance, allocator generation/serialization, lineage-scoped revision comparison and the frozen 61-family ownership/store model. F02-008 then created the independent TerraBattleState aggregate, and R01-002 created the representation-only descriptor base with explicit occurrence identity. FAST_UNIT is 1189 OK and root documented scope is 1197 OK. M1 remains IN_PROGRESS; F02-009/F02-010 and R01-003..R01-011 are READY and deliberately unentered.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8004,10 +8121,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 2,
-      "NOT_STARTED": 39,
+      "READY": 11,
+      "NOT_STARTED": 28,
       "BLOCKED": 10,
-      "DONE": 24
+      "DONE": 26
     },
     "freeze_tickets": [
       "TERRA-F01",

@@ -64,6 +64,7 @@ __all__ = [
     "FORMATION_SLOT",
     "GLOBAL_SERVICE",
     "IDENTITY_SCHEMA",
+    "IDENTITY_ALLOCATOR_SCHEMA",
     "IdentityAllocator",
     "IdentityAuthority",
     "IdentityFamily",
@@ -89,6 +90,7 @@ __all__ = [
 ]
 
 IDENTITY_SCHEMA = "typed_identity/1"
+IDENTITY_ALLOCATOR_SCHEMA = "identity_allocator/1"
 
 _MACHINE_CODE_RE = re.compile(r"\A[A-Z][A-Z0-9_]*\Z")
 
@@ -834,6 +836,27 @@ class NamespaceState:
     issued: tuple[int, ...] = field(default_factory=tuple)
     tombstones: tuple[int, ...] = field(default_factory=tuple)
 
+    def __post_init__(self) -> None:
+        if not isinstance(self.namespace, str) or not self.namespace:
+            raise TypedIdentityError("namespace must be a non-empty string")
+        object.__setattr__(self, "generation", _validate_generation(self.generation))
+        for label, value in (("next_value", self.next_value),):
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise TypedIdentityError(f"{label} must be an int >= 0")
+        for label, values in (("issued", self.issued), ("tombstones", self.tombstones)):
+            if isinstance(values, (str, bytes)) or not isinstance(values, (tuple, list)):
+                raise TypedIdentityError(f"{label} must be a tuple or list")
+            normalized = tuple(values)
+            if any(isinstance(v, bool) or not isinstance(v, int) or v < 0 for v in normalized):
+                raise TypedIdentityError(f"{label} entries must be ints >= 0")
+            if len(set(normalized)) != len(normalized):
+                raise TypedIdentityError(f"{label} entries must be unique")
+            object.__setattr__(self, label, normalized)
+        if set(self.issued) & set(self.tombstones):
+            raise TypedIdentityError("issued values and tombstones must not overlap")
+        if any(value >= self.next_value for value in self.issued + self.tombstones):
+            raise TypedIdentityError("issued/tombstoned values must be below next_value")
+
     def is_live(self, value: int) -> bool:
         return value in self.issued
 
@@ -848,6 +871,23 @@ class NamespaceState:
             "issued": list(self.issued),
             "tombstones": list(self.tombstones),
         }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "NamespaceState":
+        if not isinstance(data, Mapping):
+            raise TypedIdentityError("namespace state must be a mapping")
+        required = {"namespace", "generation", "next_value", "issued", "tombstones"}
+        if set(data) != required:
+            raise TypedIdentityError(
+                f"namespace state fields must be exactly {tuple(sorted(required))}"
+            )
+        return cls(
+            namespace=data["namespace"],
+            generation=data["generation"],
+            next_value=data["next_value"],
+            issued=tuple(data["issued"]),
+            tombstones=tuple(data["tombstones"]),
+        )
 
 
 @dataclass(frozen=True)
@@ -1025,6 +1065,11 @@ class IdentityAllocator:
             )
         state = self.state_for(identity.namespace)
         value = identity.require_int_value()
+        if identity.generation != state.generation:
+            raise TypedIdentityError(
+                f"identity generation {identity.generation} is stale; namespace "
+                f"{identity.namespace!r} is at generation {state.generation}"
+            )
         if not state.is_live(value):
             raise TypedIdentityError(
                 f"value {value} is not live in {identity.namespace!r}"
@@ -1041,7 +1086,7 @@ class IdentityAllocator:
     # -- generations -----------------------------------------------------
 
     def begin_generation(self, namespace: str) -> NamespaceState:
-        """Advance the namespace generation and start a fresh value space.
+        """Advance the namespace generation without reusing a raw token.
 
         Outstanding tickets from the previous generation become stale.
         """
@@ -1049,11 +1094,50 @@ class IdentityAllocator:
         self._published[namespace] = NamespaceState(
             namespace=state.namespace,
             generation=state.generation + 1,
-            next_value=0,
+            next_value=state.next_value,
             issued=(),
             tombstones=state.tombstones,
         )
         return self._published[namespace]
 
+    # -- serialization ---------------------------------------------------
 
+    def to_dict(self) -> dict[str, Any]:
+        """Lossless deterministic allocator state for clone/snapshot/hash."""
+        return {
+            "schema": IDENTITY_ALLOCATOR_SCHEMA,
+            "namespaces": [
+                self._published[name].to_dict() for name in sorted(self._published)
+            ],
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> "IdentityAllocator":
+        if not isinstance(data, Mapping):
+            raise TypedIdentityError("allocator document must be a mapping")
+        if set(data) != {"schema", "namespaces"}:
+            raise TypedIdentityError(
+                "allocator document must contain exactly 'schema' and 'namespaces'"
+            )
+        if data["schema"] != IDENTITY_ALLOCATOR_SCHEMA:
+            raise TypedIdentityError(
+                f"unknown allocator schema {data['schema']!r}"
+            )
+        raw = data["namespaces"]
+        if isinstance(raw, (str, bytes)) or not isinstance(raw, (tuple, list)):
+            raise TypedIdentityError("allocator namespaces must be a list")
+        allocator = cls()
+        previous: str | None = None
+        for item in raw:
+            state = NamespaceState.from_dict(item)
+            if previous is not None and state.namespace <= previous:
+                raise TypedIdentityError(
+                    "allocator namespaces must be unique and sorted"
+                )
+            allocator._published[state.namespace] = state
+            previous = state.namespace
+        return allocator
+
+    def clone(self) -> "IdentityAllocator":
+        return type(self).from_dict(self.to_dict())
 
