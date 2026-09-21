@@ -18,6 +18,8 @@ sys.path.insert(0, str(REPO / "src"))
 
 from hsr_battle_agent.battle_sandbox.revision import (  # noqa: E402
     REVISION_SCHEMA,
+    REVISION_SEQUENCE_SCHEMA,
+    RevisionAndTransactionSequence,
     StateRevision,
     StateRevisionError,
 )
@@ -229,6 +231,15 @@ class TestStaleComparison(unittest.TestCase):
         with self.assertRaises(StateRevisionError):
             older.require_same_snapshot(newer)
 
+    def test_equal_counter_with_different_snapshot_is_incomparable(self):
+        first = rev(counter=5, snapshot_id="A", lineage="L")
+        second = rev(counter=5, snapshot_id="B", lineage="L")
+        self.assertFalse(first.same_snapshot(second))
+        with self.assertRaises(StateRevisionError):
+            first.compare(second)
+        with self.assertRaises(StateRevisionError):
+            first.is_current_for(second)
+
     def test_stale_comparison_across_lineages_is_refused(self):
         with self.assertRaises(StateRevisionError):
             rev(counter=1, lineage="a").compare(rev(counter=2, lineage="b"))
@@ -314,6 +325,58 @@ class TestSerialization(unittest.TestCase):
         for name in ("executable", "is_executable", "can_execute", "as_bool"):
             with self.subTest(name=name):
                 self.assertFalse(hasattr(StateRevision, name))
+
+
+class TestRevisionAndTransactionSequence(unittest.TestCase):
+    def sequence(self, replay=7, effects=11):
+        return RevisionAndTransactionSequence(
+            published_revision=rev(counter=5, snapshot_id="snap-5", lineage="L"),
+            replay_sequence=replay,
+            committed_effect_sequence=effects,
+        )
+
+    def test_three_frozen_shape_parts_are_explicit_and_round_trip(self):
+        sequence = self.sequence()
+        payload = sequence.to_dict()
+        self.assertEqual(payload["schema"], REVISION_SEQUENCE_SCHEMA)
+        self.assertEqual(
+            payload["published_revision"],
+            sequence.published_revision.to_dict(),
+        )
+        self.assertEqual(payload["replay_sequence"], 7)
+        self.assertEqual(payload["committed_effect_sequence"], 11)
+        self.assertEqual(
+            RevisionAndTransactionSequence.from_dict(payload), sequence
+        )
+
+    def test_sequence_values_have_no_implicit_defaults(self):
+        with self.assertRaises(TypeError):
+            RevisionAndTransactionSequence(published_revision=rev())
+
+    def test_sequence_values_are_explicit_non_negative_local_ints(self):
+        for value in (-1, True, 1.0, "1", None):
+            with self.subTest(value=repr(value)):
+                with self.assertRaises(StateRevisionError):
+                    self.sequence(replay=value)
+                with self.assertRaises(StateRevisionError):
+                    self.sequence(effects=value)
+
+    def test_malformed_sequence_document_rejects_without_defaulting(self):
+        payload = self.sequence().to_dict()
+        for key in (
+            "published_revision",
+            "replay_sequence",
+            "committed_effect_sequence",
+        ):
+            with self.subTest(key=key):
+                broken = dict(payload)
+                broken.pop(key)
+                with self.assertRaises(StateRevisionError):
+                    RevisionAndTransactionSequence.from_dict(broken)
+        broken = dict(payload)
+        broken["schema"] = "revision_and_transaction_sequence/2"
+        with self.assertRaises(StateRevisionError):
+            RevisionAndTransactionSequence.from_dict(broken)
 
 
 if __name__ == "__main__":

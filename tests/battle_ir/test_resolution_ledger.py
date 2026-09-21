@@ -156,13 +156,14 @@ class TestStatePolicy(unittest.TestCase):
                 self.assertIs(state, ResolutionState.AMBIGUOUS)
                 self.assertEqual(reason, REASON_MULTIPLE_CANDIDATES)
 
-    def test_exact_relation_with_no_candidate_is_missing_not_ambiguous(self):
+    def test_exact_relation_with_no_candidate_is_blocked_as_inconsistent(self):
         for classification in EXACT_CLASSIFICATIONS:
             with self.subTest(classification=classification):
                 state, reason = classify_record(
                     record(classification=classification, candidates=())
                 )
-                self.assertIs(state, ResolutionState.MISSING)
+                self.assertIs(state, ResolutionState.BLOCKED)
+                self.assertIsNot(state, ResolutionState.MISSING)
                 self.assertIsNot(state, ResolutionState.AMBIGUOUS)
                 self.assertEqual(reason, REASON_NO_CANDIDATE_RECORDED)
 
@@ -219,7 +220,9 @@ class TestStatePolicy(unittest.TestCase):
 
     def test_three_unresolved_states_are_not_collapsed(self):
         states = {
-            classify_record(record(candidates=()))[0],                       # MISSING
+            classify_record(
+                record(classification="UNMAPPED", candidates=())
+            )[0],
             classify_record(record(candidates=("1", "2")))[0],               # AMBIGUOUS
             classify_record(record(classification="OUT_OF_STATIC_FAMILY_SCOPE",
                                    candidates=()))[0],                       # BLOCKED

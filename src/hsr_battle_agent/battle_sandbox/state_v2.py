@@ -3,7 +3,7 @@
 
 This is the first state aggregate on the Terra path.  It composes the frozen
 one-owner-per-family store catalog with a revision, allocator, sandbox RNG
-state and explicit opaque-unresolved stores.  It neither subclasses nor
+state sequence and explicit opaque-unresolved stores.  It neither subclasses nor
 projects to the legacy :mod:`battle_sandbox.state` ``BattleState``.
 
 The class is a representation boundary only.  It implements no transaction,
@@ -17,7 +17,10 @@ from typing import Any, Mapping
 
 from hsr_battle_agent.battle_sandbox.identity import IdentityAllocator
 from hsr_battle_agent.battle_sandbox.opaque import OpaqueUnresolvedStore
-from hsr_battle_agent.battle_sandbox.revision import StateRevision
+from hsr_battle_agent.battle_sandbox.revision import (
+    RevisionAndTransactionSequence,
+    StateRevision,
+)
 from hsr_battle_agent.battle_sandbox.rng import (
     SANDBOX_RNG_ALGORITHM,
     SandboxRng,
@@ -44,11 +47,11 @@ __all__ = [
     "TerraStateError",
 ]
 
-TERRA_BATTLE_STATE_SCHEMA = "terra_battle_state/1"
+TERRA_BATTLE_STATE_SCHEMA = "terra_battle_state/2"
 
 TERRA_COMPONENT_FIELD_FAMILIES = MappingProxyType(
     {
-        REVISION_FIELD_FAMILY: "revision",
+        REVISION_FIELD_FAMILY: "revision_sequence",
         ALLOCATOR_FIELD_FAMILY: "allocator",
         RNG_FIELD_FAMILY: "rng_state",
         **{family: "opaque_stores" for family in OPAQUE_FIELD_FAMILIES},
@@ -111,19 +114,31 @@ class TerraBattleState:
     Caller-owned allocator and RNG objects are cloned on entry and exit.
     """
 
-    __slots__ = ("_stores", "_revision", "_allocator", "_rng", "_opaque")
+    __slots__ = (
+        "_stores",
+        "_revision_sequence",
+        "_allocator",
+        "_rng",
+        "_opaque",
+    )
 
     def __init__(
         self,
         *,
-        revision: StateRevision,
+        revision_sequence: RevisionAndTransactionSequence,
         allocator: IdentityAllocator,
         rng_state: SandboxRng,
         stores: Mapping[str, TypedStore] | None = None,
         opaque_stores: Mapping[str, OpaqueUnresolvedStore] | None = None,
     ) -> None:
-        if not isinstance(revision, StateRevision):
-            raise TerraStateError("revision must be a StateRevision")
+        if not isinstance(
+            revision_sequence, RevisionAndTransactionSequence
+        ):
+            raise TerraStateError(
+                "revision_sequence must be a RevisionAndTransactionSequence; "
+                "published revision, replay sequence and committed effect "
+                "sequence are all required explicitly"
+            )
         if not isinstance(allocator, IdentityAllocator):
             raise TerraStateError("allocator must be an IdentityAllocator")
         if not isinstance(rng_state, SandboxRng):
@@ -201,13 +216,18 @@ class TerraBattleState:
 
         self._stores = normalized_stores
         self._opaque = normalized_opaque
-        self._revision = revision
+        self._revision_sequence = revision_sequence
         self._allocator = allocator.clone()
         self._rng = rng_state.clone()
 
     @property
     def revision(self) -> StateRevision:
-        return self._revision
+        """The published revision part of the complete sequence component."""
+        return self._revision_sequence.published_revision
+
+    @property
+    def revision_sequence(self) -> RevisionAndTransactionSequence:
+        return self._revision_sequence
 
     @property
     def stores(self) -> Mapping[str, TypedStore]:
@@ -241,7 +261,7 @@ class TerraBattleState:
                 F01StateEnvelope(self._stores[name].to_dict()).to_dict()
                 for name in TERRA_TYPED_STORE_FAMILIES
             ],
-            "revision": self._revision.to_dict(),
+            "revision_and_transaction_sequence": self._revision_sequence.to_dict(),
             "allocator": self._allocator.to_dict(),
             "rng_state": self._rng.to_dict(),
             "opaque_stores": [
@@ -257,7 +277,7 @@ class TerraBattleState:
         expected = {
             "schema",
             "stores",
-            "revision",
+            "revision_and_transaction_sequence",
             "allocator",
             "rng_state",
             "opaque_stores",
@@ -265,7 +285,8 @@ class TerraBattleState:
         if set(data) != expected:
             raise TerraStateError(
                 "TerraBattleState document must contain exactly schema, stores, "
-                "revision, allocator, rng_state and opaque_stores"
+                "revision_and_transaction_sequence, allocator, rng_state and "
+                "opaque_stores"
             )
         if data["schema"] != TERRA_BATTLE_STATE_SCHEMA:
             raise TerraStateError(
@@ -314,7 +335,9 @@ class TerraBattleState:
         _validate_rng_document(rng_document)
         try:
             return cls(
-                revision=StateRevision.from_dict(data["revision"]),
+                revision_sequence=RevisionAndTransactionSequence.from_dict(
+                    data["revision_and_transaction_sequence"]
+                ),
                 allocator=IdentityAllocator.from_dict(data["allocator"]),
                 rng_state=SandboxRng.from_dict(rng_document),
                 stores=stores,
@@ -335,7 +358,9 @@ class TerraBattleState:
 
     def __repr__(self) -> str:
         return (
-            f"TerraBattleState(revision={self._revision.identity()!r}, "
+            f"TerraBattleState(revision={self.revision.identity()!r}, "
+            f"replay={self._revision_sequence.replay_sequence}, "
+            f"effects={self._revision_sequence.committed_effect_sequence}, "
             f"stores={len(self._stores)}, opaque={len(self._opaque)}, "
             f"rng={SANDBOX_RNG_ALGORITHM!r})"
         )

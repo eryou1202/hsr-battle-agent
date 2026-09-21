@@ -19,21 +19,25 @@ Hard rules enforced here
   refuses, so identity is never derived from ``id()`` or memory layout.
 * **Snapshot identity is recorded.**  Each revision carries the snapshot token it
   labels, and staleness is compared only inside one lineage. Different snapshot
-  tokens in the same lineage remain comparable; unrelated lineages are refused.
+  tokens with ordered counters in the same lineage remain comparable; equal
+  counters with different tokens are incomparable, and unrelated lineages are
+  refused.
 """
 from __future__ import annotations
 
-import copy
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Mapping, NoReturn
 
 __all__ = [
     "REVISION_SCHEMA",
+    "REVISION_SEQUENCE_SCHEMA",
+    "RevisionAndTransactionSequence",
     "StateRevision",
     "StateRevisionError",
 ]
 
 REVISION_SCHEMA = "state_revision/1"
+REVISION_SEQUENCE_SCHEMA = "revision_and_transaction_sequence/1"
 
 
 class StateRevisionError(ValueError):
@@ -149,9 +153,11 @@ class StateRevision:
     def compare(self, other: "StateRevision") -> int:
         """Return -1, 0 or 1 within one snapshot lineage.
 
-        Ordering is defined by the counter alone. Comparing across lineages is
-        refused; different snapshot tokens in the same lineage are expected as
-        state advances and remain comparable.
+        Ordering is defined by the counter. Comparing across lineages is
+        refused. Different snapshot tokens in the same lineage remain
+        comparable when their counters order them; equal counters with
+        different tokens are refused because neither token can be selected as
+        the current point without inventing an ordering.
         """
         if not isinstance(other, StateRevision):
             raise StateRevisionError(
@@ -162,6 +168,11 @@ class StateRevision:
             return -1
         if self.counter > other.counter:
             return 1
+        if self.snapshot_id != other.snapshot_id:
+            raise StateRevisionError(
+                "equal counters with different snapshot identities are "
+                "incomparable; neither revision may be treated as current"
+            )
         return 0
 
     def is_stale_against(self, observed: "StateRevision") -> bool:
@@ -253,4 +264,90 @@ class StateRevision:
             counter=data["counter"],
             snapshot_id=data["snapshot_id"],
             lineage=data["lineage"],
+        )
+
+
+def _validate_local_sequence(value: Any, label: str) -> int:
+    """Validate a deterministic local sequence value without native claims."""
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise StateRevisionError(
+            f"{label} must be an explicit int, got {type(value).__name__}"
+        )
+    if value < 0:
+        raise StateRevisionError(f"{label} must be >= 0")
+    return value
+
+
+@dataclass(frozen=True)
+class RevisionAndTransactionSequence:
+    """The complete frozen revision-and-sequence field-family shape.
+
+    ``replay_sequence`` and ``committed_effect_sequence`` are deterministic
+    local ordering values only.  Their required, explicit construction avoids
+    silently inventing zero/default state, and this representation makes no
+    claim about client-native counters or transaction behavior.
+    """
+
+    published_revision: StateRevision
+    replay_sequence: int
+    committed_effect_sequence: int
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.published_revision, StateRevision):
+            raise StateRevisionError(
+                "published_revision must be a StateRevision"
+            )
+        object.__setattr__(
+            self,
+            "replay_sequence",
+            _validate_local_sequence(self.replay_sequence, "replay_sequence"),
+        )
+        object.__setattr__(
+            self,
+            "committed_effect_sequence",
+            _validate_local_sequence(
+                self.committed_effect_sequence,
+                "committed_effect_sequence",
+            ),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema": REVISION_SEQUENCE_SCHEMA,
+            "published_revision": self.published_revision.to_dict(),
+            "replay_sequence": self.replay_sequence,
+            "committed_effect_sequence": self.committed_effect_sequence,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: Mapping[str, Any]
+    ) -> "RevisionAndTransactionSequence":
+        if not isinstance(data, Mapping):
+            raise StateRevisionError(
+                "revision-and-transaction-sequence document must be a mapping"
+            )
+        expected = {
+            "schema",
+            "published_revision",
+            "replay_sequence",
+            "committed_effect_sequence",
+        }
+        if set(data) != expected:
+            raise StateRevisionError(
+                "revision-and-transaction-sequence document must contain "
+                "exactly schema, published_revision, replay_sequence and "
+                "committed_effect_sequence"
+            )
+        if data["schema"] != REVISION_SEQUENCE_SCHEMA:
+            raise StateRevisionError(
+                "unknown revision-and-transaction-sequence schema "
+                f"{data['schema']!r}; expected {REVISION_SEQUENCE_SCHEMA!r}"
+            )
+        return cls(
+            published_revision=StateRevision.from_dict(
+                data["published_revision"]
+            ),
+            replay_sequence=data["replay_sequence"],
+            committed_effect_sequence=data["committed_effect_sequence"],
         )

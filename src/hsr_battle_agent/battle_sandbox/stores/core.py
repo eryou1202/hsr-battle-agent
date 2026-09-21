@@ -14,8 +14,6 @@ semantic family is invented here.
 from __future__ import annotations
 
 import copy
-import hashlib
-import json
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
@@ -311,9 +309,16 @@ class TypedStore:
     # -- identity and serialization --------------------------------------
 
     def identity(self) -> str:
-        """Stable digest over the family and its ordered contents."""
-        text = json.dumps(self.to_dict(), sort_keys=True, separators=(",", ":"))
-        return hashlib.sha256(text.encode("utf-8")).hexdigest()
+        """Lossless diagnostic digest over family and ordered contents.
+
+        This deliberately reuses the established F01 tagged envelope so Python
+        tuples and lists (and other F01 distinctions) cannot collapse through
+        ordinary JSON encoding.  It is not the final Terra semantic hash;
+        F02-011 owns that canonical serializer and hash contract.
+        """
+        from hsr_battle_agent.battle_sandbox.state import F01StateEnvelope
+
+        return F01StateEnvelope(self.to_dict()).state_hash()
 
     def to_dict(self) -> dict[str, Any]:
         return {

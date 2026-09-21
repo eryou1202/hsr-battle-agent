@@ -19,12 +19,19 @@ from hsr_battle_agent.battle_sandbox.identity import (  # noqa: E402
 from hsr_battle_agent.battle_sandbox.opaque import (  # noqa: E402
     OpaqueUnresolvedStore,
 )
-from hsr_battle_agent.battle_sandbox.revision import StateRevision  # noqa: E402
+from hsr_battle_agent.battle_sandbox.revision import (  # noqa: E402
+    REVISION_SEQUENCE_SCHEMA,
+    RevisionAndTransactionSequence,
+    StateRevision,
+)
 from hsr_battle_agent.battle_sandbox.rng import (  # noqa: E402
     SANDBOX_RNG_ALGORITHM,
     SandboxRng,
 )
-from hsr_battle_agent.battle_sandbox.state import BattleState  # noqa: E402
+from hsr_battle_agent.battle_sandbox.state import (  # noqa: E402
+    BattleState,
+    F01StateEnvelope,
+)
 from hsr_battle_agent.battle_sandbox.state_v2 import (  # noqa: E402
     TERRA_BATTLE_STATE_SCHEMA,
     TERRA_COMPONENT_FIELD_FAMILIES,
@@ -49,6 +56,16 @@ def unresolved() -> UnknownHandle:
     )
 
 
+def sequence(replay=3, effects=5) -> RevisionAndTransactionSequence:
+    return RevisionAndTransactionSequence(
+        published_revision=StateRevision.initial(
+            "snapshot-0", lineage="battle-A"
+        ),
+        replay_sequence=replay,
+        committed_effect_sequence=effects,
+    )
+
+
 def make_state() -> TerraBattleState:
     stores = {
         name: store
@@ -70,7 +87,7 @@ def make_state() -> TerraBattleState:
     return TerraBattleState(
         stores=stores,
         opaque_stores=opaque,
-        revision=StateRevision.initial("snapshot-0", lineage="battle-A"),
+        revision_sequence=sequence(),
         allocator=allocator,
         rng_state=SandboxRng(1234),
     )
@@ -93,6 +110,63 @@ class TestTerraOwnership(unittest.TestCase):
             len(FROZEN_FIELD_FAMILIES),
         )
 
+    def test_revision_family_represents_its_complete_frozen_shape(self):
+        state = make_state()
+        component = state.revision_sequence
+        self.assertIs(component.published_revision, state.revision)
+        self.assertEqual(component.replay_sequence, 3)
+        self.assertEqual(component.committed_effect_sequence, 5)
+        payload = state.to_dict()["revision_and_transaction_sequence"]
+        self.assertEqual(payload["schema"], REVISION_SEQUENCE_SCHEMA)
+        self.assertEqual(
+            set(payload),
+            {
+                "schema",
+                "published_revision",
+                "replay_sequence",
+                "committed_effect_sequence",
+            },
+        )
+        self.assertEqual(
+            state.owner_component_for("revision_and_transaction_sequence"),
+            "revision_sequence",
+        )
+
+    def test_every_dedicated_component_has_a_validated_shape(self):
+        state = make_state()
+        payload = state.to_dict()
+
+        allocator = payload["allocator"]
+        self.assertEqual(set(allocator), {"schema", "namespaces"})
+        self.assertEqual(allocator["schema"], "identity_allocator/1")
+        self.assertEqual(
+            set(allocator["namespaces"][0]),
+            {"namespace", "generation", "next_value", "issued", "tombstones"},
+        )
+
+        rng = payload["rng_state"]
+        self.assertEqual(set(rng), {"schema_version", "algorithm", "state"})
+        self.assertEqual(
+            set(rng["state"]), {"version", "internal_state", "gauss_next"}
+        )
+
+        decoded_opaque = [
+            F01StateEnvelope.from_dict(item).value
+            for item in payload["opaque_stores"]
+        ]
+        self.assertEqual(len(decoded_opaque), len(OPAQUE_FIELD_FAMILIES))
+        self.assertEqual(
+            {
+                item["definition"]["state_field_family"]
+                for item in decoded_opaque
+            },
+            set(OPAQUE_FIELD_FAMILIES),
+        )
+        for item in decoded_opaque:
+            self.assertEqual(
+                set(item), {"schema", "definition", "handles"}
+            )
+
     def test_unclassified_or_missing_typed_family_is_rejected(self):
         state = make_state()
         stores = dict(state.stores)
@@ -101,7 +175,7 @@ class TestTerraOwnership(unittest.TestCase):
             TerraBattleState(
                 stores=stores,
                 opaque_stores=state.opaque_stores,
-                revision=state.revision,
+                revision_sequence=state.revision_sequence,
                 allocator=state.allocator,
                 rng_state=state.rng_state,
             )
@@ -111,7 +185,7 @@ class TestTerraOwnership(unittest.TestCase):
             TerraBattleState(
                 stores=stores,
                 opaque_stores=state.opaque_stores,
-                revision=state.revision,
+                revision_sequence=state.revision_sequence,
                 allocator=state.allocator,
                 rng_state=state.rng_state,
             )
@@ -124,7 +198,7 @@ class TestTerraOwnership(unittest.TestCase):
             TerraBattleState(
                 stores=stores,
                 opaque_stores=state.opaque_stores,
-                revision=state.revision,
+                revision_sequence=state.revision_sequence,
                 allocator=state.allocator,
                 rng_state=state.rng_state,
             )
@@ -142,6 +216,7 @@ class TestTerraRoundTrip(unittest.TestCase):
         self.assertEqual(restored, state)
         self.assertEqual(restored.to_dict(), payload)
         self.assertEqual(payload["schema"], TERRA_BATTLE_STATE_SCHEMA)
+        self.assertEqual(TERRA_BATTLE_STATE_SCHEMA, "terra_battle_state/2")
         self.assertEqual(
             payload["rng_state"]["algorithm"], SANDBOX_RNG_ALGORITHM
         )
@@ -165,7 +240,12 @@ class TestTerraRoundTrip(unittest.TestCase):
 
     def test_document_missing_extra_and_duplicate_families_reject(self):
         document = make_state().to_dict()
-        for key in ("revision", "allocator", "rng_state", "stores"):
+        for key in (
+            "revision_and_transaction_sequence",
+            "allocator",
+            "rng_state",
+            "stores",
+        ):
             with self.subTest(missing=key):
                 broken = copy.deepcopy(document)
                 broken.pop(key)
@@ -186,6 +266,14 @@ class TestTerraRoundTrip(unittest.TestCase):
         with self.assertRaises(TerraStateError):
             TerraBattleState.from_dict(document)
 
+    def test_revision_sequences_never_default_when_missing(self):
+        for key in ("replay_sequence", "committed_effect_sequence"):
+            with self.subTest(key=key):
+                document = make_state().to_dict()
+                document["revision_and_transaction_sequence"].pop(key)
+                with self.assertRaises(TerraStateError):
+                    TerraBattleState.from_dict(document)
+
 
 class TestMutationIsolationAndRng(unittest.TestCase):
     def test_constructor_does_not_draw_or_alias_rng(self):
@@ -193,7 +281,7 @@ class TestMutationIsolationAndRng(unittest.TestCase):
         before = rng.to_dict()
         allocator = IdentityAllocator()
         state = TerraBattleState(
-            revision=StateRevision.initial("s"),
+            revision_sequence=sequence(replay=0, effects=0),
             allocator=allocator,
             rng_state=rng,
         )
@@ -204,7 +292,7 @@ class TestMutationIsolationAndRng(unittest.TestCase):
     def test_allocator_and_serialization_are_isolated(self):
         allocator = IdentityAllocator()
         state = TerraBattleState(
-            revision=StateRevision.initial("s"),
+            revision_sequence=sequence(replay=0, effects=0),
             allocator=allocator,
             rng_state=SandboxRng(1),
         )
@@ -237,7 +325,7 @@ class TestLegacySeparation(unittest.TestCase):
                 self.assertFalse(hasattr(state, name))
         with self.assertRaises(TerraStateError):
             TerraBattleState(
-                revision=StateRevision.initial("s"),
+                revision_sequence=sequence(replay=0, effects=0),
                 allocator=IdentityAllocator(),
                 rng_state=SandboxRng(1),
                 stores=BattleState(),

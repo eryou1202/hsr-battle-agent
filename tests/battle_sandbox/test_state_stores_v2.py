@@ -327,6 +327,11 @@ class TestRoundTripPerFamily(unittest.TestCase):
         null = empty_stores()["entities"].append("k", PresenceValue.null())
         self.assertNotEqual(absent.identity(), null.identity())
 
+    def test_identity_distinguishes_tuple_from_list(self):
+        tuple_value = empty_stores()["entities"].append("k", (1, 2))
+        list_value = empty_stores()["entities"].append("k", [1, 2])
+        self.assertNotEqual(tuple_value.identity(), list_value.identity())
+
     def test_identity_distinguishes_families(self):
         left = empty_stores()["entities"]
         right = empty_stores()["teams"]

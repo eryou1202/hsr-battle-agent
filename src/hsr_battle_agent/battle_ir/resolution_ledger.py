@@ -42,8 +42,10 @@ State policy (a declaration, not an inference)
 ``EXACT``     an exact-relation classification with exactly one candidate.
 ``AMBIGUOUS`` more than one candidate: no single value may be exposed.
 ``MISSING``   no exact static entity relation is asserted.
-``BLOCKED``   resolution is impossible against the requested scope, or the
-              recorded classification is not one this ledger understands.
+``BLOCKED``   resolution is impossible against the requested scope, the
+              recorded classification is not one this ledger understands, or
+              an exact-relation record contradicts its required candidate
+              shape.
 ============  ===========================================================
 
 Hard rules enforced here:
@@ -342,7 +344,10 @@ def classify_record(record: Mapping[str, Any]) -> tuple[ResolutionState, str | N
             return ResolutionState.EXACT, None
         if len(candidates) > 1:
             return ResolutionState.AMBIGUOUS, REASON_MULTIPLE_CANDIDATES
-        return ResolutionState.MISSING, REASON_NO_CANDIDATE_RECORDED
+        # Each published exact-class spelling asserts a relation to exactly one
+        # local static entity.  An empty candidate list contradicts that shape;
+        # it is not the same claim as a MISSING-class vocabulary entry.
+        return ResolutionState.BLOCKED, REASON_NO_CANDIDATE_RECORDED
 
     if classification in MISSING_CLASSIFICATIONS:
         return ResolutionState.MISSING, None

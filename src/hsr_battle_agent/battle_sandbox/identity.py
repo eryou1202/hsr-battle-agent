@@ -937,11 +937,14 @@ class IdentityAllocator:
     # -- state -----------------------------------------------------------
 
     def state_for(self, namespace: str) -> NamespaceState:
-        """The published state of a namespace, creating an empty one if needed."""
-        state = self._peek(namespace)
-        if namespace not in self._published:
-            self._published[namespace] = state
-        return state
+        """Read a namespace's state without publishing an empty namespace.
+
+        An unseen namespace is represented by a temporary zero state.  Merely
+        inspecting it must not change allocator serialization; publication is
+        reserved for a successful commit or the explicit begin-generation
+        operation.
+        """
+        return self._peek(namespace)
 
     def _peek(self, namespace: str) -> NamespaceState:
         """Read a namespace's state without publishing anything."""
@@ -1007,7 +1010,13 @@ class IdentityAllocator:
                 f"ticket for {ticket.namespace!r} value {ticket.value} was "
                 "already committed; a ticket is committed at most once"
             )
-        state = self.state_for(ticket.namespace)
+        # AllocationTicket is publicly constructible, so its annotation alone
+        # cannot guarantee a declared canonical family.  Resolve it before any
+        # prospective allocator state is built or published.
+        resolved_family = require_declared_family(ticket.family)
+        # Validation is read-only.  Nothing enters _published until every
+        # ticket invariant succeeds.
+        state = self._peek(ticket.namespace)
         if ticket.generation != state.generation:
             raise TypedIdentityError(
                 f"ticket generation {ticket.generation} is stale; namespace "
@@ -1023,19 +1032,23 @@ class IdentityAllocator:
                 f"value {ticket.value} is tombstoned in {ticket.namespace!r} and "
                 "must never be reused"
             )
-        self._published[ticket.namespace] = NamespaceState(
+        next_state = NamespaceState(
             namespace=state.namespace,
             generation=state.generation,
             next_value=state.next_value + 1,
             issued=state.issued + (ticket.value,),
             tombstones=state.tombstones,
         )
-        return TypedIdentity.local(
-            ticket.family,
+        identity = TypedIdentity.local(
+            resolved_family,
             ticket.namespace,
             ticket.value,
             generation=ticket.generation,
         )
+        # Every fallible validation/construction step has completed.  This is
+        # the single publication point for a successful commit.
+        self._published[ticket.namespace] = next_state
+        return identity
 
     def allocate(self, family: Any, namespace: str) -> TypedIdentity:
         """Reserve and commit in one step, for callers with no transaction."""
@@ -1063,7 +1076,8 @@ class IdentityAllocator:
                 f"only integer identities are allocated; {identity.value!r} was "
                 "not allocated by this allocator"
             )
-        state = self.state_for(identity.namespace)
+        # A rejected retirement must not create an empty namespace entry.
+        state = self._peek(identity.namespace)
         value = identity.require_int_value()
         if identity.generation != state.generation:
             raise TypedIdentityError(
@@ -1090,7 +1104,7 @@ class IdentityAllocator:
 
         Outstanding tickets from the previous generation become stale.
         """
-        state = self.state_for(namespace)
+        state = self._peek(namespace)
         self._published[namespace] = NamespaceState(
             namespace=state.namespace,
             generation=state.generation + 1,
@@ -1140,4 +1154,3 @@ class IdentityAllocator:
 
     def clone(self) -> "IdentityAllocator":
         return type(self).from_dict(self.to_dict())
-

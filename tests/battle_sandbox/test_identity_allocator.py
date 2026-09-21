@@ -21,6 +21,7 @@ from hsr_battle_agent.battle_sandbox.identity import (  # noqa: E402
     MODIFIER,
     PROVIDER,
     AllocationTicket,
+    IdentityFamily,
     IdentityAllocator,
     NamespaceState,
     TypedIdentity,
@@ -108,6 +109,14 @@ class TestPerNamespaceIsolation(unittest.TestCase):
                 with self.assertRaises(TypedIdentityError):
                     IdentityAllocator().allocate(ENTITY, namespace)
 
+    def test_read_only_state_inspection_does_not_publish_namespace(self):
+        allocator = IdentityAllocator()
+        before = allocator.to_dict()
+        state = allocator.state_for("unseen")
+        self.assertEqual(state, NamespaceState("unseen", 0, 0))
+        self.assertEqual(allocator.to_dict(), before)
+        self.assertEqual(allocator.namespaces(), ())
+
 
 class TestNoReuseAfterRemoval(unittest.TestCase):
     def test_retired_value_is_never_handed_out_again(self):
@@ -151,6 +160,23 @@ class TestNoReuseAfterRemoval(unittest.TestCase):
         with self.assertRaises(TypedIdentityError):
             allocator.retire(foreign)
 
+    def test_failed_retire_in_unseen_namespace_is_byte_equivalent(self):
+        allocator = IdentityAllocator()
+        before = allocator.to_dict()
+        foreign = TypedIdentity.local(ENTITY, "unseen", 99)
+        with self.assertRaises(TypedIdentityError):
+            allocator.retire(foreign)
+        self.assertEqual(allocator.to_dict(), before)
+
+    def test_failed_retire_of_non_live_identity_is_byte_equivalent(self):
+        allocator = IdentityAllocator()
+        live = allocator.allocate(ENTITY, "ns")
+        allocator.retire(live)
+        before = allocator.to_dict()
+        with self.assertRaises(TypedIdentityError):
+            allocator.retire(live)
+        self.assertEqual(allocator.to_dict(), before)
+
     def test_retiring_a_string_identity_is_refused(self):
         allocator = IdentityAllocator()
         with self.assertRaises(TypedIdentityError):
@@ -164,6 +190,21 @@ class TestNoReuseAfterRemoval(unittest.TestCase):
 
 
 class TestReservationIsPrivateUntilCommit(unittest.TestCase):
+    def assert_invalid_family_rejects_atomically(self, family):
+        allocator = IdentityAllocator()
+        before = allocator.to_dict()
+        ticket = AllocationTicket(
+            namespace="ghost",
+            generation=0,
+            value=0,
+            family=family,
+        )
+        with self.assertRaises(TypedIdentityError):
+            allocator.commit(ticket)
+        self.assertEqual(allocator.to_dict(), before)
+        self.assertEqual(allocator.namespaces(), ())
+        self.assertEqual(allocator.allocate(ENTITY, "ghost").value, 0)
+
     def test_reserve_publishes_nothing(self):
         allocator = IdentityAllocator()
         before = allocator.snapshot()
@@ -180,6 +221,64 @@ class TestReservationIsPrivateUntilCommit(unittest.TestCase):
         allocator.abort(ticket)
         self.assertEqual(allocator.snapshot(), before)
         self.assertEqual(allocator.allocate(ENTITY, "ns").value, 1)
+
+    def test_reserve_and_abort_in_unseen_namespace_is_byte_equivalent(self):
+        allocator = IdentityAllocator()
+        before = allocator.to_dict()
+        allocator.abort(allocator.reserve(ENTITY, "unseen"))
+        self.assertEqual(allocator.to_dict(), before)
+
+    def test_failed_commit_in_unseen_namespace_is_byte_equivalent(self):
+        allocator = IdentityAllocator()
+        before = allocator.to_dict()
+        invalid = AllocationTicket(
+            namespace="unseen",
+            generation=1,
+            value=0,
+            family=ENTITY,
+        )
+        with self.assertRaises(TypedIdentityError):
+            allocator.commit(invalid)
+        self.assertEqual(allocator.to_dict(), before)
+
+    def test_failed_stale_commit_is_byte_equivalent(self):
+        allocator = IdentityAllocator()
+        allocator.begin_generation("ns")
+        before = allocator.to_dict()
+        stale = AllocationTicket(
+            namespace="ns",
+            generation=0,
+            value=0,
+            family=ENTITY,
+        )
+        with self.assertRaises(TypedIdentityError):
+            allocator.commit(stale)
+        self.assertEqual(allocator.to_dict(), before)
+
+    def test_unknown_string_family_rejects_before_publication(self):
+        self.assert_invalid_family_rejects_atomically("BOGUS")
+
+    def test_noncanonical_declared_spelling_rejects_before_publication(self):
+        noncanonical = IdentityFamily(ENTITY.name)
+        self.assertIsNot(noncanonical, ENTITY)
+        self.assert_invalid_family_rejects_atomically(noncanonical)
+
+    def test_other_malformed_families_reject_before_publication(self):
+        for family in (None, 7, {"name": "ENTITY"}, ["ENTITY"], object()):
+            with self.subTest(family=repr(family)):
+                self.assert_invalid_family_rejects_atomically(family)
+
+    def test_declared_serialized_family_is_canonicalized_before_publication(self):
+        allocator = IdentityAllocator()
+        ticket = AllocationTicket(
+            namespace="ns",
+            generation=0,
+            value=0,
+            family=ENTITY.name,
+        )
+        identity = allocator.commit(ticket)
+        self.assertIs(identity.family, ENTITY)
+        self.assertEqual(identity.value, 0)
 
     def test_abort_after_many_reservations_still_no_change(self):
         allocator = IdentityAllocator()
@@ -200,6 +299,9 @@ class TestReservationIsPrivateUntilCommit(unittest.TestCase):
         allocator = IdentityAllocator()
         ticket = allocator.reserve(ENTITY, "ns")
         allocator.commit(ticket)
+        # The frozen flag is an input assertion, not mutable lifecycle state.
+        # Published allocator state rejects the second commit authoritatively.
+        self.assertFalse(ticket.committed)
         with self.assertRaises(TypedIdentityError):
             allocator.commit(ticket)
 
