@@ -1,7 +1,7 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.23",
-  "generated_date": "2026-09-21",
+  "plan_version": "1.0.24",
+  "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
     "planning_only": false,
@@ -10,6 +10,7 @@
     "frozen_semantic_artifacts_modified": false,
     "current_milestone": "M1",
     "next_milestone": "M2",
+    "terra_f02_status": "COMPLETE",
     "golden": 0
   },
   "authority_precedence": [
@@ -3383,7 +3384,7 @@
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Legacy state compatibility adapter",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3452,14 +3453,24 @@
       "next_tasks": [
         "F02-013",
         "G01-013"
-      ]
+      ],
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - The adapter exposes only a one-way certified structural subset, preserves every legacy payload field or absence as explicit unresolved material, shares no mutable aliases, and cannot construct TerraBattleState or provide a semantic downgrade.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/legacy_state_adapter.py",
+        "tests/battle_sandbox/test_legacy_state_adapter.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_legacy_state_adapter -v => Ran 5 tests, OK"
+      ],
+      "status_note": "DONE after implementation and same-session strong Sol review. Only schema_version is a certified copied legacy fact; all payload-bearing and absent fields remain UnknownHandle blockers, so legacy JSON never becomes Terra authority."
     },
     {
       "task_id": "F02-010",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Snapshot v2 schema",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3528,14 +3539,24 @@
       "next_tasks": [
         "F02-011",
         "F02-013"
-      ]
+      ],
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Snapshot v2 round-trips the complete Terra aggregate and explicit evidence/profile/rule identity and version data, refuses all missing components, embeds restorable state content and exposes no execution permission or legacy equivalence.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/snapshot_v2.py",
+        "tests/battle_sandbox/test_snapshot_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_snapshot_v2 -v => Ran 6 tests, OK"
+      ],
+      "status_note": "DONE after implementation and same-session strong Sol review. Snapshot identity includes selected evidence vocabulary, profile and rule-set identities/versions/hashes; every state component is embedded and absence fails closed."
     },
     {
       "task_id": "F02-011",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Canonical serializer and semantic hash v2",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3604,14 +3625,25 @@
       ],
       "next_tasks": [
         "F02-012"
-      ]
+      ],
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - The final Terra hash accepts only a validated complete snapshot, uses an explicitly typed canonical grammar, sorts mapping keys only, preserves ordered sequences/duplicates/presence, rejects raw tuples/non-finite/unsupported numeric types and covers stores, pending/opaque data, revision sequences, allocator, RNG and policy identity.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/canonical_v2.py",
+        "src/hsr_battle_agent/battle_sandbox/hash_v2.py",
+        "tests/battle_sandbox/test_hash_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_hash_v2 -v => Ran 7 tests, OK"
+      ],
+      "status_note": "DONE after implementation and same-session strong Sol review. The hash is domain-separated Terra semantic identity, not native evidence; mapping insertion order is ignored while list order and duplicates remain semantic."
     },
     {
       "task_id": "F02-012",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "State-owned RNG and deterministic clone",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3682,14 +3714,25 @@
       "next_tasks": [
         "F02-013",
         "G01-007"
-      ]
+      ],
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR - State-owned RNG, complete generator cloning and hash inclusion were correct. CR-F02-CLOSURE-REVIEW-20260921-001 repaired two nested mutable-alias escapes on typed and opaque store read surfaces. The new Terra read context exposes immutable RNG observation and detached state/snapshot copies only; it has no draw, execute or commit surface.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+        "src/hsr_battle_agent/battle_sandbox/context_v2.py",
+        "tests/battle_sandbox/test_clone_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_clone_v2 tests.battle_sandbox.test_terra_state -v => Ran 24 tests, OK"
+      ],
+      "status_note": "DONE after implementation and same-session strong Sol review. Clone/snapshot/hash reproduce complete selected sandbox generator state independently; private RNG evolution changes the clone hash only; CLIENT_RNG_ALGORITHM remains UNKNOWN."
     },
     {
       "task_id": "F02-013",
       "freeze_ticket": "TERRA-F02",
       "local_phase": "FOUNDATION",
       "title": "Explicit legacy snapshot migration tool",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -3759,7 +3802,18 @@
       ],
       "next_tasks": [
         "G01-001"
-      ]
+      ],
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Migration reads and losslessly preserves legacy snapshot payloads into an explicit blocked MigrationResult, distinguishes absent/null/present input, retains every unsupported field as UnknownHandle, invents no Terra stores or identities, claims no semantic equality and exposes no v2-to-v1 downgrade.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/snapshot_migration.py",
+        "tests/battle_sandbox/test_snapshot_migration.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_snapshot_migration -v => Ran 6 tests, OK",
+        "post-review F02-009 plus F02-013 mutation-isolation regression => Ran 11 tests, OK"
+      ],
+      "status_note": "DONE after implementation and same-session strong Sol review. Known legacy input is deterministically readable as diagnostics only; unresolved store/RNG/trace/identity correspondence remains explicit and blocks Terra snapshot construction."
     },
     {
       "task_id": "R01-001",
@@ -7978,32 +8032,71 @@
           "all F02-001..F02-008 exact tests, R01-001/R01-002, F01 regression, FAST_UNIT, duplicate-key and DAG/readiness validation"
         ],
         "validation": "Focused allocator suite 51 OK; post-fix reproducers show unknown string, non-canonical same-spelling IdentityFamily, None, integer and mapping families all reject with byte-equivalent allocator state and leave token 0 available. All F02-001..F02-008 plus R01-001/R01-002 exact tests 392 OK; F01 plus quarantine regression 374 OK; FAST_UNIT 439 + 584 + 185 = 1208 OK; duplicate-key validation PASS; DAG/readiness 75/75 acyclic with 11 READY and no unmet dependency. Frozen authority, protected files, CR-001 and roadmap task state unchanged."
+      },
+      {
+        "change_request_id": "CR-F02-CLOSURE-REVIEW-20260921-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "F02-012 clone/read-only-context review found that TerraBattleState.stores and opaque_stores returned private wrapper instances containing publicly reachable mutable nested payloads. A caller could mutate PresenceValue.value or UnknownHandle.payload and thereby alter the supposedly isolated Terra aggregate without an explicit state replacement.",
+        "confirmed_defects": [
+          "TerraBattleState.stores returns the internal TypedStore objects; a PRESENT list/dict payload remains reachable through StoreEntry.value.value.",
+          "TerraBattleState.opaque_stores returns the internal OpaqueUnresolvedStore objects; nested UnknownHandle payload/provenance mappings remain reachable."
+        ],
+        "affected_task_ids": [
+          "F02-008",
+          "F02-012"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+          "tests/battle_sandbox/test_clone_v2.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local defensive-copy correction at Terra state read boundaries only. Store schemas, ordering, presence, identity, ownership and all native/reference evidence classifications remain unchanged.",
+        "rollback": "Revert only this request's state_v2.py and clone-test edits and restore the immediately preceding master checkpoint. Do not modify frozen authority, legacy state.py, task dependencies or policy identities.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_F02_CLOSURE_REVIEW_2026-09-21",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "nested typed-store payload mutation through an exported stores view leaves state byte-identical",
+          "nested UnknownHandle payload mutation through an exported opaque_stores view leaves state byte-identical",
+          "F02-012 clone/context/RNG acceptance plus full F02 regression"
+        ],
+        "validation": "F02-001..F02-013 plus R01-001/R01-002 exact tests 423 OK; F01 plus P0-E quarantine regression 330 OK; FAST_UNIT 439 + 615 + 185 = 1239 OK; root documented scope 1247 OK; master parse and duplicate-key validation PASS; authority reconciliation 19/19 refs PASS; DAG/readiness 75/75 acyclic with exactly R01-003..R01-011 READY and no unmet READY dependency. Frozen authority and protected files remain unchanged."
       }
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-21",
-    "status": "M1_ALLOCATOR_FINAL_CORRECTIVE_COMPLETE",
-    "head_at_run_start": "cd2a8d347c8e7b570ebe255dfd7af5c53c06e60f",
+    "timestamp": "2026-09-22",
+    "status": "TERRA_F02_FOUNDATION_CLOSURE_COMPLETE",
+    "head_at_run_start": "3e9b81e1f5cd60b4624b577c4d04e5a53727f72c",
+    "terra_f02": "COMPLETE",
+    "current_milestone": "M1_IN_PROGRESS",
     "changed_files": [
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
-      "src/hsr_battle_agent/battle_sandbox/identity.py",
-      "tests/battle_sandbox/test_identity_allocator.py"
+      "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/legacy_state_adapter.py",
+      "src/hsr_battle_agent/battle_sandbox/snapshot_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/canonical_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/hash_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/context_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/snapshot_migration.py",
+      "tests/battle_sandbox/test_legacy_state_adapter.py",
+      "tests/battle_sandbox/test_snapshot_v2.py",
+      "tests/battle_sandbox/test_hash_v2.py",
+      "tests/battle_sandbox/test_clone_v2.py",
+      "tests/battle_sandbox/test_snapshot_migration.py"
     ],
-    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. CR-002 adds only identity.py, its allocator test and master bookkeeping to the existing uncommitted CR-001 worktree. The two protected tracked modifications and unrelated untracked reverse artifacts were preserved byte-identically. Frozen Astra authority was not modified.",
+    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. The F02 closure diff is isolated to the listed F02 production/tests plus master bookkeeping. The two protected tracked modifications and unrelated historical untracked artifacts were preserved and excluded from the manual stage plan. Frozen Astra authority was not modified.",
     "tests": [
-      "focused IdentityAllocator exact suite: Ran 51 tests, OK",
-      "invalid-family post-fix reproducers: five malformed/non-canonical shapes reject byte-equivalently and next valid token is 0",
-      "all F02-001..F02-008 plus R01-001/R01-002 exact: Ran 392 tests, OK",
-      "F01 plus reference-quarantine regression: Ran 374 tests, OK",
-      "FAST_UNIT: 439 + 584 + 185 = 1208, OK",
-      "duplicate-key validation on master: PASS",
-      "DAG/readiness validation: PASS (75/75 acyclic, 11 READY, no unmet READY dependency)"
+      "all F02-001..F02-013 plus R01-001/R01-002 exact: Ran 423 tests, OK",
+      "F01 plus P0-E reference-quarantine regression: Ran 330 tests, OK",
+      "FAST_UNIT: 439 + 615 + 185 = 1239, OK",
+      "root documented scope: Ran 1247 tests, OK",
+      "master parse and duplicate-key validation: PASS",
+      "authority reconciliation: PASS (19/19 refs)",
+      "DAG/readiness validation: PASS (75/75 acyclic, 9 READY, no unmet READY dependency)"
     ],
     "blockers": [],
     "remaining_ready_any": [
-      "F02-009",
-      "F02-010",
       "R01-003",
       "R01-004",
       "R01-005",
@@ -8014,14 +8107,12 @@
       "R01-010",
       "R01-011"
     ],
-    "long_run_stopped_reason": "The allocator-only CR-002 correction is complete. No F02-009..F02-013, R01-003+, G01 or C02 task was entered.",
+    "long_run_stopped_reason": "TERRA-F02 is complete. M1 remains IN_PROGRESS because TERRA-R01 and TERRA-G01 are incomplete. No R01-003+, G01 or C02 task was entered.",
     "git_write_operations_by_agent": "NONE (disabled by session policy)",
-    "recommended_executor": "SOL for the READY F02 and R01 fan-out tasks",
-    "next_command": "Commit the combined uncommitted CR-001/CR-002 corrective diff; do not enter a new roadmap task in this session."
+    "recommended_executor": "SOL for R01-003, then follow each remaining R01 task's declared executor/review class",
+    "next_command": "Manually stage only the listed F02 closure paths and commit; do not stage protected or unrelated historical files."
   },
   "next_ready_tasks": [
-    "F02-009",
-    "F02-010",
     "R01-003",
     "R01-004",
     "R01-005",
@@ -8180,6 +8271,13 @@
       "change_request_id": "CR-M1-FOUNDATION-CORRECTIVE-20260921-002",
       "change": "Completed CR-M1-FOUNDATION-CORRECTIVE-20260921-002. IdentityAllocator.commit now resolves the ticket family and constructs both the prospective NamespaceState and final TypedIdentity before the single publication assignment. Invalid and non-canonical family tickets reject byte-equivalently and leave the token unconsumed. AllocationTicket.committed remains a frozen input/serialized assertion; published allocator state authoritatively prevents double commit. All requested exact, F01, FAST_UNIT, duplicate-key and DAG/readiness validations pass with no native, frozen-authority, protected-file, dependency or roadmap-task change.",
       "review": "SOL_ALLOCATOR_CORRECTIVE_APPLIED_AND_VALIDATED"
+    },
+    {
+      "revision": "1.0.24",
+      "date": "2026-09-22",
+      "change_request_id": "CR-F02-CLOSURE-REVIEW-20260921-001",
+      "change": "F02-009 through F02-013 implemented and strongly reviewed, completing TERRA-F02. Added the one-way fail-closed legacy-state adapter, complete snapshot v2, final typed canonical serializer and semantic hash, read-only state-owned RNG/clone context, and diagnostic-only legacy snapshot migration. The closure review repaired nested typed/opaque store alias escapes. Final exact, F01/quarantine, FAST_UNIT, root, duplicate-key, authority and 75-task DAG/readiness validation pass. M1 remains IN_PROGRESS; exactly R01-003 through R01-011 are READY and were not entered. No native semantic claim, live legacy facade, v2-to-v1 downgrade, frozen-authority change or Git write was introduced.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8202,10 +8300,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 11,
-      "NOT_STARTED": 28,
+      "READY": 9,
+      "NOT_STARTED": 25,
       "BLOCKED": 10,
-      "DONE": 26
+      "DONE": 31
     },
     "freeze_tickets": [
       "TERRA-F01",

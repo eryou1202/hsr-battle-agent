@@ -231,11 +231,26 @@ class TerraBattleState:
 
     @property
     def stores(self) -> Mapping[str, TypedStore]:
-        return MappingProxyType(dict(self._stores))
+        # TypedStore is a frozen wrapper, but a PRESENT payload may itself be a
+        # list/dict. Return validated copies so nested mutation cannot reach the
+        # aggregate through the read surface.
+        return MappingProxyType(
+            {
+                name: TypedStore.from_dict(store.to_dict())
+                for name, store in self._stores.items()
+            }
+        )
 
     @property
     def opaque_stores(self) -> Mapping[str, OpaqueUnresolvedStore]:
-        return MappingProxyType(dict(self._opaque))
+        # UnknownHandle payload/provenance values can contain mutable nested
+        # containers; copy through the lossless schema before exporting.
+        return MappingProxyType(
+            {
+                name: OpaqueUnresolvedStore.from_dict(store.to_dict())
+                for name, store in self._opaque.items()
+            }
+        )
 
     @property
     def allocator(self) -> IdentityAllocator:
