@@ -32,7 +32,9 @@ __all__ = [
 ]
 
 DESCRIPTOR_OCCURRENCE_SCHEMA = "descriptor_occurrence/1"
-DESCRIPTOR_BATCH_SCHEMA = "descriptor_batch/1"
+DESCRIPTOR_BATCH_SCHEMA = "descriptor_batch/2"
+
+_UNSET = object()
 
 
 class DescriptorError(ValueError):
@@ -104,7 +106,7 @@ def _presence_items_from_dict(value: Any, label: str) -> dict[str, PresenceValue
     return restored
 
 
-@dataclass(frozen=True, eq=False)
+@dataclass(frozen=True, eq=False, init=False)
 class DescriptorOccurrence:
     """One lossless occurrence of a representation-only descriptor."""
 
@@ -113,15 +115,65 @@ class DescriptorOccurrence:
     provenance: SourceProvenance
     occurrence_path: tuple[str | int, ...]
     source_order: int
-    payload: PresenceValue = field(default_factory=PresenceValue.absent)
-    fields: Mapping[str, PresenceValue] = field(default_factory=dict)
-    unknown_fields: Mapping[str, PresenceValue] = field(default_factory=dict)
+    _payload: PresenceValue = field(repr=False)
+    _fields: Mapping[str, PresenceValue] = field(repr=False)
+    _unknown_fields: Mapping[str, PresenceValue] = field(repr=False)
 
     # Equality is the complete serialized representation; occurrence identity
     # is exposed separately.  The object is intentionally unhashable because
     # nested lossless payloads may contain mappings/lists and an object-identity
     # hash would contradict representation equality.
     __hash__ = None
+
+    def __init__(
+        self,
+        contract_ref: ContractRef,
+        evidence_mode: EvidenceMode,
+        provenance: SourceProvenance,
+        occurrence_path: tuple[str | int, ...],
+        source_order: int,
+        payload: PresenceValue | object = _UNSET,
+        fields: Mapping[str, PresenceValue] | object = _UNSET,
+        unknown_fields: Mapping[str, PresenceValue] | object = _UNSET,
+    ) -> None:
+        object.__setattr__(self, "contract_ref", contract_ref)
+        object.__setattr__(self, "evidence_mode", evidence_mode)
+        object.__setattr__(self, "provenance", provenance)
+        object.__setattr__(self, "occurrence_path", occurrence_path)
+        object.__setattr__(self, "source_order", source_order)
+        object.__setattr__(
+            self, "_payload", PresenceValue.absent() if payload is _UNSET else payload
+        )
+        object.__setattr__(self, "_fields", {} if fields is _UNSET else fields)
+        object.__setattr__(
+            self, "_unknown_fields", {} if unknown_fields is _UNSET else unknown_fields
+        )
+        self.__post_init__()
+
+    @property
+    def payload(self) -> PresenceValue:
+        """Return a detached lossless value, never descriptor-owned storage."""
+        return PresenceValue.from_dict(self._payload.to_dict())
+
+    @property
+    def fields(self) -> Mapping[str, PresenceValue]:
+        """Return a detached ordered mapping without changing value shapes."""
+        return MappingProxyType(
+            {
+                name: PresenceValue.from_dict(value.to_dict())
+                for name, value in self._fields.items()
+            }
+        )
+
+    @property
+    def unknown_fields(self) -> Mapping[str, PresenceValue]:
+        """Return detached unknown values while preserving their source order."""
+        return MappingProxyType(
+            {
+                name: PresenceValue.from_dict(value.to_dict())
+                for name, value in self._unknown_fields.items()
+            }
+        )
 
     def __post_init__(self) -> None:
         if not isinstance(self.contract_ref, ContractRef):
@@ -141,24 +193,26 @@ class DescriptorOccurrence:
             raise DescriptorError("source_order must be an int")
         if self.source_order < 0:
             raise DescriptorError("source_order must be >= 0")
-        if not isinstance(self.payload, PresenceValue):
+        if not isinstance(self._payload, PresenceValue):
             raise DescriptorError(
                 "payload must be a PresenceValue; absence and null may not be inferred"
             )
         object.__setattr__(self, "evidence_mode", mode)
         object.__setattr__(self, "occurrence_path", _normalize_path(self.occurrence_path))
-        object.__setattr__(self, "payload", PresenceValue.from_dict(self.payload.to_dict()))
-        normalized_fields = _normalize_presence_mapping(self.fields, "fields")
+        object.__setattr__(
+            self, "_payload", PresenceValue.from_dict(self._payload.to_dict())
+        )
+        normalized_fields = _normalize_presence_mapping(self._fields, "fields")
         normalized_unknown = _normalize_presence_mapping(
-            self.unknown_fields, "unknown_fields"
+            self._unknown_fields, "unknown_fields"
         )
         overlap = set(normalized_fields) & set(normalized_unknown)
         if overlap:
             raise DescriptorError(
                 f"known and unknown descriptor fields overlap: {tuple(sorted(overlap))}"
             )
-        object.__setattr__(self, "fields", MappingProxyType(normalized_fields))
-        object.__setattr__(self, "unknown_fields", MappingProxyType(normalized_unknown))
+        object.__setattr__(self, "_fields", MappingProxyType(normalized_fields))
+        object.__setattr__(self, "_unknown_fields", MappingProxyType(normalized_unknown))
 
     def occurrence_identity(self) -> tuple[Any, ...]:
         """Identity of the source occurrence, independent of payload equality."""
@@ -174,6 +228,10 @@ class DescriptorOccurrence:
         raise DescriptorError(
             "a descriptor is representation only and cannot permit execution"
         )
+
+    def detached_copy(self) -> "DescriptorOccurrence":
+        """Revalidate a detached copy while retaining the exact concrete type."""
+        return type(self).from_dict(self.to_dict())
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -251,9 +309,20 @@ class DescriptorBatch:
         object.__setattr__(self, "occurrences", normalized)
 
     def to_dict(self) -> dict[str, Any]:
+        type_by_class = _descriptor_type_by_class()
+        serialized: list[dict[str, Any]] = []
+        for item in self.occurrences:
+            descriptor_type = type_by_class.get(type(item))
+            if descriptor_type is None:
+                raise DescriptorError(
+                    f"unregistered descriptor type {type(item).__name__!r}"
+                )
+            serialized.append(
+                {"descriptor_type": descriptor_type, "descriptor": item.to_dict()}
+            )
         return {
             "schema": DESCRIPTOR_BATCH_SCHEMA,
-            "occurrences": [item.to_dict() for item in self.occurrences],
+            "occurrences": serialized,
         }
 
     @classmethod
@@ -267,9 +336,68 @@ class DescriptorBatch:
         raw = data["occurrences"]
         if isinstance(raw, (str, bytes)) or not isinstance(raw, (tuple, list)):
             raise DescriptorError("descriptor batch occurrences must be a list")
-        return cls(tuple(DescriptorOccurrence.from_dict(item) for item in raw))
+        class_by_type = _descriptor_class_by_type()
+        restored: list[DescriptorOccurrence] = []
+        for item in raw:
+            if not isinstance(item, Mapping) or set(item) != {
+                "descriptor_type", "descriptor"
+            }:
+                raise DescriptorError(
+                    "batch items must contain exactly descriptor_type and descriptor"
+                )
+            descriptor_type = item["descriptor_type"]
+            if not isinstance(descriptor_type, str) or descriptor_type not in class_by_type:
+                raise DescriptorError(
+                    f"unknown descriptor type discriminator {descriptor_type!r}"
+                )
+            descriptor_class = class_by_type[descriptor_type]
+            restored_item = descriptor_class.from_dict(item["descriptor"])
+            if type(restored_item) is not descriptor_class:
+                raise DescriptorError("descriptor discriminator/type mismatch")
+            restored.append(restored_item)
+        return cls(tuple(restored))
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, DescriptorBatch):
             return NotImplemented
         return self.to_dict() == other.to_dict()
+
+
+def _descriptor_class_by_type() -> dict[str, type[DescriptorOccurrence]]:
+    """Versioned representation tags; they confer no execution meaning."""
+    from hsr_battle_agent.battle_ir.descriptors.damage import DamageDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.formation import (
+        FormationTopologyDescriptor,
+    )
+    from hsr_battle_agent.battle_ir.descriptors.invocation import InvocationDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.modifier import ModifierDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.monster_ai import MonsterAIDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.progression import (
+        ProgressionActivationDescriptor,
+    )
+    from hsr_battle_agent.battle_ir.descriptors.scenario import ScenarioDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.scheduler import SchedulerDescriptor
+    from hsr_battle_agent.battle_ir.descriptors.target import (
+        ResolvedTargetSet,
+        RetargetDescriptor,
+        TargetIntent,
+    )
+
+    return {
+        "base_occurrence/1": DescriptorOccurrence,
+        "invocation/1": InvocationDescriptor,
+        "modifier/1": ModifierDescriptor,
+        "formation_topology/1": FormationTopologyDescriptor,
+        "scheduler/1": SchedulerDescriptor,
+        "monster_ai/1": MonsterAIDescriptor,
+        "damage/1": DamageDescriptor,
+        "target_intent/1": TargetIntent,
+        "resolved_target_set/1": ResolvedTargetSet,
+        "retarget/1": RetargetDescriptor,
+        "progression_activation/1": ProgressionActivationDescriptor,
+        "scenario/1": ScenarioDescriptor,
+    }
+
+
+def _descriptor_type_by_class() -> dict[type[DescriptorOccurrence], str]:
+    return {value: key for key, value in _descriptor_class_by_type().items()}

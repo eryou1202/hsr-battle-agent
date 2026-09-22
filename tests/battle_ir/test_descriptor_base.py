@@ -27,6 +27,19 @@ from hsr_battle_agent.battle_sandbox.evidence_boundary import (  # noqa: E402
     EvidenceBoundaryError,
     require_native_contract,
 )
+from tests.battle_ir.test_descriptor_damage import _item as damage  # noqa: E402
+from tests.battle_ir.test_descriptor_formation import _item as formation  # noqa: E402
+from tests.battle_ir.test_descriptor_invocation import _item as invocation  # noqa: E402
+from tests.battle_ir.test_descriptor_modifier import _item as modifier  # noqa: E402
+from tests.battle_ir.test_descriptor_monster_ai import _item as monster_ai  # noqa: E402
+from tests.battle_ir.test_descriptor_progression import _item as progression  # noqa: E402
+from tests.battle_ir.test_descriptor_scenario import _item as scenario  # noqa: E402
+from tests.battle_ir.test_descriptor_scheduler import _item as scheduler  # noqa: E402
+from tests.battle_ir.test_descriptor_target import (  # noqa: E402
+    _intent as target_intent,
+    _resolved as resolved_targets,
+    _retarget as retarget,
+)
 
 
 def contract(mode: EvidenceMode = EvidenceMode.REFERENCE_MODEL) -> ContractRef:
@@ -194,6 +207,68 @@ class TestLosslessRoundTrip(unittest.TestCase):
     def test_batch_schema_is_explicit(self):
         payload = DescriptorBatch((occurrence(),)).to_dict()
         self.assertEqual(payload["schema"], DESCRIPTOR_BATCH_SCHEMA)
+
+    def test_batch_round_trip_preserves_every_concrete_descriptor_type(self):
+        original = (
+            invocation(), modifier(), formation(), scheduler(), monster_ai(),
+            damage(), target_intent(), resolved_targets(["entity:1", None]),
+            retarget(), progression(), scenario(),
+        )
+        restored = DescriptorBatch.from_dict(DescriptorBatch(original).to_dict())
+        self.assertEqual(
+            [type(item) for item in restored.occurrences],
+            [type(item) for item in original],
+        )
+        self.assertEqual(restored.to_dict(), DescriptorBatch(original).to_dict())
+
+    def test_batch_discriminator_is_required_known_and_type_checked(self):
+        document = DescriptorBatch((invocation(),)).to_dict()
+        old_schema = copy.deepcopy(document)
+        old_schema["schema"] = "descriptor_batch/1"
+        with self.assertRaises(DescriptorError):
+            DescriptorBatch.from_dict(old_schema)
+        missing = copy.deepcopy(document)
+        missing["occurrences"][0].pop("descriptor_type")
+        with self.assertRaises(DescriptorError):
+            DescriptorBatch.from_dict(missing)
+        unknown = copy.deepcopy(document)
+        unknown["occurrences"][0]["descriptor_type"] = "future_descriptor/1"
+        with self.assertRaises(DescriptorError):
+            DescriptorBatch.from_dict(unknown)
+        mismatch = copy.deepcopy(document)
+        mismatch["occurrences"][0]["descriptor_type"] = "modifier/1"
+        with self.assertRaises(DescriptorError):
+            DescriptorBatch.from_dict(mismatch)
+
+    def test_family_validation_cannot_be_bypassed_through_batch_restore(self):
+        document = DescriptorBatch((invocation(),)).to_dict()
+        serialized = document["occurrences"][0]["descriptor"]
+        arguments = next(
+            item for item in serialized["fields"] if item["name"] == "arguments"
+        )
+        arguments["value"] = PresenceValue.present([]).to_dict()
+        with self.assertRaises(DescriptorError):
+            DescriptorBatch.from_dict(document)
+
+    def test_public_presence_values_are_detached_from_descriptor_storage(self):
+        item = occurrence(
+            payload=PresenceValue.present({"items": []})
+        )
+        item = DescriptorOccurrence(
+            item.contract_ref,
+            item.evidence_mode,
+            item.provenance,
+            item.occurrence_path,
+            item.source_order,
+            item.payload,
+            {"known": PresenceValue.present({"items": []})},
+            {"future": PresenceValue.present({"items": []})},
+        )
+        before = item.to_dict()
+        item.payload.require_present()["items"].append("payload")
+        item.fields["known"].require_present()["items"].append("known")
+        item.unknown_fields["future"].require_present()["items"].append("future")
+        self.assertEqual(item.to_dict(), before)
 
 
 class TestRepresentationOnly(unittest.TestCase):

@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.24",
+  "plan_version": "1.0.26",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -11,6 +11,7 @@
     "current_milestone": "M1",
     "next_milestone": "M2",
     "terra_f02_status": "COMPLETE",
+    "terra_r01_status": "INCOMPLETE_PENDING_R01_013",
     "golden": 0
   },
   "authority_precedence": [
@@ -4047,9 +4048,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Invocation descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - invocation descriptors preserve caller, context, arguments, continuation handles and IsSkillPerform presence without implementing activation, await, completion or execution semantics.",
       "dependencies": [
         "R01-002"
       ],
@@ -4103,6 +4106,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_invocation -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/invocation.py",
+        "tests/battle_ir/test_descriptor_invocation.py"
+      ],
+      "test_results": ["exact family suite: 6 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4122,9 +4131,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Modifier descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - request, lookup, stacking-transition and lifecycle/callback representations are distinct; provider/caster and Refresh/Replace remain distinct and unresolved matcher/lifecycle state stays blocked.",
       "dependencies": [
         "R01-002"
       ],
@@ -4178,6 +4189,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_modifier -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/modifier.py",
+        "tests/battle_ir/test_descriptor_modifier.py"
+      ],
+      "test_results": ["exact family suite: 6 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4197,9 +4214,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Formation and topology descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - team, formation, row, lineup, entity, spatial order and typed relations remain separate; no adjacency, boss proxy, targetability or lifecycle inference was introduced.",
       "dependencies": [
         "R01-002"
       ],
@@ -4253,6 +4272,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_formation -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/formation.py",
+        "tests/battle_ir/test_descriptor_formation.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4272,9 +4297,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Scheduler descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - all eight scheduler request/task families remain distinct, known partial order and source sequence are lossless, and no universal queue, priority, tie-break or PlayerLegalAction conversion exists.",
       "dependencies": [
         "R01-002"
       ],
@@ -4328,6 +4355,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_scheduler -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/scheduler.py",
+        "tests/battle_ir/test_descriptor_scheduler.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4347,9 +4380,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Monster AI descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - monster-AI policy, state, ordered sequences, UseSkill leaves, variables and admission/target handoffs are represented without winner selection, precedence, RNG, DefaultDSE, admission or commit.",
       "dependencies": [
         "R01-002"
       ],
@@ -4403,6 +4438,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_monster_ai -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/monster_ai.py",
+        "tests/battle_ir/test_descriptor_monster_ai.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4422,9 +4463,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Damage descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - damage root, hit, component, context, survival/resource dependencies and special-channel references remain distinct; formulas, rounding, clamps, callbacks, Break and RNG remain unresolved.",
       "dependencies": [
         "R01-002"
       ],
@@ -4478,6 +4521,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_damage -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/damage.py",
+        "tests/battle_ir/test_descriptor_damage.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4497,9 +4546,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Target and retarget descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - TargetIntent, ResolvedTargetSet and Retarget are separate; target lists preserve empty/null/order/duplicates and refuse tuple flattening, while random/aggro/adjacency/revalidation/lifetime semantics remain blocked.",
       "dependencies": [
         "R01-002"
       ],
@@ -4553,6 +4604,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_target -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/target.py",
+        "tests/battle_ir/test_descriptor_target.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4572,9 +4629,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Progression and loadout descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - per-source ENABLED, DISABLED and UNRESOLVED activation states carry provenance; candidate mappings do not imply Eidolon, relic, LightCone or trace activation.",
       "dependencies": [
         "R01-002"
       ],
@@ -4628,6 +4687,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_progression -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/progression.py",
+        "tests/battle_ir/test_descriptor_progression.py"
+      ],
+      "test_results": ["exact family suite: 5 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4647,9 +4712,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Scenario mode and terminal descriptor family",
-      "status": "READY",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - scenario, wave-group, slot, occurrence, environment, mode and terminal representations preserve nested source order/repeats; no flattened legacy wave or official terminal semantics were adopted and sandbox rules remain explicitly classified.",
       "dependencies": [
         "R01-002"
       ],
@@ -4703,6 +4770,12 @@
         "unknown branch remains representable but blocked"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_scenario -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptors/scenario.py",
+        "tests/battle_ir/test_descriptor_scenario.py"
+      ],
+      "test_results": ["exact family suite: 6 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "representation only",
@@ -4722,9 +4795,11 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Descriptor registry and compiler seam",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the immutable descriptor registry covers all nine families and is separate from primitive execution. The adapter consumes ResolutionLedgerEntry results without re-deriving joins, preserves missing/ambiguous/blocked states, treats binding-table checks diagnostically, and cannot create GateCertificate or execution permission.",
       "dependencies": [
         "R01-003",
         "R01-004",
@@ -4788,6 +4863,13 @@
         "reference labels cannot produce GateCertificate"
       ],
       "test_command": "python -m unittest tests.battle_ir.test_descriptor_registry -v",
+      "status_updated_at": "2026-09-22",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_ir/descriptor_registry.py",
+        "src/hsr_battle_agent/game_data/behavior_descriptor_adapter.py",
+        "tests/battle_ir/test_descriptor_registry.py"
+      ],
+      "test_results": ["exact registry suite: 7 tests, OK"],
       "expected_output": "All listed acceptance tests pass with zero unexpected failure/error; task remains IMPLEMENTED_UNVERIFIED otherwise.",
       "coverage_effect": "descriptor coverage",
       "semantic_effect": "no executable promotion",
@@ -4807,7 +4889,9 @@
       "freeze_ticket": "TERRA-R01",
       "local_phase": "REPRESENTATION",
       "title": "Cross-family losslessness suite",
-      "status": "NOT_STARTED",
+      "status": "READY",
+      "readiness_recomputed_at": "2026-09-22",
+      "readiness_basis": "dependency R01-012 is DONE; task deliberately not entered",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -4842,7 +4926,8 @@
       ],
       "implementation_requirements": [
         "Assert IsSkillPerform absence, every context slot, []/[null], repeats, source wave order, Multiple vs mutate and Refresh vs Replace",
-        "Use freeze-derived fixtures only; no semantic invention"
+        "Use freeze-derived fixtures only; no semantic invention",
+        "Include CR-R01-CLOSURE-REVIEW-20260922-001 regressions for subtype-preserving batch round trip, family-validation bypass rejection, descriptor direct-read mutation isolation, registry input/output mutation isolation, target [] versus [null], duplicates/order, IsSkillPerform absence, Multiple versus mutate, Refresh versus Replace and source wave order"
       ],
       "migration_constraints": [
         "Use the legacy-runtime quarantine/new Terra path migration strategy; no live bidirectional facade.",
@@ -8061,67 +8146,105 @@
           "F02-012 clone/context/RNG acceptance plus full F02 regression"
         ],
         "validation": "F02-001..F02-013 plus R01-001/R01-002 exact tests 423 OK; F01 plus P0-E quarantine regression 330 OK; FAST_UNIT 439 + 615 + 185 = 1239 OK; root documented scope 1247 OK; master parse and duplicate-key validation PASS; authority reconciliation 19/19 refs PASS; DAG/readiness 75/75 acyclic with exactly R01-003..R01-011 READY and no unmet READY dependency. Frozen authority and protected files remain unchanged."
+      },
+      {
+        "change_request_id": "CR-R01-CLOSURE-REVIEW-20260922-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Independent pre-commit review reproduced two local representation-integrity defects after the original R01-003..R01-012 Sol review: DescriptorBatch schema v1 discarded concrete descriptor types and thereby bypassed family validation, while DescriptorOccurrence and DescriptorRegistry exposed nested mutable payload aliases through their public read surfaces.",
+        "confirmed_reproducers": [
+          "DescriptorBatch.from_dict restored InvocationDescriptor as DescriptorOccurrence.",
+          "A serialized invocation with list-shaped arguments, rejected by InvocationDescriptor, was accepted through DescriptorBatch as a generic occurrence.",
+          "Direct mutation through payload, fields and unknown_fields changed descriptor-owned serialized state.",
+          "ResolvedTargetSet.targets returned a live descriptor-owned list.",
+          "DescriptorRegistry input, resolve output and registrations surfaces all retained routes to registry-owned nested values."
+        ],
+        "affected_task_ids": [
+          "R01-002",
+          "R01-009",
+          "R01-012"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_ir/descriptors/base.py",
+          "src/hsr_battle_agent/battle_ir/descriptor_registry.py",
+          "src/hsr_battle_agent/game_data/behavior_descriptor_adapter.py",
+          "tests/battle_ir/test_descriptor_base.py",
+          "tests/battle_ir/test_descriptor_target.py",
+          "tests/battle_ir/test_descriptor_registry.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local representation schema and ownership correction only. DescriptorBatch advances from descriptor_batch/1 to descriptor_batch/2 and requires an explicit versioned representation discriminator. Descriptor and registry reads now return lossless detached values/copies. List/tuple, null/absence, duplicates, source order, evidence class and descriptor execution status are unchanged.",
+        "rollback": "Revert only this request's listed implementation/test edits and restore master revision 1.0.25. Do not alter the prior R01 family implementations, frozen authority, protected files, DAG, R01-013 readiness or native/reference gates.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_R01_FINAL_CORRECTIVE_2026-09-22",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "all eleven concrete descriptor types survive DescriptorBatch round trip with exact class identity",
+          "missing, unknown and mismatched batch discriminators reject",
+          "family-invalid serialized invocation cannot bypass validation through batch restoration",
+          "descriptor payload/fields/unknown fields and ResolvedTargetSet.targets are mutation-isolated",
+          "registry input/output/registrations and BehaviorDescriptorResult are mutation-isolated",
+          "all R01-001..R01-012, F01, F02, P0-E quarantine, FAST_UNIT, root, duplicate-key, authority and DAG/readiness regressions"
+        ],
+        "validation": "Corrected R01-001..R01-012 exact suite 139 OK; F01 representation plus P0-E quarantine 374 OK; F02 regression 347 OK; P0-E quarantine standalone 45 OK; FAST_UNIT 502 + 615 + 185 = 1302 OK; root documented scope 1310 OK. Master and reconciliation duplicate-key validation PASS; authority reconciliation PASS with all 14 unique task authority refs present and all three reconciled current hashes exact; DAG/readiness 75/75 acyclic with exactly R01-013 READY and no unmet READY dependency. Frozen authority and protected files remain unchanged."
       }
     ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-22",
-    "status": "TERRA_F02_FOUNDATION_CLOSURE_COMPLETE",
-    "head_at_run_start": "3e9b81e1f5cd60b4624b577c4d04e5a53727f72c",
+    "status": "TERRA_R01_DESCRIPTOR_IMPLEMENTATION_COMPLETE_PENDING_R01_013",
+    "head_at_run_start": "d15ec66a79917fa6d3aa502f2e980c458dd1cf12",
     "terra_f02": "COMPLETE",
+    "terra_r01": "INCOMPLETE_PENDING_R01_013",
     "current_milestone": "M1_IN_PROGRESS",
     "changed_files": [
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
-      "src/hsr_battle_agent/battle_sandbox/state_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/legacy_state_adapter.py",
-      "src/hsr_battle_agent/battle_sandbox/snapshot_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/canonical_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/hash_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/context_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/snapshot_migration.py",
-      "tests/battle_sandbox/test_legacy_state_adapter.py",
-      "tests/battle_sandbox/test_snapshot_v2.py",
-      "tests/battle_sandbox/test_hash_v2.py",
-      "tests/battle_sandbox/test_clone_v2.py",
-      "tests/battle_sandbox/test_snapshot_migration.py"
+      "src/hsr_battle_agent/battle_ir/descriptors/base.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/invocation.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/modifier.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/formation.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/scheduler.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/monster_ai.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/damage.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/target.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/progression.py",
+      "src/hsr_battle_agent/battle_ir/descriptors/scenario.py",
+      "src/hsr_battle_agent/battle_ir/descriptor_registry.py",
+      "src/hsr_battle_agent/game_data/behavior_descriptor_adapter.py",
+      "tests/battle_ir/test_descriptor_base.py",
+      "tests/battle_ir/test_descriptor_invocation.py",
+      "tests/battle_ir/test_descriptor_modifier.py",
+      "tests/battle_ir/test_descriptor_formation.py",
+      "tests/battle_ir/test_descriptor_scheduler.py",
+      "tests/battle_ir/test_descriptor_monster_ai.py",
+      "tests/battle_ir/test_descriptor_damage.py",
+      "tests/battle_ir/test_descriptor_target.py",
+      "tests/battle_ir/test_descriptor_progression.py",
+      "tests/battle_ir/test_descriptor_scenario.py",
+      "tests/battle_ir/test_descriptor_registry.py"
     ],
-    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. The F02 closure diff is isolated to the listed F02 production/tests plus master bookkeeping. The two protected tracked modifications and unrelated historical untracked artifacts were preserved and excluded from the manual stage plan. Frozen Astra authority was not modified.",
+    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. The R01-003..R01-012 diff plus CR-R01-CLOSURE-REVIEW-20260922-001 is isolated to task-owned descriptor/registry production and test files plus master bookkeeping. The two protected tracked modifications and unrelated historical untracked artifacts were preserved and excluded from the manual stage plan. Frozen Astra authority was not modified.",
     "tests": [
-      "all F02-001..F02-013 plus R01-001/R01-002 exact: Ran 423 tests, OK",
-      "F01 plus P0-E reference-quarantine regression: Ran 330 tests, OK",
-      "FAST_UNIT: 439 + 615 + 185 = 1239, OK",
-      "root documented scope: Ran 1247 tests, OK",
+      "R01-001..R01-012 exact after corrective: Ran 139 tests, OK",
+      "F02 exact regression: Ran 347 tests, OK",
+      "F01 plus P0-E reference-quarantine regression: Ran 374 tests, OK",
+      "P0-E reference quarantine standalone: Ran 45 tests, OK",
+      "FAST_UNIT: 502 + 615 + 185 = 1302, OK",
+      "root documented scope: Ran 1310 tests, OK",
       "master parse and duplicate-key validation: PASS",
-      "authority reconciliation: PASS (19/19 refs)",
-      "DAG/readiness validation: PASS (75/75 acyclic, 9 READY, no unmet READY dependency)"
+      "authority reconciliation: PASS (14 unique task authority refs present; 3/3 reconciliation hashes exact)",
+      "DAG/readiness validation: PASS (75/75 acyclic, exactly R01-013 READY, no unmet READY dependency)"
     ],
     "blockers": [],
     "remaining_ready_any": [
-      "R01-003",
-      "R01-004",
-      "R01-005",
-      "R01-006",
-      "R01-007",
-      "R01-008",
-      "R01-009",
-      "R01-010",
-      "R01-011"
+      "R01-013"
     ],
-    "long_run_stopped_reason": "TERRA-F02 is complete. M1 remains IN_PROGRESS because TERRA-R01 and TERRA-G01 are incomplete. No R01-003+, G01 or C02 task was entered.",
+    "long_run_stopped_reason": "R01-003 through R01-012 are DONE and strongly reviewed. TERRA-R01 remains incomplete until the deliberately deferred cheap-model R01-013 cross-family verification task passes. M1 remains IN_PROGRESS; R01-013, G01 and C02 were not entered.",
     "git_write_operations_by_agent": "NONE (disabled by session policy)",
-    "recommended_executor": "SOL for R01-003, then follow each remaining R01 task's declared executor/review class",
-    "next_command": "Manually stage only the listed F02 closure paths and commit; do not stage protected or unrelated historical files."
+    "recommended_executor": "CHEAP_MODEL_OK for R01-013, followed by required Sol review",
+    "next_command": "Manually stage only the listed R01 closure paths and commit; do not stage protected or unrelated historical files."
   },
   "next_ready_tasks": [
-    "R01-003",
-    "R01-004",
-    "R01-005",
-    "R01-006",
-    "R01-007",
-    "R01-008",
-    "R01-009",
-    "R01-010",
-    "R01-011"
+    "R01-013"
   ],
   "change_history": [
     {
@@ -8278,6 +8401,19 @@
       "change_request_id": "CR-F02-CLOSURE-REVIEW-20260921-001",
       "change": "F02-009 through F02-013 implemented and strongly reviewed, completing TERRA-F02. Added the one-way fail-closed legacy-state adapter, complete snapshot v2, final typed canonical serializer and semantic hash, read-only state-owned RNG/clone context, and diagnostic-only legacy snapshot migration. The closure review repaired nested typed/opaque store alias escapes. Final exact, F01/quarantine, FAST_UNIT, root, duplicate-key, authority and 75-task DAG/readiness validation pass. M1 remains IN_PROGRESS; exactly R01-003 through R01-011 are READY and were not entered. No native semantic claim, live legacy facade, v2-to-v1 downgrade, frozen-authority change or Git write was introduced.",
       "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.25",
+      "date": "2026-09-22",
+      "change": "R01-003 through R01-012 implemented and strongly reviewed. Added nine lossless representation-only descriptor families plus an immutable registry and ledger-consuming adapter seam. IsSkillPerform presence, modifier transition identity, formation/topology identity, scheduler-family separation, AI sequence occurrences, damage decomposition, target empty/null/order/duplicates, per-source activation, scenario source order and unresolved blockers remain explicit. The registry is separate from primitive execution and binding-table checks are diagnostic only. Final exact, F01/F02/quarantine, FAST_UNIT, root, duplicate-key, authority and 75-task DAG/readiness validation pass. TERRA-R01 remains INCOMPLETE_PENDING_R01_013; exactly R01-013 is READY and was not entered. No native semantic claim, frozen-authority change, DAG change or Git write was introduced.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.26",
+      "date": "2026-09-22",
+      "change_request_id": "CR-R01-CLOSURE-REVIEW-20260922-001",
+      "change": "Applied the narrow R01 representation-integrity corrective without reopening the earlier Sol review. DescriptorBatch now uses explicit descriptor_batch/2 occurrence discriminators and restores/revalidates every exact concrete descriptor type; missing, unknown and mismatched tags fail closed. DescriptorOccurrence, DescriptorRegistry and BehaviorDescriptorResult now detach nested lossless values at ownership/read boundaries, including ResolvedTargetSet.targets. R01-013 remains READY and unexecuted with the required cross-family regression cases recorded. All exact, F01/F02/quarantine, FAST_UNIT, root, duplicate-key, authority and DAG/readiness validators pass; no native semantics, frozen authority, dependencies or protected files changed.",
+      "review": "SOL_CORRECTIVE_APPLIED_AND_VALIDATED"
     }
   ],
   "validation_requirements": [
@@ -8300,10 +8436,10 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "READY": 9,
-      "NOT_STARTED": 25,
+      "READY": 1,
+      "NOT_STARTED": 24,
       "BLOCKED": 10,
-      "DONE": 31
+      "DONE": 41
     },
     "freeze_tickets": [
       "TERRA-F01",
