@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.28",
+  "plan_version": "1.0.33",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -5025,7 +5025,7 @@
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "DependencyObligation schema",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5092,14 +5092,114 @@
       ],
       "next_tasks": [
         "G01-002"
-      ]
+      ],
+      "status_updated_at": "2026-09-22",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Sol independently reviewed the applied raw-alias corrective and all G01-001 judgement calls. Every direct public representation route returns detached data; construction aliases are isolated; the three-state ObligationResolution vocabulary is explicitly local gate representation rather than a recovered native enum; UNKNOWN remains handle-backed and fail-closed; owner+ContractRef child references intentionally defer all-match conservative expansion to G01-002. Exact suite: 102 OK.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/preflight.py",
+        "tests/battle_sandbox/test_dependency_obligation.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_dependency_obligation -v  =>  Ran 74 tests, OK, exit 0",
+        "python -m unittest discover -s tests/battle_sandbox -t . -p \"test_*.py\"  =>  Ran 689 tests, OK, exit 0 (baseline 615)",
+        "python -m unittest discover -s tests/battle_ir -t . -p \"test_*.py\"  =>  Ran 586 tests, OK, exit 0 (unchanged)",
+        "python -m unittest discover -s tests/battle_runtime -t . -p \"test_*.py\"  =>  Ran 185 tests, OK, exit 0 (unchanged)",
+        "root documented scope discoverable packages  =>  Ran 1468 tests, OK, exit 0 (baseline 1394)",
+        "tools/control/validate_json_no_duplicate_keys.mjs on master and frozen authority  =>  PASS/PASS",
+        "read-only DAG/readiness check  =>  75/75 tasks acyclic; next_ready_tasks equals the computed ready set; no unmet READY dependency",
+        "CR-G01-001-RAW-ALIAS-20260923-001: python -m unittest tests.battle_sandbox.test_dependency_obligation -v  =>  Ran 102 tests, OK, exit 0 (was 74)",
+        "CR-G01-001-RAW-ALIAS-20260923-001: battle_sandbox FAST_UNIT  =>  Ran 717 tests, OK, exit 0 (was 689); battle_ir 586 OK; battle_runtime 185 OK; FAST_UNIT 1488 OK (was 1460)",
+        "CR-G01-001-RAW-ALIAS-20260923-001: root documented scope  =>  Ran 1496 tests, OK, exit 0 (was 1468)",
+        "CR-G01-001-RAW-ALIAS-20260923-001: pre-fix audit recorded all four raw routes as to_dict-unchanged=False; post-fix all four are True and every returned object is a distinct instance"
+      ],
+      "acceptance_rows": {
+        "round trip": "PASS - owner, contract identity, ordered reads, ordered writes, ordered child references, evidence mode, resolution state and unknown material all round-trip exactly through dict and JSON; missing and extra fields both reject",
+        "unknown rejection": "PASS - an UNKNOWN obligation without an UnknownHandle rejects; a RESOLVED obligation carrying unresolved material rejects; UNKNOWN and UNSUPPORTED never report satisfied; bool() of the resolution member and of the obligation both raise, so `if obligation:` cannot pass a gate"
+      },
+      "change_summary": "Created src/hsr_battle_agent/battle_sandbox/preflight.py, a representation-only DependencyObligation schema carrying owner, ContractRef, evidence mode, ordered reads, ordered writes, ordered child references, unresolved UnknownHandles and an explicit resolution state. Added tests/battle_sandbox/test_dependency_obligation.py (74 tests). No closure, no child traversal, no ghost certificate, no execution surface and no battle state access is introduced.",
+      "implementation_detail": {
+        "resolution_vocabulary": "LOCAL gate-representation vocabulary, not a recovered client-native enum. Its three distinct states implement frozen fail-closed requirements: RESOLVED, UNKNOWN (step_transaction_contract GATE_CERTIFICATE rejects any UNKNOWN obligation) and UNSUPPORTED (a settled local negative distinct from an open question). Deliberately not a str mixin, so no ledger spelling or raw label can compare equal by accident.",
+        "fail_closed_truthiness": "UNKNOWN cannot escape as truthiness in two independent ways: ObligationResolution.__bool__ raises for every member (so bool(member) can never be read as a gate) and DependencyObligation.__bool__ raises for every state including RESOLVED (so `if obligation: permit_execution()` cannot be written at all, not even for a satisfied one). is_satisfied() is the only affirmative query and returns True for RESOLVED alone; a satisfied representation still cannot satisfy require_native_contract. This is intentionally stricter than EvidenceMode, which keeps ordinary enum truthiness because it is pure provenance; a resolution state is gate-relevant, so the shortcut is removed rather than discouraged.",
+        "resolution_coherence": "Three distinct disciplines, documented in the code: RESOLVED must carry no unresolved handle (an open question may not ride behind a satisfied state); UNKNOWN must carry at least one (the gate cannot request what the obligation never names, matching every unresolved descriptor family and StructuredRejection's mandatory evidence_request); UNSUPPORTED is a settled negative, so citing a reason is permitted but not required.",
+        "evidence_boundary": "The obligation's evidence_mode must be the exact mode carried by its ContractRef, so a mismatch is rejected rather than resolved toward the more permissive label (authority precedence[3]). REFERENCE_MODEL never becomes NATIVE_EVIDENCED through a round trip, and no mode lets the obligation satisfy a native gate.",
+        "losslessness": "Ordered reads, writes and child references keep their order and keep repeated entries; nothing is sorted, deduplicated or flattened. Absent/null/present are carried by PresenceValue on the declared access extent, and membership (never truthiness) decides them, so an omitted extent, an explicitly null extent and a PRESENT(0)/PRESENT('')/PRESENT([]) extent are three different facts.",
+        "ownership_and_isolation": "Every public read surface (read_targets, write_targets, child_references, unresolved_material, to_dict) returns detached values revalidated through to_dict/from_dict, so a caller cannot rewrite obligation-owned representation by mutating a returned payload, a returned PresenceValue or the object it originally passed in.",
+        "owner_rule_interop": "The owner code rule is byte-for-byte the pre-existing StructuredRejection rule (non-empty, uppercase, no surrounding whitespace). The suite proves the two rules agree on a probe matrix rather than spot-checking, which is what lets a G01-003 rejection name an obligation owner verbatim with no lossy conversion.",
+        "no_closure_no_traversal": "A child is a ChildObligationRef, not an embedded DependencyObligation, and no traversal, closure, expansion, cycle-detection or bounded-footprint helper exists on any type. Recursive and conservative closure remain G01-002/G01-011.",
+        "no_defect_found": "No production defect was found; the only production defect discovered during development was in this task's own new module (a detached read helper called a method UnknownHandle does not have) and was fixed here.",
+        "raw_alias_corrective": "CR-G01-001-RAW-ALIAS-20260923-001: private backing storage plus detached read properties for every public name. The four defects found by the audit were all on routes whose nested payload is legitimately mutable (PresenceValue extent, UnknownHandle payload and provenance); the contract routes were already safe and are now covered by regressions instead of a special case. No __getattribute__ interception and no change to PresenceValue or ContractRef."
+      },
+      "checkpoint": {
+        "head_before_task": "292634d017fcde8593c8b2de1587a1147642f1d2",
+        "head_after_task": "292634d017fcde8593c8b2de1587a1147642f1d2",
+        "state_rng_allocator_queues_traces_touched": false,
+        "approved_change_request": "CR-G01-001-RAW-ALIAS-20260923-001",
+        "review_closure_revision": "1.0.30",
+        "next_task": "G01-002 and C02-001 are dependency-ready; this bundle enters G01-002 only.",
+        "next_command": "python -m unittest tests.battle_sandbox.test_dependency_closure -v"
+      },
+      "notes": [
+        "Representation only: no dependency closure is computed, child references are never traversed, no GateCertificate is issued and no execution surface exists.",
+        "TERRA-G01 is NOT complete; only G01-001 was executed. project_state was deliberately left untouched because terra_g01_status is not a field the control-file exception authorises this task to add.",
+        "Git write operations were disabled for this run, so nothing was staged or committed.",
+        "The master test_baseline.observed block still records the pre-R01-013 measurement; the numbers above are the measured values for this run rather than an edit to that declared block.",
+        "CR-G01-001-RAW-ALIAS-20260923-001: applied the raw-alias corrective. The owned representation is now private with detached read properties; the four live routes (read extent, write extent, handle payload, handle provenance) are closed, and the previously-safe contract routes are asserted rather than assumed.",
+        "CR-G01-001-RAW-ALIAS-20260923-001: the corrective is recorded as a PENDING change request here rather than in plan_change_control.approved_change_requests, because that register holds only Sol-authorized APPLIED_AND_VALIDATED entries and the master's architecture_change_requires policy lists SOL review and a master revision as prerequisites. plan_version stays 1.0.28 and sol_review_pending stays true.",
+        "CR-G01-001-RAW-ALIAS-20260923-001: G01-001 remains DONE with its required Sol review still outstanding; TERRA-G01 remains IN_PROGRESS and G01-002 was not entered."
+      ],
+      "status_note": "DONE and Sol-reviewed at revision 1.0.30. The representation and raw-alias corrective pass; the resolution vocabulary is local, truthiness remains forbidden, and no native permission is granted.",
+      "corrective_change_request": {
+        "change_request_id": "CR-G01-001-RAW-ALIAS-20260923-001",
+        "classification": "LOCAL_REPRESENTATION_INTEGRITY",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "The G01-001 Sol review was blocked by a confirmed production representation defect. DependencyObligation exposed its owned nested representation through raw public dataclass fields, and the nested representation is not deeply immutable: a PresenceValue carries an arbitrary caller payload and an UnknownHandle carries an opaque payload plus a provenance mapping. A caller could therefore reach the owned objects and rewrite the obligation's own future to_dict() result. frozen=True, tuple containers and MappingProxyType were each insufficient, and none of them is treated as proof of deep immutability.",
+        "confirmed_reproducers": [
+          "before = item.to_dict(); item.reads[0].extent.require_present()['items'].append('MUTATED'); assert item.to_dict() == before  -- the assertion FAILED.",
+          "item.writes[0].extent.require_present()['items'].append(...) rewrote the obligation.",
+          "item.unknown_handles[0].payload[...] rewrote the obligation, including nested and repeated payload shapes.",
+          "item.unknown_handles[0].provenance[...] rewrote the obligation."
+        ],
+        "routes_audited_and_found_already_safe": [
+          "DependencyObligation.contract_ref -> ContractRef is deeply immutable (strings, an enum and a tuple of strings); mutation attempts are blocked and to_dict() is unchanged.",
+          "ChildObligationRef.contract_ref -> same; already safe.",
+          "reads/writes/children/unknown_handles were tuples and could not be appended to, but the tuple containers did not protect the objects inside them.",
+          "ObligationAccess.target and DependencyObligation.owner are strings; already immutable."
+        ],
+        "affected_task_ids": [
+          "G01-001"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_sandbox/preflight.py",
+          "tests/battle_sandbox/test_dependency_obligation.py"
+        ],
+        "fix": "The owned representation now lives in private backing fields and every public name (owner, contract_ref, evidence_mode, resolution, reads, writes, children, unknown_handles, and ObligationAccess.extent / ChildObligationRef.contract_ref) is a read-only property that returns a detached, revalidated copy built through that type's own to_dict/from_dict round trip. No __getattribute__ trick is used, no list payload is converted to a tuple, and no existing public semantic shape or construction signature changed.",
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local ownership and read-surface correction only. The serialized schema (dependency_obligation/1, obligation_access/1, child_obligation_ref/1) is unchanged, so every previously valid document still round-trips byte-for-byte. Public read shapes are unchanged: reads/writes/children/unknown_handles remain ordered tuple collections, extent remains a PresenceValue, contract_ref remains a ContractRef. Reads now return fresh objects, so a caller that relied on object identity across two reads would observe a change; no such reliance exists in this task's callers or tests. PresenceValue and ContractRef semantics were deliberately NOT modified.",
+        "rollback": "Revert only this request's two listed files. Do not alter frozen authority, the two protected files, the DAG, next_ready_tasks, plan_version or native/reference gates.",
+        "sol_review": "PASS",
+        "sol_authorization": "AUTHORIZED_BY_SOL_G01_PREFLIGHT_CHAIN_BUNDLE_2026-09-23",
+        "astra_reopen_required": false,
+        "master_revision": "1.0.30 - promoted to plan_change_control.approved_change_requests after independent Sol review.",
+        "tests_proving_repair": [
+          "the original confirmed reproducer now passes verbatim",
+          "raw .reads / .writes extent mutation isolation (dict, nested dict and list payloads)",
+          "raw .children / .contract_ref mutation isolation",
+          "raw .unknown_handles payload, provenance and nested-payload mutation isolation, with a stable identity_hash afterwards",
+          "raw top-level .contract_ref mutation isolation",
+          "construction-alias isolation for sequences, PresenceValue, access objects, handles and input documents",
+          "a negative control confirming the regressions discriminate: the same mutation pattern corrupts the old public-field design and does not corrupt the new one",
+          "structural proof that every public representation name is a property and every dataclass field is private"
+        ],
+        "validation": "tests.battle_sandbox.test_dependency_obligation 74 -> 102 OK; battle_sandbox 689 -> 717 OK; battle_ir 586 OK; battle_runtime 185 OK; FAST_UNIT 1460 -> 1488 OK; root documented scope 1468 -> 1496 OK; duplicate-key PASS on master and frozen authority; DAG/readiness PASS with next_ready_tasks equal to the computed ready set. Frozen authority, protected files and the declared resolution semantics are unchanged."
+      }
     },
     {
       "task_id": "G01-002",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "Dependency graph and conservative closure",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5168,14 +5268,30 @@
       "next_tasks": [
         "G01-003",
         "G01-011"
-      ]
+      ],
+      "status_updated_at": "2026-09-23",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - conservative closure expands every owner+ContractRef match in source order, preserves repeated semantic occurrences, traverses all represented branch arms before any draw, and blocks missing, unknown, unsupported, cyclic and budget-unbounded reachability. Candidate occurrence indexes are traversal-control identity only and never deduplicate representation.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/dependency_graph.py",
+        "tests/battle_sandbox/test_dependency_closure.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_dependency_closure -v => Ran 27 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.31",
+        "state_rng_allocator_execution_touched": false,
+        "multiple_matches": "EXPAND_ALL",
+        "boundedness": "cycles block; explicit expansion-budget exhaustion is BLOCKED_UNBOUNDED and never success"
+      }
     },
     {
       "task_id": "G01-003",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "PreflightResult and structured rejection binding",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5242,14 +5358,30 @@
       ],
       "next_tasks": [
         "G01-004"
-      ]
+      ],
+      "status_updated_at": "2026-09-23",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - PreflightResult has exactly CLOSED/REJECTED outcomes, embeds the complete detached closure, and binds every blocker to the existing StructuredRejection vocabulary in established traversal order. Callers cannot omit later blockers or relabel a blocked/partial closure as CLOSED.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/preflight.py",
+        "tests/battle_sandbox/test_preflight_result.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_preflight_result -v => Ran 17 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.32",
+        "outcomes": ["CLOSED", "REJECTED"],
+        "gate_certificate_surface": false,
+        "all_blockers_retained": true
+      }
     },
     {
       "task_id": "G01-004",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "GateCertificate",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5316,7 +5448,24 @@
       ],
       "next_tasks": [
         "G01-005"
-      ]
+      ],
+      "status_updated_at": "2026-09-23",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the sealed strict certificate can be produced only from a fully CLOSED, entirely NATIVE_EVIDENCED PreflightResult plus a sealed NativeContract. It binds plan, complete type-tagged closure identity, evidence/policy/rule identity, input identity/revision, Terra StateRevision, ContractRef/revision, and exact ordered reads/writes derived from closure. Reference/extension evidence, historical booleans, direct construction and caller-added permissions reject.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/gate_certificate.py",
+        "tests/battle_sandbox/test_gate_certificate.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_gate_certificate -v => Ran 29 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.33",
+        "permission_object": true,
+        "native_only": true,
+        "state_rng_allocator_execution_touched": false,
+        "next_task": "G01-005 READY but deliberately not entered"
+      }
     },
     {
       "task_id": "G01-005",
@@ -8247,37 +8396,68 @@
           "all R01-001..R01-012, F01, F02, P0-E quarantine, FAST_UNIT, root, duplicate-key, authority and DAG/readiness regressions"
         ],
         "validation": "Corrected R01-001..R01-012 exact suite 139 OK; F01 representation plus P0-E quarantine 374 OK; F02 regression 347 OK; P0-E quarantine standalone 45 OK; FAST_UNIT 502 + 615 + 185 = 1302 OK; root documented scope 1310 OK. Master and reconciliation duplicate-key validation PASS; authority reconciliation PASS with all 14 unique task authority refs present and all three reconciled current hashes exact; DAG/readiness 75/75 acyclic with exactly R01-013 READY and no unmet READY dependency. Frozen authority and protected files remain unchanged."
+      },
+      {
+        "change_request_id": "CR-G01-001-RAW-ALIAS-20260923-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "The original G01-001 representation exposed obligation-owned mutable PresenceValue and UnknownHandle material through direct public dataclass fields. Independent Sol review confirmed the corrective's private backing storage and detached public properties close every raw route without changing serialized schemas or representation shape.",
+        "confirmed_defects": [
+          "Mutation through item.reads[0].extent.require_present() rewrote the obligation's future serialization.",
+          "The corresponding write extent, UnknownHandle payload and UnknownHandle provenance routes also exposed owned nested values."
+        ],
+        "affected_task_ids": ["G01-001"],
+        "files": [
+          "src/hsr_battle_agent/battle_sandbox/preflight.py",
+          "tests/battle_sandbox/test_dependency_obligation.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local representation ownership correction only. dependency_obligation/1, obligation_access/1 and child_obligation_ref/1 remain unchanged; public collection/value shapes remain unchanged but reads now return detached values.",
+        "rollback": "Revert only the corrective portions of preflight.py and test_dependency_obligation.py and restore the preceding master checkpoint; do not modify frozen authority or G01 dependencies.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_G01_PREFLIGHT_CHAIN_BUNDLE_2026-09-23",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "original raw read-extent reproducer",
+          "read/write PresenceValue nested payload routes",
+          "UnknownHandle payload/provenance routes",
+          "child/top-level ContractRef routes",
+          "construction alias isolation and structural private-field audit"
+        ],
+        "validation": "G01-001 exact 102 OK; combined G01-001..004 exact 175 OK; FAST_UNIT 790 + 586 + 185 = 1561 OK; root documented scope 1569 OK. Duplicate-key, authority reconciliation and DAG/readiness validators PASS."
       }
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-22",
-    "status": "TERRA_R01_COMPLETE_AFTER_FINAL_SOL_REVIEW",
-    "head_at_run_start": "6dac47a079c7822a90737253efa2647a0d7b2762",
-    "head_at_run_end": "6dac47a079c7822a90737253efa2647a0d7b2762",
+    "timestamp": "2026-09-23",
+    "status": "G01_PREFLIGHT_CHAIN_G01_001_THROUGH_G01_004_DONE_SOL_REVIEWED",
+    "head_at_run_start": "292634d017fcde8593c8b2de1587a1147642f1d2",
+    "head_at_run_end": "292634d017fcde8593c8b2de1587a1147642f1d2",
+    "approved_change_request": "CR-G01-001-RAW-ALIAS-20260923-001",
+    "plan_version": "1.0.33",
+    "historical_execution_revision": "1.0.29 (retained as historical)",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
+    "terra_g01": "IN_PROGRESS_G01_004_DONE",
     "current_milestone": "M1_IN_PROGRESS",
     "changed_files": [
-      "tests/battle_ir/test_descriptor_losslessness.py",
+      "src/hsr_battle_agent/battle_sandbox/preflight.py",
+      "src/hsr_battle_agent/battle_sandbox/dependency_graph.py",
+      "src/hsr_battle_agent/battle_sandbox/gate_certificate.py",
+      "tests/battle_sandbox/test_dependency_obligation.py",
+      "tests/battle_sandbox/test_dependency_closure.py",
+      "tests/battle_sandbox/test_preflight_result.py",
+      "tests/battle_sandbox/test_gate_certificate.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled, so nothing was staged or committed. Sol review repaired only weak/self-referential assertions in the new test-only suite and closed master bookkeeping at revision 1.0.28. No production file, frozen Astra authority or protected file was modified. The two protected tracked modifications and pre-existing unrelated artifacts were preserved exactly as found.",
-    "tests": [
-      "R01-013 final reviewed suite: Ran 84 tests, OK",
-      "R01-001..R01-013 exact: Ran 223 tests, OK",
-      "FAST_UNIT: battle_ir 586 + battle_sandbox 615 + battle_runtime 185 = 1386, OK",
-      "master and authority duplicate-key validation: PASS",
-      "DAG/readiness: PASS (75/75 acyclic; C02-001 and G01-001 dependency-ready; neither entered)"
-    ],
+    "worktree_note": "Git write operations were disabled. G01-001 corrective review closed, and G01-002 through G01-004 were implemented and Sol-reviewed within their exact allowlists. No frozen authority, protected file, state, RNG, allocator or execution subsystem was modified.",
     "next_ready_tasks": [
       "C02-001",
-      "G01-001"
+      "G01-005"
     ]
   },
   "next_ready_tasks": [
     "C02-001",
-    "G01-001"
+    "G01-005"
   ],
   "change_history": [
     {
@@ -8460,6 +8640,41 @@
       "date": "2026-09-22",
       "change": "Completed the required final Sol review of R01-013. The test-only suite exercises every required losslessness, blocker and native-gate invariant and exposed no production defect. Sol repaired weak test construction by replacing tautological/self-referential assertions with independent literal discriminator, descriptor-kind, scheduler-family, scenario-kind and invocation-slot expectations while retaining exactly 84 tests. R01-013 remains DONE with sol_review_pending false; TERRA-R01 is COMPLETE; M1 remains IN_PROGRESS; C02-001 and G01-001 are dependency-ready but were not entered. The historical 1.0.27 execution record is retained, and the previously stale top-level plan_version is advanced directly from 1.0.26 to 1.0.28.",
       "review": "SOL_FINAL_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.29",
+      "date": "2026-09-22",
+      "change_request_id": null,
+      "change": "Executed G01-001 (DependencyObligation schema). Added representation-only src/hsr_battle_agent/battle_sandbox/preflight.py with owner, ContractRef, evidence mode, ordered reads/writes, ordered child references, unresolved UnknownHandles and an explicit three-state resolution vocabulary in which UNKNOWN can never be read as truthy or satisfied. Added 74 tests. No closure, no child traversal, no GateCertificate, no execution surface, no battle-state access and no dependency or milestone change. battle_sandbox 615->689, FAST_UNIT 1386->1460, root 1394->1468, all OK; duplicate-key and DAG/readiness validators PASS. TERRA-G01 remains IN_PROGRESS; only the required Sol review of G01-001 is outstanding.",
+      "review": "PENDING_SOL_REVIEW"
+    },
+    {
+      "revision": "1.0.30",
+      "date": "2026-09-23",
+      "change_request_id": "CR-G01-001-RAW-ALIAS-20260923-001",
+      "change": "Completed the G01-001 final Sol/corrective review. Confirmed private owned backing storage and detached direct read surfaces close the historical PresenceValue and UnknownHandle raw-alias defect without changing any serialized schema. Ratified ObligationResolution as a local fail-closed gate vocabulary, not a recovered native enum; retained UNKNOWN handle coherence, forbidden truthiness and owner+ContractRef child references with downstream all-match expansion. G01-001 remains DONE with sol_review_pending false.",
+      "review": "SOL_CORRECTIVE_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.31",
+      "date": "2026-09-23",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-002 conservative dependency closure. Every owner+ContractRef candidate occurrence is expanded in source order; duplicates remain observable; all represented branch arms are traversed before any draw; missing, UNKNOWN, UNSUPPORTED, cyclic and budget-unbounded reachability block explicitly. No state, RNG, allocator, execution or GateCertificate surface exists. Exact suite 27 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.32",
+      "date": "2026-09-23",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-003 PreflightResult. Exactly CLOSED/REJECTED outcomes bind the complete detached closure and every existing StructuredRejection in traversal order; partial or caller-truncated blockers cannot masquerade as success. Exact suite 17 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.33",
+      "date": "2026-09-23",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-004 sealed GateCertificate. Construction requires a fully CLOSED, entirely NATIVE_EVIDENCED preflight result plus sealed NativeContract and binds plan/closure, evidence/policy/rule, input/state/contract revisions and exact closure-derived ordered access permissions. Reference promotion, historical booleans, direct construction and added caller permissions reject. Strong review repaired tuple/list identity collision risk with type-tagged binding identity. Exact suite 29 OK; combined G01 exact 175 OK; FAST_UNIT 1561 OK; root documented scope 1569 OK. G01-005 and C02-001 are READY and deliberately unentered; M1/TERRA-G01 remain IN_PROGRESS.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8482,8 +8697,8 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 42,
-      "NOT_STARTED": 23,
+      "DONE": 46,
+      "NOT_STARTED": 19,
       "BLOCKED": 10
     },
     "freeze_tickets": [
