@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.43",
+  "plan_version": "1.0.48",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -8,11 +8,15 @@
     "production_implementation_performed": true,
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M2",
-    "next_milestone": "M3",
+    "current_milestone": "M4",
+    "next_milestone": "M5",
     "terra_f02_status": "COMPLETE",
     "terra_r01_status": "COMPLETE",
     "terra_g01_status": "COMPLETE",
+    "terra_g02_status": "COMPLETE",
+    "terra_ref01_status": "COMPLETE",
+    "terra_ref02_status": "COMPLETE",
+    "terra_ref03_status": "COMPLETE",
     "golden": 0
   },
   "authority_precedence": [
@@ -334,22 +338,36 @@
     {
       "id": "M2",
       "title": "FIRST STRICT-GATED EXECUTABLE PRIMITIVES",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "exit_criteria": [
         "G02 pure modifier/target consumers qualified",
         "first committed strict primitive fixture",
         "coverage categories updated separately"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-25",
+      "closure_evidence": {
+        "pure_primitives": "PASS - G02-001 preserves frozen modifier predicate order and produces pure bounded decisions; Multiple creates distinctly and Refresh remains quarantined",
+        "strict_fixture": "PASS - the committed G01 strict no-op fixture remains the first atomic strict primitive; G02 adds no mutation or permission surface",
+        "coverage_separation": "PASS - native pure lookup coverage is recorded separately from REFERENCE_MODEL adapters"
+      }
     },
     {
       "id": "M3",
       "title": "REFERENCE BATTLE KERNEL RUNNABLE",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "exit_criteria": [
         "REF01-REF03 DONE",
         "supported ordinary reference action can query, step and settle",
         "unsupported result explicit"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-25",
+      "closure_evidence": {
+        "reference_chain": "PASS - REF01-001, REF02-001 and REF03-001 are DONE and strongly reviewed",
+        "ordinary_reference_flow": "PASS - bounded reference values/resources feed exact ordinary damage, candidate selection, complete legal-action query and explicit settlement",
+        "unsupported_explicit": "PASS - unsupported values, packet fields, ties, target gates and terminal gates reject or return BLOCKED without partial debit or promotion"
+      }
     },
     {
       "id": "M4",
@@ -6386,7 +6404,7 @@
       "freeze_ticket": "TERRA-G02",
       "local_phase": "PURE_EVIDENCED_PRIMITIVES",
       "title": "Pure modifier lookup and stacking-plan primitives",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6450,14 +6468,30 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": []
+      "next_tasks": [],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the pure query preserves frozen name/state/StackingFlag/caster/provider branch order, native caster wildcard bypasses provider, local scan order is observable, Multiple produces a distinct-create plan even after a match, and Refresh/Replace/unknown policies remain separately blocked. No state, RNG, allocator, permission or lifecycle execution surface exists.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_runtime_v2/modifier_queries.py",
+        "tests/battle_runtime/test_modifier_queries_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_runtime.test_modifier_queries_v2 -v => Ran 9 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.45",
+        "multiple": "CREATE_DISTINCT",
+        "refresh": "BLOCKED_SEPARATE",
+        "native_permission_created": false
+      }
     },
     {
       "task_id": "REF01-001",
       "freeze_ticket": "TERRA-REF01",
       "local_phase": "REFERENCE_SAFE_OPERATIONS",
       "title": "Reference value property and resource adapters",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6524,14 +6558,29 @@
       ],
       "next_tasks": [
         "REF02-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - version/hash/scope/owner-gated adapters preserve REFERENCE_MODEL through independent finite arithmetic, division-zero rejection, owner-scoped values and the exact named ModifySPNew post-commit packet. Named non-positive contributions are discarded rather than interpreted as costs, and no unknown resource policy or cross-store AIFlag duplication is introduced.",
+      "changed_files": [
+        "src/hsr_battle_agent/game_data/reference_operation_adapters.py",
+        "tests/game_data/test_reference_values_resources_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.game_data.test_reference_values_resources_v2 -v => Ran 10 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.46",
+        "evidence_mode": "REFERENCE_MODEL",
+        "native_permission_created": false
+      }
     },
     {
       "task_id": "REF02-001",
       "freeze_ticket": "TERRA-REF02",
       "local_phase": "REFERENCE_SAFE_OPERATIONS",
       "title": "Reference damage heal survival and task adapters",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6599,14 +6648,30 @@
       ],
       "next_tasks": [
         "REF03-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - complete exact packet validation precedes all reference state construction. Ordinary damage, explicit heal, resource, shield, toughness and task-marker identities remain separate; SPHit/split/special formula/random crit/nonlethal/unclosed survival/event/cardinality reject the whole step, and marker results never mutate HP, resource or timeline.",
+      "changed_files": [
+        "src/hsr_battle_agent/game_data/reference_damage_adapters.py",
+        "tests/game_data/test_reference_damage_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.game_data.test_reference_damage_v2 -v => Ran 9 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.47",
+        "evidence_mode": "REFERENCE_MODEL",
+        "whole_step_rejection": true,
+        "native_permission_created": false
+      }
     },
     {
       "task_id": "REF03-001",
       "freeze_ticket": "TERRA-REF03",
       "local_phase": "REFERENCE_SAFE_OPERATIONS",
       "title": "Ordinary reference schedule and legal-actions view",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6678,7 +6743,25 @@
       "next_tasks": [
         "C01-001",
         "V01-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - SchedulerCandidate, AIDecisionOpportunity and PlayerLegalAction remain distinct; ordinary scheduler families are not merged; unresolved native all-key ties block and stable prior-list ties exist only under REFERENCE_MODEL. Legal-action views are either complete for the supported scope or blocked with zero partial actions/debit, while behavior delay remains separate from property38.",
+      "changed_files": [
+        "src/hsr_battle_agent/game_data/reference_schedule_v2.py",
+        "src/hsr_battle_agent/battle_sandbox/legal_actions.py",
+        "tests/game_data/test_reference_schedule_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.game_data.test_reference_schedule_v2 -v => Ran 13 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.48",
+        "evidence_mode": "REFERENCE_MODEL",
+        "native_tie_fallback": false,
+        "partial_actions_as_complete": false,
+        "native_permission_created": false
+      }
     },
     {
       "task_id": "C01-001",
@@ -6760,7 +6843,7 @@
       "freeze_ticket": "TERRA-C02",
       "local_phase": "CONTENT_INTEGRATION",
       "title": "Import exact D5 D8 D9 followup ledgers",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6828,7 +6911,22 @@
       ],
       "next_tasks": [
         "V01-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the DS implementation imports only the five existing exact D5/D8/D9 artifacts, independently preserves 11 requested IDs and 15 occurrences, 4696 exact Trace joins plus 322 missing rows, 136 behavior candidates and the D9 pinned absence. No fetch, reconstruction, fuzzy/numeric matching, inherited activation, AI winner, Stage fallback or execution promotion exists.",
+      "changed_files": [
+        "src/hsr_battle_agent/game_data/followup_ledger.py",
+        "tests/game_data/test_followup_ledger.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.game_data.test_followup_ledger -v => Ran 67 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.44",
+        "semantic_effect": "MAPPING_ONLY",
+        "native_permission_created": false
+      }
     },
     {
       "task_id": "V01-001",
@@ -8593,38 +8691,45 @@
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-24",
-    "status": "TERRA_G01_COMPLETE_M1_FOUNDATION_READY_DONE",
-    "head_at_run_start": "feca50b61c70d8445378e340c2ee8bd6e80f6510",
-    "head_at_run_end": "feca50b61c70d8445378e340c2ee8bd6e80f6510",
+    "timestamp": "2026-09-25",
+    "status": "M2_M3_EXECUTION_FRONTIER_COMPLETE",
+    "head_at_run_start": "93e21c6bb917e9e4141f3858bb2525ca14a73e95",
+    "head_at_run_end": "93e21c6bb917e9e4141f3858bb2525ca14a73e95",
     "approved_change_request": null,
-    "plan_version": "1.0.43",
+    "plan_version": "1.0.48",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
     "terra_g01": "COMPLETE",
-    "current_milestone": "M2",
+    "terra_g02": "COMPLETE",
+    "terra_ref01": "COMPLETE",
+    "terra_ref02": "COMPLETE",
+    "terra_ref03": "COMPLETE",
+    "terra_c02": "COMPLETE",
+    "current_milestone": "M4",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/strict_executor.py",
-      "src/hsr_battle_agent/battle_sandbox/sandbox.py",
-      "tests/battle_sandbox/test_strict_step.py",
-      "src/hsr_battle_agent/battle_sandbox/legacy_primitive_adapter.py",
-      "tests/battle_sandbox/test_legacy_primitive_adapter.py",
-      "src/hsr_battle_agent/battle_sandbox/contract_registry.py",
-      "tests/battle_sandbox/test_modifier_refresh_quarantine.py",
+      "src/hsr_battle_agent/game_data/followup_ledger.py",
+      "tests/game_data/test_followup_ledger.py",
+      "src/hsr_battle_agent/battle_runtime_v2/modifier_queries.py",
+      "tests/battle_runtime/test_modifier_queries_v2.py",
+      "src/hsr_battle_agent/game_data/reference_operation_adapters.py",
+      "tests/game_data/test_reference_values_resources_v2.py",
+      "src/hsr_battle_agent/game_data/reference_damage_adapters.py",
+      "tests/game_data/test_reference_damage_v2.py",
+      "src/hsr_battle_agent/game_data/reference_schedule_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/legal_actions.py",
+      "tests/game_data/test_reference_schedule_v2.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. G01-012 through G01-014 were implemented and strongly reviewed within their exact allowlists. The strict path remains Terra-only, the single legacy primitive adapter is isolated and publish-free, and FC-02 Refresh remains quarantined with no native lifecycle gain. No frozen authority or protected file was modified.",
-    "validation": "G01-001..014 exact 257 OK; FAST_UNIT 586 + 872 + 185 = 1643 OK; root documented scope 1651 OK. Duplicate-key, authority reconciliation and DAG/readiness validators PASS; readiness is exactly C02-001, G02-001 and REF01-001.",
+    "worktree_note": "Git write operations were disabled. C02 was reviewed as exact mapping-only import; G02 and REF01-REF03 were implemented and strongly reviewed within their exact allowlists. Reference objects never satisfy native gates. No frozen authority or protected file was modified.",
+    "validation": "Exact task suites: C02 67, G02 9, REF01 10, REF02 9, REF03 13 (108 total), all OK; task plus strict native/reference isolation regressions 173 OK; relevant existing game_data reference regressions 101 OK; FAST_UNIT 586 + 872 + 194 = 1652 OK; root documented scope 1660 OK. Duplicate-key, 20-file reconciled semantic-authority and 75-task DAG/readiness validators PASS; readiness is exactly C01-001 and V01-001.",
     "next_ready_tasks": [
-      "C02-001",
-      "G02-001",
-      "REF01-001"
+      "C01-001",
+      "V01-001"
     ]
   },
   "next_ready_tasks": [
-    "C02-001",
-    "G02-001",
-    "REF01-001"
+    "C01-001",
+    "V01-001"
   ],
   "change_history": [
     {
@@ -8912,6 +9017,41 @@
       "change_request_id": null,
       "change": "Implemented and strongly reviewed G01-014 FC-02 quarantine. Native lifecycle_process_redd Refresh always rejects; the old fixture label survives only in REFERENCE_MODEL, a corrected native Refresh slot is explicitly blocked on frozen unresolved distinctions, and Replace remains separately contracted. No lifecycle execution or native semantic gain was introduced. Exact suite 8 OK; combined G01 exact 257 OK; FAST_UNIT 1643 OK; root documented scope 1651 OK. TERRA-G01 and M1 are COMPLETE; current milestone advances to M2. C02-001, G02-001 and REF01-001 are READY and deliberately unentered.",
       "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.44",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Strong-reviewed and closed DS C02-001. The exact mapping-only importer consumes the five existing D5/D8/D9 artifacts without fetch or reconstruction and preserves 11 requested IDs/15 occurrences, 4696 exact Trace joins/322 missing rows, 136 candidates and D9 absence. Exact suite 67 OK; no fuzzy/numeric match, inherited activation, winner, Stage fallback or permission promotion was introduced.",
+      "review": "SOL_FINAL_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.45",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G02-001 pure modifier lookup/decision primitives. Frozen predicate order and wildcard paths are explicit, Multiple is create-distinct even after a match, and Refresh/Replace/unknown policy execution remains blocked. Exact suite 9 OK. TERRA-G02 and M2 are COMPLETE without broad modifier execution coverage.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.46",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed REF01-001. Version/hash/scope/owner gates protect finite arithmetic, owner-scoped values and exact named ModifySPNew post-commit resource contributions; division by zero and unknown resource policy reject, and non-positive named contributions do not become costs. Strong review added detached ownership for caller-supplied scope/owner sequences. Exact suite 10 OK; all results remain REFERENCE_MODEL.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.47",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed REF02-001 exact ordinary damage/heal/task adapters. Complete packet validation precedes construction; late special, split, random, survival, event and cardinality blockers reject the whole step with no resource debit, while task markers cannot mutate HP or timeline. Exact suite 9 OK; all results remain REFERENCE_MODEL.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.48",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed REF03-001. Scheduler candidates, AI opportunities and player legal actions are separate; ordinary families are not merged; native unresolved ties block and stable prior-list ties are reference-only. Supported-scope action query/step/settlement is deterministic, while unsupported target/terminal gates return BLOCKED with no partial actions or debit. Strong review added detached ownership for target and comparator sequences. Exact suite 13 OK. TERRA-REF01 through TERRA-REF03 and M3 are COMPLETE; current milestone advances to M4. C01-001 and V01-001 are READY and deliberately unentered.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8934,8 +9074,8 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 56,
-      "NOT_STARTED": 9,
+      "DONE": 61,
+      "NOT_STARTED": 4,
       "BLOCKED": 10
     },
     "freeze_tickets": [
