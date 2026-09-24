@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.40",
+  "plan_version": "1.0.43",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -8,10 +8,11 @@
     "production_implementation_performed": true,
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M1",
-    "next_milestone": "M2",
+    "current_milestone": "M2",
+    "next_milestone": "M3",
     "terra_f02_status": "COMPLETE",
     "terra_r01_status": "COMPLETE",
+    "terra_g01_status": "COMPLETE",
     "golden": 0
   },
   "authority_precedence": [
@@ -314,18 +315,26 @@
     {
       "id": "M1",
       "title": "FOUNDATION READY",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "exit_criteria": [
         "F01, F02, R01 and G01 tasks DONE",
         "Terra state clone/snapshot/hash deterministic",
         "strict step rejects atomically",
         "legacy path cannot satisfy native gates"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-24",
+      "closure_evidence": {
+        "foundation_chains": "PASS - TERRA-F01, TERRA-F02, TERRA-R01 and TERRA-G01 are COMPLETE",
+        "deterministic_state": "PASS - Terra clone/snapshot/hash regressions remain green in FAST_UNIT",
+        "atomic_strict_step": "PASS - G01-012 commits only the certified empty/no-op path and rejects unsupported/stale/mismatched inputs without live mutation",
+        "legacy_native_separation": "PASS - G01-013 uses one explicit pure-leaf adapter on private legacy objects; G01-014 preserves Refresh only as REFERENCE_MODEL and denies native promotion"
+      }
     },
     {
       "id": "M2",
       "title": "FIRST STRICT-GATED EXECUTABLE PRIMITIVES",
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "exit_criteria": [
         "G02 pure modifier/target consumers qualified",
         "first committed strict primitive fixture",
@@ -6096,7 +6105,7 @@
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "Strict step integration seam",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6166,14 +6175,31 @@
       ],
       "next_tasks": [
         "G01-013"
-      ]
+      ],
+      "status_updated_at": "2026-09-24",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the new StrictExecutor and StrictSandbox accept only TerraBattleState plus an exact native GateCertificate-derived TransactionPlan. The sole supported empty/no-op action commits through AtomicCommit deterministically; unsupported, stale and mismatched inputs return explicit results without mutation. Static and dynamic guards prove the native path cannot reach the legacy executor, registry, runtime or reference fallback.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/strict_executor.py",
+        "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+        "tests/battle_sandbox/test_strict_step.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_strict_step -v => Ran 12 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.41",
+        "strict_no_op_only": true,
+        "legacy_executor_reachable": false,
+        "battle_action_promoted": false
+      }
     },
     {
       "task_id": "G01-013",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "Legacy primitive isolated adapter",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6243,14 +6269,30 @@
       ],
       "next_tasks": [
         "G01-014"
-      ]
+      ],
+      "status_updated_at": "2026-09-24",
+      "sol_review_pending": false,
+      "sol_review_result": "REPAIR/PASS - strong review moved exact certificate/plan/source-state validation and private StagedDelta construction ahead of every legacy call. The adapter allowlists only battle.ir.target.select_none, a deterministic proven leaf with no context reads or writes, validates exact result/trace plus zero private state/RNG drift, and returns only an empty detached delta. Invalid/stale plans, exceptions, extra state/RNG/trace changes, allocator/queue/event permissions, Refresh, turn advance, unknown primitives and non-native substitutes reject without live mutation or publication.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/legacy_primitive_adapter.py",
+        "tests/battle_sandbox/test_legacy_primitive_adapter.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_legacy_primitive_adapter -v => Ran 14 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.42",
+        "allowlisted_primitive": "battle.ir.target.select_none",
+        "certified_diff": "empty",
+        "live_publication_surface": false
+      }
     },
     {
       "task_id": "G01-014",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "FC-02 quarantine and future corrected Refresh gate",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6320,7 +6362,24 @@
       "next_tasks": [
         "G02-001",
         "REF01-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-24",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - FC-02 is closed by an explicit registry quarantine: native battle.ir.modifier.lifecycle_process_redd Refresh always rejects, the contradicted fixture label is preserved only by a REFERENCE_MODEL descriptor, and a corrected native Refresh slot remains blocked on every frozen unresolved distinction. Replace remains a separate slot and is representable only with its own exact native contract; no lifecycle execution or native semantic gain was added.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/contract_registry.py",
+        "tests/battle_sandbox/test_modifier_refresh_quarantine.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_modifier_refresh_quarantine -v => Ran 8 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.43",
+        "fc_02_native_refresh": "QUARANTINED",
+        "legacy_refresh_mode": "REFERENCE_MODEL",
+        "corrected_refresh_slot": "BLOCKED_NATIVE",
+        "native_lifecycle_gain": false
+      }
     },
     {
       "task_id": "G02-001",
@@ -8535,39 +8594,37 @@
   },
   "last_checkpoint": {
     "timestamp": "2026-09-24",
-    "status": "G01_TRANSACTION_CORE_G01_005_THROUGH_G01_011_DONE_SOL_REVIEWED",
-    "head_at_run_start": "755e2dcff0d991a769eee01f5577d1fa0754e243",
-    "head_at_run_end": "755e2dcff0d991a769eee01f5577d1fa0754e243",
+    "status": "TERRA_G01_COMPLETE_M1_FOUNDATION_READY_DONE",
+    "head_at_run_start": "feca50b61c70d8445378e340c2ee8bd6e80f6510",
+    "head_at_run_end": "feca50b61c70d8445378e340c2ee8bd6e80f6510",
     "approved_change_request": null,
-    "plan_version": "1.0.40",
+    "plan_version": "1.0.43",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
-    "terra_g01": "IN_PROGRESS_G01_011_DONE",
-    "current_milestone": "M1_IN_PROGRESS",
+    "terra_g01": "COMPLETE",
+    "current_milestone": "M2",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/transaction.py",
-      "src/hsr_battle_agent/battle_sandbox/transaction_rng.py",
-      "src/hsr_battle_agent/battle_sandbox/staged_trace.py",
-      "src/hsr_battle_agent/battle_sandbox/atomic_commit.py",
-      "tests/battle_sandbox/test_transaction_plan.py",
-      "tests/battle_sandbox/test_staged_delta.py",
-      "tests/battle_sandbox/test_transaction_rng.py",
-      "tests/battle_sandbox/test_staged_trace.py",
-      "tests/battle_sandbox/test_atomic_commit.py",
-      "tests/battle_sandbox/test_atomic_failure_injection.py",
-      "tests/battle_sandbox/test_preflight_rejection.py",
+      "src/hsr_battle_agent/battle_sandbox/strict_executor.py",
+      "src/hsr_battle_agent/battle_sandbox/sandbox.py",
+      "tests/battle_sandbox/test_strict_step.py",
+      "src/hsr_battle_agent/battle_sandbox/legacy_primitive_adapter.py",
+      "tests/battle_sandbox/test_legacy_primitive_adapter.py",
+      "src/hsr_battle_agent/battle_sandbox/contract_registry.py",
+      "tests/battle_sandbox/test_modifier_refresh_quarantine.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. G01-005 through G01-011 were implemented and strongly reviewed within their exact allowlists. Transaction state, RNG, allocator and ordered outputs remain private until a validated build-new/publish-once local commit returns one replacement aggregate. No frozen authority or protected file was modified; no native rollback or RNG semantics are claimed.",
-    "validation": "G01-001..011 exact 223 OK; FAST_UNIT 586 + 838 + 185 = 1609 OK; root documented scope 1617 OK. Duplicate-key validator PASS on master/freeze/reconciliation; authority reconciliation 19/19 refs PASS; DAG/readiness 75/75 acyclic with exactly C02-001 and G01-012 READY.",
+    "worktree_note": "Git write operations were disabled. G01-012 through G01-014 were implemented and strongly reviewed within their exact allowlists. The strict path remains Terra-only, the single legacy primitive adapter is isolated and publish-free, and FC-02 Refresh remains quarantined with no native lifecycle gain. No frozen authority or protected file was modified.",
+    "validation": "G01-001..014 exact 257 OK; FAST_UNIT 586 + 872 + 185 = 1643 OK; root documented scope 1651 OK. Duplicate-key, authority reconciliation and DAG/readiness validators PASS; readiness is exactly C02-001, G02-001 and REF01-001.",
     "next_ready_tasks": [
       "C02-001",
-      "G01-012"
+      "G02-001",
+      "REF01-001"
     ]
   },
   "next_ready_tasks": [
     "C02-001",
-    "G01-012"
+    "G02-001",
+    "REF01-001"
   ],
   "change_history": [
     {
@@ -8834,6 +8891,27 @@
       "change_request_id": null,
       "change": "Executed and strongly reviewed test-only G01-011. Secondary-target, event, global, terminal and unknown/unsupported random-arm blockers after supported-looking prefixes are all discovered before certificate or transaction construction; every represented random arm is closed before draws and rejection preserves zero live debit, mutation, RNG, allocation, queue, event and trace publication. Combined G01-001..011 exact suite 223 OK; FAST_UNIT 1609 OK; root documented scope 1617 OK; duplicate-key, 19-ref authority reconciliation and 75-task DAG/readiness validators PASS. G01-012 and C02-001 are READY but deliberately unentered; M1 and TERRA-G01 remain IN_PROGRESS.",
       "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.41",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-012 strict step integration. A separate Terra-only StrictSandbox/StrictExecutor accepts exact native-certified TransactionPlan input and supports only the empty/no-op structural transaction through AtomicCommit. Unsupported, stale, mismatched and non-plan inputs return explicit results without mutation; legacy executor/registry/runtime and reference fallback are unreachable. Exact suite 12 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.42",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-013 isolated legacy primitive adapter. Strong review repaired validation order so exact certificate/plan/source-state binding and private StagedDelta construction complete before any legacy call. The only allowlisted primitive is the deterministic pure target.select_none leaf with no context reads/writes; it runs on private legacy state/RNG/trace objects and can return only an empty detached delta after exact result/trace and zero-drift validation. Invalid/stale plans, exceptions, extra state/RNG/trace changes, allocator/queue/event permissions, Refresh, turn advance, unknown primitives and non-native substitutes reject without live mutation or publication. Exact suite 14 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.43",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-014 FC-02 quarantine. Native lifecycle_process_redd Refresh always rejects; the old fixture label survives only in REFERENCE_MODEL, a corrected native Refresh slot is explicitly blocked on frozen unresolved distinctions, and Replace remains separately contracted. No lifecycle execution or native semantic gain was introduced. Exact suite 8 OK; combined G01 exact 257 OK; FAST_UNIT 1643 OK; root documented scope 1651 OK. TERRA-G01 and M1 are COMPLETE; current milestone advances to M2. C02-001, G02-001 and REF01-001 are READY and deliberately unentered.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8856,8 +8934,8 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 53,
-      "NOT_STARTED": 12,
+      "DONE": 56,
+      "NOT_STARTED": 9,
       "BLOCKED": 10
     },
     "freeze_tickets": [

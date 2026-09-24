@@ -13,6 +13,23 @@ from hsr_battle_agent.battle_sandbox.rng import SandboxRng
 from hsr_battle_agent.battle_sandbox.snapshot import SandboxSnapshot, capture_snapshot
 from hsr_battle_agent.battle_sandbox.state import BattleState
 from hsr_battle_agent.battle_sandbox.trace import ExecutionTrace
+from hsr_battle_agent.battle_sandbox.strict_executor import StrictExecutor, StrictStepResult
+from hsr_battle_agent.battle_sandbox.state_v2 import TerraBattleState
+from hsr_battle_agent.battle_sandbox.transaction import TransactionPlan
+
+
+class StrictSandbox:
+    """Terra-only facade, separate from the legacy ``Sandbox.execute`` path."""
+
+    __slots__ = ("_executor",)
+
+    def __init__(self) -> None:
+        self._executor = StrictExecutor()
+
+    def step(
+        self, state: TerraBattleState, plan: TransactionPlan, action: str
+    ) -> StrictStepResult:
+        return self._executor.step(state, plan, action)
 
 
 class Sandbox:
