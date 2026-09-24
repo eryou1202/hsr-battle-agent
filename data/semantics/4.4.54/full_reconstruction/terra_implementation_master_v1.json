@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.33",
+  "plan_version": "1.0.40",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -5468,11 +5468,11 @@
       }
     },
     {
-      "task_id": "G01-005",
+    "task_id": "G01-005",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "TransactionPlan",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5535,18 +5535,33 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-006",
-        "G01-007",
-        "G01-008"
-      ]
+    "next_tasks": [
+      "G01-006",
+      "G01-007",
+      "G01-008"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - immutable ordered TransactionPlan is constructible only from an exact sealed native GateCertificate and matching Terra StateRevision; it binds the lossless operation-sequence identity, exact closure-derived footprints and full source semantic hash. Planning performs no state, RNG, allocator, queue, event or trace mutation.",
+    "changed_files": [
+      "src/hsr_battle_agent/battle_sandbox/transaction.py",
+      "tests/battle_sandbox/test_transaction_plan.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_transaction_plan -v => Ran 8 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.34",
+      "planning_live_mutation": false,
+      "source_state_hash_bound": true
+    }
     },
     {
-      "task_id": "G01-006",
+    "task_id": "G01-006",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "StagedDelta stores and invariant checks",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5611,16 +5626,31 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-009"
-      ]
+    "next_tasks": [
+      "G01-009"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - private functional StagedDelta owns detached typed-store, opaque-store and allocator replacement material. Every write requires the exact certified symbolic target and exact PresenceValue extent; read permission, absent extent, wildcard convenience and undeclared families cannot broaden writes. No publication surface exists.",
+    "changed_files": [
+      "src/hsr_battle_agent/battle_sandbox/transaction.py",
+      "tests/battle_sandbox/test_staged_delta.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_staged_delta -v => Ran 9 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.35",
+      "live_state_visible": false,
+      "exact_write_footprint": true
+    }
     },
     {
-      "task_id": "G01-007",
+    "task_id": "G01-007",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "TransactionRng",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5686,17 +5716,33 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-009",
-        "G01-011"
-      ]
+    "next_tasks": [
+      "G01-009",
+      "G01-011"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - TransactionRng clones the state-owned sandbox RNG only after an exact plan/state revision and semantic-hash match, records every private draw in order, exposes detached material, cannot publish itself, and permits its downstream commit material to be consumed once. Abort/rejection leaves live RNG bytes and draw position unchanged; no client-native RNG claim is made.",
+    "changed_files": [
+      "src/hsr_battle_agent/battle_sandbox/transaction_rng.py",
+      "tests/battle_sandbox/test_transaction_rng.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_transaction_rng -v => Ran 8 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.36",
+      "state_owned_rng": true,
+      "private_until_commit": true,
+      "client_rng_equivalence_claimed": false
+    }
     },
     {
-      "task_id": "G01-008",
+    "task_id": "G01-008",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "StagedTrace and queue/event isolation",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "CHEAP_MODEL_STRICT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5759,16 +5805,31 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-009"
-      ]
+    "next_tasks": [
+      "G01-009"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - trace, event and queue-write occurrences remain ordered, duplicate-preserving, lossless, detached and private. Every staged output requires an exact certified target and extent; discard removes every record. There is no callback, observer, execution or publication surface before commit.",
+    "changed_files": [
+      "src/hsr_battle_agent/battle_sandbox/staged_trace.py",
+      "tests/battle_sandbox/test_staged_trace.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_staged_trace -v => Ran 6 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.37",
+      "external_callback_before_commit": false,
+      "discard_is_complete": true
+    }
     },
     {
-      "task_id": "G01-009",
+    "task_id": "G01-009",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "AtomicCommit with revision compare",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5835,17 +5896,33 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-010",
-        "G01-011"
-      ]
+    "next_tasks": [
+      "G01-010",
+      "G01-011"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - AtomicCommit validates certificate/plan, semantic source hash, unchanged revision, exact staged footprints, RNG and output bindings before constructing a complete replacement TerraBattleState. Publication is the single returned aggregate containing the new state and ordered outputs; no live component is mutated, stale state rejects without retry, revision/sequences advance exactly once and replay is refused.",
+    "changed_files": [
+      "src/hsr_battle_agent/battle_sandbox/atomic_commit.py",
+      "tests/battle_sandbox/test_atomic_commit.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_atomic_commit -v => Ran 7 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.38",
+      "publish_once_replacement": true,
+      "partial_publication_possible": false,
+      "native_rollback_claimed": false
+    }
     },
     {
-      "task_id": "G01-010",
+    "task_id": "G01-010",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "Failure-injection atomicity matrix",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5907,16 +5984,30 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-012"
-      ]
+    "next_tasks": [
+      "G01-012"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - failure injection covers every declared validation/publication boundary and functional before/after staging boundaries. Canonical state document, semantic hash, revision/sequences, RNG, allocator, queue-related stores and opaque state remain identical on every failure; a successful control case proves the matrix detects real publication.",
+    "changed_files": [
+      "tests/battle_sandbox/test_atomic_failure_injection.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_atomic_failure_injection -v => Ran 3 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.39",
+      "verification_only": true,
+      "all_injected_failures_preserve_original": true
+    }
     },
     {
-      "task_id": "G01-011",
+    "task_id": "G01-011",
       "freeze_ticket": "TERRA-G01",
       "local_phase": "STRICT_GATES",
       "title": "Unknown random and unsupported-later-operation regressions",
-      "status": "NOT_STARTED",
+    "status": "DONE",
       "executor_class": "CHEAP_MODEL_OK",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -5981,9 +6072,24 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": [
-        "G01-012"
-      ]
+    "next_tasks": [
+      "G01-012"
+    ],
+    "status_updated_at": "2026-09-24",
+    "sol_review_pending": false,
+    "sol_review_result": "PASS - source-ordered supported prefixes followed by secondary-target, event, global, terminal and random-arm blockers remain rejected before a certificate or transaction can exist. Every represented random arm is closed before any draw; UNKNOWN/UNSUPPORTED later arms preserve zero resource debit, RNG advancement, allocation, state, queue, event and trace publication.",
+    "changed_files": [
+      "tests/battle_sandbox/test_preflight_rejection.py"
+    ],
+    "test_results": [
+      "python -m unittest tests.battle_sandbox.test_preflight_rejection -v => Ran 7 tests, OK"
+    ],
+    "checkpoint": {
+      "master_revision": "1.0.40",
+      "verification_only": true,
+      "supported_prefix_partial_execution": false,
+      "next_task": "G01-012 READY but deliberately not entered"
+    }
     },
     {
       "task_id": "G01-012",
@@ -8428,36 +8534,40 @@
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-23",
-    "status": "G01_PREFLIGHT_CHAIN_G01_001_THROUGH_G01_004_DONE_SOL_REVIEWED",
-    "head_at_run_start": "292634d017fcde8593c8b2de1587a1147642f1d2",
-    "head_at_run_end": "292634d017fcde8593c8b2de1587a1147642f1d2",
-    "approved_change_request": "CR-G01-001-RAW-ALIAS-20260923-001",
-    "plan_version": "1.0.33",
-    "historical_execution_revision": "1.0.29 (retained as historical)",
+    "timestamp": "2026-09-24",
+    "status": "G01_TRANSACTION_CORE_G01_005_THROUGH_G01_011_DONE_SOL_REVIEWED",
+    "head_at_run_start": "755e2dcff0d991a769eee01f5577d1fa0754e243",
+    "head_at_run_end": "755e2dcff0d991a769eee01f5577d1fa0754e243",
+    "approved_change_request": null,
+    "plan_version": "1.0.40",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
-    "terra_g01": "IN_PROGRESS_G01_004_DONE",
+    "terra_g01": "IN_PROGRESS_G01_011_DONE",
     "current_milestone": "M1_IN_PROGRESS",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/preflight.py",
-      "src/hsr_battle_agent/battle_sandbox/dependency_graph.py",
-      "src/hsr_battle_agent/battle_sandbox/gate_certificate.py",
-      "tests/battle_sandbox/test_dependency_obligation.py",
-      "tests/battle_sandbox/test_dependency_closure.py",
-      "tests/battle_sandbox/test_preflight_result.py",
-      "tests/battle_sandbox/test_gate_certificate.py",
+      "src/hsr_battle_agent/battle_sandbox/transaction.py",
+      "src/hsr_battle_agent/battle_sandbox/transaction_rng.py",
+      "src/hsr_battle_agent/battle_sandbox/staged_trace.py",
+      "src/hsr_battle_agent/battle_sandbox/atomic_commit.py",
+      "tests/battle_sandbox/test_transaction_plan.py",
+      "tests/battle_sandbox/test_staged_delta.py",
+      "tests/battle_sandbox/test_transaction_rng.py",
+      "tests/battle_sandbox/test_staged_trace.py",
+      "tests/battle_sandbox/test_atomic_commit.py",
+      "tests/battle_sandbox/test_atomic_failure_injection.py",
+      "tests/battle_sandbox/test_preflight_rejection.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. G01-001 corrective review closed, and G01-002 through G01-004 were implemented and Sol-reviewed within their exact allowlists. No frozen authority, protected file, state, RNG, allocator or execution subsystem was modified.",
+    "worktree_note": "Git write operations were disabled. G01-005 through G01-011 were implemented and strongly reviewed within their exact allowlists. Transaction state, RNG, allocator and ordered outputs remain private until a validated build-new/publish-once local commit returns one replacement aggregate. No frozen authority or protected file was modified; no native rollback or RNG semantics are claimed.",
+    "validation": "G01-001..011 exact 223 OK; FAST_UNIT 586 + 838 + 185 = 1609 OK; root documented scope 1617 OK. Duplicate-key validator PASS on master/freeze/reconciliation; authority reconciliation 19/19 refs PASS; DAG/readiness 75/75 acyclic with exactly C02-001 and G01-012 READY.",
     "next_ready_tasks": [
       "C02-001",
-      "G01-005"
+      "G01-012"
     ]
   },
   "next_ready_tasks": [
     "C02-001",
-    "G01-005"
+    "G01-012"
   ],
   "change_history": [
     {
@@ -8675,6 +8785,55 @@
       "change_request_id": null,
       "change": "Implemented and strongly reviewed G01-004 sealed GateCertificate. Construction requires a fully CLOSED, entirely NATIVE_EVIDENCED preflight result plus sealed NativeContract and binds plan/closure, evidence/policy/rule, input/state/contract revisions and exact closure-derived ordered access permissions. Reference promotion, historical booleans, direct construction and added caller permissions reject. Strong review repaired tuple/list identity collision risk with type-tagged binding identity. Exact suite 29 OK; combined G01 exact 175 OK; FAST_UNIT 1561 OK; root documented scope 1569 OK. G01-005 and C02-001 are READY and deliberately unentered; M1/TERRA-G01 remain IN_PROGRESS.",
       "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.34",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-005 TransactionPlan. The immutable plan is sealed to an exact native GateCertificate, lossless ordered operation identity, closure-derived read/write footprint, source StateRevision and complete semantic state hash. Planning reads published Terra state only and performs zero writes, RNG draws, allocations, queue/event/trace publication or execution. Exact suite 8 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.35",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-006 StagedDelta. Typed stores, opaque stores and allocator publication material are detached private replacements; every staged occurrence requires the exact certified target and PresenceValue extent, and functional staging never exposes data to live readers. Exact suite 9 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.36",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-007 TransactionRng. The existing sandbox RNG is privately cloned only after exact revision and semantic-state validation, draws remain in an ordered detached ledger, live RNG is unchanged on reject/abort and commit material is one-consumer. This makes no client-native RNG claim. Exact suite 8 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.37",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-008 StagedTrace. Trace, event and queue-write occurrences retain channel, order, duplicates and lossless payload identity behind exact certified targets/extents; discard is complete and no precommit callback, observer or publication surface exists. Exact suite 6 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.38",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed G01-009 AtomicCommit. All bindings, state hash, source revision, footprints, staged RNG and ordered outputs validate before a complete replacement TerraBattleState is built; publication is the single returned aggregate. Stale inputs reject without retry, failures cannot partially publish, revision/sequences advance exactly once and replay rejects. This is local atomicity, not native rollback semantics. Exact suite 7 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.39",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Executed and strongly reviewed test-only G01-010. Failure injection covers every declared validation/publication point plus functional staging boundaries and proves canonical snapshot/hash, revision, RNG, allocator, queue-related and opaque state remain identical; a successful control discriminates partial publication. Exact suite 3 OK.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.40",
+      "date": "2026-09-24",
+      "change_request_id": null,
+      "change": "Executed and strongly reviewed test-only G01-011. Secondary-target, event, global, terminal and unknown/unsupported random-arm blockers after supported-looking prefixes are all discovered before certificate or transaction construction; every represented random arm is closed before draws and rejection preserves zero live debit, mutation, RNG, allocation, queue, event and trace publication. Combined G01-001..011 exact suite 223 OK; FAST_UNIT 1609 OK; root documented scope 1617 OK; duplicate-key, 19-ref authority reconciliation and 75-task DAG/readiness validators PASS. G01-012 and C02-001 are READY but deliberately unentered; M1 and TERRA-G01 remain IN_PROGRESS.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -8697,8 +8856,8 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 46,
-      "NOT_STARTED": 19,
+      "DONE": 53,
+      "NOT_STARTED": 12,
       "BLOCKED": 10
     },
     "freeze_tickets": [
