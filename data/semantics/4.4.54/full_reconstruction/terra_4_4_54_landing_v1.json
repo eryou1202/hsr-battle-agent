@@ -1,0 +1,70 @@
+{
+  "schema": "terra_4_4_54_landing/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "change_request_id": "CR-4-4-54-LANDING-FREEZE-20260926-001",
+  "master": {
+    "path": "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+    "schema": "terra_implementation_master/v1",
+    "plan_version": "1.0.65"
+  },
+  "git_anchor": {
+    "branch_at_landing": "terra/implementation",
+    "starting_head": "76722575fa255afa01af2e58ae73ebf9722043b6",
+    "expected_landing_commit": null,
+    "note": "The landing record and master are uncommitted control-plane files; a later manual commit supplies the landing commit identity."
+  },
+  "release_status": {
+    "engineering_complete": true,
+    "native_validation_complete": false,
+    "full_native_reconstruction_complete": false
+  },
+  "milestones": {
+    "M0": "DONE",
+    "M0.5": "DONE",
+    "M1": "DONE",
+    "M2": "DONE",
+    "M3": "DONE",
+    "M4": "DONE",
+    "M5": "DONE",
+    "M6": "DONE",
+    "M7": "BLOCKED_BY_INDEPENDENT_EVIDENCE",
+    "M8": "DONE"
+  },
+  "native_validation": {
+    "golden_count": 0,
+    "native_trace": [],
+    "qualifying_independent_native_oracles": [],
+    "m7_deferred_for_release": true,
+    "m7_deferred_reason": "Exact HSR 4.4.54 official native runtime artifact/capture is unavailable; engineering baseline may land without weakening Golden qualification.",
+    "m7_re_entry_condition": "A future exact HSR 4.4.54, provenance-qualified, independent native artifact satisfying the existing OracleRegistry qualification contract.",
+    "oracle_contract": "src/hsr_battle_agent/validation/oracles.py:OracleRegistry",
+    "golden_ledger": "data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json"
+  },
+  "evidence_boundaries": {
+    "decision_input": "REFERENCE_MODEL",
+    "state_transition": "SANDBOX_EXTENSION",
+    "planner_data_validation_class": "DETERMINISTIC_REPLAY_ONLY",
+    "native_evidenced": false,
+    "planner_data_contract": "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+  },
+  "freeze_rule": {
+    "baseline": "HSR 4.4.54 runtime and semantic behavior is frozen as the engineering baseline.",
+    "permitted_change_paths": [
+      "An explicit CR may fix a local implementation bug without a new semantic-evidence claim.",
+      "New exact HSR 4.4.54 provenance-qualified evidence may reopen the applicable semantic domain or M7 through the existing evidence process.",
+      "A later-version delta belongs in a new version namespace with an explicit diff/migration."
+    ],
+    "later_version_policy": "HSR 4.4.54 remains an immutable baseline; later versions require an explicit diff/migration and cannot silently backfill 4.4.54.",
+    "silent_4_5_x_backfill": "FORBIDDEN"
+  },
+  "forbidden_claims": [
+    "native optimality from local planner data",
+    "Golden without a qualifying independent exact-version native oracle",
+    "NATIVE_TRACE without a qualifying native trace",
+    "full native reconstruction complete",
+    "close-version or private-server evidence satisfying M7",
+    "later-version silent backfill into HSR 4.4.54"
+  ],
+  "ready_local_engineering_tasks": 0
+}

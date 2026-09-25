@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.64",
+  "plan_version": "1.0.65",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -21,7 +21,11 @@
     "terra_v01_status": "COMPLETE",
     "terra_v02_status": "COMPLETE",
     "terra_v03_status": "COMPLETE_INFRASTRUCTURE_NO_QUALIFYING_ORACLE",
-    "golden": 0
+    "golden": 0,
+    "engineering_complete": true,
+    "native_validation_complete": false,
+    "release_status": "ENGINEERING_COMPLETE_NATIVE_VALIDATION_PENDING",
+    "landing_record": "data/semantics/4.4.54/full_reconstruction/terra_4_4_54_landing_v1.json"
   },
   "authority_precedence": [
     "ASTRA_FREEZE",
@@ -438,7 +442,10 @@
         "first qualifying fixture promoted; until then Golden=0"
       ],
       "closure_decision": "BLOCKED_BY_INDEPENDENT_EVIDENCE",
-      "blocker": "V02-001 and V03-001 are DONE, but no qualifying independent, version-qualified native oracle exists. Deterministic replay, reference/custom output and same-code-path expectations cannot increment Golden; Golden remains 0."
+      "blocker": "V02-001 and V03-001 are DONE, but no qualifying independent, version-qualified native oracle exists. Deterministic replay, reference/custom output and same-code-path expectations cannot increment Golden; Golden remains 0.",
+      "deferred_for_release": true,
+      "deferred_reason": "Exact HSR 4.4.54 official native runtime artifact/capture is unavailable; engineering baseline may land without weakening Golden qualification.",
+      "re_entry_condition": "A future exact HSR 4.4.54, provenance-qualified, independent native artifact satisfying the existing OracleRegistry qualification contract."
     },
     {
       "id": "M8",
@@ -9446,16 +9453,33 @@
           "focused M8 and FAST_UNIT regressions plus duplicate-key and DAG/readiness validation"
         ],
         "validation": "Focused BLOCKED producer/replay regressions 2 OK; the four exact planner modules and focused M8 aggregate each pass 38 OK. FAST_UNIT remains 586 + 918 + 194 = 1698 OK. Duplicate-key validation PASS for master, reconciliation and planner-data contract; authority reconciliation PASS with 19/19 top-level refs, all task refs and 3/3 reconciled hashes; DAG/readiness 85/85 acyclic with READY empty. M8 remains DONE; M7 remains evidence-blocked; Golden remains 0 and NATIVE_TRACE remains empty."
+      },
+      {
+        "change_request_id": "CR-4-4-54-LANDING-FREEZE-20260926-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "M0-M6 and M8 are complete, but M7 lacks an independent exact-version official native oracle because the verified 4.4.54 runtime artifact/capture is unavailable locally. The engineering baseline may land while M7 remains deferred evidence debt.",
+        "affected_task_ids": [],
+        "affected_milestone_ids": ["M7"],
+        "files": [
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+          "data/semantics/4.4.54/full_reconstruction/terra_4_4_54_landing_v1.json"
+        ],
+        "semantic_impact": "NONE",
+        "migration_impact": "Control-plane release status and freeze only. M7 stays BLOCKED_BY_INDEPENDENT_EVIDENCE and deferred for release; M8 stays DONE, Golden 0 and NATIVE_TRACE empty. The existing OracleRegistry qualification contract and all production behavior remain unchanged. Later versions require explicit diff/migration in a new version namespace.",
+        "rollback": "Remove the landing record and this release-status/defer metadata and restore master revision 1.0.64. Do not change prior M7/M8 history, production files, frozen authority, protected files or frontend.",
+        "sol_authorization": "AUTHORIZED_BY_USER_HSR_4_4_54_LANDING_RELEASE_FREEZE_2026-09-26",
+        "astra_reopen_required": false,
+        "validation": "Master and landing JSON parse PASS; duplicate-key validation PASS for both plus reconciliation, planner-data contract and Golden ledger. Authority reconciliation PASS: 19/19 top-level refs, all 17 unique task authority paths and 3/3 reconciled hashes. DAG/readiness PASS: 85/85 acyclic, READY 0, no newly eligible local task. M0-M6 and M8 DONE; M7 BLOCKED and deferred; Golden 0, NATIVE_TRACE empty. No production, frontend, frozen authority or protected file modified by this CR."
       }
     ]
   },
   "last_checkpoint": {
-    "timestamp": "2026-09-25",
-    "status": "M8_EXCLUSION_REPLAY_CONSISTENCY_CORRECTIVE_COMPLETE",
-    "head_at_run_start": "815bddf4eab715229381420e0e91512e5fdcac4d",
-    "head_at_run_end": "815bddf4eab715229381420e0e91512e5fdcac4d",
-    "approved_change_request": "CR-M8-EXCLUSION-REPLAY-CONSISTENCY-20260926-001",
-    "plan_version": "1.0.64",
+    "timestamp": "2026-09-26",
+    "status": "HSR_4_4_54_ENGINEERING_LANDING_FREEZE_COMPLETE",
+    "head_at_run_start": "76722575fa255afa01af2e58ae73ebf9722043b6",
+    "head_at_run_end": "76722575fa255afa01af2e58ae73ebf9722043b6",
+    "approved_change_request": "CR-4-4-54-LANDING-FREEZE-20260926-001",
+    "plan_version": "1.0.65",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
     "terra_g01": "COMPLETE",
@@ -9471,15 +9495,11 @@
     "terra_m8": "COMPLETE_LOCAL_PLANNER_DATA_GENERATION",
     "current_milestone": "M7_BLOCKED_BY_INDEPENDENT_EVIDENCE",
     "changed_files": [
-      "src/hsr_battle_agent/planner/replay.py",
-      "tests/planner/_fixtures.py",
-      "tests/planner/test_trajectory_generation.py",
-      "tests/planner/test_trajectory_replay.py",
-      "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
-      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+      "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+      "data/semantics/4.4.54/full_reconstruction/terra_4_4_54_landing_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. The narrow M8 corrective validates generator-produced BLOCKED exclusions through exact legal-actions reconstruction, preserves REJECTED action-transition replay, and records UNSUPPORTED as representable but not currently produced. The original M8 task/history records remain intact; M8 remains DONE, M7 remains evidence-blocked, Golden remains 0 and NATIVE_TRACE remains empty. Pre-existing frontend, protected and unrelated reverse artifacts were left untouched.",
-    "validation": "Focused BLOCKED producer/replay regressions 2 OK; the four exact planner modules and focused M8 aggregate each pass 38 OK. FAST_UNIT 586 + 918 + 194 = 1698 OK. Duplicate-key validation PASS for master, reconciliation and planner-data contract; authority reconciliation PASS with 19/19 top-level refs, all task refs and 3/3 reconciled hashes; DAG/readiness 85/85 acyclic with READY empty. Golden 0, NATIVE_TRACE empty, and no frozen/protected/frontend file changed by this corrective.",
+    "worktree_note": "Control-plane-only landing/freeze. Engineering complete, native validation incomplete. M7 remains deferred evidence debt, M8 remains DONE, Golden remains 0 and NATIVE_TRACE remains empty. Pre-existing frontend, protected and unrelated reverse artifacts were left untouched. No Git write operations.",
+    "validation": "Master and landing JSON parse PASS; duplicate-key validation PASS for both plus reconciliation, planner-data contract and Golden ledger. Authority reconciliation PASS: 19/19 top-level refs, all 17 unique task authority paths and 3/3 reconciled hashes. DAG/readiness PASS: 85/85 acyclic, READY 0, no newly eligible local task. M0-M6 and M8 DONE; M7 BLOCKED and deferred; Golden 0, NATIVE_TRACE empty. No production, frontend, frozen authority or protected file modified by this CR.",
     "next_ready_tasks": []
   },
   "next_ready_tasks": [],
@@ -9916,6 +9936,13 @@
       "change_request_id": "CR-M8-EXCLUSION-REPLAY-CONSISTENCY-20260926-001",
       "change": "Narrow M8 exclusion/replay consistency corrective PASS. Generator-produced BLOCKED decision contexts now replay by reconstructing the exact BLOCKED legal-actions view and blocker text without planning or execution; REJECTED exclusions retain exact transition replay; UNSUPPORTED remains representable but is documented as not currently produced. Authentic BLOCKED replay preserves source state/hash/revision/RNG and tampered reasons reject. M8 remains DONE; M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE, Golden 0 and NATIVE_TRACE empty.",
       "review": "SOL_CORRECTIVE_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.65",
+      "date": "2026-09-26",
+      "change_request_id": "CR-4-4-54-LANDING-FREEZE-20260926-001",
+      "change": "Established the HSR 4.4.54 immutable engineering baseline through a versioned landing record. Engineering complete is true; native validation complete is false. M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE and deferred for release pending an exact-version provenance-qualified independent official native artifact under the existing OracleRegistry contract. M8 remains DONE; Golden 0 and NATIVE_TRACE empty. Later-version silent backfill is forbidden.",
+      "review": "SOL_CONTROL_PLANE_LANDING_REVIEW"
     }
   ],
   "validation_requirements": [
