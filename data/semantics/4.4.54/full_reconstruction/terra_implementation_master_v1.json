@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.57",
+  "plan_version": "1.0.64",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -9,7 +9,7 @@
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
     "current_milestone": "M7",
-    "next_milestone": "M8",
+    "next_milestone": null,
     "terra_f02_status": "COMPLETE",
     "terra_r01_status": "COMPLETE",
     "terra_g01_status": "COMPLETE",
@@ -443,14 +443,25 @@
     {
       "id": "M8",
       "title": "PLANNER DATA GENERATION READY",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "exit_criteria": [
         "M5 minimum plus validation label in every trajectory",
         "scenario rule identity/RNG/revision captured",
         "unsupported trajectories excluded, not silently truncated"
       ],
       "locally_startable": true,
-      "start_basis": "M5R-001..004 establish a bounded state-bearing SANDBOX_EXTENSION branch with explicit validation labels, rule/profile identity, revision and RNG state preserved. M8 was not entered in this session."
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-25",
+      "start_basis": "M5R-001..004 establish a bounded state-bearing SANDBOX_EXTENSION branch with explicit validation labels, rule/profile identity, revision and RNG state preserved.",
+      "closure_evidence": {
+        "validation_labels": "PASS - every committed step and trajectory is explicitly DETERMINISTIC_REPLAY_ONLY, separate from REFERENCE_MODEL decision evidence and SANDBOX_EXTENSION transition evidence",
+        "identity_capture": "PASS - complete snapshots, semantic hashes, revision/effect/replay sequences, RNG state, scenario/terminal rule, profile/policy, resource contract and generation horizon are identity-bearing",
+        "branching": "PASS - resource-10 source-order exhaustive depth-2 generation produces distinct A/B and A->C/B->D state-bearing paths with deterministic identities",
+        "exclusions": "PASS - rejected continuations are absent from successful full-horizon trajectories and recorded in a separate source-state-preserving exclusion ledger",
+        "export_replay": "PASS - deterministic path-free export round-trips byte-identically and independent replay verifies legal-action completeness, plans, state/hash/revision/RNG and exclusions",
+        "native_claim": "NONE - dataset is LOCAL_SANDBOX_EXTENSION, DETERMINISTIC_REPLAY_ONLY, NOT_GOLDEN and NOT_NATIVE_TRACE; M7 remains evidence-blocked"
+      },
+      "recovery_change_request": "CR-M8-PLANNER-DATA-GENERATION-20260925-001"
     }
   ],
   "phase_dag": {
@@ -476,6 +487,7 @@
       "SOURCE_BACKED_REQUALIFICATION",
       "DETERMINISTIC_INTEGRATION",
       "M5_LOCAL_CAPABILITY_RECOVERY",
+      "PLANNER_DATA_GENERATION",
       "INDEPENDENT_VALIDATION"
     ],
     "conditional_side_path": "EVIDENCE_REOPEN does not block reference/custom progress; it alone may change frozen native blockers after new evidence."
@@ -7522,6 +7534,231 @@
       "checkpoint": {"master_revision": "1.0.57", "m5": "DONE", "m8_entered": false}
     },
     {
+      "task_id": "M8D-001",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "Trajectory, step and validation-label schema",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M5R-004"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/planner/__init__.py",
+        "src/hsr_battle_agent/planner/trajectory.py",
+        "tests/planner/__init__.py",
+        "tests/planner/_fixtures.py",
+        "tests/planner/test_trajectory_schema.py",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "implementation_requirements": [
+        "Keep DETERMINISTIC_REPLAY_ONLY validation distinct from EvidenceMode and non-boolean",
+        "Capture complete before/after snapshots, hash, revision sequence, RNG, complete actions, selected action, scenario/rule/profile, plan and footprint",
+        "Preserve null, order, duplicates and explicit termination presence through canonical identity",
+        "Expose no native permission surface"
+      ],
+      "explicit_non_goals": ["No reward/value/policy labels", "No native validation claim", "No frontend changes"],
+      "test_command": "python -m unittest tests.planner.test_trajectory_schema -v",
+      "semantic_effect": "NONE_NATIVE; local dataset representation only",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - step and trajectory schemas bind every required deterministic state and decision surface; validation strength remains a non-boolean local vocabulary separate from evidence mode, with detached lossless documents and no native gate.",
+      "changed_files": [
+        "src/hsr_battle_agent/planner/__init__.py",
+        "src/hsr_battle_agent/planner/trajectory.py",
+        "tests/planner/__init__.py",
+        "tests/planner/_fixtures.py",
+        "tests/planner/test_trajectory_schema.py",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "test_results": ["tests.planner.test_trajectory_schema => 9 OK"],
+      "checkpoint": {"master_revision": "1.0.58", "native_promotions": 0},
+      "next_tasks": ["M8D-002"]
+    },
+    {
+      "task_id": "M8D-002",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "Deterministic bounded trajectory generator",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M8D-001"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/planner/generator.py",
+        "tests/planner/_fixtures.py",
+        "tests/planner/test_trajectory_generation.py"
+      ],
+      "implementation_requirements": [
+        "Use only SandboxResourceContract/query/plan/SandboxResourceTransaction from M5R",
+        "Enumerate the exact complete action set exhaustively in source order with an explicit positive horizon",
+        "Draw zero RNG for branch selection and never mutate the initial/shared branch state",
+        "Record horizon as dataset boundary, never game terminal or victory"
+      ],
+      "explicit_non_goals": ["No stochastic sampling", "No native scheduler/target rules", "No official Stage semantics"],
+      "test_command": "python -m unittest tests.planner.test_trajectory_generation -v",
+      "semantic_effect": "NONE_NATIVE; bounded local generation",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - resource-10 depth-2 source-order enumeration produces stable distinct A/B and A->C/B->D branches, preserves the input and RNG, shares no live state, and records GENERATION_HORIZON_REACHED without a terminal claim.",
+      "changed_files": [
+        "src/hsr_battle_agent/planner/generator.py",
+        "tests/planner/_fixtures.py",
+        "tests/planner/test_trajectory_generation.py"
+      ],
+      "test_results": ["tests.planner.test_trajectory_generation => 9 OK"],
+      "checkpoint": {"master_revision": "1.0.59", "branch_order": "SOURCE_ORDER_EXHAUSTIVE"},
+      "next_tasks": ["M8D-003"]
+    },
+    {
+      "task_id": "M8D-003",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "Unsupported and rejected branch exclusion ledger",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M8D-002"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/planner/trajectory.py",
+        "src/hsr_battle_agent/planner/generator.py",
+        "tests/planner/test_trajectory_generation.py"
+      ],
+      "implementation_requirements": [
+        "Never emit a prefix that cannot reach the declared horizon as a complete trajectory",
+        "Record path identity, source hash/revision/RNG, attempted action, depth, classification, exact reason and evidence",
+        "Prove excluded branch source state remains unchanged"
+      ],
+      "explicit_non_goals": ["No best-effort truncation", "No excluded record as training trajectory", "No unsupported fallback"],
+      "test_command": "python -m unittest tests.planner.test_trajectory_generation tests.planner.test_trajectory_replay -v",
+      "semantic_effect": "NONE_NATIVE; exclusion accounting only",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - insufficient-resource continuations are absent from full-horizon output, retain stable source/path/reason/evidence records, replay as the same rejection and leave source snapshot/hash/RNG unchanged.",
+      "changed_files": [
+        "src/hsr_battle_agent/planner/trajectory.py",
+        "src/hsr_battle_agent/planner/generator.py",
+        "tests/planner/test_trajectory_generation.py"
+      ],
+      "test_results": ["generation plus replay exclusion regressions => PASS"],
+      "checkpoint": {"master_revision": "1.0.60", "silent_truncation": false},
+      "next_tasks": ["M8D-004"]
+    },
+    {
+      "task_id": "M8D-004",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "Dataset manifest, canonical identity and deterministic export",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M8D-003"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/planner/dataset.py",
+        "tests/planner/test_dataset_export.py"
+      ],
+      "implementation_requirements": [
+        "Bind generator/version, HSR-4.4.54 target, scenario/policy, horizon, validation vocabulary and ordered record identities",
+        "Classify output LOCAL_SANDBOX_EXTENSION, DETERMINISTIC_REPLAY_ONLY, NOT_GOLDEN and NOT_NATIVE_TRACE",
+        "Export byte-identically to a caller-supplied directory without timestamps, usernames or absolute paths"
+      ],
+      "explicit_non_goals": ["No bulk generated repository data", "No independent oracle claim", "No frontend contract"],
+      "test_command": "python -m unittest tests.planner.test_dataset_export -v",
+      "semantic_effect": "NONE_NATIVE; deterministic local export",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - canonical-v2 identity covers all decision-affecting records while stable JSON export is byte-identical and machine-path/time-free; manifest counts/order validate and Golden/native-trace remain zero.",
+      "changed_files": [
+        "src/hsr_battle_agent/planner/dataset.py",
+        "tests/planner/test_dataset_export.py"
+      ],
+      "test_results": ["tests.planner.test_dataset_export => 8 OK"],
+      "checkpoint": {"master_revision": "1.0.61", "golden": 0},
+      "next_tasks": ["M8D-005"]
+    },
+    {
+      "task_id": "M8D-005",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "Independent trajectory and exclusion replay validation",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M8D-004"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/planner/replay.py",
+        "tests/planner/test_trajectory_replay.py"
+      ],
+      "implementation_requirements": [
+        "Reconstruct state from exported initial snapshot and re-query complete legal actions",
+        "Re-plan/recommit every step and compare plan, footprints, state/hash/revision/RNG and trajectory identity",
+        "Reconstruct every exclusion source and reproduce its exact rejection reason without mutation",
+        "Detect deliberate action/hash/revision/RNG/rule/validation corruption beyond export hashing"
+      ],
+      "explicit_non_goals": ["No same-output-only validation", "No native trace label", "No Golden promotion"],
+      "test_command": "python -m unittest tests.planner.test_trajectory_replay -v",
+      "semantic_effect": "NONE_NATIVE; local deterministic replay validation",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - replay independently consumes the exported record through the authorized M5 transition, verifies all decision/state bindings and exact exclusions, and detects rehashed action/rule corruption plus snapshot/hash/revision/RNG/label corruption.",
+      "changed_files": [
+        "src/hsr_battle_agent/planner/replay.py",
+        "tests/planner/test_trajectory_replay.py"
+      ],
+      "test_results": ["tests.planner.test_trajectory_replay => 10 OK"],
+      "checkpoint": {"master_revision": "1.0.62", "native_validated": false},
+      "next_tasks": ["M8D-006"]
+    },
+    {
+      "task_id": "M8D-006",
+      "freeze_ticket": null,
+      "local_phase": "PLANNER_DATA_GENERATION",
+      "title": "M8 planner-data closure review",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M8D-005"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json"
+      ],
+      "files_allowed_to_modify": [],
+      "implementation_requirements": [
+        "Close M8 only with validation label, scenario/rule/profile/RNG/revision capture, separate exclusions, deterministic export/replay and zero native promotion",
+        "Leave M7 blocked, Golden 0 and NATIVE_TRACE empty",
+        "Do not create follow-on engineering work merely to avoid empty readiness"
+      ],
+      "explicit_non_goals": ["No M7 closure", "No FULL NATIVE reconstruction claim", "No frontend changes"],
+      "test_command": "python -m unittest discover -s tests/planner -t . -p test_*.py",
+      "semantic_effect": "NONE_NATIVE",
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - all M8 exit criteria are met by a bounded M5 SANDBOX_EXTENSION dataset with separate replay-only validation and exclusion ledger. M8 is DONE; M7 remains evidence-blocked; Golden/native trace stay zero.",
+      "changed_files": [],
+      "test_results": ["focused planner-data suites => 36 OK"],
+      "checkpoint": {"master_revision": "1.0.63", "m8": "DONE", "m7": "BLOCKED_BY_INDEPENDENT_EVIDENCE"},
+      "next_tasks": []
+    },
+    {
       "task_id": "EVIDENCE-D0",
       "freeze_ticket": [
         "KERNEL-ORDER",
@@ -9130,16 +9367,95 @@
           "FAST_UNIT, reference regressions, duplicate-key, authority reconciliation and DAG/readiness"
         ],
         "validation": "Focused M5R suites 29 OK; reference value/resource/damage/schedule regressions 32 OK; FAST_UNIT 586 + 918 + 194 = 1698 OK; root documented scope 1706 OK; duplicate-key, 19-ref authority reconciliation and 79-task DAG/readiness validators PASS. Golden remains 0, NATIVE_TRACE remains empty, and no frozen/protected file is modified."
+      },
+      {
+        "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "M5R-001..004 made a bounded state-bearing SANDBOX_EXTENSION branch locally available, but the historical 79-task plan contained no trajectory schema, bounded generator, exclusion ledger, deterministic dataset identity/export or independent replay validator needed to satisfy M8 honestly.",
+        "affected_task_ids": [
+          "M8D-001",
+          "M8D-002",
+          "M8D-003",
+          "M8D-004",
+          "M8D-005",
+          "M8D-006"
+        ],
+        "files": [
+          "src/hsr_battle_agent/planner/__init__.py",
+          "src/hsr_battle_agent/planner/trajectory.py",
+          "src/hsr_battle_agent/planner/generator.py",
+          "src/hsr_battle_agent/planner/dataset.py",
+          "src/hsr_battle_agent/planner/replay.py",
+          "tests/planner/__init__.py",
+          "tests/planner/_fixtures.py",
+          "tests/planner/test_trajectory_schema.py",
+          "tests/planner/test_trajectory_generation.py",
+          "tests/planner/test_dataset_export.py",
+          "tests/planner/test_trajectory_replay.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Adds a local planner-data package and six-task controlled extension over the already-authorized M5 SANDBOX_EXTENSION resource transition. Generated records distinguish REFERENCE_MODEL decisions, SANDBOX_EXTENSION transitions and DETERMINISTIC_REPLAY_ONLY validation; no native permission, trace, Golden oracle, reward/value/policy label or frontend contract is added. M8 becomes DONE while M7 remains evidence-blocked.",
+        "rollback": "Revert only this request's planner package, planner tests, planner-data contract and M8 master additions; restore master revision 1.0.57 and M8 NOT_STARTED/locally_startable true. Do not modify M5R, historical 79 tasks, frozen authority, M7, protected files or frontend.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_M8_PLANNER_DATA_GENERATION_BUNDLE_2026-09-25",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "trajectory/step schema captures complete snapshot, state hash, revision sequence, RNG, complete legal actions, selected action, scenario/rule/profile, contract, plan and exact footprints",
+          "resource-10 A/B/C/D source-order generation yields deterministic distinct A/B and A-to-C/B-to-D committed states",
+          "insufficient-resource branches are excluded with exact reason and unchanged source state rather than silently truncated",
+          "dataset export is byte-identical and free of timestamps and machine paths",
+          "independent replay detects action, state hash, revision, RNG, rule and validation-label corruption",
+          "M5R, FAST_UNIT, reference, root, duplicate-key, authority reconciliation and expanded DAG/readiness regressions"
+        ],
+        "validation": "Focused M8 planner-data suites 36 OK after strong-review schema hardening; M5R regression 29 OK; reference value/resource/damage/schedule regression 32 OK; FAST_UNIT 586 + 918 + 194 = 1698 OK; root documented scope 1742 OK. Duplicate-key validation PASS for master, reconciliation and planner-data contract; authority validation PASS with all 19 top-level authority refs and all task authority refs present and all three reconciled hashes exact; expanded DAG/readiness 85/85 acyclic with no READY task and no unmet dependency. Golden remains 0, NATIVE_TRACE remains empty, and no frozen/protected/frontend file is modified by this request."
+      },
+      {
+        "change_request_id": "CR-M8-EXCLUSION-REPLAY-CONSISTENCY-20260926-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Strong corrective review found that the bounded generator can emit a genuine BLOCKED decision-context exclusion when a caller-declared action has an unsupported target or terminal gate, while replay accepted only REJECTED action-transition exclusions. The planner-data contract also conflated the three representable classifications with those currently produced.",
+        "confirmed_findings": [
+          "BLOCKED is reachable through the existing SandboxActionRule target_supported/terminal_supported gates; an exact candidate scope containing an unsupported proposal yields a BLOCKED legal-actions view before planning.",
+          "REJECTED is reachable through planning or transaction rejection after a complete legal-actions view.",
+          "UNSUPPORTED is representable by exclusion/1 but the current M5 bounded generator has no producer for it.",
+          "The former replay path attempted action-transition validation for every exclusion and then rejected any classification other than REJECTED."
+        ],
+        "affected_task_ids": [
+          "M8D-003",
+          "M8D-005",
+          "M8D-006"
+        ],
+        "files": [
+          "src/hsr_battle_agent/planner/replay.py",
+          "tests/planner/_fixtures.py",
+          "tests/planner/test_trajectory_generation.py",
+          "tests/planner/test_trajectory_replay.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local replay correctness and contract clarification only. BLOCKED records are now replayed as decision-context results without planning or execution; REJECTED records retain exact action-transition replay; UNSUPPORTED remains representable but is explicitly not a current generator output. Dataset schemas, evidence labels, identities and M8 status remain unchanged.",
+        "rollback": "Revert only this corrective's replay helper, blocked fixtures/tests, planner-data wording and revision 1.0.64 control records. Restore the prior replay loop and contract wording without altering the original M8 task/history records, M7, Golden, NATIVE_TRACE, frozen authority, protected files or frontend.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_M8_EXCLUSION_CONSISTENCY_CORRECTIVE_2026-09-26",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "a caller-declared unsupported target produces exactly one root BLOCKED exclusion and zero successful trajectories",
+          "the authentic BLOCKED record replays through legal-actions reconstruction with exact blocker text and unchanged source state/hash/revision/RNG",
+          "a rehashed BLOCKED record with a tampered reason is rejected",
+          "REJECTED action-transition exclusion replay remains green",
+          "focused M8 and FAST_UNIT regressions plus duplicate-key and DAG/readiness validation"
+        ],
+        "validation": "Focused BLOCKED producer/replay regressions 2 OK; the four exact planner modules and focused M8 aggregate each pass 38 OK. FAST_UNIT remains 586 + 918 + 194 = 1698 OK. Duplicate-key validation PASS for master, reconciliation and planner-data contract; authority reconciliation PASS with 19/19 top-level refs, all task refs and 3/3 reconciled hashes; DAG/readiness 85/85 acyclic with READY empty. M8 remains DONE; M7 remains evidence-blocked; Golden remains 0 and NATIVE_TRACE remains empty."
       }
     ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-25",
-    "status": "M5_STATE_BEARING_PLANNER_RECOVERY_COMPLETE",
-    "head_at_run_start": "83344adb76b1f11c48279db72dcac8f2ed5dc0bc",
-    "head_at_run_end": "83344adb76b1f11c48279db72dcac8f2ed5dc0bc",
-    "approved_change_request": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
-    "plan_version": "1.0.57",
+    "status": "M8_EXCLUSION_REPLAY_CONSISTENCY_CORRECTIVE_COMPLETE",
+    "head_at_run_start": "815bddf4eab715229381420e0e91512e5fdcac4d",
+    "head_at_run_end": "815bddf4eab715229381420e0e91512e5fdcac4d",
+    "approved_change_request": "CR-M8-EXCLUSION-REPLAY-CONSISTENCY-20260926-001",
+    "plan_version": "1.0.64",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
     "terra_g01": "COMPLETE",
@@ -9152,16 +9468,18 @@
     "terra_v01": "COMPLETE",
     "terra_v02": "COMPLETE",
     "terra_v03": "COMPLETE_INFRASTRUCTURE_NO_QUALIFYING_ORACLE",
+    "terra_m8": "COMPLETE_LOCAL_PLANNER_DATA_GENERATION",
     "current_milestone": "M7_BLOCKED_BY_INDEPENDENT_EVIDENCE",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
-      "tests/battle_sandbox/test_sandbox_transition_contract.py",
-      "tests/battle_sandbox/test_sandbox_transition_atomic.py",
-      "tests/battle_sandbox/test_state_bearing_planner_recovery.py",
+      "src/hsr_battle_agent/planner/replay.py",
+      "tests/planner/_fixtures.py",
+      "tests/planner/test_trajectory_generation.py",
+      "tests/planner/test_trajectory_replay.py",
+      "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. M5R-001..004 add and strongly review a bounded caller-declared SANDBOX_EXTENSION resource transition using a complete REFERENCE_MODEL legal-action view. Genuine two-way and multi-turn Terra resource branches replay deterministically; rejection is atomic; no native gate or coverage is gained. M5 is DONE and M8 is locally startable but unentered. M7 remains evidence-blocked, Golden remains 0 and NATIVE_TRACE remains empty.",
-    "validation": "Focused M5R suites 29 OK; reference value/resource/damage/schedule regressions 32 OK; FAST_UNIT 586 + 918 + 194 = 1698 OK; root documented scope 1706 OK. Duplicate-key validation PASS; authority reconciliation 19/19 PASS; DAG/readiness 79/79 acyclic with no READY task. Golden 0, NATIVE_TRACE empty, and no frozen/protected file changed.",
+    "worktree_note": "Git write operations were disabled. The narrow M8 corrective validates generator-produced BLOCKED exclusions through exact legal-actions reconstruction, preserves REJECTED action-transition replay, and records UNSUPPORTED as representable but not currently produced. The original M8 task/history records remain intact; M8 remains DONE, M7 remains evidence-blocked, Golden remains 0 and NATIVE_TRACE remains empty. Pre-existing frontend, protected and unrelated reverse artifacts were left untouched.",
+    "validation": "Focused BLOCKED producer/replay regressions 2 OK; the four exact planner modules and focused M8 aggregate each pass 38 OK. FAST_UNIT 586 + 918 + 194 = 1698 OK. Duplicate-key validation PASS for master, reconciliation and planner-data contract; authority reconciliation PASS with 19/19 top-level refs, all task refs and 3/3 reconciled hashes; DAG/readiness 85/85 acyclic with READY empty. Golden 0, NATIVE_TRACE empty, and no frozen/protected/frontend file changed by this corrective.",
     "next_ready_tasks": []
   },
   "next_ready_tasks": [],
@@ -9549,6 +9867,55 @@
       "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
       "change": "M5R-004 closure review PASS. M5R-001..004 form a bounded state-bearing SANDBOX_EXTENSION planner seam with stable complete legal actions, genuine two-way/multi-turn resource branches, deterministic clone/hash/RNG replay, atomic rejection and zero native promotion. M5 is DONE and M8 is locally startable but unentered. M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE, Golden 0 and NATIVE_TRACE empty.",
       "review": "SOL_CLOSURE_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.58",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-001 DONE and strongly reviewed. Added lossless trajectory/step/exclusion schemas and a non-boolean DETERMINISTIC_REPLAY_ONLY vocabulary separate from EvidenceMode, binding complete snapshot/hash/revision/RNG and decision/plan context without native permission.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.59",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-002 DONE and strongly reviewed. Added positive-horizon SOURCE_ORDER_EXHAUSTIVE generation over the M5 resource seam with zero branch RNG draws, branch-isolated Terra state and explicit non-terminal horizon records.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.60",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-003 DONE and strongly reviewed. Rejected continuations are excluded from successful full-horizon trajectories and recorded separately with path/state/revision/RNG/evidence/reason identity; source-state preservation is verified and silent truncation is rejected.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.61",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-004 DONE and strongly reviewed. Added a canonical dataset manifest and byte-identical caller-directed JSON export classified LOCAL_SANDBOX_EXTENSION, DETERMINISTIC_REPLAY_ONLY, NOT_GOLDEN and NOT_NATIVE_TRACE, without time/path contamination or bulk repository output.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.62",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-005 DONE and strongly reviewed. Independent replay reconstructs exported source state, legal views, plans, commits and exclusions through the authorized M5 path and detects action/hash/revision/RNG/rule/validation corruption without treating self-consistency as native proof.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.63",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M8-PLANNER-DATA-GENERATION-20260925-001",
+      "change": "M8D-006 closure review PASS. The controlled six-task extension satisfies M8 with validation labels on every trajectory, full scenario/rule/profile/revision/RNG capture, separate exclusion accounting, deterministic export and independent local replay. M8 is DONE; M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE, Golden 0 and NATIVE_TRACE empty.",
+      "review": "SOL_CLOSURE_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.64",
+      "date": "2026-09-26",
+      "change_request_id": "CR-M8-EXCLUSION-REPLAY-CONSISTENCY-20260926-001",
+      "change": "Narrow M8 exclusion/replay consistency corrective PASS. Generator-produced BLOCKED decision contexts now replay by reconstructing the exact BLOCKED legal-actions view and blocker text without planning or execution; REJECTED exclusions retain exact transition replay; UNSUPPORTED remains representable but is documented as not currently produced. Authentic BLOCKED replay preserves source state/hash/revision/RNG and tampered reasons reject. M8 remains DONE; M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE, Golden 0 and NATIVE_TRACE empty.",
+      "review": "SOL_CORRECTIVE_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -9563,15 +9930,15 @@
     "no unauthorized production/test files or frozen authority artifacts modified"
   ],
   "task_summary": {
-    "total": 79,
+    "total": 85,
     "by_executor": {
       "CHEAP_MODEL_STRICT": 21,
       "CHEAP_MODEL_OK": 8,
-      "SOL_IMPLEMENT": 40,
+      "SOL_IMPLEMENT": 46,
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 69,
+      "DONE": 75,
       "NOT_STARTED": 0,
       "BLOCKED": 10
     },

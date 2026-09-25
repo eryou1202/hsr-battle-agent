@@ -1,0 +1,54 @@
+{
+  "schema": "terra_planner_data_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "scope": "LOCAL_SANDBOX_EXTENSION",
+  "validation_vocabulary": {
+    "version": "1",
+    "values": [
+      {
+        "value": "DETERMINISTIC_REPLAY_ONLY",
+        "meaning": "The record reproduced through the same versioned local contract with complete state/hash/revision/RNG agreement; it is not independent or native validation."
+      }
+    ],
+    "executable_boolean": false,
+    "distinct_from_evidence_mode": true
+  },
+  "current_evidence_summary": {
+    "decision_input": "REFERENCE_MODEL",
+    "state_transition": "SANDBOX_EXTENSION",
+    "native_evidenced": false,
+    "native_trace": false,
+    "golden": false
+  },
+  "generation": {
+    "strategy": "SOURCE_ORDER_EXHAUSTIVE",
+    "bounded": true,
+    "stochastic_sampling": false,
+    "rng_draws_for_branch_selection": 0,
+    "horizon_is_game_terminal": false
+  },
+  "successful_record_rule": "Only paths that commit through the full declared generation horizon are trajectories.",
+  "representable_exclusion_classifications": [
+    "BLOCKED",
+    "REJECTED",
+    "UNSUPPORTED"
+  ],
+  "current_generator_exclusion_classifications": [
+    "BLOCKED",
+    "REJECTED"
+  ],
+  "exclusion_rule": "The current bounded M5 generator emits BLOCKED decision-context and REJECTED action-transition continuations to a separate ordered exclusion ledger. UNSUPPORTED is reserved in the representation vocabulary for a future explicit producer. A valid prefix is never relabelled as a complete trajectory.",
+  "identity_rule": "Step, trajectory, exclusion and dataset identities are SHA-256 over the Terra canonical-v2 representation of every decision-affecting field except the identity field itself.",
+  "forbidden_claims": [
+    "native optimal action",
+    "reward",
+    "advantage",
+    "value target",
+    "policy probability",
+    "official Stage terminal",
+    "native victory",
+    "independent oracle",
+    "Golden"
+  ]
+}
