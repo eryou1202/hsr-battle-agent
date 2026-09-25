@@ -1,0 +1,72 @@
+{
+  "schema": "reference_battle_sandbox_recovery_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "change_request_id": "CR-M10-LOCAL-ACTION-ENVELOPE-RECOVERY-20260926-001",
+  "scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+  "prior_strict_attempt": {
+    "contract": "data/sandbox/4.4.54/reference_battle_sandbox_contract_v1.json",
+    "decision": "BLOCKED_BY_FROZEN_UNKNOWN",
+    "source_backed_full_action_available": false,
+    "finding_preserved": "No complete source-backed selectable HSR action joins legal action, target, full effect closure, action completion, scheduler progression and Terra publication."
+  },
+  "engineering_boundary": {
+    "engineering_sandbox": true,
+    "full_source_backed_hsr_action_binding": false,
+    "native_semantics_complete": false,
+    "native_evidenced": false,
+    "golden_count": 0,
+    "native_trace": [],
+    "m7": "DEFERRED",
+    "m9_transition_scope": "SANDBOX_RESOURCE_V1_UNCHANGED",
+    "validation": "DETERMINISTIC_REPLAY_ONLY"
+  },
+  "evidence": {
+    "action_admission_and_envelope": "SANDBOX_EXTENSION",
+    "reference_settlement": "REFERENCE_MODEL",
+    "local_completion_and_orchestration": "SANDBOX_EXTENSION",
+    "ordinary_scheduler_calculation_after_local_success": "REFERENCE_MODEL",
+    "terminal_bound": "SANDBOX_EXTENSION"
+  },
+  "action_envelope": {
+    "schema": "ReferenceActionEnvelope/1",
+    "identity": "SHA-256 over domain-separated canonical-v2 envelope document",
+    "required": ["namespace", "version", "action_id", "actor_id", "ordered target_ids", "candidate_occurrence_id", "fixture_id", "exact REF02 packet", "reference gate", "reference settlement identity", "reference scope", "explicit local resource cost equal to the packet debit", "completion policy", "schedule policy", "separate evidence labels"],
+    "legal_completeness": "COMPLETE_FOR_SUPPORTED_SCOPE means complete for the caller-declared ordered local envelopes for the current actor. It is not a complete HSR skill list. Each envelope is read-only preflighted for cost, target, exact REF02 settlement, real mutation, nonlethal continuation and ordinary scheduler closure; any blocker suppresses the entire view.",
+    "packet_gate": "OrdinaryReferencePacket.from_dict and ReferenceAdapterGate.require reject unsupported fields, packet shape, owner, scope and version/hash mismatches before publication.",
+    "fixture": "tests/game_data/test_reference_damage_v2.py:packet, instantiated with two explicit synthetic participants; no source-backed character or native action claim"
+  },
+  "session_state": {
+    "schema": "ReferenceBattleSessionState/1",
+    "authoritative_container": "TerraBattleState",
+    "store": "scenario_runtime",
+    "key": "reference_sandbox/local_action_session/1",
+    "write_policy": "A versioned complete reference combat/timeline payload is appended once per committed action. The latest ordinal is the local session state; every prior ordinal is retained and validated.",
+    "initial_policy": "The supplied CustomScenario contains a complete Terra initial state with empty typed and opaque stores and a NON_TERMINAL empty-side policy; conflicting or unresolved initial families block. Reference combat entities, resource, ordinary timeline, speeds, envelopes and terminal bound are supplied explicitly.",
+    "snapshot_hash": "TerraSnapshotV2 plus semantic_hash_v2 covers the store payload, revision, RNG, allocator and local policy identity.",
+    "frozen_terra_schema_modified": false,
+    "opaque_unresolved_store_used_as_executable_state": false
+  },
+  "completion_schedule_terminal": {
+    "completion_policy": "LOCAL_ACTION_COMMIT_MEANS_COMPLETED_SUCCESS/1",
+    "completion_evidence": "SANDBOX_EXTENSION",
+    "completion_meaning": "Only after the complete declared reference settlement passes and commits, a local SUCCESS task is supplied to the reference ordinary scheduler. This does not evidence native HSR action completion.",
+    "schedule_policy": "REFERENCE_ORDINARY_AFTER_LOCAL_SUCCESS/1",
+    "schedule_inputs": "Explicit ordinary action order, delays and positive speeds; pending inserted/special actions are absent from this local scope.",
+    "scheduler": "SemanticExecutor.advance_ordinary_after_completed_action using an explicit local SUCCESS TaskStep; next actor remains REFERENCE_MODEL calculation over local inputs.",
+    "terminal_policy": "LOCAL_MAX_COMMITTED_ACTIONS/1",
+    "terminal_meaning": "The caller-declared positive max_actions produces CONTINUE or CUSTOM_TERMINAL. It is not official Stage victory.",
+    "unsupported": ["lethal continuation", "native death/revive events", "pending inserted or special scheduler arbitration", "unknown Terra initial stores", "partial legal-action scope", "unsupported packet fields", "no combat mutation", "official Stage progression"]
+  },
+  "publication": {
+    "preflight": "Legal view, selected envelope, explicit target, REF02 settlement and ordinary next-turn transition all complete on private values before Terra candidate construction.",
+    "commit": "Append one local scenario_runtime payload and advance Terra published revision, replay sequence and effect sequence exactly once; RNG and allocator are copied unchanged.",
+    "rejection": "The immutable source session, Terra state, combat payload, hash, revision, RNG, allocator, turn and completion history remain byte-identical."
+  },
+  "replay": {
+    "schema": "ReferenceBattleReplay/1",
+    "method": "Reconstruct the complete session from serialized spec and initial snapshot, then independently execute every selected action and compare the full canonical step record.",
+    "checks": ["legal actions", "target", "envelope and settlement identities", "reference combat before/after and deltas", "local completion policy", "ordinary scheduler state and next actor", "terminal", "Terra snapshots and hashes", "revision", "RNG", "allocator", "separate evidence labels"],
+    "validation": "DETERMINISTIC_REPLAY_ONLY"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "reference_battle_sandbox_master/1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "content_target": "HSR-4.4.54",
   "change_request_id": "CR-M10-END-TO-END-REFERENCE-SANDBOX-20260926-001",
   "branch": "terra/implementation",
@@ -25,26 +25,223 @@
   "milestone": {
     "id": "M10",
     "title": "END-TO-END REFERENCE BATTLE SANDBOX READY",
-    "status": "BLOCKED_BY_FROZEN_UNKNOWN",
-    "sandbox_established": false,
-    "closure_decision": "NOT_DONE",
-    "blocking_seam": "No existing qualifying complete combat action connects REF03 legal-action proposals, REF02 or source-backed reference settlement, action-completion scheduling, and a safe Terra write map.",
-    "independent_of_m7": true
+    "status": "DONE",
+    "sandbox_established": true,
+    "closure_decision": "DONE_LOCAL_ENGINEERING_SANDBOX_ONLY",
+    "blocking_seam": null,
+    "independent_of_m7": true,
+    "scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+    "full_source_backed_hsr_action_binding": false
   },
   "tasks": [
-    {"task_id": "M10S-001", "title": "Capability audit and supported-scope contract", "status": "DONE", "dependencies": [], "artifact": "data/sandbox/4.4.54/reference_battle_sandbox_contract_v1.json"},
-    {"task_id": "M10S-002", "title": "Explicit session reset and state contract", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-001"], "blocker": "No qualifying full action contract to bind the reset profile and mutable stores."},
-    {"task_id": "M10S-003", "title": "Legal actions and acting-entity bridge", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-002"], "blocker": "REF03 requires complete caller proposals; no qualifying fixture supplies an exhaustive action set."},
-    {"task_id": "M10S-004", "title": "Reference settlement to atomic Terra state bridge", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-003"], "blocker": "Isolated damage components and synthetic packet cannot be promoted to a complete action transaction."},
-    {"task_id": "M10S-005", "title": "Schedule and custom terminal integration", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-004"], "blocker": "No complete action success marker and callback closure; next-turn selection cannot be published."},
-    {"task_id": "M10S-006", "title": "Session result, snapshot and independent replay", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-005"], "blocker": "No committed session transition exists to record or replay."},
-    {"task_id": "M10S-007", "title": "Real source-backed end-to-end fixture", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-003", "M10S-004", "M10S-005", "M10S-006"], "blocker": "Reviewed fixtures are operation components, modifier callbacks, or synthetic unit packets, not complete selectable actions."},
-    {"task_id": "M10S-008", "title": "Closure review", "status": "BLOCKED_BY_FROZEN_UNKNOWN", "dependencies": ["M10S-001"], "review_completed": true, "decision": "SANDBOX_ESTABLISHED_NO; no production bridge authored under the safe bridge rule."}
+    {
+      "task_id": "M10S-001",
+      "title": "Capability audit and supported-scope contract",
+      "status": "DONE",
+      "dependencies": [],
+      "artifact": "data/sandbox/4.4.54/reference_battle_sandbox_contract_v1.json"
+    },
+    {
+      "task_id": "M10S-002",
+      "title": "Explicit session reset and state contract",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-001"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Explicit CustomScenario, REF02 combat state, ordinary timeline, speeds, local envelopes and terminal bound reset into Terra scenario_runtime.",
+      "artifact": "src/hsr_battle_agent/reference_sandbox/contract.py"
+    },
+    {
+      "task_id": "M10S-003",
+      "title": "Legal actions and acting-entity bridge",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-002"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Acting entity derives from reference ordinary timeline; REF03 PlayerLegalAction machinery returns the ordered complete caller-declared local envelope scope.",
+      "artifact": "src/hsr_battle_agent/reference_sandbox/session.py"
+    },
+    {
+      "task_id": "M10S-004",
+      "title": "Reference settlement to atomic Terra state bridge",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-003"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "REF02 whole-packet settlement is independently calculated before immutable Terra candidate construction; HP, toughness and resource change in the two-turn fixture.",
+      "artifact": "src/hsr_battle_agent/reference_sandbox/session.py"
+    },
+    {
+      "task_id": "M10S-005",
+      "title": "Schedule and custom terminal integration",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-004"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Local SUCCESS completion is explicitly SANDBOX_EXTENSION; existing reference ordinary scheduler selects the next actor; caller-declared max-actions produces CUSTOM_TERMINAL.",
+      "artifact": "src/hsr_battle_agent/reference_sandbox/session.py"
+    },
+    {
+      "task_id": "M10S-006",
+      "title": "Session result, snapshot and independent replay",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-005"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Terra snapshot/hash/clone and independent serialized action replay verify complete before/after records and reject tampering.",
+      "artifact": "src/hsr_battle_agent/reference_sandbox/replay.py"
+    },
+    {
+      "task_id": "M10S-007",
+      "title": "Two-turn complete REF02 local engineering fixture",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-003",
+        "M10S-004",
+        "M10S-005",
+        "M10S-006"
+      ],
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Two synthetic participants instantiate the complete REF02 packet structure; both commit real HP and toughness changes. No source-backed skill is claimed.",
+      "artifact": "tests/reference_sandbox/test_local_session.py"
+    },
+    {
+      "task_id": "M10S-008",
+      "title": "Closure review",
+      "status": "DONE",
+      "dependencies": [
+        "M10S-001"
+      ],
+      "review_completed": true,
+      "recovery_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+      "acceptance_evidence": "Focused two-turn, rejection, clone, replay and tamper tests pass; review confines DONE to the local engineering envelope.",
+      "artifact": "data/sandbox/4.4.54/reference_battle_sandbox_recovery_contract_v1.json",
+      "decision": "SANDBOX_ESTABLISHED_YES_LOCAL_ENVELOPE_ONLY"
+    }
   ],
   "validation_class": "DETERMINISTIC_REPLAY_ONLY",
   "native_promotion": false,
-  "production_files_modified": false,
+  "production_files_modified": true,
   "frontend_modified": false,
   "m9_modified": false,
-  "next_safe_step": "Review a complete explicitly scoped 4.4.54 reference combat action and its action-completion dependencies as a separate semantic-evidence CR; then re-enter M10S-002 without editing the frozen Terra authority."
+  "next_safe_step": "M11 may separately bind this session as a planner transition scope. Full source-backed HSR action binding remains independent evidence debt.",
+  "strict_source_backed_attempt_history": {
+    "change_request_id": "CR-M10-END-TO-END-REFERENCE-SANDBOX-20260926-001",
+    "scope": "REFERENCE_BATTLE_SANDBOX_V1",
+    "contract_ref": "data/sandbox/4.4.54/reference_battle_sandbox_contract_v1.json",
+    "milestone": {
+      "id": "M10",
+      "title": "END-TO-END REFERENCE BATTLE SANDBOX READY",
+      "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+      "sandbox_established": false,
+      "closure_decision": "NOT_DONE",
+      "blocking_seam": "No existing qualifying complete combat action connects REF03 legal-action proposals, REF02 or source-backed reference settlement, action-completion scheduling, and a safe Terra write map.",
+      "independent_of_m7": true
+    },
+    "tasks": [
+      {
+        "task_id": "M10S-001",
+        "title": "Capability audit and supported-scope contract",
+        "status": "DONE",
+        "dependencies": [],
+        "artifact": "data/sandbox/4.4.54/reference_battle_sandbox_contract_v1.json"
+      },
+      {
+        "task_id": "M10S-002",
+        "title": "Explicit session reset and state contract",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-001"
+        ],
+        "blocker": "No qualifying full action contract to bind the reset profile and mutable stores."
+      },
+      {
+        "task_id": "M10S-003",
+        "title": "Legal actions and acting-entity bridge",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-002"
+        ],
+        "blocker": "REF03 requires complete caller proposals; no qualifying fixture supplies an exhaustive action set."
+      },
+      {
+        "task_id": "M10S-004",
+        "title": "Reference settlement to atomic Terra state bridge",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-003"
+        ],
+        "blocker": "Isolated damage components and synthetic packet cannot be promoted to a complete action transaction."
+      },
+      {
+        "task_id": "M10S-005",
+        "title": "Schedule and custom terminal integration",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-004"
+        ],
+        "blocker": "No complete action success marker and callback closure; next-turn selection cannot be published."
+      },
+      {
+        "task_id": "M10S-006",
+        "title": "Session result, snapshot and independent replay",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-005"
+        ],
+        "blocker": "No committed session transition exists to record or replay."
+      },
+      {
+        "task_id": "M10S-007",
+        "title": "Real source-backed end-to-end fixture",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-003",
+          "M10S-004",
+          "M10S-005",
+          "M10S-006"
+        ],
+        "blocker": "Reviewed fixtures are operation components, modifier callbacks, or synthetic unit packets, not complete selectable actions."
+      },
+      {
+        "task_id": "M10S-008",
+        "title": "Closure review",
+        "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+        "dependencies": [
+          "M10S-001"
+        ],
+        "review_completed": true,
+        "decision": "SANDBOX_ESTABLISHED_NO; no production bridge authored under the safe bridge rule."
+      }
+    ],
+    "result": "BLOCKED_BY_FROZEN_UNKNOWN",
+    "source_backed_full_action_available": false
+  },
+  "recovery": {
+    "change_request_id": "CR-M10-LOCAL-ACTION-ENVELOPE-RECOVERY-20260926-001",
+    "starting_head": "90b5dc5aef1db5f22c6620b37ab699f1c5d0bf55",
+    "scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+    "contract_ref": "data/sandbox/4.4.54/reference_battle_sandbox_recovery_contract_v1.json",
+    "source_backed_full_action_available": false,
+    "local_action_envelope_used": true,
+    "sandbox_established": true,
+    "engineering_sandbox": true,
+    "native_semantics_complete": false,
+    "golden_count": 0,
+    "native_trace": [],
+    "m7_deferred": true,
+    "git_writes": false,
+    "validation": {
+      "focused_reference_sandbox": "5 tests OK",
+      "reference_and_terra_regressions": "61 tests OK",
+      "documented_root_discovery": "1766 tests OK",
+      "control_json_duplicate_keys_and_authority": "PASS",
+      "class": "DETERMINISTIC_REPLAY_ONLY"
+    }
+  }
 }
