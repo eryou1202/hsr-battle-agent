@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.48",
+  "plan_version": "1.0.53",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -8,8 +8,8 @@
     "production_implementation_performed": true,
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M4",
-    "next_milestone": "M5",
+    "current_milestone": "M5",
+    "next_milestone": "M7",
     "terra_f02_status": "COMPLETE",
     "terra_r01_status": "COMPLETE",
     "terra_g01_status": "COMPLETE",
@@ -17,6 +17,10 @@
     "terra_ref01_status": "COMPLETE",
     "terra_ref02_status": "COMPLETE",
     "terra_ref03_status": "COMPLETE",
+    "terra_c01_status": "COMPLETE",
+    "terra_v01_status": "COMPLETE",
+    "terra_v02_status": "COMPLETE",
+    "terra_v03_status": "COMPLETE_INFRASTRUCTURE_NO_QUALIFYING_ORACLE",
     "golden": 0
   },
   "authority_precedence": [
@@ -372,32 +376,56 @@
     {
       "id": "M4",
       "title": "CUSTOM SINGLE-WAVE SCENARIO RUNNABLE",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "exit_criteria": [
         "C01 DONE",
         "explicit custom init/terminal rule",
         "no official Stage claim"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-25",
+      "closure_evidence": {
+        "custom_scenario": "PASS - C01-001 provides explicit SANDBOX_EXTENSION participants, complete Terra initial state and an optional StageID that is never fabricated",
+        "terminal_rule": "PASS - namespace, version, rule identity, empty-side, simultaneous-exhaustion and result policies are explicit and rule identity changes snapshot/hash",
+        "official_claim": "PASS - custom exhaustion reports only custom outcomes; there is no official Stage fallback, wave advance or native victory claim"
+      }
     },
     {
       "id": "M5",
       "title": "MULTI-TURN PLANNING-READY SCENARIO",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED",
       "exit_criteria": [
         "stable legal_actions for supported scope",
         "meaningful action depth",
         "clone/hash/RNG/atomic step replay passes"
-      ]
+      ],
+      "closure_decision": "BLOCKED_LOCAL_CAPABILITY",
+      "closed_at": "2026-09-25",
+      "corrective_review_reopened_at": "2026-09-25",
+      "closure_evidence": {
+        "legal_actions": "PASS - supported REFERENCE_MODEL candidate/action views repeat deterministically and settle only within their declared supported scope",
+        "action_depth": "BLOCKED - five sequential strict no-op commits advance only revision/transaction bookkeeping; reference scheduler selection and Decimal resource settlement are detached pure results and do not publish a battle-state transition",
+        "replay": "PASS - midway clone/replay preserves complete state, snapshot hash, RNG position and revision/effect/replay sequences; rejection is byte-identical",
+        "planner_readiness": "NOT SATISFIED - no already-authorized strict/reference/custom path publishes a genuine battle-relevant state transition, so meaningful planner branching is not yet demonstrated"
+      },
+      "historical_closure_note": "Revision 1.0.51 marked M5 DONE from deterministic no-op depth. CR-POST-FRONTIER-CORRECTIVE-20260925-001 preserves that history but supersedes the milestone conclusion after strict review."
     },
     {
       "id": "M6",
       "title": "SOURCE-BACKED COVERAGE REQUALIFIED",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "exit_criteria": [
         "C02 and V01 DONE",
         "historical figures remain historical",
         "new ledgers report measured categories separately"
-      ]
+      ],
+      "closure_decision": "DONE",
+      "closed_at": "2026-09-25",
+      "closure_evidence": {
+        "tasks": "PASS - C02-001 and V01-001 are DONE and strongly reviewed",
+        "history": "PASS - 14042/10685 records, 19715/4738 entrypoints, 59595 operations, 1528 reference records and 4-record/27-component source-backed figures remain explicitly historical",
+        "requalification": "PASS - all 28 frozen historical fixtures are ledgered separately as reference, quarantined or blocked; no component, mapping or entrypoint is promoted"
+      }
     },
     {
       "id": "M7",
@@ -407,7 +435,9 @@
         "V02/V03 DONE",
         "independent version-qualified oracle",
         "first qualifying fixture promoted; until then Golden=0"
-      ]
+      ],
+      "closure_decision": "BLOCKED_BY_INDEPENDENT_EVIDENCE",
+      "blocker": "V02-001 and V03-001 are DONE, but no qualifying independent, version-qualified native oracle exists. Deterministic replay, reference/custom output and same-code-path expectations cannot increment Golden; Golden remains 0."
     },
     {
       "id": "M8",
@@ -417,7 +447,9 @@
         "M5 minimum plus validation label in every trajectory",
         "scenario rule identity/RNG/revision captured",
         "unsupported trajectories excluded, not silently truncated"
-      ]
+      ],
+      "locally_startable": false,
+      "start_blocker": "M5 is BLOCKED_LOCAL_CAPABILITY: deterministic strict no-op replay does not yet provide meaningful battle-state branching."
     }
   ],
   "phase_dag": {
@@ -6768,7 +6800,7 @@
       "freeze_ticket": "TERRA-C01",
       "local_phase": "CUSTOM_SCENARIOS",
       "title": "Explicit custom initialization and terminal extension",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -6836,7 +6868,25 @@
       ],
       "next_tasks": [
         "V02-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - The custom scenario owns an explicit complete Terra initial state and ordered participants; StageID is optional and never fabricated. Terminal namespace/version/rule and all exhaustion/result policies are explicit and observable in the terminal result, remain SANDBOX_EXTENSION, alter snapshot/hash identity, and cannot claim official Stage, wave or native victory behavior.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/custom_scenario.py",
+        "tests/battle_sandbox/test_custom_scenario.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_custom_scenario -v => Ran 9 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.49",
+        "evidence_mode": "SANDBOX_EXTENSION",
+        "stage_id_fabricated": false,
+        "official_stage_claim": false,
+        "native_victory_claim": false
+      },
+      "corrective_review_result": "CR-POST-FRONTIER-CORRECTIVE-20260925-001 PASS - CustomTerminalResult now carries the exact selected ResultPolicy; both policy values are observable and hash-distinct without adding official semantics."
     },
     {
       "task_id": "C02-001",
@@ -6933,7 +6983,7 @@
       "freeze_ticket": "TERRA-V01",
       "local_phase": "SOURCE_BACKED_REQUALIFICATION",
       "title": "Requalify historical fixtures by actual frontier",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -7002,14 +7052,30 @@
       ],
       "next_tasks": [
         "V02-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Every frozen historical source-backed fixture is ledgered once at its actual reference/quarantined/blocked frontier. Historical operation, entrypoint, record, component and Golden measurements remain separate; C02 mapping facts confer no execution coverage, rejected fixtures retain blockers, and no executor output supplies expected values.",
+      "changed_files": [
+        "tests/game_data/test_source_backed_requalification.py",
+        "data/semantics/4.4.54/full_reconstruction/terra_source_requalification_v1.json"
+      ],
+      "test_results": [
+        "python -m unittest tests.game_data.test_source_backed_requalification -v => Ran 7 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.50",
+        "historical_fixtures_ledgered": 28,
+        "native_promotions": 0,
+        "golden": 0
+      }
     },
     {
       "task_id": "V02-001",
       "freeze_ticket": "TERRA-V02",
       "local_phase": "DETERMINISTIC_INTEGRATION",
       "title": "Cross-system multi-turn deterministic replay",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -7077,14 +7143,31 @@
       ],
       "next_tasks": [
         "V03-001"
-      ]
+      ],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - Supported custom/reference views and the existing strict atomic no-op frontier replay deterministically across a midway clone. Complete state, semantic hash, RNG position and revision sequences match; rejected work is byte-identical, and profile/rule changes alter cached snapshot/certificate/plan bindings without becoming native proof.",
+      "changed_files": [
+        "tests/battle_sandbox/test_multi_turn_replay_v2.py"
+      ],
+      "test_results": [
+        "python -m unittest tests.battle_sandbox.test_multi_turn_replay_v2 -v => Ran 8 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.51",
+        "production_files_changed": 0,
+        "clone_replay": "PASS",
+        "rejected_state_identity": "PASS",
+        "determinism_is_native_proof": false
+      },
+      "corrective_review_result": "CR-POST-FRONTIER-CORRECTIVE-20260925-001 PASS_WITH_MILESTONE_DOWNGRADE - V02 remains valid deterministic integration infrastructure, but its strict state steps are all no-op commits. Detached reference scheduling/resource results do not establish meaningful state-bearing planner depth; M5 is BLOCKED_LOCAL_CAPABILITY."
     },
     {
       "task_id": "V03-001",
       "freeze_ticket": "TERRA-V03",
       "local_phase": "INDEPENDENT_VALIDATION",
       "title": "Independent oracle registry and Golden promotion gate",
-      "status": "NOT_STARTED",
+      "status": "DONE",
       "executor_class": "SOL_IMPLEMENT",
       "review_class": "SOL_REVIEW_REQUIRED",
       "dependencies": [
@@ -7151,7 +7234,25 @@
         "Record blockers and continuation point in master task notes without changing the DAG.",
         "If quota/time is low, stop coding and persist IN_PROGRESS; never claim DONE."
       ],
-      "next_tasks": []
+      "next_tasks": [],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - The oracle registry validates required metadata and declared classification for exact-version NATIVE_EVIDENCED expectations with source identity/hash and provenance; it does not authenticate caller assertions, so external authority review remains required. It rejects executor-generated, same-code-path, reference, custom, unqualified and missing-provenance candidates, deduplicates oracle and expectation identities, and detects deliberate mismatches. Infrastructure is complete, but the repository ledger contains no qualifying oracle, so Golden remains 0 and M7 remains evidence-blocked.",
+      "changed_files": [
+        "src/hsr_battle_agent/validation/oracles.py",
+        "tests/validation/test_oracle_registry.py",
+        "data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json"
+      ],
+      "test_results": [
+        "python -m unittest tests.validation.test_oracle_registry -v => Ran 9 tests, OK"
+      ],
+      "checkpoint": {
+        "master_revision": "1.0.52",
+        "qualifying_independent_oracles": 0,
+        "golden": 0,
+        "m7_status": "BLOCKED_BY_INDEPENDENT_EVIDENCE"
+      },
+      "corrective_review_result": "CR-POST-FRONTIER-CORRECTIVE-20260925-001 PASS - Different oracle_id values cannot double-count one expectation_identity; oracle_id uniqueness remains enforced, and registry wording now distinguishes metadata validation from provenance authentication."
     },
     {
       "task_id": "EVIDENCE-D0",
@@ -8164,15 +8265,15 @@
         "value": 0,
         "status": "NOT_REQUALIFIED"
       },
-      {
-        "metric": "source_backed_executed_component_coverage",
-        "value": 27,
-        "status": "HISTORICAL_BASELINE_ONLY"
-      },
-      {
-        "metric": "source_backed_executed_record_coverage",
-        "value": 4,
-        "status": "HISTORICAL_BASELINE_ONLY"
+    {
+      "metric": "source_backed_executed_component_coverage",
+      "value": 0,
+      "status": "POST_ASTRA_NATIVE_REQUALIFIED_ZERO; HISTORICAL_BASELINE_27_RETAINED_SEPARATELY"
+    },
+    {
+      "metric": "source_backed_executed_record_coverage",
+      "value": 0,
+      "status": "POST_ASTRA_NATIVE_REQUALIFIED_ZERO; HISTORICAL_BASELINE_4_RETAINED_SEPARATELY"
       },
       {
         "metric": "native_trace_validation",
@@ -8184,11 +8285,11 @@
         "value": 0,
         "status": "GOLDEN_UNAVAILABLE"
       },
-      {
-        "metric": "sandbox_extension_capability",
-        "value": 0,
-        "status": "NOT_IMPLEMENTED"
-      }
+    {
+      "metric": "sandbox_extension_capability",
+      "value": 1,
+      "status": "C01_EXPLICIT_CUSTOM_SCENARIO"
+    }
     ]
   },
   "planner_start_conditions": {
@@ -8687,16 +8788,52 @@
           "construction alias isolation and structural private-field audit"
         ],
         "validation": "G01-001 exact 102 OK; combined G01-001..004 exact 175 OK; FAST_UNIT 790 + 586 + 185 = 1561 OK; root documented scope 1569 OK. Duplicate-key, authority reconciliation and DAG/readiness validators PASS."
+      },
+      {
+        "change_request_id": "CR-POST-FRONTIER-CORRECTIVE-20260925-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "Post-frontier strong review reproduced expectation-identity double counting in the V03 registry, found C01's selected result policy absent from terminal results, and determined that V02's no-op revision depth does not satisfy M5's meaningful state-bearing planner-depth criterion.",
+        "confirmed_findings": [
+          "Two otherwise qualifying records with different oracle_id values and the same expectation_identity both incremented OracleRegistry.golden_count.",
+          "CustomTerminalRule.result_policy affected rule hash but was not recoverable from CustomTerminalResult.",
+          "V02 multi-turn replay publishes only strict no-op revision/transaction bookkeeping; its scheduler candidates and Decimal resource settlement are detached REFERENCE_MODEL values, not Terra battle-state transitions.",
+          "No already-implemented authorized strict, reference or custom path publishes a genuine battle-relevant multi-turn state transition without inventing semantics."
+        ],
+        "affected_task_ids": [
+          "C01-001",
+          "V02-001",
+          "V03-001"
+        ],
+        "files": [
+          "src/hsr_battle_agent/validation/oracles.py",
+          "tests/validation/test_oracle_registry.py",
+          "src/hsr_battle_agent/battle_sandbox/custom_scenario.py",
+          "tests/battle_sandbox/test_custom_scenario.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Local validation and custom-result representation correction. Oracle IDs and expectation IDs are independently unique; caller provenance remains declared metadata pending external authority review. Custom result policy becomes observable. V02 remains DONE as deterministic integration infrastructure, while M5 is downgraded to BLOCKED_LOCAL_CAPABILITY and M8 remains not locally startable.",
+        "rollback": "Revert only this request's five listed file edits and restore master revision 1.0.52. Do not modify the uncommitted frontier implementation outside these corrections, frozen authority, the protected pair, or manufacture a state transition/oracle to preserve milestone status.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_POST_FRONTIER_CORRECTIVE_REVIEW_2026-09-25",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "different oracle_id values sharing one expectation_identity reject without double-counting",
+          "duplicate oracle_id remains rejected independently",
+          "both CustomTerminalRule result policies survive evaluation and remain SANDBOX_EXTENSION/hash-distinct",
+          "V02 deterministic replay remains green while the control plane records the absence of state-bearing planner depth",
+          "FAST_UNIT, duplicate-key, authority reconciliation and DAG/readiness validation"
+        ],
+        "validation": "Focused corrective suites V03 9 + C01 9 + V02 8 = 26 OK; FAST_UNIT 586 + 889 + 194 = 1669 OK; duplicate-key, authority reconciliation and 75-task DAG/readiness validators PASS. Golden remains 0 and no frozen/protected file changed."
       }
     ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-25",
-    "status": "M2_M3_EXECUTION_FRONTIER_COMPLETE",
-    "head_at_run_start": "93e21c6bb917e9e4141f3858bb2525ca14a73e95",
-    "head_at_run_end": "93e21c6bb917e9e4141f3858bb2525ca14a73e95",
+    "status": "POST_FRONTIER_CORRECTIVE_REVIEW_COMPLETE",
+    "head_at_run_start": "ff7632c0edff835e7126bfef9728867ce80c9313",
+    "head_at_run_end": "ff7632c0edff835e7126bfef9728867ce80c9313",
     "approved_change_request": null,
-    "plan_version": "1.0.48",
+    "plan_version": "1.0.53",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
     "terra_g01": "COMPLETE",
@@ -8705,32 +8842,27 @@
     "terra_ref02": "COMPLETE",
     "terra_ref03": "COMPLETE",
     "terra_c02": "COMPLETE",
-    "current_milestone": "M4",
+    "terra_c01": "COMPLETE",
+    "terra_v01": "COMPLETE",
+    "terra_v02": "COMPLETE",
+    "terra_v03": "COMPLETE_INFRASTRUCTURE_NO_QUALIFYING_ORACLE",
+    "current_milestone": "M5_BLOCKED_LOCAL_CAPABILITY",
     "changed_files": [
-      "src/hsr_battle_agent/game_data/followup_ledger.py",
-      "tests/game_data/test_followup_ledger.py",
-      "src/hsr_battle_agent/battle_runtime_v2/modifier_queries.py",
-      "tests/battle_runtime/test_modifier_queries_v2.py",
-      "src/hsr_battle_agent/game_data/reference_operation_adapters.py",
-      "tests/game_data/test_reference_values_resources_v2.py",
-      "src/hsr_battle_agent/game_data/reference_damage_adapters.py",
-      "tests/game_data/test_reference_damage_v2.py",
-      "src/hsr_battle_agent/game_data/reference_schedule_v2.py",
-      "src/hsr_battle_agent/battle_sandbox/legal_actions.py",
-      "tests/game_data/test_reference_schedule_v2.py",
+      "src/hsr_battle_agent/battle_sandbox/custom_scenario.py",
+      "tests/battle_sandbox/test_custom_scenario.py",
+      "tests/game_data/test_source_backed_requalification.py",
+      "data/semantics/4.4.54/full_reconstruction/terra_source_requalification_v1.json",
+      "tests/battle_sandbox/test_multi_turn_replay_v2.py",
+      "src/hsr_battle_agent/validation/oracles.py",
+      "tests/validation/test_oracle_registry.py",
+      "data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. C02 was reviewed as exact mapping-only import; G02 and REF01-REF03 were implemented and strongly reviewed within their exact allowlists. Reference objects never satisfy native gates. No frozen authority or protected file was modified.",
-    "validation": "Exact task suites: C02 67, G02 9, REF01 10, REF02 9, REF03 13 (108 total), all OK; task plus strict native/reference isolation regressions 173 OK; relevant existing game_data reference regressions 101 OK; FAST_UNIT 586 + 872 + 194 = 1652 OK; root documented scope 1660 OK. Duplicate-key, 20-file reconciled semantic-authority and 75-task DAG/readiness validators PASS; readiness is exactly C01-001 and V01-001.",
-    "next_ready_tasks": [
-      "C01-001",
-      "V01-001"
-    ]
+    "worktree_note": "Git write operations were disabled. Corrective review closed oracle expectation-identity double counting, made the custom result policy observable, and retained V02 as DONE deterministic infrastructure while downgrading M5 because no authorized state-bearing battle action exists. M8 is not locally startable; Golden remains 0 and M7 remains evidence-blocked. No frozen authority or protected file was modified.",
+    "validation": "Focused corrective suites: V03 9, C01 9 and V02 8 = 26 OK; FAST_UNIT 586 + 889 + 194 = 1669 OK. Duplicate-key, authority reconciliation and 75-task DAG/readiness validators PASS; readiness remains empty because M5 is a milestone-local capability blocker rather than an invented READY engineering task. Golden 0 and NATIVE_TRACE empty.",
+    "next_ready_tasks": []
   },
-  "next_ready_tasks": [
-    "C01-001",
-    "V01-001"
-  ],
+  "next_ready_tasks": [],
   "change_history": [
     {
       "revision": "1.0.0",
@@ -9052,6 +9184,41 @@
       "change_request_id": null,
       "change": "Implemented and strongly reviewed REF03-001. Scheduler candidates, AI opportunities and player legal actions are separate; ordinary families are not merged; native unresolved ties block and stable prior-list ties are reference-only. Supported-scope action query/step/settlement is deterministic, while unsupported target/terminal gates return BLOCKED with no partial actions or debit. Strong review added detached ownership for target and comparator sequences. Exact suite 13 OK. TERRA-REF01 through TERRA-REF03 and M3 are COMPLETE; current milestone advances to M4. C01-001 and V01-001 are READY and deliberately unentered.",
       "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.49",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed C01-001 explicit custom scenario initialization. StageID is optional and never fabricated; ordered participants and complete Terra state are privately owned; terminal namespace/version/rule plus empty-side, simultaneous-exhaustion and result policies are explicit and hash-visible. Results remain SANDBOX_EXTENSION and make no official Stage, wave or native victory claim. Exact suite 8 OK; M4 is DONE.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.50",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed test/ledger-only V01-001. All 28 frozen historical source-backed fixtures are ledgered at the current reference, quarantined or blocked frontier; rejected entries retain blockers and historical operation/entrypoint/record/component metrics remain separate. C02 mapping coverage is explicitly non-executable and no executor output supplies an expectation. Exact suite 7 OK; M6 is DONE with zero native promotion and Golden 0.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.51",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed test-only V02-001. Supported custom/reference views and the existing strict atomic no-op frontier run through meaningful multi-turn depth; midway clone/replay preserves snapshots, semantic hashes, RNG position and revision sequences, while rejection preserves complete state identity. Profile/rule changes invalidate cached identities, and determinism is not treated as native proof. Exact suite 8 OK; M5 is DONE.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.52",
+      "date": "2026-09-25",
+      "change_request_id": null,
+      "change": "Implemented and strongly reviewed V03-001 independent-oracle registry/gate infrastructure. Exact-version native expectations require independent provenance and source/expectation identities; executor-generated, same-code-path, reference, custom, unqualified and missing-provenance candidates reject, and deliberate mismatch is detected. Exact suite 8 OK. No qualifying repository oracle exists, so Golden remains 0 and M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE; no synthetic oracle was added.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.53",
+      "date": "2026-09-25",
+      "change_request_id": "CR-POST-FRONTIER-CORRECTIVE-20260925-001",
+      "change": "Post-frontier corrective review rejected expectation-identity double counting independently of oracle_id, clarified that V03 validates declared metadata but cannot authenticate caller provenance, and made both C01 custom result policies directly observable and hash-distinct. Strict V02 review found only revision-bearing no-op Terra commits plus detached reference results, so V02 remains DONE as deterministic infrastructure but M5 is downgraded to BLOCKED_LOCAL_CAPABILITY and M8 is not locally startable. M4/M6 remain DONE; V03 remains DONE; M7 remains evidence-blocked and Golden 0.",
+      "review": "SOL_CORRECTIVE_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -9074,8 +9241,8 @@
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 61,
-      "NOT_STARTED": 4,
+      "DONE": 65,
+      "NOT_STARTED": 0,
       "BLOCKED": 10
     },
     "freeze_tickets": [
