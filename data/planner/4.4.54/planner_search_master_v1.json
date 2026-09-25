@@ -1,0 +1,147 @@
+{
+  "schema": "planner_search_master/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "phase": "POST_BASELINE_LOCAL_OBJECTIVE_PLANNER",
+  "change_request_id": "CR-M9-LOCAL-OBJECTIVE-PLANNER-20260926-001",
+  "change_request_status": "APPLIED_AND_VALIDATED",
+  "change_request": {
+    "reason": "The frozen M8 planner can enumerate and replay fixed-horizon local resource trajectories but cannot select plans for a caller-declared objective or report search completeness.",
+    "authorization": "USER_M9_LOCAL_OBJECTIVE_PLANNER_IMPLEMENTATION_2026-09-26",
+    "semantic_impact": "NONE_NATIVE; only caller-declared local resource search",
+    "evidence_impact": "NONE; REFERENCE_MODEL decisions, SANDBOX_EXTENSION transitions and DETERMINISTIC_REPLAY_ONLY validation remain unchanged",
+    "rollback": "Remove only the additive planner_search package, its focused tests and these two post-baseline control records. Preserve the frozen Terra master, landing record, M8 planner, sandbox/runtime, protected files and frontend.",
+    "astra_reopen_required": false
+  },
+  "starting_git_anchor": {
+    "branch": "terra/implementation",
+    "head": "620593240b10ab78ccfbb89bd5f5ada62ce57d70",
+    "git_writes_by_this_request": false
+  },
+  "frozen_baseline": {
+    "landing_record": "data/semantics/4.4.54/full_reconstruction/terra_4_4_54_landing_v1.json",
+    "terra_master": "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+    "terra_master_plan_version": "1.0.65",
+    "planner_data_contract": "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
+    "engineering_complete": true,
+    "native_validation_complete": false,
+    "m7": "BLOCKED_BY_INDEPENDENT_EVIDENCE",
+    "m7_deferred": true,
+    "m8": "DONE",
+    "golden": 0,
+    "native_trace": [],
+    "historical_terra_task_count": 85,
+    "terra_master_modified": false
+  },
+  "scope": "SANDBOX_RESOURCE_V1",
+  "contract_ref": "data/planner/4.4.54/planner_search_contract_v1.json",
+  "milestone": {
+    "id": "M9",
+    "title": "LOCAL OBJECTIVE PLANNING READY",
+    "status": "DONE",
+    "depends_on": ["M8", "M5"],
+    "independent_of": ["M7"],
+    "closure_criteria": [
+      "stable canonical objective identity and policy identity",
+      "deterministic bounded DFS with exact node counts and source order",
+      "complete-search and node-limit semantics proved",
+      "max_plans changes only returned count, never rank-1 or exploration",
+      "selected prefixes, including zero-step plans, independently replay",
+      "BLOCKED and REJECTED exclusions preserved and replayable",
+      "same inputs produce identical bytes and identities",
+      "M7, Golden, NATIVE_TRACE and all native evidence boundaries unchanged"
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "M9P-001",
+      "title": "Search policy and supported-scope contract",
+      "status": "DONE",
+      "dependencies": [],
+      "files": ["src/hsr_battle_agent/planner_search/policy.py", "data/planner/4.4.54/planner_search_contract_v1.json", "tests/planner_search/test_policy.py"],
+      "acceptance_evidence": "PlannerSearchPolicy/1 fixes BOUNDED_DFS, SOURCE_ORDER, ACCOUNT_ONLY and SANDBOX_RESOURCE_V1; positive bounds, canonical identity and zero search RNG draws are checked.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "NONE; search policy only",
+      "evidence_effect": "NONE; no permission or native promotion"
+    },
+    {
+      "task_id": "M9P-002",
+      "title": "Declarative objective and typed resource extractor",
+      "status": "DONE",
+      "dependencies": ["M9P-001"],
+      "files": ["src/hsr_battle_agent/planner_search/objective.py", "tests/planner_search/test_objective.py"],
+      "acceptance_evidence": "Three objective kinds use only the supplied contract resource; finite explicit Decimal thresholds, predicate operators and root evaluation are supported. Lexicographic metrics are explicitly deferred.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "CALLER_DECLARED_LOCAL_PREFERENCE_ONLY",
+      "evidence_effect": "NONE; objective values are not rewards or native labels"
+    },
+    {
+      "task_id": "M9P-003",
+      "title": "PlannerPlan and PlannerResult schemas",
+      "status": "DONE",
+      "dependencies": ["M9P-001", "M9P-002"],
+      "files": ["src/hsr_battle_agent/planner_search/result.py", "tests/planner_search/test_result.py"],
+      "acceptance_evidence": "Versioned, canonical result/plan records bind objective, policy, scenario, contract, complete state facts, steps, exclusions, counts, statuses and non-native evidence; zero-step plans are representable.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "NONE; post-baseline representation only",
+      "evidence_effect": "REFERENCE_MODEL / SANDBOX_EXTENSION / DETERMINISTIC_REPLAY_ONLY retained"
+    },
+    {
+      "task_id": "M9P-004",
+      "title": "Bounded deterministic DFS",
+      "status": "DONE",
+      "dependencies": ["M9P-001", "M9P-002", "M9P-003"],
+      "files": ["src/hsr_battle_agent/planner_search/search.py", "tests/planner_search/test_search.py"],
+      "acceptance_evidence": "Iterative source-order DFS evaluates root and committed successors, stops predicate branches on first satisfaction, ranks after search, preserves blocked/rejected exclusions and distinguishes FOUND, NO_PLAN_WITHIN_HORIZON, BLOCKED, LIMIT_REACHED and UNSUPPORTED.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "NONE; uses frozen SANDBOX_RESOURCE_V1 transition seam",
+      "evidence_effect": "No evidence promotion; search consumes existing labels"
+    },
+    {
+      "task_id": "M9P-005",
+      "title": "Repeated-state accounting and proof-gated dedup framework",
+      "status": "DONE",
+      "dependencies": ["M9P-004"],
+      "files": ["src/hsr_battle_agent/planner_search/search.py", "tests/planner_search/test_search.py"],
+      "acceptance_evidence": "Full semantic snapshot hash plus exact snapshot equality confirms a repeat; count only, with no pruning and no resource-amount shortcut.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "NONE; no state merge or branch omission",
+      "evidence_effect": "NONE"
+    },
+    {
+      "task_id": "M9P-006",
+      "title": "Prefix replay and read-only Python API",
+      "status": "DONE",
+      "dependencies": ["M9P-003", "M9P-004", "M9P-005"],
+      "files": ["src/hsr_battle_agent/planner_search/replay.py", "src/hsr_battle_agent/planner_search/api.py", "tests/planner_search/test_replay.py", "tests/planner_search/test_api.py"],
+      "acceptance_evidence": "Independent replay reconstructs legal views, plan/commit, exact state facts, objective and local termination for prefixes including zero steps; PlannerRequest and plan() expose a read-only Python API.",
+      "test_results": "Final focused planner_search suite: 17 OK; M8 planner regression: 38 OK; root documented discovery: 1761 OK.",
+      "semantic_effect": "NONE; reuses frozen public interfaces",
+      "evidence_effect": "Validation remains DETERMINISTIC_REPLAY_ONLY"
+    },
+    {
+      "task_id": "M9P-007",
+      "title": "M9 closure review",
+      "status": "DONE",
+      "dependencies": ["M9P-001", "M9P-002", "M9P-003", "M9P-004", "M9P-005", "M9P-006"],
+      "files": ["data/planner/4.4.54/planner_search_master_v1.json", "tests/planner_search/"],
+      "acceptance_evidence": "Objective/policy identities, source-order DFS, exact node counts, completeness and node-limit status, max_plans rank-1 invariance, zero-step and prefix replay, exclusions, byte-identical repeat runs and non-native evidence boundaries are verified. Frozen Terra files have no diff.",
+      "test_results": "Focused planner_search 17 OK after result-schema and exact-count tightening; search 7 OK after exact-count assertions; replay 3 OK after the final all-selected replay assertion. M8 planner regression 38 OK. Root documented discovery 1761 OK before those final additive refinements. Both post-baseline JSON records parse and pass duplicate-key validation.",
+      "semantic_effect": "NONE",
+      "evidence_effect": "NONE"
+    }
+  ],
+  "validation": {
+    "focused_planner_search": "17 tests OK on final code and assertions",
+    "planner_regression": "38 M8 planner tests OK",
+    "root_documented_scope": "1761 importable-package tests OK before final additive refinements; focused 17, search 7 and replay 3 then verified the affected surface. Root discovery is not the entire test tree.",
+    "control_plane": "Post-baseline master and contract parse and pass duplicate-key validation; frozen Terra master, landing, M8 planner and sandbox/runtime have no diff; no baseline source module changed",
+    "native_promotion": false
+  },
+  "files_changed_by_cr": [
+    "src/hsr_battle_agent/planner_search/",
+    "tests/planner_search/",
+    "data/planner/4.4.54/planner_search_contract_v1.json",
+    "data/planner/4.4.54/planner_search_master_v1.json"
+  ]
+}

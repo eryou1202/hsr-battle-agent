@@ -1,0 +1,98 @@
+{
+  "schema": "planner_search_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "scope": "SANDBOX_RESOURCE_V1",
+  "baseline": {
+    "landing_record": "data/semantics/4.4.54/full_reconstruction/terra_4_4_54_landing_v1.json",
+    "planner_data_contract": "data/semantics/4.4.54/full_reconstruction/terra_planner_data_contract_v1.json",
+    "terra_master_frozen": true,
+    "m7": "BLOCKED_BY_INDEPENDENT_EVIDENCE",
+    "m7_deferred": true,
+    "m8": "DONE",
+    "golden": 0,
+    "native_trace": []
+  },
+  "transition_surface": {
+    "contract": "SandboxResourceContract",
+    "legal_actions": "query_sandbox_legal_actions",
+    "plan": "plan_sandbox_resource_transition",
+    "commit": "SandboxResourceTransaction",
+    "step_record": "TrajectoryStep",
+    "exclusion_record": "ExclusionRecord",
+    "unsupported_families": [
+      "damage transitions",
+      "healing transitions",
+      "native target arbitration",
+      "native scheduler arbitration",
+      "monster AI",
+      "official Stage progression"
+    ]
+  },
+  "search_policy": {
+    "schema": "PlannerSearchPolicy/1",
+    "strategy": "BOUNDED_DFS",
+    "branch_ordering": "SOURCE_ORDER",
+    "dedup_mode": "ACCOUNT_ONLY",
+    "scope": "SANDBOX_RESOURCE_V1",
+    "max_depth": "positive integer, committed transitions",
+    "node_limit": "positive integer; root consumes one; checked before visiting a committed successor",
+    "max_plans": "positive integer; truncates ranked output only after search ends",
+    "search_rng_draws": 0,
+    "identity": "SHA-256 of canonical-v2 policy document"
+  },
+  "node_accounting": {
+    "explored_node_count": "Concrete planner states with objective and expansion status evaluated, including the root and blocked decision states.",
+    "committed_edge_count": "Successful commits encountered, including the one whose successor cannot be visited when node_limit is reached.",
+    "rejected_edge_count": "Action attempts rejected without a successor state; these are never explored nodes.",
+    "blocked_node_count": "Explored states whose complete legal-action view is blocked.",
+    "repeated_state_count": "Visited states whose full semantic-hash key matches a prior visit and whose complete snapshot compares equal; no pruning.",
+    "limit_rule": "After a successful commit, if explored_node_count equals node_limit, stop before visiting its successor; record NODE_LIMIT and make no objective claim for that successor."
+  },
+  "objective": {
+    "schema": "PlannerObjective/1",
+    "preference_scope": "CALLER_DECLARED_LOCAL",
+    "extractor": "Only the resource amount belonging to the supplied SandboxResourceContract.",
+    "kinds": [
+      "RESOURCE_AT_HORIZON: MAXIMIZE or MINIMIZE at exact max_depth",
+      "REACH_RESOURCE_COMPARISON: LT, LE, EQ, GE or GT against a finite explicit Decimal; first satisfying prefix, including root",
+      "MIN_STEPS_TO_RESOURCE_COMPARISON: same predicate, minimizing committed steps to first satisfaction"
+    ],
+    "deferred_kind": "LEXICOGRAPHIC_RESOURCE_METRICS is deferred from v1; no generic metric language is implied.",
+    "identity": "SHA-256 of canonical-v2 objective document; included in plan/result identity",
+    "satisfaction": "A satisfied predicate terminates that branch locally; it does not assert a game terminal."
+  },
+  "ranking": {
+    "when": "After complete exploration or an explicit limit stop, before max_plans truncation.",
+    "horizon": "Declared resource comparison, then lexicographic source-action ordinal path.",
+    "reach": "Shorter satisfying path, then lexicographic source-action ordinal path.",
+    "min_steps": "Committed action count, then lexicographic source-action ordinal path.",
+    "tie_policy": "LOCAL_PLANNER_POLICY; action_id string lexical order is not used."
+  },
+  "completeness": {
+    "complete": "All supported branches explored under the objective/horizon rules, with no blocked decision context or node limit.",
+    "found": "At least one candidate exists; search_complete may be false and an incomplete result is BEST_OBSERVED only.",
+    "no_plan_within_horizon": "No candidate exists and search_complete is true.",
+    "blocked": "No candidate exists, a reachable decision context was blocked, and no node limit occurred.",
+    "limit_reached": "No candidate exists and node_limit prevented a successor visit; takes precedence over BLOCKED.",
+    "unsupported": "The request/objective resource cannot be represented by SANDBOX_RESOURCE_V1; no action exclusion is fabricated."
+  },
+  "state_accounting": {
+    "key": "scenario identity + resource contract identity + objective identity + search policy identity + remaining horizon + semantic_hash_v2 of complete TerraSnapshotV2",
+    "collision_check": "Complete snapshot equality is required after a hash match.",
+    "pruning": false
+  },
+  "result": {
+    "plan_schema": "PlannerPlan/1",
+    "result_schema": "PlannerResult/1",
+    "may_have_zero_step_plan": true,
+    "prefix_replay": "Restores initial snapshot and independently reconstructs every legal view, plan, commit, hash, revision, RNG, objective value and termination.",
+    "canonical_identity": "SHA-256 of canonical-v2 document excluding only its own identity field; no timestamps, durations, usernames or paths.",
+    "decision_evidence": "REFERENCE_MODEL",
+    "transition_evidence": "SANDBOX_EXTENSION",
+    "validation_class": "DETERMINISTIC_REPLAY_ONLY",
+    "native_trace": false,
+    "golden": false
+  },
+  "training_boundary": "Planner results and caller-declared objective values are not rewards, advantages, Q targets, value targets, policy probabilities, native-optimal labels, independent oracles or automatic M8 datasets."
+}
