@@ -1,6 +1,6 @@
 {
   "schema": "terra_implementation_master/v1",
-  "plan_version": "1.0.53",
+  "plan_version": "1.0.57",
   "generated_date": "2026-09-22",
   "project_state": {
     "target": "HSR 4.4.54 FULL-CONTENT DETERMINISTIC EVIDENCE-GATED BATTLE SANDBOX",
@@ -8,8 +8,8 @@
     "production_implementation_performed": true,
     "tests_modified": true,
     "frozen_semantic_artifacts_modified": false,
-    "current_milestone": "M5",
-    "next_milestone": "M7",
+    "current_milestone": "M7",
+    "next_milestone": "M8",
     "terra_f02_status": "COMPLETE",
     "terra_r01_status": "COMPLETE",
     "terra_g01_status": "COMPLETE",
@@ -393,22 +393,23 @@
     {
       "id": "M5",
       "title": "MULTI-TURN PLANNING-READY SCENARIO",
-      "status": "BLOCKED",
+      "status": "DONE",
       "exit_criteria": [
         "stable legal_actions for supported scope",
         "meaningful action depth",
         "clone/hash/RNG/atomic step replay passes"
       ],
-      "closure_decision": "BLOCKED_LOCAL_CAPABILITY",
+      "closure_decision": "DONE",
       "closed_at": "2026-09-25",
       "corrective_review_reopened_at": "2026-09-25",
       "closure_evidence": {
-        "legal_actions": "PASS - supported REFERENCE_MODEL candidate/action views repeat deterministically and settle only within their declared supported scope",
-        "action_depth": "BLOCKED - five sequential strict no-op commits advance only revision/transaction bookkeeping; reference scheduler selection and Decimal resource settlement are detached pure results and do not publish a battle-state transition",
-        "replay": "PASS - midway clone/replay preserves complete state, snapshot hash, RNG position and revision/effect/replay sequences; rejection is byte-identical",
-        "planner_readiness": "NOT SATISFIED - no already-authorized strict/reference/custom path publishes a genuine battle-relevant state transition, so meaningful planner branching is not yet demonstrated"
+        "legal_actions": "PASS - M5R uses an exact complete REFERENCE_MODEL PlayerLegalAction view declared by a versioned SANDBOX_EXTENSION contract; missing candidates block without exposing a partial action list",
+        "action_depth": "PASS - action-a/action-b from one source publish different values in the frozen mutable resources store, and action-a->action-c/action-b->action-d establish genuine two-turn state-bearing branches beyond revision bookkeeping",
+        "replay": "PASS - both branches and midway continuations replay byte/semantically identically with equal RNG/allocator state; stale and insufficient actions publish nothing",
+        "planner_readiness": "SATISFIED LOCALLY - the bounded caller-declared SANDBOX_EXTENSION resource transition provides meaningful deterministic planner branching without a native claim or GateCertificate"
       },
-      "historical_closure_note": "Revision 1.0.51 marked M5 DONE from deterministic no-op depth. CR-POST-FRONTIER-CORRECTIVE-20260925-001 preserves that history but supersedes the milestone conclusion after strict review."
+      "historical_closure_note": "Revision 1.0.51 marked M5 DONE from deterministic no-op depth. CR-POST-FRONTIER-CORRECTIVE-20260925-001 preserved that history but superseded the conclusion. CR-M5-STATE-BEARING-RECOVERY-20260925-001 closes the separately recorded local capability gap through M5R-001..004; it does not rehabilitate the earlier no-op evidence.",
+      "recovery_change_request": "CR-M5-STATE-BEARING-RECOVERY-20260925-001"
     },
     {
       "id": "M6",
@@ -448,8 +449,8 @@
         "scenario rule identity/RNG/revision captured",
         "unsupported trajectories excluded, not silently truncated"
       ],
-      "locally_startable": false,
-      "start_blocker": "M5 is BLOCKED_LOCAL_CAPABILITY: deterministic strict no-op replay does not yet provide meaningful battle-state branching."
+      "locally_startable": true,
+      "start_basis": "M5R-001..004 establish a bounded state-bearing SANDBOX_EXTENSION branch with explicit validation labels, rule/profile identity, revision and RNG state preserved. M8 was not entered in this session."
     }
   ],
   "phase_dag": {
@@ -474,6 +475,7 @@
       "CONTENT_INTEGRATION",
       "SOURCE_BACKED_REQUALIFICATION",
       "DETERMINISTIC_INTEGRATION",
+      "M5_LOCAL_CAPABILITY_RECOVERY",
       "INDEPENDENT_VALIDATION"
     ],
     "conditional_side_path": "EVIDENCE_REOPEN does not block reference/custom progress; it alone may change frozen native blockers after new evidence."
@@ -7255,6 +7257,271 @@
       "corrective_review_result": "CR-POST-FRONTIER-CORRECTIVE-20260925-001 PASS - Different oracle_id values cannot double-count one expectation_identity; oracle_id uniqueness remains enforced, and registry wording now distinguishes metadata validation from provenance authentication."
     },
     {
+      "task_id": "M5R-001",
+      "freeze_ticket": null,
+      "local_phase": "M5_LOCAL_CAPABILITY_RECOVERY",
+      "title": "State-bearing sandbox resource transition contract",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": [
+        "C01-001",
+        "REF03-001",
+        "V02-001"
+      ],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/terra_architecture_decisions_v1.md"
+      ],
+      "current_repository_state": "M5 was BLOCKED_LOCAL_CAPABILITY because V02 proved deterministic strict no-op depth but no battle-state-bearing planner branch.",
+      "files_read": [
+        "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+        "src/hsr_battle_agent/battle_sandbox/custom_scenario.py",
+        "src/hsr_battle_agent/battle_sandbox/legal_actions.py",
+        "src/hsr_battle_agent/game_data/reference_operation_adapters.py"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_sandbox_transition_contract.py"
+      ],
+      "files_forbidden_to_modify": [
+        "frozen Astra authority",
+        "native GateCertificate semantics",
+        "all files not explicitly listed in files_allowed_to_modify"
+      ],
+      "implementation_requirements": [
+        "Define a versioned caller-declared SANDBOX_EXTENSION resource/action contract over the existing frozen mutable resources store",
+        "Keep its complete PlayerLegalAction view REFERENCE_MODEL and separate from SchedulerCandidate, AI opportunity and native permission",
+        "Declare exact resources read/write footprints and reject partial, reordered, missing or unsupported action views before publication",
+        "Represent explicit initial resource state without fabricating HSR-native mechanics"
+      ],
+      "migration_constraints": [
+        "No REFERENCE_MODEL or SANDBOX_EXTENSION object may satisfy a NATIVE_EVIDENCED gate",
+        "No legacy-state authority or live bidirectional facade",
+        "Golden and native coverage remain unchanged"
+      ],
+      "explicit_non_goals": [
+        "No native resource semantics",
+        "No Astra reopen or evidence search",
+        "No M8 trajectory generation"
+      ],
+      "acceptance_tests": [
+        "resource initialization changes the actual Terra resources store without an implicit transition",
+        "complete supported action set is stable and missing candidates return BLOCKED with no partial actions",
+        "planning is pure and insufficient resource rejects before publication",
+        "contract/resource/plan retain SANDBOX_EXTENSION while PlayerLegalAction remains REFERENCE_MODEL"
+      ],
+      "test_command": "python -m unittest tests.battle_sandbox.test_sandbox_transition_contract -v",
+      "expected_output": "All exact tests pass; no native permission or semantic claim is introduced.",
+      "coverage_effect": "local planner-capability representation only",
+      "semantic_effect": "NONE_NATIVE; fully caller-declared SANDBOX_EXTENSION semantics",
+      "failure_recovery": "Revert only sandbox_transition.py and its focused test; retain M5 blocked.",
+      "next_tasks": ["M5R-002"],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the contract uses the already-owned mutable resources family, requires a complete ordered REFERENCE_MODEL action view and explicit non-native policy identity, and exposes no GateCertificate/native-permission surface.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_sandbox_transition_contract.py"
+      ],
+      "test_results": [
+        "tests.battle_sandbox.test_sandbox_transition_contract => 12 OK"
+      ],
+      "checkpoint": {"master_revision": "1.0.54", "native_promotions": 0}
+    },
+    {
+      "task_id": "M5R-002",
+      "freeze_ticket": null,
+      "local_phase": "M5_LOCAL_CAPABILITY_RECOVERY",
+      "title": "Atomic sandbox resource transition integration",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M5R-001"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/terra_architecture_decisions_v1.md"
+      ],
+      "current_repository_state": "M5R-001 supplies a pure exact plan but no state publication.",
+      "files_read": [
+        "src/hsr_battle_agent/battle_sandbox/atomic_commit.py",
+        "src/hsr_battle_agent/battle_sandbox/state_v2.py",
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py"
+      ],
+      "files_allowed_to_modify": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_sandbox_transition_atomic.py"
+      ],
+      "files_forbidden_to_modify": [
+        "frozen Astra authority",
+        "native AtomicCommit/GateCertificate behavior",
+        "all files not explicitly listed in files_allowed_to_modify"
+      ],
+      "implementation_requirements": [
+        "Validate exact source revision, semantic hash, contract identity and resource ordinal before building a candidate",
+        "Publish by returning one independently owned replacement TerraBattleState; never mutate live components or roll back partial publication",
+        "Advance revision/replay/effect sequences exactly once and preserve RNG, allocator, queues, opaque state and unrelated stores",
+        "A transaction instance may publish successfully only once"
+      ],
+      "migration_constraints": [
+        "Local atomicity only; no client-native rollback claim",
+        "No native GateCertificate substitution or promotion",
+        "Rejected/stale work must leave complete input identity unchanged"
+      ],
+      "explicit_non_goals": [
+        "No generic transaction operation language",
+        "No RNG draw or allocator publication",
+        "No legacy-state projection"
+      ],
+      "acceptance_tests": [
+        "successful transition changes resources and advances all three local sequence values once",
+        "stale revision/content rejects with state/hash/RNG/allocator unchanged",
+        "second commit rejects",
+        "action-a/action-b produce different resource states and semantic hashes"
+      ],
+      "test_command": "python -m unittest tests.battle_sandbox.test_sandbox_transition_atomic -v",
+      "expected_output": "All exact tests pass with copy/validate/build/return atomicity.",
+      "coverage_effect": "local sandbox transition execution",
+      "semantic_effect": "NONE_NATIVE; local SANDBOX_EXTENSION state publication",
+      "failure_recovery": "Revert only M5R-002 portions and its test; retain M5 blocked.",
+      "next_tasks": ["M5R-003"],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - validation precedes candidate construction, live state is never mutated, one successful replacement advances resources and sequences exactly once, and stale/replayed transactions reject without side effects.",
+      "changed_files": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_sandbox_transition_atomic.py"
+      ],
+      "test_results": [
+        "tests.battle_sandbox.test_sandbox_transition_atomic => 9 OK"
+      ],
+      "checkpoint": {"master_revision": "1.0.55", "publish_once": "PASS"}
+    },
+    {
+      "task_id": "M5R-003",
+      "freeze_ticket": null,
+      "local_phase": "M5_LOCAL_CAPABILITY_RECOVERY",
+      "title": "Branching state-bearing multi-turn replay validation",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M5R-002"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+      ],
+      "current_repository_state": "M5R-002 provides one exact local state-bearing commit; M5 still requires genuine branching and deterministic continuation proof.",
+      "files_read": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_multi_turn_replay_v2.py"
+      ],
+      "files_allowed_to_modify": [
+        "tests/battle_sandbox/test_state_bearing_planner_recovery.py"
+      ],
+      "files_forbidden_to_modify": [
+        "all production files",
+        "frozen Astra authority",
+        "all files not explicitly listed in files_allowed_to_modify"
+      ],
+      "implementation_requirements": [
+        "From identical source S, legal actions A/B must publish battle-relevant SA/SB with different resources and hashes",
+        "Replay A and B from clones must be byte and semantically identical",
+        "A->C and B->D must replay deterministically from midway clones",
+        "Rejected work must preserve full state identity; evidence labels and legal-action type separation must remain explicit"
+      ],
+      "migration_constraints": [
+        "Determinism is not native proof",
+        "No action difference may rely solely on revision bookkeeping",
+        "No M8 trajectory generation"
+      ],
+      "explicit_non_goals": [
+        "No new production behavior",
+        "No official Stage or native victory claim",
+        "No Golden increment"
+      ],
+      "acceptance_tests": [
+        "two-way battle-state branch and semantic-hash divergence",
+        "single and multi-turn deterministic replay from clones",
+        "rejection identity and RNG/allocator preservation",
+        "PlayerLegalAction is distinct from SchedulerCandidate and GateCertificate"
+      ],
+      "test_command": "python -m unittest tests.battle_sandbox.test_state_bearing_planner_recovery -v",
+      "expected_output": "All independent branching regressions pass.",
+      "coverage_effect": "meaningful local planner action depth",
+      "semantic_effect": "verification only; NONE_NATIVE",
+      "failure_recovery": "Revert the test and retain M5 blocked.",
+      "next_tasks": ["M5R-004"],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - independent tests establish two genuine resource-state branches, deterministic per-branch and midway replay, rejection identity, stable complete legal actions and unbroken reference/custom/native type separation.",
+      "changed_files": [
+        "tests/battle_sandbox/test_state_bearing_planner_recovery.py"
+      ],
+      "test_results": [
+        "tests.battle_sandbox.test_state_bearing_planner_recovery => 8 OK"
+      ],
+      "checkpoint": {"master_revision": "1.0.56", "branching": "PASS"}
+    },
+    {
+      "task_id": "M5R-004",
+      "freeze_ticket": null,
+      "local_phase": "M5_LOCAL_CAPABILITY_RECOVERY",
+      "title": "M5 state-bearing recovery closure review",
+      "status": "DONE",
+      "executor_class": "SOL_IMPLEMENT",
+      "review_class": "SOL_REVIEW_REQUIRED",
+      "dependencies": ["M5R-003"],
+      "authority_refs": [
+        "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json",
+        "docs/agent/terra_architecture_decisions_v1.md"
+      ],
+      "current_repository_state": "M5R-001..003 implemented and exact tests green; formal cross-boundary review and milestone decision pending.",
+      "files_read": [
+        "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+        "tests/battle_sandbox/test_sandbox_transition_contract.py",
+        "tests/battle_sandbox/test_sandbox_transition_atomic.py",
+        "tests/battle_sandbox/test_state_bearing_planner_recovery.py"
+      ],
+      "files_allowed_to_modify": [],
+      "files_forbidden_to_modify": [
+        "all production and test files",
+        "frozen Astra authority"
+      ],
+      "implementation_requirements": [
+        "Strong-review state ownership, exact legal-action completeness, rejection atomicity, branching depth and evidence-mode separation",
+        "Close M5 only if genuine state-bearing branches, deterministic replay and zero native promotion all pass",
+        "Make M8 locally startable without entering it; leave M7 evidence-blocked and Golden 0"
+      ],
+      "migration_constraints": [
+        "Historical V02 no-op evidence remains historical and is not rewritten",
+        "M7 independent-evidence blocker remains unchanged",
+        "No frozen authority modification"
+      ],
+      "explicit_non_goals": [
+        "No M8 implementation",
+        "No Astra/evidence reopen",
+        "No native coverage increase"
+      ],
+      "acceptance_tests": [
+        "focused M5R suites",
+        "FAST_UNIT and reference regressions",
+        "duplicate-key, authority reconciliation and 79-task DAG/readiness"
+      ],
+      "test_command": "python -m unittest tests.battle_sandbox.test_sandbox_transition_contract tests.battle_sandbox.test_sandbox_transition_atomic tests.battle_sandbox.test_state_bearing_planner_recovery -v",
+      "expected_output": "All recovery and repository validators pass; M5 DONE, M8 locally startable, M7 blocked and Golden 0.",
+      "coverage_effect": "M5 local planner capability closure",
+      "semantic_effect": "NONE_NATIVE",
+      "failure_recovery": "Restore M5 BLOCKED_LOCAL_CAPABILITY and M8 locally_startable false; revert only CR-M5-STATE-BEARING-RECOVERY-20260925-001 files.",
+      "next_tasks": [],
+      "status_updated_at": "2026-09-25",
+      "sol_review_pending": false,
+      "sol_review_result": "PASS - the local resource transition changes an owned battle-relevant store, supports deterministic two-way and multi-turn branching, rejects before publication, preserves RNG/allocator/other stores, and cannot satisfy native gates. M5 is DONE; M8 is locally startable but unentered; M7 remains evidence-blocked.",
+      "changed_files": [],
+      "test_results": [
+        "focused M5R suites => 29 OK"
+      ],
+      "checkpoint": {"master_revision": "1.0.57", "m5": "DONE", "m8_entered": false}
+    },
+    {
       "task_id": "EVIDENCE-D0",
       "freeze_ticket": [
         "KERNEL-ORDER",
@@ -8824,16 +9091,55 @@
           "FAST_UNIT, duplicate-key, authority reconciliation and DAG/readiness validation"
         ],
         "validation": "Focused corrective suites V03 9 + C01 9 + V02 8 = 26 OK; FAST_UNIT 586 + 889 + 194 = 1669 OK; duplicate-key, authority reconciliation and 75-task DAG/readiness validators PASS. Golden remains 0 and no frozen/protected file changed."
+      },
+      {
+        "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+        "status": "APPLIED_AND_VALIDATED",
+        "reason": "The post-frontier corrective honestly blocked M5 because the implemented V02 path committed only revision bookkeeping while reference resource settlement stayed detached. A bounded local state-bearing capability is required before meaningful planner branching can be claimed.",
+        "confirmed_gap": [
+          "StrictExecutor supports only a certified no-op action and therefore cannot change a battle-relevant store.",
+          "Existing reference value/damage/legal-action adapters return detached results and intentionally do not publish TerraBattleState.",
+          "The frozen Terra ownership catalog already provides the mutable resources store, so a caller-declared SANDBOX_EXTENSION resource contract can close the local capability gap without inventing native semantics."
+        ],
+        "affected_task_ids": [
+          "M5R-001",
+          "M5R-002",
+          "M5R-003",
+          "M5R-004"
+        ],
+        "files": [
+          "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+          "tests/battle_sandbox/test_sandbox_transition_contract.py",
+          "tests/battle_sandbox/test_sandbox_transition_atomic.py",
+          "tests/battle_sandbox/test_state_bearing_planner_recovery.py",
+          "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
+        ],
+        "semantic_impact": "NONE_NATIVE",
+        "migration_impact": "Adds one explicitly versioned SANDBOX_EXTENSION state-bearing resource seam over the existing frozen mutable resources family. It consumes only a complete REFERENCE_MODEL PlayerLegalAction view, publishes by replacement, exposes no native GateCertificate surface and leaves legacy/native paths unchanged. M5 becomes DONE and M8 becomes locally startable; M7, Golden and native coverage do not change.",
+        "rollback": "Revert only the five listed files and restore master revision 1.0.53, M5 BLOCKED_LOCAL_CAPABILITY and M8 locally_startable false. Do not rewrite the historical V02 or corrective records and do not alter frozen authority.",
+        "sol_authorization": "AUTHORIZED_BY_SOL_M5_STATE_BEARING_PLANNER_RECOVERY_2026-09-25",
+        "astra_reopen_required": false,
+        "tests_proving_repair": [
+          "explicit resource initialization and complete supported legal-action scope",
+          "pure exact planning with declared resources read/write footprint",
+          "copy/validate/build/return atomic publication and one-use commit",
+          "action-a/action-b resource and semantic-hash divergence from identical source",
+          "action-a/action-c and action-b/action-d deterministic midway replay",
+          "stale/insufficient rejection preserves full state/hash/RNG/allocator/queue identity",
+          "PlayerLegalAction, SchedulerCandidate and GateCertificate remain distinct",
+          "FAST_UNIT, reference regressions, duplicate-key, authority reconciliation and DAG/readiness"
+        ],
+        "validation": "Focused M5R suites 29 OK; reference value/resource/damage/schedule regressions 32 OK; FAST_UNIT 586 + 918 + 194 = 1698 OK; root documented scope 1706 OK; duplicate-key, 19-ref authority reconciliation and 79-task DAG/readiness validators PASS. Golden remains 0, NATIVE_TRACE remains empty, and no frozen/protected file is modified."
       }
     ]
   },
   "last_checkpoint": {
     "timestamp": "2026-09-25",
-    "status": "POST_FRONTIER_CORRECTIVE_REVIEW_COMPLETE",
-    "head_at_run_start": "ff7632c0edff835e7126bfef9728867ce80c9313",
-    "head_at_run_end": "ff7632c0edff835e7126bfef9728867ce80c9313",
-    "approved_change_request": null,
-    "plan_version": "1.0.53",
+    "status": "M5_STATE_BEARING_PLANNER_RECOVERY_COMPLETE",
+    "head_at_run_start": "83344adb76b1f11c48279db72dcac8f2ed5dc0bc",
+    "head_at_run_end": "83344adb76b1f11c48279db72dcac8f2ed5dc0bc",
+    "approved_change_request": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+    "plan_version": "1.0.57",
     "terra_f02": "COMPLETE",
     "terra_r01": "COMPLETE",
     "terra_g01": "COMPLETE",
@@ -8846,20 +9152,16 @@
     "terra_v01": "COMPLETE",
     "terra_v02": "COMPLETE",
     "terra_v03": "COMPLETE_INFRASTRUCTURE_NO_QUALIFYING_ORACLE",
-    "current_milestone": "M5_BLOCKED_LOCAL_CAPABILITY",
+    "current_milestone": "M7_BLOCKED_BY_INDEPENDENT_EVIDENCE",
     "changed_files": [
-      "src/hsr_battle_agent/battle_sandbox/custom_scenario.py",
-      "tests/battle_sandbox/test_custom_scenario.py",
-      "tests/game_data/test_source_backed_requalification.py",
-      "data/semantics/4.4.54/full_reconstruction/terra_source_requalification_v1.json",
-      "tests/battle_sandbox/test_multi_turn_replay_v2.py",
-      "src/hsr_battle_agent/validation/oracles.py",
-      "tests/validation/test_oracle_registry.py",
-      "data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json",
+      "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py",
+      "tests/battle_sandbox/test_sandbox_transition_contract.py",
+      "tests/battle_sandbox/test_sandbox_transition_atomic.py",
+      "tests/battle_sandbox/test_state_bearing_planner_recovery.py",
       "data/semantics/4.4.54/full_reconstruction/terra_implementation_master_v1.json"
     ],
-    "worktree_note": "Git write operations were disabled. Corrective review closed oracle expectation-identity double counting, made the custom result policy observable, and retained V02 as DONE deterministic infrastructure while downgrading M5 because no authorized state-bearing battle action exists. M8 is not locally startable; Golden remains 0 and M7 remains evidence-blocked. No frozen authority or protected file was modified.",
-    "validation": "Focused corrective suites: V03 9, C01 9 and V02 8 = 26 OK; FAST_UNIT 586 + 889 + 194 = 1669 OK. Duplicate-key, authority reconciliation and 75-task DAG/readiness validators PASS; readiness remains empty because M5 is a milestone-local capability blocker rather than an invented READY engineering task. Golden 0 and NATIVE_TRACE empty.",
+    "worktree_note": "Git write operations were disabled. M5R-001..004 add and strongly review a bounded caller-declared SANDBOX_EXTENSION resource transition using a complete REFERENCE_MODEL legal-action view. Genuine two-way and multi-turn Terra resource branches replay deterministically; rejection is atomic; no native gate or coverage is gained. M5 is DONE and M8 is locally startable but unentered. M7 remains evidence-blocked, Golden remains 0 and NATIVE_TRACE remains empty.",
+    "validation": "Focused M5R suites 29 OK; reference value/resource/damage/schedule regressions 32 OK; FAST_UNIT 586 + 918 + 194 = 1698 OK; root documented scope 1706 OK. Duplicate-key validation PASS; authority reconciliation 19/19 PASS; DAG/readiness 79/79 acyclic with no READY task. Golden 0, NATIVE_TRACE empty, and no frozen/protected file changed.",
     "next_ready_tasks": []
   },
   "next_ready_tasks": [],
@@ -9219,6 +9521,34 @@
       "change_request_id": "CR-POST-FRONTIER-CORRECTIVE-20260925-001",
       "change": "Post-frontier corrective review rejected expectation-identity double counting independently of oracle_id, clarified that V03 validates declared metadata but cannot authenticate caller provenance, and made both C01 custom result policies directly observable and hash-distinct. Strict V02 review found only revision-bearing no-op Terra commits plus detached reference results, so V02 remains DONE as deterministic infrastructure but M5 is downgraded to BLOCKED_LOCAL_CAPABILITY and M8 is not locally startable. M4/M6 remain DONE; V03 remains DONE; M7 remains evidence-blocked and Golden 0.",
       "review": "SOL_CORRECTIVE_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.54",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+      "change": "M5R-001 DONE and strongly reviewed. Added a versioned caller-declared SANDBOX_EXTENSION resource/action contract over the already-owned mutable resources family, explicit initialization, exact read/write footprint, and a complete ordered REFERENCE_MODEL PlayerLegalAction view that blocks missing/partial scope and exposes no native permission surface.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.55",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+      "change": "M5R-002 DONE and strongly reviewed. Added one-use copy/validate/build/return resource publication: exact revision/hash/contract/ordinal validation precedes candidate construction; success changes the resources store and advances revision/replay/effect once, while stale/replayed work publishes nothing and preserves RNG, allocator, queues and unrelated stores.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.56",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+      "change": "M5R-003 DONE and strongly reviewed. Added independent branch tests proving action-a/action-b from one source produce different resource states and hashes, each branch replays identically, action-a->action-c/action-b->action-d replay from midway clones, rejection preserves complete identity, and reference/custom/native types remain separated.",
+      "review": "SOL_IMPLEMENT_AND_REVIEW_COMPLETE"
+    },
+    {
+      "revision": "1.0.57",
+      "date": "2026-09-25",
+      "change_request_id": "CR-M5-STATE-BEARING-RECOVERY-20260925-001",
+      "change": "M5R-004 closure review PASS. M5R-001..004 form a bounded state-bearing SANDBOX_EXTENSION planner seam with stable complete legal actions, genuine two-way/multi-turn resource branches, deterministic clone/hash/RNG replay, atomic rejection and zero native promotion. M5 is DONE and M8 is locally startable but unentered. M7 remains BLOCKED_BY_INDEPENDENT_EVIDENCE, Golden 0 and NATIVE_TRACE empty.",
+      "review": "SOL_CLOSURE_REVIEW_COMPLETE"
     }
   ],
   "validation_requirements": [
@@ -9233,15 +9563,15 @@
     "no unauthorized production/test files or frozen authority artifacts modified"
   ],
   "task_summary": {
-    "total": 75,
+    "total": 79,
     "by_executor": {
       "CHEAP_MODEL_STRICT": 21,
       "CHEAP_MODEL_OK": 8,
-      "SOL_IMPLEMENT": 36,
+      "SOL_IMPLEMENT": 40,
       "ASTRA_EVIDENCE_ONLY": 10
     },
     "by_status": {
-      "DONE": 65,
+      "DONE": 69,
       "NOT_STARTED": 0,
       "BLOCKED": 10
     },
