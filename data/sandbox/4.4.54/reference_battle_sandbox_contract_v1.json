@@ -1,0 +1,151 @@
+{
+  "schema": "reference_battle_sandbox_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "scope": "REFERENCE_BATTLE_SANDBOX_V1",
+  "assessment": "BLOCKED_BY_FROZEN_UNKNOWN",
+  "sandbox_established": false,
+  "validation_class": "DETERMINISTIC_REPLAY_ONLY",
+  "evidence_boundaries": {
+    "content": "PRESERVE_SOURCE_PROVENANCE_AND_VERSION_RELATION",
+    "battle_decisions": "REFERENCE_MODEL",
+    "session_orchestration": "SANDBOX_EXTENSION",
+    "native_promotion": false,
+    "golden_count": 0,
+    "native_trace": []
+  },
+  "safe_bridge_rule": [
+    "The existing reference implementation must determine the complete result within its declared supported scope.",
+    "Every resulting TerraBattleState mutation target must be explicit.",
+    "All ordering, lifetime, target, scheduler, callback and event dependencies must close before private candidate construction.",
+    "Unknown packet fields or unresolved dependencies must block before state, RNG, allocator, revision, queue or trace publication."
+  ],
+  "capability_matrix": [
+    {
+      "category": "values/stats",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_operation_adapters.py:evaluate_arithmetic", "src/hsr_battle_agent/game_data/property_contribution_reference.py:PropertyState", "src/hsr_battle_agent/game_data/reference_execution.py:RuntimeEntity"],
+      "session_gap": "No complete action binds all stat reads and modifier effects to a Terra step."
+    },
+    {
+      "category": "resource",
+      "status": "STATE_BEARING_ALREADY",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_operation_adapters.py:apply_named_team_sp_contribution", "src/hsr_battle_agent/game_data/reference_execution.py:TeamSkillPointState", "src/hsr_battle_agent/battle_sandbox/sandbox_transition.py:SandboxResourceTransaction"],
+      "session_gap": "Reference team SP and M5 synthetic resource transitions are separate; M5 is ineligible as M10 closure proof."
+    },
+    {
+      "category": "damage",
+      "status": "STATE_BEARING_ALREADY",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_damage_adapters.py:apply_reference_packet", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_damage"],
+      "session_gap": "Damage commits to an immutable reference state, but no complete selected player action supplies its full effect and completion closure to Terra."
+    },
+    {
+      "category": "healing",
+      "status": "STATE_BEARING_ALREADY",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_damage_adapters.py:apply_reference_packet", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_heal", "src/hsr_battle_agent/game_data/damage_survival_reference.py:SurvivalState.heal"],
+      "session_gap": "The source-backed Natasha HOT example is a modifier phase callback, not a selectable ordinary action."
+    },
+    {
+      "category": "shield",
+      "status": "STATE_BEARING_ALREADY",
+      "symbols": ["src/hsr_battle_agent/game_data/damage_survival_reference.py:SurvivalState.absorb", "src/hsr_battle_agent/game_data/reference_damage_adapters.py:apply_reference_packet"],
+      "session_gap": "Shield absorption is bounded reference settlement only; no complete battle action is bridged."
+    },
+    {
+      "category": "toughness",
+      "status": "STATE_BEARING_ALREADY",
+      "symbols": ["src/hsr_battle_agent/game_data/toughness_break_reference.py:apply_toughness_damage", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_damage"],
+      "session_gap": "Selected stance components are reference executable with explicit context; full action and break dependencies must still close."
+    },
+    {
+      "category": "modifier",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_add_modifier", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_remove_modifier"],
+      "session_gap": "Selected lifecycle operations do not establish the complete callback graph for a battle action."
+    },
+    {
+      "category": "target selection",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/game_data/target_semantics_reference.py:resolve_target_payload", "src/hsr_battle_agent/game_data/reference_execution.py:ReferenceBattleState.target_context"],
+      "session_gap": "An explicit operation target may resolve, but manual action admission and automatic secondary target closure remain separate."
+    },
+    {
+      "category": "legal actions",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/battle_sandbox/legal_actions.py:query_player_legal_actions", "src/hsr_battle_agent/battle_sandbox/legal_actions.py:LegalActionProposal"],
+      "session_gap": "The query validates supplied proposals; it does not discover a complete source-backed action set from an actor or ability."
+    },
+    {
+      "category": "schedule/turn",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_schedule_v2.py:select_ordinary_candidate", "src/hsr_battle_agent/game_data/scheduler_semantics_reference.py:complete_ordinary_action", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor.advance_ordinary_after_completed_action"],
+      "session_gap": "Ordinary recharge requires a completed SUCCESS action task; no qualifying damage action proves that marker and all intervening effects. Pending inserted or special arbitration remains unresolved."
+    },
+    {
+      "category": "action cost",
+      "status": "IMPLEMENTED_PURE_ONLY",
+      "symbols": ["src/hsr_battle_agent/battle_sandbox/legal_actions.py:settle_legal_action", "src/hsr_battle_agent/game_data/reference_damage_adapters.py:apply_reference_packet"],
+      "session_gap": "Caller-supplied proposal cost and exact reference packet debit are independent until one complete action binds them."
+    },
+    {
+      "category": "task markers/events",
+      "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_damage_adapters.py:PacketKind.TASK_MARKER", "src/hsr_battle_agent/game_data/reference_execution.py:SemanticExecutor._execute_action_completion_marker"],
+      "session_gap": "A REF02 TASK_MARKER is isolated and cannot imply complete action-task success or callback/event closure."
+    },
+    {
+      "category": "survival/death",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/game_data/damage_survival_reference.py:SurvivalState", "src/hsr_battle_agent/game_data/reference_execution.py:ReferenceBattleState.ordinary_eligible_entity_ids"],
+      "session_gap": "Reference alive and HP values exist; official death, revive and downstream event effects are not inferred."
+    },
+    {
+      "category": "terminal",
+      "status": "IMPLEMENTED_REFERENCE",
+      "symbols": ["src/hsr_battle_agent/battle_sandbox/custom_scenario.py:CustomScenario.evaluate_terminal"],
+      "session_gap": "Only explicit custom left/right alive counts can be evaluated; no official Stage result or death-count fallback is licensed."
+    },
+    {
+      "category": "AI",
+      "status": "BLOCKED_BY_FROZEN_UNKNOWN",
+      "symbols": ["src/hsr_battle_agent/game_data/reference_schedule_v2.py:AIDecisionOpportunity"],
+      "session_gap": "An AI opportunity does not choose or authorize a player action or enemy behavior."
+    }
+  ],
+  "candidate_assessment": [
+    {
+      "fixture": "tests/game_data/test_reference_damage_v2.py:packet",
+      "result": "REJECT_AS_M10_CLOSURE_FIXTURE",
+      "reason": "REF02 whole-step packet proves reference HP/shield/toughness/resource arithmetic with synthetic actor-a/target and an artificial hash, but carries no source-backed skill identity, complete legal action set or action completion graph."
+    },
+    {
+      "fixture": "data/semantics/4.4.54/full_reconstruction/source_backed_normal_damage_component_reference_001.json",
+      "result": "REJECT_AS_M10_CLOSURE_FIXTURE",
+      "reason": "Canonical Black Swan Skill02 adjoining-target damage operation is explicitly a component, not a full entrypoint/action; primary hit SPHitRatio and adjoining template, condition, retarget, chance and completion dependencies remain unresolved.",
+      "provenance": "TurnBasedGameData b11066beacc4de454b625fafc7ea3dd540c5bbf3; source relation CLOSE_4.4.0_TO_4.4.54; REFERENCE_MODEL only"
+    },
+    {
+      "fixture": "data/semantics/4.4.54/full_reconstruction/source_backed_hot_reference_001.json",
+      "result": "REJECT_AS_M10_CLOSURE_FIXTURE",
+      "reason": "Source-backed Natasha HOT heals within an OnPhase1 modifier callback; it is not a player-selectable battle action."
+    },
+    {
+      "fixture": "tests/game_data/test_reference_schedule_v2.py:test_complete_supported_scope_is_deterministic_and_settles",
+      "result": "REJECT_AS_M10_CLOSURE_FIXTURE",
+      "reason": "REF03 action_id=skill is a caller-supplied proposal for a pure legal/cost test and is not bound to REF02 damage or a source-backed ability."
+    }
+  ],
+  "corpus_cross_check": {
+    "source": "data/semantics/4.4.54/full_reconstruction/external_behavior_corpus_v1.json",
+    "records_scanned": 553,
+    "compiler": "src/hsr_battle_agent/game_data/behavior_compiler.py:BehaviorCompiler.compile_record",
+    "full_executable_reference_records": 112,
+    "full_executable_reference_records_with_top_level_damage_request": 0,
+    "executable_entrypoints_with_top_level_damage_request": 1,
+    "entrypoint_exception": "MCommon_DOT_Poison OnCustomEvent is a modifier callback, not a selectable ordinary action.",
+    "qualification_limit": "Compiler executability is local operation coverage; it does not establish action admission, triggerability or complete session progression."
+  },
+  "blocking_seam": "No existing fixture joins a complete supported selectable combat action, its exact target/effect/resource closure, action-completion marker and Terra state publication. Bridging the isolated components would invent omitted action and callback semantics.",
+  "reentry_condition": "A separately reviewed exact 4.4.54 or explicitly bounded REFERENCE_MODEL full-action fixture must identify the acting entity, exhaustive supported action proposals, full operation/dependency closure, explicit target and resource inputs, action-completion marker, and a safe Terra write mapping; unresolved dependencies must continue to block.",
+  "not_implemented": ["reference_sandbox session", "Terra combat mutation bridge", "session replay", "M9 transition scope expansion"]
+}
