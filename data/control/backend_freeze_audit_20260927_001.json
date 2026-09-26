@@ -1,0 +1,390 @@
+{
+ "schema": "backend_freeze_audit/1",
+ "version": "1.0.0",
+ "change_request_id": "CR-BACKEND-FREEZE-AUDIT-20260927-001",
+ "task_type": "AUDIT_ONLY",
+ "branch": "terra/implementation",
+ "starting_head": "8a4dcb00794463e64c257083330e2783167289e8",
+ "production_files_modified": false,
+ "artifacts_modified": false,
+ "git_writes": false,
+ "audit_scope": {
+  "milestones": [
+   "M10",
+   "M11",
+   "M12",
+   "M13",
+   "M14",
+   "M15"
+  ],
+  "question": "Is the current 4.4.54 backend/planner/sandbox contract stack stable enough to freeze as the engineering baseline?",
+  "method": "Static reading of committed contracts and production, mechanical import-graph and vocabulary scans, and a full backend test-suite baseline. No redesign performed."
+ },
+ "layer_boundaries": [
+  {
+   "id": "A",
+   "name": "synthetic/local reference action execution",
+   "owner_modules": [
+    "hsr_battle_agent.battle_sandbox.state_v2",
+    "hsr_battle_agent.battle_sandbox.legal_actions",
+    "hsr_battle_agent.battle_sandbox.snapshot_v2",
+    "hsr_battle_agent.battle_sandbox.rng",
+    "hsr_battle_agent.battle_sandbox.transaction",
+    "hsr_battle_agent.reference_sandbox"
+   ],
+   "declared_scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Local envelopes are declared SANDBOX_EXTENSION; the adapter gate forces REFERENCE_MODEL."
+  },
+  {
+   "id": "B",
+   "name": "reference settlement",
+   "owner_modules": [
+    "hsr_battle_agent.game_data.reference_damage_adapters.OrdinaryReferencePacket",
+    "hsr_battle_agent.game_data.reference_operation_adapters.ReferenceAdapterGate",
+    "hsr_battle_agent.reference_sandbox.contract.ReferenceActionEnvelope"
+   ],
+   "declared_scope": "REF02 ordinary damage / explicit heal packet",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Packet shape is exact-key; special fields are refused, not interpreted."
+  },
+  {
+   "id": "C",
+   "name": "planner search",
+   "owner_modules": [
+    "hsr_battle_agent.reference_battle_planner",
+    "hsr_battle_agent.planner_search (scope SANDBOX_RESOURCE_V1)",
+    "hsr_battle_agent.planner (dataset/trajectory/replay)"
+   ],
+   "declared_scope": "M11 battle search over M10 sessions; M9 resource search is a separate scope",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Search draws zero RNG (policy asserts search_rng_draws == 0)."
+  },
+  {
+   "id": "D",
+   "name": "real-content identity/representation",
+   "owner_modules": [
+    "data/content_support/4.4.54/content_support_registry_v1.json (data)",
+    "data/content_binding/4.4.54/* (M12 census evidence)",
+    "hsr_battle_agent.game_data.behavior_compiler (compilation authority)"
+   ],
+   "declared_scope": "descriptive representation only",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Carries version_relation CLOSE_4.4.0_TO_4.4.54 with version_provenance_qualified false."
+  },
+  {
+   "id": "E",
+   "name": "content capability querying",
+   "owner_modules": [
+    "hsr_battle_agent.content_support"
+   ],
+   "declared_scope": "read-only typed query over M13 registry data",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Only consumer of the M13 data plane; imports only battle_ir.evidence for vocabularies."
+  },
+  {
+   "id": "F",
+   "name": "real-content planner admission",
+   "owner_modules": [
+    "hsr_battle_agent.content_planner"
+   ],
+   "declared_scope": "fail-closed admission; REJECTED is the only outcome",
+   "explicit": true,
+   "conducts_native_claims": false,
+   "note": "Depends on E only; no execution artifact imported; accepts no battle state."
+  },
+  {
+   "id": "G",
+   "name": "native evidence/gate authority",
+   "owner_modules": [
+    "hsr_battle_agent.battle_ir.evidence (EvidenceMode / VersionRelation / ReadinessClass)",
+    "hsr_battle_agent.battle_sandbox.evidence_boundary",
+    "hsr_battle_agent.battle_sandbox.gate_certificate",
+    "hsr_battle_agent.battle_sandbox.preflight"
+   ],
+   "declared_scope": "NATIVE_EVIDENCED vocabulary and sealed gate certificates",
+   "explicit": true,
+   "conducts_native_claims": true,
+   "note": "Both certificate types are sealed; neither is constructible from registry data."
+  }
+ ],
+ "layer_boundary_verdict": {
+  "all_boundaries_explicit": true,
+  "overlapping_responsibilities_found": false,
+  "import_direction": "D -> E -> F; M10/M11 import no content layer, so no back-edge exists",
+  "evidence": [
+   "no module outside content_support/content_planner imports either package",
+   "content_support imports only battle_ir.evidence",
+   "content_planner imports only content_support",
+   "gate certificates require module-private seals"
+  ]
+ },
+ "execution_safety": {
+  "real_content_cannot_create_reference_action_envelope": true,
+  "real_content_cannot_enter_player_legal_action": true,
+  "real_content_cannot_expand_planner_successor": true,
+  "rejected_content_touches_battle_state_rng_allocator_scheduler": false,
+  "registry_query_artifacts_can_satisfy_gate_certificate": false,
+  "synthetic_m10_m11_path_explicitly_scoped_and_usable": true,
+  "implicit_4_5x_fallback_exists": false,
+  "planner_path_interprets_checked_fields": false,
+  "reenacted_denial": {
+   "canonical_skills": 620,
+   "rejected": 620,
+   "non_effect_totals": {
+    "reference_action_envelopes": 0,
+    "player_legal_actions": 0,
+    "planner_successors": 0,
+    "state_mutations": 0,
+    "rng_draws": 0,
+    "allocator_tickets": 0,
+    "scheduler_entries": 0,
+    "execution_traces": 0,
+    "gate_certificates": 0,
+    "transaction_plans": 0,
+    "staged_deltas": 0
+   }
+  },
+  "mechanisms": {
+   "admission": "content_planner admits nothing; outcome vocabulary is {REJECTED}",
+   "purity": "admission accepts no battle state and imports no execution type",
+   "certificate": "sealed construction; REFERENCE_MODEL/registry data cannot be promoted",
+   "version": "content version is explicit; load_registry has no latest resolution or fallback",
+   "special_fields": "SPHitRatio / HitSplitRatio are refused by the REF02 packet adapter",
+   "waitanimstate": "typed only in the content compiler's static type mapping; no planner reads it"
+  }
+ },
+ "contract_stability": [
+  {
+   "contract": "TerraBattleState",
+   "layer": "A",
+   "classification": "STABLE_WITH_VERSIONED_EXTENSION",
+   "reason": "slotted type with a declared schema constant and a snapshot migration module; extension is versioned, not ad hoc"
+  },
+  {
+   "contract": "ReferenceActionEnvelope",
+   "layer": "A/B",
+   "classification": "FROZEN_STABLE",
+   "reason": "frozen dataclass, exact-shape validation, namespace/version fields, declared completion and schedule policies"
+  },
+  {
+   "contract": "ReferenceBattleSession",
+   "layer": "A",
+   "classification": "FROZEN_STABLE",
+   "reason": "public surface (create/step/legal_actions/snapshot/terminal_status) is stable; step returns a new session rather than mutating"
+  },
+  {
+   "contract": "battle planner request/result (ReferenceBattleObjective, ReferenceBattleSearchPolicy, BattlePlan, BattlePlannerResult)",
+   "layer": "C",
+   "classification": "FROZEN_STABLE",
+   "reason": "schema-tagged, from_dict/to_dict round-trip, stable identity digests"
+  },
+  {
+   "contract": "ContentSkillKey",
+   "layer": "D/E",
+   "classification": "FROZEN_STABLE",
+   "reason": "immutable typed identity with a canonical string form fixed by the M13 contract"
+  },
+  {
+   "contract": "SkillCapability",
+   "layer": "E",
+   "classification": "FROZEN_STABLE",
+   "reason": "compact frozen view over M13 data; explicitly not an authority"
+  },
+  {
+   "contract": "ContentPlannerAdmissionRequest / ContentPlannerAdmissionResult",
+   "layer": "F",
+   "classification": "FROZEN_STABLE",
+   "reason": "frozen, closed outcome vocabulary, engineered fail-closed positive path"
+  },
+  {
+   "contract": "GateCertificate",
+   "layer": "G",
+   "classification": "FROZEN_STABLE",
+   "reason": "both certificate types are sealed and require NATIVE_EVIDENCED; frozen Terra authority, must not be changed"
+  },
+  {
+   "contract": "EvidenceMode / VersionRelation / Readiness",
+   "layer": "G",
+   "classification": "FROZEN_STABLE",
+   "reason": "sole-home frozen vocabularies with identity-quarantine rules"
+  },
+  {
+   "contract": "BindingLevel / SupportStatus / BlockerClass / ReentryHint / UnboundReason",
+   "layer": "E",
+   "classification": "FROZEN_STABLE",
+   "reason": "closed typed mirrors of the M13 registry vocabulary"
+  },
+  {
+   "contract": "AdmissionReasonCode",
+   "layer": "F",
+   "classification": "STABLE_WITH_VERSIONED_EXTENSION",
+   "reason": "closed now; new M14 reasons may add members, and unknown M14 reasons surface as UNMAPPED_M14_REASON meanwhile"
+  },
+  {
+   "contract": "NonEffects",
+   "layer": "F",
+   "classification": "STABLE_WITH_VERSIONED_EXTENSION",
+   "reason": "counter set may grow as new execution artifacts appear"
+  },
+  {
+   "contract": "M13_VERSION_RELATION_TOKEN map",
+   "layer": "E",
+   "classification": "STABLE_WITH_VERSIONED_EXTENSION",
+   "reason": "single-token map; a future source relation must be added deliberately and fails closed meanwhile"
+  },
+  {
+   "contract": "ContentSupportRegistry internal lookup (_by_key)",
+   "layer": "E",
+   "classification": "SHOULD_NOT_BE_EXTERNAL_API",
+   "reason": "private field; callers must use record()/queries"
+  },
+  {
+   "contract": "content_planner.admission._admit_with_registry",
+   "layer": "F",
+   "classification": "SHOULD_NOT_BE_EXTERNAL_API",
+   "reason": "private helper; the public entrypoints are admit_content_for_planner and prepare_content_plan_request"
+  },
+  {
+   "contract": "planner_search / planner (M9)",
+   "layer": "C",
+   "classification": "LOCAL_ONLY",
+   "reason": "separate declared scope (SANDBOX_RESOURCE_V1) with its own fixtures"
+  }
+ ],
+ "duplication_policy_leaks": {
+  "binding_level_derived_outside_authority": [],
+  "support_status_derived_outside_authority": [],
+  "readiness_derived_outside_authority": [],
+  "blocker_precedence_derived_outside_authority": [],
+  "execution_eligibility_derived_outside_authority": [],
+  "content_version_selection_duplicated": [],
+  "legal_action_construction_duplicated": [],
+  "search_method": "vocabulary and import-graph scan over src/",
+  "findings": [
+   {
+    "id": "DUP-1",
+    "severity": "NON_BLOCKING",
+    "subject": "M15 reason vocabulary renames M14 reasons",
+    "detail": "AdmissionReasonCode reuses several M14 reason spellings (for example BLOCKED_BY_EVIDENCE) as a distinct type, and M14_REASON_TO_ADMISSION_REASON is a rename table. It re-derives nothing, but the shared spelling across SupportStatus and AdmissionReasonCode is easy to misread.",
+    "already_guarded_by": "mapping table is explicit and documented; unmapped reasons surface visibly"
+   },
+   {
+    "id": "DUP-2",
+    "severity": "NON_BLOCKING",
+    "subject": "readiness vocabulary single-sourced",
+    "detail": "content_support.Readiness is an alias of battle_ir.evidence.ReadinessClass, so no second copy exists. The only other occurrence of the vocabulary is its home module definition.",
+    "already_guarded_by": "alias, asserted by test_readiness_reuses_the_frozen_vocabulary"
+   }
+  ],
+  "authoritative_layers": {
+   "binding_level / support_status / blocker_classes / reentry_hints": "M13 registry data, typed once by content_support",
+   "readiness": "hsr_battle_agent.battle_ir.evidence.ReadinessClass",
+   "execution_eligibility": "content_support.real_content_execution_eligibility, renamed by content_planner",
+   "content_version_selection": "content_support.registry.load_registry with SUPPORTED_CONTENT_VERSIONS",
+   "legal_action_construction": "battle_sandbox.legal_actions"
+  }
+ },
+ "version_migration_readiness": {
+  "verdict": "DELTA_READY_WITH_SMALL_FIXES",
+  "planner_sandbox_rewrite_required": false,
+  "evidence": "M10/M11 import no content layer, so a new content version cannot require planner or sandbox changes. The M14/M15 layers are version-parameterised: load_registry takes an explicit version and the registry directory is derived from it.",
+  "small_fixes": [
+   {
+    "id": "DELTA-1",
+    "what": "content_support.registry.SUPPORTED_CONTENT_VERSIONS is a single-element allowlist",
+    "why": "a 4.5.54 registry directory will be refused until the version is registered",
+    "scope": "one deliberate constant edit in the content layer; no planner or sandbox change"
+   },
+   {
+    "id": "DELTA-2",
+    "what": "the content-production pipeline is hard-pinned to 4.4.54",
+    "why": "game_data/external_reconstruction.py refuses any version other than its CONTENT_VERSION pin; nanoka_content.SUPPORTED_VERSION, followup_ledger.TARGET_GAME_VERSION, the behavior_compiler game_version literal and battle_ir path literals are also fixed to 4.4.54",
+    "scope": "data-production side only; parameterising these pins is not an architecture change"
+   },
+   {
+    "id": "DELTA-3",
+    "what": "M13_VERSION_RELATION_TOKEN maps exactly one close-version relation",
+    "why": "a different source relation for 4.5.54 would fail closed with VersionRelationParseError",
+    "scope": "additive token registration; fail-closed behaviour is correct in the meantime"
+   }
+  ],
+  "no_private_server_4_5_54_truth_claimed": true
+ },
+ "freeze_decision": {
+  "choice": "A",
+  "label": "BACKEND_CONTRACT_STACK_FREEZE_READY",
+  "concrete_blocking_fixes": [],
+  "reason": "All seven boundaries are explicit and non-overlapping, the import graph is strictly layered with no back-edges, every real-content execution path is denied before any execution artifact can exist, no policy is derived outside its authoritative layer, content versions are explicit with no fallback, and the full backend suite passes. The only open items are forward-looking delta work, not defects in the current stack.",
+  "would_change_to_B_if": "a concrete contract incompatibility or an execution bypass is demonstrated; none was found"
+ },
+ "observations_non_blocking": [
+  {
+   "id": "OBS-1",
+   "subject": "two distinct GateCertificate classes",
+   "detail": "battle_sandbox.gate_certificate.GateCertificate (strict-preflight permission) and battle_sandbox.evidence_boundary.GateCertificate (sealed native-contract gate) are different classes sharing a name. Neither is re-exported from battle_sandbox/__init__, so consumers must import by module path.",
+   "risk": "consumer misreading of an ambiguous name",
+   "action": "document only; this is frozen Terra authority and must not be renamed or merged"
+  },
+  {
+   "id": "OBS-2",
+   "subject": "M11 plan documents carry a content_target label",
+   "detail": "reference_battle_planner.search declares CONTENT_TARGET = 'HSR-4.4.54' while its EVIDENCE block keeps action_envelope SANDBOX_EXTENSION, settlement REFERENCE_MODEL, native_trace false and golden false.",
+   "risk": "the label could be misread as a content-binding claim",
+   "action": "document only; the evidence block and the M15 denial boundary already forbid that reading"
+  },
+  {
+   "id": "OBS-3",
+   "subject": "ReferenceAdapterGate is a declared, not sealed, gate",
+   "detail": "The gate is an ordinary frozen dataclass that pins evidence_mode to REFERENCE_MODEL and requires adapter id/version/sha256/scope/owner, but any caller can construct one.",
+   "risk": "hand-built local envelopes remain possible, as intended for the synthetic scope",
+   "action": "document only. The guarantee that real content cannot produce an envelope rests on (a) no content binder existing and (b) the M15 admission boundary, not on a seal; REFERENCE_MODEL can never be promoted to native evidence"
+  },
+  {
+   "id": "OBS-4",
+   "subject": "several independent 4.4.54 version pins in the content pipeline",
+   "detail": "game_data and battle_ir modules each pin 4.4.54 independently; none resolves a 'latest' version, so there is no implicit selection.",
+   "risk": "delta work spans several modules",
+   "action": "captured as DELTA-2; not a leak and not a blocker"
+  }
+ ],
+ "evidence": {
+  "full_backend_test_suite": {
+   "tests_run": 1875,
+   "failures": 0,
+   "errors": 0,
+   "skipped": 0,
+   "all_pass": true,
+   "source": "tmp\\m15\\fullsuite.log"
+  },
+  "full_suite_command": "python -m unittest discover -s tests -t . -p test_*.py",
+  "milestone_statuses": {
+   "M10_reference_sandbox": "DELIVERED",
+   "M11_reference_battle_planner": "DELIVERED",
+   "M12_content_binding": "BLOCKED_BY_EVIDENCE",
+   "M13_content_support_registry": "DONE",
+   "M14_capability_query": "DONE",
+   "M15_content_planner_admission": "DONE"
+  },
+  "runtime_boundary": {
+   "first_real_content_bound_action": "NO",
+   "content_bound_battle_sandbox": "NOT_ESTABLISHED",
+   "native_skill_execution": "NO",
+   "golden": 0,
+   "native_trace": "empty",
+   "m7": "deferred"
+  }
+ },
+ "non_claims": [
+  "No contract was redesigned or modified.",
+  "No content was made executable.",
+  "The audit does not claim native evidence for any content.",
+  "M12 remains BLOCKED_BY_EVIDENCE; that is its correct state, not an audit defect.",
+  "No 4.5.54 content was read or interpreted."
+ ]
+}
