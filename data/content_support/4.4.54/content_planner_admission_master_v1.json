@@ -1,0 +1,213 @@
+{
+ "schema": "content_planner_admission_master/1",
+ "version": "1.0.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M15-CONTENT-PLANNER-ADMISSION-20260927-001",
+ "branch": "terra/implementation",
+ "starting_head": "df61eb8299858d0d3cd355cccb21977dbf7cfacc",
+ "git_writes": false,
+ "milestone": {
+  "id": "M15",
+  "title": "CONTENT-TO-PLANNER ADMISSION BOUNDARY",
+  "type": "BACKEND_PLANNER_INTEGRATION_MILESTONE",
+  "execution_milestone_implied": false,
+  "status": "DONE",
+  "reopens_m12": false,
+  "modifies_m13_m14": false,
+  "modifies_m10_m11": false,
+  "artifacts": {
+   "contract": "data/content_support/4.4.54/content_planner_admission_contract_v1.json",
+   "master": "data/content_support/4.4.54/content_planner_admission_master_v1.json",
+   "package": "src/hsr_battle_agent/content_planner/",
+   "tests": "tests/content_planner/test_admission_boundary.py"
+  }
+ },
+ "tasks": [
+  {
+   "task_id": "M15A-001",
+   "status": "DONE",
+   "title": "Request / result model",
+   "evidence": "models.py: ContentPlannerAdmissionRequest, REJECTED-only outcome, closed reason vocabulary, NonEffects"
+  },
+  {
+   "task_id": "M15A-002",
+   "status": "DONE",
+   "title": "M14-backed admission",
+   "evidence": "admission.py consumes load_registry / require_skill / real_content_execution_eligibility; no direct M13 read"
+  },
+  {
+   "task_id": "M15A-003",
+   "status": "DONE",
+   "title": "Structured reason mapping",
+   "evidence": "documented M14-reason -> admission-reason table; UNMAPPED_M14_REASON never occurs on 4.4.54"
+  },
+  {
+   "task_id": "M15A-004",
+   "status": "DONE",
+   "title": "Pre-planner hard boundary",
+   "evidence": "structural purity: no execution artifacts imported, no battle state accepted; spy + patched M11 search both 0 calls"
+  },
+  {
+   "task_id": "M15A-005",
+   "status": "DONE",
+   "title": "M10/M11 compatibility",
+   "evidence": [
+    "tests.reference_sandbox.test_local_session",
+    "tests.reference_battle_planner.test_battle_planner",
+    "tests.content_support.test_capability_query"
+   ]
+  },
+  {
+   "task_id": "M15A-006",
+   "status": "DONE",
+   "title": "All-620 denial proof",
+   "evidence": {
+    "skills_tested": 620,
+    "outcomes": {
+     "REJECTED": 620
+    },
+    "non_effect_totals": {
+     "reference_action_envelopes": 0,
+     "player_legal_actions": 0,
+     "planner_successors": 0,
+     "state_mutations": 0,
+     "rng_draws": 0,
+     "allocator_tickets": 0,
+     "scheduler_entries": 0,
+     "execution_traces": 0,
+     "gate_certificates": 0,
+     "transaction_plans": 0,
+     "staged_deltas": 0
+    }
+   }
+  },
+  {
+   "task_id": "M15A-007",
+   "status": "DONE",
+   "title": "Tests / closure",
+   "evidence": {
+    "modules": [
+     "tests.content_planner.test_admission_boundary"
+    ],
+    "tests_run": 52,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "all_pass": true
+   }
+  },
+  {
+   "task_id": "M15A-008",
+   "status": "DONE",
+   "title": "Facade hardening: positive path not implemented, fail closed",
+   "evidence": {
+    "positive_facade_path": "NOT_IMPLEMENTED_FAIL_CLOSED",
+    "error": "PositiveContentAdmissionNotImplementedError",
+    "reason_code": "POSITIVE_CONTENT_ADMISSION_NOT_IMPLEMENTED",
+    "planner_callable_invocations": 0,
+    "positive_outcome_member_added": false
+   }
+  }
+ ],
+ "test_evidence": {
+  "m15": {
+   "modules": [
+    "tests.content_planner.test_admission_boundary"
+   ],
+   "tests_run": 52,
+   "failures": 0,
+   "errors": 0,
+   "skipped": 0,
+   "all_pass": true
+  },
+  "regression": {
+   "modules": [
+    "tests.reference_sandbox.test_local_session",
+    "tests.reference_battle_planner.test_battle_planner",
+    "tests.content_support.test_capability_query"
+   ],
+   "tests_run": 62,
+   "failures": 0,
+   "errors": 0,
+   "skipped": 0,
+   "all_pass": true
+  }
+ },
+ "denial_accounting": {
+  "canonical_real_content_skills_tested": 620,
+  "rejected_before_planner": 620,
+  "outcomes": {
+   "REJECTED": 620
+  },
+  "non_effect_totals": {
+   "reference_action_envelopes": 0,
+   "player_legal_actions": 0,
+   "planner_successors": 0,
+   "state_mutations": 0,
+   "rng_draws": 0,
+   "allocator_tickets": 0,
+   "scheduler_entries": 0,
+   "execution_traces": 0,
+   "gate_certificates": 0,
+   "transaction_plans": 0,
+   "staged_deltas": 0
+  },
+  "fu_xuan_120801": {
+   "reason_code": "BLOCKED_BY_EVIDENCE",
+   "binding_level": "FULL_ACTION_REPRESENTED",
+   "blocker_classes": [
+    "DAMAGE_PACKET",
+    "WAIT_ANIM_STATE"
+   ],
+   "frontier_packet_field": "SPHitRatio",
+   "reentry_hints": [
+    "DAMAGE_PACKET_FIELD_SUPPORT",
+    "NEW_NATIVE_SPHITRATIO_EVIDENCE",
+    "WAITANIMSTATE_LOCAL_POLICY_REVIEW"
+   ],
+   "admitted": false
+  },
+  "four_no_entry_rows": {
+   "keys": [
+    "1220:122014",
+    "1510:151014",
+    "8001:800103",
+    "8002:800203"
+   ],
+   "reason_code": "NO_BEHAVIOR_ROOT",
+   "prepare_ability_preserved_without_promotion": true
+  },
+  "version_fallback": "NONE"
+ },
+ "validation": {
+  "all_620_rejected": true,
+  "reference_action_envelopes_created": 0,
+  "player_legal_actions_created": 0,
+  "planner_successors_expanded": 0,
+  "battle_state_mutations": 0,
+  "rng_draws": 0,
+  "allocator_consumption": 0,
+  "m10_synthetic_compatibility": true,
+  "m11_planner_compatibility": true,
+  "m12_artifacts_modified": false,
+  "m13_artifacts_modified": false,
+  "m14_artifacts_modified": false,
+  "m10_m11_production_modified": false,
+  "frontend_modified": false,
+  "positive_facade_path": "NOT_IMPLEMENTED_FAIL_CLOSED",
+  "planner_callable_invocations": 0,
+  "positive_outcome_member_added": false
+ },
+ "claim_boundary": {
+  "CONTENT_TO_PLANNER_ADMISSION_BOUNDARY": "ESTABLISHED",
+  "REAL_CONTENT_FAIL_CLOSED_BEFORE_PLANNER": "YES",
+  "REAL_CONTENT_PLANNER_ACTIONS": 0,
+  "FIRST_REAL_CONTENT_BOUND_ACTION": "NO",
+  "CONTENT_BOUND_BATTLE_SANDBOX": "NOT_ESTABLISHED",
+  "FULL_SOURCE_BACKED_HSR_ACTION_BINDING": "NO",
+  "NATIVE_SKILL_EXECUTION": "NO",
+  "golden": 0,
+  "native_trace": "empty",
+  "m7": "deferred"
+ }
+}

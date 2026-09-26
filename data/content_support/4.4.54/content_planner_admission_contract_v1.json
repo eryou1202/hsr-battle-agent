@@ -1,0 +1,211 @@
+{
+ "schema": "content_planner_admission_contract/1",
+ "version": "1.0.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M15-CONTENT-PLANNER-ADMISSION-20260927-001",
+ "milestone": "M15",
+ "purpose": "One explicit fail-closed admission boundary between real content identities (M12/M13/M14) and the existing M10/M11 reference sandbox/planner: 'may this concrete real content skill become an action candidate for the reference battle planner?'. Every current 4.4.54 real skill is answered NO, typed, deterministically, preflight-only and state/RNG/allocator neutral.",
+ "package": "hsr_battle_agent.content_planner",
+ "modules": {
+  "models.py": "typed request, closed outcome/reason vocabulary, result and non-effect record",
+  "admission.py": "M14-backed admission and the optional planner facade"
+ },
+ "not_an_execution_authority": true,
+ "content_query_authority": {
+  "single_interpretation_layer": "hsr_battle_agent.content_support (M14)",
+  "consumed_api": [
+   "load_registry",
+   "require_skill",
+   "real_content_execution_eligibility",
+   "registry.record"
+  ],
+  "reads_m13_json_directly": false,
+  "recomputes_support_status": false,
+  "recomputes_blocker_precedence": false,
+  "rescans_content_or_compiler_artifacts": false
+ },
+ "request_model": {
+  "type": "ContentPlannerAdmissionRequest",
+  "authoritative_fields": [
+   "content_version",
+   "avatar_id",
+   "skill_id"
+  ],
+  "non_authoritative_context": {
+   "fields": [
+    "actor_id",
+    "target_ids",
+    "note"
+   ],
+   "used_for_decision": false,
+   "avatar_id_derived_from_actor_id": false,
+   "skill_id_derived_from_behavior_name": false
+  }
+ },
+ "outcome_vocabulary": {
+  "members": [
+   "REJECTED"
+  ],
+  "positive_member_exists": false,
+  "note": "No executable success exists because no current runtime authority can produce one. A future positive admission must arrive with a real runtime execution authority, not by widening this enum alone."
+ },
+ "reason_vocabulary": {
+  "members": [
+   "CONTENT_VERSION_UNAVAILABLE",
+   "SKILL_NOT_IN_REGISTRY",
+   "NO_BEHAVIOR_ROOT",
+   "NO_SETTLEMENT_OBSERVED",
+   "SECOND_HOP_CONTINUATION_UNRESOLVED",
+   "BLOCKED_BY_EVIDENCE",
+   "BLOCKED_BY_REFERENCE_SUPPORT",
+   "REPRESENTABLE_BUT_NOT_EXECUTABLE",
+   "UNMAPPED_M14_REASON"
+  ],
+  "m14_reason_to_admission_reason": {
+   "NO_BEHAVIOR_ROOT": "NO_BEHAVIOR_ROOT",
+   "NO_SETTLEMENT_OBSERVED": "NO_SETTLEMENT_OBSERVED",
+   "SECOND_HOP_CONTINUATION_UNRESOLVED": "SECOND_HOP_CONTINUATION_UNRESOLVED",
+   "BLOCKED_STATUS_BLOCKED_BY_EVIDENCE": "BLOCKED_BY_EVIDENCE",
+   "BLOCKED_STATUS_BLOCKED_BY_REFERENCE_SUPPORT": "BLOCKED_BY_REFERENCE_SUPPORT",
+   "BLOCKED_STATUS_BLOCKED_BY_CONTINUATION": "SECOND_HOP_CONTINUATION_UNRESOLVED",
+   "BLOCKED_STATUS_REPRESENTABLE_BLOCKED": "REPRESENTABLE_BUT_NOT_EXECUTABLE",
+   "BLOCKED_STATUS_NO_SETTLEMENT": "NO_SETTLEMENT_OBSERVED",
+   "BLOCKED_STATUS_UNBOUND_STATIC_SKILL": "NO_BEHAVIOR_ROOT"
+  },
+  "unmapped_policy": "An M14 reason this build does not recognise is surfaced as UNMAPPED_M14_REASON with the raw M14 code preserved; it is never silently mapped onto a known reason.",
+  "promotes_a_cleaner_status": false
+ },
+ "result_model": {
+  "type": "ContentPlannerAdmissionResult",
+  "carries": [
+   "skill_key",
+   "outcome",
+   "reason_code",
+   "reason_detail",
+   "m14_reason_code",
+   "binding_level",
+   "support_status",
+   "blocker_classes",
+   "reentry_hints",
+   "frontier_packet_field",
+   "non_effects"
+  ],
+  "engineering_conclusions_all_false": [
+   "may_create_reference_action_envelope",
+   "may_enter_player_legal_actions",
+   "may_expand_planner_successor",
+   "may_mutate_state"
+  ],
+  "conclusion_kind": "ENGINEERING_ADMISSION_NOT_GAMEPLAY_LEGALITY",
+  "frontier_packet_field_policy": "The field name (e.g. SPHitRatio) is carried as a name for routing only. No value, formula, recipient or mutation class is ever derived from it."
+ },
+ "hard_pre_planner_boundary": {
+  "invariant": "A rejected real-content admission occurs before, and never creates, any of the artifacts below.",
+  "never_created": [
+   "ReferenceActionEnvelope",
+   "PlayerLegalAction",
+   "planner action candidate",
+   "TransactionPlan",
+   "GateCertificate",
+   "StagedDelta",
+   "new BattleState",
+   "RNG transaction or draw",
+   "allocator ticket or ID",
+   "scheduler entry",
+   "trace claiming execution"
+  ],
+  "enforcement": "Structural, not a runtime check: the boundary imports none of those types and accepts no mutable battle state, so it has no mechanism to produce them."
+ },
+ "purity_design": {
+  "accepts_mutable_battle_state": false,
+  "api_parameters_checked": [
+   "admit_content_for_planner",
+   "prepare_content_plan_request",
+   "prepare_content_plan_request(planner_callable=...)"
+  ],
+  "helper": "admission_accepts_battle_state()",
+  "design_note": "The stronger design is used: because admission accepts no BattleState at all, state neutrality is structural rather than something that must be re-verified per call. An integration test additionally proves that calling admission leaves an existing M10 session snapshot byte-identical."
+ },
+ "version_explicitness": {
+  "explicit_version_required": true,
+  "implicit_latest_selection": false,
+  "cross_version_fallback": false,
+  "cross_version_record_merge": false,
+  "unknown_version_reason": "CONTENT_VERSION_UNAVAILABLE"
+ },
+ "no_content_to_m10_conversion": {
+  "implemented": false,
+  "explicitly_absent": [
+   "SkillID -> ReferenceActionEnvelope",
+   "EntryAbility -> ReferenceActionEnvelope",
+   "Damage request -> OrdinaryReferencePacket"
+  ],
+  "note": "There is currently no authorized content execution bridge."
+ },
+ "m10_m11_compatibility": {
+  "requires_content_skill_key_for_synthetic_callers": false,
+  "m10_synthetic_path": "unchanged; explicitly scoped, own reference envelopes",
+  "m11_planner_path": "unchanged; plans over M10 local sessions",
+  "existing_production_modules_modified": false,
+  "planner_consults_admission_boundary": false
+ },
+ "planner_facade": {
+  "entrypoint": "prepare_content_plan_request",
+  "positive_facade_path": "NOT_IMPLEMENTED_FAIL_CLOSED",
+  "on_rejection": "returns the structured rejection and stops",
+  "planner_invocations_on_rejection": 0,
+  "plan_request_on_rejection": null,
+  "on_non_rejected": "raises PositiveContentAdmissionNotImplementedError (reason code POSITIVE_CONTENT_ADMISSION_NOT_IMPLEMENTED); the facade never enters a planner under any branch",
+  "positive_outcome_member_added": false,
+  "planner_callable_is_inert": true,
+  "planner_callable_invocations": 0,
+  "proved_by": [
+   "spy callable across all 620 skills",
+   "patched M11 search_battle_plans with zero invocations",
+   "monkeypatched non-rejected admission stub still raises and never plans",
+   "source scan asserting no positive planner handoff exists"
+  ]
+ },
+ "future_extension_boundary": {
+  "m15_decides_future_executability": false,
+  "positive_admission_requires_all_of": [
+   "content capability/identity (M13/M14 record exists and is represented)",
+   "authorized content binder (content -> reference settlement, does not exist yet)",
+   "runtime evidence/readiness (evidence mode and readiness satisfied at runtime)",
+   "GateCertificate / preflight closure from the strict execution path"
+  ],
+  "implemented_now": false,
+  "note": "A cleaner M13/M14 status must never by itself make content executable; positive admission can only be introduced alongside a separate runtime execution authority that can supply the existing strict execution prerequisites."
+ },
+ "runtime_authority_boundary": {
+  "invariant": "Registry-derived capability data NEVER satisfies GateCertificate or NATIVE_EVIDENCED.",
+  "registry_satisfies_gate_certificate": false,
+  "registry_satisfies_native_evidenced": false,
+  "m10_m11_infrastructure_unchanged": true
+ },
+ "claim_boundary": {
+  "permitted": {
+   "CONTENT_TO_PLANNER_ADMISSION_BOUNDARY": "ESTABLISHED",
+   "REAL_CONTENT_FAIL_CLOSED_BEFORE_PLANNER": "YES"
+  },
+  "still_false": {
+   "REAL_CONTENT_PLANNER_ACTIONS": 0,
+   "FIRST_REAL_CONTENT_BOUND_ACTION": "NO",
+   "CONTENT_BOUND_BATTLE_SANDBOX": "NOT_ESTABLISHED",
+   "FULL_SOURCE_BACKED_HSR_ACTION_BINDING": "NO",
+   "NATIVE_SKILL_EXECUTION": "NO",
+   "golden": 0,
+   "native_trace": "empty",
+   "m7": "deferred"
+  }
+ },
+ "not_performed": [
+  "no semantic reverse",
+  "no content binder",
+  "no frontend",
+  "no 4.5.54 migration",
+  "no M12/M13/M14 artifact modification",
+  "no git writes",
+  "no external skill writes"
+ ]
+}
