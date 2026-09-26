@@ -1,0 +1,1752 @@
+{
+  "schema": "hsr_battle_agent.astra_sphitratio_targeted_evidence/1",
+  "change_request_id": "CR-M12-SPHITRATIO-TARGETED-EVIDENCE-20260926-001",
+  "created_at": "2026-09-26T15:11:29.401Z",
+  "content_target": "HSR-4.4.54",
+  "starting_head": "6059dc67b8df2cbad92e30e8564ee26ff25d169a",
+  "branch": "terra/implementation",
+  "starting_git_status": {
+    "command": "git status --short",
+    "working_tree_was_dirty": true,
+    "status_before_output_creation": " M data/raw/4.4.54/damage_request_dispatch_resolution_18.json\n M docs/agent/handoffs/damage_request_dispatch_resolution_18.md\n M frontend/README.md\n M frontend/index.html\n M frontend/src/adapters/BattleBackendAdapter.ts\n M frontend/src/adapters/LiveBattleBackendAdapter.ts\n M frontend/src/adapters/MockBattleBackendAdapter.ts\n M frontend/src/app/App.smoke.test.tsx\n M frontend/src/app/App.tsx\n M frontend/src/app/WorkspaceProvider.tsx\n M frontend/src/components/Badge.tsx\n M frontend/src/fixtures/scenarioBUnknown.ts\n M frontend/src/fixtures/scenarioEStaleRevision.ts\n M frontend/src/fixtures/types.ts\n M frontend/src/models/certificate.ts\n M frontend/src/models/index.ts\n M frontend/src/models/json.ts\n M frontend/src/models/strict.ts\n M frontend/src/models/transaction.ts\n M frontend/src/panels/BottomConsole.tsx\n M frontend/src/panels/JsonImportPanel.tsx\n M frontend/src/panels/PreflightInspector.tsx\n M frontend/src/panels/TopStatusBar.tsx\n M frontend/src/styles/global.css\n M frontend/src/utils/format.ts\n M frontend/src/utils/jsonImport.ts\n?? .workbuddy/\n?? data/raw/4.4.54/ability_direct_change_hp_506500_10.txt\n?? data/raw/4.4.54/ability_direct_change_hp_xrefs_10.json\n?? data/raw/4.4.54/ability_direct_damage_hp_506499_10.txt\n?? data/raw/4.4.54/ability_get_property_506504_12.txt\n?? data/raw/4.4.54/ability_modify_property_506503_10.txt\n?? data/raw/4.4.54/ability_modify_property_xrefs_10.json\n?? data/raw/4.4.54/ability_targetinfo_method_lookup_30.json\n?? data/raw/4.4.54/begin_damage_chunk_506407_10.txt\n?? data/raw/4.4.54/damage_direct_hp_xrefs_10.json\n?? data/raw/4.4.54/damage_request_dispatch_table_18_probe.json\n?? data/raw/4.4.54/damage_task_candidate_507296_10.txt\n?? data/raw/4.4.54/damage_task_ctor_507292_10.txt\n?? data/raw/4.4.54/damage_task_emit_gate_507304_10.txt\n?? data/raw/4.4.54/damage_task_helper_507305_10.txt\n?? data/raw/4.4.54/damage_task_helper_507306_10.txt\n?? data/raw/4.4.54/damage_task_helper_507310_10.txt\n?? data/raw/4.4.54/damage_task_helper_507311_10.txt\n?? data/raw/4.4.54/damage_task_helper_507312_10.txt\n?? data/raw/4.4.54/damage_task_helper_507314_10.txt\n?? data/raw/4.4.54/damage_task_prepare_507303_10.txt\n?? data/raw/4.4.54/direct_change_hp_506500_10.txt\n?? data/raw/4.4.54/direct_change_hp_positive_helper_e72dce0_11.txt\n?? data/raw/4.4.54/direct_damage_auxiliary_e72c6f0_xrefs_12.json\n?? data/raw/4.4.54/direct_damage_hp_success_helper_xrefs_10.json\n?? data/raw/4.4.54/direct_damage_record_submit_195c6d120_11.txt\n?? data/raw/4.4.54/direct_damage_record_submit_xrefs_195c6d120_11.json\n?? data/raw/4.4.54/disasm_dynamicfloat_methods_30.txt\n?? data/raw/4.4.54/disasm_healhp_factory_30.txt\n?? data/raw/4.4.54/disasm_predicate_registry_cctor_tail_30.txt\n?? data/raw/4.4.54/disasm_predicateconfig_dispatcher_30.txt\n?? data/raw/4.4.54/disasm_skill_ability_config_frombinary_30.txt\n?? data/raw/4.4.54/disasm_targetselector_registry_dispatcher_30.txt\n?? data/raw/4.4.54/disasm_taskconfig_factory_30.txt\n?? data/raw/4.4.54/disasm_taskconfig_registry_cctor_head_30.txt\n?? data/raw/4.4.54/disasm_taskconfig_registry_cctor_tail_30.txt\n?? data/raw/4.4.54/disasm_taskconfig_registry_dispatcher_30.txt\n?? data/raw/4.4.54/disasm_turnbased_ability_frombinaryimpl_30.txt\n?? data/raw/4.4.54/disasm_turnbased_ability_list_frombinary_30.txt\n?? data/raw/4.4.54/disasm_waitanimstate_frombinary_30.txt\n?? data/raw/4.4.54/end_damage_chunk_506408_10.txt\n?? data/raw/4.4.54/generated_task_damage_topology_10.json\n?? data/raw/4.4.54/healdata_type_inspection_30.json\n?? data/raw/4.4.54/healhp_nested_parser_lookups_30.json\n?? data/raw/4.4.54/healhp_nested_type_inspection_30.json\n?? data/raw/4.4.54/modifier_event_execute_all_10.txt\n?? data/raw/4.4.54/modifier_event_execute_event_10.txt\n?? data/raw/4.4.54/modifier_event_sequence_execute_10.txt\n?? data/raw/4.4.54/modifier_event_sequence_execute_xrefs_10.json\n?? data/raw/4.4.54/modifier_event_setup_range_callbacks_10.txt\n?? data/raw/4.4.54/modifier_event_setup_range_xrefs_10.json\n?? data/raw/4.4.54/modifier_on_activate_506176_10.txt\n?? data/raw/4.4.54/predicate_registry_method_lookup_30.json\n?? data/raw/4.4.54/predicate_registry_type_inspection_30.json\n?? data/raw/4.4.54/predicateconfig_registry_30.json\n?? data/raw/4.4.54/property_after_change_506625_10.txt\n?? data/raw/4.4.54/property_get_506504_10.txt\n?? data/raw/4.4.54/property_get_xrefs_10.json\n?? data/raw/4.4.54/property_post_transform_19caf14a0_11.txt\n?? data/raw/4.4.54/property_post_transform_prefix_19caf14a0_12.txt\n?? data/raw/4.4.54/property_safe_fetch_506624_10.txt\n?? data/raw/4.4.54/property_value_context_dispatcher_19b4485c0_10.txt\n?? data/raw/4.4.54/target_damage_hp_504579_10.txt\n?? data/raw/4.4.54/taskconfig_dispatcher_method_lookup_30.json\n?? data/raw/4.4.54/taskconfig_registry_30.json\n?? data/raw/4.4.54/taskconfig_registry_type_inspection_30.json\n?? data/raw/4.4.54/waitanimstate_type_inspection_30.json\n?? data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_analyze_v1.cjs\n?? data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_terra_ticket_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_formation_boss_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_monster_ai_pass2_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_monster_ai_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_scheduler_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_analyze_v1.cjs\n?? data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_close_v1.cjs\n?? data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_targeted_evidence_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_terra_ticket_v1.json\n?? data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_validate_v1.cjs\n?? data/semantics/4.4.54/full_reconstruction/astra_target_retarget_targeted_evidence_v1.json\n?? docs/agent/astra_semantic_handoff_2026-09-10.md\n?? frontend/src/app/importSession.ts\n?? frontend/src/app/viewport.test.ts\n?? frontend/src/decoders/\n?? frontend/src/fixtures/branch.ts\n?? frontend/src/fixtures/planner.ts\n?? frontend/src/models/branch.ts\n?? frontend/src/models/customScenario.ts\n?? frontend/src/models/followup.ts\n?? frontend/src/models/legalActions.ts\n?? frontend/src/panels/BranchComparison.tsx\n?? frontend/src/panels/CoverageInspector.tsx\n?? frontend/src/panels/CustomScenarioPanel.tsx\n?? frontend/src/panels/LegalActionsPanel.tsx\n?? frontend/src/panels/PlannerWorkflow.tsx\n?? frontend/src/utils/branchCompare.test.ts\n?? frontend/src/utils/branchCompare.ts\n?? frontend/src/vite-env.d.ts\n?? hsr_design_data_hashes.csv\n?? hsr_design_data_inventory.csv\n?? tools/reference/\n?? tools/reverse/scripts/build_set_hp_current_hp_transition_12.py\n?? tools/reverse/scripts/index_generated_task_damage_topology_10.py\n?? tools/reverse/vendor/",
+    "start_warnings": [
+      "Permission denied opening tmp8emg7ipj/",
+      "Permission denied opening tmp98o9wqtg/"
+    ],
+    "preservation": "Existing modifications/untracked files left untouched. No Git write commands executed."
+  },
+  "status": "BLOCKED_BY_EVIDENCE",
+  "evidence_result": "NO_NEW_QUALIFYING_EVIDENCE",
+  "success_level": "D",
+  "m12_consequence": "M12_REMAINS_BLOCKED_BY_SPHITRATIO",
+  "recommendation": "No further M12 implementation against these candidates unless new qualifying evidence/source becomes available. Do not recommend SOL policy reentry from this result.",
+  "scope": {
+    "read_only_semantic_reverse": true,
+    "additive_outputs_only": true,
+    "production_modified": false,
+    "frozen_d6_modified": false,
+    "native_promotion": false,
+    "git_writes": "NONE",
+    "waitanimstate_policy": "OUT_OF_SCOPE_UNCHANGED",
+    "unrelated_domains_reopened": [],
+    "production_tests": "NOT_REQUIRED_NOT_RUN"
+  },
+  "result_rationale": "The audit revalidates the frozen candidate and exclusions but adds no qualifying SPHitRatio semantic join. Expanded local instruction notes are not a new closed semantic layer. No A or B; do not force C for re-describing prior saved evidence.",
+  "native_artifact_availability": {
+    "saved": {
+      "game_version": "4.4.54",
+      "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+      "source_id": "S07",
+      "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+    },
+    "current_binary": {
+      "path": "D:/StarRail_4.4.53/GameAssembly.dll",
+      "sha256": "fe057e0a4625ab196b5c279ac192930d8ced7068b6e13935bf9482d2990ca447",
+      "matches_saved": false,
+      "semantic_use": "NONE; hash read only. No stale RVA applied.",
+      "version": "NOT_QUALIFIED_FOR_THIS_TASK"
+    },
+    "frozen_previous_observation": {
+      "sha256": "4aac69526d1654c278ad641cbce71f728d3030d48f03694096b5778552d12660",
+      "note": "Historical observation only; current hash is different again."
+    },
+    "search_scope": [
+      "Saved raw/normalized 4.4.54 artifacts and manifest-referenced path",
+      "Bounded filename search in data/raw, data/normalized, tmp and .external_refs for GameAssembly/dump/AttackData/SetupDamage artifacts",
+      "D:/Star Rail Beta recursive GameAssembly.dll name search returned no copy"
+    ],
+    "qualifying_binary_for_missing_edges": "NOT_AVAILABLE_IN_INSPECTED_LOCATIONS",
+    "not_a_whole_disk_absence_claim": true,
+    "private_server_4_5_54_used": false,
+    "network_fetches": 0,
+    "new_native_trace": false,
+    "stop_reason": "No hash-matched body/data capture for required source-to-runtime/member-writer edge. Stop semantic work rather than infer."
+  },
+  "source_inventory": [
+    {
+      "id": "S01",
+      "path": "data/content_binding/4.4.54/full_action_closure_census_001.json",
+      "sha256": "37fb2211fee7fa2b25f91362fa45b8353080e19eb9eee0a3d029032b4711095f",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S02",
+      "path": "data/content_binding/4.4.54/content_binding_reentry_review_001.json",
+      "sha256": "c8dff36bcfe00804b584675ac098745184235ab70a57b4a1f65aabbbfe27af51",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S03",
+      "path": "data/content_binding/4.4.54/content_binding_master_v1.json",
+      "sha256": "0325114c08595be351e32ee4afbf8753756f98d886290d6f974f038d0fc5599c",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S04",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_v1.json",
+      "sha256": "06e62fa808390ac4f58af4164bb4f8d3b5151b0cbd3ab76bf203d9e8c2010396",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S05",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_damage_survival_targeted_evidence_v1.json",
+      "sha256": "ac9f44d932e8d98e5f0833cb78e8a41f8d53354a0c273354c39f5b03f9d621f5",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S06",
+      "path": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json",
+      "sha256": "6e04106f03d5ce54b7acb77ed9c65bc8a5b69b1d7dad9041b65d0b5f8fd17e7b",
+      "role": "Required authority / frozen baseline",
+      "qualification": "Local saved authority; content examples remain CLOSE_4.4.0_TO_4.4.54."
+    },
+    {
+      "id": "S07",
+      "path": "data/normalized/4.4.54/manifest.json",
+      "sha256": "5ac97324297767eaec9bfafd53c41297e82657f0a3c7f40041a602f00075e2db",
+      "role": "Saved native artifact version/hash binding",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S08",
+      "path": "data/normalized/4.4.54/fields.json",
+      "sha256": "cd5a457b241fa57a53a656f4d0440a26b0bc96692240815c22c52385312193f6",
+      "role": "Field declarations; no physical offsets or enum literal values",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S09",
+      "path": "data/normalized/4.4.54/methods.json",
+      "sha256": "9901fab8ef2ccae6a0827d279eccd2f91f486ffa013af30a1e16721bc2f27154",
+      "role": "Method/RVA identity only; not a body/dataflow proof",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S10",
+      "path": "data/raw/4.4.54/damage_task_emit_gate_507304_10.txt",
+      "sha256": "caafa1dbfad29bfeda5d2408fbdc70c00673499b4c8db88067c4ee5e681c1d7f",
+      "role": "Saved caller instructions",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S11",
+      "path": "data/raw/4.4.54/damage_task_helper_507312_10.txt",
+      "sha256": "061a925a9386ba7ac81a2319e108b27b9a8b37705b938f04ff19d79323112e74",
+      "role": "Saved M507312 candidate consumer instructions",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S12",
+      "path": "data/raw/4.4.54/ability_modify_property_506503_full_11.txt",
+      "sha256": "8a231773e58b01c64077fe1d0fa6cf5e38ec0fb914a16ddb7287d75996fe7224",
+      "role": "Saved generic property modification body; no SPHitRatio-specific join",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S13",
+      "path": "data/raw/4.4.54/property_modify_function_e4410d0_11.txt",
+      "sha256": "86371235c0654da7acffefc7af91032e624fb99970cf3a5488c2b28f7027b16f",
+      "role": "Operation dispatch body; missing complete jump-table entries",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S14",
+      "path": "data/raw/4.4.54/ability_property_type_inspection_30.json",
+      "sha256": "57718eea9a219d519dd459709f9f3cb875d37f6d9105f43e72c9fb7ccc438b42",
+      "role": "AbilityProperty declaration names, not literal constants",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S15",
+      "path": "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+      "sha256": "25263bb392854e93832b77c068e0ad3c3709feca8ced63052ae07dcb94490eb4",
+      "role": "Frozen unresolved B producer boundary; rejected target candidates not revived",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S16",
+      "path": "data/raw/4.4.54/damage_request_slot_origin_17.json",
+      "sha256": "c7f370b87e88ef6c5fe2d27c215a88449aacdc628c1567d616a20541ad5d3ade",
+      "role": "Frozen A/B distinction and return-value provenance",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S17",
+      "path": "data/raw/4.4.54/disasm_healhp_executor_ontaskbegin_30.txt",
+      "sha256": "46f941e9aad486eed86b45f5b9e6ff561caa57f3816b10b547d1c06d1e30220b",
+      "role": "Saved HealHP executor window; same numeric offset does not establish same object/member",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S18",
+      "path": "data/raw/4.4.54/healhp_executor_type_inspection_30.json",
+      "sha256": "0d4bc0982192aa8a0d311473f00ab444659c3069622f98e1c09d33571d470372",
+      "role": "HealHP executor method identity",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S19",
+      "path": "data/raw/4.4.54/healhp_executor_callee_lookup_30.json",
+      "sha256": "c3358ff8b1d8f10960060b31ad7a981a9a0215148bea88f4e06252ad18db5ebc",
+      "role": "Saved HealHP named callee lookup",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S20",
+      "path": "data/raw/4.4.54/disasm_healhp_frombinaryimpl_30.txt",
+      "sha256": "d8f6828043f9da96703e9210373e193f5940e5272790e5156b817c5c14602b5c",
+      "role": "Inspected saved parser prefix; no default or consumer join established",
+      "qualification": "Saved 4.4.54 static snapshot; provenance inherited from normalized manifest and frozen D6, not re-extracted from current GameAssembly. No independent native trace."
+    },
+    {
+      "id": "S21",
+      "path": "src/hsr_battle_agent/game_data/behavior_compiler.py",
+      "sha256": "40279656333257bf190c5805f0919d1116b40b89f5341b135f2e3f63405d1fb1",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S22",
+      "path": "src/hsr_battle_agent/game_data/reference_execution.py",
+      "sha256": "8a5155f21b8efeaf31688d98c586407755e7e514781f89677a8709c639b6a6c1",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S23",
+      "path": "src/hsr_battle_agent/game_data/reference_damage_adapters.py",
+      "sha256": "7e8a3a0cf44210afd81103741e973409140ed68ba3fed8cabbbdbcd228513d6c",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S24",
+      "path": "src/hsr_battle_agent/game_data/damage_survival_reference.py",
+      "sha256": "8bb16f16631217025036379207a85a94c1330db3210654b8d63dac6072efe65b",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S25",
+      "path": "src/hsr_battle_agent/battle_sandbox/executor.py",
+      "sha256": "a5c18a227bad5613985be764546c62b73b323c59c38bf0ef6d273f02775446b6",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S26",
+      "path": "src/hsr_battle_agent/battle_sandbox/strict_executor.py",
+      "sha256": "2edc750fb353852c26cb6c3834d8d5477551f5b454bda4e425c46cd47dc111e2",
+      "role": "Existing compiler/executor/reference boundary reviewed",
+      "qualification": "Current workspace at starting HEAD; selected reference behavior, not native evidence."
+    },
+    {
+      "id": "S27",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_FuXuan_00_Ability.json",
+      "sha256": "2076bc2ad80c0a51ee4f93324dbf4b2306034ccbe3c31f5e770819d3e20a0df3",
+      "role": "Exact ordinary candidate authored request",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; pinned commit b11066beacc4de454b625fafc7ea3dd540c5bbf3; not exact 4.4.54 native behavior."
+    },
+    {
+      "id": "S28",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_RuanMei_00_Ability.json",
+      "sha256": "2b3d435677b02f5b1b95edd43a1875180f3c25bc0f0f0aea92bc5850801fce4a",
+      "role": "Exact ordinary candidate authored request",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; pinned commit b11066beacc4de454b625fafc7ea3dd540c5bbf3; not exact 4.4.54 native behavior."
+    },
+    {
+      "id": "S29",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Sparxie_00_Ability.json",
+      "sha256": "ab80226d621ca055b50ae93ac50049ea8215ee678b529f67f1534b44475e7ae3",
+      "role": "Exact ordinary candidate authored request",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; pinned commit b11066beacc4de454b625fafc7ea3dd540c5bbf3; not exact 4.4.54 native behavior."
+    },
+    {
+      "id": "S30",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json",
+      "sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261",
+      "role": "Inherited contrast source checked, not new native semantics",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; commit b11066beacc4de454b625fafc7ea3dd540c5bbf3"
+    },
+    {
+      "id": "S31",
+      "path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Huohuo_00_Ability.json",
+      "sha256": "7960f9ce949354fbfc3c9eb88f5dc9f6cd16c26a687b0d2bc57a2bfcfe165e2f",
+      "role": "Inherited contrast source checked, not new native semantics",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; commit b11066beacc4de454b625fafc7ea3dd540c5bbf3"
+    },
+    {
+      "id": "S32",
+      "path": ".external_refs/TurnBasedGameData/files/ExcelOutput/MonsterSkillConfig.json",
+      "sha256": "89c32150712f729ed79dff097ca0d147da46fd5a368bdd0638afb98a3fd737a8",
+      "role": "Inherited SPHitBase data example",
+      "qualification": "CLOSE_4.4.0_TO_4.4.54; no Avatar base formula inference."
+    }
+  ],
+  "inherited_facts": {
+    "sp_hit_layer": {
+      "confidence": "STRONG_RECONSTRUCTION",
+      "statement": "Hit-related SP/energy accounting factor, distinct from team BP economy, HP ratio, stance and hit partition. Exact recipient, base, formula, scaling/once-per-skill rule and mutation time remain unresolved. The letters SP alone do not prove this classification.",
+      "promoted": false
+    },
+    "fixed_conclusions": [
+      "Not team BP/skill-point economy",
+      "Distinct from HitSplitRatio",
+      "Declared on AttackData and HealHP; damage and heal behavior must not be conflated",
+      "Reference execution may not silently drop SPHitRatio"
+    ]
+  },
+  "native_declarations": {
+    "source_ids": [
+      "S08",
+      "S09"
+    ],
+    "qualification": {
+      "game_version": "4.4.54",
+      "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+      "source_id": "S07",
+      "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+    },
+    "confidence": "FACT",
+    "field_records": [
+      {
+        "field_index": 44459,
+        "declaring_type_index": 10464,
+        "name": "CurrentSP",
+        "type_reference": 468652,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 57969,
+        "declaring_type_index": 12649,
+        "name": "SPBase",
+        "type_reference": 466646,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 68271,
+        "declaring_type_index": 14080,
+        "name": "SPHitBase",
+        "type_reference": 466646,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 96943,
+        "declaring_type_index": 22319,
+        "name": "SPHitRatio",
+        "type_reference": 467675,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 97111,
+        "declaring_type_index": 22352,
+        "name": "SPHitRatio",
+        "type_reference": 467675,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 99913,
+        "declaring_type_index": 23274,
+        "name": "Attacker_SPRatio",
+        "type_reference": 467675,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 99914,
+        "declaring_type_index": 23274,
+        "name": "AttackerSkill_SPBase",
+        "type_reference": 467675,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      },
+      {
+        "field_index": 101424,
+        "declaring_type_index": 23856,
+        "name": "SPHitRatio",
+        "type_reference": 467675,
+        "structure_status": "CONFIRMED",
+        "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+      }
+    ],
+    "method_records": [
+      {
+        "method_index": 124558,
+        "declaring_type_index": 22319,
+        "name": ".ctor",
+        "parameter_start": -1,
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 12213,
+        "flags_0x0C_decoded": "0x4B2AC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 22,
+        "native_rva": 484039616,
+        "native_va": 6926490560,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 124559,
+        "declaring_type_index": 22319,
+        "name": "OJNNBEJLDIJ",
+        "parameter_start": 132253,
+        "parameter_count": 2,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0x83CFC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 484039296,
+        "native_va": 6926490240,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 124560,
+        "declaring_type_index": 22319,
+        "name": "MGMEGEDLMAK",
+        "parameter_start": 132255,
+        "parameter_count": 2,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0x61B0C13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 484040544,
+        "native_va": 6926491488,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 124561,
+        "declaring_type_index": 22319,
+        "name": "ShareByCopy",
+        "parameter_start": -1,
+        "parameter_count": 0,
+        "return_type_reference": 1,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14325,
+        "flags_0x0C_decoded": "0xB76E3EC3",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 484045184,
+        "native_va": 6926496128,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 135809,
+        "declaring_type_index": 23856,
+        "name": ".ctor",
+        "parameter_start": -1,
+        "parameter_count": 0,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 12213,
+        "flags_0x0C_decoded": "0x544FC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 22,
+        "native_rva": 490779408,
+        "native_va": 6933230352,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 135810,
+        "declaring_type_index": 23856,
+        "name": "OJNNBEJLDIJ",
+        "parameter_start": 145708,
+        "parameter_count": 2,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0xACDEC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 490774800,
+        "native_va": 6933225744,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 504543,
+        "declaring_type_index": 54573,
+        "name": "SetupDamageData",
+        "parameter_start": 463501,
+        "parameter_count": 8,
+        "return_type_reference": 271083,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0xB47AC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 239461632,
+        "native_va": 6681912576,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 504545,
+        "declaring_type_index": 54573,
+        "name": "SetupDamageDataByFixedAttackerDamage",
+        "parameter_start": 463512,
+        "parameter_count": 6,
+        "return_type_reference": 271083,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0xC87FC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 239462480,
+        "native_va": 6681913424,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 504547,
+        "declaring_type_index": 54573,
+        "name": "SetupDamageData_PropertyPart",
+        "parameter_start": 463519,
+        "parameter_count": 4,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14245,
+        "flags_0x0C_decoded": "0xCFE8C13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 239465808,
+        "native_va": 6681916752,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 506503,
+        "declaring_type_index": 55009,
+        "name": "ModifyProperty",
+        "parameter_start": 465553,
+        "parameter_count": 4,
+        "return_type_reference": 424,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14261,
+        "flags_0x0C_decoded": "0x6F08C13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 242408672,
+        "native_va": 6684859616,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 507304,
+        "declaring_type_index": 55138,
+        "name": "GLDAGCNDCMA",
+        "parameter_start": 466325,
+        "parameter_count": 1,
+        "return_type_reference": 424,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14258,
+        "flags_0x0C_decoded": "0x699DC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 204532992,
+        "native_va": 6646983936,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      },
+      {
+        "method_index": 507312,
+        "declaring_type_index": 55138,
+        "name": "AILDBGOLHDJ",
+        "parameter_start": 466362,
+        "parameter_count": 4,
+        "return_type_reference": 416617,
+        "slot_0x14_decoded": -1,
+        "flags_0x0E_decoded": 14242,
+        "flags_0x0C_decoded": "0x8E7FC13B",
+        "field_0x16_decoded": 0,
+        "flags_0x19_decoded": 23,
+        "native_rva": 204545152,
+        "native_va": 6646996096,
+        "mapping_kind": "DIRECT_NATIVE",
+        "structure_status": "CONFIRMED",
+        "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+      }
+    ],
+    "limit": "Names/type references/method RVAs only. No memory-offset, default, enum literal, formula or call-chain proof from ordering in these tables."
+  },
+  "dataflow_edges": [
+    {
+      "id": "E01",
+      "from": "Authored AttackData.SPHitRatio (F96943)",
+      "to": "RtAttackData.SPHitRatio (F101424)",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "RPG.GameCore.AttackData / RPG.GameCore.RtAttackData; conversion method unresolved",
+      "offset_or_field": "F96943 / F101424; physical offsets unresolved",
+      "source_ids": [
+        "S08"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "field_index": 96943,
+          "declaring_type_index": 22319,
+          "name": "SPHitRatio",
+          "type_reference": 467675,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 101424,
+          "declaring_type_index": 23856,
+          "name": "SPHitRatio",
+          "type_reference": 467675,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "missing_relationship": "Equal names and matching type references prove two declarations, not assignment/evaluation between them. No qualifying writer body was found."
+    },
+    {
+      "id": "E02",
+      "from": "RtAttackData.SPHitRatio",
+      "to": "request B+0x1B0",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "M507304 indirect call at RVA 0xC30F0BC; concrete producer unresolved",
+      "offset_or_field": "F101424 -> B+0x1B0",
+      "source_ids": [
+        "S10",
+        "S15"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S10",
+          "line": 216,
+          "instruction": "0C30F0BC  ff d5                           call     rbp"
+        }
+      ],
+      "missing_relationship": "B is an indirect return value. A==B is unproved. No named SPHitRatio read feeding a B+0x1B0 write; SetupDamageData names cannot close it."
+    },
+    {
+      "id": "E03",
+      "from": "Caller request B in [rsp+0x60]",
+      "to": "M507312 rsi, then r9=[B+0x1B0]",
+      "confidence": "FACT",
+      "status": "SAVED_LOCAL_DATAFLOW_ONLY",
+      "method_or_symbol": "M507304 GLDAGCNDCMA -> M507312 AILDBGOLHDJ",
+      "offset_or_field": "0xC30F4FC / 0xC30F50B / 0xC311C93 / 0xC311E59",
+      "source_ids": [
+        "S10",
+        "S11"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S10",
+          "line": 450,
+          "instruction": "0C30F4FC  4c 8b 44 24 60                  mov      r8, qword ptr [rsp + 0x60]"
+        },
+        {
+          "source_id": "S10",
+          "line": 452,
+          "instruction": "0C30F505  48 89 d9                        mov      rcx, rbx"
+        },
+        {
+          "source_id": "S10",
+          "line": 454,
+          "instruction": "0C30F50B  e8 70 27 00 00                  call     0x18c311c80"
+        },
+        {
+          "source_id": "S11",
+          "line": 9,
+          "instruction": "0C311C93  4c 89 c6                        mov      rsi, r8"
+        },
+        {
+          "source_id": "S11",
+          "line": 11,
+          "instruction": "0C311C99  48 89 cf                        mov      rdi, rcx"
+        },
+        {
+          "source_id": "S11",
+          "line": 122,
+          "instruction": "0C311E59  4c 8b 8e b0 01 00 00            mov      r9, qword ptr [rsi + 0x1b0]"
+        }
+      ],
+      "missing_relationship": "This proves pointer/value forwarding only. It does not prove that the slot is derived from SPHitRatio or identify its unit."
+    },
+    {
+      "id": "E04",
+      "from": "M507312 r9=[B+0x1B0], edx=12, r8d=2",
+      "to": "M506503 ModifyProperty call",
+      "confidence": "FACT",
+      "status": "SAVED_LOCAL_CALL_ONLY",
+      "method_or_symbol": "M507312 -> M506503 TurnBasedAbilityComponent.ModifyProperty",
+      "offset_or_field": "call RVA 0xC311F17 -> RVA 0xE72DCE0",
+      "source_ids": [
+        "S11",
+        "S09"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S11",
+          "line": 122,
+          "instruction": "0C311E59  4c 8b 8e b0 01 00 00            mov      r9, qword ptr [rsi + 0x1b0]"
+        },
+        {
+          "source_id": "S11",
+          "line": 149,
+          "instruction": "0C311F0C  ba 0c 00 00 00                  mov      edx, 0xc"
+        },
+        {
+          "source_id": "S11",
+          "line": 150,
+          "instruction": "0C311F11  41 b8 02 00 00 00               mov      r8d, 2"
+        },
+        {
+          "source_id": "S11",
+          "line": 151,
+          "instruction": "0C311F17  e8 c4 bd 41 02                  call     0x18e72dce0"
+        },
+        {
+          "method_index": 506503,
+          "declaring_type_index": 55009,
+          "name": "ModifyProperty",
+          "parameter_start": 465553,
+          "parameter_count": 4,
+          "return_type_reference": 424,
+          "slot_0x14_decoded": -1,
+          "flags_0x0E_decoded": 14261,
+          "flags_0x0C_decoded": "0x6F08C13B",
+          "field_0x16_decoded": 0,
+          "flags_0x19_decoded": 23,
+          "native_rva": 242408672,
+          "native_va": 6684859616,
+          "mapping_kind": "DIRECT_NATIVE",
+          "structure_status": "CONFIRMED",
+          "semantic_status": "METHOD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "missing_relationship": "Numeric operands are proved; property identity, operation meaning and source-field join are not."
+    },
+    {
+      "id": "E05",
+      "from": "Property operand 12",
+      "to": "Named resource/property",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "AbilityProperty / M506503",
+      "offset_or_field": "operand 0xC; declaration F44459 CurrentSP",
+      "source_ids": [
+        "S14",
+        "S08"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "field_index": 44459,
+          "declaring_type_index": 10464,
+          "name": "CurrentSP",
+          "type_reference": 468652,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "missing_relationship": "Inspected declaration records have no enum literal values. Declaration position is not proof that 12 means CurrentSP."
+    },
+    {
+      "id": "E06",
+      "from": "Operation operand 2",
+      "to": "Mutation arithmetic/class",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "M506503 -> helper RVA 0xE4410D0",
+      "offset_or_field": "0xE72E09B..0xE72E0A4; jump-table base RVA 0xE4412BC",
+      "source_ids": [
+        "S12",
+        "S13"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S12",
+          "line": 209,
+          "instruction": "0E72E09B  44 89 e9                        mov      ecx, r13d"
+        },
+        {
+          "source_id": "S12",
+          "line": 210,
+          "instruction": "0E72E09E  4c 89 e2                        mov      rdx, r12"
+        },
+        {
+          "source_id": "S12",
+          "line": 211,
+          "instruction": "0E72E0A1  49 89 e8                        mov      r8, rbp"
+        },
+        {
+          "source_id": "S12",
+          "line": 212,
+          "instruction": "0E72E0A4  e8 27 30 d1 ff                  call     0x18e4410d0"
+        },
+        {
+          "source_id": "S13",
+          "line": 10,
+          "instruction": "0E4410EC  ff cb                           dec      ebx"
+        },
+        {
+          "source_id": "S13",
+          "line": 13,
+          "instruction": "0E4410F3  48 8d 05 c2 01 00 00            lea      rax, [rip + 0x1c2]"
+        },
+        {
+          "source_id": "S13",
+          "line": 14,
+          "instruction": "0E4410FA  48 63 0c 98                     movsxd   rcx, dword ptr [rax + rbx*4]"
+        },
+        {
+          "source_id": "S13",
+          "line": 16,
+          "instruction": "0E441101  ff e1                           jmp      rcx"
+        }
+      ],
+      "missing_relationship": "Saved operation dispatcher indexes a jump table after decrementing the operand. The saved text ends at the first byte of table base 0xE4412BC; entry for operand 2 at +4 is not available. An add/multiply branch in the body does not map operand 2 to that branch."
+    },
+    {
+      "id": "E07",
+      "from": "M507312 first argument / conditional component-resolution path",
+      "to": "Recipient entity role",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "M507304 / M507312 / ModifyProperty",
+      "offset_or_field": "caller rcx=rbx; callee rdi=rcx; component+0x10; conditional helper-return path",
+      "source_ids": [
+        "S10",
+        "S11"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S10",
+          "line": 452,
+          "instruction": "0C30F505  48 89 d9                        mov      rcx, rbx"
+        },
+        {
+          "source_id": "S11",
+          "line": 11,
+          "instruction": "0C311C99  48 89 cf                        mov      rdi, rcx"
+        },
+        {
+          "source_id": "S11",
+          "line": 67,
+          "instruction": "0C311D4E  48 8b 47 10                     mov      rax, qword ptr [rdi + 0x10]"
+        },
+        {
+          "source_id": "S11",
+          "line": 84,
+          "instruction": "0C311D96  48 89 c1                        mov      rcx, rax"
+        },
+        {
+          "source_id": "S11",
+          "line": 116,
+          "instruction": "0C311E3C  48 89 f9                        mov      rcx, rdi"
+        },
+        {
+          "source_id": "S11",
+          "line": 119,
+          "instruction": "0C311E4C  48 8b 47 10                     mov      rax, qword ptr [rdi + 0x10]"
+        }
+      ],
+      "missing_relationship": "Raw component pointers do not distinguish attacker, caster, skill owner, property provider, target or another entity. No identity-bearing trace joins the eventual receiver to one of these roles."
+    },
+    {
+      "id": "E08",
+      "from": "SPHitRatio and possible SPBase/SPHitBase/SPRatio inputs",
+      "to": "Amount/scaling stored in B+0x1B0",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "Producer unresolved; candidates M504543/M504545/M504547 are declarations only",
+      "offset_or_field": "F57969 / F68271 / F99913 / F99914; destination B+0x1B0",
+      "source_ids": [
+        "S08",
+        "S09"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "field_index": 57969,
+          "declaring_type_index": 12649,
+          "name": "SPBase",
+          "type_reference": 466646,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 68271,
+          "declaring_type_index": 14080,
+          "name": "SPHitBase",
+          "type_reference": 466646,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 99913,
+          "declaring_type_index": 23274,
+          "name": "Attacker_SPRatio",
+          "type_reference": 467675,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        },
+        {
+          "field_index": 99914,
+          "declaring_type_index": 23274,
+          "name": "AttackerSkill_SPBase",
+          "type_reference": 467675,
+          "structure_status": "CONFIRMED",
+          "semantic_status": "FIELD_IDENTITY_CONFIRMED"
+        }
+      ],
+      "missing_relationship": "No proved read/operation/write chain selects a base, scaling, rounding or clamp. FixedValue(1) does not fill these missing parameters."
+    },
+    {
+      "id": "E09",
+      "from": "Candidate ModifyProperty call",
+      "to": "SPHitRatio-driven state transition with multiplicity/timing",
+      "confidence": "UNKNOWN",
+      "status": "NOT_JOINED",
+      "method_or_symbol": "M507312 / M506503; ordinary damage and HealHP entry paths unresolved",
+      "offset_or_field": "B+0x1B0 -> named state endpoint unresolved",
+      "source_ids": [
+        "S11",
+        "S10",
+        "S17"
+      ],
+      "qualification": {
+        "game_version": "4.4.54",
+        "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+        "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+        "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+        "source_id": "S07",
+        "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+      },
+      "direct_evidence": [
+        {
+          "source_id": "S10",
+          "line": 454,
+          "instruction": "0C30F50B  e8 70 27 00 00                  call     0x18c311c80"
+        },
+        {
+          "source_id": "S10",
+          "line": 519,
+          "instruction": "0C30F610  e8 9b 2d 00 00                  call     0x18c3123b0"
+        }
+      ],
+      "missing_relationship": "Local call order is inherited evidence only. It does not establish a SPHitRatio effect, request/hit/target/skill cardinality, total HP/toughness/callback order, or completion-time behavior."
+    }
+  ],
+  "answers": {
+    "Q1": {
+      "confidence": "UNKNOWN",
+      "answer": "No exact source-field -> runtime-value join. RtAttackData.SPHitRatio F101424 is a declared candidate, not a proved receiver; B+0x1B0 remains unbound.",
+      "edges": [
+        "E01",
+        "E02"
+      ]
+    },
+    "Q2": {
+      "confidence": "UNKNOWN",
+      "answer": "Recipient unresolved. Attacker, caster, skill owner, property provider, target and other entity remain distinct.",
+      "edges": [
+        "E07"
+      ]
+    },
+    "Q3": {
+      "confidence": "UNKNOWN",
+      "answer": "No proved base quantity. Skill SPBase, monster SPHitBase and attacker SPRatio are unselected candidates; none is assumed.",
+      "edges": [
+        "E08"
+      ]
+    },
+    "Q4": {
+      "confidence": "UNKNOWN",
+      "answer": "Unresolved among per authored request, per actual hit, once per skill, once per target, once after all targets and other. A call site is not an execution-count trace.",
+      "edges": [
+        "E09"
+      ]
+    },
+    "Q5": {
+      "confidence": "UNKNOWN",
+      "answer": "No ordering for a SPHitRatio-driven transition is proved relative to request evaluation, HP application, toughness application, modifier callbacks or completion. Saved M507312-before-M507308 call-site order is not promoted to such a transition order.",
+      "edges": [
+        "E09"
+      ]
+    },
+    "Q6": {
+      "confidence": "UNKNOWN",
+      "answer": "Absent-field behavior unresolved; neither zero nor one is inferred. Missing JSON is not proof of constructor, deserializer, runtime conversion or context fallback defaults.",
+      "edges": [
+        "E01",
+        "E02"
+      ]
+    },
+    "Q7": {
+      "confidence": "UNKNOWN",
+      "deterministic_transition": "NO",
+      "answer": "FixedValue(1) fixes only the authored ratio expression. Recipient, base, formula, mutation class, multiplicity and timing still require guessing.",
+      "edges": [
+        "E01",
+        "E02",
+        "E05",
+        "E06",
+        "E07",
+        "E08",
+        "E09"
+      ]
+    }
+  },
+  "recipient_identity_candidates": [
+    {
+      "identity": "attacker",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    },
+    {
+      "identity": "caster",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    },
+    {
+      "identity": "skill owner",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    },
+    {
+      "identity": "property provider",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    },
+    {
+      "identity": "target",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    },
+    {
+      "identity": "other entity",
+      "resolved": false,
+      "confidence": "UNKNOWN"
+    }
+  ],
+  "candidate_consumer_revisit": {
+    "slot_is_sphitratio_derived": "UNKNOWN",
+    "slot_writer": "UNKNOWN",
+    "property_operand_12": "UNKNOWN; CurrentSP not proved",
+    "operation_operand_2": "UNKNOWN; no ordinal inferred",
+    "entity_passed": "Conditional component pointer; semantic entity role UNKNOWN",
+    "supplied_value": "Saved call supplies qword [B+0x1B0]; base/unit/formula UNKNOWN",
+    "edge_ids": [
+      "E02",
+      "E03",
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E08"
+    ]
+  },
+  "ordinary_candidates": [
+    {
+      "avatar_id": "1208",
+      "skill_id": "120801",
+      "entry_ability": "Avatar_FuXuan_00_Skill01_Phase01",
+      "effect_body": "Avatar_FuXuan_00_Skill01_Phase02",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_FuXuan_00_Ability.json:Avatar_FuXuan_00_Skill01_Phase02:ONSTART:1",
+      "source_id": "S27",
+      "source_pointer": "/AbilityList/1/OnStart/1",
+      "source": {
+        "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "entrypoint": "ONSTART",
+        "operation_index": 1,
+        "path": "Config/ConfigAbility/Avatar/Avatar_FuXuan_00_Ability.json",
+        "raw_sha256": "2076bc2ad80c0a51ee4f93324dbf4b2306034ccbe3c31f5e770819d3e20a0df3",
+        "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+        "source": "TurnBasedGameData",
+        "source_container": "AbilityList",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+      },
+      "attack_property": {
+        "$type": "RPG.GameCore.AttackData",
+        "DamageType": {
+          "DamageType": "Quantum"
+        },
+        "FormulaType": "ByMaxHP",
+        "DamagePercentage": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              -1126825319
+            ]
+          }
+        },
+        "StanceValue": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              1659254037
+            ]
+          }
+        },
+        "SPHitRatio": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1
+          }
+        },
+        "StanceDamageType": {
+          "DamageType": "Quantum"
+        },
+        "AttackType": "Normal",
+        "HitAnimation": "Hit",
+        "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_FuXuan_00/Eff_Avatar_FuXuan_00_Skill01_Hit.prefab"
+      },
+      "target": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AbilityTargetEntity"
+      },
+      "extra_attack_fields": [
+        "SPHitRatio"
+      ],
+      "full_action_blockers": [
+        "DAMAGE_PACKET",
+        "WAIT_ANIM_STATE"
+      ],
+      "wait_only_counterfactual": {
+        "removed_blocker_classes": [
+          "WAIT_ANIM_STATE"
+        ],
+        "residual_blocker_classes": [
+          "DAMAGE_PACKET"
+        ],
+        "residual_blocker_class_count": 1,
+        "residual_blocker_occurrences": {
+          "DAMAGE_PACKET": 1
+        },
+        "is_executable_state": false
+      },
+      "deterministic_sphitratio_transition": false,
+      "confidence": "FACT",
+      "claim_limit": "Authored shape and frozen census only; no resource recipient inferred from damage target."
+    },
+    {
+      "avatar_id": "1303",
+      "skill_id": "130301",
+      "entry_ability": "Avatar_RuanMei_Skill01_Phase01",
+      "effect_body": "Avatar_RuanMei_Skill01_Phase02",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_RuanMei_00_Ability.json:Avatar_RuanMei_Skill01_Phase02:ONSTART:2",
+      "source_id": "S28",
+      "source_pointer": "/AbilityList/1/OnStart/2",
+      "source": {
+        "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "entrypoint": "ONSTART",
+        "operation_index": 2,
+        "path": "Config/ConfigAbility/Avatar/Avatar_RuanMei_00_Ability.json",
+        "raw_sha256": "2b3d435677b02f5b1b95edd43a1875180f3c25bc0f0f0aea92bc5850801fce4a",
+        "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+        "source": "TurnBasedGameData",
+        "source_container": "AbilityList",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+      },
+      "attack_property": {
+        "$type": "RPG.GameCore.AttackData",
+        "DamageType": {
+          "DamageType": "Ice"
+        },
+        "DamagePercentage": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              -1126825319
+            ]
+          }
+        },
+        "StanceValue": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              1659254037
+            ]
+          }
+        },
+        "SPHitRatio": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1
+          }
+        },
+        "HitAnimation": "Hit"
+      },
+      "target": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AbilityTargetEntity"
+      },
+      "extra_attack_fields": [
+        "SPHitRatio"
+      ],
+      "full_action_blockers": [
+        "DAMAGE_PACKET",
+        "WAIT_ANIM_STATE"
+      ],
+      "wait_only_counterfactual": {
+        "removed_blocker_classes": [
+          "WAIT_ANIM_STATE"
+        ],
+        "residual_blocker_classes": [
+          "DAMAGE_PACKET"
+        ],
+        "residual_blocker_class_count": 1,
+        "residual_blocker_occurrences": {
+          "DAMAGE_PACKET": 1
+        },
+        "is_executable_state": false
+      },
+      "deterministic_sphitratio_transition": false,
+      "confidence": "FACT",
+      "claim_limit": "Authored shape and frozen census only; no resource recipient inferred from damage target."
+    },
+    {
+      "avatar_id": "1501",
+      "skill_id": "150101",
+      "entry_ability": "Avatar_Sparxie_00_Skill01_Phase01",
+      "effect_body": "Avatar_Sparxie_00_Skill01_Phase02",
+      "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Sparxie_00_Ability.json:Avatar_Sparxie_00_Skill01_Phase02:ONSTART:1",
+      "source_id": "S29",
+      "source_pointer": "/AbilityList/1/OnStart/1",
+      "source": {
+        "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+        "entrypoint": "ONSTART",
+        "operation_index": 1,
+        "path": "Config/ConfigAbility/Avatar/Avatar_Sparxie_00_Ability.json",
+        "raw_sha256": "ab80226d621ca055b50ae93ac50049ea8215ee678b529f67f1534b44475e7ae3",
+        "repository": "https://github.com/DimbreathBot/TurnBasedGameData",
+        "source": "TurnBasedGameData",
+        "source_container": "AbilityList",
+        "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+      },
+      "attack_property": {
+        "$type": "RPG.GameCore.AttackData",
+        "DamageType": {
+          "DamageType": "Fire"
+        },
+        "DamagePercentage": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              -1126825319
+            ]
+          }
+        },
+        "StanceValue": {
+          "IsDynamic": true,
+          "PostfixExpr": {
+            "OpCodes": "AQAR",
+            "FixedValues": [],
+            "DynamicHashes": [
+              1659254037
+            ]
+          }
+        },
+        "SPHitRatio": {
+          "IsDynamic": false,
+          "FixedValue": {
+            "Value": 1
+          }
+        },
+        "AttackType": "Normal",
+        "HitAnimation": "Hit",
+        "HitEffect": "Effects/Eff_Prefab/Eff_Avatar/Eff_Sparxie_00/Eff_Avatar_Sparxie_00_Skill01_Hit01.prefab"
+      },
+      "target": {
+        "$type": "RPG.GameCore.TargetAlias",
+        "Alias": "AbilityTargetEntity"
+      },
+      "extra_attack_fields": [
+        "SPHitRatio"
+      ],
+      "full_action_blockers": [
+        "DAMAGE_PACKET",
+        "WAIT_ANIM_STATE"
+      ],
+      "wait_only_counterfactual": {
+        "removed_blocker_classes": [
+          "WAIT_ANIM_STATE"
+        ],
+        "residual_blocker_classes": [
+          "DAMAGE_PACKET"
+        ],
+        "residual_blocker_class_count": 1,
+        "residual_blocker_occurrences": {
+          "DAMAGE_PACKET": 1
+        },
+        "is_executable_state": false
+      },
+      "deterministic_sphitratio_transition": false,
+      "confidence": "FACT",
+      "claim_limit": "Authored shape and frozen census only; no resource recipient inferred from damage target."
+    }
+  ],
+  "source_contrasts": [
+    {
+      "source_id": "S30",
+      "ability": "Avatar_BlackSwan_00_Skill02_Phase02",
+      "samples": [
+        {
+          "pointer": "/AbilityList/3/OnStart/1",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "SPHitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "HitSplitRatio": "ABSENT"
+        },
+        {
+          "pointer": "/AbilityList/3/OnStart/2",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetAdjoinEntity"
+          },
+          "SPHitRatio": "ABSENT",
+          "HitSplitRatio": "ABSENT"
+        }
+      ],
+      "confidence": "FACT",
+      "consequence": "Adjacent omission does not establish zero, one or any fallback. Neither universal per-target nor once-after-targets accounting is proved."
+    },
+    {
+      "source_id": "S31",
+      "ability": "Avatar_Huohuo_00_Skill01_Phase02",
+      "samples": [
+        {
+          "pointer": "/AbilityList/1/OnStart/1",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "SPHitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "HitSplitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/3",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "SPHitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "HitSplitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/5",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "SPHitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "HitSplitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.2
+            }
+          }
+        },
+        {
+          "pointer": "/AbilityList/1/OnStart/7",
+          "target": {
+            "$type": "RPG.GameCore.TargetAlias",
+            "Alias": "AbilityTargetEntity"
+          },
+          "SPHitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 1
+            }
+          },
+          "HitSplitRatio": {
+            "IsDynamic": false,
+            "FixedValue": {
+              "Value": 0.4
+            }
+          }
+        }
+      ],
+      "confidence": "FACT",
+      "consequence": "Distinct authored split and SP ratios; neither split multiplication nor once-per-skill accounting can be selected from these values."
+    },
+    {
+      "source_id": "S32",
+      "inherited_sample": {
+        "SkillID": 100201101,
+        "SkillName": {
+          "Hash": 10030733179492870000
+        },
+        "SkillTriggerKey": "Skill04",
+        "SkillTypeDesc": {
+          "Hash": 4236760374151560000
+        },
+        "SkillTag": {
+          "Hash": 13718219806540081000
+        },
+        "DamageType": "Ice",
+        "AttackType": "Normal",
+        "SPHitBase": {
+          "Value": 10
+        },
+        "DelayRatio": {
+          "Value": 1
+        },
+        "AI_CD": 1,
+        "AI_ICD": 1,
+        "IconPath": "SpriteOutput/SkillIcons/Avatar/1001/SkillIcon_1001_Maze.png",
+        "SkillDesc": {
+          "Hash": 2506186724985781000
+        },
+        "PhaseList": [
+          1
+        ],
+        "ParamList": [
+          {
+            "Value": 2
+          }
+        ],
+        "ModifierList": [],
+        "ExtraEffectIDList": []
+      },
+      "confidence": "FACT",
+      "consequence": "SPHitBase=10 in Monster SkillID 100201101 is data, not a producer/recipient/formula proof for ordinary Avatars."
+    }
+  ],
+  "heal_boundary": {
+    "confidence": "UNKNOWN",
+    "declared_field": "HealHP F97111 SPHitRatio",
+    "source_ids": [
+      "S08",
+      "S17"
+    ],
+    "qualification": {
+      "game_version": "4.4.54",
+      "build_string": "20260731-0529-BetaLive-15953205-OSBETAWin4.4.54-OSCb",
+      "binary_sha256": "7b44379bf69352022cb3437b03431ddc558ffb34e3d98e7144200f37e8c837cc",
+      "metadata_sha256": "4bfdd6eaed092c1a70431cf32946903e41f716beeb1322291fa1ab1c6dbb33a7",
+      "source_id": "S07",
+      "verification": "Saved artifact text and normalized identities only; current binary mismatches. Instruction-byte fidelity to original binary cannot be independently rechecked in this task."
+    },
+    "statement": "No HealHP SPHitRatio -> amount -> recipient mutation chain recovered. M507312 damage-request candidate cannot be transplanted to heal requests.",
+    "false_offset_join_exclusion": {
+      "confidence": "FACT",
+      "evidence": [
+        {
+          "source_id": "S17",
+          "line": 114,
+          "instruction": "0B3F45A9  48 8b 08                        mov      rcx, qword ptr [rax]"
+        },
+        {
+          "source_id": "S17",
+          "line": 115,
+          "instruction": "0B3F45AC  48 8b b1 b0 01 00 00            mov      rsi, qword ptr [rcx + 0x1b0]"
+        },
+        {
+          "source_id": "S17",
+          "line": 120,
+          "instruction": "0B3F45C5  ff d6                           call     rsi"
+        }
+      ],
+      "limit": "Here +0x1B0 is read from a class/header and used as an indirect call target. Numeric offset equality with request B+0x1B0 proves no field identity."
+    }
+  },
+  "reference_contract": {
+    "status": "NOT_CLOSED",
+    "level_b_allowed": false,
+    "required_but_unproved": [
+      "recipient identity",
+      "quantity and unit",
+      "multiplicity",
+      "mutation timing",
+      "mutation class and state endpoint"
+    ],
+    "arbitrary_caller_value_allowed": false,
+    "spbase_as_external_input_allowed": false,
+    "existing_reference_boundary": "behavior_compiler.py excludes SPHitRatio from ordinary AttackProperty keys and reports EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS. reference_damage_adapters.py explicitly rejects SPHitRatio. Existing HP/toughness multiplier contexts do not settle this unknown side effect.",
+    "code_source_ids": [
+      "S21",
+      "S22",
+      "S23",
+      "S24",
+      "S25",
+      "S26"
+    ]
+  },
+  "minimal_new_evidence_needed": [
+    "Hash/version-matched AttackData and RtAttackData constructor/deserializer/conversion bodies with exact physical field assignment and absent-field behavior.",
+    "Concrete request-B producer identity and named read/base/arithmetic/write path into B+0x1B0, or a different proved SPHitRatio consumer.",
+    "Matching property/operation literal constants or complete dispatch bytes plus recipient identity-bearing flow/trace.",
+    "Ordinary Avatar damage/heal evidence establishing multiplicity and mutation ordering relative to HP/toughness/callbacks/completion."
+  ],
+  "validation": {
+    "frozen_hash_checks": [
+      {
+        "path": "data/semantics/4.4.54/damage_value_to_hp_bridge_13.json",
+        "expected_sha256": "49551393eba6206c2f1532a7deabdc67a8fc40c9154774ea09421375e8e30024",
+        "observed_sha256": "49551393eba6206c2f1532a7deabdc67a8fc40c9154774ea09421375e8e30024",
+        "match": true
+      },
+      {
+        "path": "data/semantics/4.4.54/direct_damage_hp_transition_12.json",
+        "expected_sha256": "ab485d04211afdcc17362a6266867eb04aca8b50d8fca36f259d7f4c1d8a7508",
+        "observed_sha256": "ab485d04211afdcc17362a6266867eb04aca8b50d8fca36f259d7f4c1d8a7508",
+        "match": true
+      },
+      {
+        "path": "data/semantics/4.4.54/damage_evaluator_q_14.json",
+        "expected_sha256": "822bc42ff001135cf718d09fea04d06c972bdf46584e6101ad480a6ef6901275",
+        "observed_sha256": "822bc42ff001135cf718d09fea04d06c972bdf46584e6101ad480a6ef6901275",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_request_slot_origin_17.json",
+        "expected_sha256": "c7f370b87e88ef6c5fe2d27c215a88449aacdc628c1567d616a20541ad5d3ade",
+        "observed_sha256": "c7f370b87e88ef6c5fe2d27c215a88449aacdc628c1567d616a20541ad5d3ade",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_request_dispatch_resolution_18.json",
+        "expected_sha256": "25263bb392854e93832b77c068e0ad3c3709feca8ced63052ae07dcb94490eb4",
+        "observed_sha256": "25263bb392854e93832b77c068e0ad3c3709feca8ced63052ae07dcb94490eb4",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_request_topology_probe_13.json",
+        "expected_sha256": "4372401e8d222d972b467ae6f34494aa8d5977d50191ac166b543d2345798ec7",
+        "observed_sha256": "4372401e8d222d972b467ae6f34494aa8d5977d50191ac166b543d2345798ec7",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_value_producer_probe_16.json",
+        "expected_sha256": "e321e6eb861d0ee19719be63d6d5a969ed88fafc138a736d98f96a977cba2d31",
+        "observed_sha256": "e321e6eb861d0ee19719be63d6d5a969ed88fafc138a736d98f96a977cba2d31",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_helper_preprocess_14.json",
+        "expected_sha256": "5dfc8cb01a313de8fa161bea7bf486fe259bf7eefe0dc0b9ef1cd6d73a18dc30",
+        "observed_sha256": "5dfc8cb01a313de8fa161bea7bf486fe259bf7eefe0dc0b9ef1cd6d73a18dc30",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_task_emit_gate_507304_10.txt",
+        "expected_sha256": "caafa1dbfad29bfeda5d2408fbdc70c00673499b4c8db88067c4ee5e681c1d7f",
+        "observed_sha256": "caafa1dbfad29bfeda5d2408fbdc70c00673499b4c8db88067c4ee5e681c1d7f",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_task_helper_507312_10.txt",
+        "expected_sha256": "061a925a9386ba7ac81a2319e108b27b9a8b37705b938f04ff19d79323112e74",
+        "observed_sha256": "061a925a9386ba7ac81a2319e108b27b9a8b37705b938f04ff19d79323112e74",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_task_helper_507310_10.txt",
+        "expected_sha256": "444aee88b5809303001a4f8cf39e90454b4d80e7085337fee89c29e3d2594545",
+        "observed_sha256": "444aee88b5809303001a4f8cf39e90454b4d80e7085337fee89c29e3d2594545",
+        "match": true
+      },
+      {
+        "path": "data/raw/4.4.54/damage_task_helper_507311_10.txt",
+        "expected_sha256": "892c3e07bcb01510db7df5ae1f254f66342b09aeea8d2277ebc8b9a3275b5efb",
+        "observed_sha256": "892c3e07bcb01510db7df5ae1f254f66342b09aeea8d2277ebc8b9a3275b5efb",
+        "match": true
+      },
+      {
+        "path": "data/normalized/4.4.54/types.json",
+        "expected_sha256": "afa4405d89ac082a040d6861668adba645e4e29f76e96fb00c580328619cddd4",
+        "observed_sha256": "afa4405d89ac082a040d6861668adba645e4e29f76e96fb00c580328619cddd4",
+        "match": true
+      },
+      {
+        "path": "data/normalized/4.4.54/fields.json",
+        "expected_sha256": "cd5a457b241fa57a53a656f4d0440a26b0bc96692240815c22c52385312193f6",
+        "observed_sha256": "cd5a457b241fa57a53a656f4d0440a26b0bc96692240815c22c52385312193f6",
+        "match": true
+      },
+      {
+        "path": "data/normalized/4.4.54/methods.json",
+        "expected_sha256": "9901fab8ef2ccae6a0827d279eccd2f91f486ffa013af30a1e16721bc2f27154",
+        "observed_sha256": "9901fab8ef2ccae6a0827d279eccd2f91f486ffa013af30a1e16721bc2f27154",
+        "match": true
+      },
+      {
+        "path": ".external_refs/TurnBasedGameData/files/ExcelOutput/MonsterSkillConfig.json",
+        "expected_sha256": "89c32150712f729ed79dff097ca0d147da46fd5a368bdd0638afb98a3fd737a8",
+        "observed_sha256": "89c32150712f729ed79dff097ca0d147da46fd5a368bdd0638afb98a3fd737a8",
+        "match": true
+      }
+    ],
+    "source_hashes_recorded": true,
+    "instruction_evidence": {
+      "checked": true,
+      "method": "Each quoted RVA line was located exactly in the hashed saved text; method destination checked against normalized method record.",
+      "fact_scope": "Saved text only; not a live byte re-disassembly or native execution."
+    },
+    "source_examples": {
+      "raw_hashes_match_frozen": true,
+      "exact_candidate_nodes_match": true,
+      "three_candidates_each_have_only_sphitratio_extra": true,
+      "contrast_nodes_match": true
+    },
+    "all_unknown_edges_kept_unknown": true,
+    "no_strong_reconstruction_promoted": true,
+    "no_native_formula_guessed": true,
+    "boundary_b_rejected": true,
+    "production_tests_run": false,
+    "output_review": {
+      "json_parse_pass": true,
+      "source_hashes_unchanged": true,
+      "all_edge_source_refs_resolve": true,
+      "all_nine_edges_version_qualified": true,
+      "seven_answers_present": true,
+      "three_candidate_shapes_validated": true,
+      "git_status_delta_only_cr_output": true
+    }
+  },
+  "handoff": {
+    "zip_path": "D:/HSR_Battle_Agent/agent_handoffs/CR-M12-SPHITRATIO-TARGETED-EVIDENCE-20260926-001_changed_files.zip",
+    "expected_members": [
+      "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json",
+      "HANDOFF_MANIFEST.json"
+    ],
+    "include_existing_dirty_files": false,
+    "optional_markdown_created": false
+  }
+}
