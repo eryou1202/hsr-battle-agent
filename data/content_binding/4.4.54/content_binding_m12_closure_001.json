@@ -1,0 +1,200 @@
+{
+ "schema": "M12FinalClosure/1",
+ "version": "1.0.0",
+ "change_request_id": "CR-M12-FINAL-CLOSURE-20260926-001",
+ "content_target": "HSR-4.4.54",
+ "task_type": "CONTROL_PLANE_BOOKKEEPING_ONLY",
+ "branch": "terra/implementation",
+ "starting_head": "3799ffbd7d197cc2bb01247542f85556bc11a0f4",
+ "git_writes": false,
+ "production_files_modified": false,
+ "historical_m12_records_modified": false,
+ "scope_statement": "Control-plane bookkeeping only. No new semantic research, no production implementation, no Astra reasoning, no Git writes. This record closes M12 monotonically as BLOCKED_BY_EVIDENCE and does not reinterpret any source artifact.",
+ "final_facts": {
+  "STATIC_4_4_54_CONTENT_IDENTITY": "ESTABLISHED",
+  "OWNER_SCOPED_SKILL_TO_BEHAVIOR_ROOT_JOIN": "ACCEPT_AS_LOCAL_EXACT_CONTENT_JOIN",
+  "BEHAVIOR_ROOT_BOUND": "YES",
+  "FULL_FIRST_HOP_ACTION_CLOSURE_CENSUS": "COMPLETE",
+  "behavior_root_bound_skills": 528,
+  "full_closure_settlement_skills": 293,
+  "true_ACTION_C_wait_plus_one_candidates": 5,
+  "FIRST_4_4_54_CONTENT_BOUND_REFERENCE_ACTION": "NO",
+  "REFERENCE_SETTLEMENT_BOUND": "NO",
+  "CONTENT_BOUND_BATTLE_SANDBOX": "NOT_ESTABLISHED",
+  "CONTENT_BOUND_BRANCHING_PLANNER": "NOT_ESTABLISHED",
+  "FULL_SOURCE_BACKED_HSR_ACTION_BINDING": "NO",
+  "NATIVE_SKILL_EXECUTION": "NO",
+  "golden": 0,
+  "native_trace": "empty",
+  "m7": "deferred"
+ },
+ "primary_minimum_frontier_blocker": {
+  "field": "SPHitRatio",
+  "targeted_astra_result": "NO_NEW_QUALIFYING_EVIDENCE",
+  "evidence_source": "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json",
+  "evidence_source_sha256": "fc71eabcf7b2ad0d1473fbc2fe58e4caa57675db404499ac3964eb7d6577ac6a",
+  "evidence_change_request": "CR-M12-SPHITRATIO-TARGETED-EVIDENCE-20260926-001",
+  "source_field_to_runtime_field_join": "NOT_CLOSED",
+  "recipient": "UNKNOWN",
+  "base_quantity": "UNKNOWN",
+  "formula_scaling": "UNKNOWN",
+  "multiplicity": "UNKNOWN",
+  "mutation_timing": "UNKNOWN",
+  "absent_field_behavior": "UNKNOWN",
+  "safe_external_input_contract_exists": false,
+  "reference_contract_status": "NOT_CLOSED",
+  "level_b_allowed": false,
+  "deterministic_transition": "NO"
+ },
+ "blocker_scope_limit": {
+  "overstatement_forbidden": "SPHitRatio is the only blocker for all skills.",
+  "correct_statement": "SPHitRatio is the blocker on the strongest currently identified true full-action candidate frontier. Other skills retain their own modifier / target / predicate / callback / continuation / packet blockers.",
+  "frontier_candidates_with_only_sphitratio_extra_field": [
+   "1208/120801",
+   "1303/130301",
+   "1501/150101"
+  ],
+  "frontier_candidate_count_with_only_sphitratio": 3,
+  "other_skills_retain_own_blockers": true,
+  "other_blocker_classes_retained": [
+   "MODIFIER",
+   "RANDOM_TARGET",
+   "PREDICATE_CALLBACK",
+   "SECOND_HOP_CONTINUATION",
+   "DAMAGE_PACKET",
+   "HEAL_PACKET",
+   "RESOURCE",
+   "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+   "REFERENCE_PACKET_OTHER"
+  ]
+ },
+ "waitanimstate_status": {
+  "candidate_local_policy_review": "DEFERRED",
+  "reason": "Resolving WaitAnimState cannot establish the selected real action while SPHitRatio settlement remains unclosed.",
+  "global_waitanimstate_policy_changed": false
+ },
+ "m12_final_status": "BLOCKED_BY_EVIDENCE",
+ "reentry_conditions": {
+  "rule": "M12 may be reopened only when at least one genuinely new qualifying evidence source appears.",
+  "existing_saved_evidence_reread_is_not_a_trigger": true,
+  "private_server_observations_alone_are_not_4_4_54_native_proof": true,
+  "triggers": [
+   {
+    "id": "A",
+    "trigger": "Hash/version-matched 4.4.54 GameAssembly or equivalent native artifact covering the required AttackData/RtAttackData path"
+   },
+   {
+    "id": "B",
+    "trigger": "Exact constructor/deserializer/conversion evidence joining SPHitRatio to its runtime member and absent-field behavior"
+   },
+   {
+    "id": "C",
+    "trigger": "Proved consumer/dataflow establishing recipient, base, formula, multiplicity and mutation class"
+   },
+   {
+    "id": "D",
+    "trigger": "Independent runtime/native trace with sufficient version qualification to close the same boundary"
+   },
+   {
+    "id": "E",
+    "trigger": "A different real skill whose complete full-action closure avoids every currently unresolved semantic field and unsupported sibling"
+   }
+  ]
+ },
+ "m12_task_state": {
+  "ledger_ref": "data/content_binding/4.4.54/content_binding_master_v1.json#/tasks",
+  "completed_marks": [
+   "M12C-001",
+   "M12C-002",
+   "M12C-007",
+   "M12C-008",
+   "M12C-009",
+   "M12C-010",
+   "M12C-011"
+  ],
+  "blocked_marks": [
+   "M12C-003",
+   "M12C-004",
+   "M12C-005",
+   "M12C-006"
+  ],
+  "ready_task_count": 0,
+  "open_implementation_tasks": [],
+  "no_ready_m12_implementation_task": true,
+  "fabricated_completion": false
+ },
+ "next_phase_boundary": {
+  "m12_closed_for_current_evidence": true,
+  "further_engineering_may_proceed_in_later_milestones": true,
+  "later_milestones_must_not_claim_m12_content_bound_execution": true,
+  "m13_started_in_this_cr": false
+ },
+ "source_artifact_hashes": {
+  "data/content_binding/4.4.54/content_action_closure_census_001.json": {
+   "sha256": "cb97d0b76e08b9e633ad635b77ace927d66bf0eab934e48af7e37e592ec868a8",
+   "bytes": 1875687
+  },
+  "data/content_binding/4.4.54/content_binding_candidate_ledger_v1.json": {
+   "sha256": "e1b5b9d4c4292c7dc426f333c0a97ed5a307927d8c4e1aa5b04a23f00e122ded",
+   "bytes": 10168
+  },
+  "data/content_binding/4.4.54/content_binding_contract_v1.json": {
+   "sha256": "021d3edd9c44c553b223fdc63d047917f216c5e1c16f847c35994243649fb0af",
+   "bytes": 3302
+  },
+  "data/content_binding/4.4.54/content_binding_evidence_recovery_001.json": {
+   "sha256": "1f3ef235f2ac5bbd2fb5658b56e3047bed2272f6088d53241a4b37450502eced",
+   "bytes": 25917
+  },
+  "data/content_binding/4.4.54/content_binding_master_v1.json": {
+   "sha256": "0325114c08595be351e32ee4afbf8753756f98d886290d6f974f038d0fc5599c",
+   "bytes": 3162
+  },
+  "data/content_binding/4.4.54/content_binding_reentry_review_001.json": {
+   "sha256": "c8dff36bcfe00804b584675ac098745184235ab70a57b4a1f65aabbbfe27af51",
+   "bytes": 16039
+  },
+  "data/content_binding/4.4.54/content_first_hop_blocker_audit_001.json": {
+   "sha256": "de19725d867ad1ba2613e4dc82eeee4f8fa3f143d28f304abf7e6d2f73a090cb",
+   "bytes": 1326537
+  },
+  "data/content_binding/4.4.54/content_residual_blocker_frontier_001.json": {
+   "sha256": "d86dae145e55674f18b68fffed7542c28bb778f194c09181825a51b7090666b9",
+   "bytes": 479439
+  },
+  "data/content_binding/4.4.54/first_real_action_policy_review_001.json": {
+   "sha256": "bdd3be6d0c37234df15828912e608a3a7e6379133e430b60feffdc7cfa785067",
+   "bytes": 9555
+  },
+  "data/content_binding/4.4.54/full_action_closure_census_001.json": {
+   "sha256": "37fb2211fee7fa2b25f91362fa45b8353080e19eb9eee0a3d029032b4711095f",
+   "bytes": 11124582
+  },
+  "data/content_binding/4.4.54/natasha_110502_effect_closure_001.json": {
+   "sha256": "0eef62e3512c068f6366430e1b21ea3aa53e42eae68d91ea4ff95e2a479a54bb",
+   "bytes": 44179
+  },
+  "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json": {
+   "sha256": "fc71eabcf7b2ad0d1473fbc2fe58e4caa57675db404499ac3964eb7d6577ac6a",
+   "bytes": 77160
+  }
+ },
+ "validation": {
+  "all_referenced_m12_artifacts_exist": true,
+  "sphitratio_artifact_exists": true,
+  "closure_artifact_created": true,
+  "no_historical_m12_artifact_modified": true,
+  "master_update_is_monotonic": true,
+  "old_blockers_and_audits_preserved": true,
+  "no_ready_m12_task": true,
+  "no_open_implementation_task": true,
+  "golden_remains_0": true,
+  "native_trace_remains_empty": true,
+  "m7_remains_deferred": true,
+  "master_points_to_closure": true,
+  "master_points_to_sphitratio": true,
+  "final_status_agrees_with_sources": true,
+  "json_parses_closure": true,
+  "duplicate_key_json_rejected": true
+ }
+}
