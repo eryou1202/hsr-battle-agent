@@ -1,0 +1,219 @@
+{
+ "schema": "content_capability_query_contract/1",
+ "version": "1.0.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M14-CONTENT-CAPABILITY-QUERY-20260927-001",
+ "milestone": "M14",
+ "purpose": "Typed, deterministic, read-only query surface over the frozen M13 content-support registry, so future planner/backend/version-diff code never reimplements population/support/readiness logic ad hoc.",
+ "package": "hsr_battle_agent.content_support",
+ "modules": {
+  "models.py": "closed vocabularies, typed keys, frozen records and capability views",
+  "registry.py": "explicit-version read-only loader plus integrity validation",
+  "queries.py": "deterministic bulk/single queries, execution denial, planner visibility"
+ },
+ "data_authority": {
+  "registry": "data/content_support/4.4.54/content_support_registry_v1.json",
+  "contract": "data/content_support/4.4.54/content_support_registry_contract_v1.json",
+  "summary": "data/content_support/4.4.54/content_support_summary_v1.json",
+  "master": "data/content_support/4.4.54/content_support_master_v1.json",
+  "note": "M13 artifacts are consumed verbatim; M14 does not modify them."
+ },
+ "frozen_population_invariants": {
+  "canonical_records": 620,
+  "trigger_name_joined_rows": 528,
+  "actual_behavior_root_bound_or_better": 524,
+  "unbound_rows": 96,
+  "empty_trigger_rows": 92,
+  "trigger_matched_without_entry_ability": 4,
+  "m12_full_closure_settlement_rows": 293,
+  "root_only_settlement_rows": 65,
+  "bound_rows_with_any_observed_settlement": 358,
+  "second_hop_affected_rows": 20,
+  "executable_real_content_actions": 0,
+  "golden": 0,
+  "native_trace": "empty"
+ },
+ "typed_identities": {
+  "ContentSkillKey": [
+   "content_version",
+   "avatar_id",
+   "skill_id"
+  ],
+  "canonical_form": "AvatarID:SkillID",
+  "version_qualified_form": "content_version/AvatarID:SkillID",
+  "not_conflated": [
+   "SkillID",
+   "SkillTriggerKey",
+   "EntryAbility",
+   "PrepareAbility",
+   "behavior_id"
+  ]
+ },
+ "closed_vocabularies": {
+  "binding_level": [
+   "STATIC_ONLY",
+   "BEHAVIOR_ROOT_BOUND",
+   "FULL_ACTION_REPRESENTED",
+   "REFERENCE_SETTLEMENT_BOUND",
+   "CONTENT_ACTION_EXECUTABLE_REFERENCE"
+  ],
+  "support_status": [
+   "REPRESENTABLE_BLOCKED",
+   "BLOCKED_BY_EVIDENCE",
+   "BLOCKED_BY_REFERENCE_SUPPORT",
+   "BLOCKED_BY_CONTINUATION",
+   "NO_SETTLEMENT",
+   "UNBOUND_STATIC_SKILL"
+  ],
+  "readiness": "reuses hsr_battle_agent.battle_ir.evidence.ReadinessClass",
+  "blocker_class": [
+   "WAIT_ANIM_STATE",
+   "DAMAGE_PACKET",
+   "HEAL_PACKET",
+   "MODIFIER",
+   "RANDOM_TARGET",
+   "PREDICATE_CALLBACK",
+   "SECOND_HOP_CONTINUATION",
+   "RESOURCE",
+   "REFERENCE_PACKET_OTHER",
+   "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+   "UNKNOWN_OR_UNSUPPORTED"
+  ],
+  "reentry_hint": [
+   "NEW_NATIVE_SPHITRATIO_EVIDENCE",
+   "WAITANIMSTATE_LOCAL_POLICY_REVIEW",
+   "MODIFIER_STACKING_EVIDENCE",
+   "TARGET_RANDOM_CONTRACT",
+   "PREDICATE_CALLBACK_SUPPORT",
+   "SECOND_HOP_ORCHESTRATION",
+   "DAMAGE_PACKET_FIELD_SUPPORT",
+   "HEAL_PACKET_SUPPORT"
+  ],
+  "unbound_reason": [
+   "EMPTY_TRIGGER_KEY",
+   "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+  ],
+  "settlement_kind": [
+   "DAMAGE_REQUEST",
+   "HEAL_REQUEST",
+   "MODIFY_TEAM_SP",
+   "MODIFY_WEAKNESS"
+  ]
+ },
+ "unknown_vocabulary_policy": "An unknown value fails closed with UnknownVocabularyError. Explicit preservation is available only via parse_closed(..., preserve_unknown=True), which yields an UnknownVocabularyValue that can never equal a real member. Unknown values are never silently mapped onto a supported value.",
+ "query_api": {
+  "get_skill": "explicit-absent (None) lookup by key, 'AvatarID:SkillID' or (avatar, skill)",
+  "require_skill": "same lookup, raising UnknownSkillError when absent",
+  "get_avatar_skills": "all skills for one AvatarID",
+  "get_by_binding_level": "filter by closed BindingLevel",
+  "get_by_support_status": "filter by closed SupportStatus",
+  "get_by_blocker_class": "filter by closed BlockerClass",
+  "get_by_reentry_hint": "filter by closed ReentryHint",
+  "get_unbound_skills": "binding_level == STATIC_ONLY",
+  "get_bound_skills": "non-null EntryAbility",
+  "get_settlement_skills": "closure records any settlement operation",
+  "get_second_hop_skills": "first-hop target contains a further TriggerAbility",
+  "real_content_execution_eligibility": "denial only; always NOT_ELIGIBLE",
+  "planner_content_visibility": "descriptive planner filter"
+ },
+ "capability_view": {
+  "SkillCapability": [
+   "key",
+   "binding_level",
+   "support_status",
+   "representation_readiness",
+   "execution_readiness",
+   "settlement_present",
+   "settlement_kinds",
+   "blocker_classes",
+   "primary_blocker",
+   "reentry_hints",
+   "entry_ability",
+   "prepare_ability",
+   "version_relation"
+  ],
+  "note": "A view over M13 data, not a new authority."
+ },
+ "execution_eligibility": {
+  "outcomes": [
+   "NOT_ELIGIBLE"
+  ],
+  "no_eligible_member_by_design": true,
+  "reason_source": "derived from registry evidence only",
+  "reason_codes": [
+   "NO_BEHAVIOR_ROOT",
+   "NO_SETTLEMENT_OBSERVED",
+   "SECOND_HOP_CONTINUATION_UNRESOLVED",
+   "BLOCKED_STATUS_*"
+  ],
+  "returns_gate_certificate": false,
+  "constructs_transaction_plan": false,
+  "reference_model_readiness_is_not_permission": true
+ },
+ "planner_visibility": {
+  "modes": [
+   "REPRESENTABLE",
+   "HAS_SETTLEMENT",
+   "BLOCKED_WITH_REASON"
+  ],
+  "forbidden_modes": [
+   "PLAYABLE",
+   "LEGAL_ACTION",
+   "EXECUTABLE_ACTION"
+  ],
+  "note": "A registry skill is not automatically a PlayerLegalAction."
+ },
+ "ordering": {
+  "rule": "AvatarID then SkillID, natural (numeric-first) ordering",
+  "stronger_orders": "none defined in M14"
+ },
+ "version_explicitness": {
+  "explicit_version_required": true,
+  "implicit_latest_selection": false,
+  "cross_version_fallback": false,
+  "cross_version_record_merge": false,
+  "supported_versions": [
+   "4.4.54"
+  ]
+ },
+ "determinism": {
+  "repeated_load_equivalent": true,
+  "global_mutable_cache": false,
+  "per_registry_immutable_lookup": true
+ },
+ "no_duplicate_policy": "The query layer consumes already-derived binding_level / support_status / readiness / blocker classes / reentry hints. It does not re-implement M13 status derivation; only simple integrity invariants are recomputed. If M13 changes later, query behaviour follows the new registry.",
+ "runtime_authority_boundary": {
+  "invariant": "Registry data NEVER satisfies GateCertificate or NATIVE_EVIDENCED.",
+  "corollaries": [
+   "A record becoming cleaner does not grant execution permission.",
+   "Runtime still requires its own evidence-mode, readiness and gate checks.",
+   "M10/M11 synthetic infrastructure remains unchanged."
+  ],
+  "registry_satisfies_gate_certificate": false,
+  "registry_satisfies_native_evidenced": false
+ },
+ "claim_boundary": {
+  "permitted": {
+   "CONTENT_SUPPORT_QUERY_LAYER": "ESTABLISHED",
+   "CONTENT_REGISTRY_MACHINE_QUERYABLE": "YES"
+  },
+  "still_false": {
+   "FIRST_REAL_CONTENT_BOUND_ACTION": "NO",
+   "CONTENT_BOUND_BATTLE_SANDBOX": "NOT_ESTABLISHED",
+   "FULL_SOURCE_BACKED_HSR_ACTION_BINDING": "NO",
+   "NATIVE_SKILL_EXECUTION": "NO",
+   "golden": 0,
+   "native_trace": "empty"
+  }
+ },
+ "not_performed": [
+  "no content execution",
+  "no binder",
+  "no semantic reverse",
+  "no frontend",
+  "no 4.5.54 migration",
+  "no M13 artifact modification",
+  "no M12 modification",
+  "no git writes"
+ ]
+}

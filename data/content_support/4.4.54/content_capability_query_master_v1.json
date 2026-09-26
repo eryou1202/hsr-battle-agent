@@ -1,0 +1,108 @@
+{
+ "schema": "content_capability_query_master/1",
+ "version": "1.0.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M14-CONTENT-CAPABILITY-QUERY-20260927-001",
+ "branch": "terra/implementation",
+ "starting_head": "3fc02c8af1760b41e98a50959597ceb662e8c663",
+ "git_writes": false,
+ "milestone": {
+  "id": "M14",
+  "title": "CONTENT CAPABILITY QUERY LAYER (BACKEND)",
+  "type": "BACKEND_ENGINEERING_MILESTONE",
+  "execution_milestone_implied": false,
+  "status": "DONE",
+  "reopens_m12": false,
+  "modifies_m13": false,
+  "artifacts": {
+   "contract": "data/content_support/4.4.54/content_capability_query_contract_v1.json",
+   "master": "data/content_support/4.4.54/content_capability_query_master_v1.json",
+   "package": "src/hsr_battle_agent/content_support/",
+   "tests": "tests/content_support/test_capability_query.py"
+  }
+ },
+ "tasks": [
+  {
+   "task_id": "M14Q-001",
+   "status": "DONE",
+   "title": "Typed model",
+   "evidence": "models.py: ContentSkillKey, closed vocabularies, frozen SkillRecord/SkillCapability/ExecutionEligibility"
+  },
+  {
+   "task_id": "M14Q-002",
+   "status": "DONE",
+   "title": "Loader / integrity",
+   "evidence": "registry.py: explicit-version loader, schema/version/count/uniqueness/index validation"
+  },
+  {
+   "task_id": "M14Q-003",
+   "status": "DONE",
+   "title": "Indexes / query API",
+   "evidence": "queries.py: 11 query entrypoints plus deterministic AvatarID-then-SkillID ordering"
+  },
+  {
+   "task_id": "M14Q-004",
+   "status": "DONE",
+   "title": "Capability view",
+   "evidence": "SkillCapability projection over M13 records"
+  },
+  {
+   "task_id": "M14Q-005",
+   "status": "DONE",
+   "title": "Execution-denial boundary",
+   "evidence": "real_content_execution_eligibility returns NOT_ELIGIBLE for all 620 rows with registry-derived reasons"
+  },
+  {
+   "task_id": "M14Q-006",
+   "status": "DONE",
+   "title": "Planner visibility filter",
+   "evidence": "planner_content_visibility with REPRESENTABLE / HAS_SETTLEMENT / BLOCKED_WITH_REASON only"
+  },
+  {
+   "task_id": "M14Q-007",
+   "status": "DONE",
+   "title": "Tests / closure",
+   "evidence": {
+    "module": "tests.content_support.test_capability_query",
+    "tests_run": 51,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "all_pass": true
+   }
+  }
+ ],
+ "test_evidence": {
+  "module": "tests.content_support.test_capability_query",
+  "tests_run": 51,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "all_pass": true
+ },
+ "validation": {
+  "canonical_skills_loaded": 620,
+  "actual_behavior_root_bound": 524,
+  "unbound": 96,
+  "empty_trigger": 92,
+  "trigger_matched_without_entry_ability": 4,
+  "m12_full_closure_settlement_rows": 293,
+  "root_only_settlement_rows": 65,
+  "second_hop_affected": 20,
+  "execution_eligibility_all_not_eligible": true,
+  "m13_artifacts_modified": false,
+  "m12_artifacts_modified": false,
+  "production_existing_modules_modified": false,
+  "frontend_modified": false
+ },
+ "claim_boundary": {
+  "CONTENT_SUPPORT_QUERY_LAYER": "ESTABLISHED",
+  "CONTENT_REGISTRY_MACHINE_QUERYABLE": "YES",
+  "FIRST_REAL_CONTENT_BOUND_ACTION": "NO",
+  "CONTENT_BOUND_BATTLE_SANDBOX": "NOT_ESTABLISHED",
+  "FULL_SOURCE_BACKED_HSR_ACTION_BINDING": "NO",
+  "NATIVE_SKILL_EXECUTION": "NO",
+  "golden": 0,
+  "native_trace": "empty"
+ }
+}
