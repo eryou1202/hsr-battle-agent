@@ -1,0 +1,86 @@
+{
+ "schema": "content_support_master/1",
+ "version": "1.1.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M13-CONTENT-SUPPORT-REGISTRY-20260926-001",
+ "branch": "terra/implementation",
+ "git_writes": false,
+ "milestone": {
+  "id": "M13",
+  "title": "CONTENT SUPPORT REGISTRY (DATA PRODUCT)",
+  "type": "DATA_PRODUCT_MILESTONE",
+  "execution_milestone_implied": false,
+  "status": "DONE",
+  "reopens_m12": false,
+  "artifacts": {
+   "contract": "data/content_support/4.4.54/content_support_registry_contract_v1.json",
+   "registry": "data/content_support/4.4.54/content_support_registry_v1.json",
+   "summary": "data/content_support/4.4.54/content_support_summary_v1.json",
+   "master": "data/content_support/4.4.54/content_support_master_v1.json"
+  }
+ },
+ "population_model": {
+  "canonical_records": 620,
+  "STATIC_SKILL_ROWS": 620,
+  "TRIGGER_NAME_JOINED_ROWS": 528,
+  "TRIGGER_JOINED_WITHOUT_ENTRY_ABILITY": 4,
+  "ACTUAL_BEHAVIOR_ROOT_BOUND_OR_BETTER": 524,
+  "TOTAL_STATIC_WITHOUT_BEHAVIOR_ROOT": 96
+ },
+ "tasks": [
+  {
+   "task_id": "M13R-001",
+   "status": "DONE",
+   "title": "Source reconciliation",
+   "evidence": "620 static rows / 528 trigger-name-joined / 524 behavior-root-bound / 92+4 unbound; 293 settlement-reaching reconciled"
+  },
+  {
+   "task_id": "M13R-002",
+   "status": "DONE",
+   "title": "Registry contract",
+   "evidence": "content_support_registry_contract_v1.json"
+  },
+  {
+   "task_id": "M13R-003",
+   "status": "DONE",
+   "title": "Per-skill registry",
+   "evidence": "620 canonical records (one per static AvatarID:SkillID)"
+  },
+  {
+   "task_id": "M13R-004",
+   "status": "DONE",
+   "title": "Blocker/readiness normalization",
+   "evidence": "11-class blocker vocabulary; deterministic status and readiness precedence"
+  },
+  {
+   "task_id": "M13R-005",
+   "status": "DONE",
+   "title": "Avatar rollup + indexes",
+   "evidence": "91 avatar rollups (skill_count sum 620, bound sum 524); 7 indexes"
+  },
+  {
+   "task_id": "M13R-006",
+   "status": "DONE",
+   "title": "Future-version diff contract",
+   "evidence": "schema defined only; no 4.5.54 diff performed"
+  },
+  {
+   "task_id": "M13R-007",
+   "status": "DONE",
+   "title": "Validation / closure",
+   "evidence": "validation block in registry + summary reconciliation"
+  },
+  {
+   "task_id": "M13R-008",
+   "status": "DONE",
+   "title": "Population semantics corrective pass (pre-commit)",
+   "evidence": "canonical record model widened to 620 rows; behavior-root-bound corrected to 524; M12 528 preserved as historical join population"
+  }
+ ],
+ "runtime_authority_boundary": {
+  "registry_satisfies_gate_certificate": false,
+  "registry_satisfies_native_evidenced": false,
+  "m10_m11_changed": false
+ },
+ "m12_status_unchanged": "BLOCKED_BY_EVIDENCE"
+}

@@ -1,0 +1,1206 @@
+{
+ "schema": "content_support_registry_contract/1",
+ "version": "1.1.0",
+ "content_version": "4.4.54",
+ "change_request_id": "CR-M13-CONTENT-SUPPORT-REGISTRY-20260926-001",
+ "purpose": "Canonical 4.4.54 capability registry for backend capability queries, planner filtering, future 4.4.54 -> 4.5.54 diff, future test selection and future frontend support display.",
+ "not_an_execution_authority": true,
+ "record_model": {
+  "canonical_population": "one record per static AvatarID:SkillID",
+  "canonical_record_count": 620,
+  "covers_all_static_skill_rows": true,
+  "no_separate_duplicate_view": "Unbound rows are canonical records with binding_level STATIC_ONLY. Any unbound index is a key projection only and does not duplicate record bodies.",
+  "entry_ability_rule": "EntryAbility is never fabricated. The four trigger-matched rows without EntryAbility keep entry_ability = null."
+ },
+ "population_terminology": {
+  "STATIC_SKILL_ROWS": 620,
+  "EMPTY_TRIGGER_ROWS": 92,
+  "TRIGGER_NAME_JOINED_ROWS": 528,
+  "TRIGGER_JOINED_WITHOUT_ENTRY_ABILITY": 4,
+  "ACTUAL_BEHAVIOR_ROOT_BOUND_OR_BETTER": 524,
+  "TOTAL_STATIC_WITHOUT_BEHAVIOR_ROOT": 96,
+  "historical_note": "M12's 528 is the historical trigger-name-joined population. M13 does not rewrite it; M13 reports the literal behavior-root-bound count as 524."
+ },
+ "unbound_reasons": [
+  "EMPTY_TRIGGER_KEY",
+  "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+ ],
+ "binding_levels": [
+  {
+   "level": "STATIC_ONLY",
+   "meaning": "Static avatar/skill identity only; no behavior root (empty trigger key, or trigger matched but no EntryAbility)."
+  },
+  {
+   "level": "BEHAVIOR_ROOT_BOUND",
+   "meaning": "EntryAbility root named by the exact owner-scoped join; no full-closure census."
+  },
+  {
+   "level": "FULL_ACTION_REPRESENTED",
+   "meaning": "Full first-hop action closure is represented and its blockers are known. This does NOT mean executable."
+  },
+  {
+   "level": "REFERENCE_SETTLEMENT_BOUND",
+   "meaning": "FORBIDDEN for the current M12 evidence set. Not assigned to any record."
+  },
+  {
+   "level": "CONTENT_ACTION_EXECUTABLE_REFERENCE",
+   "meaning": "FORBIDDEN for the current M12 evidence set. Not assigned to any record."
+  }
+ ],
+ "binding_level_definition_note": "BEHAVIOR_ROOT_BOUND requires a non-null EntryAbility. FULL_ACTION_REPRESENTED means the closure is represented and blockers are known; it does NOT mean executable.",
+ "support_statuses": [
+  "REPRESENTABLE_BLOCKED",
+  "BLOCKED_BY_EVIDENCE",
+  "BLOCKED_BY_REFERENCE_SUPPORT",
+  "BLOCKED_BY_CONTINUATION",
+  "NO_SETTLEMENT",
+  "UNBOUND_STATIC_SKILL"
+ ],
+ "support_status_precedence": [
+  "1. UNBOUND_STATIC_SKILL: no EntryAbility (empty trigger key, or trigger matched but no EntryAbility).",
+  "2. BLOCKED_BY_CONTINUATION: second-hop TriggerAbility continuation present in a first-hop target (evaluated before packet blockers so continuation is never masked).",
+  "3. NO_SETTLEMENT: no settlement operation in the represented closure.",
+  "4. BLOCKED_BY_EVIDENCE: closure represented (census available) and the Wait-only residual blocker classes are a subset of {DAMAGE_PACKET, HEAL_PACKET}.",
+  "5. BLOCKED_BY_REFERENCE_SUPPORT: closure represented, no structural/uncompiled classes remain, but reference-adapter support gaps remain.",
+  "6. REPRESENTABLE_BLOCKED: closure represented (or root-record scope only) and uncompiled structural nodes remain."
+ ],
+ "no_supported_status": "No M12 real content action receives an executable or SUPPORTED status.",
+ "readiness_vocabulary": [
+  "SAFE_TO_REPRESENT_ONLY",
+  "SAFE_REFERENCE_MODEL_ONLY",
+  "STRICT_REJECT_UNTIL_NEW_EVIDENCE"
+ ],
+ "readiness_precedence": [
+  "UNBOUND_STATIC_SKILL or NO_SETTLEMENT -> SAFE_TO_REPRESENT_ONLY",
+  "BLOCKED_BY_EVIDENCE or BLOCKED_BY_CONTINUATION -> STRICT_REJECT_UNTIL_NEW_EVIDENCE",
+  "BLOCKED_BY_REFERENCE_SUPPORT or REPRESENTABLE_BLOCKED -> SAFE_REFERENCE_MODEL_ONLY"
+ ],
+ "readiness_separation": "representation_readiness and execution_readiness are separate fields. SAFE_TO_IMPLEMENT is never assigned to a real content action.",
+ "distribution_population_rule": "Unlabeled global distributions cover the full 620 canonical rows. Any bound-only view is suffixed *_bound_population_distribution.",
+ "blocker_vocabulary": [
+  "WAIT_ANIM_STATE",
+  "DAMAGE_PACKET",
+  "HEAL_PACKET",
+  "MODIFIER",
+  "RANDOM_TARGET",
+  "PREDICATE_CALLBACK",
+  "SECOND_HOP_CONTINUATION",
+  "RESOURCE",
+  "REFERENCE_PACKET_OTHER",
+  "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+  "UNKNOWN_OR_UNSUPPORTED"
+ ],
+ "blocker_normalization_rule": "Raw compiler blocker strings are normalized to the fixed class vocabulary using the M12 census's own recorded per-operation classification. Raw reasons are retained per record in raw_blocker_reasons and raw_blocker_reason_sources (reason + source_type). No equivalence between unrelated reasons is inferred.",
+ "primary_blocker_precedence": [
+  "DAMAGE_PACKET",
+  "HEAL_PACKET",
+  "SECOND_HOP_CONTINUATION",
+  "MODIFIER",
+  "RANDOM_TARGET",
+  "PREDICATE_CALLBACK",
+  "RESOURCE",
+  "WAIT_ANIM_STATE",
+  "REFERENCE_PACKET_OTHER",
+  "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+  "UNKNOWN_OR_UNSUPPORTED"
+ ],
+ "primary_blocker_note": "primary_blocker is a UI/query convenience field derived deterministically. It is not a claim that other blockers are irrelevant; all blocker classes are preserved in blocker_classes.",
+ "reentry_hint_vocabulary": [
+  "DAMAGE_PACKET_FIELD_SUPPORT",
+  "HEAL_PACKET_SUPPORT",
+  "MODIFIER_STACKING_EVIDENCE",
+  "NEW_NATIVE_SPHITRATIO_EVIDENCE",
+  "PREDICATE_CALLBACK_SUPPORT",
+  "SECOND_HOP_ORCHESTRATION",
+  "TARGET_RANDOM_CONTRACT",
+  "WAITANIMSTATE_LOCAL_POLICY_REVIEW"
+ ],
+ "reentry_hint_rule": "Hints are emitted only for blocker classes present on the record. They are routing hints, not automated approvals.",
+ "stable_query_keys": {
+  "by_skill": "AvatarID:SkillID",
+  "by_avatar": "AvatarID"
+ },
+ "indexes": [
+  "by_skill",
+  "by_avatar",
+  "by_blocker_class",
+  "by_support_status",
+  "by_binding_level",
+  "by_reentry_hint",
+  "by_unbound_reason"
+ ],
+ "index_rule": "Indexes contain stable skill keys only and do not duplicate record bodies. by_skill covers all 620 canonical rows; by_avatar covers all static skill rows.",
+ "future_version_diff_contract": {
+  "target_version": "4.5.54",
+  "performed_in_this_cr": false,
+  "join_key": "AvatarID:SkillID",
+  "comparable_fields": [
+   "STATIC_ADDED",
+   "STATIC_REMOVED",
+   "TRIGGER_KEY_CHANGED",
+   "ENTRY_ABILITY_CHANGED",
+   "PREPARE_ABILITY_CHANGED",
+   "CLOSURE_CHANGED",
+   "SETTLEMENT_KIND_CHANGED",
+   "BLOCKER_SET_CHANGED",
+   "VERSION_PROVENANCE_CHANGED"
+  ],
+  "field_definitions": {
+   "STATIC_ADDED": "key exists in 4.5.54 registry but not in 4.4.54 registry",
+   "STATIC_REMOVED": "key exists in 4.4.54 registry but not in 4.5.54 registry",
+   "TRIGGER_KEY_CHANGED": "skill_trigger_key differs",
+   "ENTRY_ABILITY_CHANGED": "entry_ability differs",
+   "PREPARE_ABILITY_CHANGED": "prepare_ability differs",
+   "CLOSURE_CHANGED": "closure metadata differs",
+   "SETTLEMENT_KIND_CHANGED": "settlement_kinds set differs",
+   "BLOCKER_SET_CHANGED": "blocker_classes set differs",
+   "VERSION_PROVENANCE_CHANGED": "version_relation or version_provenance_qualified differs"
+  },
+  "private_server_4_5_54_is_not_native_truth": true,
+  "no_diff_executed": true
+ },
+ "runtime_authority_boundary": {
+  "invariant": "Registry data NEVER satisfies GateCertificate or NATIVE_EVIDENCED.",
+  "corollaries": [
+   "A record becoming cleaner does not grant execution permission.",
+   "Runtime still requires its own evidence-mode, readiness and gate checks.",
+   "M10/M11 synthetic infrastructure remains unchanged.",
+   "No registry field is an execution authority."
+  ]
+ },
+ "source_authority": [
+  "data/content_binding/4.4.54/full_action_closure_census_001.json",
+  "data/content_binding/4.4.54/content_first_hop_blocker_audit_001.json",
+  "data/content_binding/4.4.54/content_binding_master_v1.json",
+  "data/content_binding/4.4.54/content_binding_m12_closure_001.json",
+  "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json",
+  ".external_refs/TurnBasedGameData/files/ExcelOutput/AvatarConfig.json",
+  ".external_refs/TurnBasedGameData/files/ExcelOutput/AvatarSkillConfig.json",
+  ".external_refs/TurnBasedGameData/files/Config/ConfigCharacter/Avatar/*_Config.json"
+ ],
+ "corrective_pass_note": "This artifact was corrected before the initial M13 commit to fix population terminology: the canonical record model now covers all 620 static rows and the literal behavior-root-bound count is 524, not 528.",
+ "blocker_class_derivation": {
+  "raw_reason_to_class_map": {
+   "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": [
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": null
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "ANNAJHLHKLD"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "BALFAPGPFGA"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "BHJLLBNDCLL"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "BIKKDNAMGMG"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "CMFFNNENPNL"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "CNLIMBPHJNP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "DIHCJLDIMNA"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "DKHNKLPFEJN"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "DNMCNKCMJBD"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "EGAIKBNEPOG"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "EJLHBEGHAME"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "FCCIDFIMONC"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "JDOLDFECMPL"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "KJNHIELIFEK"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "KLJDOJPBEJC"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "LAJIKDENEOO"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "LAPKGFCDPCD"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "LIMGBAHNNIK"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "LMHLABELCDJ"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "LPMGDCDFOOE"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "MABKFJCEPFH"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "MBIADGFPAGK"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "MDCEMPKNOKN"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "NGLKHNKNBDC"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "NKLOMENKLHK"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "None"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.AddGlobalDynamicOffsetIgnoreEntity"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.AddRegardAsAttackType"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.AddTargetStancePreshowConfig"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.AnimSetParameter"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ApplyOperation"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.AutoUseUltraSkill"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.CameraFollowEntityTimeScale"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ChangeBattleEventOwner"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ChangeCharacterConfigParam"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ChangeCharacterUIDisplay"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.CharacterChangeModel"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.CharacterChangePhase"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.CharacterDisableLookAt"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ClearEntityDamageText"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ClearEntityFollowAttachPoint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ClearFormationFaceDeltaRecord"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ClearRegardAsAttackType"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ClearTargetTimeSlow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ConditionLoopExecuteTaskList"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.CreateServant"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.DamageStance"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.DefineDynamicString"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.DisableCharacterVO"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.EnableFieldEffectSoftZOffset"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.EnableHugeMonsterHalfDither"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.EnableSpecificModifierSpecialMark"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.FireMultiProjectiles"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.FireWaveProjectile"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.FrameCaptureIfNeed"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.GlobalTimeSlow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.HideEntityForCurrentCamera"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.HideEntityInActionBarByDelay"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.HideFieldEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.HideModifierEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.IncludeGlobalTaskListTemplate"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LevelAudioState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LevelAudioSwitch"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LockAnimatorSpeed"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LoopExecuteTaskList"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LoopTargetList"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.LoseHPByRatio"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.MakeCharacterHUDVisible"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifierOverrideOnHitEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifyCharacterOutlineTargetRender"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifyEntityBoostPoint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifyProperty"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifySP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifySkillPropertyByName"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifySpecialSP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifyTeamBoostPoint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ModifyTeamBoostPointMax"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.MoveStageOnTargetForward"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.MoveTeam"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.MoveToTargetList"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.NewFireProjectile"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.OverrideSelectDarkTeamEntityCamera"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.PauseEntityFollowAttach"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.PerformDelayExecute"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.PlayCrossHairPreviewFadeIn"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.PlayTimeline"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.PreloadBattleEventByID"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RPGColorGradingCurveEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RadialBlurEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RandomSelectDynamicValue"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RandomSelectInTargetList"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RedirectActionDelayChange"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RefreshQingQueEnergyBarState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ReleaseCharacterHUDVisibleControl"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ReleaseEnvProfile"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.Remodifier"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.RemoveGlobalTimeSlow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ResetCharacterCustomTeamFormation"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ResetHeadLookAt"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetActionDelayNearTarget"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetAttachmentVisibility"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetBattleBGMState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetBattleUIPanelState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterAnimFollow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterCustomTeamFormation"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterEnhancedState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterFormation"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterPartsVisibility"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterScaleFollow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterVisibilityFollow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetCharacterVisibleInViewMode"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetComponentAssetLoadState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetControlSkillMapping"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDieImmediately"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByAddValue"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByAttackTargetCount"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByBPChange"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByBreakBaseDamage"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByCharacterCount"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByCountOfBaseType"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByCurrentBP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByDamageDataProperty"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByHPRatio"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByHealDataProperty"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByMaxBP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByPropertyClientOnly"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueBySkillProperty"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByTargetToTeamCenterDistance"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByWaveStageCount"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueByWeaknessCount"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetDynamicValueClientOnly"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectAnimatorParameter"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectAnimatorState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectAnimatorTrigger"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectAutoLayoutScale"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectFrameCaptureMatTex"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEffectProgress"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEnergyBarState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEntityFollowAttachPoint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEntityPosition"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetEntityVisible"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetHP"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetHpBreakHint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetLayerWeight"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetModifierEffectVisible"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetModifierValueByBehaviorFlag"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetPhainonChargePoint"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetPhainonChargePointPreshow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetShenJunActionBar"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetSkillButtonAdditionalStatus"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetSkillTargetFormationByPos"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetStanceHintEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetSummonerEnergyBarState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetTargetAssetPreloadState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetTargetCrossHairVisible"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetTargetCustomAssetPreloadState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetTeamLockTarget"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetTeamRootOffset"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetUltraSkillAssetPreload"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SetViewModeEnabled"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowActionBarEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowAttackTime"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowBattleAvatarPanel"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowBattleSkillEnhanced"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowBonusUIEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowSkillReadyCamera"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ShowUltraSkillAlternative"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SkipPopupUIOffset"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SortTargets"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.StackSkillDesc"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.StartBattleQTE"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.StopEffectFollow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.StopTimeline"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SummonPartner"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SwitchBattleArea"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.SwitchByCommandType"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TargetAlias"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TargetConcat"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TargetMapAdjoinEntity"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TargetMapPartOwnerEntity"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TargetTimeSlow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TeamLookAt"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ToggleSkillPreShow"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ToggleSpecialSkillMark"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.ToggleUITop"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TransitEnvProfile"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerAdditiveAnimState"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerAnimStateWithMove"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerAutoLayoutTransferPerform"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerCustomString"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerEnergyBarEffect"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerModifierCustomEvent"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerParallelAbility"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerSoundInAnim"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TriggerUINotifyWithTarget"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.TryStartConnectUltraSkillFrameCapture"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.UseSkillOneMore"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.VCameraNoiseChange"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitFor"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitFrame"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitFrameForBattleServer"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitSecond"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitTimelineFinish"
+    },
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WriteCustomValueToStatistic"
+    }
+   ],
+   "DAMAGE_PACKET": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_DAMAGE_ATTACK_TYPE_UNSUPPORTED",
+     "source_type": "RPG.GameCore.DamageByAttackProperty"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DAMAGE_FORMULA_UNSUPPORTED",
+     "source_type": "RPG.GameCore.DamageByAttackProperty"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS",
+     "source_type": "RPG.GameCore.DamageByAttackProperty"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING",
+     "source_type": "RPG.GameCore.DamageByAttackProperty"
+    }
+   ],
+   "HEAL_PACKET": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_HEAL_VALUE_MISSING",
+     "source_type": "RPG.GameCore.HealHP"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_UNSUPPORTED_HEAL_FORMULA",
+     "source_type": "RPG.GameCore.HealHP"
+    }
+   ],
+   "MODIFIER": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.AddModifier"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_ADD_MODIFIER_FIXED_LIFETIME_UNSUPPORTED",
+     "source_type": "RPG.GameCore.AddModifier"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED",
+     "source_type": "RPG.GameCore.AddModifier"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_REMOVE_MODIFIER_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.RemoveModifier"
+    }
+   ],
+   "RANDOM_TARGET": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_RETARGET_TARGET_UNSUPPORTED",
+     "source_type": "RPG.GameCore.Retarget"
+    }
+   ],
+   "REFERENCE_PACKET_OTHER": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_ACTION_COMPLETION_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SkillPerformFinish"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_ACTION_DELAY_SET_TARGET_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SetActionDelay"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DAMAGE_COMPLETION_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.DamagePerformFinish"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
+     "source_type": "RPG.GameCore.SetDynamicValueByStatusCount"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_DYNAMIC_VALUE_MISSING",
+     "source_type": "RPG.GameCore.SetDynamicValueByVariateType"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_INSERT_ACTION_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.TurnInsertAbility"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_INSERT_ACTION_TYPE_UNSUPPORTED",
+     "source_type": "RPG.GameCore.TurnInsertAction"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_MODIFIER_VALUE_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SetDynamicValueByModifierValue"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_MODIFIER_VALUE_TYPE_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SetDynamicValueByModifierValue"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TARGET_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SetDynamicValueByProperty"
+    },
+    {
+     "reason": "EXECUTABLE_REFERENCE_PROPERTY_VALUE_TYPE_UNSUPPORTED",
+     "source_type": "RPG.GameCore.SetDynamicValueByProperty"
+    }
+   ],
+   "RESOURCE": [
+    {
+     "reason": "EXECUTABLE_REFERENCE_TEAM_SP_ARGUMENTS_UNSUPPORTED",
+     "source_type": "RPG.GameCore.ModifySPNew"
+    }
+   ],
+   "SECOND_HOP_CONTINUATION": [
+    {
+     "reason": "TriggerAbility",
+     "source_type": "RPG.GameCore.TriggerAbility"
+    }
+   ],
+   "WAIT_ANIM_STATE": [
+    {
+     "reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+     "source_type": "RPG.GameCore.WaitAnimState"
+    }
+   ]
+  },
+  "note": "Derived from the M12 census's own per-operation classification. Raw reasons retained per record."
+ },
+ "source_artifact_sha256": {
+  "data/content_binding/4.4.54/full_action_closure_census_001.json": "37fb2211fee7fa2b25f91362fa45b8353080e19eb9eee0a3d029032b4711095f",
+  "data/content_binding/4.4.54/content_first_hop_blocker_audit_001.json": "de19725d867ad1ba2613e4dc82eeee4f8fa3f143d28f304abf7e6d2f73a090cb",
+  "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json": "fc71eabcf7b2ad0d1473fbc2fe58e4caa57675db404499ac3964eb7d6577ac6a",
+  "data/semantics/4.4.54/full_reconstruction/full_content_behavior_compiler_report_001.json": "45e5edad4d93b3f71bcb45fc407b17b89c63e4d02bb040a32467ddb3e9b19a53",
+  "data/db/hsr_content_4.4.54.sqlite": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692"
+ },
+ "corrective_findings": {
+  "population_terminology": "The canonical record model covers all 620 static rows; the literal behavior-root-bound count is 524 because four trigger-matched rows have no EntryAbility.",
+  "four_trigger_matched_rows_without_entry_ability": {
+   "rows": [
+    {
+     "skill_key": "1220:122014",
+     "skill_trigger_key": "Skill31",
+     "trigger_key_non_empty": true,
+     "owner_skilllist_name_match_exists": true,
+     "entry_ability": null,
+     "entry_ability_absent": true,
+     "prepare_ability": null,
+     "prepare_ability_absent": true,
+     "binding_level": "STATIC_ONLY",
+     "support_status": "UNBOUND_STATIC_SKILL",
+     "unbound_reason": "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+    },
+    {
+     "skill_key": "1510:151014",
+     "skill_trigger_key": "Skill31",
+     "trigger_key_non_empty": true,
+     "owner_skilllist_name_match_exists": true,
+     "entry_ability": null,
+     "entry_ability_absent": true,
+     "prepare_ability": null,
+     "prepare_ability_absent": true,
+     "binding_level": "STATIC_ONLY",
+     "support_status": "UNBOUND_STATIC_SKILL",
+     "unbound_reason": "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+    },
+    {
+     "skill_key": "8001:800103",
+     "skill_trigger_key": "Skill03",
+     "trigger_key_non_empty": true,
+     "owner_skilllist_name_match_exists": true,
+     "entry_ability": null,
+     "entry_ability_absent": true,
+     "prepare_ability": "Avatar_PlayerBoy_Skill03_EnterReady",
+     "prepare_ability_absent": false,
+     "binding_level": "STATIC_ONLY",
+     "support_status": "UNBOUND_STATIC_SKILL",
+     "unbound_reason": "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+    },
+    {
+     "skill_key": "8002:800203",
+     "skill_trigger_key": "Skill03",
+     "trigger_key_non_empty": true,
+     "owner_skilllist_name_match_exists": true,
+     "entry_ability": null,
+     "entry_ability_absent": true,
+     "prepare_ability": "Avatar_PlayerGirl_Skill03_EnterReady",
+     "prepare_ability_absent": false,
+     "binding_level": "STATIC_ONLY",
+     "support_status": "UNBOUND_STATIC_SKILL",
+     "unbound_reason": "TRIGGER_MATCHED_BUT_NO_ENTRY_ABILITY"
+    }
+   ],
+   "entry_ability_absent_for_all_four": true,
+   "prepare_ability_absent": [
+    "1220:122014",
+    "1510:151014"
+   ],
+   "prepare_ability_present": [
+    "8001:800103",
+    "8002:800203"
+   ],
+   "discrepancy_with_cr_assumption": {
+    "cr_stated": "all four rows have PrepareAbility absent/null",
+    "observed": "PrepareAbility is absent for 1220:122014 and 1510:151014, but PRESENT for 8001:800103 (Avatar_PlayerBoy_Skill03_EnterReady) and 8002:800203 (Avatar_PlayerGirl_Skill03_EnterReady).",
+    "recorded_not_forced": "The observed state is recorded as fact rather than adjusted to match the CR assumption. No EntryAbility was fabricated for any of the four rows.",
+    "does_not_restore_binding": "A PrepareAbility here is a *_EnterReady ability, not an action root. Its presence does not make the row behavior-root-bound, does not create settlement, and does not change binding_level/support_status. The invariant that matters (no EntryAbility -> cannot reach a behavior root) holds for all four rows."
+   }
+  }
+ }
+}
