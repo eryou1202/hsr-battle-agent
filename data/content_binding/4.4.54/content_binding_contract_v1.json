@@ -1,0 +1,24 @@
+{
+  "schema": "content_binding_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "change_request_id": "CR-M12-REAL-CONTENT-BINDING-20260926-001",
+  "binding_strengths": [
+    {"level": "STATIC_ID_BOUND", "meaning": "Exact 4.4.54 AvatarID, SkillID, owner relation and level/config identity only; no executable behavior claim."},
+    {"level": "BEHAVIOR_BOUND", "meaning": "Exact SkillID/config is explicitly joined to an exact-version behavior record; a matching name or filename alone does not qualify."},
+    {"level": "REFERENCE_SETTLEMENT_BOUND", "meaning": "Joined behavior plus exact or declared runtime inputs close every field and dependency of one supported REF02 settlement without invented arithmetic."},
+    {"level": "LOCAL_ACTION_BOUND", "meaning": "A reference-settlement-bound real skill is wrapped by a declared M10 local target, completion, schedule and terminal envelope; these fields retain SANDBOX_EXTENSION evidence."},
+    {"level": "SOURCE_BACKED_FULL_ACTION", "meaning": "The whole selectable action, target, effects, completion and schedule are closed by source evidence; not established in this CR."}
+  ],
+  "promotion_gates": {
+    "static_to_behavior": "Require an explicit exact SkillID/config-to-behavior relation and version-qualified behavior identity. Avatar tag, ordinal suffix, localization text and close-version filename relations are insufficient.",
+    "behavior_to_settlement": "Require exact REF02 packet kind, target cardinality, amount base/factors, resource cost/owner, toughness delta, and closed survival/events with complete ordering and dependencies. Every numeric source must be pinned content or an explicitly required runtime state input; a local parameter must not impersonate game content.",
+    "settlement_to_local_action": "Require an M10-compatible versioned envelope, complete legal view, immutable publication, combat mutation, next decision context, and deterministic replay with binding provenance carried through envelope, step and plan identities.",
+    "local_to_full_action": "Require evidence for real action admission, target arbitration, effect closure, action completion and scheduler continuation; local envelope policies do not qualify."
+  },
+  "ref02_packet_fields": ["kind", "source_id", "targets", "base_value", "ordered factors", "resource_cost", "resource_owner", "toughness_delta", "survival_closed", "events_closed"],
+  "version_policy": "Exact Nanoka 4.4.54 static rows are not silently joined to close 4.4.0 behavior or artifacts with unverified runtime provenance.",
+  "blocked_runtime_policy": "No ContentBoundReferenceAction or M10 envelope is emitted until REFERENCE_SETTLEMENT_BOUND passes. Discovery SQLite is not a session.step dependency. M10/M11 v1 schemas and identities remain unchanged.",
+  "evidence": {"exact_static_content": "SOURCE_BACKED_STATIC_ID", "reference_settlement_if_future_gate_passes": "REFERENCE_MODEL", "local_envelope_if_future_gate_passes": "SANDBOX_EXTENSION", "validation": "DETERMINISTIC_REPLAY_ONLY", "native_evidenced": false, "golden": 0, "native_trace": []},
+  "forbidden_claims": ["native skill execution", "native damage", "native target selection", "native optimal planning", "full source-backed HSR action from a component", "M7 closure from local replay"]
+}

@@ -1,0 +1,74 @@
+{
+  "schema": "content_binding_candidate_ledger/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "ranking_basis": "Closure quality under exact-version SkillID-to-behavior and REF02 gates, not character popularity.",
+  "census": {
+    "exact_static_avatars": 97,
+    "exact_static_skills": 664,
+    "exact_avatar_skill_relations": 664,
+    "full_content_mapping_skill_static_denominator": 664,
+    "full_content_mapping_skill_direct_id_links": 0,
+    "full_content_mapping_skill_exact_config_id_links": 0,
+    "full_content_mapping_skill_whole_record_executable_reference": 0,
+    "exact_raw_avatar_ability_containers_examined": ["Avatar_Natasha_00", "Avatar_BlackSwan_00"],
+    "source_backed_requalification_current_executed_records": 0,
+    "note": "The catalog's Avatar executable-reference entrypoint counts do not prove a static SkillID join or a full selectable action."
+  },
+  "source_artifacts": {
+    "static_database": {"path": "data/db/hsr_content_4.4.54.sqlite", "sha256": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692", "version": "4.4.54", "source": "Nanoka"},
+    "mapping": {"path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_mapping_001.json", "sha256": "50d89805a47282b7804fd0b842af0bed82b6035900cd10b935be37ab9900bfa1"},
+    "natasha_container": {"path": "data/raw/4.4.54/ability_file_container_natasha_30.json", "sha256": "6d173573c922c107c227a0c022f553154be5b21afb832e787776e989cc10062f", "source_archive_path_version_label": "4.4.53"},
+    "natasha_heal_subtree": {"path": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json", "sha256": "4dcca0baa2474373b20f785d47b853087971d99ae52617e030fe0931d81f5596"},
+    "natasha_heal_boundary": {"path": "data/semantics/4.4.54/real_skill_heal_boundary_30.json", "sha256": "5c0cc063ac1961496e341715d2116039d4e3c4ca1bb5c3e0082f11d16d9187ab", "declared_subtree_sha256": "c135173b1d6b1365aa515f48749192ff5f7798f09a81c804ed6e9c4a79a92b10", "current_subtree_sha256_matches_declared": false},
+    "black_swan_container": {"path": "data/raw/4.4.54/ability_file_container_black_swan_validation_30.json", "sha256": "a2bec9924c8ab571d950d3abd54b435bd0c1874debfc62ea29454e66bc7a332e", "source_archive_path_version_label": "4.4.53"},
+    "black_swan_damage_component": {"path": "data/semantics/4.4.54/full_reconstruction/source_backed_normal_damage_component_reference_001.json", "sha256": "f36c21d2999888831191b7ed5c116f067933154e3217c49b1b511558612da635", "behavior_version_relation": "CLOSE_4.4.0_TO_4.4.54", "claim_unit": "COMPONENT_NOT_ENTRYPOINT"}
+  },
+  "candidates": [
+    {
+      "rank": 1, "avatar_id": "1105", "avatar_name": "Natasha", "skill_id": "110502", "skill_level": "1", "exact_level_params": ["0.07", "0.048", "2", "70", "48"],
+      "avatar_canonical_sha256": "c681c99d05f8b8f06b4d4c243706f9ac88b36ff6b7feb846c60e95a1d976307c", "skill_canonical_sha256": "accd7111172b08dc22b15ac2e34b899518fee5daa9b54505f1ddfbe5ca8bf38a",
+      "behavior_candidate": "Avatar_Natasha_00_Skill02_Phase02", "behavior_artifact": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json", "skill_id_to_behavior_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY", "binding_strength": "STATIC_ID_BOUND", "ref02_adapter_candidate": "EXPLICIT_HEAL",
+      "exact_content_derived_settlement_fields": [], "runtime_scenario_fields_if_reentered": ["target MaxHP", "target CurrentHP", "healer HealRatio", "target HealTakenRatio"], "local_envelope_fields_if_reentered": ["target choice", "completion", "schedule", "terminal"],
+      "blockers": ["SKILL_ID_TO_BEHAVIOR_JOIN_UNPROVEN", "SOURCE_VERSION_UNVERIFIED", "PROVENANCE_DIGEST_MISMATCH", "DYNAMIC_FLOAT_UNRESOLVED", "TARGET_SEMANTICS_UNRESOLVED", "DISPEL_CONSUMER_UNRESOLVED", "POSITIVE_HEAL_CONSUMER_UNRESOLVED", "DAMAGE_PACKET_INCOMPLETE", "ACTION_COMPLETION_LOCAL_ONLY"],
+      "reason": "The named HealHP subtree and formula type 4 do not provide the DynamicFloat values, exact static SkillID join, complete ordered DispelStatus/HealHP effect consumption, or a valid REF02 heal packet. The separate runtime proof stops at a HealRequestBoundary without HP mutation."
+    },
+    {
+      "rank": 2, "avatar_id": "1105", "avatar_name": "Natasha", "skill_id": "110501", "skill_level": "1", "exact_level_params": ["0.5"],
+      "avatar_canonical_sha256": "c681c99d05f8b8f06b4d4c243706f9ac88b36ff6b7feb846c60e95a1d976307c", "skill_canonical_sha256": "a18ba5d25c4845944a4be4b367a10d0d5c040aba361e966dfe221181e9f4d79f",
+      "behavior_candidate": "Avatar_Natasha_00_Skill01_Phase02", "behavior_artifact": "data/raw/4.4.54/ability_file_container_natasha_30.json", "skill_id_to_behavior_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY", "binding_strength": "STATIC_ID_BOUND", "ref02_adapter_candidate": "ORDINARY_DAMAGE",
+      "exact_content_derived_settlement_fields": [], "runtime_scenario_fields_if_reentered": ["attacker Attack", "target HP and shield"], "local_envelope_fields_if_reentered": ["target choice", "completion", "schedule", "terminal"],
+      "blockers": ["SKILL_ID_TO_BEHAVIOR_JOIN_UNPROVEN", "SOURCE_VERSION_UNVERIFIED", "BEHAVIOR_TASK_GRAPH_INCOMPLETE", "DAMAGE_PACKET_INCOMPLETE", "TARGET_SEMANTICS_UNRESOLVED", "ACTION_COMPLETION_LOCAL_ONLY"],
+      "reason": "The exact static level multiplier and a same-named ability directory entry do not establish the behavior's effect formula, resource delta, toughness delta, target closure, or full REF02 packet."
+    },
+    {
+      "rank": 3, "avatar_id": "1105", "avatar_name": "Natasha", "skill_id": "110503", "skill_level": "1", "exact_level_params": ["0.092", "92"],
+      "avatar_canonical_sha256": "c681c99d05f8b8f06b4d4c243706f9ac88b36ff6b7feb846c60e95a1d976307c", "skill_canonical_sha256": "f757fc0cf2907145a80080052930de184f5d900156baf70d9d57475c6b094f59",
+      "behavior_candidate": "Avatar_Natasha_00_Skill03_EnterReady", "behavior_artifact": "data/raw/4.4.54/ability_file_container_natasha_30.json", "skill_id_to_behavior_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY", "binding_strength": "STATIC_ID_BOUND", "ref02_adapter_candidate": "EXPLICIT_HEAL",
+      "exact_content_derived_settlement_fields": [], "runtime_scenario_fields_if_reentered": ["team member HP and MaxHP"], "local_envelope_fields_if_reentered": ["target choice", "completion", "schedule", "terminal"],
+      "blockers": ["SKILL_ID_TO_BEHAVIOR_JOIN_UNPROVEN", "SOURCE_VERSION_UNVERIFIED", "MULTI_TARGET_SHAPE_UNSUPPORTED_REF02", "DAMAGE_PACKET_INCOMPLETE", "ACTION_COMPLETION_LOCAL_ONLY"],
+      "reason": "The static skill describes all-team healing; REF02's supported heal packet has exactly one target and no multi-target action closure is established."
+    },
+    {
+      "rank": 4, "avatar_id": "1307", "avatar_name": "Black Swan", "skill_id": "130701", "skill_level": "1", "exact_level_params": ["0.3", "0.5", "0.5"],
+      "avatar_canonical_sha256": "d65edd2d504612411eb06e4f6f015cc4bb44c5c96c1fc687c9dc0eb88de11653", "skill_canonical_sha256": "3bae99d5fba0394592d4afb92055ee9d2779bd9b0d59c66e8d0568fdce7b0bc0",
+      "behavior_candidate": "Avatar_BlackSwan_00_Skill01_Phase02", "behavior_artifact": "data/raw/4.4.54/ability_file_container_black_swan_validation_30.json", "skill_id_to_behavior_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY", "binding_strength": "STATIC_ID_BOUND", "ref02_adapter_candidate": "ORDINARY_DAMAGE",
+      "exact_content_derived_settlement_fields": [], "runtime_scenario_fields_if_reentered": ["attacker Attack", "target HP and shield"], "local_envelope_fields_if_reentered": ["target choice", "completion", "schedule", "terminal"],
+      "blockers": ["SKILL_ID_TO_BEHAVIOR_JOIN_UNPROVEN", "SOURCE_VERSION_UNVERIFIED", "RANDOM_CONTRACT_UNRESOLVED", "MODIFIER_STACKING_UNRESOLVED", "DAMAGE_PACKET_INCOMPLETE", "ACTION_COMPLETION_LOCAL_ONLY"],
+      "reason": "Static text includes probabilistic Arcana effects; a single damage component cannot stand in for the complete basic-attack action."
+    },
+    {
+      "rank": 5, "avatar_id": "1307", "avatar_name": "Black Swan", "skill_id": "130702", "skill_level": "1", "exact_level_params": ["0.45", "1", "1", "0.148", "3"],
+      "avatar_canonical_sha256": "d65edd2d504612411eb06e4f6f015cc4bb44c5c96c1fc687c9dc0eb88de11653", "skill_canonical_sha256": "dd92e7e2b21c2f019749cb4d8df0e78a66f8a109402126db6b786452c5bd5058",
+      "behavior_candidate": "Avatar_BlackSwan_00_Skill02_Phase02", "behavior_artifact": "data/semantics/4.4.54/full_reconstruction/source_backed_normal_damage_component_reference_001.json", "skill_id_to_behavior_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY_AND_CLOSE_VERSION_COMPONENT", "binding_strength": "STATIC_ID_BOUND", "ref02_adapter_candidate": "ORDINARY_DAMAGE",
+      "exact_content_derived_settlement_fields": [], "runtime_scenario_fields_if_reentered": ["attacker Attack", "target HP and shield"], "local_envelope_fields_if_reentered": ["target choice", "completion", "schedule", "terminal"],
+      "blockers": ["SKILL_ID_TO_BEHAVIOR_JOIN_UNPROVEN", "VERSION_RELATION_ONLY", "SP_HIT_RATIO_UNRESOLVED", "ADJOIN_TARGET_SHAPE_UNSUPPORTED_REF02", "RANDOM_CONTRACT_UNRESOLVED", "MODIFIER_STACKING_UNRESOLVED", "TRIGGER_ABILITY_UNRESOLVED", "DAMAGE_PACKET_INCOMPLETE", "ACTION_COMPLETION_LOCAL_ONLY"],
+      "reason": "The reference fixture executes one adjoining-target damage component with caller-provided DynamicHash/multiplier inputs. The primary hit and full Skill02 entrypoint remain uncompiled."
+    }
+  ],
+  "audited_candidate_count": 5,
+  "binding_strength_distribution": {"STATIC_ID_BOUND": 5, "BEHAVIOR_BOUND": 0, "REFERENCE_SETTLEMENT_BOUND": 0, "LOCAL_ACTION_BOUND": 0, "SOURCE_BACKED_FULL_ACTION": 0},
+  "selected_actions": [],
+  "closure_decision": "BLOCKED_BY_INCOMPLETE_EXACT_CONTENT_TO_REF02_CLOSURE",
+  "reentry_conditions": ["Proven exact SkillID/config-to-behavior join", "Verified exact-version source provenance and resolved digest mismatch where relevant", "All required behavior parameters and effect dependencies closed without synthetic numeric filling", "A complete single-target REF02-supported packet with correct cost and target semantics", "Versioned provenance carrier through M10 envelope, step, M11 plan and independent local replay"]
+}
