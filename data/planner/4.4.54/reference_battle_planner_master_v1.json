@@ -1,0 +1,49 @@
+{
+  "schema": "reference_battle_planner_master/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "change_request_id": "CR-M11-REFERENCE-BATTLE-PLANNER-20260926-001",
+  "branch": "terra/implementation",
+  "starting_head": "693e167e1a89fcd3d5b4f183e9e1b803e6777e03",
+  "git_writes": false,
+  "contract_ref": "data/planner/4.4.54/reference_battle_planner_contract_v1.json",
+  "scope": "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE",
+  "milestone": {
+    "id": "M11",
+    "title": "REFERENCE BATTLE PLANNING READY",
+    "status": "DONE",
+    "battle_sandbox": "ESTABLISHED",
+    "local_battle_planner": "ESTABLISHED",
+    "full_source_backed_hsr_action_binding": false,
+    "native_optimal_planning": false,
+    "depends_on": ["M9", "M10"],
+    "independent_of": ["M7"]
+  },
+  "tasks": [
+    {"task_id": "M11P-001", "status": "DONE", "dependencies": [], "title": "M9/M10 compatibility audit and explicit transition-adapter contract"},
+    {"task_id": "M11P-002", "status": "DONE", "dependencies": ["M11P-001"], "title": "ReferenceBattleSession planner adapter"},
+    {"task_id": "M11P-003", "status": "DONE", "dependencies": ["M11P-001"], "title": "Caller-declared combat-state objective contract"},
+    {"task_id": "M11P-004", "status": "DONE", "dependencies": ["M11P-002", "M11P-003"], "title": "Deterministic bounded search over M10 states"},
+    {"task_id": "M11P-005", "status": "DONE", "dependencies": ["M11P-004"], "title": "Plan/result and replay contract"},
+    {"task_id": "M11P-006", "status": "DONE", "dependencies": ["M11P-005"], "title": "Branching reference combat fixture and compatibility regression"},
+    {"task_id": "M11P-007", "status": "DONE", "dependencies": ["M11P-006"], "title": "Closure review"}
+  ],
+  "compatibility": {
+    "m9_v1_modified": false,
+    "m10_modified": false,
+    "frozen_terra_modified": false,
+    "m9_historical_records_modified": false,
+    "m10_control_records_modified": false
+  },
+  "fixture": {
+    "kind": "SYNTHETIC_LOCAL_ENGINEERING",
+    "base_reference_packet": "tests/game_data/test_reference_damage_v2.py:packet",
+    "m10_session_base": "tests/reference_sandbox/test_local_session.py:fixture",
+    "branching_actions": ["z-light", "a-heavy"],
+    "reference_arithmetic_reimplemented": false,
+    "source_backed_character_skill": false
+  },
+  "native_validation": {"m7": "BLOCKED_BY_INDEPENDENT_EVIDENCE", "m7_deferred": true, "golden": 0, "native_trace": []},
+  "evidence": {"action_envelope": "SANDBOX_EXTENSION", "settlement": "REFERENCE_MODEL", "orchestration": "SANDBOX_EXTENSION", "validation": "DETERMINISTIC_REPLAY_ONLY"},
+  "next_phase": "M12 content binding is separate; M11 does not bind actual 4.4.54 character kits."
+}

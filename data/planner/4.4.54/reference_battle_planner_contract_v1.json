@@ -1,0 +1,70 @@
+{
+  "schema": "reference_battle_planner_contract/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "transition_scopes": [
+    "SANDBOX_RESOURCE_V1",
+    "REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE"
+  ],
+  "m9_compatibility": "M9 v1 public API, policy, objective, result identity and search implementation are unchanged; ResourceV1Boundary dispatches to M9 without interpreting its transitions.",
+  "battle_transition": {
+    "producer": "ReferenceBattleSession.step",
+    "legal_view": "ReferenceBattleSession.legal_actions; complete only for caller-declared local envelopes",
+    "settlement": "REF02 reference packet through M10",
+    "action_completion": "LOCAL_ACTION_COMMIT_MEANS_COMPLETED_SUCCESS/1",
+    "next_actor": "M10 ordinary reference scheduler after local SUCCESS",
+    "terminal": "M10 local max committed actions",
+    "full_source_backed_hsr_action_binding": false
+  },
+  "policy": {
+    "schema": "ReferenceBattleSearchPolicy/1",
+    "strategy": "BOUNDED_DFS",
+    "branch_ordering": "SOURCE_ORDER",
+    "dedup_mode": "ACCOUNT_ONLY",
+    "max_depth": "nonnegative integer; exact committed-action horizon",
+    "node_limit": "positive integer; root is one explored node; a committed successor beyond the limit is not evaluated",
+    "max_plans": "positive integer; output truncation only after ranking, never changes exploration",
+    "tie_policy": "LOCAL_PLANNER_POLICY; lexicographic path of declared envelope ordinals",
+    "search_rng_draws": 0
+  },
+  "objective": {
+    "schema": "ReferenceBattleObjective/1",
+    "preference_scope": "CALLER_DECLARED_LOCAL",
+    "entity_fields": ["HP", "TOUGHNESS"],
+    "resource_field": "REFERENCE_TEAM_RESOURCE",
+    "entity_identity": "An exact entity_id is required for every entity field objective.",
+    "horizon_kinds": ["ENTITY_FIELD_AT_HORIZON", "RESOURCE_AT_HORIZON"],
+    "reach_kinds": ["REACH_ENTITY_FIELD_COMPARISON", "REACH_RESOURCE_COMPARISON"],
+    "min_steps_kinds": ["MIN_STEPS_TO_ENTITY_FIELD_COMPARISON", "MIN_STEPS_TO_RESOURCE_COMPARISON"],
+    "comparators": ["LT", "LE", "EQ", "GE", "GT"],
+    "threshold": "finite, explicit, canonically serialized Decimal",
+    "satisfaction": "Horizon objectives evaluate only at exact depth; reach objectives evaluate root and every committed successor and stop a branch at first satisfaction. Objective satisfaction does not assert game terminal."
+  },
+  "state_accounting": {
+    "key": "transition scope + session spec identity + objective identity + policy identity + remaining horizon + M10 semantic hash",
+    "collision_check": "Full M10 snapshot equality is required after a hash match.",
+    "pruning": false,
+    "blocked_states": "Explored nodes with a blocked complete local legal-action view; no partial action list is treated as complete.",
+    "rejected_edges": "Failed action attempts never become explored nodes."
+  },
+  "result": {
+    "plan_schema": "ReferenceBattlePlannerPlan/1",
+    "result_schema": "ReferenceBattlePlannerResult/1",
+    "statuses": ["FOUND", "NO_PLAN_WITHIN_HORIZON", "BLOCKED", "LIMIT_REACHED", "UNSUPPORTED"],
+    "found_incomplete": "BEST_OBSERVED under the local caller objective, never native or global optimality",
+    "zero_step_plan": true,
+    "step_records": "Exact M10 ReferenceBattleStep/1 documents; no conversion to M8 TrajectoryStep",
+    "identity": "Domain-separated SHA-256 over canonical-v2 documents excluding only their own ID; no wall-clock time or machine path",
+    "replay": "Reconstruct M10 initial spec, legal action source ordinals, complete M10 steps and objective; also rerun the whole search for result validation."
+  },
+  "evidence": {
+    "action_envelope": "SANDBOX_EXTENSION",
+    "settlement": "REFERENCE_MODEL",
+    "orchestration": "SANDBOX_EXTENSION",
+    "validation": "DETERMINISTIC_REPLAY_ONLY",
+    "native_trace": false,
+    "golden": false
+  },
+  "training_boundary": "Search demonstrations and caller objective values do not imply native labels, rewards, values, Q targets or policy probabilities.",
+  "next_phase": "M12 content binding may replace synthetic local envelopes only where existing exact 4.4.54 evidence permits."
+}
