@@ -1,0 +1,160 @@
+{
+  "schema": "content_binding_reentry_review/1",
+  "version": "1.0.0",
+  "content_target": "HSR-4.4.54",
+  "change_request_id": "CR-M12-REENTRY-REVIEW-20260926-001",
+  "starting_head": "67440fd5e0c0928395f109fe5f6b4773f81bee44",
+  "branch": "terra/implementation",
+  "git_writes": false,
+  "prior_records_preserved": [
+    "data/content_binding/4.4.54/content_binding_contract_v1.json",
+    "data/content_binding/4.4.54/content_binding_candidate_ledger_v1.json",
+    "data/content_binding/4.4.54/content_binding_evidence_recovery_001.json"
+  ],
+  "source_artifacts": [
+    {"path": ".external_refs/TurnBasedGameData/files/ExcelOutput/AvatarConfig.json", "sha256": "c14584519e2feda70e9932501f7b79d67242d700585fe44119bbce9da9678e98", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": ".external_refs/TurnBasedGameData/files/ExcelOutput/AvatarSkillConfig.json", "sha256": "a8bb98389dcba6ba9c7704934d69e4d4a32935899e05825e041101b33e1d7097", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": ".external_refs/TurnBasedGameData/files/Config/ConfigCharacter/Avatar/Avatar_Natasha_00_Config.json", "sha256": "40787bc584c46ed0be200223cb9d1ec7fef96a108affbaf7d2ae23b4d30ddb4e", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": ".external_refs/TurnBasedGameData/files/Config/ConfigCharacter/Avatar/Avatar_BlackSwan_00_Config.json", "sha256": "784dd8189821fe0d2110d3115f62709a304a6aaf7ed0d883361bc8dd33e22142", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json", "sha256": "edc9fe58b25d082662ac07b6180df0c1bc3ab5d4cbcc43495aa577381564f10d", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_BlackSwan_00_Ability.json", "sha256": "a8cc41930c3997fc6469e53b965302779fb994d4964e56b66970aeb7dea48261", "version_relation": "CLOSE_4.4.0_TO_4.4.54"},
+    {"path": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json", "role": "ANALOGOUS_MONSTER_DECLARATION_ONLY"},
+    {"path": "data/semantics/4.4.54/real_skill_heal_boundary_30.json", "role": "NATASHA_DECLARED_DIGEST"},
+    {"path": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json", "role": "NATASHA_RAW_DIGEST_RECONCILIATION", "source_archive_path_version_label": "4.4.53"},
+    {"path": "data/db/hsr_content_4.4.54.sqlite", "role": "EXACT_4.4.54_STATIC_AVATAR_SKILL_IDENTITIES"}
+  ],
+  "direct_declared_skillid_behavior_join": false,
+  "avatar_trigger_name_join_judgment": "ACCEPT_AS_LOCAL_EXACT_CONTENT_JOIN",
+  "join_rule": {
+    "left": "Within AvatarConfig.AvatarID, each AvatarConfig.SkillList numeric SkillID selects AvatarSkillConfig.SkillID and its non-empty SkillTriggerKey.",
+    "right": "AvatarConfig.JsonPath selects the same owner's CharacterConfig; SkillTriggerKey must equal exactly one CharacterConfig.SkillList[].Name, whose EntryAbility is the behavior root.",
+    "comparison": "Exact case-sensitive string equality with no suffix, index, localization or fuzzy fallback.",
+    "authority": "LOCAL_ENGINEERING_CONTENT_INTEGRATION_RULE",
+    "why_accepted": "Both component links are explicit in the pinned source objects; the cross-object name equality is exact, same-owner, unique and total for all observed non-empty trigger keys. Field names support key semantics. The alternative positional rule is contradicted.",
+    "not_source_declared_for_avatars": true,
+    "analogous_monster_rule": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json#/binding_rule",
+    "monster_rule_does_not_authorize_avatar_native_semantics": true,
+    "version_limit": "The joining AvatarSkillConfig, AvatarConfig and CharacterConfig files are pinned close-4.4.0 sources. This exact local equality does not prove an exact 4.4.54 runtime relation or executable behavior.",
+    "empty_key_policy": "Do not join empty SkillTriggerKey rows.",
+    "duplicate_policy": "Any repeated same-owner right-side Name, conflicting SkillTriggerKey across levels, or duplicate non-empty key assigned to distinct listed SkillIDs blocks that owner/key rather than arbitrarily choosing one."
+  },
+  "join_reproduction": {
+    "avatar_config_rows": 91,
+    "skill_list_entries": 620,
+    "non_empty_trigger_keys": 528,
+    "unique_same_owner_name_matches": 528,
+    "non_empty_keys_without_match": 0,
+    "empty_trigger_keys": 92,
+    "duplicate_same_owner_right_names": 0,
+    "duplicate_non_empty_trigger_keys_across_distinct_listed_skill_ids": 0,
+    "conflicting_trigger_keys_across_skill_levels": 0,
+    "same_index_contradictions": 175,
+    "coverage_interpretation": "528/528 is consistency of the declared local join rule over pinned close-version content, not native evidence, Golden coverage, or proof of missing 4.4.54 behavior."
+  },
+  "binding_strength_extension": {
+    "label": "BEHAVIOR_ROOT_BOUND",
+    "meaning": "Exact owner-scoped local content join from static SkillID to pinned CharacterConfig.EntryAbility root identity only, with source-version limitation retained.",
+    "relation_to_existing_BEHAVIOR_BOUND": "NARROWER; does not satisfy the original exact-version behavior-record or REF02 settlement gate.",
+    "binding_contract_identity": "content_binding_reentry_review/1:ACCEPT_AS_LOCAL_EXACT_CONTENT_JOIN",
+    "native_evidenced": false
+  },
+  "historical_candidate_correction": {
+    "old_candidate_status": "NOT_CORROBORATED_BY_ENTRYABILITY",
+    "historical_ledger_mutated": false,
+    "rule": "The previous Phase02/EnterReady values remain historical candidates; the new EntryAbility roots are recorded separately. PrepareAbility is not selected as the root without role evidence.",
+    "all_five_old_candidates_differ_from_entry_ability": true,
+    "skill_110503_old_candidate_matches_prepare_ability": true
+  },
+  "candidate_reviews": [
+    {
+      "avatar_id": "1105", "skill_id": "110502", "trigger_key": "Skill02", "old_candidate": "Avatar_Natasha_00_Skill02_Phase02", "entry_ability_root": "Avatar_Natasha_00_Skill02_Phase01", "prepare_ability": null,
+      "root_present_in_ability_list": true, "root_on_start_operation_count": 4,
+      "outgoing_relationships": [
+        {"kind": "EXPLICIT_STATIC_EDGE", "from": "CharacterConfig.SkillList[Name=Skill02]", "to": "Avatar_Natasha_00_Skill02_Phase01", "meaning": "EntryAbility field identifies the root only"},
+        {"kind": "BLOCKED_BY_TRIGGERABILITY_SEMANTICS", "from": "Avatar_Natasha_00_Skill02_Phase01:OnStart:0", "to": "Avatar_Natasha_00_Skill02_Phase02", "target_record_present": true, "meaning": "TriggerAbility names the target but D1 execution, ordering and continuation are unresolved"},
+        {"kind": "BLOCKED_BY_UNKNOWN_CONTINUATION", "from": "Avatar_Natasha_00_Skill02_Phase01", "to": "complete action settlement", "meaning": "PredicateTaskList and subsequent action completion do not close REF02"}
+      ],
+      "executable_reference_edges": 0, "ref02_result": "BEHAVIOR_ROOT_BOUND_ONLY", "ref02_missing": ["authorized TriggerAbility traversal", "kind mapping", "target cardinality", "DynamicFloat amount", "resource cost", "DispelStatus effect consumer", "positive HealData HP consumer", "survival/events closure"], "source_version_unverified": true
+    },
+    {
+      "avatar_id": "1105", "skill_id": "110501", "trigger_key": "Skill01", "old_candidate": "Avatar_Natasha_00_Skill01_Phase02", "entry_ability_root": "Avatar_Natasha_00_Skill01_Phase01", "prepare_ability": null,
+      "root_present_in_ability_list": true, "root_on_start_operation_count": 4,
+      "outgoing_relationships": [
+        {"kind": "EXPLICIT_STATIC_EDGE", "from": "CharacterConfig.SkillList[Name=Skill01]", "to": "Avatar_Natasha_00_Skill01_Phase01", "meaning": "EntryAbility field identifies the root only"},
+        {"kind": "BLOCKED_BY_TRIGGERABILITY_SEMANTICS", "from": "Avatar_Natasha_00_Skill01_Phase01:OnStart:0", "to": "Avatar_Natasha_00_Skill01_Phase02", "target_record_present": true, "meaning": "Named target is not an authorized effect execution"},
+        {"kind": "BLOCKED_BY_UNKNOWN_CONTINUATION", "from": "Avatar_Natasha_00_Skill01_Phase01", "to": "complete action settlement", "meaning": "LookAt, StartAim and TriggerAnimState do not close the combat effect"}
+      ],
+      "executable_reference_edges": 0, "ref02_result": "BEHAVIOR_ROOT_BOUND_ONLY", "ref02_missing": ["authorized TriggerAbility traversal", "damage amount mapping", "target cardinality", "resource cost", "toughness delta", "survival/events closure"], "source_version_unverified": true
+    },
+    {
+      "avatar_id": "1105", "skill_id": "110503", "trigger_key": "Skill03", "old_candidate": "Avatar_Natasha_00_Skill03_EnterReady", "entry_ability_root": "Avatar_Natasha_00_Skill03_Phase01", "prepare_ability": "Avatar_Natasha_00_Skill03_EnterReady",
+      "root_present_in_ability_list": true, "root_on_start_operation_count": 15,
+      "outgoing_relationships": [
+        {"kind": "EXPLICIT_STATIC_EDGE", "from": "CharacterConfig.SkillList[Name=Skill03]", "to": "Avatar_Natasha_00_Skill03_Phase01", "meaning": "EntryAbility is distinct from PrepareAbility"},
+        {"kind": "BLOCKED_BY_TRIGGERABILITY_SEMANTICS", "from": "Avatar_Natasha_00_Skill03_Phase01:OnStart:1", "to": "Avatar_Natasha_00_Skill03_Phase02", "target_record_present": true, "meaning": "Named effect-phase target does not close traversal"},
+        {"kind": "NOT_PRESENT", "from": "Avatar_Natasha_00_Skill03_Phase01:OnStart:2", "to": "Avatar_Natasha_00_Skill03_Camera", "target_record_present": false, "meaning": "Named camera target is absent from this AbilityList; no execution claim"},
+        {"kind": "BLOCKED_BY_UNKNOWN_CONTINUATION", "from": "Avatar_Natasha_00_Skill03_Phase01", "to": "complete action settlement", "meaning": "Remaining event and timeline operations do not close a multi-target heal action"}
+      ],
+      "executable_reference_edges": 0, "ref02_result": "BEHAVIOR_ROOT_BOUND_ONLY", "ref02_missing": ["authorized TriggerAbility traversal", "multi-target heal shape unsupported by REF02", "amount mapping", "resource cost", "events closure"], "source_version_unverified": true
+    },
+    {
+      "avatar_id": "1307", "skill_id": "130701", "trigger_key": "Skill01", "old_candidate": "Avatar_BlackSwan_00_Skill01_Phase02", "entry_ability_root": "Avatar_BlackSwan_00_Skill01_Phase01", "prepare_ability": null,
+      "root_present_in_ability_list": true, "root_on_start_operation_count": 10,
+      "outgoing_relationships": [
+        {"kind": "EXPLICIT_STATIC_EDGE", "from": "CharacterConfig.SkillList[Name=Skill01]", "to": "Avatar_BlackSwan_00_Skill01_Phase01", "meaning": "EntryAbility field identifies the root only"},
+        {"kind": "BLOCKED_BY_TRIGGERABILITY_SEMANTICS", "from": "Avatar_BlackSwan_00_Skill01_Phase01:OnStart:1", "to": "Avatar_BlackSwan_00_Skill01_Phase02", "target_record_present": true, "meaning": "Named effect-phase target does not close traversal"},
+        {"kind": "NOT_PRESENT", "from": "Avatar_BlackSwan_00_Skill01_Phase01:OnStart:2", "to": "Avatar_BlackSwan_00_Skill01_Camera", "target_record_present": false, "meaning": "Named camera target is absent from this AbilityList"},
+        {"kind": "BLOCKED_BY_UNKNOWN_CONTINUATION", "from": "Avatar_BlackSwan_00_Skill01_Phase01", "to": "complete action settlement", "meaning": "Other animation/effect operations and probabilistic modifier effects remain unclosed"}
+      ],
+      "executable_reference_edges": 0, "ref02_result": "BEHAVIOR_ROOT_BOUND_ONLY", "ref02_missing": ["authorized TriggerAbility traversal", "damage packet fields", "random status contract", "modifier stacking", "survival/events closure"], "source_version_unverified": true
+    },
+    {
+      "avatar_id": "1307", "skill_id": "130702", "trigger_key": "Skill02", "old_candidate": "Avatar_BlackSwan_00_Skill02_Phase02", "entry_ability_root": "Avatar_BlackSwan_00_Skill02_Phase01", "prepare_ability": null,
+      "root_present_in_ability_list": true, "root_on_start_operation_count": 13,
+      "outgoing_relationships": [
+        {"kind": "EXPLICIT_STATIC_EDGE", "from": "CharacterConfig.SkillList[Name=Skill02]", "to": "Avatar_BlackSwan_00_Skill02_Phase01", "meaning": "EntryAbility field identifies the root only"},
+        {"kind": "BLOCKED_BY_TRIGGERABILITY_SEMANTICS", "from": "Avatar_BlackSwan_00_Skill02_Phase01:OnStart:0", "to": "Avatar_BlackSwan_00_Skill02_Phase02", "target_record_present": true, "meaning": "Named effect-phase target does not close traversal"},
+        {"kind": "NOT_PRESENT", "from": "Avatar_BlackSwan_00_Skill02_Phase01:OnStart:1", "to": "Avatar_BlackSwan_00_Skill02_Camera", "target_record_present": false, "meaning": "Named camera target is absent from this AbilityList"},
+        {"kind": "BLOCKED_BY_UNKNOWN_CONTINUATION", "from": "Avatar_BlackSwan_00_Skill02_Phase01", "to": "complete action settlement", "meaning": "Primary SPHitRatio, adjoining target and modifier dependencies remain unclosed"}
+      ],
+      "executable_reference_edges": 0, "ref02_result": "BEHAVIOR_ROOT_BOUND_ONLY", "ref02_missing": ["authorized TriggerAbility traversal", "primary SPHitRatio", "adjoining target shape", "random/modifier effects", "resource cost", "survival/events closure"], "source_version_unverified": true
+    }
+  ],
+  "natasha_digest_review": {
+    "historical_blocker": "PROVENANCE_DIGEST_MISMATCH",
+    "current_classification": "RESOLVED_DIFFERENT_SERIALIZATION",
+    "historical_ledger_mutated": false,
+    "raw_worktree_sha256": "4dcca0baa2474373b20f785d47b853087971d99ae52617e030fe0931d81f5596",
+    "lf_normalized_sha256": "c135173b1d6b1365aa515f48749192ff5f7798f09a81c804ed6e9c4a79a92b10",
+    "declared_sha256": "c135173b1d6b1365aa515f48749192ff5f7798f09a81c804ed6e9c4a79a92b10",
+    "raw_worktree_bytes": 9156,
+    "crlf_pairs": 270,
+    "bare_lf_count": 0,
+    "lf_normalized_bytes": 8886,
+    "recovery_prose_normalized_byte_count": 8930,
+    "recovery_prose_byte_count_correct": false,
+    "core_autocrlf": true,
+    "gitattributes_json": "text eol=lf",
+    "git_blob_sha1_at_producing_commit_4d27854": "b237ac442af865a66f1d426c4107214928afd85e",
+    "git_blob_sha1_at_starting_head": "b237ac442af865a66f1d426c4107214928afd85e",
+    "git_worktree_path_clean": true,
+    "source_version_unverified": true,
+    "source_version_reason": "The source.archive path recorded in the raw artifact still carries a 4.4.53 label."
+  },
+  "ref02_reentry_gate": {
+    "question": "Does a bound EntryAbility root itself, or an already-authorized exact child relation, supply every REF02 settlement field?",
+    "answer": false,
+    "root_only": "Each inspected root has a named TriggerAbility target or other operations, but no complete REF02 amount, target, resource, toughness and event/survival closure.",
+    "triggerability": "D1 TriggerAbility execution and continuation semantics remain frozen unknown; target-name presence is not permission to traverse or execute.",
+    "forbidden_inferences_retained": ["Skill ParamList index meaning", "DynamicFloat operand meaning", "SPBase/BPNeed as REF02 cost", "ShowStanceList as toughness delta", "target cardinality", "events_closed", "survival_closed"],
+    "reference_settlement_bound_candidates": 0,
+    "runtime_binding_authorized": false
+  },
+  "m12_status": "M12_ADVANCES_TO_BEHAVIOR_ROOT_BOUND",
+  "milestone_completion": "BLOCKED_BEFORE_REFERENCE_SETTLEMENT_BOUND",
+  "next_executor": "DS",
+  "next_task": "For Natasha AvatarID 1105 SkillID 110502 only, mechanically inspect the pinned EntryAbility root Avatar_Natasha_00_Skill02_Phase01 and its named TriggerAbility target. Record exact source/version, operation order, target reference, and field-by-field REF02 inputs and blockers. Seek a source-declared execution edge or explicit authorized reference bridge; do not execute the edge or infer ParamList, DynamicFloat, target, cost, DispelStatus or HealData semantics. Return a provenance-qualified closure ledger; do not modify M10/M11 or promote native evidence.",
+  "native_promotion": false,
+  "golden": 0,
+  "native_trace": []
+}
