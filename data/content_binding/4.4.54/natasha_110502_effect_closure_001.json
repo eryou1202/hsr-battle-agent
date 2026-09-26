@@ -1,0 +1,477 @@
+{
+  "schema": "natasha_110502_effect_closure/1",
+  "version": "1.0.0",
+  "change_request_id": "CR-M12-NATASHA-110502-EFFECT-CLOSURE-20260926-001",
+  "content_target": "HSR-4.4.54",
+  "task_type": "MECHANICAL_EVIDENCE_AUDIT_ONLY",
+  "starting_head": "090004039dff087217b4fa56b9d29fd8dedba4d0",
+  "branch": "terra/implementation",
+  "git_writes": false,
+  "scope_statement": "Mechanical evidence audit. No production code, no runtime binder, no TriggerAbility execution or traversal, no semantic inference, no M10/M11 change, no existing M12 record change, no Git write. Nothing here closes M12 or authorizes a bridge.",
+
+  "content_identity": {
+    "AvatarID": "1105",
+    "SkillID": "110502",
+    "trigger_key": "Skill02",
+    "EntryAbility": "Avatar_Natasha_00_Skill02_Phase01",
+    "binding_strength": "BEHAVIOR_ROOT_BOUND",
+    "binding_authority": "data/content_binding/4.4.54/content_binding_reentry_review_001.json :: ACCEPT_AS_LOCAL_EXACT_CONTENT_JOIN",
+    "owner_scoped_join_reconsidered": false,
+    "source_version_limit_retained": true
+  },
+
+  "named_effect_edge": {
+    "answer": "YES",
+    "classification": "EXPLICIT_NAMED_CONTENT_EDGE",
+    "must_not_establish": ["EXECUTABLE_TRIGGER_EDGE", "NATIVE_CONTINUATION", "ACTION_COMPLETION"],
+    "source_artifact": "data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json",
+    "source_artifact_sha256": "16d600bbfefdcb1dc04fa4bc7271f7846c04474c2e216cadac9bb64effa6e9f5",
+    "source_json_path": "/records[31] (behavior_id ...:Avatar_Natasha_00_Skill02_Phase01)",
+    "source_provenance": {
+      "upstream_path": "Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json",
+      "raw_sha256": "edc9fe58b25d082662ac07b6180df0c1bc3ab5d4cbcc43495aa577381564f10d",
+      "commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+      "version_relation": "CLOSE_4.4.0_TO_4.4.54"
+    },
+    "ability_root": "Avatar_Natasha_00_Skill02_Phase01",
+    "root_compile_status": "COMPILED_STRUCTURE_ONLY",
+    "root_dynamic_value_definitions": [],
+    "entrypoint_event": "ONSTART",
+    "entrypoint_executable_reference": false,
+    "operation_container": "entrypoints[event=ONSTART].operations",
+    "operation_index": 0,
+    "operation_id": "external:TurnBasedGameData:Config/ConfigAbility/Avatar/Avatar_Natasha_00_Ability.json:Avatar_Natasha_00_Skill02_Phase01:ONSTART:0",
+    "operation_type": "RPG.GameCore.TriggerAbility",
+    "operation_kind": "INVOKE_BEHAVIOR",
+    "operation_semantic_status": "MODELLED",
+    "operation_disposition": "BOUND_PRIMITIVE",
+    "exact_target_field": "arguments.AbilityName.Value",
+    "exact_target_value": "Avatar_Natasha_00_Skill02_Phase02",
+    "additional_arguments": {"IsSkillPerform": true},
+    "operation_target_alias": "Caster",
+    "operation_dependencies": ["KERNEL-EVENT-001"],
+    "operation_event_boundary": "UNKNOWN",
+    "operation_reference_execution_blocker": null,
+    "target_definition_exists": true,
+    "target_definition_evidence": {
+      "ability_container_artifact": "data/raw/4.4.54/ability_file_container_natasha_30.json",
+      "ability_container_sha256": "6d173573c922c107c227a0c022f553154be5b21afb832e787776e989cc10062f",
+      "container_ordinal": 3,
+      "container_byte_range": ["0xBC9960", "0xBC9BC9"],
+      "container_field_presence_bitmap": 51
+    },
+    "operation_ordering_around_it": {
+      "root_operation_count": 4,
+      "index_0": "RPG.GameCore.TriggerAbility -> Avatar_Natasha_00_Skill02_Phase02 (this edge)",
+      "index_1": "RPG.GameCore.PredicateTaskList (ByIsTurnActionEntity; Success additionally names Avatar_Natasha_00_Skill02_Camera_Other)",
+      "index_2": "RPG.GameCore.TriggerAnimState (presentation, HEADLESS_PRESENTATION_OMITTED)",
+      "index_3": "RPG.GameCore.MoveToTargetPosition (presentation, HEADLESS_PRESENTATION_OMITTED)"
+    },
+    "trigger_ability_execution_authorized": false,
+    "note": "Root-level dynamic_value_definitions is empty, so the root supplies no dynamic values to the target body."
+  },
+
+  "phase02_operations": {
+    "behavior": "Avatar_Natasha_00_Skill02_Phase02",
+    "upstream_source_type": "ability_config DesignData archive",
+    "primary_source_artifact": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+    "primary_source_sha256": "4dcca0baa2474373b20f785d47b853087971d99ae52617e030fe0931d81f5596",
+    "primary_source_declared_game_version": "4.4.54",
+    "primary_source_archive_path_version_label": "4.4.53",
+    "primary_source_archive_sha256": "098ec31c5c03a0f6fbf030d6b2579a5e60c03639ce7060f68fa52371a03dc64b",
+    "cross_source_artifact": "data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json",
+    "cross_source_sha256": "16d600bbfefdcb1dc04fa4bc7271f7846c04474c2e216cadac9bb64effa6e9f5",
+    "cross_source_version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "compiler_compile_status": "REJECTED",
+    "compiler_operation_count": 8,
+    "compiler_execution_blocker_count": 3,
+    "compiler_entrypoint_executable_reference": false,
+    "compiler_dynamic_value_definitions": [
+      {"dynamic_hash": "-1087299341", "scope": "Floats", "definition": {"ReadInfo": {"Index": 0, "Type": "None"}}, "source_field_path": "DynamicValues.Floats.-1087299341"}
+    ],
+    "body_present_fields": ["Name", "TargetInfo", "OnStart", "DynamicValues"],
+    "body_target_info": {"selector": 16, "runtime_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"},
+    "body_on_start_count": 22,
+    "operations_in_exact_serialized_order": [
+      {
+        "index": 0, "operation_id_suffix": "ONSTART:0", "classification": "UNSUPPORTED_OPERATION",
+        "source_type": "RPG.GameCore.WaitAnimState", "kind": "PRESENTATION_WAIT",
+        "semantic_status": "PRESENTATION", "disposition": "REJECT_NOT_NOOP",
+        "blocker_reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "gating_risk": "POSSIBLE_STATE_COMMIT",
+        "note": "recorded as an execution blocker that REJECTS rather than being omitted as a no-op"
+      },
+      {
+        "index": 1, "operation_id_suffix": "ONSTART:1", "classification": "KNOWN_REFERENCE_OPERATION_BUT_NOT_REF02",
+        "source_type": "RPG.GameCore.TriggerEffect", "kind": "PRESENTATION",
+        "semantic_status": "PRESENTATION", "disposition": "HEADLESS_PRESENTATION_OMITTED",
+        "arguments": {"EffectPath": "Effects/Eff_Prefab/Eff_Avatar/Eff_Natasha_00/Eff_Avatar_Natasha_00_Skill02_Heal.prefab", "ForceSimulateImmediately": false},
+        "target_alias": "AbilityTargetEntity",
+        "note": "already omitted by existing compiler policy"
+      },
+      {
+        "index": 2, "operation_id_suffix": "ONSTART:2", "classification": "UNSUPPORTED_OPERATION",
+        "source_type": "RPG.GameCore.WaitAnimState", "kind": "PRESENTATION_WAIT",
+        "semantic_status": "PRESENTATION", "disposition": "REJECT_NOT_NOOP",
+        "blocker_reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "gating_risk": "POSSIBLE_STATE_COMMIT"
+      },
+      {
+        "index": 3, "operation_id_suffix": "ONSTART:3", "classification": "UNRESOLVED_TRIGGER",
+        "source_type": "RPG.GameCore.PredicateTaskList", "kind": "CONDITIONAL",
+        "semantic_status": "REQUIRES_PACKET", "disposition": "EXECUTABLE_REFERENCE",
+        "dependencies": ["COMPILER-PREDICATE-001-SEMANTICS"],
+        "predicate": {"$type": "RPG.GameCore.BySkillPointActivated", "PointTriggerKey": "PointB1"},
+        "success_task_list": [
+          {"$type": "RPG.GameCore.DispelStatus",
+           "Numbers": {"IsDynamic": true, "PostfixExpr": {"DynamicHashes": [-2124210825], "FixedValues": [], "OpCodes": "AQAR"}},
+           "Order": "LastAdded",
+           "TargetType": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AbilityTargetEntity"}}
+        ]
+      },
+      {
+        "index": 4, "operation_id_suffix": "ONSTART:4", "classification": "KNOWN_REF02_INPUT",
+        "source_type": "RPG.GameCore.HealHP", "kind": "HEAL_REQUEST",
+        "semantic_status": "MODELLED", "disposition": "EXECUTABLE_REFERENCE",
+        "dependencies": ["dynamic_mvp_v1:HEAL_STATE_TRANSITION"],
+        "arguments": {
+          "FormulaType": "HealByHealerMaxHP",
+          "HealPercentage": {"IsDynamic": true, "PostfixExpr": {"DynamicHashes": [-1544075911], "FixedValues": [], "OpCodes": "AQAR"}},
+          "ModifyValue": {"IsDynamic": true, "PostfixExpr": {"DynamicHashes": [-203632277], "FixedValues": [], "OpCodes": "AQAR"}}
+        },
+        "target_alias": "AbilityTargetEntity",
+        "note": "the compiler already classifies this operation as HEAL_REQUEST with MODELLED semantics and an EXECUTABLE_REFERENCE disposition"
+      },
+      {
+        "index": 5, "operation_id_suffix": "ONSTART:5", "classification": "UNRESOLVED_DYNAMIC_VALUE",
+        "source_type": "RPG.GameCore.PredicateTaskList", "kind": "CONDITIONAL",
+        "semantic_status": "REQUIRES_PACKET", "disposition": "EXECUTABLE_REFERENCE",
+        "dependencies": ["COMPILER-PREDICATE-001-SEMANTICS"],
+        "predicate": {"$type": "RPG.GameCore.BySkillPointActivated", "PointTriggerKey": "PointB3"},
+        "failed_task_list": [{"$type": "RPG.GameCore.SetDynamicValue", "DynamicKey": {"Value": "SkillTree_LifeTime"}, "Value": {"FixedValue": {"Value": 0}, "IsDynamic": false}}],
+        "success_task_list": [{"$type": "RPG.GameCore.SetDynamicValue", "DynamicKey": {"Value": "SkillTree_LifeTime"}, "Value": {"IsDynamic": true, "PostfixExpr": {"DynamicHashes": [2117344201], "FixedValues": [], "OpCodes": "AQAR"}}}]
+      },
+      {
+        "index": 6, "operation_id_suffix": "ONSTART:6", "classification": "UNSUPPORTED_OPERATION",
+        "source_type": "RPG.GameCore.AddModifier", "kind": "ADD_MODIFIER",
+        "semantic_status": "REQUIRES_PACKET", "disposition": "BOUND_UNEXECUTABLE_PACKET",
+        "reference_execution_blocker": "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+        "dependencies": ["PRIM-MODIFIER-001"],
+        "arguments_dynamic_values": {"MDF_ShowValue1": [-754957899], "MDF_ShowValue2": [-1192384503]},
+        "arguments_lifetime_dynamic_hashes": [-1019407308, -1087299341],
+        "target_alias": "AbilityTargetEntity",
+        "note": "the Lifetime operand references -1087299341, which is the single dynamic value the compiler node defines"
+      },
+      {
+        "index": 7, "operation_id_suffix": "ONSTART:7", "classification": "UNSUPPORTED_OPERATION",
+        "source_type": "RPG.GameCore.WaitAnimState", "kind": "PRESENTATION_WAIT",
+        "semantic_status": "PRESENTATION", "disposition": "REJECT_NOT_NOOP",
+        "blocker_reason": "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "gating_risk": "POSSIBLE_STATE_COMMIT"
+      },
+      {
+        "index": 8, "operation_id_suffix": "ONSTART:8", "classification": "KNOWN_REFERENCE_OPERATION_BUT_NOT_REF02",
+        "source_type": "RPG.GameCore.ModifySPNew", "kind": "MODIFY_TEAM_SP",
+        "semantic_status": "MODELLED", "disposition": "EXECUTABLE_REFERENCE",
+        "dependencies": ["dynamic_mvp_v1:SP_CORE"],
+        "arguments": {"AddRatio": {"FixedValue": {"Value": 1}, "IsDynamic": false}},
+        "target_alias": "Caster",
+        "note": "an existing authorized reference adapter already names this behavior; see resource_cost_findings"
+      },
+      {
+        "index": 9, "operation_id_suffix": "ONSTART:9", "classification": "UNSUPPORTED_OPERATION",
+        "source_type": "RPG.GameCore.Retarget", "kind": "RETARGET",
+        "semantic_status": "REQUIRES_PACKET", "disposition": "BOUND_UNEXECUTABLE_PACKET",
+        "dependencies": ["TARGET-001"],
+        "arguments_randomising_field": {"ByRandom": true, "MaxNumber": {"FixedValue": {"Value": 1}, "IsDynamic": false}},
+        "target_alias": "SkillTargetEntityList",
+        "note": "ByRandom true is a randomness surface inside the effect body"
+      },
+      {
+        "index": 10, "operation_id_suffix": "ONSTART:10", "classification": "KNOWN_REFERENCE_OPERATION_BUT_NOT_REF02",
+        "source_type": "RPG.GameCore.SkillPerformFinish", "kind": "ACTION_COMPLETION_MARKER",
+        "semantic_status": "REQUIRES_PACKET", "disposition": "EXECUTABLE_REFERENCE",
+        "dependencies": ["SCHEDULER-001"], "arguments": {}
+      }
+    ],
+    "recovered_subtree_view": {
+      "source_artifact": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+      "subtree": "PredicateTaskList parent discriminator 1960, byte range 0xBC9A1C-0xBC9A7E",
+      "predicate": {"discriminator": 496, "runtime_type_name": "RPG.GameCore.BySkillPointActivated", "trigger_key": 12, "evaluation_status": "RUNTIME_CONTEXT_SEMANTICS_NOT_RECOVERED"},
+      "success_task_count": 2,
+      "success_tasks": [
+        {"ordinal": 0, "runtime_type_name": "RPG.GameCore.DispelStatus", "discriminator": 1199, "field_presence_bitmap": 194, "present_fields": ["TargetType", "Numbers", "Order"], "order": 2, "target_discriminator": 12, "target_name": "AbilityTargetEntity", "target_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED", "numbers_dynamic_float": {"opcodes_hex": "01 00 11", "single_int32_operand_signed": -2124210825, "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"}},
+        {"ordinal": 1, "runtime_type_name": "RPG.GameCore.HealHP", "discriminator": 1481, "field_presence_bitmap": 178, "present_fields": ["TargetType", "FormulaType", "HealPercentage", "ModifyValue"], "absent_default_fields": ["HealerTargetType", "AliveOnly", "SPHitRatio", "IsHealRallyHP", "ScreenSpaceFloatMsg", "DisplayData", "PerformanceDelay"], "formula_type": 4, "target_discriminator": 12, "target_name": "AbilityTargetEntity", "target_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED", "heal_percentage_dynamic_float": {"opcodes_hex": "01 00 11", "single_int32_operand_signed": -1544075911, "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"}, "modify_value_dynamic_float": {"opcodes_hex": "01 00 11", "single_int32_operand_signed": -203632277, "evaluation_status": "BYTECODE_SEMANTICS_NOT_RECOVERED"}}
+      ],
+      "boundary_proof": {"heal_end_exclusive": "0xBC9A7E", "next_outer_task_start": "0xBC9A7E", "next_outer_task_discriminator": 1960}
+    },
+    "cross_source_structural_divergence": {
+      "fact": "The two sources attribute the DispelsStatus and HealHP effects to different structural positions.",
+      "close_4_4_0_compiler_view": "DispelStatus is the sole SuccessTaskList entry of the ONSTART:3 PredicateTaskList; HealHP is a separate top-level operation at ONSTART:4.",
+      "pinned_4_4_53_archive_view": "DispelStatus (ordinal 0) and HealHP (ordinal 1) are the two success tasks of one PredicateTaskList under one BySkillPointActivated predicate.",
+      "resolution_attempted": false,
+      "why_not_resolved": "Deciding which attribution is the native one is a semantic inference and is out of scope."
+    }
+  },
+
+  "ref02_required_field_matrix": {
+    "authority": {
+      "implementation": "src/hsr_battle_agent/game_data/reference_damage_adapters.py :: OrdinaryReferencePacket, PacketKind, apply_reference_packet",
+      "implementation_sha256": "7e8a3a0cf44210afd81103741e973409140ed68ba3fed8cabbbdbcd228513d6c",
+      "tests": "tests/game_data/test_reference_damage_v2.py",
+      "tests_sha256": "6c4176eec36270fa0dd91493221bb9a7e368e6822ead2b45878b81f53d290378",
+      "required_key_set": ["packet_schema", "kind", "source_id", "targets", "base_value", "factors", "resource_cost", "resource_owner", "toughness_delta", "survival_closed", "events_closed", "task_id", "task_owner"],
+      "forbidden_special_keys": ["SPHitRatio", "HitSplitRatio", "DamageValue", "DamageBehavior", "Nonlethal", "RandomCrit", "SpecialFormula", "UnknownTargetCardinality", "UnknownEventCallback"],
+      "amount_rule": "amount = base_value * product(factors); EXPLICIT_HEAL: heal = min(target.max_hp - target.hp, amount); shield and toughness unchanged; resource_current -= resource_cost"
+    },
+    "fields": [
+      {"field_name": "packet_schema", "required_by": "OrdinaryReferencePacket.from_dict", "phase02_source_path": null, "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "contract constant \"ordinary_reference_packet/1\"", "resolved_value": "ordinary_reference_packet/1", "status": "EXACT_CLOSED"},
+      {"field_name": "kind", "required_by": "PacketKind + _validate", "phase02_source_path": "records[32].entrypoints[ONSTART].operations[4] (ONSTART:4)", "raw_serialized_value": "source_type RPG.GameCore.HealHP; compiler kind HEAL_REQUEST; semantic_status MODELLED; disposition EXECUTABLE_REFERENCE", "existing_mapping_authorizing_interpretation": "NONE FOUND. Repository-wide, EXPLICIT_HEAL co-occurs with HealHP/1481 in exactly 2 files, both M12 audit records, and there the occurrence is a bare candidate label with exact_content_derived_settlement_fields = []", "resolved_value": null, "status": "PRESENT_BUT_SEMANTICS_UNMAPPED"},
+      {"field_name": "source_id", "required_by": "from_dict + gate.require(owner=...) + resource_owner check", "phase02_source_path": "no content literal; caster alias only (DispelStatus/heal target alias AbilityTargetEntity; ModifySPNew target Caster)", "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "REF02 accepts an explicit owner token; RealSkillExternalBindings.ability_target is an EntityRef supplied externally", "resolved_value": "caller-supplied owner token", "status": "RUNTIME_SCENARIO_INPUT"},
+      {"field_name": "targets", "required_by": "_validate: exactly one target for a combat packet", "phase02_source_path": "recovered_subtree.success_tasks[1].target_type (RPG.GameCore.AbilityTargetEntity, discriminator 12)", "raw_serialized_value": {"discriminator": 12, "name": "AbilityTargetEntity", "runtime_resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"}, "existing_mapping_authorizing_interpretation": "REF02 takes targets as an explicit id list; the audit brief permits target as LOCAL_OR_RUNTIME_SCENARIO_INPUT", "resolved_value": "caller-supplied single target id", "status": "RUNTIME_SCENARIO_INPUT"},
+      {"field_name": "base_value", "required_by": "amount rule", "phase02_source_path": "recovered_subtree.success_tasks[1].formula_type = 4; heal_percentage and modify_value DynamicFloat operands", "raw_serialized_value": {"formula_type": 4, "heal_percentage_operand": -1544075911, "modify_value_operand": -203632277}, "existing_mapping_authorizing_interpretation": "src/hsr_battle_agent/battle_runtime/healing.py :: heal_formula_type4_ordinary computes base = MaxHP-CurrentHP; configured = base*HealPercentage + ModifyValue; amount = configured*(1+HealerHealRatio+TargetHealTakenRatio) from explicit integer inputs", "resolved_value": "computable only when the four runtime properties and the two dynamic values are supplied", "status": "RUNTIME_SCENARIO_INPUT"},
+      {"field_name": "factors", "required_by": "amount rule (ordered list)", "phase02_source_path": "no content factor list; the ordinary factor is 1 + healer HealRatio + target HealTakenRatio", "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "heal_formula_type4_ordinary already folds the ordinary factor into one amount; REF02 permits an empty ordered factors list", "resolved_value": "composition choice by the local envelope", "status": "LOCAL_ORCHESTRATION_ONLY"},
+      {"field_name": "resource_cost", "required_by": "from_dict + _validate (>=0) + apply_reference_packet (must not exceed state.resource_current; subtracted)", "phase02_source_path": "operations[8] (ONSTART:8) RPG.GameCore.ModifySPNew AddRatio FixedValue 1 target Caster", "raw_serialized_value": {"AddRatio": {"FixedValue": 1}}, "existing_mapping_authorizing_interpretation": "reference_operation_adapters.apply_named_team_sp_contribution accepts source_name Avatar_Natasha_00_Skill02_Phase02 with argument_name AddRatio, and its docstring states the operation is a post-commit contribution whose non-positive values are discarded and are never treated as a cost", "resolved_value": "the content operation is a contribution, so it must not supply REF02 resource_cost; a separate scenario input must", "status": "RUNTIME_SCENARIO_INPUT"},
+      {"field_name": "resource_owner", "required_by": "apply_reference_packet resource owner equality", "phase02_source_path": "ModifySPNew target alias Caster", "raw_serialized_value": "Caster (alias, not an id)", "existing_mapping_authorizing_interpretation": "ReferenceSessionSpec already requires each envelope packet resource_owner to equal the combat state resource_owner", "resolved_value": "caller-supplied owner token", "status": "RUNTIME_SCENARIO_INPUT"},
+      {"field_name": "toughness_delta", "required_by": "_validate: >=0, and must be 0 for EXPLICIT_HEAL", "phase02_source_path": "HealHP has no toughness field; absent_default_fields include SPHitRatio and IsHealRallyHP", "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "REF02 forces 0 for a heal packet", "resolved_value": "0", "status": "EXACT_CLOSED"},
+      {"field_name": "survival_closed", "required_by": "_validate: must be true for a non-marker packet", "phase02_source_path": null, "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "REF02 demands the assertion as an input; it does not derive or guarantee it; no content artifact supplies it", "resolved_value": null, "status": "LOCAL_ORCHESTRATION_ONLY"},
+      {"field_name": "events_closed", "required_by": "_validate: must be true for a non-marker packet", "phase02_source_path": null, "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "REF02 demands the assertion as an input; the phase body also carries HealRequestBoundary.consumer_status = POSITIVE_HEAL_EVENT_CONSUMER_NOT_RECOVERED", "resolved_value": null, "status": "LOCAL_ORCHESTRATION_ONLY"},
+      {"field_name": "task_id", "required_by": "_validate: must be None for a combat packet", "phase02_source_path": null, "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "contract", "resolved_value": null, "status": "EXACT_CLOSED"},
+      {"field_name": "task_owner", "required_by": "_validate: must be None for a combat packet", "phase02_source_path": null, "raw_serialized_value": null, "existing_mapping_authorizing_interpretation": "contract", "resolved_value": null, "status": "EXACT_CLOSED"}
+    ],
+    "status_counts": {"EXACT_CLOSED": 4, "RUNTIME_SCENARIO_INPUT": 5, "LOCAL_ORCHESTRATION_ONLY": 3, "PRESENT_BUT_SEMANTICS_UNMAPPED": 1, "MISSING": 0, "PRESENT_BUT_VERSION_WEAK": 0, "UNSUPPORTED_BY_REF02": 0},
+    "settlement_driving_fields_not_closed": ["kind"]
+  },
+
+  "dynamic_float_findings": {
+    "result": "RUNTIME_VALUE_REQUIRED",
+    "representation_modelled_by_existing_code": true,
+    "exact_mapping_from_serialization_to_structure_FOUND": true,
+    "exact_mapping_from_serialization_to_a_concrete_value_FOUND": false,
+    "decoder": {"symbol": "decode_postfix_program", "module": "src/hsr_battle_agent/game_data/dynamic_value_reference.py", "module_sha256": "d08776bd0a2e2e2e9995c1b6765c2c1cb976be09147a1e56c0756c01ff9e4411"},
+    "opcode_constants": {"END": 17, "OPERAND_FIXED": 0, "OPERAND_DYNAMIC": 1},
+    "operands": [
+      {
+        "label": "DispelStatus.Numbers",
+        "artifact_path": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+        "json_path": "recovered_subtree.success_tasks[0].numbers",
+        "serialized_representation": {"serialized_type": "RPG.GameCore.DynamicFloat.formula", "opcodes_hex": "01 00 11", "opcodes": [1, 0, 17], "qword_operands": [], "single_int32_operand": {"encoded_uleb": 4248421649, "signed_value": -2124210825}},
+        "parameter_index": 0,
+        "literal_or_default": null,
+        "decoded_program_by_existing_decoder": {"opcodes": [], "operand_count": 1, "tokens": "DYNAMIC[0], END", "infix": "DYNAMIC[0]", "dynamic_hashes": [-2124210825], "fixed_values": []},
+        "artifacts_defining_that_parameter": ["data/raw/4.4.54/natasha_skill02_healhp_content_30.json (the record itself)", "data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json (same hash, unresolved)", "src/hsr_battle_agent/game_data/real_skill.py (asserts the hash literally, does not resolve it)", "tests/reverse/test_natasha_skill02_healhp_extractor_30.py"],
+        "code_interpreting_this_representation": "decode_postfix_program + PostfixProgram.evaluate(dynamic_resolver)",
+        "value_resolved_in_repository": false
+      },
+      {
+        "label": "HealHP.HealPercentage",
+        "artifact_path": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+        "json_path": "recovered_subtree.success_tasks[1].heal_percentage",
+        "serialized_representation": {"serialized_type": "RPG.GameCore.DynamicFloat.formula", "opcodes_hex": "01 00 11", "opcodes": [1, 0, 17], "qword_operands": [], "single_int32_operand": {"encoded_uleb": 3088151821, "signed_value": -1544075911}},
+        "parameter_index": 0,
+        "literal_or_default": null,
+        "decoded_program_by_existing_decoder": {"opcodes": [], "operand_count": 1, "tokens": "DYNAMIC[0], END", "infix": "DYNAMIC[0]", "dynamic_hashes": [-1544075911], "fixed_values": []},
+        "artifacts_defining_that_parameter": ["data/raw/4.4.54/natasha_skill02_healhp_content_30.json", "data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json (PostfixExpr AQAR, DynamicHashes [-1544075911], FixedValues [])", "src/hsr_battle_agent/game_data/real_skill.py", "docs/agent/handoffs/natasha_skill02_healhp_content_30.md"],
+        "code_interpreting_this_representation": "decode_postfix_program + PostfixProgram.evaluate(dynamic_resolver); battle_ir.healing.RealSkillExternalBindings.resolve(formula) requires a matching ResolvedDynamicFloat",
+        "value_resolved_in_repository": false
+      },
+      {
+        "label": "HealHP.ModifyValue",
+        "artifact_path": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+        "json_path": "recovered_subtree.success_tasks[1].modify_value",
+        "serialized_representation": {"serialized_type": "RPG.GameCore.DynamicFloat.formula", "opcodes_hex": "01 00 11", "opcodes": [1, 0, 17], "qword_operands": [], "single_int32_operand": {"encoded_uleb": 407264553, "signed_value": -203632277}},
+        "parameter_index": 0,
+        "literal_or_default": null,
+        "decoded_program_by_existing_decoder": {"opcodes": [], "operand_count": 1, "tokens": "DYNAMIC[0], END", "infix": "DYNAMIC[0]", "dynamic_hashes": [-203632277], "fixed_values": []},
+        "artifacts_defining_that_parameter": ["data/raw/4.4.54/natasha_skill02_healhp_content_30.json", "data/semantics/4.4.54/full_reconstruction/behavior_compiler_report_001.json (PostfixExpr AQAR, DynamicHashes [-203632277], FixedValues [])", "src/hsr_battle_agent/game_data/real_skill.py", "docs/agent/handoffs/natasha_skill02_healhp_content_30.md"],
+        "code_interpreting_this_representation": "decode_postfix_program + PostfixProgram.evaluate(dynamic_resolver)",
+        "value_resolved_in_repository": false
+      }
+    ],
+    "additional_dynamic_hashes_in_the_body_operations": [-754957899, -1192384503, -1019407308, -1087299341, 2117344201],
+    "phase02_defined_dynamic_values": [
+      {"dynamic_hash": "-1087299341", "definition": {"ReadInfo": {"Index": 0, "Type": "None"}}, "scope": "Floats", "note": "only the AddModifier Lifetime operand references this hash; none of the three heal/dispel operands is defined by this table"}
+    ],
+    "verification_note": "The DYNAMIC[0] decode was reproduced by running the repository decoder on ('AQAR', [], [hash]) for each of the three hashes. No ParamList index semantics were inferred and no opcode meaning beyond the existing decoder table was introduced.",
+    "what_is_now_established": "The DynamicFloat amounts are not opaque bytecode: each is exactly one unresolved single-value reference, and existing code already decodes it and already has an API (PostfixProgram.evaluate with a resolver, or RealSkillExternalBindings.dynamic_values carrying ResolvedDynamicFloat with provenance) to consume a supplied value.",
+    "what_is_still_missing": "A numeric value for each of the two heal hashes. No repository artifact supplies one."
+  },
+
+  "heal_consumer_findings": {
+    "operation_representation_exists": true,
+    "authorized_adapter_to_a_ref02_packet_exists": false,
+    "authorized_adapter_to_a_reference_heal_settlement_exists": "PARTIAL",
+    "evidence": [
+      {"symbol": "RPG.GameCore.HealHP", "where": "behavior_compiler_report_001.json ONSTART:4", "recorded_as": {"kind": "HEAL_REQUEST", "semantic_status": "MODELLED", "disposition": "EXECUTABLE_REFERENCE", "dependencies": ["dynamic_mvp_v1:HEAL_STATE_TRANSITION"]}},
+      {"symbol": "NatashaSkill02HealConfig / load_natasha_skill02_heal_config", "module": "src/hsr_battle_agent/battle_ir/healing.py", "module_sha256": "9e899ace471898b37389f1f1291a4df24b5d20fa734744bb4addff9617bdd402", "role": "validated projection of the committed real Natasha content artifact"},
+      {"symbol": "SerializedDynamicFloatFormula", "role": "structurally decoded DynamicFloat formula; evaluation is declared EXTERNAL"},
+      {"symbol": "RealSkillExternalBindings / ResolvedDynamicFloat", "role": "the existing carrier for externally supplied DynamicFloat values with mandatory provenance"},
+      {"symbol": "heal_formula_type4_ordinary", "module": "src/hsr_battle_agent/battle_runtime/healing.py", "module_sha256": "e10fefa7d9d24acb74cdc90c4e30c7e138ed2e05613be2fc8dea9787379e91b4", "role": "existing authorized implementation of the FormulaType 4 ordinary non-rally heal amount from six explicit integer inputs"},
+      {"symbol": "HealRequestBoundary", "role": "the existing terminal type of the real-skill path", "consumer_status_default": "POSITIVE_HEAL_EVENT_CONSUMER_NOT_RECOVERED"},
+      {"symbol": "data/semantics/4.4.54/real_skill_heal_boundary_30.json", "sha256": "5c0cc063ac1961496e341715d2116039d4e3c4ca1bb5c3e0082f11d16d9187ab", "persistent_effect_policy": {"dispel_mutation": "NOT_PERFORMED", "current_hp_mutation": "NOT_PERFORMED", "reason": "native effect consumers are not recovered"}, "catalog_registration": {"registered_as_generic_primitive": false}},
+      {"symbol": "apply_reference_packet (PacketKind.EXPLICIT_HEAL)", "role": "does perform a target HP mutation (heal = min(max_hp - hp, amount)), but as a REFERENCE_MODEL settlement, and only from a caller-declared packet"}
+    ],
+    "conclusion": "The Phase02 heal operation is represented, modelled, and has an authorized formula adapter. What does not exist is any adapter that maps the Phase02 heal operation to a REF02 packet. The real-skill path deliberately stops at a request boundary with HP mutation NOT performed, while REF02 performs the HP mutation from a caller-declared packet. Bridging the two would require a new mapping.",
+    "distinction_requested_by_the_brief": {"operation_representation_exists": "YES", "operation_has_an_authorized_ref02_adapter": "NO"}
+  },
+
+  "target_findings": {
+    "target_fields_in_phase02": [
+      {"location": "recovered_subtree.success_tasks[0] (DispelStatus)", "field": "TargetType", "value": {"discriminator": 12, "name": "RPG.GameCore.AbilityTargetEntity"}, "resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"},
+      {"location": "recovered_subtree.success_tasks[1] (HealHP)", "field": "TargetType", "value": {"discriminator": 12, "name": "RPG.GameCore.AbilityTargetEntity"}, "resolution_status": "TARGET_SELECTOR_REGISTRY_NOT_JOINED"},
+      {"location": "operations[4] (HealHP)", "field": "target", "value": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AbilityTargetEntity"}},
+      {"location": "operations[3] (DispelStatus)", "field": "TargetType", "value": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AbilityTargetEntity"}},
+      {"location": "operations[6] (AddModifier)", "field": "target", "value": {"$type": "RPG.GameCore.TargetAlias", "Alias": "AbilityTargetEntity"}},
+      {"location": "operations[8] (ModifySPNew)", "field": "target", "value": {"$type": "RPG.GameCore.TargetAlias", "Alias": "Caster"}},
+      {"location": "operations[9] (Retarget)", "field": "target", "value": {"$type": "RPG.GameCore.TargetAlias", "Alias": "SkillTargetEntityList"}, "randomising_field": {"ByRandom": true}}
+    ],
+    "ref02_accepts_explicit_target_input": true,
+    "ref02_target_contract": "_validate requires exactly one target id for a non-marker packet; apply_reference_packet resolves it via ReferenceCombatState.entity(targets[0])",
+    "result": "TARGET = LOCAL_OR_RUNTIME_SCENARIO_INPUT",
+    "native_target_selection_inferred": false,
+    "target_cardinality_inferred": false,
+    "randomness_surface_noted": "operations[9] Retarget carries ByRandom true; this is a randomness surface in the body and is recorded, not resolved."
+  },
+
+  "resource_cost_findings": {
+    "result": "REF02_SETTLEMENT_REQUIRED",
+    "evidence": [
+      {"symbol": "OrdinaryReferencePacket", "field": "resource_cost", "rule": "required key; _validate requires >= 0"},
+      {"symbol": "apply_reference_packet", "rule": "packet.resource_cost > state.resource_current raises; resource_current - packet.resource_cost is the settled value"},
+      {"symbol": "test_reference_damage_v2.ReferenceDamageV2Tests.test_hand_computed_ordinary_damage", "rule": "resource_current moves 5 -> 3 for a packet declaring resource_cost 2"}
+    ],
+    "content_supplies_a_cost": false,
+    "content_supplies_a_contribution_instead": {
+      "operation": "operations[8] ONSTART:8 RPG.GameCore.ModifySPNew",
+      "arguments": {"AddRatio": {"FixedValue": 1}},
+      "target_alias": "Caster",
+      "existing_authorized_adapter": {"symbol": "apply_named_team_sp_contribution", "module": "src/hsr_battle_agent/game_data/reference_operation_adapters.py", "module_sha256": "63ef9f80bd4d762d2627885c00dfa46c1856d2b93dd5e34d50242189b227c65f"},
+      "allowlist_membership": {"argument_name": "AddRatio", "source_name_allowlist": ["Avatar_Natasha_00_Skill02_Phase02", "Avatar_Natasha_00_Skill03_Phase02"], "contains_this_behavior": true},
+      "declared_semantics": "Apply only the named ModifySPNew post-commit contribution packet. Non-positive evaluated contributions are discarded; they are never treated as a cost."
+    },
+    "conclusion": "REF02 requires a resource cost and settles it. The Phase02 content does not supply one: its SP operation is an existing-authorized post-commit CONTRIBUTION that its own adapter documentation says is never treated as a cost. A fabricated Skill Point cost was not created and SPBase/BPNeed were not mapped. A runtime scenario input must supply resource_cost.",
+    "blocks_the_settlement_alone": false
+  },
+
+  "dispel_findings": {
+    "present": true,
+    "locations": [
+      {"view": "pinned 4.4.53 archive", "path": "recovered_subtree.success_tasks[0]", "runtime_type": "RPG.GameCore.DispelStatus", "discriminator": 1199, "order": 2, "numbers_single_dynamic_operand": -2124210825},
+      {"view": "close-4.4.0 compiler", "path": "records[32] ONSTART:3 SuccessTaskList[0]", "runtime_type": "RPG.GameCore.DispelStatus", "order": "LastAdded", "numbers_single_dynamic_operand": -2124210825}
+    ],
+    "is_it_declared_required_for_the_heal": false,
+    "is_it_declared_independent_of_the_heal": false,
+    "sibling_status": "It is a sibling effect in the same behavior. Under the archive view it is one of two success tasks of the same PredicateTaskList; under the compiler view it is a separate top-level operation.",
+    "existing_authorization_to_exclude_it_from_a_ref02_settlement": false,
+    "existing_whole_step_rule": [
+      {"symbol": "OrdinaryReferencePacket.from_dict", "rule": "validates the whole packet first; unsupported special keys raise"},
+      {"symbol": "apply_reference_packet", "rule": "all late blockers first, then one settlement; no partial application path exists"},
+      {"symbol": "tests/game_data/test_reference_damage_v2.py::test_late_special_field_rejects_whole_step_without_resource_debit", "rule": "an unsupported surface rejects the whole step and leaves the state untouched"}
+    ],
+    "classification": "SIBLING_EFFECT_BLOCKS_ATOMIC_REPRESENTATION",
+    "option_selected": "D_of_the_brief",
+    "why": "By the existing whole-step rejection discipline, an unsupported surface rejects the whole step rather than being silently dropped. No artifact authorizes excluding a declared sibling effect, so representing Phase02 as one REF02 settlement is not available.",
+    "decided_from_gameplay_intuition": false
+  },
+
+  "survival_event_findings": {
+    "ref02_requirement": "_validate requires survival_closed and events_closed to be true for a non-marker packet",
+    "already_guaranteed_by_the_bounded_reference_adapter": false,
+    "explicit_runtime_contract_inputs": true,
+    "still_unsupported": false,
+    "detail": [
+      {"flag": "survival_closed", "ref02_behaviour": "demanded as an input, never derived; no content artifact supplies it", "classification": "LOCAL_ORCHESTRATION_ONLY"},
+      {"flag": "events_closed", "ref02_behaviour": "demanded as an input; the phase body's own boundary type defaults consumer_status to POSITIVE_HEAL_EVENT_CONSUMER_NOT_RECOVERED", "classification": "LOCAL_ORCHESTRATION_ONLY"}
+    ],
+    "note": "These flags are assertions the caller must make. REF02 does not compute them, and their truth is not established by content. Asserting them is a local-envelope decision, not a content claim."
+  },
+
+  "local_bridge_structural_status": {
+    "answer": "BLOCKED_BY_MISSING_SETTLEMENT_FIELDS",
+    "bridge_shape_under_test": {
+      "content_bound_root": "Avatar_Natasha_00_Skill02_Phase01",
+      "explicit_named_content_edge": "Phase01 ONSTART:0 names Avatar_Natasha_00_Skill02_Phase02",
+      "local_orchestration": "SANDBOX_EXTENSION chooses the named Phase02 as settlement body",
+      "phase02_settlement": "REFERENCE_MODEL / REF02"
+    },
+    "blocking_missing_fields": ["kind (no existing mapping from the HealHP operation to a REF02 packet kind)"],
+    "blocking_structural_conditions": [
+      "the declared sibling DispelStatus effect has no REF02 representation and no authorization to be excluded",
+      "Phase02's compiler node is REJECTED, with three WaitAnimState blockers recorded as REJECT_NOT_NOOP / BEHAVIOR_AFFECTING_NODE_NOT_COMPILED",
+      "two of the eight operations are BOUND_UNEXECUTABLE_PACKET, one of which carries a declared reference_execution_blocker",
+      "the body contains a ByRandom retarget operation"
+    ],
+    "would_require_fabricated_values": false,
+    "note": "No settlement value would have to be fabricated: the gaps are an unmapped kind and unauthorised structural exclusions, plus runtime inputs. This is not permission to implement a bridge and it does not call TriggerAbility executed."
+  },
+
+  "closure_verdict": "A. NO_REF02_CLOSURE",
+  "closure_verdict_detail": {
+    "settlement_driving_fields_closed": "8 of 13 resolve to a contract constant, a runtime scenario input, or a local orchestration decision; 1 of 13 has no existing mapping (kind)",
+    "non_runtime_gaps": [
+      "kind: no repository artifact maps the HealHP operation to a REF02 packet kind (mechanically established: EXPLICIT_HEAL co-occurs with HealHP/1481 in exactly 2 files, both M12 audit records, both as a bare candidate label)",
+      "the sibling DispelStatus effect has no REF02 representation and no authorization to exclude"
+    ],
+    "runtime_gaps": ["source_id", "targets", "base_value", "resource_cost", "resource_owner"],
+    "verdict_reasoning": "Option C and the premise of option D both require the effect body to be closed with existing mappings; one required field (kind) is not, so neither is available. Option B requires the only blockers to be runtime scenario inputs; two blockers are not runtime inputs. Option E requires a new exact mapping needing evidence judgment; the new exact findings are established by existing code, not open judgments.",
+    "m12_unblocked_claim_made": false,
+    "native_promotion": false,
+    "golden": 0,
+    "native_trace": []
+  },
+
+  "new_exact_evidence_found": [
+    {
+      "id": "NE-1",
+      "item": "The Phase01 -> Phase02 named edge is exactly recorded in an existing compiler artifact, including the argument field and value (arguments.AbilityName.Value = Avatar_Natasha_00_Skill02_Phase02), operation type RPG.GameCore.TriggerAbility, kind INVOKE_BEHAVIOR, index 0, target alias Caster, dependency KERNEL-EVENT-001.",
+      "strength": "MECHANICALLY_PROVEN",
+      "status": "EXPLICIT_NAMED_CONTENT_EDGE_ONLY"
+    },
+    {
+      "id": "NE-2",
+      "item": "All three DynamicFloat amounts decode, with existing code, to exactly one unresolved single-value reference: OpCodes AQAR -> DYNAMIC[0] then END. The DynamicFloat blocker is a value-supply problem, not an opaque-bytecode problem.",
+      "strength": "MECHANICALLY_PROVEN",
+      "verified_by": "running decode_postfix_program('AQAR', [], [hash]) for each hash"
+    },
+    {
+      "id": "NE-3",
+      "item": "An existing authorized reference adapter already names this exact behavior for the ModifySPNew operation: reference_operation_adapters._ADD_RATIO_SOURCES contains 'Avatar_Natasha_00_Skill02_Phase02', and the adapter documents the operation as a post-commit contribution that is never treated as a cost.",
+      "strength": "MECHANICALLY_PROVEN",
+      "use": "Establishes that the content SP operation must not be used as REF02 resource_cost, and that the resource field stays a scenario input."
+    },
+    {
+      "id": "NE-4",
+      "item": "Phase02's compiler node is REJECTED with three WaitAnimState blockers (REJECT_NOT_NOOP / BEHAVIOR_AFFECTING_NODE_NOT_COMPILED), and two of its eight operations are BOUND_UNEXECUTABLE_PACKET.",
+      "strength": "MECHANICALLY_PROVEN",
+      "use": "The effect body is not an executable reference body in the compiler's own record, independently of the REF02 field question."
+    },
+    {
+      "id": "NE-5",
+      "item": "The two sources attribute DispelStatus and HealHP to different structural positions (siblings inside one PredicateTaskList in the pinned archive; separate top-level operations in the close-4.4.0 compiler report).",
+      "strength": "MECHANICALLY_PROVEN_OBSERVATION",
+      "resolution_attempted": false
+    }
+  ],
+
+  "recommended_next_executor": "DS",
+  "recommended_next_executor_reason": "Not all settlement-driving fields close (kind has no existing mapping) and no newly discovered exact mapping requires evidence judgment; the new exact findings are all established by existing code.",
+
+  "recommended_next_question": "Mechanically resolve the two remaining non-runtime gaps for Phase02 without inferring semantics: (1) enumerate every existing artifact and code symbol that classifies a RPG.GameCore.HealHP task and determine whether any declares a REF02 packet kind (if none does, record the absence precisely so Sol can decide whether to authorize one); and (2) test whether the compiler's REJECT_NOT_NOOP WaitAnimState blockers at ONSTART:0/2/7 and the two BOUND_UNEXECUTABLE_PACKET operations (AddModifier with reference_execution_blocker EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED, and Retarget with ByRandom true) are covered by any existing omission or exclusion policy, and record which are not. Do not derive a formula, invent ParamList meaning, guess any coefficient, cost, target type or Dispel semantics, and do not traverse or execute the TriggerAbility edge.",
+
+  "validation": {
+    "json_parses": true,
+    "duplicate_keys_rejected": true,
+    "all_source_paths_exist": true,
+    "reported_hashes_recompute": true,
+    "operation_order_reproduces": true,
+    "ref02_fields_derived_from_current_code_and_tests": true,
+    "inferred_semantic_mapping_presented_as_exact": false,
+    "checks": [
+      "operation order reproduced from records[32].entrypoints[ONSTART].operations in the order recorded",
+      "the DYNAMIC[0] decode reproduced by executing the repository decoder",
+      "the _ADD_RATIO_SOURCES membership read directly from the module source",
+      "the REF02 required key set and validate rules read from OrdinaryReferencePacket and apply_reference_packet",
+      "the resource debit behaviour confirmed against test_hand_computed_ordinary_damage"
+    ]
+  },
+
+  "production_files_modified": 0,
+  "existing_m12_records_modified": 0
+}
