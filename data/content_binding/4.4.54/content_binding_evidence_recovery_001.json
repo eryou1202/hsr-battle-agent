@@ -1,0 +1,309 @@
+{
+  "schema": "content_binding_evidence_recovery/1",
+  "version": "1.0.0",
+  "change_request_id": "CR-M12-EVIDENCE-RECOVERY-20260926-001",
+  "content_target": "HSR-4.4.54",
+  "task_type": "EXACT_DISCOVERY_AND_RECONCILIATION_ONLY",
+  "starting_head": "47c8b495a26adc4336a4e085ce0422ce983a4a7d",
+  "scope_statement": "Mechanical discovery only. No runtime code, no semantic inference, no M10/M11 change, no existing M12 record change, no Git write. Nothing here promotes a candidate or closes M12; only Sol may make that decision.",
+
+  "queries_performed": [
+    {"id": "Q0", "kind": "inventory", "detail": "Repo-wide text scan for exact occurrences of 9 behavior identities and 5 target SkillIDs (3339 files, 456,891,213 bytes)."},
+    {"id": "Q1", "kind": "sqlite_schema", "detail": "Read-only schema+row-count dump of all 43 tables in data/db/hsr_content_4.4.54.sqlite."},
+    {"id": "Q2", "kind": "sqlite_term_scan", "detail": "LIKE scan of every *_json column in all 43 tables for 12 behavior/ability terms (AbilityName, EntryAbility, AbilityList, _Phase, SkillTriggerKey, AbilityID, ...)."},
+    {"id": "Q3", "kind": "structural_json_scan", "detail": "Parsed 2405 JSON files and walked 1,897,439 JSON objects looking for any object containing both a skill-id key and an ability-name key."},
+    {"id": "Q4", "kind": "structural_sub_relation_scan", "detail": "Same walk, measuring (a) SkillID + Skill<label> in one object, (b) Skill<label> key + ability-name value in one object, (c) SkillID + Name=Skill<label> in one object."},
+    {"id": "Q5", "kind": "intersection", "detail": "For each of the 5 audited candidates, listed every file containing BOTH the numeric SkillID and the named behavior string, and extracted the enclosing JSON object."},
+    {"id": "Q6", "kind": "exact_join_hypothesis_test", "detail": "Compared the label hypothesis (SkillID -> SkillTriggerKey -> CharacterConfig.SkillList[].Name -> EntryAbility) against the same-index hypothesis for Natasha (1105) and Black Swan (1307)."},
+    {"id": "Q7", "kind": "label_consistency_census", "detail": "Extended Q6 to all 91 AvatarConfig rows / 620 AvatarConfig SkillList entries against every owner CharacterConfig."},
+    {"id": "Q8", "kind": "hash_reconciliation", "detail": "SHA-256 of 6693 files; compared the declared Natasha digest against every file; tested CRLF/LF normalization; read Git blob identity at the producing commit."},
+    {"id": "Q9", "kind": "git_read_only", "detail": "git ls-files / log / log --full-history / show / rev-parse / hash-object / config for the Natasha artifacts. No write command was issued."},
+    {"id": "Q10", "kind": "rf02_field_probe", "detail": "Per-candidate exact static field inventory from the Nanoka 4.4.54 skills table."},
+    {"id": "Q11", "kind": "version_label_probe", "detail": "Extracted declared vs path version labels for every artifact cited."}
+  ],
+
+  "files_scanned": {
+    "repo_text_files": 3339,
+    "repo_text_bytes": 456891213,
+    "json_files_parsed": 2405,
+    "json_files_unparsable": 15,
+    "json_objects_visited": 1897439,
+    "files_hashed": 6693,
+    "sqlite_tables": 43,
+    "sqlite_rows_total_note": "skills 664, avatars 97, avatar_skills 664, traces 5018, monster_skills 12873, source_snapshots 1055"
+  },
+
+  "primary_question_a_exact_skill_to_behavior_relation": {
+    "answer": "NONE_FOUND",
+    "objects_with_skill_id_key_and_ability_name_key": 0,
+    "objects_with_skill_id_key_and_name_is_skill_label": 0,
+    "authoritative_mapping_artifact_verdict": {
+      "path": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_mapping_001.json",
+      "family": "Skill",
+      "static_entity_denominator": 664,
+      "static_entities_directly_linked": 0,
+      "static_entities_unmapped": 664,
+      "behavior_records_direct_id_link": 0,
+      "behavior_records_exact_config_id_link": 0,
+      "declared_counting_rule_excerpt": "EXACT_ID requires literal exact entity-id equality; ... SOURCE_PATH_ONLY and parent-only names do not count as static links."
+    },
+    "exact_sub_relations_that_DO_exist": [
+      {"id": "R1", "left": "AvatarSkillConfig.SkillID", "right": "AvatarSkillConfig.SkillTriggerKey (Skill<label>)", "relation": "same object, literal", "objects": 9551, "files": ["external_refs/TurnBasedGameData/files/ExcelOutput/AvatarSkillConfig.json (6702)", "external_refs/TurnBasedGameData/files/ExcelOutput/MonsterSkillConfig.json (2839)", "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json (9)"], "exact": true, "binds_behavior": false},
+      {"id": "R2", "left": "AvatarConfig.AvatarID", "right": "AvatarConfig.JsonPath (CharacterConfig path)", "relation": "same object, literal", "exact": true, "binds_behavior": false},
+      {"id": "R3", "left": "AvatarConfig.AvatarID", "right": "AvatarConfig.SkillList[] (numeric SkillIDs)", "relation": "same object, ordered literal list", "exact": true, "binds_behavior": false},
+      {"id": "R4", "left": "CharacterConfig.SkillList[].Name (Skill<label>)", "right": "CharacterConfig.SkillList[].EntryAbility / PrepareAbility", "relation": "same object, literal", "objects": 848, "files_containing": 142, "exact": true, "binds_behavior": true, "binds_numeric_skill_id": false},
+      {"id": "R5", "left": "CharacterConfig.SkillAbilityList[].Skill (Skill<label>)", "right": "CharacterConfig.SkillAbilityList[].AbilityList[] (behaviors)", "relation": "same object, ordered literal list; mirrored with provenance in astra_equipment_trace_eidolon_targeted_evidence_v1.json and ability containers", "exact": true, "binds_behavior": true, "binds_numeric_skill_id": false}
+    ],
+    "missing_edge": {
+      "edge": "AvatarSkillConfig.SkillTriggerKey == Avatar CharacterConfig.SkillList[].Name",
+      "declared_for_avatars": false,
+      "declared_for_monsters": true,
+      "monster_declaration_source": "data/semantics/4.4.54/full_reconstruction/monster_ai_sequence_id_binding_001.json :: binding_rule",
+      "monster_declaration_excerpt": "EXACT only if raw sequence value equals MonsterSkillRow.SkillID and serialized SkillTriggerKey exactly equals CharacterConfig.SkillList.Name.",
+      "consequence": "For avatars the chain needs exactly one undeclared cross-table string equivalence. Supplying it is an authorisation decision, not a mechanical discovery, so every candidate stays NON_EXACT."
+    },
+    "character_config_contains_no_numeric_skill_id": {
+      "verified_by": "literal string search for 110501/110502/110503 in Avatar_Natasha_00_Config.json and 130701/130702 in Avatar_BlackSwan_00_Config.json",
+      "result": "all absent; the file also has no SkillTriggerKey field"
+    }
+  },
+
+  "exact_skill_occurrences": {
+    "target_skill_ids": ["110501", "110502", "110503", "130701", "130702"],
+    "method": "exact token search with digit boundaries; each hit classified by whether the enclosing artifact also carries a behavior identity and whether it carries settlement-driving numeric fields",
+    "per_skill_file_counts": {
+      "110501": 43,
+      "110502": 41,
+      "110503": 38,
+      "130701": 22,
+      "130702": 21
+    },
+    "notable_occurrences": [
+      {"skill_id": "110502", "file": "data/db/hsr_content_4.4.54.sqlite :: skills.entity_id", "context": "exact static row, source_version 4.4.54, canonical_sha256 accd7111172b08dc...", "also_has_behavior_identity": false, "has_settlement_numeric_fields": true},
+      {"skill_id": "110502", "file": "external_refs/TurnBasedGameData/files/ExcelOutput/AvatarSkillConfig.json", "context": "SkillID + SkillTriggerKey='Skill02' + ParamList[0.07,0.048,2,70,48] + SPBase 30 + BPNeed 1 + ShowStanceList[0,0,0]", "also_has_behavior_identity": false, "has_settlement_numeric_fields": true},
+      {"skill_id": "110502", "file": "external_refs/TurnBasedGameData/files/ExcelOutput/AvatarConfig.json", "context": "AvatarID 1105 SkillList entry", "also_has_behavior_identity": false, "has_settlement_numeric_fields": false},
+      {"skill_id": "110502", "file": "data/semantics/4.4.54/dynamic_core/packets_v1.json", "context": "packet DYN-HEAL-STATE-01: the SkillID appears only inside a prose string in external_sources ('Nanoka 4.4.54 Skill 110502 level parameters are a static amount reference only')", "also_has_behavior_identity": true, "co_occurrence_type": "PROSE_NOT_STRUCTURED", "has_settlement_numeric_fields": true},
+      {"skill_id": "130701", "file": "data/semantics/4.4.54/full_reconstruction/astra_equipment_trace_eidolon_targeted_evidence_v1.json", "context": "enclosing object is {\"Skill\":\"Skill01\",\"AbilityList\":[...]} — a label, not a SkillID; the numeric id occurs elsewhere in the file", "also_has_behavior_identity": true, "co_occurrence_type": "SAME_FILE_DIFFERENT_OBJECT", "has_settlement_numeric_fields": true}
+    ],
+    "warning": "Co-occurrence in an aggregate file is NOT a join. The only two files that place a target SkillID and its audited behavior string inside one JSON object are the M12 ledger itself and prose strings in dynamic_core/dynamic_mvp packets."
+  },
+
+  "exact_join_candidates": {
+    "audited_candidates": 5,
+    "exact_behavior_join_found": 0,
+    "candidate_matrix": [
+      {
+        "rank": 1, "skill_id": "110502", "avatar_id": "1105",
+        "ledger_behavior_candidate": "Avatar_Natasha_00_Skill02_Phase02",
+        "ledger_join": "UNPROVEN_NAME_AND_SUFFIX_RELATION_ONLY",
+        "character_config_entry_ability_for_label_Skill02": "Avatar_Natasha_00_Skill02_Phase01",
+        "label_route_would_give": "Avatar_Natasha_00_Skill02_Phase01",
+        "agrees_with_ledger_candidate": false,
+        "exact_join": false
+      },
+      {
+        "rank": 2, "skill_id": "110501", "avatar_id": "1105",
+        "ledger_behavior_candidate": "Avatar_Natasha_00_Skill01_Phase02",
+        "character_config_entry_ability_for_label_Skill01": "Avatar_Natasha_00_Skill01_Phase01",
+        "label_route_would_give": "Avatar_Natasha_00_Skill01_Phase01",
+        "agrees_with_ledger_candidate": false,
+        "exact_join": false
+      },
+      {
+        "rank": 3, "skill_id": "110503", "avatar_id": "1105",
+        "ledger_behavior_candidate": "Avatar_Natasha_00_Skill03_EnterReady",
+        "character_config_entry_ability_for_label_Skill03": "Avatar_Natasha_00_Skill03_Phase01",
+        "character_config_prepare_ability_for_label_Skill03": "Avatar_Natasha_00_Skill03_EnterReady",
+        "note": "the ledger candidate matches the PrepareAbility field, not the EntryAbility field; no artifact declares which of the two a REF02 packet would need",
+        "agrees_with_ledger_candidate": "FIELD_ROLE_MISMATCH",
+        "exact_join": false
+      },
+      {
+        "rank": 4, "skill_id": "130701", "avatar_id": "1307",
+        "ledger_behavior_candidate": "Avatar_BlackSwan_00_Skill01_Phase02",
+        "character_config_entry_ability_for_label_Skill01": "Avatar_BlackSwan_00_Skill01_Phase01",
+        "label_route_would_give": "Avatar_BlackSwan_00_Skill01_Phase01",
+        "agrees_with_ledger_candidate": false,
+        "exact_join": false
+      },
+      {
+        "rank": 5, "skill_id": "130702", "avatar_id": "1307",
+        "ledger_behavior_candidate": "Avatar_BlackSwan_00_Skill02_Phase02",
+        "character_config_entry_ability_for_label_Skill02": "Avatar_BlackSwan_00_Skill02_Phase01",
+        "label_route_would_give": "Avatar_BlackSwan_00_Skill02_Phase01",
+        "agrees_with_ledger_candidate": false,
+        "exact_join": false
+      }
+    ],
+    "new_mechanical_finding": "For all five audited candidates the behavior named in the M12 ledger differs from the only explicit entry-ability field available in the owner CharacterConfig. Nothing here decides which is correct; the action graph may legitimately enter a later phase. It does mean the audited behavior_candidate is not corroborated by the most explicit available content field.",
+    "same_index_hypothesis_disproved": {
+      "hypothesis": "AvatarConfig.SkillList[i] corresponds to CharacterConfig.SkillList[i]",
+      "result": "CONTRADICTED",
+      "disagreeing_positions": 175,
+      "example": "avatar 1105 index 5: label hypothesis says SkillMaze, position hypothesis says PassiveSkill02 (and the trigger key for 110507 is SkillMaze)"
+    },
+    "label_consistency_census_DISCOVERY_ONLY_NOT_A_JOIN": {
+      "avatars_with_AvatarConfig_row": 91,
+      "avatar_config_skill_list_entries_examined": 620,
+      "entries_whose_skill_trigger_key_exactly_equals_a_character_config_skill_list_name": 528,
+      "entries_with_empty_skill_trigger_key": 92,
+      "entries_with_no_matching_name": 0,
+      "interpretation": "A consistent label route exists for 528 of 620 AvatarConfig skill-list entries, but consistency is evidence, not a declared relation. This count must not be reported as a join or as coverage."
+    }
+  },
+
+  "natasha_hash_reconciliation": {
+    "artifact_declaring": "data/semantics/4.4.54/real_skill_heal_boundary_30.json",
+    "field": "content.artifact_sha256",
+    "declared_hash": "c135173b1d6b1365aa515f48749192ff5f7798f09a81c804ed6e9c4a79a92b10",
+    "declared_for_file": "data/raw/4.4.54/natasha_skill02_healhp_content_30.json",
+    "current_file_sha256": "4dcca0baa2474373b20f785d47b853087971d99ae52617e030fe0931d81f5596",
+    "current_file_bytes": 9156,
+    "current_file_crlf_count": 270,
+    "current_file_bare_lf_count": 0,
+    "normalized_lf_sha256": "c135173b1d6b1365aa515f48749192ff5f7798f09a81c804ed6e9c4a79a92b10",
+    "declared_hash_equals_lf_normalized_bytes": true,
+    "declared_hash_matches_any_repo_file": false,
+    "files_hashed_for_that_check": 6693,
+    "declared_hash_textual_occurrences": [
+      "data/semantics/4.4.54/real_skill_heal_boundary_30.json (the declaration)",
+      "data/content_binding/4.4.54/content_binding_candidate_ledger_v1.json (a copy, as declared_subtree_sha256)"
+    ],
+    "git_evidence": {
+      "tracked": true,
+      "path_history": "single commit 4d27854 (2026-08-24T14:29:59+08:00) 'reverse: recover real Natasha HealHP content'",
+      "declaration_commit": "dd1a62c (2026-08-24T14:41:29+08:00) 'docs: record bounded core E2E status'",
+      "blob_sha1_at_4d27854": "b237ac442af865a66f1d426c4107214928afd85e",
+      "blob_sha1_at_HEAD": "b237ac442af865a66f1d426c4107214928afd85e",
+      "working_tree_clean_for_this_path": true,
+      "file_changed_historically_per_git": false,
+      "core_autocrlf": true,
+      "gitattributes_present": true
+    },
+    "classification": "DIFFERENT_SERIALIZATION",
+    "classification_basis": "The git blob is byte-identical between the producing commit and HEAD, and the working tree is clean, so the JSON content has never changed. The declared digest is exactly the SHA-256 of the same file's bytes with CRLF normalized to LF; the working-tree copy is pure CRLF (270 CRLF, 0 bare LF) because core.autocrlf=true. The 8,930-byte LF form and the 9,156-byte CRLF form are the same document.",
+    "why_the_ledger_flagged_a_mismatch": "The M12 ledger hashed the working-tree (CRLF) bytes for this file while its recorded hashes for the sibling artifacts match that file's raw bytes; the ledger therefore mixed normalisation conventions between files, which produced a false PROVENANCE_DIGEST_MISMATCH.",
+    "sibling_check": {
+      "path": "data/raw/4.4.54/ability_file_container_natasha_30.json",
+      "raw_sha256": "6d173573c922c107c227a0c022f553154be5b21afb832e787776e989cc10062f",
+      "lf_normalized_sha256": "96ba13df59dfe0b67318d211e64739cd24e4abb2b1e04295a92a66bbf1e299a1",
+      "ledger_recorded_hash": "6d173573c922c107c227a0c022f553154be5b21afb832e787776e989cc10062f",
+      "ledger_used": "raw bytes"
+    },
+    "repair_performed": "NONE",
+    "repair_note": "The declaration was not rewritten and no file was modified, per this change request's scope."
+  },
+
+  "ref02_field_matrix": {
+    "rule_applied": "SAFE_TO_USE=YES only when an exact artifact supplies the field under the same candidate binding. The required binding for every field except source_id is BEHAVIOR_BOUND, which is not established for any candidate, so no behavioural field is safe.",
+    "candidate_rows": [
+      {
+        "skill_id": "110502", "avatar_id": "1105", "ref02_adapter_candidate": "EXPLICIT_HEAL",
+        "exact_static_canonical_sha256": "accd7111172b08dc22b15ac2e34b899518fee5daa9b54505f1ddfbe5ca8bf38a",
+        "fields": {
+          "kind": {"exact_content_value_found": "PARTIAL", "source": "Nanoka skills row / AvatarSkillConfig", "value": "type=BPSkill, tag=Restore, AttackType=BPSkill, SkillEffect=Restore", "provenance": "nanoka 4.4.54 static", "safe_to_use": "NO", "reason": "no artifact maps type/tag onto REF02 kind"},
+          "source_id": {"exact_content_value_found": "YES", "source": "Nanoka skills.entity_id", "value": "110502", "provenance": "exact 4.4.54 static id", "safe_to_use": "YES", "reason": "exact static identity under the established STATIC_ID_BOUND binding"},
+          "targets": {"exact_content_value_found": "NO_UNDER_CANDIDATE_BINDING", "source": "CharacterConfig.SkillList[1].TargetInfo.TargetType", "value": "FriendSelect (keyed by the label Skill02, not by SkillID)", "provenance": "4.4.53 path label", "safe_to_use": "NO", "reason": "keyed by label; REF02 needs cardinality/order closure, and the freeze records target semantics as unresolved"},
+          "base_value": {"exact_content_value_found": "YES", "source": "Nanoka level.1.param_list / AvatarSkillConfig.ParamList", "value": "[0.07, 0.048, 2, 70, 48]", "provenance": "exact 4.4.54 static", "safe_to_use": "NO", "reason": "no artifact establishes param index -> REF02 base_value"},
+          "ordered_factors": {"exact_content_value_found": "YES", "source": "same param list, order preserved", "value": "[0.07, 0.048, 2, 70, 48]", "provenance": "exact 4.4.54 static", "safe_to_use": "NO", "reason": "no artifact establishes the factor meaning or ordering contract"},
+          "resource_cost": {"exact_content_value_found": "PARTIAL", "source": "Nanoka sp_base/bp_need ; AvatarSkillConfig SPBase/BPNeed", "value": "sp_base=30, bp_need=1", "provenance": "exact 4.4.54 static", "safe_to_use": "NO", "reason": "no artifact establishes which field is the REF02 cost"},
+          "resource_owner": {"exact_content_value_found": "NO", "source": "-", "value": null, "provenance": "none", "safe_to_use": "NO", "reason": "no such field in any exact static artifact"},
+          "toughness_delta": {"exact_content_value_found": "PARTIAL", "source": "Nanoka show_stance_list ; AvatarSkillConfig ShowStanceList", "value": "[0, 0, 0]", "provenance": "exact 4.4.54 static", "safe_to_use": "NO", "reason": "no artifact establishes the reduction contract"},
+          "survival_closed": {"exact_content_value_found": "NO", "source": "-", "value": null, "provenance": "none", "safe_to_use": "NO", "reason": "not a static content concept"},
+          "events_closed": {"exact_content_value_found": "NO", "source": "reverse artifact only", "value": "ordered_success_tasks DispelStatus(disc 1199) then HealHP(disc 1481)", "provenance": "4.4.53 path label, repo-authored reverse artifact", "safe_to_use": "NO", "reason": "4.4.53-labelled reverse evidence, and the artifact itself records the positive HealData consumer as unresolved"}
+        }
+      }
+    ],
+    "other_candidates_summary": [
+      {"skill_id": "110501", "exact_level_params": [0.5], "sp_base": 20, "bp_need": -1, "bp_add": 1, "show_stance_list": [30, 0, 0], "type": "Normal", "tag": "SingleAttack", "fields_safe_to_use": ["source_id"]},
+      {"skill_id": "110503", "exact_level_params": [0.092, 92], "sp_base": 5, "bp_need": -1, "show_stance_list": [0, 0, 0], "type": "Ultra", "tag": "Restore", "fields_safe_to_use": ["source_id"]},
+      {"skill_id": "130701", "exact_level_params": [0.3, 0.5, 0.5], "sp_base": 20, "bp_need": -1, "bp_add": 1, "show_stance_list": [30, 0, 0], "type": "Normal", "tag": "SingleAttack", "fields_safe_to_use": ["source_id"]},
+      {"skill_id": "130702", "exact_level_params": [0.45, 1, 1, 0.148, 3], "sp_base": 30, "bp_need": 1, "show_stance_list": [60, 0, 30], "type": "BPSkill", "tag": "Blast", "fields_safe_to_use": ["source_id"]}
+    ],
+    "field_closure_candidates": 0
+  },
+
+  "repository_wide_counts": {
+    "static_skills_scanned": 664,
+    "criterion": "a candidate qualifies as EXACT_BEHAVIOR_JOIN_FOUND only if an artifact explicitly binds both the numeric static SkillID and a behavior identity (same object, or an artifact that declares the cross-file relation).",
+    "STATIC_ONLY": 664,
+    "EXACT_BEHAVIOR_JOIN_FOUND": 0,
+    "EXACT_BEHAVIOR_JOIN_FOUND_BUT_VERSION_WEAK": 0,
+    "REF02_FIELD_CANDIDATE": 0,
+    "discovery_only_not_counted_as_coverage": {
+      "avatar_config_skill_list_entries_with_consistent_label_route": 528,
+      "avatar_config_skill_list_entries_with_empty_trigger_key": 92,
+      "same_index_positions_contradicted_by_the_label_route": 175,
+      "note": "These are opportunity counts, not joins and not coverage. They must not be added to any Golden or coverage denominator."
+    }
+  },
+
+  "version_discipline": {
+    "exact_4_4_54": [
+      "data/db/hsr_content_4.4.54.sqlite (skills.payload provenance source_version=4.4.54, source_url static.nanoka.cc/hsr/4.4.54/...)",
+      "data/content/4.4.54/nanoka/* (fetch provenance log records version 4.4.54, 1055 records, 20 errors)"
+    ],
+    "4_4_53_PATH_LABEL": [
+      "data/raw/4.4.54/natasha_skill02_healhp_content_30.json (declares game_version 4.4.54; source.archive path D:\\StarRail_4.4.53\\...; archive_sha256 098ec31c...)",
+      "data/raw/4.4.54/ability_file_container_natasha_30.json (declares game_version 4.4.54; source.archive path under StarRail_4.4.53)",
+      "data/raw/4.4.54/ability_file_container_black_swan_validation_30.json (ledger records source_archive_path_version_label 4.4.53)",
+      "data/raw/4.4.53/manifest/* (black swan manifest set)",
+      "external_refs/TurnBasedGameData/* (project-pinned 4.4.0 dump; relation CLOSE_4.4.0_TO_4.4.54)"
+    ],
+    "CLOSE_4_4_0": [
+      "external_refs/TurnBasedGameData (pinned commit b11066beacc4de454b625fafc7ea3dd540c5bbf3, version_relation CLOSE_4.4.0_TO_4.4.54)",
+      "data/raw/4.4.54/manifest/black_swan_ability_headers_4.4.54.json (records commit b11066be..., version_relation CLOSE_4.4.0_TO_4.4.54)"
+    ],
+    "note": "An artifact stored under a 4.4.54 directory while internally recording a 4.4.53 source archive path is reported as BOTH facts. Nothing was upgraded from close-version or path-label to exact.",
+    "no_upgrade_performed": true
+  },
+
+  "new_evidence_found": [
+    {
+      "id": "NE-1",
+      "item": "Natasha declared-digest mismatch resolved as DIFFERENT_SERIALIZATION (CRLF vs LF).",
+      "strength": "MECHANICALLY_PROVEN",
+      "evidence": "declared c135173b... equals the SHA-256 of the named file after CRLF->LF normalisation; git blob sha1 identical at 4d27854 and HEAD; working tree clean; core.autocrlf=true.",
+      "removes": "The PROVENANCE_DIGEST_MISMATCH blocker for this artifact, mechanically.",
+      "does_not_remove": "SOURCE_VERSION_UNVERIFIED (the source archive path still carries a 4.4.53 label)."
+    },
+    {
+      "id": "NE-2",
+      "item": "The same-index SkillList correspondence is mechanically contradicted in 175 positions; the label route is consistent in 528 of 620 AvatarConfig skill-list entries.",
+      "strength": "MECHANICALLY_PROVEN_AS_EVIDENCE_NOT_AS_A_DECLARED_RELATION",
+      "evidence": "avatar 1105 index 5 and avatar 1107 index 5, plus 173 further positions, assign a different label under the two hypotheses.",
+      "use": "Rules out a tempting non-exact join and quantifies exactly what a declared avatar label rule would cover."
+    },
+    {
+      "id": "NE-3",
+      "item": "Every one of the five audited behavior_candidate values differs from the owner CharacterConfig's explicit EntryAbility for the corresponding label; 110503's candidate corresponds to PrepareAbility instead.",
+      "strength": "MECHANICALLY_PROVEN",
+      "evidence": "direct read of Avatar_Natasha_00_Config.json and Avatar_BlackSwan_00_Config.json SkillList.",
+      "use": "Tells Sol that the audited candidate column is not corroborated by the most explicit available content field, before any join rule is authorised."
+    },
+    {
+      "id": "NE-4",
+      "item": "The monster family already carries a declared SkillTriggerKey == CharacterConfig.SkillList.Name rule; the avatar family does not.",
+      "strength": "MECHANICALLY_PROVEN_DECLARATION",
+      "evidence": "monster_ai_sequence_id_binding_001.json :: binding_rule, with a non-zero A-type object count in that artifact only.",
+      "use": "Names the single missing edge precisely, as an authorisation decision rather than a discovery gap."
+    }
+  ],
+
+  "not_found": [
+    "No JSON object in the repository (0 of 1,897,439) contains both a skill-id key and an ability-name key.",
+    "No avatar CharacterConfig contains a numeric SkillID or a SkillTriggerKey field.",
+    "No artifact declares an avatar SkillID-to-behavior relation.",
+    "No exact content-derived REF02 field closure exists for any audited candidate.",
+    "No additional 4.4.54-native behavioral artifact was found beyond the already-consumed corpus."
+  ],
+
+  "no_fuzzy_join_promoted": true,
+  "no_runtime_code_written": true,
+  "production_files_modified": 0,
+  "existing_m12_records_modified": 0,
+  "git_writes": "NONE",
+
+  "reentry_recommendation": "MULTIPLE_NEW_EVIDENCE_ITEMS_REQUIRE_SOL_REVIEW",
+  "reentry_detail": "Three mechanically proven items and one declaration finding are new: the digest mismatch is a serialization artifact (NE-1), the same-index shortcut is disproven (NE-2), the audited candidates disagree with the explicit EntryAbility field (NE-3), and the missing edge is a single undeclared cross-table equivalence that already exists in declared form for the monster family (NE-4). None of these is a promoted exact join and none closes a REF02 field, so this change request does not assert that M12 is unblocked."
+}
