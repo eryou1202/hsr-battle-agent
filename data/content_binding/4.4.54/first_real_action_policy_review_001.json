@@ -1,0 +1,170 @@
+{
+  "schema": "M12FirstRealActionPolicyReview/1",
+  "version": "1.0.0",
+  "change_request_id": "CR-M12-FIRST-REAL-ACTION-POLICY-20260926-001",
+  "content_target": "HSR-4.4.54",
+  "starting_head": "819b23ff29bef1732136da1419bfa96e6510796e",
+  "branch": "terra/implementation",
+  "review_scope": "NARROW_FIRST_REAL_CONTENT_DAMAGE_ACTION",
+  "outcome": "NO_SAFE_MINIMAL_FIELD_CANDIDATE",
+  "first_real_action_selected": null,
+  "first_4_4_54_content_bound_reference_action": false,
+  "content_bound_battle_sandbox": "NOT_ESTABLISHED",
+  "source_boundary": {
+    "source_repository": "TurnBasedGameData",
+    "recorded_source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3",
+    "version_relation": "CLOSE_4.4.0_TO_4.4.54",
+    "exact_4_4_54_behavior_source_proven": false,
+    "note": "The exact 4.4.54 Avatar/Skill static identities do not promote close-version behavior into exact 4.4.54 execution evidence."
+  },
+  "candidate_selection_method": {
+    "population": "241 first-hop settlement bodies",
+    "damage_mixed_bodies": 185,
+    "one_extra_attack_property_field_count": 80,
+    "one_extra_field_breakdown": {
+      "SPHitRatio": 77,
+      "HitSplitRatio": 1,
+      "HitAngleHorizontal": 1,
+      "HitMotion": 1
+    },
+    "method": "Rechecked the first-hop owner/skill edges and streamed the compiler report. The two records have only the named extra AttackProperty field among operations diagnosed EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS; this does not imply whole-body closure.",
+    "inputs": [
+      "data/content_binding/4.4.54/content_first_hop_blocker_audit_001.json",
+      "data/content_binding/4.4.54/content_residual_blocker_frontier_001.json",
+      "data/semantics/4.4.54/full_reconstruction/full_content_behavior_compiler_report_001.json",
+      "src/hsr_battle_agent/game_data/behavior_compiler.py"
+    ]
+  },
+  "field_review": {
+    "HitAngleHorizontal": {
+      "classification": "UNRESOLVED",
+      "raw_candidate_value": -80,
+      "evidence": [
+        "The exact Phainon AttackProperty contains HitAngleHorizontal next to HitAnimation and HitEffect; the field name and neighboring values do not prove settlement irrelevance.",
+        "behavior_compiler.py accepts HitAngleVertical as local visual metadata but explicitly rejects HitAngleHorizontal as EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS.",
+        "astra_damage_survival_v1.json calls RandomHitAngleHorizontal a separate presentation-direction input; it does not establish the consumer or effect of non-random HitAngleHorizontal.",
+        "No HitAngleHorizontal consumer or settlement/presentation partition exists in the current REF02 adapter, reference executor, or survival reference code."
+      ],
+      "lossless_source_retention_required": true,
+      "settlement_field_filter_authorized": false
+    },
+    "HitMotion": {
+      "classification": "UNRESOLVED",
+      "raw_candidate_value": {
+        "FallTime": 0.1,
+        "HangBeginHeightRatio": 0.57,
+        "HangPeakTime": 0.2,
+        "HangTime": 0.58,
+        "Offset": {"X": 0, "Y": 5.5, "Z": 0},
+        "RiseTime": 0.1
+      },
+      "evidence": [
+        "The source supplies motion geometry and timing values, but no reviewed consumer establishes that they cannot affect settlement or a state commit.",
+        "The raw discovery names EntityHitMotion as a type, which establishes identity only, not behavior.",
+        "behavior_compiler.py rejects HitMotion as EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS; REF02 and survival reference code do not provide a HitMotion partition."
+      ],
+      "lossless_source_retention_required": true,
+      "settlement_field_filter_authorized": false
+    }
+  },
+  "candidates": [
+    {
+      "candidate_field": "HitAngleHorizontal",
+      "avatar_id": "1408",
+      "skill_id": "140802",
+      "skill_trigger_key": "Skill02",
+      "entry_ability": "Avatar_Phainon_00_Skill02_Phase01",
+      "effect_body": "Avatar_Phainon_00_Skill02_Phase02",
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_Phainon_00_Ability.json",
+      "source_sha256": "62705a8c076af05458e2d8c4465dd47c4c335fa7fe287a14abfcf1d9c447fb1b",
+      "root_to_body": "Phase01 OnStart[4] TriggerAbility names Phase02; trigger execution semantics remain local/unproven.",
+      "ordered_on_start": [
+        "0 WaitAnimState Skill02@0.08",
+        "1 IncludeTaskListTemplate Phainon_00_Passive_ChargeEnergyToGainSP",
+        "2 WaitAnimState Skill02@0.525",
+        "3 TriggerAnimState target=AbilityTargetAndAdjoinEntity",
+        "4 WaitAnimState Skill02@0.554",
+        "5 AddModifier M_Phainon_00_Skill02_TargetTimeslow target=AbilityTargetEntity + AbilityTargetAdjoinEntity",
+        "6 DamageByAttackProperty target=AbilityTargetEntity HitAngleHorizontal=-80",
+        "7 DamageByAttackProperty target=AbilityTargetAdjoinEntity HitAngleHorizontal=-80",
+        "8 DamagePerformFinish",
+        "9 SkillPerformFinish"
+      ],
+      "all_wait_ordinals": [0, 2, 4],
+      "attack_property_fields_each_damage": [
+        "$type", "DamagePercentage", "DamageType", "HitAngleHorizontal", "HitAnimation", "HitEffect", "HitEffectHeight", "StanceValue"
+      ],
+      "original_structural_blockers": [
+        "WaitAnimState@0", "WaitAnimState@2", "WaitAnimState@4", "TargetTimeSlow in modifier callback"
+      ],
+      "counterfactual_residual_blockers": [
+        "EXECUTABLE_REFERENCE_ADD_MODIFIER_ARGUMENTS_UNSUPPORTED",
+        "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS at both damage requests",
+        "IncludeTaskListTemplate/charge-energy-to-SP closure unproven",
+        "TargetTimeSlow modifier callback unresolved"
+      ],
+      "sibling_state_effects": ["IncludeTaskListTemplate with dynamic resource argument", "AddModifier before damage", "modifier callback RemoveSelfModifier and unresolved TargetTimeSlow"],
+      "wait_decision": "WAIT_REMAINS_HARD_BLOCKER",
+      "wait_reason": "Three waits precede or separate the template, modifier, and settlement path. Existing evidence does not prove that headless execution can cross them without affecting resource, modifier, or callback ordering.",
+      "complete_action_closure": "BLOCKED",
+      "additional_blockers_beyond_wait_and_reviewed_field": true,
+      "m10_target_shape": "BLOCKED: two explicit damage target aliases and a modifier target set exceed the M10 single-target envelope."
+    },
+    {
+      "candidate_field": "HitMotion",
+      "avatar_id": "1506",
+      "skill_id": "150601",
+      "skill_trigger_key": "Skill01",
+      "entry_ability": "Avatar_SilverWolf999_00_Skill01_Phase01",
+      "effect_body": "Avatar_SilverWolf999_00_Skill01_Phase02",
+      "source_path": ".external_refs/TurnBasedGameData/files/Config/ConfigAbility/Avatar/Avatar_SilverWolf999_00_Ability.json",
+      "source_sha256": "4b36bc0755b92c5fec8488761e3b419a83ea146b7d5c76f7a06a83f878b68a95",
+      "root_to_body": "Phase01 OnStart[2] TriggerAbility names Phase02; trigger execution semantics remain local/unproven.",
+      "ordered_on_start": [
+        "0 WaitAnimState Skill01@0.148",
+        "1 DamageByAttackProperty target=AbilityTargetEntity HitMotion=source object",
+        "2 PredicateTaskList ByContainBehaviorFlag(Caster,ElationEchoPoint): SuccessTaskList[0] DamageByAttackProperty",
+        "3 DamagePerformFinish",
+        "4 SkillPerformFinish"
+      ],
+      "all_wait_ordinals": [0],
+      "first_damage_attack_property_fields": [
+        "$type", "AttackType", "DamagePercentage", "DamageType", "HitAngleVertical", "HitAnimation", "HitMotion", "HitPosHeight", "StanceValue"
+      ],
+      "conditional_damage_attack_property_fields": [
+        "$type", "AttackType", "DamageType", "ElationDamagePercentage", "FormulaType"
+      ],
+      "original_blockers": [
+        "WaitAnimState@0",
+        "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS at OnStart[1]",
+        "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING at OnStart[2]/SuccessTaskList[0]"
+      ],
+      "counterfactual_residual_blockers": [
+        "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS",
+        "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING"
+      ],
+      "conditional_second_damage": "AttackType=ElationDamage, FormulaType=ByElationDamage, ElationDamagePercentage dynamic; outside the ordinary REF02 damage contract and cannot be discarded by assuming the behavior flag false.",
+      "wait_decision": "WAIT_REMAINS_HARD_BLOCKER",
+      "wait_reason": "The wait gates the first settlement in source order. No current gate proves that timing cannot affect the later behavior-flag branch or action completion.",
+      "complete_action_closure": "BLOCKED",
+      "additional_blockers_beyond_wait_and_reviewed_field": true
+    }
+  ],
+  "closure_decision": {
+    "full_action_closure": "BLOCKED",
+    "reference_packet_instantiated": false,
+    "m10_execution": "NOT_RUN",
+    "m11_consumption": "NOT_RUN",
+    "reason": "Neither candidate has a closed full ordered action body, even counterfactually after removing its reviewed damage-field diagnostic and WaitAnimState diagnostic. Exact 4.4.54 behavior-source provenance is also unverified.",
+    "sp_hit_ratio_policy_changed": false,
+    "hit_split_ratio_policy_changed": false,
+    "global_wait_anim_state_policy_changed": false,
+    "native_promotion": false,
+    "golden_count": 0,
+    "native_trace": "empty",
+    "m7": "deferred"
+  },
+  "master_update": "NOT_NEEDED: blocked review frontier is recorded here; existing M12 history and status remain unchanged.",
+  "production_files_modified": false,
+  "git_writes": false
+}
