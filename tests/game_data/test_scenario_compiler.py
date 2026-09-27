@@ -40,7 +40,7 @@ class ScenarioCompilerTest(unittest.TestCase):
             self.assertFalse(first["golden_eligible"])
             self.assertEqual(first["execution_status"], "STATIC_READY_BEHAVIOR_COMPILATION_REQUIRED")
 
-    def test_stage_template_can_be_overridden_without_flattening_waves(self) -> None:
+    def test_stage_template_waves_are_overlaid_not_replaced(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             compiler = self._compiler(Path(temporary))
             request = self._request()
@@ -48,7 +48,11 @@ class ScenarioCompilerTest(unittest.TestCase):
             request["enemy_waves"] = [{"wave_index": 7, "enemies": [{"monster_id": 1002030, "level": 66}]}]
             package = compiler.compile(request)
             self.assertEqual(package["source_stage"]["stage_id"], "420101")
-            self.assertEqual([wave["wave_index"] for wave in package["waves"]], [7])
+            # The template wave is retained and the caller wave is added.
+            self.assertEqual([wave["wave_index"] for wave in package["waves"]], [1, 7])
+            self.assertEqual([wave["wave_id"] for wave in package["waves"]], ["420101:1", None])
+            self.assertEqual([wave["origin"] for wave in package["waves"]], ["TEMPLATE", "CALLER"])
+            self.assertEqual([wave["override_applied"] for wave in package["waves"]], [False, False])
             self.assertTrue(any(binding["binding_id"].startswith("template:420101") for binding in package["buff_bindings"]))
 
     def test_unknown_ids_and_missing_seed_are_rejected(self) -> None:

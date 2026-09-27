@@ -1,0 +1,254 @@
+{
+  "schema": "scenario_contract_conformance/1",
+  "version": "1.1.0",
+  "change_request_id": "CR-P1-SCENARIO-CONTRACT-CONFORMANCE-20260927-001",
+  "correction_patch": "P1.1 SCENARIO CONTRACT CORRECTION (small patch; no P1 redesign)",
+  "task_type": "STATIC_PRODUCT_CONTRACT_WORK",
+  "branch": "terra/implementation",
+  "starting_head": "135c7445998e99bf1fee17d2cb31370b1a5215ac",
+  "closed_audit_defects": ["F2", "F3", "F4"],
+  "audit_defects_not_touched": ["F5 (loadout completeness -- explicitly UNTOUCHED)", "F6 (decision recorded only)", "F7", "F8", "F9", "F10", "F11"],
+  "p1_1_corrections": [
+    {
+      "finding": 1,
+      "subject": "F3 rule classification",
+      "was": "Every supplied non-empty victory_rule_id / defeat_rule_id was emitted as CALLER_DECLARED_LOCAL.",
+      "why_wrong": "A bare supplied string carries no information about whether it denotes a real game rule, an unknown identifier or a caller-owned local rule, and the pre-P1 contract defines no caller-owned rule input. Classifying it as caller-owned was not justified.",
+      "now": "absent/null/empty -> UNSPECIFIED; non-empty string -> UNKNOWN; non-string -> ScenarioCompileError. resolved_rule/authority stay null and execution_semantics stays NONE. CALLER_DECLARED_LOCAL remains in the vocabulary but is unreachable from the current bare-string input.",
+      "typed_local_rule_input_invented": "NO"
+    },
+    {
+      "finding": 2,
+      "subject": "Scenario package schema version",
+      "was": "Emitted hsr_battle_agent.scenario_package/1 while replacing the bare rules.victory_rule_id / defeat_rule_id strings with structured records.",
+      "why_wrong": "Replacing a field shape is not purely additive, so retaining /1 silently re-interpreted the contract.",
+      "now": "Emits hsr_battle_agent.scenario_package/2. The ambiguous bare-string fields are NOT restored. LEGACY_PACKAGE_SCHEMA records the superseded /1 shape.",
+      "documented": {
+        "scenario_package/1": "pre-P1 static shape (rules echoed bare victory_rule_id / defeat_rule_id strings)",
+        "scenario_package/2": "P0 static monster-resolution metadata + P1 explicit rule records + wave identity/origin/provenance contract"
+      },
+      "m10_custom_scenario_or_session_spec_schemas_touched": false
+    },
+    {
+      "finding": 3,
+      "subject": "Audit defect numbering",
+      "was": "P1-owned text stated that F5 was closed by the wave-overlay work.",
+      "why_wrong": "Audit F5 is LOADOUT COMPLETENESS and remains untouched. P1 closes F2, F3 and F4 only; wave-id retention and override provenance are part of F4 closure.",
+      "now": "Corrected in the scenario_compiler.py docstring, HANDOFF_MANIFEST.json, this control artifact, the contract document and the test module docstrings. No F5 implementation was added or modified.",
+      "f5_verification": "A dedicated test class asserts that no six-relic-slot rule is enforced and that skill_levels / trace rank_state / initial_state are still carried without validation, i.e. F5 behaviour is unchanged."
+    },
+    {
+      "finding": 4,
+      "subject": "Contract acceptance wording",
+      "was": "free_scenario_assembly_contract_v1.json claimed template compatibility includes addING/REMOVING enemies or Buffs.",
+      "why_wrong": "P1 implements no enemy or Buff removal mechanism, so the acceptance statement overstated the contract.",
+      "now": "The statement matches reality: template waves are retained by default; a matching caller wave_index replaces that wave's enemy set; a new caller wave_index adds a wave; template wave_id/provenance is retained; caller Buff bindings may be added and template Buff bindings remain. Removal is explicitly NOT claimed.",
+      "removal_semantics_invented": "NO"
+    },
+    {
+      "finding": 5,
+      "subject": "Golden / execution safety",
+      "reviewed": "golden_eligible is a static formula: not unresolved_behavior and unsupported_policy != 'opaque-disabled'. It never consults rule resolution.",
+      "confirmed": "An UNKNOWN rule cannot be read as resolved or executable: resolution_status is never RESOLVED, resolved_rule and authority stay null, and execution_semantics is always NONE.",
+      "deferred_requirement": "Once behavior gaps can close (a later behavior-execution CR), golden/executable eligibility MUST additionally require every rule reference to be RESOLVED. Today every compiled package has at least one unresolved behavior gap (an AvatarBehavior/MonsterBehavior/StageBuffBehavior entry per entity), so golden_eligible is always false and the missing gate is currently unreachable rather than satisfied.",
+      "scope": "Recorded as a deferred gate requirement only; no behavior execution was added."
+    }
+  ],
+  "final_contract_sync": {
+    "scope": "P1.1 FINAL CONTRACT SYNC ONLY -- documentation wording; no Python, frontend, M10-M15, semantics or test change",
+    "contradictions_fixed": [
+      {
+        "subject": "input wording for victory_rule_id / defeat_rule_id",
+        "was": "the input description called a supplied id an 'optional caller-declared victory/defeat rule identifier'",
+        "why_wrong": "a bare string carries no authority or ownership information, so it must not be described as caller-declared",
+        "now": "described as an optional victory/defeat rule reference; a bare string carries no authority or ownership information and is recorded as UNKNOWN (absent/null/empty -> UNSPECIFIED)"
+      },
+      {
+        "subject": "dsh_implementation_contract immutability sentence",
+        "was": "stated that the ScenarioCompiler 'produces an immutable ScenarioPackage'",
+        "why_wrong": "P1 explicitly decided IMMUTABILITY_DEFERRED, so the contract claimed a guarantee the code does not make",
+        "now": "states the actual guarantee -- deterministic, self-contained, copy-isolated, stable package_sha256 -- and states that immutable product typing is deferred hardening"
+      }
+    ],
+    "unchanged": ["scenario_package/2", "rule mapping", "overlay semantics", "tests", "production Python"]
+  },
+  "player_team_bound": {
+    "contract": "1 <= len(player_team) <= 4",
+    "constants": {"MIN_PLAYER_TEAM": 1, "MAX_PLAYER_TEAM": 4},
+    "zero_players": "REJECTED (ScenarioCompileError)",
+    "one_to_four_players": "ACCEPTED",
+    "five_or_more_players": "REJECTED (ScenarioCompileError)",
+    "duplicate_slot": "REJECTED (unchanged)",
+    "party_order_semantics_added": "NONE -- supplied slot identity is preserved verbatim; no gameplay party-order semantics were introduced",
+    "m10_custom_scenario_touched": false
+  },
+  "rule_resolution_representation": {
+    "decision": "Every victory/defeat rule reference is emitted as an explicit resolution record; bare rule-id strings are no longer echoed anywhere in the package.",
+    "record_shape": {
+      "requested_id": "string|null",
+      "resolution_status": "one of RULE_RESOLUTION_STATES",
+      "resolved_rule": "null",
+      "authority": "null",
+      "execution_semantics": "NONE"
+    },
+    "vocabulary": ["RESOLVED", "UNKNOWN", "CALLER_DECLARED_LOCAL", "UNSPECIFIED"],
+    "input_mapping": {"absent_or_null_or_empty": "UNSPECIFIED", "non_empty_string": "UNKNOWN", "non_string": "REJECTED (ScenarioCompileError)"},
+    "reachable_states": ["UNKNOWN", "UNSPECIFIED"],
+    "unreachable_states": ["RESOLVED", "CALLER_DECLARED_LOCAL"],
+    "chosen_outcome": "B -- UNKNOWN for a supplied identifier; UNSPECIFIED when absent. Option C (CALLER_DECLARED_LOCAL) is deliberately NOT reachable because no typed local-rule input exists in the contract.",
+    "rationale": "The static content layer has no victory/defeat rule catalogue (checked: the SQLite facade exposes no rule table; mode_metadata holds mode/challenge metadata only; the only rule-like tokens are opaque stage-authored level_win_condition/level_lose_condition strings). No supplied identifier can be promoted to RESOLVED, and a bare string cannot be shown to be caller-owned, so the honest classification is UNKNOWN.",
+    "no_invented_semantics": "No rule was mapped to any semantics; resolved_rule and authority stay null and execution_semantics stays NONE.",
+    "no_terminal_policy_mapping": "A scenario rule reference is never mapped onto an M10 terminal policy automatically.",
+    "package_rules_keys": ["rng_seed", "unsupported_policy", "victory_rule", "defeat_rule"],
+    "bare_string_fields_restored": false
+  },
+  "rule_execution_gate": {
+    "status": "DEFERRED_REQUIREMENT",
+    "requirement": "golden/executable eligibility must additionally require every rule reference to be RESOLVED",
+    "current_behaviour": "golden_eligible = (not unresolved_behavior) and (unsupported_policy != 'opaque-disabled'); rule resolution is not consulted",
+    "currently_unreachable": true,
+    "why": "Every compiled package carries at least one BEHAVIOR_COMPILATION_REQUIRED gap (one per Avatar, Monster and StageBuff), so unresolved_behavior is never empty and golden_eligible is always false today",
+    "owner": "a future behavior-execution CR; explicitly out of scope for P1/P1.1"
+  },
+  "template_overlay_semantics": {
+    "decision": "The resolved Stage template establishes the base ordered wave set; caller waves are overlaid, never replacing the template.",
+    "rule": [
+      "template waves establish the base ordered wave set",
+      "a caller wave whose wave_index matches a template wave REPLACES that wave's enemies and keeps the template wave identity",
+      "a caller wave with a previously unseen wave_index is ADDED",
+      "template waves the caller does not mention are RETAINED"
+    ],
+    "removal_mechanism": "None exists in this contract and none was invented; an omitted template wave is always retained.",
+    "enemy_or_buff_removal_claimed": false,
+    "ordering": "compiled waves are sorted by wave_index (deterministic)",
+    "duplicate_caller_wave_index": "REJECTED (ScenarioCompileError)",
+    "duplicate_template_wave_index": "REJECTED (ScenarioCompileError)"
+  },
+  "wave_id_retention": {
+    "decision": "Every compiled wave carries wave_index AND wave_id, plus origin and override_applied.",
+    "wave_id_values": {
+      "template_wave": "the Stage template wave_id (retained)",
+      "overridden_template_wave": "the Stage template wave_id (template identity retained)",
+      "caller_added_wave": "the caller-supplied wave_id, or null",
+      "free_scenario_wave": "the caller-supplied wave_id, or null"
+    },
+    "fabricated_native_wave_id": "NEVER -- a caller-created wave never receives a manufactured game wave_id"
+  },
+  "provenance_semantics": {
+    "decision": "A minimal explicit per-wave provenance block; no second general provenance framework was introduced.",
+    "wave_provenance_fields": ["source_stage_id", "template_wave_id", "template_wave_index", "caller_wave_index", "caller_wave_id"],
+    "wave_origin_vocabulary": ["TEMPLATE", "TEMPLATE_WITH_CALLER_OVERRIDE", "CALLER"],
+    "wave_fields": ["wave_index", "wave_id", "origin", "override_applied", "provenance", "enemies"],
+    "enemy_level": "Each enemy keeps its existing template_position {group_index, slot} and carries origin mirroring the wave origin; full source envelopes are not duplicated.",
+    "reuse": "Existing Source Package source_refs / entity envelopes are reused; the top-level source_stage block is unchanged."
+  },
+  "scenario_schema_decision": {
+    "decision": "B -- bumped to hsr_battle_agent.scenario_package/2",
+    "emitted": "hsr_battle_agent.scenario_package/2",
+    "superseded": "hsr_battle_agent.scenario_package/1",
+    "subject": "the rules block shape changed from bare victory_rule_id / defeat_rule_id strings to structured victory_rule / defeat_rule records",
+    "rationale": "Replacing the bare rule strings with structured records is not purely additive, so the version was bumped rather than silently re-interpreted. No exact-shape production consumer exists in the repository (checked across .py/.ts/.tsx/.js/.json/.md: only this control artifact, the audit handoff and scenario_compiler.py reference the scenario package), so this is the low-cost migration window.",
+    "v1_definition": "pre-P1 static shape",
+    "v2_definition": "P0 static monster-resolution metadata + P1 explicit rule records + wave identity/origin/provenance contract",
+    "bare_string_fields_restored": false,
+    "p0_resolution_field_retained": true,
+    "m10_custom_scenario_touched": false,
+    "m10_session_spec_schema_touched": false
+  },
+  "immutability_decision": {
+    "decision": "IMMUTABILITY_DEFERRED",
+    "rationale": "A frozen product type would change the type identity of every returned package and would have to survive deepcopy/pickle and json-based stable_hash; that is a broad consumer risk rather than a local change, and the CR permits deferral.",
+    "provided_instead": "deterministic package_sha256 + copy isolation (the returned package is deep-copied so it shares no mutable container with the caller request or the database facade)",
+    "f6_status": "recorded only; not expanded into a redesign"
+  },
+  "changed_files": [
+    {
+      "path": "src/hsr_battle_agent/game_data/scenario_compiler.py",
+      "sha256": "7ee6b4120916974913a4db07127d8e6c09c5d448c9d475a2c4ec16ea182c3ab1",
+      "size_bytes": 22399,
+      "change": "F2 player-team bound; F3 explicit rule-resolution records with non-empty string -> UNKNOWN; F4 deterministic Stage-template wave overlay with wave_id and provenance retention; PACKAGE_SCHEMA bumped to scenario_package/2 with LEGACY_PACKAGE_SCHEMA; docstring numbering corrected (F2/F3/F4 only, F5 explicitly untouched); copy-isolated return."
+    },
+    {
+      "path": "tests/game_data/test_scenario_contract_conformance.py",
+      "sha256": "0f0aa97dfea0376b677fe162b58d137457c72ed5022933aa50f0824894bb7a41",
+      "size_bytes": 30415,
+      "change": "50 focused tests: team bound, rule resolution (UNKNOWN mapping, UNSPECIFIED, CALLER_DECLARED_LOCAL unreachable, execution_semantics NONE), template overlay, wave-id retention, F5-untouched proofs, rule-execution safety, P0 regression, determinism, static boundary, schema /2 decision, real-database conformance."
+    },
+    {
+      "path": "tests/game_data/test_scenario_compiler.py",
+      "sha256": "cc76afe23334e735a5659a086694354727daab2b0f539260e59b2d5a67cb478b",
+      "size_bytes": 4264,
+      "change": "The pre-P1 test test_stage_template_can_be_overridden_without_flattening_waves asserted the audited (replace) behaviour, waves == [7]; it is renamed and updated to the contract-conformant overlay expectation [1, 7] with wave_id/origin/override_applied assertions. Unchanged by the P1.1 patch."
+    },
+    {
+      "path": "data/semantics/4.4.54/full_reconstruction/free_scenario_assembly_contract_v1.json",
+      "sha256": "0e16ac3a13f0ee38d74e5825f00ccc4ebbf5e236ee4376e2f6087bfafec58d2c",
+      "size_bytes": 9472,
+      "change": "Static contract documentation synchronised with the implemented compiler: optional caller wave_id on enemy_waves; rule ids described as references that a bare string leaves UNKNOWN; added compiler requirements; a static_contract_conformance block recording the team bound, the UNKNOWN rule mapping with its input table, the deferred rule-execution gate, the template overlay, wave identity retention and the scenario_package/2 schema decision; template_compatibility reworded to drop the enemy/Buff removal claim. Final P1.1 sync removed the residual 'caller-declared' input wording and replaced the 'immutable ScenarioPackage' sentence with the actual deterministic/self-contained/copy-isolated/stable-hash guarantee plus the IMMUTABILITY_DEFERRED note. No dynamic/behavior claim was altered."
+    }
+  ],
+  "unchanged_proof": {
+    "src/hsr_battle_agent/game_data/nanoka_content.py": {
+      "sha256": "84a399dc38405de217bf4a082d5cade6330f22012de532000c033730a887cc2e",
+      "note": "Byte-identical to the committed P0 state: P0 resolution semantics are unchanged."
+    },
+    "tests/game_data/test_scenario_entity_resolution_parity.py": {
+      "sha256": "52938911f2932e9ce3021176780c2234991f55e6e5486f0379c548cada1be969",
+      "note": "Unchanged; the full 12-test P0 parity suite still passes."
+    }
+  },
+  "frozen_layers": {
+    "reference_sandbox": {"aggregate_sha256": "c01da5b4f2035d385220f2261fc7ef3e03197a75d4b0061944af1ce0664072fe", "file_count": 4},
+    "reference_battle_planner": {"aggregate_sha256": "2d76048ba601be2e8b396c97f34ad54ed3c2dd594d3bac2c7757cc1387429ee9", "file_count": 5},
+    "battle_sandbox": {"aggregate_sha256": "bb0e26d288919ebe92a05f6e94dded2eece2ed1557c85ebc4c7d79249de4b39b", "file_count": 39},
+    "content_support": {"aggregate_sha256": "2f7686d5953582b4b0523f0319cdae5c4176419d0e8b6d2f1208ebb6780d9770", "file_count": 4},
+    "content_planner": {"aggregate_sha256": "cf5b7f96d618f34782925c98b6837a2aeae07dc3a5901750f065484310847610", "file_count": 3}
+  },
+  "frozen_layers_unchanged": true,
+  "frozen_milestones_modified": {"M10": 0, "M11": 0, "M12": 0, "M13": 0, "M14": 0, "M15": 0},
+  "quarantine_boundary": "game_data.scenario_compiler remains quarantined from the strict runtime path via battle_sandbox/reference_boundary.py; no M10-M15 runtime depends on it.",
+  "tests": {
+    "all_three_required_suites": {
+      "command": "python -m unittest -v tests.game_data.test_scenario_contract_conformance tests.game_data.test_scenario_compiler tests.game_data.test_scenario_entity_resolution_parity",
+      "tests_run": 65,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK"
+    },
+    "conformance": {
+      "command": "python -m unittest tests.game_data.test_scenario_contract_conformance",
+      "tests_run": 50,
+      "result": "OK"
+    },
+    "scenario_compiler": {
+      "command": "python -m unittest tests.game_data.test_scenario_compiler",
+      "tests_run": 3,
+      "result": "OK"
+    },
+    "p0_parity_regression": {
+      "command": "python -m unittest tests.game_data.test_scenario_entity_resolution_parity",
+      "tests_run": 12,
+      "result": "OK",
+      "note": "All P0 proofs still pass: canonical + variant-only resolution, stage 420101 compiles, requested variant ID preserved, frozen runtime packages free of the resolver."
+    },
+    "adjacent_regression": {
+      "command": "python -m unittest tests.game_data.test_nanoka_content_database tests.game_data.test_scenario_compiler",
+      "tests_run": 6,
+      "result": "OK"
+    }
+  },
+  "known_environment_issues": [
+    {
+      "test": "tests/game_data/test_external_reconstruction.py (both cases)",
+      "status": "PRE_EXISTING_ENVIRONMENTAL_NOT_CAUSED_BY_P1",
+      "detail": "Both cases error with PermissionError [WinError 32] deleting a temp-directory sqlite file during TemporaryDirectory.cleanup() on Windows. This is a teardown/GC-timing artefact, not an assertion failure: the failing test never imports game_data.scenario_compiler (verified: scenario_compiler is absent from sys.modules in the failing path), and the identical build path unlinks cleanly in a scratch reproduction that also never imports the module. Neither tests/game_data/test_external_reconstruction.py nor src/hsr_battle_agent/game_data/external_reconstruction.py is touched by this CR."
+    }
+  ],
+  "p0_resolution_regression": "PASS -- nanoka_content.py byte-identical; step-by-step P0 proofs re-verified (canonical MONSTER, variant-only MONSTER_VARIANT with proven parent, stage 420101 compiles, requested variant ID preserved verbatim).",
+  "runtime_semantics_added": false,
+  "real_content_execution": "DENIED",
+  "m10_m15_modified": false,
+  "frontend_modified": false,
+  "work_4_5_54": false,
+  "git_writes": false
+}

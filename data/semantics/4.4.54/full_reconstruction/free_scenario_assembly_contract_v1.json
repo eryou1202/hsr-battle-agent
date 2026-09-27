@@ -8,9 +8,9 @@
     "source_stage_id": "optional 4.4.54 Stage ID used only as provenance/template input",
     "mode": "standard/free or an explicitly implemented mode-rule ID",
     "player_team": [{"slot": "0..3", "avatar":{"avatar_id":"original game ID","level":"1..80","promotion":"canonical ascension index","eidolon":"0..6","skill_levels":{"basic":"explicit level","skill":"explicit level","ultimate":"explicit level","talent":"explicit level"},"trace_state":{"unlocked_trace_ids":"canonical Trace IDs","rank_state":"explicit optional rank map"}},"lightcone":{"lightcone_id":"original game ID","level":"1..80","promotion":"canonical ascension index","superimposition":"1..5"},"relics":[{"slot":"HEAD|HAND|BODY|FOOT|PLANAR_SPHERE|LINK_ROPE","template_or_piece_id":"canonical original ID","set_id":"original game ID","level":"0..15","main_affix_id":"canonical affix ID","sub_affixes":[{"affix_id":"canonical affix ID","roll_tiers":"explicit roll list"}]}],"initial_state":{"hp":"optional explicit value","energy":"optional explicit value","special_resources":"explicit supported resource map only","other_supported_overrides":"explicit named map only"}}],
-    "enemy_waves": [{"wave_index": "ordered integer", "enemies": [{"instance_id": "caller-owned unique ID", "monster_id": "original game ID", "level": "explicit integer", "initial_state_overrides": "explicit optional values only"}]}],
+    "enemy_waves": [{"wave_index": "ordered integer", "wave_id": "optional caller-owned wave ID; a fabricated native wave ID is never produced", "enemies": [{"instance_id": "caller-owned unique ID", "monster_id": "original game ID", "level": "explicit integer", "initial_state_overrides": "explicit optional values only"}]}],
     "buff_bindings": [{"binding_id": "caller-owned unique ID", "buff_id": "original/source ID", "scope": "battle|player_team|enemy_team|entity|wave", "owner_or_target": "explicit selector", "activation": "battle_start|wave_start|explicit trigger", "parameter_overrides": "explicit optional values only"}],
-    "rules": {"victory_rule_id": "explicit rule", "defeat_rule_id": "explicit rule", "rng_seed": "required deterministic seed", "unsupported_policy": "reject|opaque-disabled"}
+    "rules": {"victory_rule_id": "optional victory rule reference; a bare string carries no authority or ownership information and is recorded as UNKNOWN (absent/null/empty -> UNSPECIFIED)", "defeat_rule_id": "optional defeat rule reference; a bare string carries no authority or ownership information and is recorded as UNKNOWN (absent/null/empty -> UNSPECIFIED)", "rng_seed": "required deterministic seed", "unsupported_policy": "reject|opaque-disabled"}
   },
   "compiler_requirements": [
     "Resolve every Avatar, LightCone, RelicSet, Monster and Buff reference through canonical/SQLite data by original ID and game version.",
@@ -18,15 +18,41 @@
     "Resolve a Stage template before caller overrides, then retain both template provenance and override provenance.",
     "Reject dangling, cross-version, unavailable or semantically unsupported references unless the request explicitly selects opaque-disabled behavior.",
     "Compile entity behavior through the generic behavior IR; Scenario assembly must not read Nanoka or external raw JSON at runtime.",
-    "Emit a self-contained Scenario Package with resolved static records, behavior IDs, rules, provenance and explicit unsupported records."
+    "Emit a self-contained Scenario Package with resolved static records, behavior IDs, rules, provenance and explicit unsupported records.",
+    "Bound player_team to 1..4 combatants; zero and more than four are rejected, and duplicate slots remain rejected.",
+    "Represent every victory/defeat rule reference with an explicit resolution state so that a supplied identifier can never be read as a known or executable rule.",
+    "Retain the Stage template wave_id on every template-sourced wave, and record template and caller provenance separately for overlaid waves."
   ],
+  "static_contract_conformance": {
+    "implemented_in": "src/hsr_battle_agent/game_data/scenario_compiler.py",
+    "player_team_bound": "1 <= len(player_team) <= 4; MIN_PLAYER_TEAM=1, MAX_PLAYER_TEAM=4",
+    "rule_reference_representation": {
+      "shape": {"requested_id": "string|null", "resolution_status": "RESOLVED|UNKNOWN|CALLER_DECLARED_LOCAL|UNSPECIFIED", "resolved_rule": "null", "authority": "null", "execution_semantics": "NONE"},
+      "input_mapping": {"absent_or_null_or_empty": "UNSPECIFIED", "non_empty_string": "UNKNOWN", "non_string": "ScenarioCompileError"},
+      "reachable_states": ["UNKNOWN", "UNSPECIFIED"],
+      "unreachable_states": ["RESOLVED", "CALLER_DECLARED_LOCAL"],
+      "rationale": "The static content layer holds no victory/defeat rule catalogue, so no supplied identifier is promoted to RESOLVED. A bare string also does not say whether it denotes a real game rule, an unknown identifier or a caller-owned local rule, so it is classified UNKNOWN rather than caller-owned; CALLER_DECLARED_LOCAL would require a typed local-rule declaration that this contract does not define.",
+      "no_terminal_policy_mapping": "A scenario rule reference is never mapped onto an M10 terminal policy automatically.",
+      "rule_execution_gate": "DEFERRED REQUIREMENT: once behavior gaps can close, golden/executable eligibility must additionally require every rule reference to be RESOLVED. Today the static formula consults behavior gaps and policy only, and behavior compilation is always pending, so golden_eligible is always false."
+    },
+    "template_overlay": "The resolved Stage template establishes the base ordered wave set. A caller wave whose wave_index matches a template wave replaces that wave's enemies and keeps the template wave identity; a caller wave with a new wave_index is added; template waves the caller does not mention are retained. No wave-removal mechanism exists in this contract and none is invented.",
+    "wave_identity_retention": "Every compiled wave carries wave_index, wave_id (template wave_id, caller-supplied wave_id, or null), origin (TEMPLATE|TEMPLATE_WITH_CALLER_OVERRIDE|CALLER), override_applied and a provenance block {source_stage_id, template_wave_id, template_wave_index, caller_wave_index, caller_wave_id}. A native game wave_id is never manufactured for a caller-created wave.",
+    "scenario_schema_decision": {
+      "emitted": "hsr_battle_agent.scenario_package/2",
+      "v1": "pre-P1 static shape, whose rules block echoed bare victory_rule_id / defeat_rule_id strings",
+      "v2": "P0 static monster-resolution metadata + P1 explicit rule records + wave identity/origin/provenance contract",
+      "rationale": "Replacing the bare rule strings with structured records is not purely additive, so the version was bumped rather than silently re-interpreted. There are no exact-shape production consumers, so this is the low-cost migration window.",
+      "not_touched": "M10 CustomScenario / ReferenceSessionSpec schemas are unrelated and were not modified."
+    },
+    "immutability_decision": "IMMUTABILITY_DEFERRED -- the package is copy-isolated and hash-deterministic but remains a plain object; a frozen product type is a separate hardening CR."
+  },
   "acceptance": {
     "minimum_fixture": "Two arbitrary valid avatars with loadouts, two arbitrary monsters in two ordered waves, and one Battle/Team/Enemy Buff binding compile to a self-contained deterministic package.",
     "stage_independence": "The same fixture compiles with source_stage_id absent.",
-    "template_compatibility": "A supported Stage Package may be imported then modified by adding/removing enemies or Buffs without losing wave ordering/provenance.",
-    "implemented_static_assembly": "src/hsr_battle_agent/game_data/scenario_compiler.py validates and resolves the specified static entities, waves, Stage template provenance and Buff bindings with deterministic package hashes.",
+    "template_compatibility": "A supported Stage Package may be imported then overlaid by caller input without losing wave ordering or provenance. Concretely: template waves are retained by default; a caller wave whose wave_index matches a template wave replaces that wave's enemy set while keeping the template wave identity; a caller wave with a new wave_index adds a wave; template wave_id and provenance are retained; caller Buff bindings may be added and template Buff bindings remain. This contract provides NO enemy or Buff removal mechanism, and none is claimed.",
+    "implemented_static_assembly": "src/hsr_battle_agent/game_data/scenario_compiler.py validates and resolves the specified static entities, waves, Stage template provenance and Buff bindings with deterministic package hashes. It enforces the 1..4 player bound, emits explicit rule-resolution records and overlays caller waves on the Stage template without dropping template wave identity or provenance.",
     "not_yet_claimed": ["generic behavior compiler", "Buff runtime semantics", "mode semantics", "production BattleState construction"]
   },
   "opaque_disabled_rule": "opaque-disabled is restricted to debug, inspection and partial-reconstruction diagnostics. A ScenarioPackage containing a behavior-affecting disabled operation is invalid for GOLDEN_TESTED, executable coverage success, full-freeze coverage, planner validation or training corpus use.",
-  "dsh_implementation_contract": "Implement a pure ScenarioCompiler that validates this input, resolves canonical records, produces an immutable ScenarioPackage, and reports unresolved behavior IDs before BattleState construction. Do not encode a hard dependency on a fully enumerated Stage database."
+  "dsh_implementation_contract": "Implement a pure ScenarioCompiler that validates this input, resolves canonical records, produces a deterministic, self-contained, copy-isolated ScenarioPackage with a stable package_sha256, and reports unresolved behavior IDs before BattleState construction. Immutable product typing is deferred hardening (IMMUTABILITY_DEFERRED); the current guarantee is determinism, self-containment, copy isolation and a stable package hash. Do not encode a hard dependency on a fully enumerated Stage database."
 }
