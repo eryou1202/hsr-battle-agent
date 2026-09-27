@@ -3,6 +3,12 @@
 This is the SCENARIO-FREE-001 static assembly layer.  It validates selected
 content and preserves all identity/provenance, but deliberately does not
 execute behavior IR or construct a mutable BattleState.
+
+Monster references are resolved through the single static identity authority
+``ContentDatabase.resolve_monster`` so that a Scenario Package and a real Stage
+Package can never disagree about whether a placement is known.  The resolution
+record is static identity data only; it is never an AI, skill, phase or
+execution claim.
 """
 from __future__ import annotations
 
@@ -10,7 +16,9 @@ from copy import deepcopy
 from typing import Any, Mapping, Sequence
 
 from .external_reconstruction import ReferenceEvaluator
-from .nanoka_content import ContentDatabase, stable_hash
+from .nanoka_content import (
+    MONSTER_RESOLUTION_IDENTITY_FIELDS, ContentDatabase, stable_hash,
+)
 
 
 class ScenarioCompileError(ValueError):
@@ -163,14 +171,25 @@ class ScenarioCompiler:
                 monster_id = enemy.get("monster_id")
                 if monster_id is None:
                     raise ScenarioCompileError(f"wave {wave_index} enemy {enemy_position} has no monster_id")
-                monster = self.database.get_monster(str(monster_id))
-                if monster is None:
+                resolution = self.database.resolve_monster(str(monster_id))
+                if resolution is None:
                     raise ScenarioCompileError(f"unknown monster: {monster_id}")
                 instance_id = str(enemy.get("instance_id", f"wave:{wave_index}:enemy:{enemy_position}"))
                 if instance_id in instances:
                     raise ScenarioCompileError(f"duplicate enemy instance_id: {instance_id}")
                 instances.add(instance_id)
-                enemies.append({"instance_id": instance_id, "monster_id": str(monster_id), "level": int(enemy.get("level", 1)), "monster": monster, "initial_state_overrides": dict(self._mapping(enemy.get("initial_state_overrides"))), "template_position": {"group_index": enemy.get("group_index"), "slot": enemy.get("slot")}})
+                # ``monster_id`` keeps the caller's requested ID verbatim; the
+                # resolution record states which static identity kind answered
+                # it and the proven canonical parent, when there is one.
+                enemies.append({
+                    "instance_id": instance_id,
+                    "monster_id": str(monster_id),
+                    "level": int(enemy.get("level", 1)),
+                    "monster": resolution["entity"],
+                    "resolution": {name: resolution[name] for name in MONSTER_RESOLUTION_IDENTITY_FIELDS},
+                    "initial_state_overrides": dict(self._mapping(enemy.get("initial_state_overrides"))),
+                    "template_position": {"group_index": enemy.get("group_index"), "slot": enemy.get("slot")},
+                })
             if not enemies:
                 raise ScenarioCompileError(f"wave {wave_index} has no enemies")
             compiled.append({"wave_index": wave_index, "enemies": enemies})

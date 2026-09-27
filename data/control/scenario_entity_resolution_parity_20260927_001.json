@@ -1,0 +1,147 @@
+{
+  "schema": "scenario_entity_resolution_parity/1",
+  "version": "1.0.0",
+  "change_request_id": "CR-P0-SCENARIO-ENTITY-RESOLUTION-PARITY-20260927-001",
+  "task_type": "STATIC_CONTENT_FIX",
+  "audited_defect": "F1",
+  "audited_defect_summary": "ScenarioCompiler._compile_waves resolved Monster placements with get_monster only, while ContentDatabase.get_stage_package resolved them with get_monster OR monster_variants. The two static identity rules disagreed for 823/6717 (12.2%) of the real 4.4.54 wave placements, so a Scenario Package could reject a Monster placement that the Stage Package reported RESOLVED (e.g. source_stage_id=420101 raised 'unknown monster: 100401401').",
+  "branch": "terra/implementation",
+  "starting_head": "24ccb9bc01f7e20bf215b9b1aa96f3e346e7ed2a",
+  "resolution_rule": {
+    "authority": "hsr_battle_agent.game_data.nanoka_content.ContentDatabase.resolve_monster",
+    "shared_by": [
+      "ContentDatabase.get_stage_package",
+      "hsr_battle_agent.game_data.scenario_compiler.ScenarioCompiler._compile_waves"
+    ],
+    "precedence": [
+      "canonical monsters record wins (resolved_kind=MONSTER)",
+      "monster_variants record is accepted as an equally static second identity (resolved_kind=MONSTER_VARIANT)"
+    ],
+    "canonical_parent_rule": "A variant reports canonical_monster_id only when the variant payload's own monster_id field resolves to an existing monsters record; an unproven parent is reported as null rather than guessed.",
+    "identity_fields": [
+      "requested_id",
+      "resolved_kind",
+      "canonical_monster_id",
+      "variant_id"
+    ],
+    "requested_id_policy": "The caller-requested monster_id is preserved verbatim; the canonical parent is never substituted for the requested identity.",
+    "no_new_semantics": [
+      "no fuzzy or name matching",
+      "no cross-version fallback",
+      "no parent invention",
+      "no AI / skill / phase / execution semantics"
+    ]
+  },
+  "modified_files": [
+    {
+      "path": "src/hsr_battle_agent/game_data/nanoka_content.py",
+      "sha256": "84a399dc38405de217bf4a082d5cade6330f22012de532000c033730a887cc2e",
+      "size_bytes": 80255,
+      "change": "Added module constants MONSTER_RESOLUTION_KINDS and MONSTER_RESOLUTION_IDENTITY_FIELDS, added public method ContentDatabase.resolve_monster (single static identity authority), and refactored get_stage_package's monster loop to consume the shared authority. get_stage_package output shape is unchanged."
+    },
+    {
+      "path": "src/hsr_battle_agent/game_data/scenario_compiler.py",
+      "sha256": "d3ba4e0fe2f9173707b11bb18d23aed739aa924d9de4aa6deedc3daf3558d523",
+      "size_bytes": 13661,
+      "change": "ScenarioCompiler._compile_waves now resolves via database.resolve_monster and records a static 'resolution' dict per enemy (requested_id, resolved_kind, canonical_monster_id, variant_id). monster_id keeps the caller's requested ID verbatim. Module docstring documents the shared authority."
+    },
+    {
+      "path": "tests/game_data/test_scenario_entity_resolution_parity.py",
+      "sha256": "52938911f2932e9ce3021176780c2234991f55e6e5486f0379c548cada1be969",
+      "size_bytes": 17734,
+      "change": "New focused parity test module: offline A-H proofs against the fixture database and a real-placement parity sweep against the local 4.4.54 database (skipped when the DB is absent)."
+    }
+  ],
+  "frozen_files_untouched": true,
+  "frozen_milestones_modified": {
+    "M10": 0,
+    "M11": 0,
+    "M12": 0,
+    "M13": 0,
+    "M14": 0,
+    "M15": 0
+  },
+  "frozen_layers": {
+    "reference_sandbox": {"aggregate_sha256": "c01da5b4f2035d385220f2261fc7ef3e03197a75d4b0061944af1ce0664072fe", "file_count": 4, "resolver_references": 0},
+    "reference_battle_planner": {"aggregate_sha256": "2d76048ba601be2e8b396c97f34ad54ed3c2dd594d3bac2c7757cc1387429ee9", "file_count": 5, "resolver_references": 0},
+    "battle_sandbox": {"aggregate_sha256": "bb0e26d288919ebe92a05f6e94dded2eece2ed1557c85ebc4c7d79249de4b39b", "file_count": 39, "resolver_references": 0},
+    "content_support": {"aggregate_sha256": "2f7686d5953582b4b0523f0319cdae5c4176419d0e8b6d2f1208ebb6780d9770", "file_count": 4, "resolver_references": 0},
+    "content_planner": {"aggregate_sha256": "cf5b7f96d618f34782925c98b6837a2aeae07dc3a5901750f065484310847610", "file_count": 3, "resolver_references": 0}
+  },
+  "quarantine_boundary": "game_data.scenario_compiler remains quarantined from the strict runtime path (battle_sandbox/reference_boundary.py). No M10-M15 runtime depends on the resolver.",
+  "test_results": {
+    "command": "python -m unittest tests.game_data.test_scenario_entity_resolution_parity -v",
+    "tests_run": 12,
+    "failures": 0,
+    "errors": 0,
+    "result": "OK",
+    "duration_seconds": 17.277,
+    "cases": [
+      "ResolutionParityTest.test_a_canonical_monster_id_still_resolves ... ok",
+      "ResolutionParityTest.test_b_variant_only_ids_resolve_exactly_as_the_stage_package_does ... ok",
+      "ResolutionParityTest.test_c_requested_variant_identity_is_never_rewritten ... ok",
+      "ResolutionParityTest.test_d_unknown_monster_and_variant_ids_are_still_rejected ... ok",
+      "ResolutionParityTest.test_e_cross_version_behaviour_is_unchanged ... ok",
+      "ResolutionParityTest.test_f_free_scenario_without_a_stage_template_still_works ... ok",
+      "ResolutionParityTest.test_g_stage_420101_now_compiles_statically ... ok",
+      "ResolutionParityTest.test_h_no_runtime_or_evidence_status_is_promoted ... ok",
+      "ResolutionParityTest.test_frozen_runtime_layers_do_not_depend_on_the_resolver ... ok",
+      "RealStagePlacementParityTest.test_every_known_placement_resolves_with_the_shared_rule ... ok",
+      "RealStagePlacementParityTest.test_stage_package_and_scenario_resolver_agree_on_variant_bearing_stages ... ok",
+      "RealStagePlacementParityTest.test_real_stage_420101_compiles_with_proven_variant_parents ... ok"
+    ]
+  },
+  "adjacent_regression_results": {
+    "command": "python -m unittest tests.game_data.test_scenario_compiler tests.game_data.test_nanoka_content_database",
+    "tests_run": 6,
+    "failures": 0,
+    "errors": 0,
+    "result": "OK",
+    "duration_seconds": 79.816,
+    "note": "The two suites that directly exercise the modified modules (scenario_compiler, nanoka_content) still pass unchanged."
+  },
+  "real_stage_420101": {
+    "status": "COMPILES_STATICALLY",
+    "previous_behaviour": "ScenarioCompileError: unknown monster: 100401401",
+    "placed_monster_ids": ["100202001", "100203001", "100401401"],
+    "resolved_kinds": ["MONSTER_VARIANT"],
+    "canonical_monster_ids": ["1002020", "1002030", "1004014"],
+    "execution_status": "STATIC_READY_BEHAVIOR_COMPILATION_REQUIRED",
+    "golden_eligible": false
+  },
+  "known_placements_checked": {
+    "source": "data/db/hsr_content_4.4.54.sqlite",
+    "database_sha256": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692",
+    "database_size_bytes": 80343040,
+    "total_wave_placements": 6717,
+    "distinct_placement_ids": 336,
+    "canonical_monster_records": 628,
+    "monster_variant_records": 2648,
+    "variant_only_distinct_ids": 188,
+    "variant_only_placements": 823,
+    "unproven_variant_parents": 0,
+    "unresolved_placements": 0
+  },
+  "parity_result": {
+    "stage_package_output_identity": "IDENTICAL",
+    "stages_checked": 1459,
+    "package_sha256_mismatches": 0,
+    "unknown_reference_differences": 0,
+    "method": "Monkeypatched resolve_monster to emulate the pre-refactor get_monster-or-variant expression, then compared get_stage_package package_sha256 and unknown_references for all 1,459 stages (tmp/audit/stage_package_equivalence_sweep.py).",
+    "artifact": "tmp/audit/scenario_entity_resolution_parity_sweep.json"
+  },
+  "scope_boundary": {
+    "defects_fixed": ["F1"],
+    "defects_not_touched": ["F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11"],
+    "frontend_modified": false,
+    "m10_m15_modified": false,
+    "work_4_5_54": false,
+    "new_runtime_semantics_added": false
+  },
+  "claim_boundary": {
+    "real_content_execution": "DENIED",
+    "m15_admission": "REJECTED_ONLY",
+    "golden_count": 0
+  },
+  "git_writes": false
+}

@@ -1455,6 +1455,22 @@ def sqlite_logical_hash(path: Path) -> str:
         connection.close()
 
 
+#: The two static identity kinds a Monster reference may resolve to.  A Stage
+#: placement may legally name either a canonical Monster record or one of that
+#: Monster's MonsterVariant records; both are static identity facts.
+MONSTER_RESOLUTION_KINDS = ("MONSTER", "MONSTER_VARIANT")
+
+#: Identity fields carried by :meth:`ContentDatabase.resolve_monster`.  The
+#: resolved entity envelope is deliberately excluded so callers embed only the
+#: identity facts in their own documents.
+MONSTER_RESOLUTION_IDENTITY_FIELDS = (
+    "requested_id",
+    "resolved_kind",
+    "canonical_monster_id",
+    "variant_id",
+)
+
+
 class ContentDatabase:
     """Read-only stable query facade for Canonical SQLite content."""
 
@@ -1522,6 +1538,56 @@ class ContentDatabase:
     def get_monster(self, monster_id: str | int) -> dict[str, Any] | None:
         return self._entity("monsters", monster_id)
 
+    def resolve_monster(self, monster_id: str | int) -> dict[str, Any] | None:
+        """Resolve one static Monster reference by its original ID.
+
+        This is the single static identity-resolution rule for Monster
+        references; :meth:`get_stage_package` and the static Scenario compiler
+        both consume it so they can never disagree about whether a placement is
+        known.
+
+        Precedence is deliberate: a canonical ``monsters`` record wins, and a
+        ``monster_variants`` record is accepted as a second, equally static
+        identity.  The canonical parent of a variant is reported only when the
+        variant payload's own ``monster_id`` field resolves to an existing
+        Monster record; an unproven parent is reported as ``None`` rather than
+        guessed.  There is no fuzzy or name matching, no cross-version
+        fallback, and no path that invents a parent.
+
+        The result is a static identity record.  It carries no AI, skill,
+        phase or other runtime semantics, and it must not be read as an
+        execution claim.  Returns ``None`` when the ID is unknown.
+
+        Keys: ``requested_id``, ``resolved_kind`` (one of
+        :data:`MONSTER_RESOLUTION_KINDS`), ``canonical_monster_id``,
+        ``variant_id`` and ``entity`` (the resolved Canonical entity envelope,
+        for callers that embed it directly).
+        """
+        requested_id = str(monster_id)
+        monster = self.get_monster(requested_id)
+        if monster is not None:
+            return {
+                "requested_id": requested_id,
+                "resolved_kind": "MONSTER",
+                "canonical_monster_id": requested_id,
+                "variant_id": None,
+                "entity": monster,
+            }
+        variant = self._entity("monster_variants", requested_id)
+        if variant is None:
+            return None
+        parent = _mapping(variant.get("data")).get("monster_id")
+        canonical: str | None = None
+        if parent is not None and self.get_monster(str(parent)) is not None:
+            canonical = str(parent)
+        return {
+            "requested_id": requested_id,
+            "resolved_kind": "MONSTER_VARIANT",
+            "canonical_monster_id": canonical,
+            "variant_id": requested_id,
+            "entity": variant,
+        }
+
     def get_encounter(self, encounter_id: str) -> dict[str, Any] | None:
         return self._entity("encounters", encounter_id)
 
@@ -1560,7 +1626,10 @@ class ContentDatabase:
             for monster_payload, monster_provenance in rows:
                 monster_data = json.loads(monster_payload)
                 monster_id = str(monster_data["monster_id"])
-                resolution = self.get_monster(monster_id) or self._entity("monster_variants", monster_id)
+                # Single static identity-resolution authority; a canonical
+                # Monster record or one of its MonsterVariant records both
+                # count as known.  Output shape is unchanged.
+                resolution = self.resolve_monster(monster_id)
                 if resolution is None:
                     unresolved.append({"kind": "monster", "monster_id": monster_id, "status": "UNKNOWN"})
                 monsters.append({
