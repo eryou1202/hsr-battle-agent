@@ -876,9 +876,13 @@ class EnumerationBoundaryTest(unittest.TestCase):
     def test_facade_refuses_non_enumerable_tables(self) -> None:
         from hsr_battle_agent.game_data.nanoka_content import ContentDatabaseError
 
+        # P3 widened the allow-list to stages/encounters, but it stays narrow:
+        # a table outside it is still refused.
         with self.assertRaises(ContentDatabaseError):
-            self.database._entity_ids("stages")
-        self.assertEqual(self.database.ENUMERABLE_ENTITY_TABLES, ("avatars", "monsters"))
+            self.database._entity_ids("waves")
+        for expected in ("avatars", "monsters", "stages", "encounters"):
+            self.assertIn(expected, self.database.ENUMERABLE_ENTITY_TABLES)
+        self.assertEqual(self.database.ENUMERABLE_ENTITY_TABLES, ("avatars", "monsters", "stages", "encounters"))
 
     def test_service_consumes_the_facade_methods(self) -> None:
         service = ContentProductService(self.database)

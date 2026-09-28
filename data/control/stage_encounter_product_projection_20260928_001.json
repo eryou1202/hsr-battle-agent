@@ -1,0 +1,211 @@
+{
+  "schema": "stage_encounter_product_projection/1",
+  "version": "1.0.0",
+  "change_request_id": "CR-P3-STAGE-ENCOUNTER-PRODUCT-20260928-001",
+  "task_type": "STATIC_PRODUCT_PACKAGING",
+  "branch": "terra/implementation",
+  "starting_head": "f8c3d0212739b5c01e492fabdc66654f3f7ec246",
+  "starting_head_subject": "content(P2): add character and monster product projections",
+  "schemas": {
+    "stage_product": "hsr_battle_agent.stage_product/1",
+    "stage_summary": "hsr_battle_agent.stage_summary/1",
+    "encounter_product": "hsr_battle_agent.encounter_product/1",
+    "encounter_summary": "hsr_battle_agent.encounter_summary/1"
+  },
+  "authorities_reused_not_replaced": {
+    "stage_package": "hsr_battle_agent.stage_package/1",
+    "scenario_package": "hsr_battle_agent.scenario_package/2"
+  },
+  "types_deliberately_not_created": ["StagePackage", "StageCompiler", "EncounterCompiler"],
+  "public_api": {
+    "module": "src/hsr_battle_agent/game_data/content_product.py",
+    "entry_point": "ContentProductService",
+    "new_methods": {
+      "list_stages": "list_stages(*, include_package_topology=False) -> tuple[stage_summary, ...]",
+      "get_stage": "get_stage(stage_id) -> stage_product | None",
+      "list_encounters": "list_encounters() -> tuple[encounter_summary, ...]",
+      "get_encounter": "get_encounter(encounter_id) -> encounter_product | None"
+    },
+    "existing_methods_unchanged": ["list_characters", "get_character", "list_monsters", "get_monster"],
+    "name_ambiguity_note": "ContentProductService.get_stage / get_encounter return PRODUCT documents; ContentDatabase.get_stage / get_encounter return the raw canonical entity envelope. Both methods document the distinction in their docstrings.",
+    "sqlite_internals_exposed": false,
+    "locale_parameter_on_stage_or_encounter_apis": false
+  },
+  "enumeration_authority": {
+    "facade_methods": ["ContentDatabase.list_stage_ids()", "ContentDatabase.list_encounter_ids()"],
+    "allow_list": "ContentDatabase.ENUMERABLE_ENTITY_TABLES == (\"avatars\", \"monsters\", \"stages\", \"encounters\"); anything outside it raises ContentDatabaseError",
+    "no_generic_api": "ContentDatabase.list_entity_ids is deliberately NOT exposed",
+    "ordering": "deterministic numeric-aware ascending; encounter IDs are colon-composite so they use a per-segment numeric-aware key (a plain numeric key would sort \"maze:1000\" before \"maze:999\")",
+    "product_layer": "the product layer calls only database.list_stage_ids()/list_encounter_ids() and contains no sqlite3 import, no database_path access, no SQL keyword and no storage table name",
+    "existing_query_outputs_changed": false,
+    "nanoka_content_diff": "13 insertions, 1 deletion -- the single deletion is the widened ENUMERABLE_ENTITY_TABLES constant; no existing query output moved"
+  },
+  "stage_package_reuse_policy": {
+    "rule": "get_stage_package(...) is the SOLE topology authority. The Stage product PRESERVES it and never rebuilds it.",
+    "preserved_verbatim": ["waves", "stage_buffs", "encounter_contexts", "unknown_references", "rule_metadata", "source_refs", "package_sha256", "package schema"],
+    "added_around_it": ["identity", "display", "mode", "monster_placements (flattened, with stable product refs)", "rules wrapper", "static_source_metadata (F9)", "provenance wrapper", "unknown wrapper"],
+    "topology_added_counts": ["wave_count", "enemy_placement_count", "stage_buff_count", "unknown_reference_count"],
+    "re_derived_from_raw_tables": "NOTHING",
+    "rule_metadata_policy": {
+      "win_conditions_interpreted": false,
+      "mapped_to_scenario_rule_ids": false,
+      "execution_semantics": "NOT_SUPPLIED",
+      "note": "win/lose conditions are opaque stage-authored tokens; they are never converted into ScenarioCompiler rule identifiers"
+    },
+    "monster_placements": {
+      "fields": ["wave_id", "wave_index", "group_index", "slot", "monster_id", "level", "resolution_status", "resolved_kind", "canonical_monster_id", "monster_product_ref"],
+      "requested_monster_id": "preserved verbatim (never normalised into the canonical parent)",
+      "identity_source": "ContentDatabase.resolve_monster (the P0 authority)",
+      "embedded_full_monster_product": false
+    }
+  },
+  "f9_retained_fields": {
+    "status": "CLOSED AS PRODUCT PRESENTATION ONLY",
+    "stage_package_modified": false,
+    "block": "static_source_metadata",
+    "classification": "STATIC_SOURCE_METADATA_ONLY",
+    "fields": ["stage_name", "stage_type", "stage_ability_config", "monster_list", "sub_level_graphs", "trial_avatar_list", "forbid_exit_battle", "hard_level_group", "monster_warning_ratio", "level_graph_path", "elite_group", "battle_scoring_group", "level", "release", "stage_config_data"],
+    "representation": ["fields_present", "fields_absent", "field_values (null when the record supplies no value)", "non_interpreted_fields"],
+    "non_interpreted_fields": ["stage_ability_config", "level_graph_path", "sub_level_graphs"],
+    "non_interpretation_statement": "these three are carried verbatim as static/source metadata and are never read as runtime behavior",
+    "observed_presence": {"stage_name": 1459, "stage_type": 1459, "stage_ability_config": 68, "monster_list": 1459, "sub_level_graphs": 0, "trial_avatar_list": 0, "forbid_exit_battle": 1459, "hard_level_group": 1459, "monster_warning_ratio": 1459, "level_graph_path": 1459, "elite_group": 560, "battle_scoring_group": 368, "level": 1459, "release": 1299, "stage_config_data": 1459}
+  },
+  "f10_mode_policy": {
+    "status": "CLOSED AS PRODUCT PRESENTATION ONLY",
+    "raw_stage_type": "every packaged 4.4.54 Stage reports stage_type == \"Challenge\" (1,459 / 1,459)",
+    "encounter_source_modes": "game-mode context exists only at Encounter level: boss / maze / story",
+    "canonical_mode": null,
+    "canonical_mode_established": false,
+    "inference_performed": false,
+    "explicit_statement": "stage_type 'Challenge' must never be read as an established game mode; no canonical gameplay mode (Memory of Chaos, Pure Fiction, Apocalyptic Shadow, ...) is inferred or claimed",
+    "separation": "raw_stage_type and encounter_source_modes are exposed as separate fields and are never merged"
+  },
+  "encounter_representation": {
+    "authority": "ContentDatabase.get_encounter (canonical Encounter entity envelope)",
+    "identity": ["encounter_id", "source_mode", "original_game_id", "game_id_status", "confidence", "reconstruction_status", "entity_sha256"],
+    "static_context": "the whole payload copied verbatim, plus common_fields_present / mode_context_fields_present / unrecognised_fields / context_fields_present / context_merged_across_encounters",
+    "common_fields": ["event_index", "lane", "source_mode", "stage_id"],
+    "mode_specific_fields": {"boss": ["boss_id", "difficulty_id", "difficulty_name"], "maze": ["maze_id", "maze_record_id", "maze_record_index", "maze_context"], "story": ["story_id", "story_level_id", "story_level_index", "story_name", "story_level_context", "story_metadata"]},
+    "related_stages": "the payload's own stage_id, cross-checked with get_stage for existence; order_supplied=false because the record supplies no ordering",
+    "multiple_encounters_merged": false,
+    "unknown_fields": "anything outside the common and expected mode sets is surfaced as unrecognised_fields rather than dropped",
+    "runtime_invented": false
+  },
+  "locale_policy": {
+    "finding": "Stage and Encounter records carry NO en/ja/ko/zh locale bundle, unlike avatars and monsters",
+    "stage_name": "an INT for all 1,459 stages -- a static numeric identifier, not a display string (stage_name_kind = STATIC_NUMERIC_ID)",
+    "static_text_reported_verbatim": ["difficulty_name (boss)", "story_name (story)", "maze_context.desc (maze)"],
+    "locale_status": "NO_LOCALE_STRUCTURE",
+    "locale_vocabulary": [],
+    "locale_parameter_exposed": false,
+    "hidden_fallback": false,
+    "note": "the exact static text supplied is reported verbatim and no localization is fabricated"
+  },
+  "provenance_policy": {
+    "stage": ["package_source_refs (verbatim stage_package source_refs)", "raw_stage_entity_provenance (verbatim get_stage provenance)", "invented_source_relationships = false"],
+    "encounter": ["entity_provenance (verbatim get_encounter provenance)", "invented_provenance = false"],
+    "invented": false
+  },
+  "determinism_copy_policy": {
+    "hash": "every document carries product_sha256 = stable_hash(document without the hash field)",
+    "ordering": "all collections explicitly sorted; stage IDs numeric-aware, encounter IDs per-segment numeric-aware",
+    "same_input_same_hash": true,
+    "representation": "plain dict documents; immutable typing explicitly NOT claimed",
+    "copy_isolation": "every returned document and summary row is deepcopy-isolated",
+    "no_wall_clock_or_random_input": true,
+    "measured_costs": {"get_stage_package_per_stage_ms": 23.1, "get_stage_package_all_1459_seconds": 33.69, "get_stage_all_1459_seconds": 1.48, "get_encounter_all_1543_seconds": 1.57},
+    "browse_cost_decision": "list_stages() is driven by get_stage + one encounter pass and does NOT call get_stage_package per row; the four package-derived counts are opt-in via include_package_topology and are explicitly null by default rather than guessed or re-derived"
+  },
+  "census": {
+    "artifact": "tmp/audit/p3_census.json",
+    "script": "tmp/audit/p3_stage_census.py",
+    "elapsed_seconds": 122.35,
+    "stages": {"static_count": 1459, "projection_successes": 1459, "projection_failures": 0, "stage_type_counts": {"Challenge": 1459}, "stages_with_win_condition": 162, "stages_with_lose_condition": 160, "stages_with_stage_buffs": 160, "stages_with_unknown_references": 8, "stages_with_variant_only_monster_placements": 446, "wave_count_distribution": {"1": 1459}, "stages_per_encounter_source_mode": {"boss": 160, "maze": 1091, "story": 208}},
+    "package_authority_cross_check": {"sampled_checked": 15, "sampled_matches": 15, "note": "topology.package_sha256 re-derived from get_stage_package on a deterministic sample"},
+    "raw_side_cross_checks": {"win_condition": 162, "lose_condition": 160},
+    "encounters": {"static_count": 1543, "projection_successes": 1543, "projection_failures": 0, "source_mode_counts": {"boss": 160, "maze": 1175, "story": 208}, "related_stage_count_distribution": {"1": 1543}, "encounters_linking_multiple_stages": 0},
+    "data_facts_recorded": [
+      "every packaged 4.4.54 Stage has exactly ONE wave -- this is a data fact, not a schema limitation",
+      "every Encounter relates to exactly ONE Stage (0 multi-stage encounters)",
+      "8 Stages carry Stage-Package unknown references",
+      "446 Stages contain at least one variant-only (MONSTER_VARIANT) Monster placement"
+    ],
+    "not_execution_coverage": true
+  },
+  "tests": {
+    "new": {
+      "command": "python -m unittest -v tests.game_data.test_stage_product",
+      "tests_run": 33,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK"
+    },
+    "combined": {
+      "command": "python -m unittest tests.game_data.test_stage_product tests.game_data.test_content_product tests.game_data.test_nanoka_content_database tests.content_support.test_capability_query",
+      "tests_run": 157,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK"
+    },
+    "updated": {
+      "tests/game_data/test_content_product.py": "one P2 test asserted the enumeration allow-list was exactly (avatars, monsters); P3 legitimately widened it to include stages/encounters, so the test now asserts the widened list and that a table outside it (waves) is still refused"
+    }
+  },
+  "frozen_layers": {
+    "reference_sandbox": {"aggregate_sha256": "c01da5b4f2035d385220f2261fc7ef3e03197a75d4b0061944af1ce0664072fe", "file_count": 4},
+    "reference_battle_planner": {"aggregate_sha256": "2d76048ba601be2e8b396c97f34ad54ed3c2dd594d3bac2c7757cc1387429ee9", "file_count": 5},
+    "battle_sandbox": {"aggregate_sha256": "bb0e26d288919ebe92a05f6e94dded2eece2ed1557c85ebc4c7d79249de4b39b", "file_count": 39},
+    "content_support": {"aggregate_sha256": "2f7686d5953582b4b0523f0319cdae5c4176419d0e8b6d2f1208ebb6780d9770", "file_count": 4},
+    "content_planner": {"aggregate_sha256": "cf5b7f96d618f34782925c98b6837a2aeae07dc3a5901750f065484310847610", "file_count": 3}
+  },
+  "frozen_layers_unchanged": true,
+  "changed_files": [
+    {
+      "path": "src/hsr_battle_agent/game_data/content_product.py",
+      "status": "MODIFIED",
+      "sha256": "bd9837211d8efbe0f3af3e9f34998cd10acfd64227774d5851d1dae71661f3f6",
+      "size_bytes": 66034,
+      "diff": "498 insertions, 2 deletions (the deletions are two duplicated section-comment lines)"
+    },
+    {
+      "path": "src/hsr_battle_agent/game_data/nanoka_content.py",
+      "status": "MODIFIED",
+      "sha256": "5f4b0a2790bd0aa24b3a85e9efef9e2b2cf59bd71b7cb109bbcc65046291582e",
+      "size_bytes": 82292,
+      "diff": "13 insertions, 1 deletion -- list_stage_ids/list_encounter_ids added and ENUMERABLE_ENTITY_TABLES widened from (avatars, monsters) to (avatars, monsters, stages, encounters); no existing query output changed"
+    },
+    {
+      "path": "tests/game_data/test_stage_product.py",
+      "status": "NEW",
+      "sha256": "459309f09044f4700f678977601ac2d5d484990b8e2dc346d806d0506e9dd42b",
+      "size_bytes": 27773
+    },
+    {
+      "path": "tests/game_data/test_content_product.py",
+      "status": "MODIFIED",
+      "sha256": "1d43cf43d1a37a785bbe423481ecf6921b73749a687d87d7555f237836155711",
+      "size_bytes": 49528,
+      "diff": "one test updated for the widened enumeration allow-list"
+    }
+  ],
+  "out_of_scope_not_done": [
+    "F5 loadout completeness",
+    "general F6 immutable typing",
+    "F7 relic vocabulary",
+    "Scenario Support Report (P4)",
+    "frontend product adapter",
+    "behavior IR attachment",
+    "Stage runtime",
+    "Monster runtime",
+    "planner path"
+  ],
+  "runtime_semantics_added": false,
+  "stage_runtime_semantics_added": false,
+  "encounter_runtime_semantics_added": false,
+  "per_stage_execution_readiness_claimed": false,
+  "real_content_execution": "DENIED",
+  "m10_m15_modified": false,
+  "frontend_modified": false,
+  "work_4_5_54": false,
+  "git_writes": false
+}

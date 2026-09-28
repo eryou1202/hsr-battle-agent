@@ -1591,7 +1591,7 @@ class ContentDatabase:
     #: Canonical entity tables that may be enumerated through the facade.  The
     #: product layer asks for these by name, so the SQLite table vocabulary never
     #: leaves this module.
-    ENUMERABLE_ENTITY_TABLES = ("avatars", "monsters")
+    ENUMERABLE_ENTITY_TABLES = ("avatars", "monsters", "stages", "encounters")
 
     @staticmethod
     def _canonical_id_sort_key(value: str) -> tuple:
@@ -1619,6 +1619,18 @@ class ContentDatabase:
     def list_monster_ids(self) -> list[str]:
         """Every canonical Monster ID for this content version, in stable order."""
         return self._entity_ids("monsters")
+
+    def list_stage_ids(self) -> list[str]:
+        """Every canonical Stage ID for this content version, in stable order."""
+        return self._entity_ids("stages")
+
+    def list_encounter_ids(self) -> list[str]:
+        """Every canonical Encounter ID for this content version, in stable order.
+
+        Encounter IDs are composite strings (``<source_mode>:...``), so ordering
+        is decimal-first then lexicographic via the shared ID sort key.
+        """
+        return self._entity_ids("encounters")
 
     def get_encounter(self, encounter_id: str) -> dict[str, Any] | None:
         return self._entity("encounters", encounter_id)

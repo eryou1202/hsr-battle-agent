@@ -114,6 +114,267 @@ MONSTER_LIMITATIONS = (
     "Runtime evidence for monsters is family-level only; no per-monster claim is made.",
 )
 
+#: Product schemas for the Stage / Encounter projections (CR-P3).
+STAGE_PRODUCT_SCHEMA = "hsr_battle_agent.stage_product/1"
+STAGE_SUMMARY_SCHEMA = "hsr_battle_agent.stage_summary/1"
+ENCOUNTER_PRODUCT_SCHEMA = "hsr_battle_agent.encounter_product/1"
+ENCOUNTER_SUMMARY_SCHEMA = "hsr_battle_agent.encounter_summary/1"
+
+#: The existing topology authority this projection consumes.  It is NOT replaced.
+STAGE_PACKAGE_SCHEMA = "hsr_battle_agent.stage_package/1"
+
+#: Raw Stage fields audit F9 recorded as dropped from ``stage_package/1``.  They
+#: are retained here as STATIC SOURCE METADATA and are never interpreted as
+#: runtime behavior.  A field absent from the record is reported as ``null``.
+STAGE_RAW_METADATA_FIELDS = (
+    "stage_name",
+    "stage_type",
+    "stage_ability_config",
+    "monster_list",
+    "sub_level_graphs",
+    "trial_avatar_list",
+    "forbid_exit_battle",
+    "hard_level_group",
+    "monster_warning_ratio",
+    "level_graph_path",
+    "elite_group",
+    "battle_scoring_group",
+    "level",
+    "release",
+    "stage_config_data",
+)
+
+#: Fields of :data:`STAGE_RAW_METADATA_FIELDS` that must never be read as runtime
+#: behavior.  They are carried verbatim and labelled as source metadata only.
+STAGE_NON_INTERPRETED_FIELDS = (
+    "stage_ability_config",
+    "level_graph_path",
+    "sub_level_graphs",
+)
+
+#: F10 policy: ``stage_type`` is uniformly "Challenge" for every packaged Stage,
+#: so no canonical gameplay mode is established by this product.
+CANONICAL_STAGE_MODE_ESTABLISHED = False
+
+STAGE_LIMITATIONS = (
+    "Wave spawning and wave progression/clear are not supplied by this product.",
+    "Stage Buff activation is not supplied by this product.",
+    "Mode rules, score rules and special terminal rules are not supplied by this product.",
+    "Boss phase / body-part runtime is not supplied by this product.",
+    "Monster AI and formation arbitration are not supplied by this product.",
+    "No per-stage execution readiness is claimed; P4 will own runtime support reporting.",
+)
+
+ENCOUNTER_LIMITATIONS = (
+    "Encounter runtime is not supplied by this product.",
+    "Encounter difficulty and reward resolution are not supplied by this product.",
+    "Story or maze progression semantics are not supplied by this product.",
+)
+
+#: Stage and Encounter records carry no en/ja/ko/zh locale bundle, so the locale
+#: policy is "no locale structure" rather than a silent default.
+STAGE_LOCALE_STATUS = "NO_LOCALE_STRUCTURE"
+
+#: Fields every Encounter payload carries, whatever its source mode.
+ENCOUNTER_COMMON_FIELDS = ("event_index", "lane", "source_mode", "stage_id")
+
+#: The mode-specific context fields observed in the 4.4.54 Encounter records.
+#: Anything outside these two sets is surfaced as an unrecognised field rather
+#: than being quietly dropped.
+ENCOUNTER_SOURCE_MODE_FIELDS = {
+    "boss": ("boss_id", "difficulty_id", "difficulty_name"),
+    "maze": ("maze_id", "maze_record_id", "maze_record_index", "maze_context"),
+    "story": (
+        "story_id", "story_level_id", "story_level_index", "story_name",
+        "story_level_context", "story_metadata",
+    ),
+}
+
+
+# --------------------------------------------------------------------------- #
+# stage / encounter helpers
+# --------------------------------------------------------------------------- #
+def _composite_id_sort_key(value: Any) -> tuple:
+    """Stable numeric-aware ordering for colon-composite IDs like encounter IDs."""
+    return tuple(
+        (0, int(part), "") if part.isdigit() else (1, 0, part)
+        for part in str(value).split(":")
+    )
+
+
+def _count_wave_fields(package: Mapping[str, Any]) -> tuple[int, int]:
+    waves = list(_sequence(package.get("waves")))
+    placements = sum(len(_sequence(_mapping(wave).get("enemy_groups"))) for wave in waves)
+    return len(waves), placements
+
+
+def _stage_topology(package: Mapping[str, Any]) -> dict[str, Any]:
+    """The authoritative stage_package/1 topology, preserved verbatim."""
+    waves = [dict(_mapping(wave)) for wave in _sequence(package.get("waves"))]
+    wave_count, placement_count = _count_wave_fields(package)
+    return {
+        "authority": "hsr_battle_agent.stage_package/1 (ContentDatabase.get_stage_package)",
+        "package_schema": package.get("schema"),
+        "package_sha256": package.get("package_sha256"),
+        "wave_count": wave_count,
+        "enemy_placement_count": placement_count,
+        "waves": waves,
+        "stage_buff_count": len(_sequence(package.get("stage_buffs"))),
+        "stage_buffs": [dict(_mapping(entry)) for entry in _sequence(package.get("stage_buffs"))],
+        "encounter_contexts": [dict(_mapping(entry)) for entry in _sequence(package.get("encounter_contexts"))],
+        "unknown_reference_count": len(_sequence(package.get("unknown_references"))),
+        "unknown_references": [dict(_mapping(entry)) for entry in _sequence(package.get("unknown_references"))],
+    }
+
+
+def _stage_rules(package: Mapping[str, Any]) -> dict[str, Any]:
+    """Rule metadata carried verbatim; never interpreted or re-mapped."""
+    metadata = dict(_mapping(package.get("rule_metadata")))
+    return {
+        "authority": "stage_package/1 rule_metadata (verbatim)",
+        "rule_metadata": metadata,
+        "win_condition_count": len(_sequence(metadata.get("win_conditions"))),
+        "lose_condition_count": len(_sequence(metadata.get("lose_conditions"))),
+        "win_conditions_interpreted": False,
+        "mapped_to_scenario_rule_ids": False,
+        "execution_semantics": "NOT_SUPPLIED",
+        "note": (
+            "win/lose conditions are opaque stage-authored tokens; this product neither "
+            "interprets them nor converts them into ScenarioCompiler rule identifiers"
+        ),
+    }
+
+
+def _stage_source_metadata(raw_data: Mapping[str, Any]) -> dict[str, Any]:
+    """Audit F9 -- raw Stage fields retained as static source metadata only."""
+    present = [
+        name for name in STAGE_RAW_METADATA_FIELDS
+        if name in raw_data and raw_data.get(name) not in (None, "", [], {})
+    ]
+    absent = [name for name in STAGE_RAW_METADATA_FIELDS if name not in present]
+    stage_name = raw_data.get("stage_name")
+    if isinstance(stage_name, int):
+        name_kind = "STATIC_NUMERIC_ID"
+    elif stage_name in (None, ""):
+        name_kind = "ABSENT"
+    else:
+        name_kind = "PRESENT"
+    return {
+        "classification": "STATIC_SOURCE_METADATA_ONLY",
+        "note": (
+            "raw canonical Stage fields that stage_package/1 does not retain; the fields "
+            "listed in non_interpreted_fields are carried verbatim and are NOT interpreted "
+            "as runtime behavior"
+        ),
+        "non_interpreted_fields": list(STAGE_NON_INTERPRETED_FIELDS),
+        "fields_present": present,
+        "fields_absent": absent,
+        "stage_name": stage_name,
+        "stage_name_kind": name_kind,
+        "stage_type": raw_data.get("stage_type"),
+        "field_values": {name: raw_data.get(name) for name in STAGE_RAW_METADATA_FIELDS},
+    }
+
+
+def _stage_mode_block(package: Mapping[str, Any], raw_data: Mapping[str, Any]) -> dict[str, Any]:
+    """Audit F10 -- raw classification plus encounter modes; no invented mode."""
+    source_modes = sorted({
+        str(_mapping(context).get("source_mode"))
+        for context in _sequence(package.get("encounter_contexts"))
+        if _mapping(context).get("source_mode")
+    })
+    return {
+        "raw_stage_type": raw_data.get("stage_type") or package.get("mode"),
+        "encounter_source_modes": source_modes,
+        "canonical_mode": None,
+        "canonical_mode_established": CANONICAL_STAGE_MODE_ESTABLISHED,
+        "inference_performed": False,
+        "note": (
+            "every packaged 4.4.54 Stage reports stage_type 'Challenge', and game-mode "
+            "context is only available at Encounter level via source_mode; no canonical "
+            "gameplay mode (for example Memory of Chaos, Pure Fiction, Apocalyptic Shadow) "
+            "is inferred or claimed. stage_type 'Challenge' must never be read as an "
+            "established game mode."
+        ),
+    }
+
+
+def _monster_placements(
+    package: Mapping[str, Any],
+    resolver,
+) -> list[dict[str, Any]]:
+    """Flatten the package's placements and attach stable Monster references.
+
+    Nothing is re-derived from raw tables: waves, group_index, slot, monster_id and
+    level come straight from the authoritative package.  The only addition is the
+    P0 static identity of each Monster, plus a stable product reference instead of
+    an embedded MonsterProduct.
+    """
+    rows = []
+    for wave in _sequence(package.get("waves")):
+        wave_row = _mapping(wave)
+        for group in _sequence(wave_row.get("enemy_groups")):
+            placement = _mapping(group)
+            monster_id = placement.get("monster_id")
+            resolution = None if monster_id is None else resolver(str(monster_id))
+            rows.append({
+                "wave_id": wave_row.get("wave_id"),
+                "wave_index": wave_row.get("wave_index"),
+                "group_index": placement.get("group_index"),
+                "slot": placement.get("slot"),
+                "monster_id": None if monster_id is None else str(monster_id),
+                "level": placement.get("level"),
+                "resolution_status": placement.get("resolution_status"),
+                "resolved_kind": None if resolution is None else resolution["resolved_kind"],
+                "canonical_monster_id": None if resolution is None else resolution["canonical_monster_id"],
+                "monster_product_ref": {
+                    "service": "ContentProductService.get_monster",
+                    "monster_id": None if monster_id is None else str(monster_id),
+                },
+            })
+    return rows
+
+
+def _encounter_static_display(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """Exact static text supplied by the Encounter record; no localization."""
+    maze_context = _mapping(payload.get("maze_context"))
+    text = {
+        "difficulty_name": _text(payload.get("difficulty_name")),
+        "story_name": _text(payload.get("story_name")),
+        "maze_context_desc": _text(maze_context.get("desc")),
+    }
+    return {
+        "localized": False,
+        "locale_vocabulary": [],
+        "locale_status": STAGE_LOCALE_STATUS,
+        "static_display_text": text,
+        "static_text_fields_present": sorted(name for name, value in text.items() if value),
+        "note": (
+            "Encounter records carry no en/ja/ko/zh locale bundle; the exact static text "
+            "supplied is reported verbatim and no localization is fabricated"
+        ),
+    }
+
+
+def _encounter_context_block(payload: Mapping[str, Any]) -> dict[str, Any]:
+    """The mode-specific Encounter context, preserved verbatim and classified."""
+    source_mode = _text(payload.get("source_mode"))
+    expected = ENCOUNTER_SOURCE_MODE_FIELDS.get(source_mode, ())
+    present = sorted(str(key) for key in payload)
+    common = [name for name in ENCOUNTER_COMMON_FIELDS if name in payload]
+    return {
+        "source_mode": source_mode,
+        "common_fields_present": sorted(common),
+        "mode_context_fields_present": sorted(name for name in expected if name in payload),
+        "unrecognised_fields": sorted(
+            name for name in present
+            if name not in ENCOUNTER_COMMON_FIELDS and name not in expected
+        ),
+        "context_fields_present": present,
+        "static_context": dict(payload),
+        "context_merged_across_encounters": False,
+    }
+
 
 # --------------------------------------------------------------------------- #
 # small deterministic helpers
@@ -332,7 +593,7 @@ class ContentProductService:
             real_content_execution_eligibility(self._registry, str(avatar_id), str(skill_id))
         )
 
-    # -- enumeration (audit F8) -------------------------------------------- #
+    # -- ID lists ---------------------------------------------------------- #
     def _character_ids(self) -> Sequence[str]:
         # The facade owns enumeration authority; the product re-sorts so its own
         # ordering guarantee never depends on the facade's iteration order.
@@ -341,7 +602,13 @@ class ContentProductService:
     def _monster_ids(self) -> Sequence[str]:
         return sorted(self.database.list_monster_ids(), key=_id_sort_key)
 
-    # -- enumeration (audit F8) -------------------------------------------- #
+    def _stage_ids(self) -> Sequence[str]:
+        return sorted(self.database.list_stage_ids(), key=_id_sort_key)
+
+    def _encounter_ids(self) -> Sequence[str]:
+        return sorted(self.database.list_encounter_ids(), key=_composite_id_sort_key)
+
+    # -- character enumeration --------------------------------------------- #
     def list_characters(self, *, locale: str | None = None) -> tuple[dict[str, Any], ...]:
         """Lightweight deterministic character browse rows for one content version."""
         wanted = _resolve_locale(locale)
@@ -691,6 +958,224 @@ class ContentProductService:
         document["product_sha256"] = stable_hash(document)
         return deepcopy(document)
 
+    # -- stage product ------------------------------------------------------ #
+    def list_stages(self, *, include_package_topology: bool = False) -> tuple[dict[str, Any], ...]:
+        """Lightweight deterministic Stage browse rows.
+
+        ``include_package_topology`` is off by default: the four package-derived
+        counts require ``get_stage_package``, which costs roughly 23 ms per Stage
+        (about 34 s across all 1,459).  With the flag off those counts are
+        explicitly ``null`` rather than guessed or re-derived from raw tables.
+        """
+        modes_by_stage = self._encounter_source_modes_by_stage()
+        rows = []
+        for stage_id in self._stage_ids():
+            raw = self.database.get_stage(stage_id)
+            if raw is None:  # pragma: no cover - ids come from the same table
+                continue
+            raw_data = _mapping(raw.get("data"))
+            counts = {
+                "wave_count": None,
+                "enemy_placement_count": None,
+                "stage_buff_count": None,
+                "unknown_reference_count": None,
+            }
+            if include_package_topology:
+                package = self.database.get_stage_package(stage_id)
+                if package is not None:
+                    wave_count, placement_count = _count_wave_fields(package)
+                    counts = {
+                        "wave_count": wave_count,
+                        "enemy_placement_count": placement_count,
+                        "stage_buff_count": len(_sequence(package.get("stage_buffs"))),
+                        "unknown_reference_count": len(_sequence(package.get("unknown_references"))),
+                    }
+            rows.append(deepcopy({
+                "schema": STAGE_SUMMARY_SCHEMA,
+                "game_version": self.game_version,
+                "stage_id": str(stage_id),
+                "stage_name": raw_data.get("stage_name"),
+                "stage_name_kind": _stage_source_metadata(raw_data)["stage_name_kind"],
+                "raw_stage_type": raw_data.get("stage_type"),
+                "encounter_source_modes": modes_by_stage.get(str(stage_id), []),
+                "topology_counts_included": include_package_topology,
+                **counts,
+            }))
+        return tuple(rows)
+
+    def get_stage(self, stage_id: Any) -> dict[str, Any] | None:
+        """Project one Stage into a Stage product document.
+
+        The topology, rule metadata, Stage Buffs, encounter contexts and unknown
+        references are preserved from ``stage_package/1`` unchanged; this method
+        never rebuilds them.  (``ContentProductService.get_stage`` returns a Stage
+        product document, whereas ``ContentDatabase.get_stage`` returns the raw
+        canonical entity envelope.)
+        """
+        key = str(stage_id)
+        package = _mapping(self.database.get_stage_package(key))
+        raw = self.database.get_stage(key)
+        if not package and raw is None:
+            return None
+        raw_data = _mapping(_mapping(raw).get("data"))
+        raw_provenance = [dict(entry) for entry in _sequence(_mapping(raw).get("provenance"))]
+
+        topology = _stage_topology(package) if package else {
+            "authority": "hsr_battle_agent.stage_package/1 (ContentDatabase.get_stage_package)",
+            "package_schema": None,
+            "package_sha256": None,
+            "wave_count": None,
+            "enemy_placement_count": None,
+            "waves": None,
+            "stage_buff_count": None,
+            "stage_buffs": None,
+            "encounter_contexts": None,
+            "unknown_reference_count": None,
+            "unknown_references": None,
+        }
+        placements = _monster_placements(package, self.database.resolve_monster) if package else []
+        source_refs = [dict(entry) for entry in _sequence(package.get("source_refs"))]
+        source_metadata = _stage_source_metadata(raw_data)
+
+        document = {
+            "schema": STAGE_PRODUCT_SCHEMA,
+            "game_version": self.game_version,
+            "identity": {
+                "stage_id": key,
+                "stage_package_id": package.get("stage_id"),
+                "original_game_id": _mapping(raw).get("original_game_id"),
+                "game_id_status": _mapping(raw).get("game_id_status"),
+                "confidence": _mapping(raw).get("confidence"),
+                "reconstruction_status": _mapping(raw).get("reconstruction_status"),
+                "entity_sha256": _mapping(raw).get("canonical_sha256"),
+            },
+            "display": {
+                "localized": False,
+                "locale_vocabulary": [],
+                "locale_status": STAGE_LOCALE_STATUS,
+                "stage_name": raw_data.get("stage_name"),
+                "stage_name_kind": source_metadata["stage_name_kind"],
+                "raw_stage_type": raw_data.get("stage_type"),
+                "note": (
+                    "Stage records carry no en/ja/ko/zh locale bundle; the exact static values "
+                    "supplied are reported verbatim and no localization is fabricated"
+                ),
+            },
+            "mode": _stage_mode_block(package, raw_data),
+            "topology": topology,
+            "monster_placements": placements,
+            "rules": _stage_rules(package),
+            "static_source_metadata": source_metadata,
+            "provenance": {
+                "package_source_refs": source_refs,
+                "package_source_ref_count": len(source_refs),
+                "raw_stage_entity_provenance": raw_provenance,
+                "raw_stage_entity_provenance_count": len(raw_provenance),
+                "source": "canonical SQLite content facade (ContentDatabase)",
+                "invented_source_relationships": False,
+            },
+            "unknown": {
+                "limitations": list(STAGE_LIMITATIONS),
+                "stage_package_unknown_references": [dict(entry) for entry in _sequence(package.get("unknown_references"))],
+                "stage_package_unknown_reference_count": len(_sequence(package.get("unknown_references"))),
+                "stage_package_available": bool(package),
+                "raw_stage_available": raw is not None,
+                "unresolved_static_references": [],
+            },
+            "runtime_semantics_added": False,
+        }
+        document["product_sha256"] = stable_hash(document)
+        return deepcopy(document)
+
+    # -- encounter product -------------------------------------------------- #
+    def _encounter_source_modes_by_stage(self) -> dict[str, list[str]]:
+        """Stage ID -> sorted source modes, read from the Encounter records."""
+        mapping: dict[str, set[str]] = {}
+        for encounter_id in self._encounter_ids():
+            entity = self.database.get_encounter(encounter_id)
+            if entity is None:  # pragma: no cover - ids come from the same table
+                continue
+            payload = _mapping(entity.get("data"))
+            stage_id = payload.get("stage_id")
+            mode = _text(payload.get("source_mode"))
+            if stage_id is None or mode is None:
+                continue
+            mapping.setdefault(str(stage_id), set()).add(mode)
+        return {key: sorted(value) for key, value in mapping.items()}
+
+    def list_encounters(self) -> tuple[dict[str, Any], ...]:
+        """Lightweight deterministic Encounter browse rows."""
+        rows = []
+        for encounter_id in self._encounter_ids():
+            entity = self.database.get_encounter(encounter_id)
+            if entity is None:  # pragma: no cover - ids come from the same table
+                continue
+            payload = _mapping(entity.get("data"))
+            related = [str(payload["stage_id"])] if payload.get("stage_id") is not None else []
+            rows.append(deepcopy({
+                "schema": ENCOUNTER_SUMMARY_SCHEMA,
+                "game_version": self.game_version,
+                "encounter_id": str(encounter_id),
+                "source_mode": _text(payload.get("source_mode")),
+                "related_stage_count": len(related),
+                "related_stage_ids": related,
+                "static_display_text": _encounter_static_display(payload)["static_display_text"],
+            }))
+        return tuple(rows)
+
+    def get_encounter(self, encounter_id: Any) -> dict[str, Any] | None:
+        """Project one Encounter into an Encounter product document.
+
+        (``ContentProductService.get_encounter`` returns an Encounter product
+        document, whereas ``ContentDatabase.get_encounter`` returns the raw
+        canonical entity envelope.)
+        """
+        key = str(encounter_id)
+        entity = self.database.get_encounter(key)
+        if entity is None:
+            return None
+        payload = _mapping(entity.get("data"))
+        stage_id = payload.get("stage_id")
+        related_stage_ids = [] if stage_id is None else [str(stage_id)]
+        related = [
+            {
+                "stage_id": candidate,
+                "order_supplied": False,
+                "stage_exists_in_content": self.database.get_stage(candidate) is not None,
+                "stage_product_ref": {"service": "ContentProductService.get_stage", "stage_id": candidate},
+            }
+            for candidate in related_stage_ids
+        ]
+
+        document = {
+            "schema": ENCOUNTER_PRODUCT_SCHEMA,
+            "game_version": self.game_version,
+            "identity": {
+                "encounter_id": key,
+                "source_mode": _text(payload.get("source_mode")),
+                "original_game_id": entity.get("original_game_id"),
+                "game_id_status": entity.get("game_id_status"),
+                "confidence": entity.get("confidence"),
+                "reconstruction_status": entity.get("reconstruction_status"),
+                "entity_sha256": entity.get("canonical_sha256"),
+            },
+            "display": _encounter_static_display(payload),
+            "static_context": _encounter_context_block(payload),
+            "related_stages": related,
+            "related_stage_ids": related_stage_ids,
+            "provenance": _provenance_block(entity.get("provenance")),
+            "unknown": {
+                "limitations": list(ENCOUNTER_LIMITATIONS),
+                "stage_reference_supplied": stage_id is not None,
+                "multiple_stage_identities_supplied": len(related_stage_ids) > 1,
+                "context_merged_across_encounters": False,
+                "unresolved_static_references": [],
+            },
+            "runtime_semantics_added": False,
+        }
+        document["product_sha256"] = stable_hash(document)
+        return deepcopy(document)
+
 
 # --------------------------------------------------------------------------- #
 # section builders
@@ -947,10 +1432,21 @@ def _variant_descriptors(detail: Mapping[str, Any], monster_id: str) -> list[dic
 __all__ = [
     "CHARACTER_PRODUCT_SCHEMA",
     "MONSTER_PRODUCT_SCHEMA",
+    "STAGE_PRODUCT_SCHEMA",
+    "STAGE_SUMMARY_SCHEMA",
+    "ENCOUNTER_PRODUCT_SCHEMA",
+    "ENCOUNTER_SUMMARY_SCHEMA",
+    "STAGE_PACKAGE_SCHEMA",
     "LOCALE_VOCABULARY",
     "DEFAULT_LOCALE",
     "MONSTER_RUNTIME_SUPPORT",
     "MONSTER_STATIC_STAT_FIELDS",
+    "STAGE_RAW_METADATA_FIELDS",
+    "STAGE_NON_INTERPRETED_FIELDS",
+    "CANONICAL_STAGE_MODE_ESTABLISHED",
+    "STAGE_LOCALE_STATUS",
+    "ENCOUNTER_COMMON_FIELDS",
+    "ENCOUNTER_SOURCE_MODE_FIELDS",
     "ContentProductService",
     "ContentProductError",
     "UnknownLocaleError",
