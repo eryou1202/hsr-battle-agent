@@ -1,0 +1,259 @@
+{
+  "schema": "scenario_support_report/1",
+  "version": "1.1.0",
+  "change_request_id": "CR-P4-SCENARIO-SUPPORT-REPORT-20260929-001",
+  "correction_patch": "P4.1 SCENARIO SUPPORT REPORT HARDENING (four review findings; no P4 redesign)",
+  "task_type": "STATIC_PRODUCT_AGGREGATION",
+  "branch": "terra/implementation",
+  "starting_head": "04403760180d4f83a519cc926fc4b5e68f1bce8f",
+  "starting_head_subject": "content(P3): add stage and encounter product projections",
+  "report_schema": "hsr_battle_agent.scenario_support_report/1",
+  "p4_1_findings_fixed": [
+    {
+      "finding": 1,
+      "subject": "explicit M14 registry required",
+      "was": "ScenarioSupportReporter(database, registry=None) was accepted and only failed later inside _admit(); M14_REGISTRY_NOT_SUPPLIED was a reachable report state.",
+      "now": "registry is a REQUIRED keyword-only parameter on both the constructor and build_scenario_support_report; a missing/None registry raises MissingM14RegistryError immediately at construction. M14_REGISTRY_NOT_SUPPLIED is no longer reachable in a report (it remains a valid P2 character-browsing state)."
+    },
+    {
+      "finding": 2,
+      "subject": "product service authority bypass",
+      "was": "the constructor accepted product_service=... without verifying it used the same database, content version and M14 registry as the reporter, so character/M14 facts and M15 admission facts could come from different authorities.",
+      "now": "the product_service injection seam is REMOVED (it is absent from the signature and from the module source). The service is always built internally as ContentProductService(database, registry=registry), giving one authority chain and one registry. A test proves injection is a TypeError and that reporter.products is bound to the same database."
+    },
+    {
+      "finding": 3,
+      "subject": "strict M15 outcome gate",
+      "was": "the gate accepted any outcome that appeared in ADMISSION_OUTCOMES and had rejected == true, so a future vocabulary widening would have been auto-accepted.",
+      "now": "P4 accepts EXACTLY the reviewed outcome REJECTED (compared against the ACCEPTED_M15_OUTCOME literal, not against the vocabulary). ADMISSION_OUTCOMES is still reported as authority metadata with outcome_vocabulary_is_authority_metadata_only = true. future_outcome_auto_extension = false."
+    },
+    {
+      "finding": 4,
+      "subject": "malformed scenario shape validation",
+      "was": "package_sha256 proved content integrity only, so an incorrectly typed field (e.g. waves = {}) was silently treated as empty by _sequence().",
+      "now": "a structural shape check runs before report construction and is independent of package_sha256. Tests use malformed inputs with a CORRECTLY recomputed hash to prove independence."
+    }
+  ],
+  "registry_required": true,
+  "registry_requirement": {
+    "constructor_signature": "ScenarioSupportReporter(database, *, registry, repository_root=None)",
+    "convenience_signature": "build_scenario_support_report(scenario_package, database, *, registry)",
+    "missing_registry": "TypeError (no default on the keyword-only parameter)",
+    "explicit_none_registry": "MissingM14RegistryError at construction",
+    "reason": "every Scenario Support Report performs M15 admission, which needs an authoritative M14 registry, so there is no registry-free report mode",
+    "m14_registry_not_supplied_reachable_in_a_report": false
+  },
+  "product_service_authority": {
+    "value": "internal_same_database_same_registry",
+    "injection_seam_removed": true,
+    "still_in_signature": false,
+    "still_in_source": false,
+    "always_constructed_as": "ContentProductService(database, registry=registry)",
+    "authority_chain": ["scenario_package/2", "ContentDatabase(database)", "ContentProductService(database, registry=registry)", "M14 registry (capability + eligibility)", "M15 admission against the same registry and content version"],
+    "verification": "a test asserts reporter.products.database is the reporter's database, that the service reports the same game_version and m14_registry_supplied, and that a version-mixed pairing cannot be constructed at all"
+  },
+  "m15_outcome_gate": {
+    "accepted_m15_outcomes": ["REJECTED"],
+    "accepted_literal_constant": "ACCEPTED_M15_OUTCOME = \"REJECTED\"",
+    "compared_against": "the literal, NOT the ADMISSION_OUTCOMES vocabulary",
+    "future_outcome_auto_extension": false,
+    "outcome_vocabulary_role": "reported as authority metadata only (admission_outcome_vocabulary + outcome_vocabulary_is_authority_metadata_only = true)",
+    "rejected_flag_also_required": true,
+    "permission_conclusions_must_all_be_false": true,
+    "non_effects_must_be_neutral": true,
+    "failure": "UnsupportedFutureAdmissionOutcomeError (never enters a planner)",
+    "proven_cases": ["ADMITTED + rejected=false fails closed", "DEFERRED + rejected=true fails closed", "DEFERRED + rejected=true fails closed even when ADMISSION_OUTCOMES is widened to include DEFERRED", "REJECTED + a non-false may_* fails closed", "REJECTED + non-neutral NonEffects fails closed"]
+  },
+  "minimal_input_shape_validation": {
+    "runs_before": "report construction (inside _validate, before any product or admission work)",
+    "independent_of": "package_sha256 -- hash integrity and shape validity are two separate checks and neither substitutes for the other",
+    "error": "MalformedScenarioPackageError",
+    "rules": {
+      "players": ["sequence", ">= 1 entry", "every element a mapping"],
+      "waves": ["sequence", "every wave a mapping", "every wave has an enemies key", "wave.enemies is a sequence", "every enemy is a mapping"],
+      "buff_bindings": ["sequence", "every element a mapping"],
+      "rules": ["mapping", "contains rng_seed"],
+      "unresolved_behavior": ["sequence", "every element a mapping"],
+      "source_stage": ["absent / null, or a mapping"]
+    },
+    "scenario_compiler_business_rules_recreated": false,
+    "structural_product_input_validation_only": true,
+    "not_validated_here": ["player count upper bound (the ScenarioCompiler owns the 1..4 team bound)", "monster existence", "loadout legality", "rule resolution semantics", "wave ordering rules"],
+    "proven_malformed_cases": ["waves = {}", "waves = [\"garbage\"]", "wave without an enemies key", "wave.enemies = {}", "enemy = \"garbage\"", "buff_bindings = \"garbage\"", "buff_bindings = [\"garbage\"]", "unresolved_behavior = {}", "unresolved_behavior = [\"garbage\"]", "players = [\"garbage\"]", "rules = []", "source_stage = \"nope\""],
+    "accepted_edges": ["source_stage = null", "buff_bindings = []", "unresolved_behavior = []", "wave.enemies = []"]
+  },
+  "module_placement": {
+    "package": "src/hsr_battle_agent/product_support/",
+    "modules": ["__init__.py", "scenario_report.py"],
+    "rationale": "a new namespace above game_data / content_support / content_planner, so no frozen layer needed modification",
+    "frozen_files_modified": [],
+    "nanoka_content_modified": false,
+    "imports": ["game_data.nanoka_content (ContentDatabase, stable_hash)", "game_data.content_product (ContentProductService)", "content_support (ContentSupportRegistry)", "content_planner (public M15 admission API)"],
+    "does_not_import": ["reference_sandbox", "reference_battle_planner", "battle_sandbox", "m10/m11 planner", "frontend"],
+    "entrypoint": "ScenarioSupportReporter(database, *, registry, repository_root=None).build(scenario_package)",
+    "convenience_function": "build_scenario_support_report(scenario_package, database, *, registry)"
+  },
+  "input_schema": {
+    "accepted": "hsr_battle_agent.scenario_package/2",
+    "rejected_by_name": "hsr_battle_agent.scenario_package/1 (UnsupportedScenarioSchemaError)",
+    "unknown_schema": "rejected (UnsupportedScenarioSchemaError)",
+    "required_structure": ["schema", "game_version", "players (>=1, mappings)", "waves (sequence of mappings)", "buff_bindings (sequence of mappings)", "rules.rng_seed", "unresolved_behavior (sequence of mappings)", "package_sha256"],
+    "two_independent_validity_checks": ["package_sha256 content integrity (stable_hash over the package minus its own hash key)", "structural shape validity (see minimal_input_shape_validation)"],
+    "package_hash_verification": "stable_hash over the package minus its own package_sha256 key, compared to the recorded value; a mismatch raises MalformedScenarioPackageError before consumption",
+    "hash_verification_cost": "free -- it uses the public stable_hash convention and duplicates no ScenarioCompiler internals",
+    "scenario_assembly_recreated": false,
+    "not_a_second_scenario_package": true,
+    "executable_scenario_type_created": false
+  },
+  "version_coherence_policy": {
+    "checks": ["registry.content_version == database.game_version (at construction)", "Scenario Package game_version == ContentDatabase.game_version", "Scenario Package game_version == M14 registry content_version"],
+    "failure": "ContentVersionMismatchError (fail closed)",
+    "latest_fallback": "NONE",
+    "cross_version_substitution": "NONE"
+  },
+  "static_resolution_sources": {
+    "authority": "the input hsr_battle_agent.scenario_package/2 itself",
+    "reported": ["players (instance_id, slot, avatar_id, static loadout presence)", "waves (wave_index, wave_id, origin, override_applied)", "enemy occurrences (instance_id, requested monster id, level, resolution record)", "buff bindings", "rules as their existing explicit P1 resolution records", "unsupported_policy / execution_status / reconstruction_status / golden_eligible / provenance_policy"],
+    "rule_records_reinterpreted": false,
+    "p1_rule_records_kept_as_is": true,
+    "distinct_concepts_kept_apart": ["Scenario unresolved_behavior", "static unknown references (Stage Package)"],
+    "behavior_compilation_required_called_a_missing_entity": false
+  },
+  "m14_authority": {
+    "authority": "content_support public API via ContentProductService / CharacterProduct (P2), always built internally with the reporter's own registry",
+    "api": ["load_registry(version)", "get_avatar_skills(registry, avatar_id)", "real_content_execution_eligibility(registry, avatar_id, skill_id)"],
+    "reported_per_skill": ["skill_id", "m14_status (LINKED | NO_M14_ROW)", "m14_capability (verbatim)", "m14_execution_eligibility (verbatim)"],
+    "recalculated": [],
+    "m13_raw_json_read": false,
+    "missing_row_behaviour": "NO_M14_ROW preserved with null capability and null eligibility"
+  },
+  "m15_authority": {
+    "authority": "content_planner public API",
+    "api_used": "content_planner.admit_content_for_planner(ContentPlannerAdmissionRequest(...), registry=...)",
+    "private_helpers_used": [],
+    "planner_facade_used": false,
+    "per_result_reported": ["outcome", "reason_code", "reason_detail", "m14_reason_code", "binding_level", "support_status", "blocker_classes", "reentry_hints", "frontier_packet_field", "non_effects", "may_* permission conclusions", "m14_status (from M14, kept separate)"],
+    "values_copied_verbatim": true,
+    "expected_outcome": "REJECTED",
+    "observed_outcomes": "REJECTED only",
+    "observed_reason_codes": ["SECOND_HOP_CONTINUATION_UNRESOLVED", "REPRESENTABLE_BUT_NOT_EXECUTABLE", "NO_BEHAVIOR_ROOT", "NO_SETTLEMENT_OBSERVED", "SKILL_NOT_IN_REGISTRY"]
+  },
+  "family_level_monster_authority": {
+    "scope": "FAMILY_LEVEL_ONLY",
+    "per_entity_runtime_claim_available": false,
+    "artifacts": {
+      "family_census": {"path": "data/semantics/4.4.54/full_reconstruction/full_content_compiler_census_001.json", "report_id": "FULL-CONTENT-COMPILER-CENSUS-001", "status": "PINNED_FAMILY_CORPUS_FULL_CONTENT_BASELINE_NOT_FULL_GAME_COMPLETION", "monster_family": {"static_total": 628, "behavior_mapped": 0, "executable": 48, "golden": 0, "unmapped": 628}, "monster_skill_family": {"static_total": 12873, "behavior_mapped": 0, "executable": 0, "unmapped": 12873}},
+      "behavior_coverage": {"path": "data/semantics/4.4.54/full_reconstruction/behavior_coverage_census_002.json", "report_id": "BEHAVIOR-COVERAGE-CENSUS-002", "monster_family": {"behavior_bearing_denominator": 3, "canonicalized": 3, "executable_reference": 0, "golden_tested": 0}},
+      "monster_ai_ledger": {"path": "data/semantics/4.4.54/full_reconstruction/monster_ai_binding_ledger_001.json", "schema": "hsr_battle_agent.monster_ai_binding_ledger/1", "note": "a targeted 14-row binding ledger, NOT a per-entity census over 628 Monsters"}
+    },
+    "exact_static_entity_link_count": 0,
+    "per_static_monster_behavior_join_available": false,
+    "reason": "the pinned family census records behaviour_mapped = 0 for the Monster family",
+    "per_entity_field_emitted": false,
+    "variant_identity_statement": "a MONSTER_VARIANT resolved to a canonical parent is a static identity success, not a runtime-support success"
+  },
+  "family_level_stage_authority": {
+    "scope": "FAMILY_LEVEL_ONLY",
+    "per_entity_runtime_claim_available": false,
+    "per_stage_readiness_field_emitted": false,
+    "artifacts": {
+      "family_census": {"path": "data/semantics/4.4.54/full_reconstruction/full_content_compiler_census_001.json", "stage_buff_family": {"static_total": 18, "canonicalized": 134, "behavior_mapped": 0, "executable": 0, "golden": 0, "unmapped": 18}},
+      "behavior_coverage": {"path": "data/semantics/4.4.54/full_reconstruction/behavior_coverage_census_002.json", "stage_buff_family": {"behavior_bearing_denominator": 53, "canonicalized": 54, "captured_records": 54, "static_definition_only": 1, "executable_reference": 0, "golden_tested": 0}},
+      "golden_ledger": {"path": "data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json", "golden": 0, "native_trace_entry_count": 0, "native_trace_claim": "NONE"},
+      "coverage_ledger": {"path": "data/semantics/4.4.54/full_reconstruction/coverage_ledger_v1.json", "ledger_id": "FULL-SIM-COVERAGE-4.4.54-V1", "status": "ACTIVE_CONTINUOUS_RECONSTRUCTION"}
+    },
+    "runtime_mechanisms_not_implemented": ["wave_spawn", "wave_progression_or_clear", "stage_buff_activation", "mode_rules", "score_rules", "special_terminal_rules", "boss_phase_or_body_part_handling"],
+    "not_inferred_from": ["StagePackage presence", "StageAbility path presence", "Stage Buff static binding presence"],
+    "stage_static_source": "ContentProductService / StageProduct (P3); source_stage_id absent is reported plainly and is not an error"
+  },
+  "unresolved_content_categories": {
+    "categories": ["scenario_unresolved_behavior", "stage_unknown_references", "character_static_skill_without_m14_row", "m14_blocker_classes_and_reentry_hints", "m15_rejection_reasons", "loadout_unapplied_contextual_effects", "monster_static_missing_fields"],
+    "kept_distinct": true,
+    "single_generic_error_list": false,
+    "note": "a missing optional static stat is not the same fact as an M15 execution rejection, and the report keeps their sources separate"
+  },
+  "non_effect_guarantees": {
+    "source": "content_planner.NonEffects (public M15 representation), summed across results; no independent counters are invented",
+    "fields_all_zero": ["reference_action_envelopes", "player_legal_actions", "planner_successors", "state_mutations", "rng_draws", "allocator_tickets", "scheduler_entries", "execution_traces", "gate_certificates", "transaction_plans", "staged_deltas"],
+    "permission_fields_all_false": ["may_create_reference_action_envelope", "may_enter_player_legal_actions", "may_expand_planner_successor", "may_mutate_state"],
+    "non_claims_block": {
+      "real_content_execution_performed": false,
+      "reference_action_envelopes_created": 0,
+      "player_legal_actions_created": 0,
+      "planner_invoked": false,
+      "battle_state_created": false,
+      "native_evidence_promoted": false,
+      "golden_claimed": false,
+      "scenario_is_executable": false,
+      "scenario_is_planner_ready": false,
+      "m15_rejection_proves_game_behavior": false,
+      "family_level_runtime_evidence_applies_to_an_individual_monster_or_stage": false
+    },
+    "m10_m11_invoked": false
+  },
+  "determinism_copy_policy": {
+    "hash": "report_sha256 = stable_hash(report without the hash field)",
+    "wall_clock_timestamp_in_hashed_document": false,
+    "ordering": "all collections explicitly sorted; counts dicts sorted by key",
+    "representation": "plain dict document; immutable typing explicitly NOT claimed",
+    "copy_isolation": "deepcopy before return; a caller mutation cannot reach another result or any artefact payload",
+    "same_input_same_hash": true,
+    "note": "the P4.1 metadata additions changed the report hashes; the P4.1 census re-recorded them"
+  },
+  "fixtures": {
+    "A_free": {"scenario": "1105 Natasha, no source Stage, one custom enemy wave (1002020 @ level 80)", "scenario_package_sha256": "e97ea6eefa97e449cf85ef717207c8bf441afec934f1c7b99dc07a5869855df0", "report_sha256": "0ffd55fc7269cf083c501bc2b283fab595099eb5cfa8f3e42c6e8fb029814c3e", "proves": "Stage absence is not an error"},
+    "B_stage_backed": {"scenario": "1105 with source_stage_id 420101", "scenario_package_sha256": "6798c241ac779bb718be8b6ad5ea02d960a03484cdc9d5922071549e81831419", "report_sha256": "f979812765e738dab2ab3190ad3ccea6047b92a045fa2fd324ddb7af65f95aa3", "proves": "Stage Buff 3110001, encounter source mode boss, P0 variant-only Monster identity (100401401 -> 1004014, 100402601 -> 1004026)"},
+    "C_m14_missing": {"scenario": "1508 Rin Tohsaka (lightcone 23037, Mage-compatible)", "scenario_package_sha256": "908d2293af0f28c1fb2634231c101b0e5a759c6536243308a4b4326219459e0b", "report_sha256": "2447ae4271464e4b54e250e55f828553a68abc2421e6c2c3d80ba4352b97c05f", "proves": "M14 NO_M14_ROW (8 skills) is distinct from M15 SKILL_NOT_IN_REGISTRY (8 results); no capability or eligibility fabricated"},
+    "also": "1105 appears in A and B as the normal M14-linked avatar (COMPLETE, 6/6 linked)"
+  },
+  "census": {
+    "artifact": "tmp/audit/p4_support_census.json",
+    "script": "tmp/audit/p4_support_census.py",
+    "example_reports": ["tmp/audit/p4_example_A_free.json", "tmp/audit/p4_example_B_stage_backed.json", "tmp/audit/p4_example_C_m14_missing.json"],
+    "A_free": {"players": 1, "static_skills": 6, "m14_linked": 6, "m14_missing": 0, "m15_results": 6, "m15_outcomes": {"REJECTED": 6}, "m15_reasons": {"NO_BEHAVIOR_ROOT": 1, "NO_SETTLEMENT_OBSERVED": 1, "REPRESENTABLE_BUT_NOT_EXECUTABLE": 3, "SECOND_HOP_CONTINUATION_UNRESOLVED": 1}, "enemy_instances": 1, "variant_occurrences": 0, "stage_unknown": 0, "unresolved_behavior": 2, "unapplied_contextual": 1},
+    "B_stage_backed": {"players": 1, "static_skills": 6, "m14_linked": 6, "m14_missing": 0, "m15_results": 6, "m15_outcomes": {"REJECTED": 6}, "enemy_instances": 2, "variant_occurrences": 2, "stage_unknown": 0, "unresolved_behavior": 4, "unapplied_contextual": 1},
+    "C_m14_missing": {"players": 1, "static_skills": 8, "m14_linked": 0, "m14_missing": 8, "m15_results": 8, "m15_outcomes": {"REJECTED": 8}, "m15_reasons": {"SKILL_NOT_IN_REGISTRY": 8}, "enemy_instances": 1, "variant_occurrences": 0, "stage_unknown": 0, "unresolved_behavior": 2, "unapplied_contextual": 1},
+    "not_execution_coverage": true,
+    "team_stage_combinations_exhaustively_run": false
+  },
+  "tests": {
+    "new": {
+      "command": "python -m unittest -v tests.product_support.test_scenario_support_report",
+      "tests_run": 58,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK",
+      "p4_1_additions": "RegistryRequiredTest (7), InputContractTest shape-validation additions (2 methods covering 12 malformed + 4 accepted-edge cases), M15AdmissionTest outcome-gate additions (4) = 12 new tests (46 -> 58)"
+    },
+    "adjacent": {
+      "command": "python -m unittest tests.content_planner.test_admission_boundary tests.content_support.test_capability_query tests.game_data.test_scenario_compiler tests.game_data.test_scenario_entity_resolution_parity tests.game_data.test_content_product tests.game_data.test_stage_product",
+      "tests_run": 221,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK"
+    }
+  },
+  "frozen_layers": {
+    "reference_sandbox": {"aggregate_sha256": "c01da5b4f2035d385220f2261fc7ef3e03197a75d4b0061944af1ce0664072fe", "file_count": 4},
+    "reference_battle_planner": {"aggregate_sha256": "2d76048ba601be2e8b396c97f34ad54ed3c2dd594d3bac2c7757cc1387429ee9", "file_count": 5},
+    "battle_sandbox": {"aggregate_sha256": "bb0e26d288919ebe92a05f6e94dded2eece2ed1557c85ebc4c7d79249de4b39b", "file_count": 39},
+    "content_support": {"aggregate_sha256": "2f7686d5953582b4b0523f0319cdae5c4176419d0e8b6d2f1208ebb6780d9770", "file_count": 4},
+    "content_planner": {"aggregate_sha256": "cf5b7f96d618f34782925c98b6837a2aeae07dc3a5901750f065484310847610", "file_count": 3}
+  },
+  "frozen_layers_unchanged": true,
+  "changed_files": [
+    {"path": "src/hsr_battle_agent/product_support/__init__.py", "status": "NEW", "sha256": "a971992013e5f2a5b7907594226d991dda2c54529236670739c80ccb11021c42", "size_bytes": 1510},
+    {"path": "src/hsr_battle_agent/product_support/scenario_report.py", "status": "NEW", "sha256": "798912e1754e8e93cf3661f08fa2504a610e6cbc8d27d504e0cc3e2849d50c99", "size_bytes": 54368},
+    {"path": "tests/product_support/__init__.py", "status": "NEW", "sha256": "5e556706c04bbb21ec07dfde629be8cd00cbeb4a949856f866627279ee18f5f8", "size_bytes": 63},
+    {"path": "tests/product_support/test_scenario_support_report.py", "status": "NEW", "sha256": "6ec36b20d71e3ccccbc35d7ba2997789824dfa63e813f66154ae4650cecb1b2c", "size_bytes": 43541}
+  ],
+  "existing_files_modified": [],
+  "out_of_scope_not_done": ["real battle execution", "M10 Scenario binding", "M11 planning", "positive M15 admission", "behavior IR attachment", "Monster AI", "Stage runtime", "frontend adapter", "F5 loadout hardening", "general immutable typing"],
+  "runtime_semantics_added": false,
+  "planner_invoked": false,
+  "execution_artifacts_created": 0,
+  "m10_m15_modified": false,
+  "frontend_modified": false,
+  "work_4_5_54": false,
+  "git_writes": false
+}
