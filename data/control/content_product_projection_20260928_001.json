@@ -1,0 +1,287 @@
+{
+  "schema": "content_product_projection/1",
+  "version": "1.1.0",
+  "change_request_id": "CR-P2-CONTENT-PRODUCT-PROJECTION-20260928-001",
+  "correction_patch": "P2.1 CONTENT PRODUCT HARDENING (four review findings; no P2 redesign)",
+  "task_type": "STATIC_PRODUCT_PACKAGING",
+  "branch": "terra/implementation",
+  "starting_head": "456eb8589a37cf3aed3837c2efcd87d7782fd06c",
+  "starting_head_subject": "content(P1): close static scenario contract",
+  "schemas": {
+    "character_product": "hsr_battle_agent.character_product/1",
+    "monster_product": "hsr_battle_agent.monster_product/1",
+    "character_summary": "hsr_battle_agent.character_summary/1",
+    "monster_summary": "hsr_battle_agent.monster_summary/1"
+  },
+  "schema_change_in_p2_1": "NONE -- the new eligibility field and the restructured monster provenance are additive inside the existing /1 schemas",
+  "new_product_types": ["CharacterProduct", "MonsterProduct"],
+  "product_types_deliberately_not_created": ["StagePackage", "ScenarioPackage", "LoadoutPackage", "ScenarioCompiler"],
+  "public_api": {
+    "module": "src/hsr_battle_agent/game_data/content_product.py",
+    "entry_point": "ContentProductService",
+    "constructor": "ContentProductService(database, *, registry=None)",
+    "methods": {
+      "list_characters": "list_characters(*, locale=None) -> tuple[character_summary, ...]",
+      "get_character": "get_character(avatar_id, *, locale=None) -> character_product | None",
+      "list_monsters": "list_monsters(*, locale=None) -> tuple[monster_summary, ...]",
+      "get_monster": "get_monster(monster_id, *, locale=None, level=None, formation=None) -> monster_product | None"
+    },
+    "properties": ["game_version", "m14_registry_supplied"],
+    "errors": ["ContentProductError", "UnknownLocaleError"],
+    "sqlite_internals_exposed": false,
+    "removed_in_p2_1": {
+      "skill_capability_lookup": "REMOVED. It could supply capabilities but never the authoritative M14 execution-eligibility result, so retaining it would have created a path where M14-linked skills silently reported null eligibility, and it was a way to bypass M14 policy authority. The M14 dependency is now exactly one explicit, version-checked registry."
+    }
+  },
+  "execution_eligibility_source": {
+    "status": "ADDED IN P2.1 (review finding 1)",
+    "authority": "content_support.real_content_execution_eligibility(registry, avatar_id, skill_id)",
+    "field": "skills[].m14_execution_eligibility",
+    "record_shape": ["authority", "recomputed_by_product_layer", "avatar_id", "skill_id", "content_version", "outcome", "reason_code", "reason_detail", "execution_evidence_mode", "representation_evidence_mode", "satisfies_gate_certificate", "satisfies_native_evidenced"],
+    "outcome_vocabulary": "the canonical M14 machine vocabulary (ExecutionEligibilityOutcome), observed as exactly {\"NOT_ELIGIBLE\"}",
+    "copied_verbatim": true,
+    "recomputed_by_product_layer": false,
+    "inferred_from": "NOTHING -- the field must not be derived from execution_readiness, support_status, binding_level or settlement_present; a test asserts none of those four names appears in the eligibility record",
+    "NO_M14_ROW": "m14_execution_eligibility is null",
+    "M14_REGISTRY_NOT_SUPPLIED": "m14_execution_eligibility is null for every skill",
+    "capability_summary_fields": ["execution_eligibility_source", "execution_eligibility_available", "skills_with_execution_eligibility", "execution_eligibility_outcomes"],
+    "unknown_block_field": "unknown.skills_without_execution_eligibility lists every skill left without an eligibility record",
+    "previously_untrue_claim_now_true": "the pre-P2.1 control artifact (and the module docstring) said M14 'execution eligibility' was copied verbatim while the separate authoritative result was in fact omitted; the field now exists"
+  },
+  "version_coherence_policy": {
+    "status": "ADDED IN P2.1 (review finding 2)",
+    "registry_vs_database": "ContentProductService.__init__ requires registry.content_version == database.game_version; a mismatch raises ContentProductError at construction (fail closed)",
+    "capability_vs_service": "every capability returned for an avatar is re-checked at call time; capability.key.content_version must equal service.game_version or ContentProductError is raised",
+    "mixed_version_behaviour": "REJECTED -- never silently dropped, never rewritten, never fallen back",
+    "latest_fallback": "NONE",
+    "test_seams": "the removed skill_capability_lookup was the only injection seam; no remaining seam can bypass the M14 policy authority"
+  },
+  "variant_parent_provenance": {
+    "status": "ADDED IN P2.1 (review finding 3)",
+    "structure": {
+      "provenance.sources": "ordered list of {role, entity_id, original_game_id, game_id_status, confidence, reconstruction_status, entity_sha256, provenance, provenance_count}",
+      "provenance.field_sources": "a sorted map naming the source of every parent-backed field",
+      "provenance.parent_provenance_available": "explicit boolean",
+      "provenance.entity_provenance_count": "sum of the per-source provenance counts",
+      "provenance.invented_provenance": "always false"
+    },
+    "canonical_monster": "one source with role SELF",
+    "monster_variant_with_proven_parent": "two sources, role REQUESTED_ENTITY (the variant) and role CANONICAL_PARENT, each carrying its own verbatim provenance and its own entity_sha256",
+    "parent_backed_fields": {
+      "static_stats": "CANONICAL_PARENT (a variant record carries only modify ratios, never base stats)",
+      "display.names / display.descriptions / display.icon / display.rank": "CANONICAL_PARENT",
+      "combat_descriptors.rank / .monster_camp_id / .phase_list / .max_monster_phase": "CANONICAL_PARENT",
+      "combat_descriptors.weaknesses": "VARIANT_STANCE_WEAK_LIST",
+      "combat_descriptors.damage_type_resistance / .elite_group / .hard_level_group / skills": "REQUESTED_VARIANT_RECORD",
+      "identity": "REQUESTED_ENTITY"
+    },
+    "canonical_monster_field_sources": {"static_stats": "SELF", "display.names": "SELF", "combat_descriptors.weaknesses": "SELF_COLLECTION", "skills": "SELF_CHILD_DESCRIPTOR"},
+    "unproven_parent": "identity.parent_resolved=false, only the REQUESTED_ENTITY source is retained, parent_provenance_available=false, and nothing is fabricated",
+    "envelopes_used_verbatim": "ContentDatabase.get_avatar/get_monster/resolve_monster envelopes only"
+  },
+  "enumeration_authority": {
+    "status": "MOVED IN P2.1 (review finding 4)",
+    "facade_methods": ["ContentDatabase.list_avatar_ids()", "ContentDatabase.list_monster_ids()"],
+    "facade_internals": "a private _entity_ids(table) guarded by ContentDatabase.ENUMERABLE_ENTITY_TABLES == (\"avatars\", \"monsters\"); an unexpected table raises ContentDatabaseError",
+    "no_generic_api": "ContentDatabase.list_entity_ids is deliberately NOT exposed, so the SQLite table vocabulary stays inside the facade",
+    "properties": ["deterministic (numeric-aware ascending canonical ID order)", "version-scoped by game_version", "canonical entity IDs only, never rows or columns", "no latest fallback"],
+    "product_layer": "ContentProductService now calls only database.list_avatar_ids()/list_monster_ids(); the product module contains no sqlite3 import, no database_path access, no SQL keyword and no storage table name, and it re-sorts defensively so its own ordering guarantee never depends on the facade",
+    "existing_query_outputs_changed": false,
+    "nanoka_content_diff": "32 insertions, 0 deletions (purely additive)",
+    "p3_note": "stage/encounter enumeration can follow the same pattern with list_stage_ids()/list_encounter_ids()"
+  },
+  "character_fields": {
+    "identity": ["avatar_id", "original_game_id", "game_id_status", "confidence", "reconstruction_status", "entity_sha256"],
+    "display": ["names (all available locales)", "localized_name", "locale (requested, echoed)", "locale_status", "locale_vocabulary", "available_locales", "missing_locales", "locale_fallback_used", "descriptions (collection + detail, verbatim)", "rarity", "rarity_code", "path", "element", "icon"],
+    "progression": ["promotion_keys", "promotion_count", "promotion_stat_tables (verbatim per promotion)", "level_domain {explicit_level_cap, max_promotion_key, note}"],
+    "skills": ["skill_id", "skill_numeric_id", "name", "desc", "simple_desc", "tag", "sp_base", "bp_add", "bp_need", "show_stance_list", "skill_combo_value_delta", "max_level", "levels[{level, param_list}]", "m14_status", "m14_capability", "m14_execution_eligibility"],
+    "traces": ["trace_id", "point", "level", "point_id", "point_type", "point_trigger_key", "anchor", "max_level", "pre_point", "status_add_list", "level_up_skill_id", "avatar_level_limit", "avatar_promotion_limit", "default_unlock", "icon"],
+    "eidolons": ["rank", "eidolon_id", "name", "desc", "param_list", "icon"],
+    "equipment": ["compatible_lightcone_ids", "compatible_lightcone_count", "relic_reference"],
+    "memosprite": ["present", "name", "static_skill_ids", "hp_skill", "icon", "m14_coverage"],
+    "capability": ["registry_loaded", "registry_content_version", "source", "status", "counts_available", "static_skill_count", "skills_with_m14_row", "skills_without_m14_row", "skills_with_m14_row_ids", "skills_without_m14_row_ids", "execution_eligibility_source", "execution_eligibility_available", "skills_with_execution_eligibility", "execution_eligibility_outcomes", "policy_authority", "execution_claimed"],
+    "provenance": ["entity_provenance (verbatim)", "entity_provenance_count", "source", "invented_provenance"],
+    "unknown": ["limitations", "unavailable_sections", "missing_locales", "static_skills_without_m14_row", "m14_registry_supplied", "execution_eligibility_available", "skills_without_execution_eligibility", "unresolved_static_references"],
+    "flags": ["runtime_semantics_added=false", "product_sha256"]
+  },
+  "monster_fields": {
+    "identity": ["requested_id", "resolved_kind (MONSTER|MONSTER_VARIANT)", "canonical_monster_id", "variant_id", "original_game_id", "game_id_status", "confidence", "reconstruction_status", "entity_sha256", "parent_resolved"],
+    "display": ["names", "localized_name", "locale", "locale_status", "locale_vocabulary", "available_locales", "missing_locales", "locale_fallback_used", "names_source", "descriptions", "icon", "rank", "rank_source"],
+    "static_stats": ["hp_base", "attack_base", "defence_base", "speed_base", "critical_damage_base", "stance_base", "stance_count", "status_resistance_base", "initial_delay_ratio", "minimum_fatigue_ratio"],
+    "static_stats_basis": "SELF for a canonical Monster; CANONICAL_PARENT for a variant",
+    "static_stats_source_monster_id": "the monster the stats were read from",
+    "combat_descriptors": ["weaknesses", "weaknesses_source", "damage_type_resistance", "rank", "elite_group", "hard_level_group", "monster_camp_id", "phase_list", "max_monster_phase"],
+    "skills": ["skill_id", "skill_name", "skill_desc", "damage_type", "sp_hit_base", "source"],
+    "variant_descriptors": ["variant_id", "is_self_variant", "elite_group", "hard_level_group", "stance_weak_list", "damage_type_resistance", "skill_ids", "hp_modify_ratio", "attack_modify_ratio", "defence_modify_ratio", "speed_modify_ratio", "speed_modify_value", "stance_modify_ratio", "stance_modify_value"],
+    "context": ["level", "level_source (CALLER|NOT_SUPPLIED)", "formation {group_index, slot}", "note"],
+    "runtime_support": ["evidence_scope", "per_entity_readiness_claim", "monster_ai", "monster_skill_execution", "phase_or_body_part_runtime", "battle_state_construction", "statement"],
+    "provenance": ["sources[{role, entity_id, original_game_id, game_id_status, confidence, reconstruction_status, entity_sha256, provenance, provenance_count}]", "field_sources", "entity_provenance_count", "source", "invented_provenance", "parent_provenance_available"],
+    "unknown": ["limitations", "missing_locales", "missing_static_stats", "damage_type_resistance_supplied", "unresolved_static_references"],
+    "flags": ["runtime_semantics_added=false", "product_sha256"]
+  },
+  "locale_policy": {
+    "observed_vocabulary": ["en", "ja", "ko", "zh"],
+    "observed_from": "the collection block of every 4.4.54 avatar and monster record (97 + 628 records scanned)",
+    "backend_default_locale": null,
+    "chinese_default": false,
+    "requested_locale_none": "returns every available locale under display.names and sets locale_status=MULTI; localized_name stays null",
+    "requested_locale_present": "display.localized_name is that locale's value and locale_status=PRESENT",
+    "requested_locale_absent_for_this_entity": "locale_status=ABSENT and localized_name=null; NO substitution and NO fallback (locale_fallback_used is always false)",
+    "requested_locale_outside_vocabulary": "UnknownLocaleError",
+    "raw_database_semantics_changed": false,
+    "canonical_ids_independent_of_localization": true
+  },
+  "enumeration_semantics": {
+    "audit_item_closed": "F8 (relevant part: character and monster enumeration)",
+    "list_characters": "97 rows; per-row {schema, game_version, avatar_id, names, localized_name, locale, locale_status, rarity, rarity_code, path, element}",
+    "list_monsters": "628 rows; per-row {schema, game_version, monster_id, names, localized_name, locale, locale_status, rank, monster_camp_id, weaknesses, variant_count, declared_child_count}",
+    "ordering": "deterministic numeric-aware ascending by avatar_id / monster_id (1, 2, ... 10, not lexicographic)",
+    "heavy_detail_materialized_by_list": false,
+    "explicit_content_version": "fixed at construction by the explicitly versioned ContentDatabase; summary rows echo game_version",
+    "latest_fallback": "NONE -- the service exposes no version/content_version parameter at all"
+  },
+  "m14_dependency_path": {
+    "public_apis_used": ["content_support.get_avatar_skills(registry, avatar_id)", "content_support.real_content_execution_eligibility(registry, avatar_id, skill_id)"],
+    "how_supplied": "the caller passes an explicitly loaded ContentSupportRegistry (load_registry('4.4.54')); it is version-checked against the database",
+    "module_level_import_of_content_support": false,
+    "import_style": "function-local (lazy), reached only when a registry is supplied; keeps the static module-level import graph free of a game_data -> content_support edge",
+    "implicit_or_global_registry_loading": false,
+    "m13_raw_registry_json_read": false,
+    "policy_recomputed": [],
+    "policy_copied_verbatim": ["binding_level", "support_status", "representation_readiness", "execution_readiness", "settlement_present", "settlement_kinds", "blocker_classes", "primary_blocker", "reentry_hints", "entry_ability", "prepare_ability", "version_relation", "execution eligibility (outcome, reason_code, reason_detail, evidence modes, gate/native flags)"],
+    "no_registry_supplied_behaviour": "capability.registry_loaded=false, capability.status=M14_REGISTRY_NOT_SUPPLIED, capability.skills_with_m14_row=null and skills_without_m14_row=null (explicitly unknown, never reported as zero), capability.skills_with_execution_eligibility=null, every skills[].m14_execution_eligibility=null, and unknown.static_skills_without_m14_row=null"
+  },
+  "unknown_missing_representation": {
+    "character": {
+      "unknown.unavailable_sections": "lists any section that could not be produced (m14_capability / relic_reference / compatible_lightcone_ids / traces / eidolons)",
+      "per_skill_m14_status": "LINKED | NO_M14_ROW | M14_REGISTRY_NOT_SUPPLIED",
+      "static_skills_without_m14_row": "explicit id list, or null when no M14 authority was supplied",
+      "skills_without_execution_eligibility": "explicit id list of every skill left without an authoritative eligibility record",
+      "missing_locales": "explicit list of vocabulary locales absent for this entity"
+    },
+    "monster": {
+      "unknown.missing_static_stats": "explicit list of the ten static stat fields absent from the record",
+      "unknown.damage_type_resistance_supplied": "explicit boolean",
+      "parent_unproven": "identity.parent_resolved=false and only the REQUESTED_ENTITY provenance source is retained (never guessed)",
+      "context_level": "null with level_source=NOT_SUPPLIED rather than a fabricated default"
+    }
+  },
+  "determinism_policy": {
+    "hash": "every document carries product_sha256 = stable_hash(document without the hash field), using the repository stable_hash (json.dumps sort_keys=True, separators=(',',':'))",
+    "ordering": "all collections are explicitly sorted (numeric-aware for game IDs, lexicographic for locale/field keys); never dependent on dict iteration order",
+    "same_input_same_hash": true,
+    "level_and_formation_participate_in_the_hash": true,
+    "no_wall_clock_or_random_input": true
+  },
+  "immutability_copy_policy": {
+    "representation": "plain dict documents carrying a stable schema string and a stable product_sha256",
+    "immutable_typing_claimed": false,
+    "rationale": "the game_data product layer already emits dict documents (stage_package/1, scenario_package/2), so dicts keep the layer uniform; a frozen wrapper over deeply nested payloads would either not be deeply immutable or would break json-based stable_hash and list/dict equality. P1's ambiguity is not repeated: no immutability is claimed here.",
+    "copy_isolation": "every returned document and summary row is deepcopy-isolated, so a caller mutation cannot reach the database facade, another document or a later call",
+    "stable_schema_string": true,
+    "stable_hash": true,
+    "future_work": "a frozen product type remains available as later hardening"
+  },
+  "test_fixtures": {
+    "characters": {
+      "1105": "Natasha -- 4-star, Priest, Physical, 6 skills all linked to M14, 50 trace rows, 6 eidolons, 3 compatible lightcones, no memosprite",
+      "1409": "Hyacine -- 5-star, Memory, Wind, 62 trace rows, 2 compatible lightcones, memosprite present (the materially different profile)",
+      "1508": "Rin Tohsaka -- 5-star, Mage, Quantum, 8 static skills with ZERO M14 rows (proves explicit missing capability and null eligibility)"
+    },
+    "monsters": {
+      "1002020": "Vagrant -- canonical Monster (A), single SELF provenance, weaknesses + damage-type resistance (D), two static skill references (E)",
+      "100202001": "the P0 variant-only ID (B); requested id preserved, canonical parent 1002020, TWO provenance sources retained",
+      "999999999": "unknown id returns None (C)",
+      "level supplied": "explicit placement level + formation (F)",
+      "level omitted": "context.level null with level_source NOT_SUPPLIED (G)",
+      "determinism": "same input -> same product_sha256, and a different level changes the hash (H)"
+    },
+    "fakes": "a fake M14 registry and fake SkillRecord-shaped capabilities carry chosen content versions so mixed-version behaviour is provable without a second content build",
+    "offline": "the packaged minimal fixture drives a robustness tier that proves missing sections/locales/stats degrade to explicit 'unavailable' rather than crashing; it is not a faithful real-payload sample (its field names differ), which is why the real acceptance fixtures use the local 4.4.54 database."
+  },
+  "counts": {
+    "database": "data/db/hsr_content_4.4.54.sqlite",
+    "database_sha256": "b6fb04075745e197e0d630814617239b4558a645e0fb6f0524843eed3b9e3692",
+    "census_artifact": "tmp/audit/p21_census.json",
+    "census_elapsed_seconds": 12.25,
+    "characters": {"static_count": 97, "projection_successes": 97, "projection_failures": 0},
+    "character_locales": {"entities_with_no_locale_value_at_all": 0, "missing_locale_occurrences": {}},
+    "character_skills": {"static_skill_rows": 664, "static_skills_with_m14_row": 620, "static_skills_without_m14_row": 44, "static_skills_with_execution_eligibility": 620},
+    "monsters": {"static_count": 628, "projection_successes": 628, "projection_failures": 0, "missing_locale_occurrences": {}},
+    "monster_variants": {"static_count": 2648, "projection_successes": 2648, "projection_failures": 0, "requested_id_preserved": 2648, "resolved_kind_counts": {"MONSTER": 627, "MONSTER_VARIANT": 2021}, "variants_with_proven_canonical_parent_provenance": 2021},
+    "unknown_static_gaps": {
+      "static_skills_without_m14_row": 44,
+      "avatars_with_zero_m14_rows": 6,
+      "monsters_missing_at_least_one_static_stat": 114,
+      "missing_static_stat_field_occurrences": {"status_resistance_base": 74, "stance_base": 32, "speed_base": 13, "stance_count": 12, "initial_delay_ratio": 10}
+    },
+    "note": "This is a product census, not execution coverage. 627 of the 2,648 monster_variants rows are canonical-Monster self-variant rows (their id also exists in monsters), which is why they resolve as MONSTER; the 2,021 MONSTER_VARIANT rows are exactly the ones that now carry proven canonical-parent provenance."
+  },
+  "tests": {
+    "new": {
+      "command": "python -m unittest -v tests.game_data.test_content_product",
+      "tests_run": 70,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK",
+      "p2_1_additions": "M14ExecutionEligibilityTest (6), M14VersionCoherenceTest (6), EnumerationBoundaryTest (5), MonsterVariantProvenanceTest (6) = 23 new tests (47 -> 70)"
+    },
+    "adjacent": {
+      "command": "python -m unittest tests.game_data.test_nanoka_content_database tests.content_support.test_capability_query tests.game_data.test_scenario_entity_resolution_parity tests.game_data.test_scenario_compiler",
+      "tests_run": 69,
+      "failures": 0,
+      "errors": 0,
+      "result": "OK",
+      "note": "the P0 parity and P1 scenario-compiler suites are included because P2.1 touches nanoka_content.py; unchanged get_stage_package hashes prove no existing query output moved"
+    }
+  },
+  "frozen_layers": {
+    "reference_sandbox": {"aggregate_sha256": "c01da5b4f2035d385220f2261fc7ef3e03197a75d4b0061944af1ce0664072fe", "file_count": 4},
+    "reference_battle_planner": {"aggregate_sha256": "2d76048ba601be2e8b396c97f34ad54ed3c2dd594d3bac2c7757cc1387429ee9", "file_count": 5},
+    "battle_sandbox": {"aggregate_sha256": "bb0e26d288919ebe92a05f6e94dded2eece2ed1557c85ebc4c7d79249de4b39b", "file_count": 39},
+    "content_support": {"aggregate_sha256": "2f7686d5953582b4b0523f0319cdae5c4176419d0e8b6d2f1208ebb6780d9770", "file_count": 4},
+    "content_planner": {"aggregate_sha256": "cf5b7f96d618f34782925c98b6837a2aeae07dc3a5901750f065484310847610", "file_count": 3}
+  },
+  "frozen_layers_unchanged": true,
+  "changed_files": [
+    {
+      "path": "src/hsr_battle_agent/game_data/content_product.py",
+      "status": "NEW",
+      "sha256": "32979b7eb71d11456113f2f894f3161ebc1be2b644c4552171ee83b07ddcac6f",
+      "size_bytes": 43139
+    },
+    {
+      "path": "src/hsr_battle_agent/game_data/nanoka_content.py",
+      "status": "MODIFIED",
+      "sha256": "0a1ed0af3d965c7c500386624132b0ec589c1d88d757f9cecc134c9fcc0f5a78",
+      "size_bytes": 81757,
+      "diff": "32 insertions, 0 deletions -- ENUMERABLE_ENTITY_TABLES, _canonical_id_sort_key, _entity_ids, list_avatar_ids and list_monster_ids are all new; no existing query output changed"
+    },
+    {
+      "path": "tests/game_data/test_content_product.py",
+      "status": "NEW",
+      "sha256": "76adfa22e4ac09aff44aab9e08ab0e53b661b8e6d8cfb14a32aad654c8a3bf83",
+      "size_bytes": 49230
+    }
+  ],
+  "out_of_scope_not_done": [
+    "F5 loadout completeness",
+    "F6 general package immutability beyond this module",
+    "F7 relic vocabulary docs",
+    "F9 Stage retained raw fields",
+    "F10 Stage mode/category semantics",
+    "Stage Product projection",
+    "Scenario Support Report",
+    "frontend product adapter",
+    "behavior IR attachment",
+    "Monster AI / Monster execution"
+  ],
+  "runtime_semantics_added": false,
+  "character_runtime_semantics_added": false,
+  "monster_runtime_semantics_added": false,
+  "real_content_execution": "DENIED",
+  "m10_m15_modified": false,
+  "frontend_modified": false,
+  "work_4_5_54": false,
+  "git_writes": false
+}

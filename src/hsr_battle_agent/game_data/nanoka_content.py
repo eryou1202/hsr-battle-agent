@@ -1588,6 +1588,38 @@ class ContentDatabase:
             "entity": variant,
         }
 
+    #: Canonical entity tables that may be enumerated through the facade.  The
+    #: product layer asks for these by name, so the SQLite table vocabulary never
+    #: leaves this module.
+    ENUMERABLE_ENTITY_TABLES = ("avatars", "monsters")
+
+    @staticmethod
+    def _canonical_id_sort_key(value: str) -> tuple:
+        return (0, int(value), "") if value.isdigit() else (1, 0, value)
+
+    def _entity_ids(self, table: str) -> list[str]:
+        """Deterministically enumerate one canonical entity table's IDs.
+
+        ``table`` is validated against :data:`ENUMERABLE_ENTITY_TABLES`; callers
+        receive canonical entity IDs only, never rows or columns.
+        """
+        if table not in self.ENUMERABLE_ENTITY_TABLES:
+            raise ContentDatabaseError(f"table is not enumerable through the facade: {table}")
+        with closing(sqlite3.connect(self.database_path)) as connection:
+            rows = connection.execute(
+                f"SELECT entity_id FROM {table} WHERE game_version=?",
+                (self.game_version,),
+            ).fetchall()
+        return sorted((str(row[0]) for row in rows), key=self._canonical_id_sort_key)
+
+    def list_avatar_ids(self) -> list[str]:
+        """Every canonical Avatar ID for this content version, in stable order."""
+        return self._entity_ids("avatars")
+
+    def list_monster_ids(self) -> list[str]:
+        """Every canonical Monster ID for this content version, in stable order."""
+        return self._entity_ids("monsters")
+
     def get_encounter(self, encounter_id: str) -> dict[str, Any] | None:
         return self._entity("encounters", encounter_id)
 
