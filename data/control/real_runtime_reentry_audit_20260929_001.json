@@ -1,0 +1,792 @@
+{
+ "schema": "hsr_battle_agent.real_runtime_reentry_audit/1",
+ "version": "1.0.0",
+ "change_request_id": "CR-REAL-RUNTIME-REENTRY-AUDIT-20260929-001",
+ "task_type": "READ_ONLY_ARCHITECTURE_AND_IMPLEMENTATION_AUDIT",
+ "branch": "terra/implementation",
+ "starting_head": "7eb82ec2400b050e6b915bbfb2d834bbfe0fae3d",
+ "git_writes": false,
+ "production_files_modified": false,
+ "tests_modified": false,
+ "feature_implemented": false,
+ "architecture_redesigned": false,
+
+ "start_gate": {
+  "head": "7eb82ec2400b050e6b915bbfb2d834bbfe0fae3d",
+  "branch": "terra/implementation",
+  "fork_point_of_goal_chain": "311b6e9b384cd2d4432c62f33d562ab8f2bab319 (M12 full-action-closure census)",
+  "post_freeze_commits_audited": [
+   "24ccb9b control: freeze 4.4.54 backend contract stack",
+   "135c744 content(P0): unify scenario monster resolution",
+   "456eb85 content(P1): close static scenario contract",
+   "f8c3d02 content(P2): add character and monster product projections",
+   "0440376 content(P3): add stage and encounter product projections",
+   "b1faed7 content(P4): add scenario support reporting",
+   "e17666c frontend(P5A): add product document contract",
+   "7eb82ec frontend(P5B): add local scenario bridge"
+  ],
+  "commit_delta_count_vs_backend_freeze_baseline": 8,
+  "dirty_tree_preserved": true,
+  "dirty_tree_scope": [
+   "frontend/* (P5 visual + adapter + model + panel work in progress)",
+   "data/raw/4.4.54/* (reverse-engineering probes: disasm, taskconfig/predicate registries, damage dispatch)",
+   "data/semantics/4.4.54/full_reconstruction/astra_*.json + *.cjs (Astra domain evidence and tickets)",
+   "docs/agent/handoffs/* (astra + numeric semantic handoffs 09-30)",
+   "?? tools/reverse/scripts, tools/reference, frontend/src/{fe1,fe3,ui,decoders,styles}, misc tmp dirs"
+  ],
+  "dirty_tree_interpretation": "Two independent workstreams are uncommitted on top of HEAD: (a) frontend P5 product UX and (b) reverse-engineering/semantic-reconstruction probes aimed at the runtime goal. The audit treats the working tree as authoritative current source and changed nothing.",
+  "forbidden_operations_performed": []
+ },
+
+ "original_goal": {
+  "target_architecture": [
+   "real client / extracted content",
+   "canonical static + behavior data",
+   "generic semantic / behavior representation",
+   "real-content BattleState",
+   "generic deterministic executor",
+   "run_until_decision()",
+   "DecisionPoint",
+   "legal_actions()",
+   "state clone / canonical hash",
+   "baseline / greedy / beam planner",
+   "recommendation",
+   "later: live client state reader",
+   "real-time battle advisor"
+  ],
+  "explicit_non_goals": [
+   "content browser",
+   "M14 registry viewer",
+   "static Scenario builder",
+   "support-report viewer",
+   "admin/debug console"
+  ],
+  "non_goal_status": "All five non-goals are implemented and healthy. The end goal (battle planning over real HSR content) has zero realized steps."
+ },
+
+ "control_artifacts_read": [
+  {"path": "data/control/backend_freeze_audit_20260927_001.json", "verdict": "BACKEND_CONTRACT_STACK_FREEZE_READY (choice A); M10 DELIVERED, M11 DELIVERED, M12 BLOCKED_BY_EVIDENCE, M13/M14/M15 DONE", "measured_at_head": "8a4dcb00794463e64c257083330e2783167289e8", "note": "superseded by 8 later commits; verdict re-verified against current source"},
+  {"path": "data/control/scenario_entity_resolution_parity_20260927_001.json", "verdict": "P0 IDENTICAL; real_stage_420101 COMPILES_STATICALLY; real_content_execution DENIED"},
+  {"path": "data/control/scenario_contract_conformance_20260927_001.json", "verdict": "P1 emitted scenario_package/2; F2/F3/F4 closed; F5/F7 explicitly UNTOUCHED"},
+  {"path": "data/control/content_product_projection_20260928_001.json", "verdict": "P2 CharacterProduct/MonsterProduct done (static); F5/F7 out_of_scope_not_done"},
+  {"path": "data/control/stage_encounter_product_projection_20260928_001.json", "verdict": "P3 stage_product/1 + encounter_product/1 done (static)"},
+  {"path": "data/control/scenario_support_report_20260929_001.json", "verdict": "P4 STATIC_PRODUCT_AGGREGATION; real_content_execution_performed false; monster/stage scope FAMILY_LEVEL_ONLY"},
+  {"path": "data/control/product_frontend_contract_20260929_001.json", "verdict": "P5A done; browser_dynamic_scenario_compilation NOT_CONNECTED at that time"},
+  {"path": "data/control/local_scenario_bridge_20260929_001.json", "verdict": "P5B done; dynamic_compile_connected true; battle_execution_exposed false; M15_admission REJECTED"},
+  {"path": "data/content_binding/4.4.54/full_action_closure_census_001.json", "verdict": "M12 C. WAIT_PLUS_ONE_TRUE_FULL_ACTION_FRONTIER_FOUND; minimum residual 1 class = DAMAGE_PACKET", "measured_at_head": "311b6e9b384cd2d4432c62f33d562ab8f2bab319"},
+  {"path": "data/content_support/4.4.54/content_support_registry_v1.json", "verdict": "M13 620 records; descriptive_only"},
+  {"path": "data/content_support/4.4.54/content_support_summary_v1.json", "verdict": "CONTENT_ACTION_EXECUTABLE_REFERENCE = 0"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_semantic_freeze_v1.json", "verdict": "SEMANTIC_SPRINT_COMPLETE but native_reconstruction_status INCOMPLETE_EVIDENCE_AND_CONTENT_BLOCKED; battle_state_contract ARCHITECTURE_ONLY_NO_METHOD_IMPLEMENTATIONS"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_reverse_master_v1.json", "verdict": "full_native_behavior_reconstruction_complete false; production_implementation_started false"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json", "verdict": "PASS_4_COMPLETE_BLOCKED_BY_EVIDENCE; execution_readiness NO; expected_new_executable_coverage 0"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_sphitratio_targeted_evidence_v1.json", "verdict": "BLOCKED_BY_EVIDENCE; do not recommend SOL policy reentry from this result"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json", "verdict": "ai_policy_binding PARTIAL; candidate runtime admission UNKNOWN; terra_contract ready PARTIAL"},
+  {"path": "data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json", "verdict": "wave_advance_contract BLOCKED_BY_EVIDENCE_AND_GRAPH_CONTENT; spawn REQUEST_REPRESENTATION_CLOSED_EXECUTION_BLOCKED; terminal SOURCE_PREDICATE_SURFACES_EXACT_EXECUTION_BLOCKED"},
+  {"path": "docs/agent/handoffs/m12_full_action_closure_census_20260926.md", "verdict": "293 settlement-reaching roots; 0 closed; blocker histogram"},
+  {"path": "docs/agent/handoffs/semantic_handoff_30.md", "verdict": "CORE_RUNTIME_READY_WITH_BOUNDED_EXTERNAL_BLOCKER; CurrentHP deliberately unchanged; 6 remaining blockers"},
+  {"path": "docs/agent/handoffs/natasha_skill02_healhp_content_30.md", "verdict": "real HealHP node + FormulaType 4 confirmed; positive HealData consumer missing"},
+  {"path": "docs/agent/handoffs/damage_request_dispatch_resolution_18.md", "verdict": "PARTIAL_RESOLUTION - TARGET_UNRESOLVED; PGOOHIHKHNJ +0x120 slot unknown"},
+  {"path": "docs/agent/handoffs/direct_hp_real_content_census_28.md", "verdict": "DIRECT_HP_AVATAR_SLICE_NOT_FOUND"},
+  {"path": "docs/agent/handoffs/simple_skill_candidate_index_21.md", "verdict": "PGOO blocker BYPASSABLE_FOR_NON_DAMAGE_OR_DIRECT_HP_SLICE (selector premise later retracted by handoff 30)"},
+  {"path": "docs/agent/handoffs/pgoo_live_dispatch_observation_stage1_blocker_20.md", "verdict": "RUNTIME_INSTANCE_OBSERVATION_REQUIRED"}
+ ],
+
+ "module_inventory": {
+  "columns": ["module", "py_files", "loc", "category", "imports_into_runtime"],
+  "rows": [
+   ["game_data.nanoka_content", 1, 1764, "STATIC_DATA", "no"],
+   ["game_data.external_reconstruction", 1, 1423, "STATIC_DATA + REFERENCE_MODEL (numeric evaluator, loadout materializer)", "no"],
+   ["game_data.external_behavior", 1, 724, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (raw behavior normalizer)", "no"],
+   ["game_data.behavior_compiler", 1, 675, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (strict compiler, REJECT_NOT_NOOP)", "no"],
+   ["game_data.content_behavior_mapping", 1, 347, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (coverage mapping)", "no"],
+   ["game_data.full_content_behavior_ingestion", 1, 265, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (ingestion planning)", "no"],
+   ["game_data.behavior_descriptor_adapter", 1, 136, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (one-way mapping seam)", "no"],
+   ["game_data.reference_execution", 1, 1714, "REFERENCE_MODEL (closed-subset reference execution)", "no (quarantined)"],
+   ["game_data.reference_operation_adapters", 1, 208, "REFERENCE_MODEL (REF01 value/resource adapters)", "no (quarantined)"],
+   ["game_data.reference_damage_adapters", 1, 227, "REFERENCE_MODEL (REF02 damage/heal packet adapters)", "no (quarantined)"],
+   ["game_data.reference_schedule_v2", 1, 126, "REFERENCE_MODEL (REF03 scheduling primitives)", "no (quarantined)"],
+   ["game_data.cross_family_execution_reference", 1, 219, "REFERENCE_MODEL (verification scaffold)", "no (quarantined)"],
+   ["game_data.damage_survival_reference", 1, 165, "REFERENCE_MODEL (damage/survival semantics)", "no (quarantined)"],
+   ["game_data.dynamic_value_reference", 1, 371, "REFERENCE_MODEL", "no (quarantined)"],
+   ["game_data.predicate_semantics_reference", 1, 362, "REFERENCE_MODEL", "no (quarantined)"],
+   ["game_data.scheduler_semantics_reference", 1, 413, "REFERENCE_MODEL", "no (quarantined)"],
+   ["game_data.rng_semantics_reference", 1, 76, "REFERENCE_MODEL (KERNEL-RNG-001 weighted selection)", "no (quarantined)"],
+   ["game_data.target_semantics_reference", 1, 225, "REFERENCE_MODEL (TARGET-001 alias resolution)", "no (quarantined)"],
+   ["game_data.toughness_break_reference", 1, 99, "REFERENCE_MODEL (toughness/break)", "no (quarantined)"],
+   ["game_data.modifier_lifecycle_reference", 1, 228, "REFERENCE_MODEL (modifier lifecycle)", "no (quarantined)"],
+   ["game_data.property_contribution_reference", 1, 73, "REFERENCE_MODEL (modifier property effect)", "no (quarantined)"],
+   ["game_data.modifier_catalog", 1, 195, "REFERENCE_MODEL (canonical modifier definition catalog)", "no"],
+   ["game_data.semantic_event_trace", 1, 265, "REFERENCE_MODEL (reference tracing)", "no"],
+   ["game_data.real_skill", 1, 179, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (strict Natasha Skill02 slice loader)", "no (explicitly unregistered)"],
+   ["game_data.followup_ledger", 1, 2066, "REAL_CONTENT_SEMANTIC_RECONSTRUCTION (D5/D8/D9 followup ledgers)", "no"],
+   ["game_data.scenario_compiler", 1, 417, "STATIC_PRODUCT_PROJECTION (static assembly only)", "no (quarantined by name only)"],
+   ["game_data.content_product", 1, 1453, "PRODUCT_PROJECTION (Character/Monster/Stage/Encounter)", "no"],
+   ["battle_ir (31 files)", 31, 8132, "REPRESENTATION (descriptors = representation only) + primitive/type definitions consumed by runtime", "types only"],
+   ["battle_runtime (10 files)", 10, 3733, "LOCAL/SYNTHETIC_RUNTIME + REFERENCE_MODEL primitives (modifiers/property/hp/turns/targets/predicates/values)", "n/a (is the runtime)"],
+   ["battle_runtime_v2.modifier_queries", 1, 168, "LOCAL/SYNTHETIC_RUNTIME (bound modifier query)", "n/a"],
+   ["battle_sandbox (39 files)", 39, 11949, "STAGING/STATE/HASH/RNG/TRANSACTION/GATE/CERTIFICATE infrastructure; legacy PrimitiveExecutor; Terra shell", "n/a"],
+   ["reference_sandbox (4 files)", 4, 734, "LOCAL/SYNTHETIC_RUNTIME (M10 REFERENCE_BATTLE_SANDBOX_V1_LOCAL_ACTION_ENVELOPE)", "consumes quarantined reference modules"],
+   ["planner (5 files)", 5, 1214, "PLANNER (M8 bounded source-order DFS enumeration, no objective)", "no content import"],
+   ["planner_search (7 files)", 7, 881, "PLANNER (M9 bounded DFS + objective + result contract)", "no content import"],
+   ["reference_battle_planner (5 files)", 5, 672, "PLANNER (M11 bounded DFS over M10 sessions + replay)", "no content import"],
+   ["content_support (4 files)", 4, 1422, "REAL_CONTENT_QUERY (read-only M13 registry; descriptive only)", "no"],
+   ["content_planner (3 files)", 3, 630, "REAL_CONTENT_ADMISSION (fail-closed, REJECTED is the only outcome)", "no"],
+   ["product_support (2 files)", 2, 1147, "PRODUCT_PROJECTION (scenario support report)", "no"],
+   ["frontend_adapter (5 files)", 5, 562, "PRESENTATION/TRANSPORT (offline static generation + reference planner emission)", "no"],
+   ["frontend_bridge (4 files)", 4, 353, "PRESENTATION/TRANSPORT (loopback HTTP: compile/support only, no battle execution)", "no"],
+   ["validation.oracles", 1, 176, "EVIDENCE_GATE (golden promotion gate)", "no"]
+  ],
+  "runtime_core_size": {
+   "executor_py": 124,
+   "state_py": 600,
+   "state_v2_py": 381,
+   "legal_actions_py": 129,
+   "sandbox_py": 121,
+   "strict_executor_py": 164,
+   "core_total": 1519,
+   "interpretation": "Of 11,949 battle_sandbox lines, only ~1,519 form state+executor+legal-actions. The remainder is evidence/gate/certificate/trace/snapshot/migration/boundary infrastructure. battle_runtime adds 3,733 lines of generic client-method primitives."
+  },
+  "import_direction_proof": [
+   "grep 'from hsr_battle_agent.game_data' over battle_sandbox/ and battle_runtime/ => ZERO matches",
+   "battle_sandbox/reference_boundary.py:61-69 lists game_data.scenario_compiler / reference_execution / cross_family_execution_reference as QUARANTINED module NAMES (a string list, not an import)",
+   "only reference_sandbox/session.py (the reference side, outside STRICT_PATH_PACKAGES) imports the quarantined game_data modules",
+   "planner / planner_search / reference_battle_planner import no content_* or game_data module; their only 'content' references are string constants CONTENT_TARGET='HSR-4.4.54'"
+  ]
+ },
+
+ "static_content": {
+  "authority": "data/db/hsr_content_4.4.54.sqlite + data/content/4.4.54/nanoka/*.jsonl + data/content/4.4.54/external_reconstruction/*",
+  "counts_verified_from_current_sqlite": {
+   "avatars": 97,
+   "skills_static_avatar_skill_rows": 664,
+   "traces": 5018,
+   "eidolons": 582,
+   "lightcones": 169,
+   "lightcone_promotions": 1183,
+   "lightcone_superimpositions": 845,
+   "relic_sets": 60,
+   "relic_items": 184,
+   "relic_affixes": 165,
+   "relic_templates": 742,
+   "monsters": 628,
+   "monster_variants": 2648,
+   "monster_skills": 12873,
+   "encounters": 1543,
+   "stages": 1459,
+   "waves": 1459,
+   "wave_monsters_placements": 6717,
+   "stage_buffs": 18,
+   "mode_metadata": 92
+  },
+  "relic_slot_distribution_from_templates": {"HEAD": 128, "HAND": 128, "BODY": 132, "FOOT": 130, "NECK": 112, "OBJECT": 112},
+  "product_ready": [
+   "Avatars (character_product/1, capability index)",
+   "LightCones (referenced inside character product + loadout)",
+   "Trace / Eidolon (character product + loadout)",
+   "Monsters (monster_product/1)",
+   "Stages (stage_product/1, stage_package)",
+   "Encounters (encounter_product/1)",
+   "Waves + wave placements (inside stage_package only)",
+   "Stage Buffs (inside stage_package: 17 of 18 resolvable; 3110018 missing from pinned 4.4.0 MazeBuff table)"
+  ],
+  "exists_without_typed_api_coverage": [
+   "MonsterSkills (12873 rows, no get_monster_skill)",
+   "MonsterVariants (2648 rows, no get_monster_variant)",
+   "Waves (no get_wave)",
+   "mode_metadata (92 rows, no accessor)",
+   "relic_items (no get_relic_item)"
+  ],
+  "incomplete_or_ambiguous": [
+   {"id": "RELIC_AFFIX_SCHEMA", "status": "CLOSED_EXTERNAL (nanoka gap NEEDS_STATIC_RECOVERY; values come from external reconstruction, 117 main / 48 sub)"},
+   {"id": "cross_source_checks.relic_main_affix.tbg_to_starrailres", "status": "SOURCE_CONFLICT (left 117, exact 80, non_exact 37)"},
+   {"id": "STAGE_BUFF_DETAIL", "status": "PARTIAL_EXTERNAL (required 18, resolved 17, missing 3110018)"},
+   {"id": "AUXILIARY_ELITEGROUP / AUXILIARY_HARDLEVELGROUP", "status": "EXTERNAL_MISSING"},
+   {"id": "MONSTER_VARIANT_LIST:4034020", "status": "PARTIAL"},
+   {"id": "F5_LOADOUT_COMPLETENESS", "status": "STILL_OPEN - not touched by any commit through HEAD"},
+   {"id": "F7_RELIC_SLOT_VOCABULARY", "status": "STILL_OPEN - not touched by any commit through HEAD"}
+  ],
+  "f5_f7_current_source_verification": {
+   "f5": {
+    "status": "STILL_UNRESOLVED",
+    "evidence": "src/hsr_battle_agent/game_data/scenario_compiler.py:25-26 docstring states 'Audit F5 (loadout completeness) is explicitly NOT addressed by this change: no relic-slot, set_id, initial_state, skill_level or rank validation was added.' _compile_players (:202-261) copies skill_levels / trace_state / initial_state through unchanged.",
+    "commit_check": "no commit between 8a4dcb0 and HEAD touches scenario_compiler.py"
+   },
+   "f7": {
+    "status": "STILL_UNRESOLVED",
+    "evidence": "Contract data/semantics/4.4.54/full_reconstruction/free_scenario_assembly_contract_v1.json:10 still declares slots HEAD|HAND|BODY|FOOT|PLANAR_SPHERE|LINK_ROPE while the actual data uses HEAD|HAND|BODY|FOOT|NECK|OBJECT; affix entity_ids remain composite ('main:21:1'), not game affix ids.",
+    "impact": "Documentation/vocabulary mismatch only; not an execution blocker by itself, but it means the loadout contract text cannot be trusted as a data schema."
+   }
+  },
+  "needed_by_battlestate_initialization": "identity + numeric survival (entity_id, hp, max_hp, speed) only. Static content CAN supply these numbers, but no code path materializes static loadout/monster stats into any BattleState. Contract free_scenario_assembly_contract_v1.json:54 lists 'production BattleState construction' under not_yet_claimed."
+ },
+
+ "loadout": {
+  "materializer": "hsr_battle_agent.game_data.external_reconstruction.ReferenceEvaluator.materialize_loadout (line 1132), output schema hsr_battle_agent.static_loadout/1",
+  "sole_caller": "game_data/scenario_compiler.py:248 (static scenario assembly). No runtime / sandbox / planner module calls it.",
+  "reconstruction_status": "PARTIAL; evidence_level R3_CROSS_SOURCE_RECONSTRUCTED",
+  "field_classification": [
+   ["avatar_id existence", "VALIDATED", "KeyError if absent (1140-1143)"],
+   ["avatar level", "STATICALLY_MATERIALIZED", "base + add*(level-1); NO range validation (1145,1158-1161)"],
+   ["avatar promotion", "VALIDATED (existence only)", "ValueError if the promotion row is absent; no explicit 0..6 bound (1146,1148-1156)"],
+   ["eidolon rank", "VALIDATED (0<=rank<=6) but CONTEXTUAL_EFFECT_UNAPPLIED", "only recorded into unapplied_contextual_effects (1257-1259,1267-1268)"],
+   ["skill levels", "UNREPRESENTED in materialize_loadout; CARRIED_UNVALIDATED by scenario_compiler", "scenario_compiler.py:257 copies through"],
+   ["trace / rank state", "PARTIAL: unlocked_trace_ids validated (KeyError) and summed; trace_state incl. rank_state CARRIED_UNVALIDATED", "1187-1193; scenario_compiler.py:231,237,258"],
+   ["initial state", "CARRIED_UNVALIDATED", "scenario_compiler.py:259"],
+   ["LightCone existence", "VALIDATED", "KeyError (1164-1169)"],
+   ["LightCone path compatibility", "VALIDATED", "ValueError on base_type mismatch (1171-1173)"],
+   ["LightCone level", "STATICALLY_MATERIALIZED", "no range validation (1174,1183-1185)"],
+   ["LightCone promotion", "VALIDATED (existence only)", "ValueError if absent; promotion==0 special case (1175-1181)"],
+   ["LightCone superimposition", "CARRIED_UNVALIDATED", "written to lightcone_context only, no numeric check (1186,1261-1262)"],
+   ["six relic slots", "UNREPRESENTED", "no exactly-six-slot rule; only duplicate-slot rejection when a template slot parses (1206-1209)"],
+   ["relic slot identity", "PARTIAL", "derived from template slot, used only for duplicate detection"],
+   ["relic set_id", "CARRIED_UNVALIDATED (caller value IGNORED)", "set_id re-derived from template; upstream caller set_id discarded; output as unapplied relic_set_effect (1213-1215,1263-1266)"],
+   ["relic main affix", "VALIDATED", "must exist, affix_kind=='main', group must match template (1216-1224)"],
+   ["relic sub affixes", "VALIDATED", "affix_kind=='sub', group match, roll_tiers within 0..step_num (1227-1243)"],
+   ["relic level", "VALIDATED", "0 <= level <= template max_level (1210-1212)"],
+   ["duplicate slots", "VALIDATED", "only when a template slot resolves (1206-1209)"],
+   ["missing slots", "UNREPRESENTED", "no completeness check"],
+   ["dynamic equipment effects (LC/set/eidolon mechanics)", "CONTEXTUAL_EFFECT_UNAPPLIED", "recorded as unapplied_contextual_effects with status UNAPPLIED_CONTEXTUAL (1260-1268)"]
+  ],
+  "loadout_verdict": "The static loadout is a numeric materializer for HP/ATK/DEF/SPD plus a validated relic-affix arithmetic layer. It validates shape where a template/affix row exists and validates nothing about completeness or application. NO runtime consumer exists."
+ },
+
+ "behavior_binding": {
+  "population_model": {
+   "canonical_records": 620,
+   "one_record_per": "static AvatarID:SkillID",
+   "EMPTY_TRIGGER_ROWS": 92,
+   "TRIGGER_NAME_JOINED_ROWS": 528,
+   "TRIGGER_JOINED_WITHOUT_ENTRY_ABILITY": 4,
+   "ACTUAL_BEHAVIOR_ROOT_BOUND_OR_BETTER": 524,
+   "TOTAL_STATIC_WITHOUT_BEHAVIOR_ROOT": 96
+  },
+  "settlement": {
+   "settlement_reaching_bound_skills": 293,
+   "root_record_only_settlement_bound_skills": 65,
+   "actual_bound_rows_with_any_observed_settlement": 358,
+   "actual_bound_rows_with_no_observed_settlement": 166,
+   "settlement_kind_counts": {"DAMAGE_REQUEST": 269, "HEAL_REQUEST": 28, "MODIFY_TEAM_SP": 110}
+  },
+  "binding_level_distribution": {"STATIC_ONLY": 96, "BEHAVIOR_ROOT_BOUND": 200, "FULL_ACTION_REPRESENTED": 324, "REFERENCE_SETTLEMENT_BOUND": 0, "CONTENT_ACTION_EXECUTABLE_REFERENCE": 0},
+  "support_status_distribution": {"REPRESENTABLE_BLOCKED": 336, "BLOCKED_BY_EVIDENCE": 5, "BLOCKED_BY_REFERENCE_SUPPORT": 1, "BLOCKED_BY_CONTINUATION": 20, "NO_SETTLEMENT": 162, "UNBOUND_STATIC_SKILL": 96},
+  "readiness_distribution": {"SAFE_TO_REPRESENT_ONLY": 258, "SAFE_REFERENCE_MODEL_ONLY": 337, "STRICT_REJECT_UNTIL_NEW_EVIDENCE": 25},
+  "second_hop": {"affected_roots": 20, "occurrences": 23},
+  "blocker_class_frequencies_620_population": {"WAIT_ANIM_STATE": 328, "DAMAGE_PACKET": 231, "HEAL_PACKET": 16, "MODIFIER": 184, "RANDOM_TARGET": 55, "PREDICATE_CALLBACK": 0, "SECOND_HOP_CONTINUATION": 20, "RESOURCE": 5, "REFERENCE_PACKET_OTHER": 211, "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 431, "UNKNOWN_OR_UNSUPPORTED": 0},
+  "full_closure_census_324_rows": {
+   "ACTION_A_CURRENTLY_CLOSED": 0,
+   "ACTION_B_WAIT_ONLY": 0,
+   "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS": 5,
+   "ACTION_D_SMALL_FRONTIER": 162,
+   "ACTION_E_BROADLY_BLOCKED": 126,
+   "ACTION_F_NO_SETTLEMENT": 31,
+   "minimum_true_full_action_residual_classes": 1,
+   "minimum_residual_class": "DAMAGE_PACKET (EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS)"
+  },
+  "pipeline_stage_status": {
+   "static_skill_id": "PRESENT (620 rows, AvatarSkillConfig)",
+   "behavior_root": "PARTIALLY BOUND (524/620 literal EntryAbility; binding is a STRING, not cross-validated against the compiler corpus)",
+   "entry_ability": "PRESENT as a name",
+   "operations": "COMPILED FOR THE FULL CORPUS (captured 14042, behavior_bearing 10685) but with 29086 BEHAVIOR_AFFECTING_NODE_NOT_COMPILED failures and REJECT_NOT_NOOP policy that rejects the whole record",
+   "continuations": "REPRESENTED AS A NAMED EDGE ONLY (InvocationDescriptor.continuation_handles; closure flag second_hop_continuation_present). execution_readiness = NO.",
+   "settlement": "REPRESENTED; executability refused for 100% of avatar settlement cases (DAMAGE_PACKET / HEAL_PACKET blockers)",
+   "runtime_semantics": "NOT REACHED for any real avatar skill"
+  },
+  "executable_real_content_skills": 0,
+  "independent_oracle_coverage": 0,
+  "native_validation_evidence": 0,
+  "strongest_evidence": "DETERMINISTIC_REPLAY_ONLY over caller-declared M10 action envelopes, plus STATIC_DISASSEMBLY-ONLY content reconstruction. No native HSR runtime or official-client observation exists for any recovered operation."
+ },
+
+ "behavior_ir": {
+  "layers": {
+   "descriptor_layer": "battle_ir/descriptors/* (+descriptor_registry) - REPRESENTATION ONLY. DescriptorOccurrence.execution_permitted() raises DescriptorError; DescriptorRegistry.execution_permitted() raises DescriptorRegistryError. Family enums expose only REPRESENTED/UNRESOLVED; there is no executable boolean. Neither battle_runtime nor battle_sandbox imports any descriptor class.",
+   "execution_layer": "battle_ir/model.py PrimitiveCall/PrimitiveSpec/PrimitiveArgument/PrimitiveResult + battle_ir value/state types (actions, modifiers, targets, property, hp, turns, values). This is what PrimitiveExecutor dispatches."
+  },
+  "descriptor_classes": ["DescriptorOccurrence", "InvocationDescriptor", "ModifierDescriptor", "FormationTopologyDescriptor", "SchedulerDescriptor", "MonsterAIDescriptor", "DamageDescriptor", "TargetIntent", "ResolvedTargetSet", "RetargetDescriptor", "ProgressionActivationDescriptor", "ScenarioDescriptor"],
+  "representable_today": ["invocation", "modifier request/query/transition/lifecycle", "formation topology", "scheduler family", "monster AI policy leaves", "damage intent", "target intent/resolved set/retarget", "progression activation", "scenario"],
+  "compiler": {
+   "module": "game_data/behavior_compiler.py",
+   "input": "canonical BehaviorRecord only (raw external payload never consulted)",
+   "policy": "REJECT_NOT_NOOP: any diagnostic rejects the whole record",
+   "compile_status_values": ["EXECUTABLE_REFERENCE", "COMPILED_STRUCTURE_ONLY", "STATIC_DEFINITION_ONLY", "REJECTED"],
+   "primitive_bindings_count": 52,
+   "primitive_binding_split": {"EXECUTABLE_REFERENCE": 17, "STRUCTURAL_CALL_ONLY": 1, "STRUCTURAL_PACKET_ONLY": 34},
+   "executable_reference_kinds": ["HEAL_REQUEST", "MODIFY_TEAM_SP", "ADD_MODIFIER", "REMOVE_MODIFIER", "MODIFY_PROPERTY_STACK", "CONDITIONAL", "PREDICATE", "SET_DYNAMIC_VALUE", "DEFINE_DYNAMIC_VALUE", "DAMAGE_REQUEST", "DAMAGE_COMPLETION_MARKER", "RETARGET", "INSERT_ACTION", "DELAY_ACTION", "ACTION_START_MARKER", "ACTION_COMPLETION_MARKER", "MODIFY_WEAKNESS"],
+   "structural_only_kinds": ["INVOKE_BEHAVIOR", "MODIFY_DAMAGE_DATA", "MODIFY_HEAL_DATA", "DISPEL_STATUS", "TARGET_FILTER", "FORMATION_CHANGE", "MODIFY_ACTION_STATE", "MODIFY_ACTION_COST", "INCLUDE_TASK_TEMPLATE", "LOOP", "CONDITIONAL_LOOP", "PROJECTILE_DISPATCH", "SWITCH_CASE", "CHARM_USE_SKILL", "GRANT_ABILITY", "SET_MODIFIER_VALUE", "MODIFY_MODIFIER_FLAG", "MODIFY_SKILL_PROPERTY", "MODIFY_SKILL_TREE_LEVEL", "ADD_STAGE_BUFF", "MODIFY_TOUGHNESS", "TRIGGER_BREAK", "RESET_TOUGHNESS", "SET_RESILIENCE", "INIT_SHIELD", "REMOVE_SHIELD", "LOCK_HP", "FORCE_KILL", "DEATH_HANDLER", "MODIFY_TEAM_HP", "REGISTER_STAGE_EVENTS", "CREATE_STAGE_EVENT", "MODIFY_SPECIAL_RESOURCE", "RANDOM_SELECTION", "SET_DYNAMIC_ENTITY_PARAM"],
+   "terminating_operations": "Any source type absent from OPERATION_MAP (external_behavior.py:43-163, ~115 mapped RPG.GameCore.* types) and not matching the By* predicate prefix classifies as OPAQUE -> diagnostic BEHAVIOR_AFFECTING_NODE_NOT_COMPILED -> whole record REJECTED. Corpus total: 29086 occurrences.",
+   "payload_level_refusals": ["EXECUTABLE_REFERENCE_UNSUPPORTED_HEAL_FORMULA", "EXECUTABLE_REFERENCE_MODIFIER_DEFINITION_UNRESOLVED", "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS", "EXECUTABLE_REFERENCE_DOT_MIXED_STATE_FIELDS", "EXECUTABLE_REFERENCE_RETARGET_TYPE_UNSUPPORTED", "EXECUTABLE_REFERENCE_INSERT_ACTION_TYPE_UNSUPPORTED"]
+  },
+  "full_corpus_run": {
+   "artifacts": ["data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json", "full_content_behavior_compiler_report_001.json", "full_content_compiler_census_001.json", "full_content_behavior_mapping_001.json", "full_modifier_definition_catalog_001.json"],
+   "game_version": "4.4.54",
+   "captured": 14042,
+   "behavior_bearing": 10685,
+   "executable": 1528,
+   "golden_tested": 0,
+   "static_definition_only": 3357,
+   "structural_compiled": 2579,
+   "uncompiled": 6578,
+   "failure_reasons": {"BEHAVIOR_AFFECTING_NODE_NOT_COMPILED": 29086},
+   "operation_level_disposition": {"EXECUTABLE_REFERENCE": 59595, "BOUND_UNEXECUTABLE_PACKET": 25078, "BOUND_PRIMITIVE": 4430, "HEADLESS_PRESENTATION_OMITTED": 23378},
+   "denominator_caveat": "census states its denominator is NOT the complete 4.4.54 game behavior set",
+   "executable_by_owner": {"Avatar": 131, "Modifier": 1349, "Monster": 48, "LightCone": 0, "RelicSet": 0, "StageBuff": 0, "ExternalBehavior": 0}
+  },
+  "answers": {
+   "canonical_cross_ability_identity": "NO. astra_triggerability_v1 states 'No concrete native token/element/equality key recovered.' Loading, execution instance, wait registration and owning perform are distinct with no recovered native key.",
+   "continuation_represented": "ONLY as a named handle + boolean closure flag; never a first-class construct; INVOKE_BEHAVIOR pinned to STRUCTURAL_CALL_ONLY; execution_readiness NO.",
+   "modifiers_first_class": "YES for representation (descriptor family + canonical modifier catalog with 4 supported stacking names); PARTIALLY executable (ADD/REMOVE_MODIFIER only, and only when the modifier definition resolves in the catalog).",
+   "conditions_represented": "YES (CONDITIONAL / PREDICATE are EXECUTABLE_REFERENCE kinds with payload validation).",
+   "target_resolution_represented": "PARTIALLY (RETARGET executable; TARGET_FILTER structural only; target ordering/random/aggro/adjacency ORDER_UNKNOWN).",
+   "event_subscription_represented": "STRUCTURE ONLY (REGISTER_STAGE_EVENTS / CREATE_STAGE_EVENT = STRUCTURAL_PACKET_ONLY).",
+   "scheduler_timing_represented": "PARTIALLY (action start/finish markers and INSERT/DELAY_ACTION executable; turn insertion, one-more, immediate action, cross-family arbitration strict-rejected).",
+   "rng_represented": "STRUCTURE ONLY (RANDOM_SELECTION = STRUCTURAL_PACKET_ONLY; native client PRNG algorithm UNKNOWN; only a PYTHON_RANDOM_MT19937 reference model exists)."
+  },
+  "critical_distinction": "'record exists in IR' is true for 14,042 records; 'BattleState transition exists' is true for ZERO real-content records."
+ },
+
+ "battle_state": {
+  "types_found": [
+   {"type": "TerraBattleState", "module": "battle_sandbox/state_v2.py:108", "form": "__slots__", "schema": "terra_battle_state/2", "classification": "ARCHITECTURAL_SHELL", "fields": "_stores, _revision_sequence, _allocator, _rng, _opaque"},
+   {"type": "BattleState", "module": "battle_sandbox/state.py:73", "form": "dataclass", "schema_version": 4, "classification": "LOCAL_SANDBOX / REFERENCE_MODEL", "fields": "schema_version, extensions, modifier_state_by_entity, entity_property_entries, modifier_property_contributions, component_lock_hp_records, turn_timeline"},
+   {"type": "ReferenceBattleState", "module": "game_data/reference_execution.py:227", "classification": "REFERENCE_MODEL", "note": "requires >=1 entity; entities carry hp/max_hp; used only by reference_sandbox"},
+   {"type": "ReferenceCombatState / ReferenceEntityState", "module": "game_data (consumed by reference_sandbox/contract.py:17-19)", "classification": "REFERENCE_MODEL", "note": "entity_id/hp/max_hp/shield/toughness as Decimal; resource_owner, resource_current, timeline_token"},
+   {"type": "SandboxResourceState", "module": "battle_sandbox/sandbox_transition.py:213", "classification": "SYNTHETIC (caller-declared resource, not a battle state)"},
+   {"type": "CustomScenario", "module": "battle_sandbox/custom_scenario.py:128", "classification": "SYNTHETIC (embeds initial_state: TerraBattleState)"}
+  ],
+  "terra_state_representation_model": "TerraBattleState has NO named HP/speed/resource field. All 61 frozen field families exist exactly once, each as a TypedStore (stores/protocols.py:172-234). TypedStore implements no lifecycle behaviour, no creation/destruction rules and no transition logic (stores/core.py:5-8). Only revision_sequence, allocator, rng_state and 8 OPAQUE_UNRESOLVED families have structural components.",
+  "concept_matrix": {
+   "columns": ["concept", "represented_in_terra", "represented_in_legacy_or_reference", "mutated_by_any_executor", "source_backed", "real_content_bound"],
+   "rows": [
+    ["actors/entities", "family name only (entities/teams/formations, empty stores)", "yes (legacy keys; reference entities)", "yes (legacy/reference)", "no", "no"],
+    ["HP", "no field; family survival/properties", "yes (component_lock_hp_records; reference hp)", "yes (direct_damage_hp_transition, negative-delta path)", "reference only", "no"],
+    ["max_hp", "no field", "yes (property id 1)", "read only", "reference only", "no"],
+    ["toughness", "family name only (empty)", "yes (reference toughness)", "no (ApplyStanceDamage not entered)", "reference only", "no"],
+    ["energy", "ABSENT", "ABSENT", "no", "no", "no"],
+    ["SP / skill points", "ABSENT (resources family used generically by sandbox_transition)", "caller-declared resource only (SandboxResourceState.amount)", "yes (caller-declared resource transition only)", "no", "no"],
+    ["speed", "family name only", "yes (property id 32)", "read only", "reference only", "no"],
+    ["action value / AV", "family ordinary_timeline only", "yes (turn_timeline; elapsed_action_delay_raw)", "yes (advance_to_next_actor)", "semantics-29 reconstruction", "no"],
+    ["turn order", "no field", "yes (turn_timeline.action_entity_runtime_ids)", "yes", "semantics-29 reconstruction", "no"],
+    ["statuses", "ABSENT (family names modifier_instances/modifier_order)", "yes (legacy modifier_state_by_entity)", "yes (modifier lifecycle primitives)", "reference only", "no"],
+    ["buffs", "ABSENT", "partial (modifier model)", "partial", "reference only", "no"],
+    ["debuffs", "ABSENT", "partial (modifier model)", "partial", "reference only", "no"],
+    ["DOT", "ABSENT", "reference descriptor only", "no", "reference only", "no"],
+    ["shields", "ABSENT", "yes (reference entity shield)", "no (INIT_SHIELD/REMOVE_SHIELD are structural packet only)", "reference only", "no"],
+    ["summons / memosprites", "ABSENT", "ABSENT", "no", "no", "no"],
+    ["weakness", "ABSENT (MODIFY_WEAKNESS is an executable kind but unbound in practice)", "reference descriptor", "no", "no", "no"],
+    ["resistance", "ABSENT", "ABSENT", "no", "no", "no"],
+    ["break state", "family toughness only; no break logic", "reference toughness/break module", "no", "reference only", "no"],
+    ["targeting", "families target_bindings/target_contexts; execution-time transient (ExecutionContext)", "yes", "resolver primitives exist; real-content ordering UNKNOWN", "partial", "no"],
+    ["formation", "family formations; scenario formation_slot", "yes", "no (FORMATION_CHANGE structural only)", "no", "no"],
+    ["RNG state", "yes (TerraBattleState._rng; family rng_streams)", "yes (SandboxRng MT19937)", "yes", "reference generator only", "no"],
+    ["event queue", "family names event_work/callback_registrations; StagedTrace channels TRACE/EVENT/QUEUE", "partial", "partial", "no", "no"],
+    ["scheduler", "families task_states/scheduler_phase/ordinary_timeline; no named implementation", "yes (ordinary timeline only)", "ordinary turn advance only", "partial", "no"],
+    ["wave state", "ABSENT (custom_scenario explicitly does not model waves)", "ABSENT", "no", "no", "no"],
+    ["stage state", "families scenario_definition/scenario_runtime; CustomScenario.stage_id", "yes", "no", "no", "no"],
+    ["battle terminal state", "family terminal_state; CustomTerminalRule/CustomTerminalResult", "yes", "CUSTOM_TERMINAL only (local max committed actions)", "no", "no"]
+   ]
+  },
+  "contract_status": "astra_semantic_freeze_v1.battle_state_contract.status = ARCHITECTURE_ONLY_NO_METHOD_IMPLEMENTATIONS",
+  "verdict": "No REAL_CONTENT_CAPABLE BattleState exists. The Terra state is a validated empty-families shell; the legacy and reference states are synthetic/caller-declared and are not content-bound. Energy, DOT, summons, weakness, resistance, shields, wave state and stage runtime have no representation anywhere."
+ },
+
+ "executor": {
+  "state_changing_paths": [
+   {"executor": "battle_sandbox/executor.py:37 PrimitiveExecutor", "classification": "REFERENCE_MODEL / generic client-method atoms", "dispatch": "registry.resolve(primitive_id) then registered.implementation(context, ordered_inputs); missing => UnsupportedPrimitiveError; never silently no-ops", "binding_count": 92, "loads": "data/semantics/4.4.54/catalog.json enabled artifacts"},
+   {"executor": "battle_sandbox/strict_executor.py:118 StrictExecutor", "classification": "LOCAL", "supports": "exactly one operation: terra.strict.no_op/1; any other action or any non-empty plan returns UNSUPPORTED"},
+   {"executor": "battle_sandbox/sandbox_transition.py", "classification": "SYNTHETIC caller-declared resource transition", "note": "the ONLY path that mutates Terra state; explicitly not a client-native rule"},
+   {"executor": "battle_runtime/* (3,733 loc)", "classification": "REFERENCE_MODEL primitive implementations", "mutating_families": ["modifier lifecycle (modifier_state_by_entity)", "property/materialization (entity_property_entries, modifier_property_contributions)", "HP transition (component_lock_hp_records)", "turn/AV (turn_timeline)"]}
+  ],
+  "state_mutation_sites": ["state.component_lock_hp_records (hp.py:155)", "state.modifier_state_by_entity (modifiers.py:163)", "state.entity_property_entries (property.py:566)", "state.modifier_property_contributions (property.py:804)", "state.turn_timeline (turns.py:149)"],
+  "real_content_executor": "NONE",
+  "real_content_evidence": {
+   "module": "battle_runtime/healing.py (real Natasha Skill02 FormulaType 4 + event boundary)",
+   "registered_as_primitive": false,
+   "in_catalog": false,
+   "mutates_state": false,
+   "own_statement": "healing.py:110-113 'This function performs no HP or dispel mutation. It returns the ordered request boundaries that a future recovered event consumer must apply.'"
+  },
+  "m10_reference_trace_end_to_end": {
+   "chain": "action_id -> ReferenceBattleSession.step -> envelope preflight -> OrdinaryReferencePacket(REF02) exact-shape validation -> reference settlement -> SandboxResourceTransaction atomic commit -> StagedTrace",
+   "result": "COMPLETE for caller-declared local envelopes; state and trace change",
+   "scope_limit": "reference_sandbox/contract.py:1 'Explicit local action envelopes; never a recovered HSR skill catalogue.'"
+  },
+  "first_real_action_blocker_chain": {
+   "step_1": "static Skill ID (e.g. 120801 in AvatarSkillConfig)",
+   "step_2": "M13 registry row with entry_ability = 'Avatar_FuXuan_00_Skill01_Phase01' (string join AvatarConfig.AvatarID x AvatarSkillConfig.SkillTriggerKey == same-owner CharacterConfig.SkillList[])",
+   "step_3": "behavior root located in the compiled corpus; root_compile_status = REJECTED",
+   "step_4": "STOPS: compiler-eligible operations carry zero executability for the settlement; first-hop closure contains DAMAGE_PACKET blocked by EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS (SPHitRatio / HitEffectHeight / HitPosHeight / HitMotion) and an unresolved DamageByAttackProperty runtime dispatch",
+   "step_5": "even if the packet were accepted, no binder exists: content_planner/__init__.py:17 'implements no SkillID/EntryAbility -> ReferenceActionEnvelope binder'; content_planner admission outcome vocabulary is {REJECTED}",
+   "step_6": "even with an envelope, no real-content BattleState/BattleActor initializer exists to receive it",
+   "deepest_reached_point": "Natasha Skill02 real content reaches the HEAL REQUEST BOUNDARY with a computed FixPoint(650) but deliberately leaves CurrentHP unchanged because the positive HealData event consumer is unrecovered (semantic_handoff_30). That is the furthest real-content runtime progress in the repository."
+  }
+ },
+
+ "monster_runtime": {
+  "classification": "FAMILY_LEVEL_ONLY",
+  "join_exists": {
+   "monster_static_id_to_monster_skill": "YES at the static data layer (monster_skills 12873 rows, monster_skill_relations; monster_variants 2648)",
+   "monster_skill_to_behavior": "NO proven entity-exact join",
+   "behavior_to_runtime_execution": "NO"
+  },
+  "evidence": [
+   "compiler census owner_kind Monster: behavior_bearing 3809, captured 3983, executable_reference 48, static_definition_only 174, structural_compiled 997, golden_tested 0",
+   "census failure cluster: NO_EXECUTABLE_LOWERING, operation_kind INVOKE_BEHAVIOR, owner_kind Monster, operation_count 2863 (e.g. Monster_AML_Boss_00_Skill01_Phase01 ONSTART)",
+   "astra_monster_ai_v1.ai_policy_binding.status = PARTIAL; candidate_generation.status = DECLARED_LEAVES_RECOVERED_RUNTIME_ADMISSION_UNKNOWN",
+   "astra_monster_ai_pass2_targeted_evidence_v1.full_ai_content_coverage = PARTIAL; MA-Q01 policy_precedence BLOCKED_BY_EVIDENCE; sequence_id_binding NEEDS_TERRA_CONTENT (11 sequence IDs requesting MonsterSkillConfig.json)",
+   "no accessors exist for MonsterSkill or MonsterVariant rows (grep def get_monster_skill / get_monster_variant => zero matches)",
+   "content_support (M13) covers Avatar skills only; it contains no monster capability record",
+   "scenario_support_report documents monster scope as FAMILY_LEVEL_ONLY with per_entity_runtime_claim_available false",
+   "astra_monster_ai_v1 terra_contract.ready = PARTIAL, allowed_now explicitly excludes any runtime"
+  ],
+  "sub_audit": {
+   "monster_static_data": "PRESENT (628 monsters / 2648 variants / 12873 skills / relations)",
+   "monster_skill_data": "PRESENT but not joined to an internal SkillTriggerKey for 11+ sequence IDs",
+   "behavior_data": "COMPILED with 2863 EXECUTABLE-lowering failures for Monster INVOKE_BEHAVIOR",
+   "ai_config_data": "SOURCE_AVAILABILITY_CLOSED for 9 paths; runtime override/inheritance precedence UNPROVED",
+   "target_selection": "ORDER_UNKNOWN (general selector/retarget/aggro/invalidation)",
+   "skill_choice": "declared leaves recovered; runtime eligible set and winner selection UNKNOWN (no DefaultDSE winner proof)",
+   "turn_behavior": "AI must not own AV/actor choice/turn consumption; scheduler coupling strict-rejected",
+   "phase_transitions": "boss phase transition / body part / formation sharing strict-rejected",
+   "body_parts": "boss-part boundary represented in target model only; no runtime",
+   "formation_changes": "FORMATION_CHANGE is STRUCTURAL_PACKET_ONLY; native SetTeamFormation strict-rejected"
+  },
+  "not_claimed": "No exact Monster static ID -> Monster skill -> behavior -> runtime execution join is asserted, because none is mechanically proven."
+ },
+
+ "stage_runtime": {
+  "classification": "STATIC_TOPOLOGY_ONLY",
+  "no_runtime_exists": {
+   "wave_spawn": "NO implementation (grep wave_spawn/next_wave/advance_wave in src => only a string literal in followup_ledger.py:1876 and a label in product_support/scenario_report.py:109)",
+   "wave_clear": "NO",
+   "next_wave_transition": "NO",
+   "enemy_formation_runtime": "NO",
+   "stage_buff_activation": "NO",
+   "win_conditions": "NO",
+   "lose_conditions": "NO",
+   "score_rules": "NO",
+   "special_mode_rules": "NO",
+   "boss_phase_transitions": "NO",
+   "terminal_state": "only CustomTerminalRule/local max-committed-actions in the M10 reference sandbox"
+  },
+  "semantic_evidence": {
+   "wave_model": "ARCHITECTURE_CLOSED_NATIVE_DISPATCH_PARTIAL (WaveDefinition/WaveRuntimeState described, not implemented)",
+   "wave_advance_contract": "BLOCKED_BY_EVIDENCE_AND_GRAPH_CONTENT (all wave-advance predicate families UNKNOWN)",
+   "spawn_boundary": "REQUEST_REPRESENTATION_CLOSED_EXECUTION_BLOCKED",
+   "stage_buff_model": "STATIC_ACTIVATION_SOURCE_DISTINCT_BATTLE_BINDING_PARTIAL (160 stage buff refs -> 18 canonical IDs; 17 exact rows; exact_behavior_matches 0; missing_behavior_references 17)",
+   "terminal_model": "SOURCE_PREDICATE_SURFACES_EXACT_EXECUTION_BLOCKED (1297 empty win conditions, 160 custom-string win rows, serialized '[CDT_WaitCustomString:Level_SpecialWin]'; parser binding/composition UNKNOWN)",
+   "defeat_model": "OPAQUE_UNTIL_PREDICATE_AND_CONTEXT_BOUND (1299 empty lose conditions, 160 special lose rows)",
+   "special_mode_overrides": "RECORDED_NOT_IMPLEMENTED"
+  },
+  "stage_420101_trace": {
+   "stage_id": "420101",
+   "static_record": "PRESENT in data/db/hsr_content_4.4.54.sqlite stages (entity_id=420101, original_game_id=420101, reconstruction_status=RECONSTRUCTION_READY)",
+   "payload_facts": {"stage_type": "Challenge", "level": 60, "monster_list": [{"monster0": 100401401, "monster1": 100402601}], "level_win_condition": ["[CDT_WaitCustomString:Level_SpecialWin]"], "level_lose_condition": ["[CDT_WaitCustomString:Level_SpecialLose]"], "stage_config_data": [{"jdkamoanicm": "_Wave", "mojjbfbkbnc": "1"}, {"jdkamoanicm": "_IsEliteBattle", "mojjbfbkbnc": "1"}, {"jdkamoanicm": "_BindingMazeBuff", "mojjbfbkbnc": "3110001"}], "level_graph_path": "Config/Level/StageCommonTemplate.json"},
+   "wave_record": "420101:1 present in waves table",
+   "chain": ["Stage ID 420101", "ScenarioCompiler / get_stage_package static assembly", "ScenarioPackage hsr_battle_agent.scenario_package/2", "STOP"],
+   "stopping_point": "The ScenarioPackage is a deterministic static document. scenario_compiler.py:1-31 states it 'deliberately does not ... construct a mutable BattleState'. Nothing consumes a ScenarioPackage to initialize a battle. The win condition is an opaque custom-string predicate, so terminal semantics are not evaluable either.",
+   "recorded_status": "scenario_entity_resolution_parity: real_stage_420101.status = COMPILES_STATICALLY; execution_status = STATIC_READY_BEHAVIOR_COMPILATION_REQUIRED; golden_eligible false"
+  }
+ },
+
+ "decisionpoint_legal_actions": {
+  "DecisionPoint_concept": "ABSENT. grep 'DecisionPoint|run_until_decision|decision_point' over src/ => ZERO matches. The original-goal control-flow primitive does not exist in any form.",
+  "legal_action_concepts_found": [
+   {"module": "battle_sandbox/legal_actions.py", "shape": "LegalActionProposal(action_id, candidate_occurrence_id, actor_id, target_ids, resource_cost, target_supported, terminal_supported); PlayerLegalAction; LegalActionsView(COMPLETE_FOR_SUPPORTED_SCOPE/BLOCKED)", "behavior": "CLASSIFICATION ONLY - query_player_legal_actions validates caller-supplied proposals; it never generates actions", "constraints_modeled": ["candidate-occurrence membership", "target_supported flag", "terminal_supported flag", "resource_cost sufficiency (checked only at settlement)"], "constraints_NOT_modeled": ["skills", "cooldowns", "energy", "target aliveness", "speed order", "ultimate timing", "pending decisions", "no-input/follow-up events"]},
+   {"module": "battle_sandbox/sandbox.py:110-121", "behavior": "Sandbox.legal_actions() / step() / is_terminal() all raise StubNotImplementedError('NOT_IMPLEMENTED: legal_actions needs recovered action semantics')"},
+   {"module": "reference_sandbox/session.py:218", "behavior": "legal_actions() returns a LegalActionsView over caller-declared ReferenceActionEnvelope objects; candidate id hardcoded to ordinary:{actor}"},
+   {"module": "battle_sandbox/sandbox_transition.py:102-206", "behavior": "SandboxActionRule lets the CALLER declare action_id/actor_id/target_ids/resource_cost and converts it into a LegalActionProposal"}
+  ],
+  "real_avatar_skill_as_legal_action": "NO",
+  "required_dependencies_before_it_could": [
+   "a SkillID/EntryAbility -> action binder (content_planner/__init__.py:17 confirms none exists)",
+   "an execution model for the settlement operation family (DAMAGE_PACKET / HEAL_PACKET)",
+   "a real-content BattleState + BattleActor initializer to hang actions on",
+   "a DecisionPoint/run_until_decision control loop (absent entirely)",
+   "resource semantics (SP/energy/AV recharge) for real content"
+  ],
+  "structural_denial": "Three independent guards prevent real content from entering the legal-action path: content_planner admission can only return REJECTED; frontend_adapter/render.py:106-117 raises POSITIVE_REAL_CONTENT_PLANNER_NOT_IMPLEMENTED on any non-REJECTED result; backend_freeze_audit re-enacted denial records 0 legal actions / 0 state mutations / 0 RNG draws for all 620 canonical skills."
+ },
+
+ "planner": {
+  "packages": [
+   {"package": "planner (M8)", "algorithm": "exhaustive source-order DFS enumeration (branch_ordering fixed to SOURCE_ORDER_EXHAUSTIVE)", "objective": "NONE (terminates at generation horizon / custom terminal)", "state_source": "battle_sandbox CustomScenario + SandboxResourceContract", "reusable_for_real_content": false, "note": "not a goal-directed search engine"},
+   {"package": "planner_search (M9)", "algorithm": "bounded source-order DFS with explicit stack", "objective": "RESOURCE_AT_HORIZON / REACH_RESOURCE_COMPARISON / MIN_STEPS_TO_RESOURCE_COMPARISON with LT/LE/EQ/GE/GT", "state_source": "battle_sandbox sandbox_transition (caller-declared resource)", "classification": "SEARCH_ENGINE_READY; REAL_CONTENT_ADAPTER_NOT_READY"},
+   {"package": "reference_battle_planner (M11)", "algorithm": "bounded source-order DFS over immutable M10 sessions; adapter protocol ReferenceBattleAdapter (scope, initial_identity, snapshot, legal_actions, commit, step, terminal_status)", "objective": "ENTITY/RESOURCE x HORIZON/REACH/MIN", "state_source": "reference_sandbox ReferenceBattleSession", "classification": "SEARCH_ENGINE_READY; REAL_CONTENT_ADAPTER_NOT_READY"}
+  ],
+  "shared_infrastructure": {
+   "state_clone": "required and present (ReferenceBattleSession.clone; Terra state clone via to_dict/from_dict)",
+   "canonical_hash": "semantic_hash_v2(snapshot) over canonical_v2_bytes, domain-prefixed; used as a dedup key",
+   "dedup_mode": "ACCOUNT_ONLY (counts repeated states, does not prune)",
+   "limits": ["max_depth", "node_limit", "max_plans"],
+   "determinism": "search_rng_draws == 0 asserted in all three packages; stochastic_sampling must be false; mutation-of-caller-state asserted",
+   "terminal_assumption": "horizon or caller custom terminal; NO official win/lose condition"
+  },
+  "baseline_policies": {
+   "random": "ABSENT",
+   "simple_auto": "ABSENT",
+   "greedy": "ABSENT",
+   "beam": "ABSENT",
+   "note": "every object named 'policy' in these packages is a frozen search/generation CONFIG, not a per-action decision policy. grep for random/greedy/beam/MCTS/rollout inside the three planner packages returns no decision-policy implementation."
+  },
+  "content_import_check": "No planner package imports content_support or content_planner. The only content reference is the string constant CONTENT_TARGET='HSR-4.4.54' plus EVIDENCE blocks that pin action_envelope SANDBOX_EXTENSION / settlement REFERENCE_MODEL / native_trace false / golden false.",
+  "reuse_assessment": {
+   "SEARCH_ENGINE_READY": ["planner_search", "reference_battle_planner"],
+   "REAL_CONTENT_ADAPTER_READY": [],
+   "explanation": "Both engine packages are algorithmically complete, deterministic, hash-based and replay-verified, but every state/action/objective surface they accept is caller-declared synthetic or reference-model. Reuse requires a new real-content state+action adapter; no engine rewrite is implicated."
+  }
+ },
+
+ "determinism": {
+  "rng": {"model": "SandboxRng wrapping Python random.Random (MT19937, state length 625)", "constants": {"CLIENT_RNG_ALGORITHM": "UNKNOWN", "SANDBOX_RNG": "DETERMINISTIC_ABSTRACTION", "SANDBOX_RNG_ALGORITHM": "PYTHON_RANDOM_MT19937"}, "native_correspondence": "explicitly NOT claimed", "reusable": "yes, as a declared reference stream"},
+  "allocator": {"module": "battle_sandbox/identity.py:918 IdentityAllocator", "properties": ["deterministic", "non-reusing", "namespace-scoped", "generation-aware", "reserve/commit/abort/retire with tombstones", "NATIVE_CLIENT_IDENTITY rejected"], "reusable": "yes"},
+  "scheduler_ordering": {"rule": "sort by remaining delay, Python stable sort preserves prior action-list order on ties (Semantics-29 sandbox policy)", "reusable": "only as a declared sandbox tie rule; native tie semantics strict-rejected"},
+  "event_ordering": {"trace": "monotonic event_id, PrimitiveStarted/PrimitiveFinished, scalar summaries only", "reusable": "yes as trace infrastructure"},
+  "canonical_hash": {"functions": ["stable_json_hash", "logical_battle_hash (excludes trace)", "stable_f01_envelope_hash", "semantic_hash_v2", "canonical_v2_bytes"], "coverage": "state + opaque stores + revision + allocator + RNG + policy identity", "reusable": "yes"},
+  "snapshot_clone": {"legacy": "SandboxSnapshot deep copy; TerraSnapshotV2 clones state and policy", "reusable": "yes"},
+  "replay": {"module": "reference_sandbox/replay.py", "mechanism": "re-step and byte-compare canonical_v2_bytes; REPLAY_STEP_MISMATCH on divergence", "fault_injection": "after_preflight / before_publication", "reusable": "yes"},
+  "assumptions_tied_to_synthetic_semantics": [
+   "the entire resource model is caller-declared (SandboxResourceState) rather than derived from client rules",
+   "the tie-break rule is a declared sandbox policy, not a recovered native rule",
+   "the terminal rule is local max-committed-actions, not an official win/lose condition",
+   "the RNG is a declaration, not the client PRNG"
+  ]
+ },
+
+ "validation": {
+  "golden_fixtures": 0,
+  "native_traces": 0,
+  "committed_files_under_data_traces": ["data/traces/.gitkeep (0 bytes)"],
+  "official_client_trace": "NONE",
+  "private_server_trace": "NONE (private/research clients used only as static structure snapshots; four artifacts explicitly state private-server observations are not 4.4.54 native truth)",
+  "independent_oracle": "NONE (terra_golden_ledger_v1.json qualifying_independent_native_oracles = [] ; m7_status BLOCKED)",
+  "strongest_real_world_evidence": "DETERMINISTIC_REPLAY_ONLY (self-consistency) plus STATIC_DISASSEMBLY evidence. No action semantics has ever been checked against a real HSR runtime. Clean answer to 'what is the strongest evidence semantics match HSR': NONE.",
+  "anti_promotion_mechanisms": [
+   "validation/oracles.py assess(): requires OracleKind.INDEPENDENT_NATIVE, EvidenceMode.NATIVE_EVIDENCED, exact game_version and independent_provenance; module docstring concedes it does not authenticate provenance truthfulness",
+   "battle_ir/evidence.py: EvidenceMode / VersionRelation / ReadinessClass are separate _StrictVocabulary enums (not str mixins); CLOSE_4.4.0_TO_4.4.54 can never compare or merge as EXACT_NATIVE",
+   "battle_sandbox/evidence_boundary.py: module-private _NATIVE_SEAL; reference objects can never carry NATIVE_EVIDENCED",
+   "battle_sandbox/reference_boundary.py: promote_to_native() unconditionally raises BoundaryCrossingError; preserve_evidence_mode() forbids class changes",
+   "battle_sandbox/gate_certificate.py: certify_closed_preflight requires NATIVE_EVIDENCED for the contract and every obligation, and GateCertificate.__bool__ raises"
+  ],
+  "current_test_baseline": {"command": "python -m unittest discover -s tests -t . -p test_*.py", "ran": 1954, "failures": 0, "errors": 0, "duration_s": 203.6, "measured_at_head": "7eb82ec2400b050e6b915bbfb2d834bbfe0fae3d", "test_files": 146, "delta_vs_freeze_audit": "+79 tests since the 1875-test freeze-audit baseline (the 8 P-series commits)"},
+  "reconstruction_vs_validation_separation": "All 1,954 passing tests validate REFERENCE_MODEL consistency, contract behavior, determinism and denial boundaries. Zero of them validate any operation against HSR itself."
+ },
+
+ "live_reader": {
+  "classification": "STATIC_ONLY (and the live-battle-state sub-capability is NONE)",
+  "why_not_NONE": "Real process attach + ReadProcessMemory code exists under tools/runtime_snapshot/*.py (ctypes, OpenProcess with PROCESS_QUERY_INFORMATION|PROCESS_VM_READ, PSAPI module enumeration) and tools/runtime_probe/ (C++ LoadLibraryW via CreateRemoteThread + DllMain)",
+  "why_not_PARTIAL_LIVE": "Those tools read only known UnityPlayer/GameAssembly module ranges and static-derived pointer chains. pgoo_live_dispatch_observation_stage1_blocker_20.md states they 'do not locate managed task/executor instances, inspect execution registers, or enumerate heaps'. tools/runtime_probe/README.md states it does not enter BattleInstance / Ability Execute / Modifier Runtime / Battle Sandbox.",
+  "absence_checks": {"pymem": 0, "frida": 0, "ptrace": 0, "proto/pcap files": 0, "ocr/screen capture": 0, "network protocol reader": 0, "client instrumentation hook": 0},
+  "src_level": {"src/hsr_battle_agent/runtime/": "contains only .gitkeep and a 3-line README placeholder", "frontend LiveBattleBackendAdapter.ts": "kind='LIVE' but every method throws BackendNotConnectedError; contractStatus NOT_CONNECTED; supportedMethods []", "frontend MockBattleBackendAdapter.ts": "MOCK_ONLY fixture lookup", "BattleBackendAdapter.ts comment": "'The real backend API does not exist yet'"},
+  "manual_import": "JSON workspace import exists in the frontend (JsonImportPanel / jsonImport / importSession) but is static, caller-authored data, not live state",
+  "status_of_the_probe_itself": "EXPERIMENTAL and blocked: tools/runtime_snapshot README final_status STATIC_TARGET_UNRESOLVED (slot-63 chain resolves to a Unity proxy stub, not il2cpp_domain_get); runtime_probe Phase A never launched the game and was blocked by OpenProcess error 5"
+ },
+
+ "product_frontend": {
+  "static_product_browse": {"status": "SOLVED (static)", "mounted_ui": "FE1/FE2 M14 capability index + M15 rejection view over frontend/public/data/{content_index,content_details,content_admissions}.json (~620 skill rows)", "generated_but_unmounted": "FE3 product layer frontend/public/data/product/4.4.54/catalog.json with collections characters(97)/monsters(628)/stages(1459)/encounters(1543), 30 detail chunks, complete_detail_count 3727; frontend/src/fe3/productClients.ts is a tested library not imported by any app/panels/ui module", "lightcone_relic_collections": "none (referenced inside character product only)"},
+  "scenario_compilation": {"status": "SOLVED (static)", "artifact": "hsr_battle_agent.scenario_package/2 by game_data/scenario_compiler.py", "P0": "stage_package_output_identity IDENTICAL over 1459 stages, 6717 placements, 0 unresolved, 0 unproven variant parents", "P1": "F2/F3/F4 closed; player team 1..4 enforced; reachable rule states only UNKNOWN/UNSPECIFIED; execution_semantics NONE"},
+  "support_report": {"status": "SOLVED (static aggregation)", "artifact": "hsr_battle_agent.scenario_support_report/1 by product_support/scenario_report.py", "non_impact_guarantees": {"real_content_execution_performed": false, "planner_invoked": false, "battle_state_created": false, "golden_claimed": false, "m10_m11_invoked": false}},
+  "browser_python_bridge": {"status": "SOLVED (local transport)", "module": "frontend_bridge/server.py - single-threaded loopback HTTP on 127.0.0.1:8765", "routes": ["GET /api/v1/info", "POST /api/v1/scenario/compile", "POST /api/v1/scenario/support"], "capabilities": {"scenario_compile": true, "scenario_support_report": true, "battle_execution": false, "planner": false, "native_execution": false}, "e2e": "PASS via real FE3 client over loopback", "exposed_surfaces": {"battle_execution_exposed": false, "planner_exposed": false, "native_execution_exposed": false, "filesystem_mutation_exposed": false, "battle_state_mutation_exposed": false}},
+  "p_series_status": {"P0": "DONE (static)", "P1": "DONE (static)", "P2": "DONE (static product)", "P3": "DONE (static product)", "P4": "DONE (static aggregation)", "P5A": "DONE (static assets; dynamic compilation NOT_CONNECTED at the time)", "P5B": "DONE (local bridge; dynamic compile + support connected)"},
+  "does_not_advance_real_execution": [
+   "all static product browse surfaces (read-only projections)",
+   "ScenarioPackage static assembly (explicitly constructs no mutable BattleState)",
+   "Scenario Support Report (descriptive aggregation with real_content_execution_performed false)",
+   "frontend adapters (Mock = fixtures, Live = NOT_CONNECTED skeleton)",
+   "the loopback bridge (capabilities battle_execution/planner/native_execution all false)",
+   "FE3 product client library and detail chunks"
+  ],
+  "only_product_layer_that_runs_anything": "frontend_adapter/render.py emit_planner_result() can invoke reference_battle_planner.search_battle_plans on caller-declared M10 envelopes. That is reference execution, not real content."
+ },
+
+ "gap_matrix": {
+  "column_order": ["row", "CURRENT_STATUS", "REAL_CONTENT", "SOURCE_BACKED", "RUNTIME", "PLANNER_READY", "NATIVE_VALIDATED", "MAIN_BLOCKER", "AUTHORITATIVE_MODULE"],
+  "status_vocabulary": ["ABSENT", "REPRESENTATION_ONLY", "STATIC_ONLY", "REFERENCE_MODEL_ONLY", "PARTIAL", "PRESENT_DENIED", "PRESENT", "ENGINE_READY"],
+  "rows": [
+   ["Static Avatar content", "PRESENT", "YES", "YES", "NO", "N/A", "NO", "none (content complete: 97 avatars / 664 skill rows / 5018 traces / 582 eidolons)", "game_data/nanoka_content.py, data/db/hsr_content_4.4.54.sqlite"],
+   ["Static Monster content", "PRESENT", "YES", "YES", "NO", "N/A", "NO", "none for the static layer (628/2648/12873); typed API missing for MonsterSkill/MonsterVariant/wave", "game_data/nanoka_content.py"],
+   ["Static Stage content", "PRESENT", "YES", "YES", "NO", "N/A", "NO", "win/lose conditions are opaque custom-string predicates", "game_data/nanoka_content.py (stages/waves/wave_monsters)"],
+   ["Loadout", "PARTIAL", "YES", "PARTIAL", "NO", "NO", "NO", "F5 open: no six-slot rule, set_id ignored, skill_levels/trace rank_state/initial_state carried unvalidated; dynamic equipment effects unapplied; no runtime consumer", "game_data/external_reconstruction.py:1132 (materialize_loadout), game_data/scenario_compiler.py:202-261"],
+   ["Behavior binding", "PARTIAL", "YES", "YES (close-version relation)", "NO", "NO", "NO", "0 executable reference-bound skills; binding is a string join not cross-validated against the compiler corpus; TriggerAbility continuation unresolvable", "game_data/behavior_compiler.py, content_support/registry.py, data/content_support/4.4.54/*"],
+   ["Behavior IR", "REPRESENTATION_ONLY (execution layer exists but unconnected)", "YES", "YES", "PARTIAL (generic client atoms only)", "NO", "NO", "29086 BEHAVIOR_AFFECTING_NODE_NOT_COMPILED; REJECT_NOT_NOOP rejects whole records; no cross-ability identity; INVOKE_BEHAVIOR structural only", "battle_ir/descriptors/*, battle_ir/model.py, game_data/external_behavior.py"],
+   ["BattleState", "ARCHITECTURAL_SHELL", "NO", "PARTIAL", "PARTIAL (legacy/reference only)", "NO", "NO", "TerraBattleState is 61 empty stores with no named entity/HP/resource fields; contract status ARCHITECTURE_ONLY_NO_METHOD_IMPLEMENTATIONS; no real-content initializer", "battle_sandbox/state_v2.py, battle_sandbox/state.py, game_data/reference_execution.py"],
+   ["Generic executor", "PARTIAL", "NO", "PARTIAL", "PARTIAL (92 generic client atoms)", "NO", "NO", "StrictExecutor supports only terra.strict.no_op/1; no path compiles 4.4.54 skill behavior into a transition; real Natasha slice unregistered and non-mutating", "battle_sandbox/executor.py, battle_sandbox/strict_executor.py, battle_runtime/*"],
+   ["Damage", "REFERENCE_MODEL_ONLY", "NO", "PARTIAL", "PARTIAL (ordinary reference packet)", "NO", "NO", "EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS (SPHitRatio / HitEffectHeight / HitPosHeight / HitMotion); DamageByAttackProperty runtime dispatch PGOOHIHKHNJ +0x120 UNKNOWN; SPHitRatio evidence BLOCKED_BY_EVIDENCE", "game_data/reference_damage_adapters.py, game_data/damage_survival_reference.py, docs/agent/handoffs/damage_request_dispatch_resolution_18.md"],
+   ["Toughness / break", "REFERENCE_MODEL_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "MODIFY_TOUGHNESS / TRIGGER_BREAK / RESET_TOUGHNESS are STRUCTURAL_PACKET_ONLY; ApplyStanceDamage never entered", "game_data/toughness_break_reference.py"],
+   ["Energy", "ABSENT", "NO", "NO", "NO", "NO", "NO", "no representation anywhere; no recovery evidence", "(none)"],
+   ["SP", "PARTIAL (caller-declared resource only)", "NO", "NO", "PARTIAL (synthetic transition)", "NO", "NO", "SandboxResourceState is a declared amount, not the client SP rule; MODIFY_TEAM_SP executable kind has no real-content payload acceptance", "battle_sandbox/sandbox_transition.py, game_data/reference_operation_adapters.py"],
+   ["Speed / action order", "PARTIAL (declared sandbox rule)", "NO", "PARTIAL", "PARTIAL (ordinary timeline only)", "NO", "NO", "tie-break is a declared sandbox policy; native ordering strict-rejected; scheduler arbitration DOMAIN_4 stops at insert/interrupt/summon boundaries", "battle_runtime/turns.py, data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json"],
+   ["Buff / Modifier", "PARTIAL", "NO", "PARTIAL", "PARTIAL (ADD/REMOVE only)", "NO", "NO", "184 modifier-blocked roots; unbound source/default/init/lifecycle/global/remove paths strict-rejected; modifier definition must resolve in the local catalog", "battle_runtime/modifiers.py, game_data/modifier_catalog.py, game_data/modifier_lifecycle_reference.py"],
+   ["DOT", "REPRESENTATION_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "EXECUTABLE_REFERENCE_DOT_MIXED_STATE_FIELDS; no DOT state field anywhere", "game_data/behavior_compiler.py (payload refusal)"],
+   ["Shield / Heal", "PARTIAL (heal response boundary only)", "PARTIAL (Natasha slice)", "PARTIAL", "NO mutation", "NO", "NO", "positive HealData event consumer unrecovered; INIT_SHIELD/REMOVE_SHIELD structural only; DispelStatus consumer unrecovered; CurrentHP deliberately unchanged", "battle_runtime/healing.py, game_data/real_skill.py, docs/agent/handoffs/semantic_handoff_30.md"],
+   ["Triggers", "REPRESENTATION_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "TriggerAbility execution_readiness NO; registration != activation != barrier != marker; no activation/context/registration contract", "data/semantics/4.4.54/full_reconstruction/astra_triggerability_v1.json"],
+   ["Follow-up", "REPRESENTATION_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "follow-up/followup ledger is content-only (D5/D8/D9); no runtime admission", "game_data/followup_ledger.py"],
+   ["Summons / memosprite", "ABSENT", "NO", "PARTIAL (representation)", "NO", "NO", "NO", "summon actor boundary and formation sharing strict-rejected; CUSTOM_TERMINAL/entity lifecycle unresolved", "data/semantics/4.4.54/full_reconstruction/astra_scheduler_arbitration_v1.json, astra_formation_boss_v1.json"],
+   ["RNG", "REFERENCE_MODEL_ONLY", "NO", "NO (client algorithm UNKNOWN)", "PARTIAL (PYTHON_RANDOM_MT19937 reference)", "NO", "NO", "native client algorithm and stream topology UNKNOWN; RANDOM_SELECTION structural only; retarget ByRandom NATIVE_BLOCKED_TR_Q2", "battle_sandbox/rng.py, game_data/rng_semantics_reference.py"],
+   ["Scheduler", "PARTIAL", "NO", "PARTIAL", "PARTIAL (ordinary turn advance)", "NO", "NO", "native tie/consumption/release semantics unresolved; cross-family arbitration strict-rejected", "battle_runtime/turns.py, game_data/scheduler_semantics_reference.py, game_data/reference_schedule_v2.py"],
+   ["Monster AI", "FAMILY_LEVEL_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "runtime admission UNKNOWN; policy precedence BLOCKED_BY_EVIDENCE; 11 sequence IDs need MonsterSkillConfig.json; 2863 Monster INVOKE_BEHAVIOR lowering failures", "data/semantics/4.4.54/full_reconstruction/astra_monster_ai_v1.json, astra_monster_ai_pass2_targeted_evidence_v1.json"],
+   ["Stage runtime", "STATIC_TOPOLOGY_ONLY", "NO", "PARTIAL", "NO", "NO", "NO", "wave_advance BLOCKED_BY_EVIDENCE_AND_GRAPH_CONTENT; spawn EXECUTION_BLOCKED; terminal/win/lose custom strings unbound; 0 exact stage-buff behavior matches", "game_data/scenario_compiler.py (static only), data/semantics/4.4.54/full_reconstruction/astra_stage_environment_mode_v1.json"],
+   ["DecisionPoint", "ABSENT", "NO", "NO", "NO", "NO", "NO", "concept does not exist in the codebase (zero grep matches)", "(none)"],
+   ["Legal actions", "PARTIAL (classification only)", "NO", "NO", "NO", "NO", "NO", "query_player_legal_actions validates caller proposals and never generates them; no binder; Sandbox.legal_actions raises StubNotImplementedError; real content structurally denied", "battle_sandbox/legal_actions.py, battle_sandbox/sandbox.py:110"],
+   ["State clone / hash", "PRESENT", "N/A", "YES", "YES", "YES", "NO", "none (fully implemented and usable)", "battle_sandbox/hash.py, battle_sandbox/hash_v2.py, battle_sandbox/canonical_v2.py, battle_sandbox/snapshot_v2.py"],
+   ["Replay", "PRESENT", "N/A", "YES", "YES", "YES", "NO", "none (byte-exact replay of reference sessions)", "reference_sandbox/replay.py"],
+   ["Baseline policy", "ABSENT", "NO", "NO", "NO", "NO", "NO", "no random / simple-auto decision policy exists anywhere", "(none)"],
+   ["Greedy planner", "ABSENT", "NO", "NO", "NO", "NO", "NO", "no greedy decision policy; only objective-ranked exhaustive DFS", "(none)"],
+   ["Beam planner", "ABSENT", "NO", "NO", "NO", "NO", "NO", "no beam search", "(none)"],
+   ["Native validation", "ABSENT", "N/A", "NO", "NO", "NO", "NO", "0 golden fixtures, 0 native traces, empty oracle ledger, m7 BLOCKED; only deterministic replay + disassembly evidence", "validation/oracles.py, data/semantics/4.4.54/full_reconstruction/terra_golden_ledger_v1.json"],
+   ["Live reader", "STATIC_ONLY (live battle state = NONE)", "NO", "NO", "NO", "N/A", "NO", "probes read module ranges and static pointer chains only; STATIC_TARGET_UNRESOLVED; runtime_probe blocked at OpenProcess error 5; runtime/ is an empty placeholder", "tools/runtime_snapshot/*, tools/runtime_probe/*, src/hsr_battle_agent/runtime/README.md"],
+   ["Advisor", "ABSENT", "NO", "NO", "NO", "NO", "NO", "only a README placeholder (apps/realtime_advisor) developed against Mock BattleState; depends on reader + sandbox + planner", "apps/realtime_advisor/README.md"],
+   ["Frontend product plumbing", "PRESENT", "NO (static documents)", "YES", "NO", "NO", "NO", "not on the execution critical path; bridge capabilities battle_execution/planner/native_execution all false", "frontend_adapter/*, frontend_bridge/*, frontend/src/fe1, frontend/src/fe3, product_support/scenario_report.py"]
+  ]
+ },
+
+ "first_real_action_census": {
+  "method": "Mechanical derivation from data/content_binding/4.4.54/full_action_closure_census_001.json (per_skill_records, n=324) filtered to: settlement_operation_count >= 1, second_hop_presence = false, target_blockers = 0, resource_blockers = 0, predicate_callback_blockers = 0, modifier_blockers = 0, no MODIFIER/RANDOM_TARGET/RETARGET/RESOURCE/HEAL_PACKET in full_action_blocker_set, and no DOT/HEAL settlement kind. Sorted by (residual blocker class count, closure operation count, closure rejected operation count).",
+  "population_meeting_filter": 98,
+  "enumeration_limit": 10,
+  "ordering_disclaimer": "The list is ordered by a mechanical sort key only. It is NOT a ranking of merit, NOT a recommendation, and no candidate is selected. Architectural selection is explicitly deferred to SOL.",
+  "shared_facts_all_candidates": {
+   "provenance": {"version_relation": "CLOSE_4.4.0_TO_4.4.54", "source_commit": "b11066beacc4de454b625fafc7ea3dd540c5bbf3", "source_version_unverified": true},
+   "join_rule": "(AvatarConfig.AvatarID, AvatarSkillConfig.SkillTriggerKey) == same-owner CharacterConfig.SkillList[]",
+   "m14_binding_level": "FULL_ACTION_REPRESENTED (all 10)",
+   "m14_execution_readiness": "STRICT_REJECT_UNTIL_NEW_EVIDENCE (all 10)",
+   "root_compile_status": "REJECTED (except 140101 = COMPILED_STRUCTURE_ONLY)",
+   "common_blocker_families": ["DAMAGE_PACKET (EXECUTABLE_REFERENCE_DAMAGE_MIXED_STATE_FIELDS)", "WAIT_ANIM_STATE (presentation wait used as an implicit local order barrier)", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED (ACTION_D rows only)"],
+   "common_missing_runtime_primitives": ["a damage-packet consumer that accepts the mixed-state DamageByAttackProperty request (blocked by unresolved special fields and the PGOOHIHKHNJ +0x120 dispatch)", "a wait/presentation barrier primitive with declared ordering semantics", "a real-content BattleActor/BattleState initializer", "a SkillID/EntryAbility -> action binder"],
+   "settlement_kind_for_all": "DAMAGE_REQUEST",
+   "target_model_for_all": "AbilityTargetEntity (2 targets, single damage alias)"
+  },
+  "candidates": [
+   {"n": 1, "avatar_id": "1208", "skill_id": "120801", "trigger_key": "Skill01", "entry_ability": "Avatar_FuXuan_00_Skill01_Phase01", "settlement_body": "Avatar_FuXuan_00_Skill01_Phase02", "closure_operation_count": 11, "closure_rejected_operation_count": 4, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "BLOCKED_BY_EVIDENCE", "blockers": ["DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["DAMAGE_PACKET"], "packet_extra_unsupported_fields": ["SPHitRatio"], "why_mechanically_simple": "1 settlement op, 1 damage alias, no second hop, no modifier, no retarget, no RNG; smallest closure (11 ops) with a single residual policy class"},
+   {"n": 2, "avatar_id": "1303", "skill_id": "130301", "trigger_key": "Skill01", "entry_ability": "Avatar_RuanMei_Skill01_Phase01", "settlement_body": "Avatar_RuanMei_Skill01_Phase02", "closure_operation_count": 11, "closure_rejected_operation_count": 4, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "BLOCKED_BY_EVIDENCE", "blockers": ["DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["DAMAGE_PACKET"], "packet_extra_unsupported_fields": ["SPHitRatio"], "why_mechanically_simple": "identical mechanical profile to n=1"},
+   {"n": 3, "avatar_id": "1501", "skill_id": "150101", "trigger_key": "Skill01", "entry_ability": "Avatar_Sparxie_00_Skill01_Phase01", "settlement_body": "Avatar_Sparxie_00_Skill01_Phase02", "closure_operation_count": 11, "closure_rejected_operation_count": 4, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "BLOCKED_BY_EVIDENCE", "blockers": ["DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["DAMAGE_PACKET"], "packet_extra_unsupported_fields": ["SPHitRatio"], "why_mechanically_simple": "identical mechanical profile to n=1"},
+   {"n": 4, "avatar_id": "1401", "skill_id": "140101", "trigger_key": "Skill01", "entry_ability": "Avatar_TheHerta_00_Skill01_Phase01", "settlement_body": "Avatar_TheHerta_00_Skill01_Phase02", "closure_operation_count": 11, "closure_rejected_operation_count": 5, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "BLOCKED_BY_EVIDENCE", "blockers": ["DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["DAMAGE_PACKET"], "packet_extra_unsupported_fields": ["SPHitRatio", "HitEffectHeight", "HitPosHeight"], "why_mechanically_simple": "smallest closure but 3 unsupported packet fields and a COMPILED_STRUCTURE_ONLY root (unlike the others) - more packet surface, fewer compiler rejections"},
+   {"n": 5, "avatar_id": "1506", "skill_id": "150601", "trigger_key": "Skill01", "entry_ability": "Avatar_SilverWolf999_00_Skill01_Phase01", "settlement_body": "Avatar_SilverWolf999_00_Skill01_Phase02", "closure_operation_count": 14, "closure_rejected_operation_count": 6, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x2", "full_closure_status": "ACTION_C_WAIT_PLUS_ONE_POLICY_CLASS", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "BLOCKED_BY_EVIDENCE", "blockers": ["DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["DAMAGE_PACKET"], "packet_extra_unsupported_fields": ["HitMotion"], "extra_blocker": "EXECUTABLE_REFERENCE_DAMAGE_PERCENTAGE_MISSING", "why_mechanically_simple": "1 residual class, 2 settlement ops; also carries a missing-damage-percentage defect"},
+   {"n": 6, "avatar_id": "1504", "skill_id": "150401", "trigger_key": "Skill01", "entry_ability": "Avatar_Ashveil_00_Skill01_Phase01", "closure_operation_count": 8, "closure_rejected_operation_count": 9, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_D_SMALL_FRONTIER", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "REPRESENTABLE_BLOCKED", "blockers": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET"], "packet_extra_unsupported_fields": [], "why_mechanically_simple": "smallest compiled closure (8 ops) of the ACTION_D group but requires 3 uncompiled nodes to be lowered"},
+   {"n": 7, "avatar_id": "1310", "skill_id": "131001", "trigger_key": "Skill01", "entry_ability": "Avatar_Sam_00_Skill01_Phase01", "closure_operation_count": 9, "closure_rejected_operation_count": 8, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_D_SMALL_FRONTIER", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "REPRESENTABLE_BLOCKED", "blockers": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET"], "packet_extra_unsupported_fields": [], "why_mechanically_simple": "9-op closure, only 2 uncompiled nodes"},
+   {"n": 8, "avatar_id": "1404", "skill_id": "140401", "trigger_key": "Skill01", "entry_ability": "Avatar_Mydeimos_00_Skill01_Phase01", "closure_operation_count": 9, "closure_rejected_operation_count": 9, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_D_SMALL_FRONTIER", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "REPRESENTABLE_BLOCKED", "blockers": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET"], "packet_extra_unsupported_fields": [], "why_mechanically_simple": "9-op closure, 3 uncompiled nodes"},
+   {"n": 9, "avatar_id": "1215", "skill_id": "121501", "trigger_key": "Skill01", "entry_ability": "Avatar_Hanya_00_Skill01_Phase01", "closure_operation_count": 10, "closure_rejected_operation_count": 8, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x1", "full_closure_status": "ACTION_D_SMALL_FRONTIER", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "REPRESENTABLE_BLOCKED", "blockers": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET"], "packet_extra_unsupported_fields": [], "why_mechanically_simple": "10-op closure, 3 uncompiled nodes"},
+   {"n": 10, "avatar_id": "100801", "skill_id": "100801", "trigger_key": "Skill01", "entry_ability": "Avatar_Arlan_Skill01_Phase01", "closure_operation_count": 10, "closure_rejected_operation_count": 11, "first_hop_target_count": 2, "operation_families": ["BOUND_PRIMITIVE_LOCAL_ORCHESTRATION", "CURRENT_REFERENCE_EXECUTABLE", "REFERENCE_PACKET_BLOCKED", "BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "PRESENTATION_WAIT_GATED"], "settlement_kind": "DAMAGE_REQUEST x2", "full_closure_status": "ACTION_D_SMALL_FRONTIER", "m14_binding_level": "FULL_ACTION_REPRESENTED", "m14_support_status": "REPRESENTABLE_BLOCKED", "blockers": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET", "WAIT_ANIM_STATE"], "residual_after_wait_counterfactual": ["BEHAVIOR_AFFECTING_NODE_NOT_COMPILED", "DAMAGE_PACKET"], "packet_extra_unsupported_fields": [], "why_mechanically_simple": "10-op closure with 2 settlement ops"}
+  ],
+  "further_rows_named_by_m12_census": ["1107/110701", "1110/111001", "1210/121001", "1221/122101", "1312/131201", "1321/132101", "1406/140601", "1408/140801", "1409/140901", "1505/150501", "8001/800101"],
+  "unlisted_rows": 87,
+  "unlisted_rows_note": "87 further rows of the 98-row mechanical filter set were not enumerated (enumeration_limit 10, per change request).",
+  "note_on_natasha": "Avatar_Natasha_00_Skill02 (1105/110502) is NOT a candidate for a first DAMAGE settlement transition: it is a heal-path skill whose M14 blocker set is MODIFIER / RANDOM_TARGET / REFERENCE_PACKET_OTHER / WAIT_ANIM_STATE. It is nevertheless the only real-content skill with a recovered semantic chain (to the heal request boundary, no mutation) and is recorded separately as the deepest real-content progress.",
+  "note_on_retracted_premise": "docs/agent/handoffs/simple_skill_candidate_index_21.md asserted the global serialized HealHP selector is 7 and that a heal path bypasses the PGOO blocker. Handoff 30 retracts that selector claim (the generated global TaskConfig registry uses ULEB discriminators; HealHP = 1481; selector 7 belonged to a file-local factory family). The bypass claim therefore rests on the direct-HP/HealHP route being selector-independent, and direct_hp_real_content_census_28 records DIRECT_HP_AVATAR_SLICE_NOT_FOUND. Both artifacts remain in the tree as current evidence and the contradiction is unresolved."
+ },
+
+ "runtime_foundation_dependency_graph": {
+  "note": "Factual only. Edges are derived from CURRENT code dependencies and from the explicit dependency lists recorded by the semantic-reconstruction artifacts. No future architecture is invented.",
+  "nodes": [
+   {"id": "content_static", "class": "PRESENT", "module": "game_data/nanoka_content.py, data/db/hsr_content_4.4.54.sqlite"},
+   {"id": "validated_loadout", "class": "MISSING", "module": "game_data/external_reconstruction.py:1132 (partial; F5 open; no runtime consumer)"},
+   {"id": "behavior_corpus", "class": "PRESENT", "module": "data/semantics/4.4.54/full_reconstruction/full_content_behavior_corpus_001.json"},
+   {"id": "behavior_root_binding", "class": "PARTIAL", "module": "content_support/registry.py (string join, 524/620)"},
+   {"id": "behavior_ir_representation", "class": "PRESENT", "module": "battle_ir/descriptors/*"},
+   {"id": "operation_lowering", "class": "MISSING", "module": "game_data/behavior_compiler.py (29086 unresolved nodes)"},
+   {"id": "continuation_activation_contract", "class": "MISSING", "module": "astra_triggerability_v1.json (execution_readiness NO)"},
+   {"id": "target_resolver", "class": "PARTIAL", "module": "game_data/target_semantics_reference.py, battle_runtime/targets.py"},
+   {"id": "resource_state", "class": "PARTIAL_SYNTHETIC", "module": "battle_sandbox/sandbox_transition.py"},
+   {"id": "initial_battle_actor", "class": "MISSING", "module": "(none) - free_scenario_assembly_contract_v1.json:54 lists production BattleState construction under not_yet_claimed"},
+   {"id": "real_content_battlestate", "class": "MISSING", "module": "battle_sandbox/state_v2.py (Terra shell only)"},
+   {"id": "damage_packet", "class": "PARTIAL_REFERENCE", "module": "game_data/reference_damage_adapters.py"},
+   {"id": "damage_dispatch_resolution", "class": "MISSING", "module": "docs/agent/handoffs/damage_request_dispatch_resolution_18.md (PGOOHIHKHNJ +0x120 UNKNOWN)"},
+   {"id": "toughness_break", "class": "PARTIAL_REFERENCE", "module": "game_data/toughness_break_reference.py"},
+   {"id": "hp_mutation", "class": "PARTIAL", "module": "battle_runtime/hp.py (negative delta only)"},
+   {"id": "positive_heal_consumer", "class": "MISSING", "module": "(unrecovered native event consumer)"},
+   {"id": "energy_sp_mutation", "class": "MISSING", "module": "(none for real content; synthetic resource only)"},
+   {"id": "status_modifier_engine", "class": "PARTIAL", "module": "battle_runtime/modifiers.py, game_data/modifier_lifecycle_reference.py"},
+   {"id": "event_trigger_engine", "class": "MISSING", "module": "(REGISTER_STAGE_EVENTS / CREATE_STAGE_EVENT are structural only)"},
+   {"id": "scheduler", "class": "PARTIAL_REFERENCE", "module": "battle_runtime/turns.py, game_data/scheduler_semantics_reference.py"},
+   {"id": "skill_action_adapter", "class": "MISSING", "module": "content_planner/__init__.py:17 (no binder)"},
+   {"id": "trace", "class": "PRESENT", "module": "battle_sandbox/trace.py, battle_sandbox/staged_trace.py"},
+   {"id": "state_hash_clone", "class": "PRESENT", "module": "battle_sandbox/hash_v2.py, snapshot_v2.py, canonical_v2.py"},
+   {"id": "decisionpoint_loop", "class": "MISSING", "module": "(none)"},
+   {"id": "legal_action_generator", "class": "MISSING", "module": "battle_sandbox/legal_actions.py (classifier only)"},
+   {"id": "planner_search_engine", "class": "PRESENT", "module": "planner_search, reference_battle_planner"},
+   {"id": "real_content_adapter_for_planner", "class": "MISSING", "module": "(none)"},
+   {"id": "native_validation_oracle", "class": "MISSING", "module": "validation/oracles.py (0 qualified)"},
+   {"id": "live_reader", "class": "MISSING", "module": "src/hsr_battle_agent/runtime (placeholder)"}
+  ],
+  "edges": [
+   ["content_static", "validated_loadout", "static tables exist; materializer partially validates"],
+   ["validated_loadout", "initial_battle_actor", "REQUIRED but no code path exists (contract lists it as not_yet_claimed)"],
+   ["initial_battle_actor", "real_content_battlestate", "REQUIRED but no code path exists"],
+   ["content_static", "behavior_root_binding", "M13 string join over AvatarSkillConfig x CharacterConfig.SkillList"],
+   ["behavior_corpus", "behavior_root_binding", "the compiler corpus carries the roots; the registry join is not cross-validated against it"],
+   ["behavior_root_binding", "behavior_ir_representation", "root records are compiled"],
+   ["behavior_ir_representation", "operation_lowering", "REQUIRED; 29086 nodes fail lowering"],
+   ["operation_lowering", "continuation_activation_contract", "REQUIRED; TriggerAbility cannot be lowered or activated"],
+   ["operation_lowering", "skill_action_adapter", "REQUIRED; no SkillID/EntryAbility -> action binder exists"],
+   ["operation_lowering", "damage_packet", "the settlement kind for every enumerated candidate"],
+   ["damage_dispatch_resolution", "damage_packet", "BLOCKING: mixed-state packet acceptance and the +0x120 dispatch are unresolved"],
+   ["damage_packet", "hp_mutation", "REQUIRED"],
+   ["positive_heal_consumer", "hp_mutation", "BLOCKING for the heal path (the deepest real-content chain stops here)"],
+   ["target_resolver", "damage_packet", "REQUIRED (target ordering currently ORDER_UNKNOWN)"],
+   ["resource_state", "scheduler", "REQUIRED for real-content AV/SP"],
+   ["scheduler", "decisionpoint_loop", "REQUIRED (run_until_decision has no owner)"],
+   ["real_content_battlestate", "decisionpoint_loop", "REQUIRED"],
+   ["skill_action_adapter", "legal_action_generator", "REQUIRED"],
+   ["legal_action_generator", "decisionpoint_loop", "REQUIRED"],
+   ["status_modifier_engine", "real_content_battlestate", "REQUIRED (184 modifier-blocked roots)"],
+   ["event_trigger_engine", "status_modifier_engine", "REQUIRED for triggered effects"],
+   ["toughness_break", "real_content_battlestate", "REQUIRED for break semantics"],
+   ["energy_sp_mutation", "decisionpoint_loop", "REQUIRED for ultimate/SP-gated actions"],
+   ["state_hash_clone", "planner_search_engine", "PRESENT edge: planner already consumes semantic_hash_v2"],
+   ["legal_action_generator", "planner_search_engine", "REQUIRED; planner currently consumes caller-declared actions"],
+   ["real_content_battlestate", "real_content_adapter_for_planner", "REQUIRED"],
+   ["real_content_adapter_for_planner", "planner_search_engine", "REQUIRED; engine itself needs no rewrite"],
+   ["trace", "native_validation_oracle", "trace infrastructure exists but no oracle consumes it for promotion"],
+   ["native_validation_oracle", "live_reader", "independent evidence is a prerequisite for trusting a reader-derived state"],
+   ["live_reader", "decisionpoint_loop", "advisor input"]
+  ],
+  "no_back_edge_constraint": "battle_sandbox and battle_runtime import zero game_data modules; planners import zero content modules. The layering is clean, so real-content work must add a new adapter layer rather than modify the existing engines."
+ },
+
+ "work_streams_to_stop": [
+  {"stream": "product projection (P2/P3 Character/Monster/Stage/Encounter)", "sufficient": true, "on_critical_path": false, "reason": "content_product.py is a read-only projection with 70+ passing tests; it executes no behavior IR and touches no battle state. It supplies no input that any runtime foundation node requires."},
+  {"stream": "Scenario support reporting (P4)", "sufficient": true, "on_critical_path": false, "reason": "scenario_report.py declares real_content_execution_performed false, planner_invoked false, battle_state_created false, m10_m11_invoked false. It aggregates what already exists."},
+  {"stream": "frontend adapters and visual frontend (P5A/P5B + FE1/FE2/FE3 UI)", "sufficient": true, "on_critical_path": false, "reason": "bridge capabilities pin battle_execution/planner/native_execution to false; the Live adapter is a NOT_CONNECTED skeleton; FE3 is not even mounted. No visual work can create a state transition."},
+  {"stream": "M14 display enhancements / registry viewing", "sufficient": true, "on_critical_path": false, "reason": "the capability index is a viewer over data whose execution_readiness is STRICT_REJECT_UNTIL_NEW_EVIDENCE for the whole bound population. Better display of a denial does not move the denial."},
+  {"stream": "M15 admission expansion", "sufficient": true, "on_critical_path": false, "reason": "the admission vocabulary is deliberately {REJECTED}; expanding it requires the execution semantics that do not yet exist, so it is downstream, not upstream."},
+  {"stream": "additional static product collections (lightcone/relic browse, missing accessors)", "sufficient": true, "on_critical_path": false, "reason": "static tables are already complete enough for execution (97 avatars, full loadout numbers available). Missing accessors for MonsterSkill/Wave are conveniences, not runtime prerequisites unless a specific runtime DAG edge demands them."},
+  {"stream": "F7 relic vocabulary doc alignment", "sufficient": false, "on_critical_path": "MARGINAL", "reason": "F7 is a contract-text vs data-schema mismatch. It does not block execution by itself, but the loadout contract text cannot be used as a data schema until it is aligned, so it must be resolved BEFORE any loadout-dependent runtime node is trusted."},
+  {"stream": "F5 loadout completeness", "sufficient": false, "on_critical_path": "YES (conditional)", "reason": "if the first real action depends on initial character state, F5 becomes a direct dependency of the initial_battle_actor node."},
+  {"stream": "frontend visual polish / UX", "sufficient": "user-owned", "on_critical_path": false, "reason": "explicitly out of scope for this audit and for the runtime goal."}
+ ],
+
+ "verdict": {
+  "choice": "C",
+  "label": "REAL_RUNTIME_BLOCKED_BY_MISSING_RECONSTRUCTION",
+  "one_line": "Real HSR 4.4.54 content cannot yet produce a single BattleState transition, because the behavior reconstruction deliberately refuses 29,086 operation nodes and has recovered no runtime execution semantics for any of them; zero of 620 canonical skills is executable.",
+  "why_C": [
+   "content_support binding_level_distribution: CONTENT_ACTION_EXECUTABLE_REFERENCE = 0 and REFERENCE_SETTLEMENT_BOUND = 0. All 620 rows are STATIC_ONLY (96), BEHAVIOR_ROOT_BOUND (200) or FULL_ACTION_REPRESENTED (324) and none is executable.",
+   "The compiler refuses 29086 operation nodes with BEHAVIOR_AFFECTING_NODE_NOT_COMPILED and enforces REJECT_NOT_NOOP, so a rejected record cannot be promoted piecewise.",
+   "The M12 census finds ACTION_A_CURRENTLY_CLOSED = 0 and ACTION_B_WAIT_ONLY = 0 across all 324 closure-censused rows; the minimum residual is still 1 blocker class (DAMAGE_PACKET) for the 5 best rows.",
+   "The single skill with a recovered semantic chain (Natasha Skill02, heal) reaches a request boundary and deliberately performs no mutation because the positive HealData event consumer is unrecovered. Four explicit dependencies remain in that bounded slice alone.",
+   "DamageByAttackProperty runtime dispatch is PARTIAL_RESOLUTION - TARGET_UNRESOLVED: the PGOOHIHKHNJ +0x120 slot owner and its +0x2D8 writer are UNKNOWN, and the SPHitRatio evidence artifact is itself BLOCKED_BY_EVIDENCE with the explicit instruction not to re-enter SOL on it.",
+   "TriggerAbility execution_readiness is NO with expected_new_executable_coverage 0; astra_reverse_master states full_native_behavior_reconstruction_complete false and native_reconstruction_status INCOMPLETE_EVIDENCE_AND_CONTENT_BLOCKED.",
+   "Monster runtime admission is UNKNOWN and Stage wave advance is BLOCKED_BY_EVIDENCE_AND_GRAPH_CONTENT, so no non-avatar content can fill the gap either."
+  ],
+  "why_not_D": "Option D presupposes that content is sufficient and only the state model is missing. Content is demonstrably not sufficient (0 executable skills, 29086 refused nodes, no cross-ability identity, no damage dispatch). D-type work is also unfinished - TerraBattleState is a 61-empty-store shell, energy/DOT/summons/weakness/shields have no representation, DecisionPoint does not exist, and legal_actions only classifies - and it will have to be done, but it is not the binding constraint: there is currently no content to execute, so building the state model first would create a runtime with nothing to run.",
+  "why_not_A_or_B": "A and B require that a bounded set of fixes unlocks the first real action. No bounded fix set exists: the blocker set spans content extraction (11 monster sequence IDs, direct-HP node mapping, DynamicFloat operands, the +0x120 dispatch), semantic mapping (TriggerAbility activation, AI precedence, wave advance, terminal predicates), runtime primitives (positive heal consumer, event trigger engine) and evidence (0 golden, 0 native trace, empty oracle ledger). The smallest honest slice (Natasha heal) needs four named dependencies and still cannot mutate state.",
+  "why_not_E": "The current foundations do not conflict with the goal. The evidence-gated layering, the frozen evidence vocabulary, the deterministic hash/clone/replay infrastructure and the two complete DFS search engines are all reusable and correct for the original goal. This is a completeness gap, not an architectural contradiction. The consistent finding across every module is 'denied, not wrong'.",
+  "secondary_co_blocker_for_the_record": "REAL_RUNTIME_BLOCKED_BY_MISSING_STATE_MODEL is also true and will become primary once reconstruction succeeds. It is recorded here as the next-in-line blocker, not as the current verdict."
+ },
+
+ "non_claims": [
+  "No production code was modified and no test was modified.",
+  "No git write of any kind was performed (no add/commit/push/pull/fetch/reset/restore/stash/clean/checkout/switch).",
+  "No frontend visual work was performed.",
+  "No feature was implemented and no architecture was redesigned.",
+  "No fix is proposed for any blocker identified.",
+  "No first action was selected; the census is factual and explicitly not a ranking of merit.",
+  "No roadmap is written.",
+  "No real-content execution is claimed anywhere.",
+  "No source-backed reconstruction is upgraded into native validation.",
+  "Static artifact counts are quoted as recorded by the artifacts that produced them; the two M12 census artifacts were produced at heads 311b6e9b and 8a4dcb0 while the SQLite counts, module inventory, grep results and the 1954-test baseline were measured at HEAD 7eb82ec.",
+  "The working tree was treated as authoritative current source; uncommitted dirt was preserved and read, never staged."
+ ]
+}
+
+
+
