@@ -1,0 +1,2367 @@
+{
+  "IR_representable_task_types": [
+    "RPG.GameCore.AddModifier",
+    "RPG.GameCore.CharacterPlayVO",
+    "RPG.GameCore.DebugLog",
+    "RPG.GameCore.DispelStatus",
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.IncludeTaskListTemplate",
+    "RPG.GameCore.ModifyHealData",
+    "RPG.GameCore.ModifySPNew",
+    "RPG.GameCore.MoveToTargetPosition",
+    "RPG.GameCore.PredicateTaskList",
+    "RPG.GameCore.RemoveModifier",
+    "RPG.GameCore.Retarget",
+    "RPG.GameCore.SetDynamicValue",
+    "RPG.GameCore.SkillPerformFinish",
+    "RPG.GameCore.StackProperty",
+    "RPG.GameCore.TargetTimeSlow",
+    "RPG.GameCore.TriggerAbility",
+    "RPG.GameCore.TriggerAnimState",
+    "RPG.GameCore.TriggerEffect",
+    "RPG.GameCore.WaitAnimState"
+  ],
+  "actual_corpus": [
+    {
+      "bytes": 521725,
+      "path": "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+      "sha256": "9e09bd77ef2bc6416f4936286a528aa9606182e6650b097765351648aab6a4f6",
+      "source": "ARCHIVED_DECODED_JSON_ONLY",
+      "verified": true
+    },
+    {
+      "bytes": 1314109,
+      "path": "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json",
+      "sha256": "08aeff32f80994d5c4192d2f06910ac630160d81cd22c2e7014838c6fac1f541",
+      "source": "ARCHIVED_DECODED_JSON_ONLY",
+      "verified": true
+    },
+    {
+      "bytes": 249737,
+      "path": "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json",
+      "sha256": "e838565f773169d333528901d776488be0ad876cf6b83ff4c8ffeb3729454d85",
+      "source": "ARCHIVED_DECODED_JSON_ONLY",
+      "verified": true
+    },
+    {
+      "bytes": 473050,
+      "path": "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json",
+      "sha256": "609bb25427c993327bd2915c0a23c1165f016235a9de454669e8c114c1336e64",
+      "source": "ARCHIVED_DECODED_JSON_ONLY",
+      "verified": true
+    }
+  ],
+  "archived_decoder_family_bindings": {
+    ".BEMKAFNMJIK": "task",
+    ".BKLODCFCAED": "target",
+    ".KMBDLCNGJFN": "target",
+    ".MKIOEPLIEIH": "predicate",
+    "RPG.GameCore.PredicateConfig": "predicate",
+    "RPG.GameCore.TargetEvaluator": "target",
+    "RPG.GameCore.TargetSeqOperation": "target",
+    "RPG.GameCore.TaskConfig": "task"
+  },
+  "archived_ledger": {
+    "includes_metadata_only": true,
+    "primitive_entries": 176,
+    "serialized_named_types": 156,
+    "sha256": "f82a74ff89721fe208f05d867f9b95a951c845005ed95eb8cf5cc1f59d6dafb7",
+    "source": "data/control/real_runtime_generic_primitive_ledger_20261007_001.json"
+  },
+  "change_request": "CR-R12-GENERIC-BEHAVIOR-IR-RUNTIME-REENTRY-20261007-001",
+  "count_policy": "Distinct source/type/start/end decoded wrappers; copies deduplicated; counts are not runtime calls",
+  "counts": {
+    "IR_representable_task_types": 20,
+    "known_task_types": 20,
+    "mapped_task_types": 14,
+    "oracle_pending_task_types": 20,
+    "reference_executable_task_types": 2,
+    "unsupported_task_types": 6
+  },
+  "decoded_semantic_instance_counts": {
+    "predicate": 52,
+    "target": 533,
+    "task": 73
+  },
+  "expression_coverage": {
+    "IR_representable": 79,
+    "decoded_expressions": 79,
+    "unknown_programs": 0
+  },
+  "fully_decoded_skill_count_claimed": false,
+  "known_task_types": [
+    "RPG.GameCore.AddModifier",
+    "RPG.GameCore.CharacterPlayVO",
+    "RPG.GameCore.DebugLog",
+    "RPG.GameCore.DispelStatus",
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.IncludeTaskListTemplate",
+    "RPG.GameCore.ModifyHealData",
+    "RPG.GameCore.ModifySPNew",
+    "RPG.GameCore.MoveToTargetPosition",
+    "RPG.GameCore.PredicateTaskList",
+    "RPG.GameCore.RemoveModifier",
+    "RPG.GameCore.Retarget",
+    "RPG.GameCore.SetDynamicValue",
+    "RPG.GameCore.SkillPerformFinish",
+    "RPG.GameCore.StackProperty",
+    "RPG.GameCore.TargetTimeSlow",
+    "RPG.GameCore.TriggerAbility",
+    "RPG.GameCore.TriggerAnimState",
+    "RPG.GameCore.TriggerEffect",
+    "RPG.GameCore.WaitAnimState"
+  ],
+  "mapped_task_types": [
+    "RPG.GameCore.AddModifier",
+    "RPG.GameCore.CharacterPlayVO",
+    "RPG.GameCore.DispelStatus",
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.ModifySPNew",
+    "RPG.GameCore.MoveToTargetPosition",
+    "RPG.GameCore.PredicateTaskList",
+    "RPG.GameCore.Retarget",
+    "RPG.GameCore.SetDynamicValue",
+    "RPG.GameCore.SkillPerformFinish",
+    "RPG.GameCore.TriggerAbility",
+    "RPG.GameCore.TriggerAnimState",
+    "RPG.GameCore.TriggerEffect",
+    "RPG.GameCore.WaitAnimState"
+  ],
+  "native_validated_task_types": [],
+  "non_executable_task_types": [
+    "RPG.GameCore.AddModifier",
+    "RPG.GameCore.CharacterPlayVO",
+    "RPG.GameCore.DebugLog",
+    "RPG.GameCore.DispelStatus",
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.IncludeTaskListTemplate",
+    "RPG.GameCore.ModifyHealData",
+    "RPG.GameCore.ModifySPNew",
+    "RPG.GameCore.MoveToTargetPosition",
+    "RPG.GameCore.RemoveModifier",
+    "RPG.GameCore.Retarget",
+    "RPG.GameCore.SetDynamicValue",
+    "RPG.GameCore.SkillPerformFinish",
+    "RPG.GameCore.StackProperty",
+    "RPG.GameCore.TargetTimeSlow",
+    "RPG.GameCore.TriggerAnimState",
+    "RPG.GameCore.TriggerEffect",
+    "RPG.GameCore.WaitAnimState"
+  ],
+  "oracle_pending_task_types": [
+    "RPG.GameCore.AddModifier",
+    "RPG.GameCore.CharacterPlayVO",
+    "RPG.GameCore.DebugLog",
+    "RPG.GameCore.DispelStatus",
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.IncludeTaskListTemplate",
+    "RPG.GameCore.ModifyHealData",
+    "RPG.GameCore.ModifySPNew",
+    "RPG.GameCore.MoveToTargetPosition",
+    "RPG.GameCore.PredicateTaskList",
+    "RPG.GameCore.RemoveModifier",
+    "RPG.GameCore.Retarget",
+    "RPG.GameCore.SetDynamicValue",
+    "RPG.GameCore.SkillPerformFinish",
+    "RPG.GameCore.StackProperty",
+    "RPG.GameCore.TargetTimeSlow",
+    "RPG.GameCore.TriggerAbility",
+    "RPG.GameCore.TriggerAnimState",
+    "RPG.GameCore.TriggerEffect",
+    "RPG.GameCore.WaitAnimState"
+  ],
+  "reference_core_only_task_types": [
+    "RPG.GameCore.HealHP",
+    "RPG.GameCore.SetDynamicValue"
+  ],
+  "reference_executable_scope": "Conditional reference sequencing/invocation only with explicit operand/context/controller bindings; no full native skill claim",
+  "reference_executable_task_types": [
+    "RPG.GameCore.PredicateTaskList",
+    "RPG.GameCore.TriggerAbility"
+  ],
+  "schema": "generic_runtime_support_census/2",
+  "scope": "Four hash-matching archived selected/global-alias graphs; not the 620-skill universe",
+  "types": [
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 4,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json",
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.ByAnd",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 14,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 14,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCharacterDamageType",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareCharacterID",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareGridFightProperty",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareHP",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareHPRatio",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareMonsterID",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareStanceCount",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByCompareTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByContainBehaviorFlag",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByIsBattleEventEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByIsContainModifier",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByIsTeammate",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.ByIsTurnActionEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByNot",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.BySkillPointActivated",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByTargetAliveState",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 5,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 5,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByTargetListIntersects",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "predicate",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.ByTargetTeam",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 233,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json",
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetAlias",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetCompute",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 29,
+      "family": "target",
+      "field_bindings_unresolved_instances": 29,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetConcat",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAbilityGroup",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAbilityTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAbilityTargetLeader",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchActionDelayExceed",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchActualOwner",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvAllNPCMonsters",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvLineup",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvLocalPlayer",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvSkillTargetEntityList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvTeamLeader",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAdvTeamMembers",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAidDefender",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAidProtector",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "target",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAimAtTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAliveSourceEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAllStanceBreakEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAllUnselectable",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchAvatarAssistant",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchBattleEventCaster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchBattleEventEntityList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchBloodLinkTargets",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "target",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchByTauntAndAggro",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCallBackModifierCaster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCameraAimTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCameraAnchorTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCaster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCurrentDamageAttacker",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCurrentDamageDefender",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCurrentGroupNPCMonsters",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchCurrentInsertAbilityTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchDataViewUISelectEnter",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchDataViewUISelectLeave",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchFateRinCardCaster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchFateRinCardSkillMainTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchFateRinCardSkillSubTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchFateRinCardSkillTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchFightMVPEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchLatestEnterStageAvatar",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchLevelEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchLockTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchMainMonster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchModifierOwner",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchNextSkillCaster",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchNextTurnOwnerEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchNone",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchParamEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchParamEntityByIndex",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchParamEntityList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchPartner",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchPassiveEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchProjectileHitEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchProjectileHitPos",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchRogueMagicScepterList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchSnapshotEntityList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchStanceBreakTargetEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchSummonMonsters",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTaskActionTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTeamEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTemplateEntityList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTrailblazer",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTurnActionEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchTurnOwnerEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "target",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchUniqueNameEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFetchUnstageTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 13,
+      "family": "target",
+      "field_bindings_unresolved_instances": 13,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetFilter",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 10,
+      "family": "target",
+      "field_bindings_unresolved_instances": 10,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetIndex",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 10,
+      "family": "target",
+      "field_bindings_unresolved_instances": 4,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapAdjoinEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 10,
+      "family": "target",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapAllTeamMember",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapAllTeamMemberFromFirstEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapAttackTargetList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapCreatedBattleEvent",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapDamageAttacker",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapDamageDefender",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapEnemyTeamEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "target",
+      "field_bindings_unresolved_instances": 3,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapPartEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSkillActualAttacker",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSkillIndicatorTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSkillPointEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSkillSubTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 4,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSkillTarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSummonedMinions",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 5,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapSummoner",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetMapTeamEntity",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 7,
+      "family": "target",
+      "field_bindings_unresolved_instances": 7,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetQuery",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 89,
+      "family": "target",
+      "field_bindings_unresolved_instances": 89,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetSequence",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "target",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetSortByActionOrder",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 13,
+      "family": "target",
+      "field_bindings_unresolved_instances": 11,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetSortByFormation",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "target",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": null,
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/global_alias_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetTake",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 7,
+      "family": "task",
+      "field_bindings_unresolved_instances": 6,
+      "mapping": [
+        "modifier_apply",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json",
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.AddModifier",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "voice",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.CharacterPlayVO",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.DebugLog",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "dispel",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.DispelStatus",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "task",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": [
+        "heal",
+        "REFERENCE_SEMANTICS_AVAILABLE",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.HealHP",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 14,
+      "family": "task",
+      "field_bindings_unresolved_instances": 14,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.IncludeTaskListTemplate",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "task",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.ModifyHealData",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "task",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": [
+        "actor_resource",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json",
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.ModifySPNew",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "movement",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.MoveToTargetPosition",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 22,
+      "family": "task",
+      "field_bindings_unresolved_instances": 19,
+      "mapping": [
+        "branch",
+        "REFERENCE_SEMANTICS_AVAILABLE",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": true,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json",
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.PredicateTaskList",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 1,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.RemoveModifier",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "retarget",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.Retarget",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "dynamic_write",
+        "REFERENCE_SEMANTICS_AVAILABLE",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.SetDynamicValue",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "finish",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.SkillPerformFinish",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "task",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.StackProperty",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 2,
+      "family": "task",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": [
+        "unsupported",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/mandatory_common_modifier_decode.json"
+      ],
+      "type": "RPG.GameCore.TargetTimeSlow",
+      "unsupported_semantic": true
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "invoke",
+        "REFERENCE_SEMANTICS_AVAILABLE",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": true,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": true,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.TriggerAbility",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 1,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "animation",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.TriggerAnimState",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "task",
+      "field_bindings_unresolved_instances": 2,
+      "mapping": [
+        "effect",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+        "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_modifier_ability_decode.json"
+      ],
+      "type": "RPG.GameCore.TriggerEffect",
+      "unsupported_semantic": false
+    },
+    {
+      "IR_representable": true,
+      "decoded_instances": 3,
+      "family": "task",
+      "field_bindings_unresolved_instances": 0,
+      "mapping": [
+        "wait",
+        "STRUCTURE_ONLY",
+        "ORACLE_PENDING"
+      ],
+      "oracle_pending": true,
+      "reference_executable": false,
+      "reference_execution_requires_explicit_bindings": true,
+      "reference_handler_registered": false,
+      "sources": [
+        "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json"
+      ],
+      "type": "RPG.GameCore.WaitAnimState",
+      "unsupported_semantic": false
+    }
+  ],
+  "unsupported_task_types": [
+    "RPG.GameCore.DebugLog",
+    "RPG.GameCore.IncludeTaskListTemplate",
+    "RPG.GameCore.ModifyHealData",
+    "RPG.GameCore.RemoveModifier",
+    "RPG.GameCore.StackProperty",
+    "RPG.GameCore.TargetTimeSlow"
+  ]
+}

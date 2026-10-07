@@ -1,0 +1,187 @@
+{
+  "RNG": "splitmix64_reference_v1",
+  "authority_fields": [
+    "evidence_level",
+    "source_version",
+    "source_artifact",
+    "source_sha256",
+    "native_method_refs",
+    "semantic_status",
+    "oracle_status",
+    "source_pointer",
+    "ledger_refs"
+  ],
+  "canonicalization": "UTF-8 JSON, sorted string keys, compact separators, allow_nan=False; list order preserved; SHA-256",
+  "change_request": "CR-R12-GENERIC-BEHAVIOR-IR-RUNTIME-REENTRY-20261007-001",
+  "execution_authority": "REFERENCE_MODEL; original per-node authority retained in trace and gaps",
+  "expression_operations": [
+    "add",
+    "clamp",
+    "compare",
+    "conditional",
+    "div",
+    "identity",
+    "literal",
+    "lookup",
+    "max",
+    "min",
+    "mul",
+    "sub",
+    "unknown_opcode"
+  ],
+  "fixture": {
+    "canonical_ir_sha256": "05820ac210120c80669c664b6803550d4e04485b1d21e2979bb9d752b71285a0",
+    "compiled_to_ir": "PASS",
+    "completed_leaf_tasks": 0,
+    "full_transition": "SEMANTIC_GAP",
+    "source": "data/control/real_runtime_4651_natasha_110502_structural_graph_20261004_001.json",
+    "source_sha256": "9e09bd77ef2bc6416f4936286a528aa9606182e6650b097765351648aab6a4f6"
+  },
+  "heal_policy": "Generic bounded mode0 FormulaType2 amount-only reference core; pre/post hooks, modifiers, settlement and property/resource listeners unresolved",
+  "no_M15_admission": true,
+  "no_native_correct_claim": true,
+  "node_kinds": [
+    "AbilityIR",
+    "CompletionIR",
+    "EventDispatchIR",
+    "ExpressionIR",
+    "ModifierApplyIR",
+    "ModifierRemoveIR",
+    "PredicateIR",
+    "PropertyMutationIR",
+    "RandomChoiceIR",
+    "ResourceMutationIR",
+    "SchedulerBarrierIR",
+    "TargetSelectorIR",
+    "TaskIR",
+    "TaskSequenceIR",
+    "UnsupportedSemanticIR"
+  ],
+  "predicate_operations": [
+    "RPG.GameCore.ByIsTurnActionEntity",
+    "RPG.GameCore.BySkillPointActivated",
+    "all",
+    "any",
+    "comparison",
+    "entity-state",
+    "not",
+    "skill-tree-row-present"
+  ],
+  "presentation_policy": "Unknown animation/effect/movement/VO retain TaskIR and block; no automatic cosmetic no-op",
+  "registry_identity": "fe6d4fb14f79e138629177d3cf983dcb1a319e1e9aea6e606cb894c9304cc174",
+  "resource_policy": "Actor and team stores separated; exact SP/BP/energy native joins remain pending",
+  "scheduler": "Serialized immediate sequences, retained continuation head, ordered tick/sequence callbacks, explicit barriers, event queue, completion request plus drain",
+  "schema": "generic_behavior_ir/1",
+  "state_schema": "evidence_aware_behavior_state/1",
+  "supplemental_selected_expression_fixture": {
+    "HOT_callback_expressions": 3,
+    "expression_count": 19,
+    "main_graph_expressions": 16,
+    "role": "SUPPLEMENTAL_EXPRESSIONS_NOT_IMPLICIT_EXECUTION",
+    "source": "tmp/audit/r11_4651_natasha_semantic_closure_20261005_001/selected_dynamic_float_expressions.json",
+    "source_sha256": "e1d7acd9508e47d5b37a9ab14b551aef3626844a787cfe6c974b3020b8ad7707"
+  },
+  "target_operations": [
+    "AbilityTargetEntity",
+    "Caster",
+    "ModifierOwnerEntity",
+    "ParamEntity",
+    "RPG.GameCore.TargetAlias",
+    "RPG.GameCore.TargetFetchAbilityTarget",
+    "RPG.GameCore.TargetFetchCaster",
+    "RPG.GameCore.TargetFetchParamEntity",
+    "SkillTargetEntityList",
+    "compare",
+    "explicit",
+    "filter",
+    "map",
+    "random",
+    "sequence"
+  ],
+  "task_mappings": {
+    "AddModifier": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "modifier_apply",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "CharacterPlayVO": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "voice",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "DispelStatus": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "dispel",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "HealHP": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "heal",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "REFERENCE_SEMANTICS_AVAILABLE"
+    },
+    "ModifySPNew": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "actor_resource",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "MoveToTargetPosition": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "movement",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "PredicateTaskList": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "branch",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "REFERENCE_SEMANTICS_AVAILABLE"
+    },
+    "Retarget": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "retarget",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "SetDynamicValue": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "dynamic_write",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "REFERENCE_SEMANTICS_AVAILABLE"
+    },
+    "SkillPerformFinish": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "finish",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "TriggerAbility": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "invoke",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "REFERENCE_SEMANTICS_AVAILABLE"
+    },
+    "TriggerAnimState": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "animation",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "TriggerEffect": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "effect",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    },
+    "WaitAnimState": {
+      "IR": "IR_SUPPORTED",
+      "op_concept": "wait",
+      "oracle": "ORACLE_PENDING",
+      "semantic_availability": "STRUCTURE_ONLY"
+    }
+  }
+}
