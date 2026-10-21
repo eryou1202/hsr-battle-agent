@@ -1,0 +1,2568 @@
+{
+  "policy_json_schema": {
+    "$defs": {
+      "PositiveRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      }
+    },
+    "$id": "urn:hsr:r21:turn-policy:1",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "availability_provider_id": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "boundary_event_keys": {
+        "additionalProperties": false,
+        "properties": {
+          "AFTER_ACTION": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "BEFORE_ACTION": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "DURATION_PROGRESS": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "EXPIRY_CHECK": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "TURN_END": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "TURN_START": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "TURN_START",
+          "BEFORE_ACTION",
+          "AFTER_ACTION",
+          "TURN_END",
+          "DURATION_PROGRESS",
+          "EXPIRY_CHECK"
+        ],
+        "type": "object"
+      },
+      "boundary_listener_policy_hash": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "boundary_order": {
+        "items": {
+          "enum": [
+            "TURN_START",
+            "BEFORE_ACTION",
+            "AFTER_ACTION",
+            "TURN_END",
+            "DURATION_PROGRESS",
+            "EXPIRY_CHECK"
+          ]
+        },
+        "type": "array"
+      },
+      "category_rules": {
+        "additionalProperties": false,
+        "properties": {
+          "EXTRA_TURN": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "FOLLOW_UP_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "FORCED_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "INSERTED_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "NORMAL_TURN": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "ULTIMATE_INTERRUPT": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "NORMAL_TURN",
+          "EXTRA_TURN",
+          "INSERTED_ACTION",
+          "FOLLOW_UP_ACTION",
+          "ULTIMATE_INTERRUPT",
+          "FORCED_ACTION"
+        ],
+        "type": "object"
+      },
+      "defeat": {
+        "enum": [
+          "REMOVE_NORMAL_ENTRY_CANCEL_PENDING_RETAIN_ACTIVE_UNTIL_SETTLED"
+        ]
+      },
+      "disable": {
+        "enum": [
+          "FREEZE_REMAINING_DISTANCE"
+        ]
+      },
+      "duration_policy": {
+        "enum": [
+          "OWNER_NORMAL_END_NEW_INSTANCE_SKIPS_CREATION_TURN"
+        ]
+      },
+      "identity": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "interrupts": {
+        "enum": [
+          "GAP_UNTIL_SAFE_POINT_ADAPTER"
+        ]
+      },
+      "max_insert_depth": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "max_zero_time_transitions": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "numeric": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_delay_basis": {
+            "enum": [
+              "FULL_CURRENT_INTERVAL"
+            ]
+          },
+          "distance": {
+            "$ref": "#/$defs/PositiveRational"
+          },
+          "elapsed": {
+            "enum": [
+              "ABSOLUTE_DUE_CLOCK_ADVANCE"
+            ]
+          },
+          "initial": {
+            "enum": [
+              "FULL_INTERVAL_FROM_CURRENT_CLOCK"
+            ]
+          },
+          "max_integer_bits": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "nonpositive_speed": {
+            "enum": [
+              "SPEED_PROVIDER_MISSING"
+            ]
+          },
+          "normal_reset": {
+            "enum": [
+              "AFTER_ALL_END_BOUNDARY_WORK"
+            ]
+          },
+          "past_due": {
+            "enum": [
+              "CLAMP_TO_NOW"
+            ]
+          },
+          "representation": {
+            "enum": [
+              "REDUCED_RATIONAL"
+            ]
+          },
+          "rounding": {
+            "enum": [
+              "EXACT_RATIONAL"
+            ]
+          },
+          "speed_change": {
+            "enum": [
+              "PRESERVE_REMAINING_DISTANCE"
+            ]
+          },
+          "speed_decode": {
+            "enum": [
+              "R12_MODE0_RAW_DIV_2_POW_33"
+            ]
+          }
+        },
+        "required": [
+          "representation",
+          "distance",
+          "speed_decode",
+          "rounding",
+          "max_integer_bits",
+          "nonpositive_speed",
+          "initial",
+          "elapsed",
+          "speed_change",
+          "advance_delay_basis",
+          "past_due",
+          "normal_reset"
+        ],
+        "type": "object"
+      },
+      "operation_bindings": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_delay_adjustment": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "elapsed_time_advancement": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "initial_initiative_placement": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "remaining_time_update": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "speed_change_rebase": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "speed_to_action_interval": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "tie_break": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "speed_to_action_interval",
+          "initial_initiative_placement",
+          "elapsed_time_advancement",
+          "remaining_time_update",
+          "speed_change_rebase",
+          "advance_delay_adjustment",
+          "tie_break"
+        ],
+        "type": "object"
+      },
+      "order": {
+        "items": {
+          "enum": [
+            "DUE_ASC",
+            "PRIORITY_DESC",
+            "REGISTRATION_ASC",
+            "ENQUEUE_ASC",
+            "ENTRY_ID_UTF8_ASC"
+          ]
+        },
+        "type": "array"
+      },
+      "r15_running_clock": {
+        "enum": [
+          "FREEZE_AV"
+        ]
+      },
+      "revive": {
+        "enum": [
+          "FULL_INTERVAL_NEW_GENERATION"
+        ]
+      },
+      "schema": {
+        "enum": [
+          "generic_battle_turn_policy/1"
+        ]
+      },
+      "semantic_authority": {
+        "enum": [
+          "REFERENCE_MODEL"
+        ]
+      },
+      "summon": {
+        "enum": [
+          "EXPLICIT_REGISTER_FULL_INTERVAL"
+        ]
+      },
+      "terminal_provider_id": {
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "schema",
+      "identity",
+      "semantic_authority",
+      "operation_bindings",
+      "numeric",
+      "order",
+      "category_rules",
+      "boundary_order",
+      "boundary_event_keys",
+      "boundary_listener_policy_hash",
+      "duration_policy",
+      "r15_running_clock",
+      "interrupts",
+      "defeat",
+      "disable",
+      "revive",
+      "summon",
+      "terminal_provider_id",
+      "max_zero_time_transitions",
+      "max_insert_depth",
+      "availability_provider_id"
+    ],
+    "type": "object"
+  },
+  "reference_policy": {
+    "availability_provider_id": "explicit-caller-actions-v1",
+    "boundary_event_keys": {
+      "AFTER_ACTION": "reference.turn.after_action",
+      "BEFORE_ACTION": "reference.turn.before_action",
+      "DURATION_PROGRESS": "reference.turn.duration_progress",
+      "EXPIRY_CHECK": "reference.turn.expiry_check",
+      "TURN_END": "reference.turn.turn_end",
+      "TURN_START": "reference.turn.turn_start"
+    },
+    "boundary_listener_policy_hash": "a90989477f3271f1b7990687b75b4c2b9ac3cf7baa1c725892c8d0393e46435a",
+    "boundary_order": [
+      "TURN_START",
+      "BEFORE_ACTION",
+      "AFTER_ACTION",
+      "TURN_END",
+      "DURATION_PROGRESS",
+      "EXPIRY_CHECK"
+    ],
+    "category_rules": {
+      "EXTRA_TURN": {
+        "admission": "CALLER_PERMISSION",
+        "consumes_normal_av": false,
+        "counts_normal_turn": false,
+        "duration_progress": "NONE",
+        "emits_turn_end": true,
+        "emits_turn_start": true,
+        "parent_ownership": "RETAIN_PARENT",
+        "placement": "AFTER_ACTIVE_SETTLES",
+        "priority": 50,
+        "resume": "NONE"
+      },
+      "FOLLOW_UP_ACTION": {
+        "admission": "CALLER_PERMISSION",
+        "consumes_normal_av": false,
+        "counts_normal_turn": false,
+        "duration_progress": "NONE",
+        "emits_turn_end": false,
+        "emits_turn_start": false,
+        "parent_ownership": "RETAIN_PARENT",
+        "placement": "AFTER_ACTIVE_SETTLES",
+        "priority": 70,
+        "resume": "NONE"
+      },
+      "FORCED_ACTION": {
+        "admission": "CALLER_PERMISSION",
+        "consumes_normal_av": false,
+        "counts_normal_turn": false,
+        "duration_progress": "NONE",
+        "emits_turn_end": false,
+        "emits_turn_start": false,
+        "parent_ownership": "RETAIN_PARENT",
+        "placement": "AFTER_ACTIVE_SETTLES",
+        "priority": 80,
+        "resume": "NONE"
+      },
+      "INSERTED_ACTION": {
+        "admission": "CALLER_PERMISSION",
+        "consumes_normal_av": false,
+        "counts_normal_turn": false,
+        "duration_progress": "NONE",
+        "emits_turn_end": false,
+        "emits_turn_start": false,
+        "parent_ownership": "RETAIN_PARENT",
+        "placement": "AFTER_ACTIVE_SETTLES",
+        "priority": 60,
+        "resume": "NONE"
+      },
+      "NORMAL_TURN": {
+        "admission": "CALLER_PERMISSION",
+        "consumes_normal_av": true,
+        "counts_normal_turn": true,
+        "duration_progress": "OWNER_NORMAL_TURN_END",
+        "emits_turn_end": true,
+        "emits_turn_start": true,
+        "parent_ownership": "ROOT",
+        "placement": "NORMAL_DUE",
+        "priority": 0,
+        "resume": "NONE"
+      },
+      "ULTIMATE_INTERRUPT": {
+        "admission": "TYPED_GAP",
+        "consumes_normal_av": false,
+        "counts_normal_turn": false,
+        "duration_progress": "NONE",
+        "emits_turn_end": false,
+        "emits_turn_start": false,
+        "parent_ownership": "SUSPEND_PARENT",
+        "placement": "NEXT_SAFE_POINT",
+        "priority": 100,
+        "resume": "AFTER_INSERTION_SETTLES"
+      }
+    },
+    "defeat": "REMOVE_NORMAL_ENTRY_CANCEL_PENDING_RETAIN_ACTIVE_UNTIL_SETTLED",
+    "disable": "FREEZE_REMAINING_DISTANCE",
+    "duration_policy": "OWNER_NORMAL_END_NEW_INSTANCE_SKIPS_CREATION_TURN",
+    "identity": "r21_turn_distance_rational_reference_v1",
+    "interrupts": "GAP_UNTIL_SAFE_POINT_ADAPTER",
+    "max_insert_depth": 16,
+    "max_zero_time_transitions": 1000,
+    "numeric": {
+      "advance_delay_basis": "FULL_CURRENT_INTERVAL",
+      "distance": {
+        "d": 1,
+        "n": 10000
+      },
+      "elapsed": "ABSOLUTE_DUE_CLOCK_ADVANCE",
+      "initial": "FULL_INTERVAL_FROM_CURRENT_CLOCK",
+      "max_integer_bits": 256,
+      "nonpositive_speed": "SPEED_PROVIDER_MISSING",
+      "normal_reset": "AFTER_ALL_END_BOUNDARY_WORK",
+      "past_due": "CLAMP_TO_NOW",
+      "representation": "REDUCED_RATIONAL",
+      "rounding": "EXACT_RATIONAL",
+      "speed_change": "PRESERVE_REMAINING_DISTANCE",
+      "speed_decode": "R12_MODE0_RAW_DIV_2_POW_33"
+    },
+    "operation_bindings": {
+      "advance_delay_adjustment": {
+        "implementation_hash": "ded09edddabda1d332ce79ff6feaa5f3acca49ce8a464a5192b71579aab3abfb",
+        "parameters": {},
+        "provider_id": "r21.reference.advance_delay_adjustment",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "elapsed_time_advancement": {
+        "implementation_hash": "b7933bf0bd63f89dcb4ac91d52bb1d1a3b085b3933d46a9be2ed4c1b4e5d2faa",
+        "parameters": {},
+        "provider_id": "r21.reference.elapsed_time_advancement",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "initial_initiative_placement": {
+        "implementation_hash": "571d09eb7aceabed084e71ebb1631d7be8cc7fc0b07b7eb773c903a7fac2f3f5",
+        "parameters": {},
+        "provider_id": "r21.reference.initial_initiative_placement",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "remaining_time_update": {
+        "implementation_hash": "090008348a9e1bb4b69002e6581046de04a78ca2bcc7a5dd11a89605bb463059",
+        "parameters": {},
+        "provider_id": "r21.reference.remaining_time_update",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "speed_change_rebase": {
+        "implementation_hash": "d7453e0f46b0b96b9bdffe337aa2602082ba03a6adc4c098e4124d306bcc3629",
+        "parameters": {},
+        "provider_id": "r21.reference.speed_change_rebase",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "speed_to_action_interval": {
+        "implementation_hash": "e32fd98646101e6c8bb8fc6885914ccf96c674b106aae97478fd995ff6a9b251",
+        "parameters": {},
+        "provider_id": "r21.reference.speed_to_action_interval",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      },
+      "tie_break": {
+        "implementation_hash": "3297596e2eafbc387f5ec7ebede0b9445b340c61aacb36700d04c8e2067fe57e",
+        "parameters": {},
+        "provider_id": "r21.reference.tie_break",
+        "semantic_authority": "REFERENCE_MODEL",
+        "version": "1"
+      }
+    },
+    "order": [
+      "DUE_ASC",
+      "PRIORITY_DESC",
+      "REGISTRATION_ASC",
+      "ENQUEUE_ASC",
+      "ENTRY_ID_UTF8_ASC"
+    ],
+    "r15_running_clock": "FREEZE_AV",
+    "revive": "FULL_INTERVAL_NEW_GENERATION",
+    "schema": "generic_battle_turn_policy/1",
+    "semantic_authority": "REFERENCE_MODEL",
+    "summon": "EXPLICIT_REGISTER_FULL_INTERVAL",
+    "terminal_provider_id": "explicit-stage-fixture-v1"
+  },
+  "state_json_schema": {
+    "$defs": {
+      "ActionInsertion": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_permission_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancellation": {
+            "enum": [
+              "PENDING",
+              "ADMITTED",
+              "CANCELLED",
+              "COMPLETED"
+            ]
+          },
+          "cancellation_reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "enum": [
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "consumes_normal_av": {
+            "type": "boolean"
+          },
+          "counts_normal_turn": {
+            "type": "boolean"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "emits_turn_end": {
+            "type": "boolean"
+          },
+          "emits_turn_start": {
+            "type": "boolean"
+          },
+          "enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "insertion_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "parent_action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parent_turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "placement": {
+            "enum": [
+              "AFTER_ACTIVE_SETTLES",
+              "NEXT_SAFE_POINT",
+              "AT_EXPLICIT_TIME"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "policy_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "requested_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "safe_point_token": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "insertion_id",
+          "category",
+          "owner_actor_id",
+          "action_actor_id",
+          "generation",
+          "requested_at",
+          "enqueue_ordinal",
+          "priority",
+          "placement",
+          "due_at",
+          "parent_turn_id",
+          "parent_action_root_id",
+          "action_permission_id",
+          "policy_id",
+          "policy_hash",
+          "cancellation",
+          "cancellation_reason",
+          "consumes_normal_av",
+          "counts_normal_turn",
+          "emits_turn_start",
+          "emits_turn_end",
+          "safe_point_token"
+        ],
+        "type": "object"
+      },
+      "ActionPermission": {
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_ir_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL",
+              "EXPLICIT_SCENARIO_INPUT"
+            ]
+          },
+          "availability_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "cost_policy_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "permission_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "state_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "target_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "permission_id",
+          "decision_id",
+          "turn_id",
+          "actor_id",
+          "category",
+          "action_id",
+          "action_ir_hash",
+          "target_ids",
+          "state_revision",
+          "policy_hash",
+          "availability_provider_id",
+          "cost_policy_hash",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "ActiveTurn": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "completion_consumed": {
+            "type": "boolean"
+          },
+          "insertion_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "normal_turn_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "parent_action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parent_turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permission_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "phase": {
+            "enum": [
+              "START_BOUNDARY",
+              "DECISION",
+              "BEFORE_ACTION",
+              "ACTION_RUNNING",
+              "ACTION_SUSPENDED",
+              "AFTER_ACTION",
+              "END_BOUNDARY",
+              "DURATION_EXPIRY",
+              "SETTLED"
+            ]
+          },
+          "queue_entry_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "saved_r15_current_root": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "saved_target_context": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "turn_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "turn_owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "queue_entry_id",
+          "turn_owner_actor_id",
+          "action_actor_id",
+          "category",
+          "phase",
+          "selected_at",
+          "normal_turn_index",
+          "action_index",
+          "parent_turn_id",
+          "parent_action_root_id",
+          "action_root_id",
+          "saved_r15_current_root",
+          "saved_target_context",
+          "permission_id",
+          "insertion_id",
+          "completion_consumed"
+        ],
+        "type": "object"
+      },
+      "ActorInitiativeState": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL"
+            ]
+          },
+          "cycle_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "disabled_remaining": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "disabled_since": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effective_speed_sample": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SpeedSample"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "normal_entry_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revision": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "actor_id",
+          "generation",
+          "due_at",
+          "effective_speed_sample",
+          "cycle_index",
+          "normal_entry_id",
+          "disabled_remaining",
+          "disabled_since",
+          "revision",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "Authority": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "REAL_CONTENT_STATIC",
+              "REAL_CONTENT_RECONSTRUCTED",
+              "REFERENCE_MODEL",
+              "EXPLICIT_SCENARIO_INPUT",
+              "EFFECTIVE_RUNTIME_UNKNOWN"
+            ]
+          },
+          "pointer": {
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_version": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "source_version",
+          "artifact",
+          "sha256",
+          "pointer"
+        ],
+        "type": "object"
+      },
+      "BattleClock": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "now": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "transition_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "unit": {
+            "enum": [
+              "REFERENCE_AV"
+            ]
+          }
+        },
+        "required": [
+          "now",
+          "unit",
+          "advance_count",
+          "transition_count"
+        ],
+        "type": "object"
+      },
+      "BattleTurnState": {
+        "additionalProperties": false,
+        "properties": {
+          "action_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "active_stack": {
+            "items": {
+              "$ref": "#/$defs/ActiveTurn"
+            },
+            "type": "array"
+          },
+          "boundary_work": {
+            "items": {
+              "$ref": "#/$defs/TurnBoundaryEvent"
+            },
+            "type": "array"
+          },
+          "clock": {
+            "$ref": "#/$defs/BattleClock"
+          },
+          "command_journal": {
+            "items": {
+              "$ref": "#/$defs/ReplayCommand"
+            },
+            "type": "array"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DecisionBoundary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TypedFailure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "initiative": {
+            "additionalProperties": {
+              "$ref": "#/$defs/ActorInitiativeState"
+            },
+            "type": "object"
+          },
+          "next_command_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_decision_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_entry_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_event_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_insertion_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_permission_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_turn_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "normal_queue": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/TurnQueueEntry"
+                },
+                {
+                  "properties": {
+                    "category": {
+                      "enum": [
+                        "NORMAL_TURN"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "normal_turn_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "participants": {
+            "items": {
+              "$ref": "#/$defs/Participant"
+            },
+            "type": "array"
+          },
+          "pending_insertions": {
+            "items": {
+              "$ref": "#/$defs/ActionInsertion"
+            },
+            "type": "array"
+          },
+          "pending_interrupts": {
+            "items": {
+              "$ref": "#/$defs/ActionInsertion"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "items": {
+              "$ref": "#/$defs/ActionPermission"
+            },
+            "type": "array"
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "policy_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "schema": {
+            "enum": [
+              "generic_battle_turn_state/1"
+            ]
+          },
+          "stage": {
+            "$ref": "#/$defs/StageBoundary"
+          },
+          "terminal": {
+            "$ref": "#/$defs/Terminal"
+          }
+        },
+        "required": [
+          "schema",
+          "policy_id",
+          "policy_hash",
+          "clock",
+          "participants",
+          "initiative",
+          "normal_queue",
+          "active_stack",
+          "pending_insertions",
+          "pending_interrupts",
+          "permissions",
+          "boundary_work",
+          "decision",
+          "terminal",
+          "stage",
+          "revision",
+          "next_turn_id",
+          "next_entry_id",
+          "next_insertion_id",
+          "next_decision_id",
+          "next_permission_id",
+          "next_event_id",
+          "next_command_id",
+          "next_enqueue_ordinal",
+          "next_registration_ordinal",
+          "normal_turn_count",
+          "action_count",
+          "command_journal",
+          "failure"
+        ],
+        "type": "object"
+      },
+      "DecisionBoundary": {
+        "additionalProperties": false,
+        "properties": {
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidate_permission_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "decision_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TypedFailure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "input_request": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "PLAYER_NORMAL_TURN",
+              "ENEMY_AI_DECISION",
+              "OUT_OF_TURN_WINDOW",
+              "PENDING_FORCED_ACTION",
+              "SUSPENDED_ACTION_INPUT",
+              "BATTLE_TERMINAL",
+              "SEMANTIC_GAP",
+              "BUDGET_YIELD"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "state_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "terminal_reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "decision_id",
+          "kind",
+          "actor_id",
+          "turn_id",
+          "action_root_id",
+          "state_revision",
+          "policy_hash",
+          "candidate_permission_ids",
+          "input_request",
+          "failure",
+          "terminal_reason"
+        ],
+        "type": "object"
+      },
+      "NonnegativeRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "Participant": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "$ref": "#/$defs/Authority"
+          },
+          "availability_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "controller": {
+            "enum": [
+              "PLAYER",
+              "MONSTER_AI",
+              "FORCED",
+              "STAGE"
+            ]
+          },
+          "entity_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "entity_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "participation": {
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "REMOVED"
+            ]
+          },
+          "registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "speed_ref": {
+            "$ref": "#/$defs/SpeedProviderRef"
+          },
+          "summon_parent_actor": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "actor_id",
+          "entity_ref",
+          "generation",
+          "registration_ordinal",
+          "controller",
+          "speed_ref",
+          "participation",
+          "entity_revision",
+          "summon_parent_actor",
+          "availability_provider_id",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "PositiveRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "Rational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "ReplayCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "type": "object"
+          },
+          "command_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "expected_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "SUBMIT_ACTION",
+              "SPEED_CHANGED",
+              "ADJUST_READINESS",
+              "INSERT_ACTION",
+              "SAFE_POINT",
+              "RELEASE_BARRIER",
+              "DEFEAT",
+              "DISABLE",
+              "REVIVE",
+              "REGISTER_ENTITY",
+              "REMOVE_ENTITY",
+              "STAGE_TRANSITION"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command_id",
+          "expected_revision",
+          "expected_hash",
+          "policy_hash",
+          "kind",
+          "arguments"
+        ],
+        "type": "object"
+      },
+      "SpeedProviderRef": {
+        "additionalProperties": false,
+        "properties": {
+          "authority": {
+            "$ref": "#/$defs/Authority"
+          },
+          "base_property_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "effective_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "provider_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "base_property_key",
+          "effective_provider_id",
+          "provider_policy_hash",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "SpeedSample": {
+        "additionalProperties": false,
+        "properties": {
+          "input_state_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "observed_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "provider_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "value": {
+            "$ref": "#/$defs/PositiveRational"
+          }
+        },
+        "required": [
+          "value",
+          "provider_revision",
+          "observed_at",
+          "input_state_hash"
+        ],
+        "type": "object"
+      },
+      "StageBoundary": {
+        "additionalProperties": false,
+        "properties": {
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "pending_request_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "stage_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "wave_index": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "stage_id",
+          "wave_index",
+          "provider_id",
+          "pending_request_id",
+          "generation",
+          "policy_hash"
+        ],
+        "type": "object"
+      },
+      "Terminal": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stage_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "WAVE_PENDING",
+              "VICTORY",
+              "DEFEAT",
+              "ABORTED"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "reason",
+          "stage_policy_hash"
+        ],
+        "type": "object"
+      },
+      "TurnBoundaryEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL"
+            ]
+          },
+          "boundary_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "duration_instance_cursor": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "emitted_listener_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "event_kind": {
+            "enum": [
+              "TURN_START",
+              "BEFORE_ACTION",
+              "AFTER_ACTION",
+              "TURN_END",
+              "DURATION_PROGRESS",
+              "EXPIRY_CHECK"
+            ]
+          },
+          "event_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "listener_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "normal_turn_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "r15_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reference_event_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PENDING",
+              "DISPATCHED",
+              "DRAINING",
+              "COMMITTED"
+            ]
+          },
+          "turn_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "boundary_id",
+          "turn_id",
+          "event_kind",
+          "reference_event_key",
+          "owner_actor_id",
+          "action_actor_id",
+          "normal_turn_index",
+          "event_ordinal",
+          "status",
+          "r15_root_id",
+          "listener_policy_hash",
+          "emitted_listener_ids",
+          "duration_instance_cursor",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "TurnQueueEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "due_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "entry_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "initiative_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "insertion_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entry_id",
+          "actor_id",
+          "generation",
+          "category",
+          "due_at",
+          "priority",
+          "registration_ordinal",
+          "enqueue_ordinal",
+          "initiative_revision",
+          "insertion_id"
+        ],
+        "type": "object"
+      },
+      "TypedFailure": {
+        "additionalProperties": false,
+        "properties": {
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code": {
+            "enum": [
+              "INITIATIVE_INPUT_MISSING",
+              "SPEED_PROVIDER_MISSING",
+              "TURN_OWNER_UNKNOWN",
+              "AV_REFERENCE_POLICY_MISSING",
+              "NATIVE_ORDER_UNKNOWN",
+              "INTERRUPT_POLICY_MISSING",
+              "TURN_BOUNDARY_EVENT_UNKNOWN",
+              "ENTITY_STATE_UNRESOLVED",
+              "ACTION_NOT_COMPLETE",
+              "SEMANTIC_GAP"
+            ]
+          },
+          "evidence_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "input_state_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "operation": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "required_policy_or_input": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "resume_token": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "evidence_ids",
+          "operation",
+          "actor_id",
+          "turn_id",
+          "action_root_id",
+          "resume_token",
+          "input_state_hash",
+          "required_policy_or_input"
+        ],
+        "type": "object"
+      }
+    },
+    "$id": "urn:hsr:r21:turn-state:1",
+    "$ref": "#/$defs/BattleTurnState",
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+  }
+}

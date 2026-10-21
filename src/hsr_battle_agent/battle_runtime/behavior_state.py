@@ -72,6 +72,20 @@ class ModifierInstance:
     snapshot_data: dict = field(default_factory=dict)
     event_registrations: list[dict] = field(default_factory=list)
     authority: dict = field(default_factory=dict)
+    definition_id: str = ""
+    source_ability: str = ""
+    target: str = ""
+    activation_state: str = "REFERENCE_INSTANCE_CONSTRUCTED"
+    created_at: int = 0
+    activated_at: int | None = None
+    reference_policy: dict = field(default_factory=dict)
+    provider_binding: dict = field(default_factory=dict)
+    property_contributions: list[dict] = field(default_factory=list)
+    pending_lifecycle_callbacks: list[str] = field(default_factory=list)
+    refresh_count: int = 0
+    replacement_of: str | None = None
+    removal_reason: str | None = None
+    removed_at: int | None = None
 
 
 @dataclass
@@ -82,6 +96,7 @@ class SchedulerState:
     callbacks: list[dict] = field(default_factory=list)
     barriers: dict[str, bool] = field(default_factory=dict)
     completion_requested: bool = False
+    action_execution: dict = field(default_factory=dict)
 
     def schedule(self, tick: int, nodes: list[dict], release: str | None = None):
         if isinstance(tick, bool) or not isinstance(tick, int) or tick < self.tick:
@@ -101,6 +116,14 @@ class BehaviorBattleState:
     team_resources: dict[str, dict[str, int]] = field(default_factory=dict)
     progression: dict[str, dict] = field(default_factory=dict)
     modifiers: dict[str, ModifierInstance] = field(default_factory=dict)
+    modifier_definitions: dict[str, dict] = field(default_factory=dict)
+    modifier_history: list[dict] = field(default_factory=list)
+    next_modifier_id: int = 0
+    next_listener_id: int = 0
+    damage_requests: dict[str, dict] = field(default_factory=dict)
+    damage_history: list[dict] = field(default_factory=list)
+    damage_transactions: list[dict] = field(default_factory=list)
+    next_damage_id: int = 0
     dynamic_values: dict[str, dict[str, int]] = field(default_factory=dict)
     target_context: dict[str, object] = field(default_factory=dict)
     scheduler: SchedulerState = field(default_factory=SchedulerState)
@@ -119,7 +142,8 @@ class BehaviorBattleState:
         document = json.loads(canonical_json(raw_document))
         for key in ("entities", "properties", "actor_resources", "team_resources",
                     "progression", "dynamic_values", "target_context", "pending_events",
-                    "mechanics", "presentation"):
+                    "mechanics", "presentation", "modifier_definitions", "modifier_history",
+                    "damage_requests", "damage_history", "damage_transactions"):
             setattr(self, key, document[key])
         self.modifiers = {k: ModifierInstance(**v) for k, v in document["modifiers"].items()}
         self.scheduler = SchedulerState(**document["scheduler"])

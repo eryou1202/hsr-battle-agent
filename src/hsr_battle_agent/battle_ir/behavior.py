@@ -172,6 +172,11 @@ class CompletionIR(IRNode):
     kind = "CompletionIR"
 
 
+class DamageRequestIR(IRNode):
+    """Typed, source-preserving request; operand roles require explicit authority."""
+    kind = "DamageRequestIR"
+
+
 class UnsupportedSemanticIR(IRNode):
     kind = "UnsupportedSemanticIR"
 
@@ -179,7 +184,7 @@ class UnsupportedSemanticIR(IRNode):
 NODE_TYPES = {c.kind: c for c in (AbilityIR, TaskIR, TaskSequenceIR, PredicateIR,
     TargetSelectorIR, ExpressionIR, PropertyMutationIR, ResourceMutationIR,
     ModifierApplyIR, ModifierRemoveIR, EventDispatchIR, SchedulerBarrierIR,
-    RandomChoiceIR, CompletionIR, UnsupportedSemanticIR)}
+    RandomChoiceIR, CompletionIR, DamageRequestIR, UnsupportedSemanticIR)}
 
 
 def walk_nodes(value: object):

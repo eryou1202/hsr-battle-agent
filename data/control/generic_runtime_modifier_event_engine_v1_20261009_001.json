@@ -1,0 +1,139 @@
+{
+  "application_policies": [
+    "INSERT_NEW_REFERENCE",
+    "REFRESH_EXISTING_REFERENCE",
+    "REPLACE_EXISTING_REFERENCE",
+    "INCREMENT_STACK_REFERENCE",
+    "REJECT_DUPLICATE_REFERENCE"
+  ],
+  "architecture": {
+    "branch": "terra/implementation",
+    "damage_formula_added": false,
+    "definition_instance_listener_store": "BehaviorBattleState",
+    "ending_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+    "event_processing": "R15 _owned_event / CallbackFrame / _sequence / ActionExecutionRoot",
+    "forbidden_dispatch_branches": [],
+    "frozen_modules_and_tests": "SHA256_PRESERVED",
+    "git_writes": "NONE",
+    "native_numeric_policies_interpreted": false,
+    "per_character_handlers": false,
+    "separate_event_executor": false,
+    "source_checks": {
+      "no_runtime_drive_in_modifier_module": true,
+      "shared_owned_event_function": true
+    },
+    "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+    "status": "PASS",
+    "strict_M15_and_ScenarioCompiler": "SHA256_PRESERVED"
+  },
+  "branch": "terra/implementation",
+  "callback_context": "owner/caster/original caster/event source/target/ParamEntity/ability context/provider parent/event payload/shared RNG/action root",
+  "change_request": "CR-R17-MODIFIER-EVENT-ENGINE-20261009-001",
+  "damage_extensions": "explicit before_damage/amount_modification/property_mutation/after_damage points; complete formula absent",
+  "determinism": "PASS",
+  "event_authority": [
+    "EVENT_ID_STRUCTURALLY_DECODED",
+    "LISTENER_REFERENCE_CONFIGURED",
+    "REFERENCE_CALLBACK_EXECUTABLE",
+    "NATIVE_EVENT_MEANING_UNKNOWN",
+    "NATIVE_EFFECTIVE_LISTENER_UNKNOWN"
+  ],
+  "event_processing": "R15 _owned_event / CallbackFrame / _sequence / ActionExecutionRoot",
+  "evidence_boundaries": [
+    "DECODED_MODIFIER_DEFINITION",
+    "REFERENCE_INSTANCE_CONSTRUCTED",
+    "REFERENCE_INSTANCE_ACTIVE",
+    "REFERENCE_LISTENERS_REGISTERED",
+    "REFERENCE_CALLBACK_EXECUTED"
+  ],
+  "git_writes": "NONE",
+  "heal_extensions": "explicit pre_heal/effective_amount/settlement/hp_mutation/post_heal order + owned callback drain",
+  "lifetime": "explicit reference advance/event/manual; no native AV or turn step",
+  "listener_order": "priority, instance identity, registration identity; serialized reference policy",
+  "native_correct": false,
+  "native_numeric_application_policy": "NATIVE_POLICY_UNKNOWN",
+  "persistence": "installed modifiers do not keep source action open; currently triggered callbacks do until drained",
+  "pipeline": [
+    "exact definition binding",
+    "explicit target/owner/caster/source/provider operands",
+    "explicit identity matching and application policy",
+    "construct/refresh/replace/stack",
+    "explicit activation",
+    "deterministic listener registration",
+    "R15 action-owned callback enqueue/drain"
+  ],
+  "production_files": [
+    "src/hsr_battle_agent/battle_ir/content_catalog.py",
+    "src/hsr_battle_agent/battle_runtime/behavior.py",
+    "src/hsr_battle_agent/battle_runtime/behavior_state.py",
+    "src/hsr_battle_agent/battle_runtime/action_scheduler.py",
+    "src/hsr_battle_agent/battle_runtime/modifier_lifecycle.py"
+  ],
+  "property_aggregation": "explicit ADDITIVE_REVERSIBLE_REFERENCE; native aggregation unknown",
+  "recommended_R18": {
+    "family": "DAMAGE / HP SETTLEMENT",
+    "native_oracle_track": "INDEPENDENT",
+    "planning_authority": "AUTHORED_REFERENCE_PHASE_SELECTION",
+    "reason": "Largest remaining unimplemented combat primitive family (74 combat, 15 joined); Modifier/Event now has an explicit reusable reference engine. Catalog remains the largest raw blocker and needs a separate targeted source/reader backlog.",
+    "turn_AV_engine": "OUT_OF_SCOPE"
+  },
+  "recursion": "R15 task/callback/ability depths, repeated callback-path hash and WorkBudget",
+  "removal": "instance/config-target/target-filter; deregistration + reversible contributions + tombstone + explicit pending callback policy",
+  "replay": "PASS",
+  "retained_callbacks": "live reads while active; explicit dispatch snapshot after removal",
+  "schema": "generic_runtime_r17_control/1",
+  "semantic_authority": "REFERENCE_MODEL",
+  "serialization": "all definition/instance/listener/policy/provider/lifetime/contribution/callback identities in state/runtime snapshots and hashes",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "state_fields": [
+    "definition_id",
+    "instance_id",
+    "config_identity",
+    "owner",
+    "caster",
+    "original_caster",
+    "source_ability",
+    "target",
+    "stack",
+    "count",
+    "duration",
+    "created_at",
+    "activated_at",
+    "activation_state",
+    "dynamic_values",
+    "snapshot_data",
+    "event_registrations",
+    "provider_binding",
+    "property_contributions",
+    "reference_policy",
+    "pending_lifecycle_callbacks",
+    "refresh_count",
+    "replacement_of",
+    "removal_reason",
+    "removed_at"
+  ],
+  "stop_boundary": "next work requires missing predicates/providers/resources/damage primitives, exact missing sources/readers, initialized actors or independent native oracle; no turn/AV invention",
+  "test_files": [
+    "tests/battle_runtime/test_behavior_r17.py"
+  ],
+  "tests": {
+    "R12_R17": {
+      "returncode": 0,
+      "tests": 185
+    },
+    "battle_ir_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 379
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "transactions": "R15 state candidate per transition; unsupported primitive rolls back, earlier committed work and suspended continuation retained",
+  "verdict": "GENERIC_MODIFIER_EVENT_REFERENCE_ENGINE_ESTABLISHED"
+}

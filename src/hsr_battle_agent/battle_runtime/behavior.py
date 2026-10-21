@@ -23,6 +23,8 @@ class ExecutionStatus(str, Enum):
     SEMANTIC_GAP = "SEMANTIC_GAP"
     INVALID_ACTION = "INVALID_ACTION"
     TERMINAL = "TERMINAL"
+    ACTION_REFERENCE_COMPLETE = "ACTION_REFERENCE_COMPLETE"
+    EXECUTION_BUDGET_EXHAUSTED = "EXECUTION_BUDGET_EXHAUSTED"
 
 
 @dataclass(frozen=True)
@@ -327,10 +329,24 @@ def default_registry() -> SemanticRegistry:
     registry.register("event", "event_dispatch", _event)
     from .behavior_expansion import install
     install(registry)
+    from .modifier_lifecycle import install as install_modifier_reference
+    install_modifier_reference(registry)
+    from .damage_pipeline import install as install_damage_reference
+    install_damage_reference(registry)
+    from .dynamic_property import install as install_dynamic_property_reference
+    install_dynamic_property_reference(registry)
+    from .actor_binding import install as install_actor_reference
+    install_actor_reference(registry)
+    from .resource_engine import install as install_resource_reference
+    install_resource_reference(registry)
     return registry
 
 
 class BehaviorRuntime:
+    def bind_actor(self, binding):
+        """R20 explicit initialization on this runtime's existing BattleState."""
+        return binding.bind(self)
+
     def __init__(self, state: BehaviorBattleState, *, actions: dict[str, AbilityIR] | None = None,
                  abilities: dict[str, AbilityIR] | None = None, aliases: dict[str, TargetSelectorIR] | None = None,
                  events: dict[str, list[IRNode]] | None = None, policies: dict | None = None,
@@ -396,26 +412,36 @@ class BehaviorRuntime:
             raise ValueError("snapshot/registry mismatch")
         maps = {key: {k: IRNode.from_dict(v) for k,v in snapshot[key].items()}
                 for key in ("actions", "abilities", "aliases")}
-        return cls(BehaviorBattleState.from_snapshot(snapshot["state"]), **maps,
+        result = cls(BehaviorBattleState.from_snapshot(snapshot["state"]), **maps,
             templates={k: IRNode.from_dict(v) for k, v in snapshot.get("templates", {}).items()},
             events={k: [IRNode.from_dict(v) for v in values] for k,values in snapshot["events"].items()},
             policies=snapshot["policies"], registry=registry)
+        if 'battle_turn_adapter_v1' in result.state.mechanics:
+            from .battle_turn import validate_runtime
+            validate_runtime(result, strict_queue=True)
+        return result
 
     def stable_hash(self) -> str:
         return stable_hash(self.snapshot())
 
     def legal_actions(self) -> tuple[str, ...]:
+        execution = self.state.scheduler.action_execution
+        if execution and execution["roots"][execution["current_root"]]["status"] != "ACTION_REFERENCE_COMPLETE":
+            return ()
         if self.state.terminal or self.state.scheduler.continuation or self.state.scheduler.callbacks or self.state.pending_events:
             return ()
         return tuple(sorted(self.actions))
 
-    def step(self, action_id: str) -> ExecutionResult:
+    def step(self, action_id: str, *, budget=10000) -> ExecutionResult:
         if action_id not in self.legal_actions():
             return ExecutionResult(ExecutionStatus.INVALID_ACTION)
+        if "r15_action_scheduler_reference_v1" in self.policies:
+            self.start_action(action_id)
+            return self.run_until_action_complete(budget)
         self.trace = []
         self.state.scheduler.completion_requested = False
         self.state.scheduler.continuation.append(self.actions[action_id].to_dict())
-        return self.run_until_decision()
+        return self.run_until_decision(budget)
 
     def _callback(self) -> bool:
         scheduler = self.state.scheduler
@@ -428,7 +454,14 @@ class BehaviorRuntime:
         scheduler.continuation[0:0] = callback["nodes"]
         return True
 
-    def run_until_decision(self, max_nodes: int = 10000) -> ExecutionResult:
+    def run_until_decision(self, max_nodes: int = 10000, *, budget=None):
+        if 'battle_turn_adapter_v1' in self.state.mechanics:
+            from .battle_turn import run_until_decision
+            return run_until_decision(self, max_nodes if budget is None else budget)
+        if budget is not None:
+            max_nodes = budget
+        if self.state.scheduler.action_execution:
+            return self.run_until_blocked(max_nodes)
         completed = 0
         for _ in range(max_nodes):
             state, scheduler = self.state, self.state.scheduler
@@ -505,6 +538,106 @@ class BehaviorRuntime:
         for action in action_ids:
             result = runtime.step(action)
             results.append(result)
-            if result.status in {ExecutionStatus.SEMANTIC_GAP, ExecutionStatus.INVALID_ACTION, ExecutionStatus.WAITING_SCHEDULER}:
+            if result.status in {ExecutionStatus.SEMANTIC_GAP, ExecutionStatus.INVALID_ACTION, ExecutionStatus.WAITING_SCHEDULER, ExecutionStatus.EXECUTION_BUDGET_EXHAUSTED}:
                 break
         return runtime, tuple(results)
+
+    def start_action(self, action_id: str):
+        if 'battle_turn_adapter_v1' in self.state.mechanics:
+            raise ValueError('global turns require fresh submit_action permissions')
+        from .action_scheduler import start_action
+        return start_action(self, action_id)
+
+    def run_ready(self, budget=10000):
+        from .action_scheduler import drive
+        return drive(self, budget, advance=False)
+
+    def advance_to_next_event(self, budget=10000):
+        from .action_scheduler import drive
+        return drive(self, budget, advance=True, one_time=True)
+
+    def run_until_blocked(self, budget=10000):
+        from .action_scheduler import drive
+        return drive(self, budget, advance=True)
+
+    def run_until_action_complete(self, budget=10000):
+        return self.run_until_blocked(budget)
+
+    def run_until_semantic_gap(self, budget=10000):
+        return self.run_until_blocked(budget)
+
+    def release_action_barrier(self, barrier_id: str):
+        from .action_scheduler import release_barrier
+        if 'battle_turn_adapter_v1' in self.state.mechanics:
+            from .battle_turn import _atomic, _touch
+            def release(candidate):
+                release_barrier(candidate, barrier_id)
+                _touch(candidate)
+            return _atomic(self, release, journal='RELEASE_BARRIER', arguments={'barrier_id': barrier_id})
+        return release_barrier(self, barrier_id)
+
+    def initialize_turns(self, participant_bindings, policy, provider_contracts):
+        from .battle_turn import initialize_turns
+        return initialize_turns(self, participant_bindings, policy, provider_contracts)
+
+    def current_turn_owner(self):
+        from .battle_turn import current_turn_owner
+        return current_turn_owner(self)
+
+    def next_actor_preview(self, limit=10):
+        from .battle_turn import next_actor_preview
+        return next_actor_preview(self, limit)
+
+    def legal_action_candidates(self, decision_id):
+        from .battle_turn import legal_action_candidates
+        return legal_action_candidates(self, decision_id)
+
+    def submit_action(self, permission, targets, expected_revision):
+        from .battle_turn import submit_action
+        return submit_action(self, permission, targets, expected_revision)
+
+    def run_until_next_turn(self, budget=10000):
+        from .battle_turn import run_until_next_turn
+        return run_until_next_turn(self, budget)
+
+    def is_terminal(self):
+        if 'battle_turn_adapter_v1' not in self.state.mechanics:
+            return self.state.terminal
+        from .battle_turn import is_terminal
+        return is_terminal(self)
+
+    def notify_speed_change(self, actor_id, provider_revision):
+        from .battle_turn import notify_speed_change
+        return notify_speed_change(self, actor_id, provider_revision)
+
+    def adjust_readiness(self, actor_id, kind, fraction, source_ref):
+        from .battle_turn import adjust_readiness
+        return adjust_readiness(self, actor_id, kind, fraction, source_ref)
+
+    def request_insertion(self, insertion):
+        from .battle_turn import request_insertion
+        return request_insertion(self, insertion)
+
+    def turn_lifecycle(self, actor_id, operation, *, source_ref, binding=None):
+        from .battle_turn import lifecycle
+        return lifecycle(self, actor_id, operation, source_ref=source_ref, binding=binding)
+
+    def turn_stage_transition(self, status, *, source_ref, reason=None):
+        from .battle_turn import stage_transition
+        return stage_transition(self, status, source_ref=source_ref, reason=reason)
+
+    def request_enemy_decision(self, provider=None):
+        from .battle_turn import enemy_decision
+        return enemy_decision(self, provider)
+
+    def dispatch_turn_event(self, event_key, payload=None):
+        from .battle_turn import dispatch_turn_event
+        return dispatch_turn_event(self, event_key, payload)
+
+    def record_turn_command(self, kind, arguments):
+        from .battle_turn import record_command
+        return record_command(self, kind, arguments)
+
+    def replay_turn_commands(self, receipts):
+        from .battle_turn import replay_commands
+        return replay_commands(self, receipts)

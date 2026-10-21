@@ -1,0 +1,207 @@
+{
+  "HP_COMMITTED": "provisional HP storage mutation inside R18 atomic damage transaction; rollback restores it until source primitive commit",
+  "action_completion": "existing source SkillPerformFinish + all R15 owned work + damage requests/transactions and pending events drained",
+  "branch": "terra/implementation",
+  "change_request": "CR-R19-DAMAGE-CONTINUATION-PROPERTY-20261010-001",
+  "completion_distinctions": [
+    "TASK_COMPLETION",
+    "DAMAGE_REQUEST_COMPLETION",
+    "DAMAGE_SETTLEMENT_COMPLETION",
+    "ABILITY_COMPLETION",
+    "ACTION_COMPLETION"
+  ],
+  "determinism": "all lifecycle records in snapshots/hash; budgets suspend resumably; clone/restore/replay PASS",
+  "finish_effects": "local assertion/serialized boundary/metric only; no request/ability/action completion requested",
+  "finish_policy": "R18 ASSERT_OWNED_DAMAGE_DRAINED_REFERENCE, strengthened rather than replaced",
+  "finish_probes": {
+    "classification_overlap": true,
+    "context_ready": 50,
+    "distinct_original_roots": 116,
+    "oracle_blocked": 118,
+    "original_graph_completed": 50,
+    "reachable": 50,
+    "reference_supported": 118,
+    "structural_instances": 118,
+    "structure_only_in_original_graph": 68,
+    "synthetic_skill_finish_inserted": false
+  },
+  "frozen_modules_modified": false,
+  "git_writes": "NONE",
+  "labels": "REFERENCE_MODEL abstraction, not native state labels",
+  "native_correctness": false,
+  "native_finish_evidence": {
+    "answers": {
+      "additional_callbacks": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "controller_completion": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "damage_bookkeeping": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "further_events": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "request_finalization": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "scheduler_barrier_release": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted",
+      "waits_for_settlement": "UNKNOWN for effective DamagePerformFinish task; no equivalence asserted"
+    },
+    "config_type": {
+      "fields": [
+        {
+          "index": 99872,
+          "name": "SkipDeathSettlement",
+          "type": {
+            "data": 205,
+            "kind": 2,
+            "reference": 464819
+          }
+        },
+        {
+          "index": 99873,
+          "name": "IsFakeAvatarAttack",
+          "type": {
+            "data": 205,
+            "kind": 2,
+            "reference": 464819
+          }
+        }
+      ],
+      "method": {
+        "file_offset": 68128066,
+        "flags": "0x96",
+        "index": 127971,
+        "name": "MGMEGEDLMAK",
+        "parameter_count": 2,
+        "rva": "0x1E5265C0",
+        "slot": 65535,
+        "type": "RPG.GameCore.DamagePerformFinish",
+        "type_index": 23016
+      },
+      "methods": [
+        {
+          "file_offset": 68128014,
+          "flags": "0x1886",
+          "index": 127969,
+          "name": ".ctor",
+          "parameter_count": 0,
+          "rva": "0x1E5265B0",
+          "slot": 65535,
+          "type": "RPG.GameCore.DamagePerformFinish",
+          "type_index": 23016
+        },
+        {
+          "file_offset": 68128040,
+          "flags": "0x96",
+          "index": 127970,
+          "name": "OJNNBEJLDIJ",
+          "parameter_count": 2,
+          "rva": "0x1E526460",
+          "slot": 65535,
+          "type": "RPG.GameCore.DamagePerformFinish",
+          "type_index": 23016
+        },
+        {
+          "file_offset": 68128066,
+          "flags": "0x96",
+          "index": 127971,
+          "name": "MGMEGEDLMAK",
+          "parameter_count": 2,
+          "rva": "0x1E5265C0",
+          "slot": 65535,
+          "type": "RPG.GameCore.DamagePerformFinish",
+          "type_index": 23016
+        }
+      ],
+      "type": {
+        "file_offset": 28213268,
+        "index": 23016,
+        "method_count": 3,
+        "method_start": 127969,
+        "name": "DamagePerformFinish",
+        "namespace": "RPG.GameCore",
+        "vtable_start": 51015
+      }
+    },
+    "effective_runtime_uncertainty": {
+      "IFix": "CharmDamagePerformFinish patch guard RVA 0x978E100, patch id 0x7FC20; provider patch id 0x7F939; active flags/maps unknown",
+      "Lua": "existing R11C runtime Type.Name registration; effective backend/initialized hook maps unbound; no no-override certificate",
+      "task_executor": "config->runtime executor binding not recovered in the bounded existing mapping"
+    },
+    "evidence_files": {
+      "native_1e196300.txt": "d263018eac6a91e56d840adbb4e5fd1af6ffcd4e3320ce02fdb955651306fa42",
+      "native_1e197870.txt": "21b0ed47ac3505488bd20fc7d34d1c74a409901a7419e729d92d907f51cc124a",
+      "native_1e197a40.txt": "a954be22d1eea71f05fd038201840da032c802bb02bbbd6ebd0ceaa94b942d31",
+      "native_1e468880.txt": "4c410743eebca7a3bc2944e9c117b57b689d091c2f4d17af6f57a1852fe15165",
+      "native_1e526460.txt": "16f0a937d1185d2f2d18110cb1e5108eaa5bd1e9cf46b905ca8ca7c5bce12d74",
+      "native_b66f590.txt": "b1d2e70f20f186446ade6d6a750eb6d61536e9ebaa9b1646a937c46868fb8d0b",
+      "native_calls_1e196300_1e197870_1e197a40_f0ec420_1e526460_1e468880.json": "e361de02292a05e3a61edcfa62f8e2e5ce0a0e795a0dd55ecd655152517486a6",
+      "native_calls_edf6e30_e26cd70_b66f590.json": "4ad5444ddb68f2516ce63f1a50c0bac6e2c17a8852e0bf396911cf9abcbe0fe6",
+      "native_calls_f1418a0_eec5f80_edf8530.json": "9941d04df76409326dc60291be0c51f243b211965d4c20343e09275ebef82570",
+      "native_e26cd70.txt": "6197900d438f72fef71b127f83fa608821c3795e60d6bc144861d0897927e01e",
+      "native_edf6e30.txt": "b425764d4112acb5cb94f0200d212d8b23e30b753cf6c91c146aa81329c8cfc6",
+      "native_edf8530.txt": "600daf35b73c1c21376852baca6ba86eaf00450bd54f59afede1e69c9cb816cc",
+      "native_eec5f80.txt": "370dd6f07507e9845c7f3323b30208191905ab1341ba097c4c6ac561737676ce",
+      "native_f0ec420.txt": "4f4616c8b07e317d57c375fabe0b7ad6826c815d646fad855e558c09362f61db",
+      "native_f1418a0.txt": "98a17a5af79a8c84fb1c0b3a4183012a23d6ce8d8e6841371e6ec748269eea61",
+      "native_inventory.json": "304dfb29630909f64ca6720af099b850a01e3d32ce8481d1af2c73f417e5c793"
+    },
+    "exact_task_to_related_method_join": "UNPROVEN; config reader is not a runtime task executor",
+    "game_launch": false,
+    "live_capture": false,
+    "manifest_pin": "b702762039368badf25c1e2c0a3a4eea79d7b8ada79c6ce98a448492a97378ec",
+    "native_semantics_blocker": "DAMAGE_FINISH_EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+    "new_provider_archive_registration_discovery": false,
+    "previous_4651_refs": [
+      "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/lua_task_registration_key_join.json",
+      "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/lua_selected_package_evidence.json",
+      "tmp/audit/r11c_4651_effective_runtime_semantic_closure_20261006_001/native_semantic_continuation.json",
+      "data/control/real_runtime_4651_live_runtime_authority_20261007_001.json"
+    ],
+    "previous_version_4454_semantics_reused": false,
+    "reference_effects": "only successful local task boundary and metric; no fabricated callbacks/barriers/SkillPerformFinish",
+    "reference_policy": "R18 ASSERT_OWNED_DAMAGE_DRAINED_REFERENCE + R19 current ability/descendant callbacks/events/continuations assertion",
+    "related_consumer": "CharacterHudComponent._OnAbilityDamagePerformFinish@0xEEC5F80; presentation consumer does not prove settlement/ownership semantics",
+    "related_event_signal": "unpatched related method fills event fields, tail calls 0xE26CD70 -> EventManager.FireEvent@0xEF632B0",
+    "related_finish_method": "TurnBasedAbilityComponent.CharmDamagePerformFinish@0xF1418A0 method index 523296",
+    "signals_distinct": [
+      "TASK_COMPLETION",
+      "DAMAGE_REQUEST_COMPLETION",
+      "DAMAGE_SETTLEMENT_COMPLETION",
+      "ABILITY_COMPLETION",
+      "ACTION_COMPLETION"
+    ],
+    "source_version": "4.6.51",
+    "structural_fields": "SkipDeathSettlement and IsFakeAvatarAttack; all 118 selected decoded bitmap=0; defaults not inferred",
+    "trusted_mapping": "R09 exact metadata method-index table, reused R10.2 exact.cjs"
+  },
+  "ownership": "R15 ActionExecutionRoot + current ability and descendants; R17 owned callbacks/events/continuations",
+  "pending_work": "requests, settlements, callbacks, event frames/mutations, descendant abilities and continuations block the assertion",
+  "schema": "generic_runtime_damage_lifecycle/1",
+  "semantic_authority": "REFERENCE_MODEL",
+  "source_version": "4.6.51",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "states": [
+    "REQUEST_CREATED",
+    "AMOUNT_EVALUATED",
+    "SETTLEMENT_PENDING",
+    "HP_COMMITTED",
+    "CALLBACKS_PENDING",
+    "DAMAGE_REFERENCE_COMPLETE"
+  ],
+  "storage": "existing damage_requests/damage_history/transaction checkpoint; no new runtime/state cache",
+  "structural_instances": 118,
+  "tests": {
+    "R12_R19": {
+      "returncode": 0,
+      "tests": 265
+    },
+    "battle_ir_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 459
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "transaction": "R18 descendant-only scheduler and source checkpoint retained; unsupported primitive effects roll back atomically; earlier source commits persist",
+  "verdict": "GENERIC_DAMAGE_CONTINUATION_REFERENCE_ESTABLISHED"
+}

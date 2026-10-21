@@ -1,0 +1,131 @@
+{
+  "R21_semantics_changed": false,
+  "adapter_role": "permission seals, external-event/duration cursors, immutable generation references, ordered R15 receipts; no duplicate actor/HP/resource/readiness/scheduler state",
+  "adapter_storage": "mechanics[battle_turn_adapter_v1]",
+  "authority": "REFERENCE_MODEL",
+  "change_request": "CR-R22-GLOBAL-TURN-AV-ENGINE-20261011-001",
+  "clock": "absolute due_at; AV frozen through R15 execution, callbacks and logical waits",
+  "content_finish_nodes_added": false,
+  "frozen_M10_M15_modified": false,
+  "git_writes": "NONE",
+  "native_equivalence": "NOT_CLAIMED",
+  "native_policy_changes": [],
+  "numeric": "bounded reduced rationals; ordinary R12 raw / 2^33 adapter",
+  "opt_in_state": "BehaviorBattleState.mechanics[battle_turn_v1]",
+  "policy_implementation_bindings": {
+    "advance_delay_adjustment": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.advance_delay_adjustment",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "elapsed_time_advancement": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.elapsed_time_advancement",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "initial_initiative_placement": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.initial_initiative_placement",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "remaining_time_update": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.remaining_time_update",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "speed_change_rebase": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.speed_change_rebase",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "speed_to_action_interval": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.speed_to_action_interval",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    },
+    "tie_break": {
+      "implementation_hash": "942bfadecce070a6287ce384f87d1157e89fac4ab5f140c0a8d66ad5db92bbb0",
+      "parameters": {},
+      "provider_id": "r22.reference.tie_break",
+      "semantic_authority": "REFERENCE_MODEL",
+      "version": "1"
+    }
+  },
+  "production_files": [
+    "pyproject.toml",
+    "src/hsr_battle_agent/battle_runtime/behavior.py",
+    "src/hsr_battle_agent/battle_runtime/action_scheduler.py",
+    "src/hsr_battle_agent/battle_runtime/modifier_lifecycle.py",
+    "src/hsr_battle_agent/battle_runtime/actor_binding.py",
+    "src/hsr_battle_agent/battle_runtime/battle_turn.py",
+    "src/hsr_battle_agent/battle_runtime/battle_turn_contract.json"
+  ],
+  "public_apis": [
+    "initialize_turns",
+    "run_until_decision",
+    "current_turn_owner",
+    "next_actor_preview",
+    "legal_action_candidates",
+    "submit_action",
+    "run_until_next_turn",
+    "is_terminal",
+    "notify_speed_change",
+    "adjust_readiness",
+    "request_insertion",
+    "turn_lifecycle",
+    "turn_stage_transition",
+    "request_enemy_decision",
+    "dispatch_turn_event",
+    "record_turn_command",
+    "replay_turn_commands"
+  ],
+  "queue_order": [
+    "due asc",
+    "priority desc",
+    "registration asc",
+    "enqueue asc",
+    "entry UTF8 asc"
+  ],
+  "reference_protocol_extensions": [
+    {
+      "reason": "R21 DecisionBoundary has no state hash, reason or provider identity fields.",
+      "resolution": "External DecisionReceipt wraps exact R21 boundary with hash/reason/provider/actions; the stored schema is unchanged.",
+      "version": "r22_decision_receipt/1"
+    },
+    {
+      "reason": "R21 ReplayCommand enum excludes initialize/advance/complete/modifier-event.",
+      "resolution": "External receipt stream covers every public command; stored journal uses original mutation enums. External event maps to a declared decision SAFE_POINT; posthash stays outside state.",
+      "version": "r22_public_command_receipt/1"
+    },
+    {
+      "reason": "Exact R21 ActionPermission lacks generation/content-version/consumed markers.",
+      "resolution": "Serialized permission seals and consumed IDs in existing mechanics bind exact R20/R15 dependencies without changing the permission schema.",
+      "version": "r22_turn_adapter/1"
+    }
+  ],
+  "schema": "generic_runtime_global_turn_engine/1",
+  "schema_conformance": {
+    "R21_policy": "EXACT_UNCHANGED",
+    "R21_state": "EXACT_UNCHANGED",
+    "bundled_schema_sha256": "914c11a795d62e14f2a6b496027482f8c619ca8cf506da5975741eddcb1638f6"
+  },
+  "source_catalog_denominators_unchanged": [
+    632,
+    160
+  ],
+  "source_content_modified": false,
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "verdict": "GLOBAL_TURN_AV_REFERENCE_ENGINE_ESTABLISHED"
+}

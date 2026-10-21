@@ -1,0 +1,363 @@
+{
+  "acceptance_matrix": [
+    {
+      "acceptance": "Missing speed/input/policy rejects atomically; explicit real actor identity and ordinary raw speed adapter accepted",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT01",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Explicit R20 actors and ordinary mode0 speed only; tagged numeric domains remain gaps.",
+      "scope": "INITIALIZE",
+      "specific_test_cases": [
+        "test_AT01_initialize_atomic_and_mode0"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Different speeds, three-way order, equal readiness and input permutation yield exact expected actor/time",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT02",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "NEXT_ACTOR",
+      "specific_test_cases": [
+        "test_AT02_equal_readiness_stability",
+        "test_AT02_multiple_successive_turns_public_api",
+        "test_AT02_three_way_and_permutations"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Waiting preserve-distance rebase, ready/active/disabled actor policies, stale revisions and final callback speed",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT03",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Disabled/removed speed notifications reject; enable and revive require explicit adapters.",
+      "scope": "SPEED_CHANGE",
+      "specific_test_cases": [
+        "test_AT03_final_turn_callback_speed_sample_and_missing_notification",
+        "test_AT03_ready_actor_remains_ready_under_rebase",
+        "test_AT03_waiting_speed_rebase_and_active_defer"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Full-current-interval basis, exact rational fractions, clamp, invalid negative and numeric overflow",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT04",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "ADVANCE_DELAY",
+      "specific_test_cases": [
+        "test_AT04_advance_delay_clamp_mapping_overflow"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Actor availability intersects local actions; no unrelated normal turn while R15 root active/suspended",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT05",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "OWNERSHIP",
+      "specific_test_cases": [
+        "test_AT05_gap_owner_av_frozen",
+        "test_AT05_suspended_barrier_restore_and_release"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Suffix callbacks/child work/resources/HP drain; root finish request never sufficient; consume receipt once",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT06",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "COMPLETION",
+      "specific_test_cases": [
+        "test_AT06_finish_request_waits_owned_child_and_suffix",
+        "test_AT06_original_finish_suffix_wait_and_child_drain",
+        "test_LevelB_original_decoded_ability_and_full_hash_replay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Clone/restore before/after every dispatch/listener/expiry; no callback or duration double commit",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT07",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Reference listener keys and R15 envelopes; native OnTurnEnd 0x13 is not mapped.",
+      "scope": "BOUNDARY_RESUME",
+      "specific_test_cases": [
+        "test_AT07_AT08_modifier_turn_end_expiry_and_snapshot_every_transition",
+        "test_AT07_duration_visits_explicit_registration_order",
+        "test_AT07_listener_removal_does_not_double_fire"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Action complete retains persistent R17 instances; turn count expiry explicit owner/creation rule",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT08",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "PERSISTENT_MODIFIERS",
+      "specific_test_cases": [
+        "test_AT07_AT08_modifier_turn_end_expiry_and_snapshot_every_transition",
+        "test_AT08_new_modifier_skips_creation_turn",
+        "test_AT08_persistent_manual_modifier_survives_multiple_actions"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Queued FUA/insert/forced/extra placement, category flags and stable owner; unchanged normal due where no AV consumed",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT09",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Four R21 post-settle categories only; no safe-point action interruption.",
+      "scope": "INSERT_AFTER_ACTION",
+      "specific_test_cases": [
+        "test_AT09_all_safe_categories_order_owner_and_due",
+        "test_AT09_typed_ActionInsertion_public_record"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Default rejects active-root insertion with typed gap; future adapter must save/resume parent queues/context without restoring shared state",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT10",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "PASS means typed INTERRUPT_POLICY_MISSING and atomic active-root rejection; interrupts are unimplemented.",
+      "scope": "INTERRUPT_GAP",
+      "specific_test_cases": [
+        "test_AT10_interrupt_rejected_atomic"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Defeated before due skipped; pending requests cancelled; stale generation rejected; revive/summon explicit schedule",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT11",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "ENTITY_LIFECYCLE",
+      "specific_test_cases": [
+        "test_AT11_defeat_active_owner_drains_pending_action",
+        "test_AT11_defeat_during_start_boundary_drains_then_cancels",
+        "test_AT11_defeat_revive_disable_and_summon_generations"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "All 8 boundary kinds explicit; terminal/candidate/gap/input exclusivity; repeated read is pure",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT12",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "DECISIONS",
+      "specific_test_cases": [
+        "test_AT12_previews_and_repeated_decision_are_pure"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Fresh permission exact owner/IR/targets/version; failed cost or target validation draws no RNG or mutates state",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT13",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Explicit reference candidate targets and literal R20 source costs; native legality and expression-cost admission unimplemented.",
+      "scope": "COSTS_TARGETS",
+      "specific_test_cases": [
+        "test_AT13_R20_resource_cost_atomic_and_actual_settlement",
+        "test_AT13_stale_altered_targets_consumed"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Enemy provider requested before action; pending wave not victory; stage unresolved emits typed gap",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT14",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Deterministic supplied provider and explicit stage output only; native Monster AI and full waves unimplemented.",
+      "scope": "AI_STAGE",
+      "specific_test_cases": [
+        "test_AT14_enemy_provider_receives_snapshot_and_validates_output",
+        "test_AT14_pending_wave_and_terminal_after_settlement",
+        "test_AT14_stage_pending_at_unsubmitted_decision_is_gap"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Identical command stream matches canonical state, full runtime hash, ordered trace across clone/restored/replay",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT15",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "DETERMINISM",
+      "specific_test_cases": [
+        "test_AT15_full_public_command_replay_external_event_speed_and_adjust",
+        "test_AT15_positive_rng_draws_and_public_replay",
+        "r22_audit A-L full external command replay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Different tie/numeric/listener/provider policy changes full runtime hash; wrong restore policy rejected",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT16",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Implemented R21 reference operation registry only; unknown/custom implementation identities reject.",
+      "scope": "POLICY_HASH",
+      "specific_test_cases": [
+        "test_AT16_exact_r21_schemas_policy_identity"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Zero-time cycles and callback/insertion depth yield resumable BUDGET_YIELD/gap; never fake time advance",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT17",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "BUDGETS",
+      "specific_test_cases": [
+        "test_AT17_budget_yield_resumes",
+        "test_AT17_insertion_depth_guard_and_active_root_parent",
+        "test_AT17_zero_time_insertion_limits_and_stale_queue"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Old 4.4.54 IDs/offsets not native 4.6.51; formulas and synthetic trace facts remain reference",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT18",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "Native Turn/AV equivalence NOT CLAIMED; old source IDs remain version-qualified.",
+      "scope": "AUTHORITY",
+      "specific_test_cases": [
+        "r22_finalize.controls: pinned authority assertions"
+      ],
+      "status": "PASS"
+    },
+    {
+      "acceptance": "Only existing actor/resource/modifier/property/event/action/catalog state; frozen compiler/admission/modules untouched",
+      "current_validation": "R22 executable public API implementation and regression receipts",
+      "id": "AT19",
+      "native_authority_level": "REFERENCE_MODEL",
+      "native_validation": false,
+      "output_receipts": [
+        "tmp/audit/r22_global_turn_engine_20261011_001/final_focused_output.txt",
+        "tmp/audit/r22_global_turn_engine_20261011_001/execution_traces.json"
+      ],
+      "remaining_limitation": "No remaining blocker within the approved reference profile.",
+      "scope": "ARCHITECTURE",
+      "specific_test_cases": [
+        "r22_checks.preservation",
+        "r22_frozen original runner"
+      ],
+      "status": "PASS"
+    }
+  ],
+  "authority": "REFERENCE_MODEL",
+  "change_request": "CR-R22-GLOBAL-TURN-AV-ENGINE-20261011-001",
+  "frozen_M10_M15_modified": false,
+  "git_writes": "NONE",
+  "native_equivalence": "NOT_CLAIMED",
+  "schema": "generic_runtime_turn_acceptance_matrix/1",
+  "source_acceptance_matrix": "generic_runtime_r22_implementation_plan_v1_20261011_001.json#/acceptance_matrix",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "summary": {
+    "BLOCKED": 0,
+    "FAIL": 0,
+    "PARTIAL": 0,
+    "PASS": 19
+  }
+}

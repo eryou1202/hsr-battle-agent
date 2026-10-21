@@ -1,0 +1,2643 @@
+{
+  "authority_separation": {
+    "initialization": "Every participant/availability/provider/modifier registration is explicit with provenance; constructor validity is not native legality",
+    "native_names": "Proposed concepts are generic abstractions, not recovered class names",
+    "product": "4.4.54 frozen baseline; no cross-version data merge",
+    "research": "4.6.51 immutable pinned snapshot"
+  },
+  "boundary_dispatch_contract": {
+    "boundary_roots": "Reference boundary envelope owns callbacks using existing R15 frames; it is not a real source ability or a second scheduler. Boundary completion independent from the skill root.",
+    "duration": "Only explicit owner-normal-turn-END counters in this profile; lifecycle callback at turn end runs before duration progress; expiries drain before next interval is sampled; other native duration kinds gap",
+    "gap_resume": "Persist boundary_id, listener cursor/IDs and modifier instance cursor; failed callback candidate rolls back existing R18 checkpoint, committed earlier listeners persist",
+    "listeners": "Caller must provide a complete registration policy/hash per event, including explicit empty registration. Existing R17 stable priority/ordinal order and callback context apply.",
+    "reference_keys": "Namespaced reference.turn.* keys only; native literal 0x13 is evidence and is never transplanted as a global dispatch ID",
+    "resource": "No automatic energy gain or costs at turn start/end; declared listeners invoke existing resource engine with exact mappings and provenance"
+  },
+  "branch": "terra/implementation",
+  "change_request": "CR-R21-TRUE-TURN-AV-CONTRACT-20261011-001",
+  "decision_kind_requirements": {
+    "BATTLE_TERMINAL": "Stage-declared terminal reason/status, candidate permissions empty and no unresolved owned settlement; actor/turn/root null after settled terminal transaction",
+    "BUDGET_YIELD": "Resumable exact revision/phase/cursor with no new semantic claim; candidates empty, input_request reports which deterministic budget was exhausted",
+    "ENEMY_AI_DECISION": "ENABLED live MONSTER_AI participant and exact selected turn; provider request/input populated, candidate permissions explicit; do not auto-pick from local actions if provider absent",
+    "OUT_OF_TURN_WINDOW": "Explicit insertion/interrupt availability policy and owner; window input request/safe point if active root, no implicit ultimate rights from energy balance alone",
+    "PENDING_FORCED_ACTION": "Exactly one admitted forced request/owner/action permission identified; driver pauses to report it, then explicit caller auto-submit policy may progress; no fabricated choice",
+    "PLAYER_NORMAL_TURN": "ENABLED live PLAYER participant, normal ActiveTurn DECISION, actor/turn populated, no running action root or unresolved start/before work; permissions freshly validated",
+    "SEMANTIC_GAP": "TypedFailure populated with exact owner/source/resume; candidates empty; stage or actor unknown cannot masquerade as terminal/decision",
+    "SUSPENDED_ACTION_INPUT": "Exact active turn/action root and serialized input/barrier request; candidate permissions empty unless same input policy explicitly defines them; AV frozen",
+    "invalidation": "Any committed actor/provider/resource/target/readiness/listener mutation increments turn-state revision and invalidates prior permissions/decision receipt. Preview and repeated same-boundary reads are pure.",
+    "priority": "Existing unresolved gap/input/owned action drain first; terminal only after settlement; forced/inserted request policy before next normal selection; external actor decision never auto-executed without policy."
+  },
+  "enemy_stage_interfaces": {
+    "LifecycleProvider": "Explicit actor/entity revision transitions: defeat/remove cancel waiting entries and invalid owned insertions; active work settles under declared policy; revival creates new generation; summons allocate unique stable IDs/ordinal and full explicit binding.",
+    "MonsterDecisionProvider": "request(decision_id, actor_id, canonical_snapshot, permissions, policy_hash) -> selected permission + targets + explicit RNG changes or typed gap. No wall-clock/client dependency. AI remains unimplemented.",
+    "StageProvider": "reconcile(snapshot, settled_boundary_id) -> CONTINUE | WAVE_PENDING | REGISTER_WAVE(participants, source refs) | TERMINAL(reason) | gap. Wave transition only at quiescent boundary, explicit carry/reset clock/modifier/resource policy required.",
+    "Wave_policy": "This reference profile carries AV clock and survivor due values; new-wave actors full interval at now. Complete wave engine, defeat handling and terminal rules are caller/provider work, not supplied native behavior."
+  },
+  "extension_points": {
+    "ActionExecutionRoot": "Existing root drain/completion; boundary adapter reuses EventIR and a labeled REFERENCE_MODEL envelope, never changes real-content skill finish nodes",
+    "ActorRuntimeBinding": "Entity identity, caller initialization provenance, controller/availability/speed refs; no character branches",
+    "BehaviorBattleState": "Use mechanics dictionary, existing clone/snapshot/hash; no second BattleState",
+    "ContentCatalog/ScenarioCompiler/strict admission": "Reuse catalog identities; no compiler/admission changes",
+    "ModifierLifecycle": "Existing event registration/context/removal; future owner-turn duration transition adapter, preserving persistent instances",
+    "R19 properties": "Generic explicit provider resolver reads effective speed; notification must rebase scheduling cache after authoritative write; missing notification is invalid provider contract",
+    "ResourceEngine": "Existing cost/pre/change/post ownership; turn effects via explicit listener IR; no fabricated SP/energy gains",
+    "legacy BattleState/turns.py": "Historical Semantics29 ordinary 4.4.54 sandbox model is retained unchanged; not a 4.6.51 global controller and not the R21 store",
+    "local legal_actions": "Still returns sorted local action IDs; global API intersects caller availability. R15 current-root guard must remain intact"
+  },
+  "failure_contract": {
+    "ACTION_NOT_COMPLETE": {
+      "kind": "ACTION_NOT_COMPLETE",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "AV_REFERENCE_POLICY_MISSING": {
+      "kind": "AV_REFERENCE_POLICY_MISSING",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "ENTITY_STATE_UNRESOLVED": {
+      "kind": "ENTITY_STATE_UNRESOLVED",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "INITIATIVE_INPUT_MISSING": {
+      "kind": "INITIATIVE_INPUT_MISSING",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "INTERRUPT_POLICY_MISSING": {
+      "kind": "INTERRUPT_POLICY_MISSING",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "NATIVE_ORDER_UNKNOWN": {
+      "kind": "NATIVE_ORDER_UNKNOWN",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "SEMANTIC_GAP": {
+      "kind": "SEMANTIC_GAP",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "SPEED_PROVIDER_MISSING": {
+      "kind": "SPEED_PROVIDER_MISSING",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "TURN_BOUNDARY_EVENT_UNKNOWN": {
+      "kind": "TURN_BOUNDARY_EVENT_UNKNOWN",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    },
+    "TURN_OWNER_UNKNOWN": {
+      "kind": "TURN_OWNER_UNKNOWN",
+      "no_silent_default": true,
+      "resume": "serialize exact failure/source/owner/root and required policy/input; preserve committed R15 prefix; rejected command changes no battle state"
+    }
+  },
+  "git_writes": "NONE",
+  "injectable_policy_interface": {
+    "advance_delay_adjustment": "(now, due_at, speed, kind, operand, source_ref) -> due_at Rational under declared basis",
+    "binding": "Seven required operation_bindings resolve through a caller-supplied deterministic registry keyed by provider_id/version/implementation_hash. No serialized Python callables or object identity. Unknown provider/hash returns AV_REFERENCE_POLICY_MISSING.",
+    "conformance": "Numeric fields/order in this profile are declared requirements. A replacement hook must conform to them, or use a new fully serialized policy profile/schema version that states changed requirements. Registry identity and full parameters participate in stable_hash.",
+    "elapsed_time_advancement": "(now Rational, selected due Rational, phase) -> new_now Rational >= now; reference profile freezes action execution",
+    "initial_initiative_placement": "(participant ref, now Rational, interval Rational, explicit inputs) -> due_at Rational >= now",
+    "purity": "Hooks consume canonical values and produce candidate values, never mutate external stores or depend on wall clock/process floating state; bounds and cross-field validators apply before atomic commit.",
+    "remaining_time_update": "(now Rational, due_at Rational) -> nonnegative Rational; pure derived read, not an independent writable field",
+    "spec_hashes": "The R21 example hashes identify declared specifications only; R22 must replace them with validated implementation identities when code exists, and store that complete policy in runtime snapshot. They are not fake native/code hashes.",
+    "speed_change_rebase": "(now, old_due, old_speed, new_speed, participation/active phase) -> new_due or deferred resample instruction",
+    "speed_to_action_interval": "(positive speed Rational, numeric parameters) -> positive Rational",
+    "tie_break": "(two eligible entries and immutable participant metadata) -> -1/0/1 with strict total order after final id key; pure, no RNG or container order"
+  },
+  "integration_call_graph": [
+    "BehaviorRuntime opt-in global driver -> lifecycle/stage status provider -> queue select -> ActiveTurn START_BOUNDARY",
+    "Boundary dispatcher -> existing R17 listeners / EventIR -> existing R15-owned boundary root -> drain -> DECISION",
+    "Explicit PLAYER or MonsterAI provider -> ActionPermission -> submit_action -> BEFORE_ACTION boundary drain",
+    "Existing ResourceEngine cost transaction + ActorRuntimeBinding context -> BehaviorRuntime.start_action -> ActionExecutionRoot",
+    "R15 tasks/children/continuations/events -> R17 / R18 / R19 / R20 settlement -> exact root result",
+    "ACTION_REFERENCE_COMPLETE -> AFTER_ACTION -> TURN_END -> duration/expiry -> readiness reset -> stage/lifecycle reconciliation -> next selection",
+    "SUSPENDED_INPUT / external barrier -> SUSPENDED_ACTION_INPUT; WAITING_SCHEDULER without input -> ACTION_NOT_COMPLETE; SemanticGap -> SEMANTIC_GAP; no normal AV advance"
+  ],
+  "interrupt_adapter_contract": {
+    "child": "Future adapter starts new root without weakening public local legality guard; binds its distinct category/owner. All parent work is filtered by root id while suspended.",
+    "current_limit": "Existing R15 start_action calls local legal_actions and rejects an active root. R21/R22 initial policy returns INTERRUPT_POLICY_MISSING.",
+    "failure": "Unimplemented adapter, absent safe token, active transaction or unknown cancel policy yields typed gap; never reset or overwrite parent queues",
+    "future_safe_point": "Adapter must expose a serialized safe-point token only between committed task transitions with no open resource/damage transaction. Approval requires caller policy, not native name guesses.",
+    "resume": "After child and its policy-defined boundaries drain, restore exact parent current_root and context. Child commits remain in shared actor/resource/modifier state; do not restore whole battle snapshot.",
+    "save": "Atomically mark parent ACTION_SUSPENDED, retain current_root/target_context, all parent queues/frame cursors/events, turn and action root ids."
+  },
+  "invariants": [
+    "Every rational is reduced by gcd; denominator positive; zero is 0/1; no bool/float admitted as numeric input. Compare by integer cross-products.",
+    "Native R12 tagged raw values are not decoded as speed; ordinary mode0 positive signed int64 raw/2^33 is explicit adapter scope. Unsupported numeric modes return a gap.",
+    "Rational n,d and cross-products obey explicit max_integer_bits; reject overflow atomically as SEMANTIC_GAP before state mutation; no truncation or global floating-point context.",
+    "Actor id is a stable string, entity_ref joins existing entities; unique registration ordinal never reused; resurrection/removal increments generation and invalidates stale entries/permissions.",
+    "Actor properties/resources/progression/modifiers remain authoritative in existing stores. SpeedSample is a read-only scheduling cache bound to provider revision and input hash, not a second writable speed.",
+    "Participation is scheduler membership, not a duplicate HP/alive flag. Entity status comes from explicit lifecycle adapter and matching entity_revision.",
+    "Enabled waiting actor has exactly one current normal entry. Active NORMAL_TURN removes its entry until settled. Disabled/removed actor has no selectable entry.",
+    "due_at is the sole readiness authority; remaining=max(0,due_at-clock.now) is derived, never a second stored writable AV.",
+    "normal_queue is canonically sorted by policy comparator. initiative due_at and normal entry due_at must match with identical revision; mutations atomically update both. Queue is a validated index, not independent AV state.",
+    "Priority numbers are reference only; UTF8 byte order is the final total-order tie. Arrays preserve semantic order; maps are canonically key-sorted.",
+    "No R15 logical_time or WaitSecond value is added to clock.now. Running/suspended action freezes AV unless an explicit future interruption policy admits work at the same timestamp.",
+    "Active stack empty admits a normal selection. With active stack, only top frame owns R15 current_root; suspended parent retains every task/event/continuation ownership identifier.",
+    "Permissions bind decision/turn/actor/action IR hash/targets/state_revision/policy_hash; stale/foreign/dead-owner requests reject without cost or RNG draw.",
+    "Completion must be ACTION_REFERENCE_COMPLETE for the exact bound root after owned work drain. SkillPerformFinish request, empty local queue or waiting status alone is insufficient.",
+    "A root completion is consumed once; duplicate settle commands reject. Source task prefix commits persist on a resumable gap; failed turn transition/boundary effect rolls back only its atomic candidate.",
+    "Boundary events carry stable id, dispatch/drain status and emitted listener ids/cursors. Snapshot at any phase resumes exactly once; never redispatch a committed event or decrement duration twice.",
+    "Persistent modifiers survive root completion; turn-end duration updates visit live instance IDs in explicit registration order, skip newly created instances for that owner turn, expire only after callbacks drain.",
+    "Unknown entity/stage/AI availability/native ordering is not a no-op. Policy absence emits typed gaps; absence differs from explicit empty-listener policy.",
+    "All counters/next ids, pending queues, stack, boundaries, provider revisions, policy identities/hashes, terminal/stage and replay cursors serialize; process object identity/wall clock excluded.",
+    "State terminal status and BehaviorBattleState.terminal synchronize in one transaction; WAVE_PENDING is not terminal; pending waves prevent victory unless stage policy explicitly declares it.",
+    "Budget exhaustion returns BUDGET_YIELD with resumable state. Zero-time transitions, insertion depth and R15 work have separate explicit budgets. No fabricated time tick resolves a cycle."
+  ],
+  "native_equivalent_turn_av": "NOT_CLAIMED",
+  "numeric_operations": {
+    "advance": "advance fraction f>=0 changes due to max(now,due-f*I(current_speed)); not percent remaining",
+    "advance_clock": "select eligible minimum due; now=max(now,due); every remaining time is derived from unchanged absolute due; zero elapsed ties still act",
+    "completion": "After AFTER_ACTION/TURN_END/duration/expiry callbacks drain, normal due=now+I(final_effective_speed); increment normal cycle/count once. Out-of-turn rule decides AV consumption.",
+    "delay": "delay fraction f>=0 changes due to due+f*I(current_speed); negative operands rejected; absolute deltas require different policy id",
+    "disabled": "Save remaining distance via remaining time and speed sample; remove normal entry. Re-enable policy is distinct from revival; re-enable uses saved_remaining*s_old/s_new at unchanged clock.",
+    "initial_placement": "due=now+I(effective_speed); caller may supply initial due only under a separately hashed placement policy",
+    "interval": "I(s)=K/s with K from supplied policy; sample fixture K=10000 is REFERENCE_MODEL, no native constant claim",
+    "revive_summon": "Explicit new generation/registration at current now with full interval; removed actor id cannot be silently reused. Native initialization unknown.",
+    "speed_change_active": "Update authoritative provider and observed sample; do not reinsert active normal actor. Settlement samples final post-callback speed for next interval.",
+    "speed_change_waiting": "At old clock t, r=max(0,due-t); new_due=t+r*s_old/s_new. Apply old sample before replacement, then sort; ready r=0 remains ready."
+  },
+  "ownership_transitions": [
+    {
+      "from": "IDLE",
+      "guard": "valid eligible minimum entry and empty active stack",
+      "owner": "battle engine selects turn_owner and action_actor",
+      "to": "START_BOUNDARY"
+    },
+    {
+      "from": "START_BOUNDARY",
+      "guard": "all owned boundary callback work drains",
+      "owner": "player/AI/forced provider",
+      "to": "DECISION"
+    },
+    {
+      "from": "DECISION",
+      "guard": "fresh category-bound permission",
+      "owner": "turn frame retains actor; event callback may have different modifier owner",
+      "to": "BEFORE_ACTION"
+    },
+    {
+      "from": "BEFORE_ACTION",
+      "guard": "callbacks drain, cost/context validated, prior R15 root complete",
+      "owner": "exact ActionExecutionRoot id",
+      "to": "ACTION_RUNNING"
+    },
+    {
+      "from": "ACTION_RUNNING",
+      "guard": "input request or future explicit safe-point interrupt adapter",
+      "owner": "parent root retained; no normal advance",
+      "to": "ACTION_SUSPENDED"
+    },
+    {
+      "from": "ACTION_RUNNING",
+      "guard": "exact root ACTION_REFERENCE_COMPLETE and owned work drained",
+      "owner": "turn frame, completion receipt consumed once",
+      "to": "AFTER_ACTION"
+    },
+    {
+      "from": "AFTER_ACTION",
+      "guard": "after callbacks complete",
+      "owner": "explicit turn boundary root",
+      "to": "END_BOUNDARY"
+    },
+    {
+      "from": "END_BOUNDARY",
+      "guard": "all turn-end work drained",
+      "owner": "existing R17 instance IDs, cursors in boundary state",
+      "to": "DURATION_EXPIRY"
+    },
+    {
+      "from": "DURATION_EXPIRY",
+      "guard": "expiry callbacks complete, final speed sampled, category accounting committed",
+      "owner": "battle queue engine",
+      "to": "SETTLED"
+    },
+    {
+      "from": "SETTLED",
+      "guard": "stage/lifecycle reconciliation; insertion precedence evaluated",
+      "owner": "battle owner",
+      "to": "IDLE"
+    }
+  ],
+  "policy_json_schema": {
+    "$defs": {
+      "PositiveRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      }
+    },
+    "$id": "urn:hsr:r21:turn-policy:1",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+      "availability_provider_id": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "boundary_event_keys": {
+        "additionalProperties": false,
+        "properties": {
+          "AFTER_ACTION": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "BEFORE_ACTION": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "DURATION_PROGRESS": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "EXPIRY_CHECK": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "TURN_END": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "TURN_START": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "TURN_START",
+          "BEFORE_ACTION",
+          "AFTER_ACTION",
+          "TURN_END",
+          "DURATION_PROGRESS",
+          "EXPIRY_CHECK"
+        ],
+        "type": "object"
+      },
+      "boundary_listener_policy_hash": {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+      },
+      "boundary_order": {
+        "items": {
+          "enum": [
+            "TURN_START",
+            "BEFORE_ACTION",
+            "AFTER_ACTION",
+            "TURN_END",
+            "DURATION_PROGRESS",
+            "EXPIRY_CHECK"
+          ]
+        },
+        "type": "array"
+      },
+      "category_rules": {
+        "additionalProperties": false,
+        "properties": {
+          "EXTRA_TURN": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "FOLLOW_UP_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "FORCED_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "INSERTED_ACTION": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "NORMAL_TURN": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          },
+          "ULTIMATE_INTERRUPT": {
+            "additionalProperties": false,
+            "properties": {
+              "admission": {
+                "enum": [
+                  "CALLER_PERMISSION",
+                  "TYPED_GAP"
+                ]
+              },
+              "consumes_normal_av": {
+                "type": "boolean"
+              },
+              "counts_normal_turn": {
+                "type": "boolean"
+              },
+              "duration_progress": {
+                "enum": [
+                  "OWNER_NORMAL_TURN_END",
+                  "NONE"
+                ]
+              },
+              "emits_turn_end": {
+                "type": "boolean"
+              },
+              "emits_turn_start": {
+                "type": "boolean"
+              },
+              "parent_ownership": {
+                "enum": [
+                  "ROOT",
+                  "RETAIN_PARENT",
+                  "SUSPEND_PARENT"
+                ]
+              },
+              "placement": {
+                "enum": [
+                  "NORMAL_DUE",
+                  "AFTER_ACTIVE_SETTLES",
+                  "NEXT_SAFE_POINT"
+                ]
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "resume": {
+                "enum": [
+                  "NONE",
+                  "AFTER_INSERTION_SETTLES"
+                ]
+              }
+            },
+            "required": [
+              "placement",
+              "priority",
+              "consumes_normal_av",
+              "counts_normal_turn",
+              "emits_turn_start",
+              "emits_turn_end",
+              "parent_ownership",
+              "resume",
+              "admission",
+              "duration_progress"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "NORMAL_TURN",
+          "EXTRA_TURN",
+          "INSERTED_ACTION",
+          "FOLLOW_UP_ACTION",
+          "ULTIMATE_INTERRUPT",
+          "FORCED_ACTION"
+        ],
+        "type": "object"
+      },
+      "defeat": {
+        "enum": [
+          "REMOVE_NORMAL_ENTRY_CANCEL_PENDING_RETAIN_ACTIVE_UNTIL_SETTLED"
+        ]
+      },
+      "disable": {
+        "enum": [
+          "FREEZE_REMAINING_DISTANCE"
+        ]
+      },
+      "duration_policy": {
+        "enum": [
+          "OWNER_NORMAL_END_NEW_INSTANCE_SKIPS_CREATION_TURN"
+        ]
+      },
+      "identity": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "interrupts": {
+        "enum": [
+          "GAP_UNTIL_SAFE_POINT_ADAPTER"
+        ]
+      },
+      "max_insert_depth": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "max_zero_time_transitions": {
+        "minimum": 1,
+        "type": "integer"
+      },
+      "numeric": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_delay_basis": {
+            "enum": [
+              "FULL_CURRENT_INTERVAL"
+            ]
+          },
+          "distance": {
+            "$ref": "#/$defs/PositiveRational"
+          },
+          "elapsed": {
+            "enum": [
+              "ABSOLUTE_DUE_CLOCK_ADVANCE"
+            ]
+          },
+          "initial": {
+            "enum": [
+              "FULL_INTERVAL_FROM_CURRENT_CLOCK"
+            ]
+          },
+          "max_integer_bits": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "nonpositive_speed": {
+            "enum": [
+              "SPEED_PROVIDER_MISSING"
+            ]
+          },
+          "normal_reset": {
+            "enum": [
+              "AFTER_ALL_END_BOUNDARY_WORK"
+            ]
+          },
+          "past_due": {
+            "enum": [
+              "CLAMP_TO_NOW"
+            ]
+          },
+          "representation": {
+            "enum": [
+              "REDUCED_RATIONAL"
+            ]
+          },
+          "rounding": {
+            "enum": [
+              "EXACT_RATIONAL"
+            ]
+          },
+          "speed_change": {
+            "enum": [
+              "PRESERVE_REMAINING_DISTANCE"
+            ]
+          },
+          "speed_decode": {
+            "enum": [
+              "R12_MODE0_RAW_DIV_2_POW_33"
+            ]
+          }
+        },
+        "required": [
+          "representation",
+          "distance",
+          "speed_decode",
+          "rounding",
+          "max_integer_bits",
+          "nonpositive_speed",
+          "initial",
+          "elapsed",
+          "speed_change",
+          "advance_delay_basis",
+          "past_due",
+          "normal_reset"
+        ],
+        "type": "object"
+      },
+      "operation_bindings": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_delay_adjustment": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "elapsed_time_advancement": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "initial_initiative_placement": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "remaining_time_update": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "speed_change_rebase": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "speed_to_action_interval": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          },
+          "tie_break": {
+            "additionalProperties": false,
+            "properties": {
+              "implementation_hash": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "parameters": {
+                "type": "object"
+              },
+              "provider_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "semantic_authority": {
+                "enum": [
+                  "REFERENCE_MODEL"
+                ]
+              },
+              "version": {
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "provider_id",
+              "version",
+              "implementation_hash",
+              "semantic_authority",
+              "parameters"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "speed_to_action_interval",
+          "initial_initiative_placement",
+          "elapsed_time_advancement",
+          "remaining_time_update",
+          "speed_change_rebase",
+          "advance_delay_adjustment",
+          "tie_break"
+        ],
+        "type": "object"
+      },
+      "order": {
+        "items": {
+          "enum": [
+            "DUE_ASC",
+            "PRIORITY_DESC",
+            "REGISTRATION_ASC",
+            "ENQUEUE_ASC",
+            "ENTRY_ID_UTF8_ASC"
+          ]
+        },
+        "type": "array"
+      },
+      "r15_running_clock": {
+        "enum": [
+          "FREEZE_AV"
+        ]
+      },
+      "revive": {
+        "enum": [
+          "FULL_INTERVAL_NEW_GENERATION"
+        ]
+      },
+      "schema": {
+        "enum": [
+          "generic_battle_turn_policy/1"
+        ]
+      },
+      "semantic_authority": {
+        "enum": [
+          "REFERENCE_MODEL"
+        ]
+      },
+      "summon": {
+        "enum": [
+          "EXPLICIT_REGISTER_FULL_INTERVAL"
+        ]
+      },
+      "terminal_provider_id": {
+        "minLength": 1,
+        "type": "string"
+      }
+    },
+    "required": [
+      "schema",
+      "identity",
+      "semantic_authority",
+      "operation_bindings",
+      "numeric",
+      "order",
+      "category_rules",
+      "boundary_order",
+      "boundary_event_keys",
+      "boundary_listener_policy_hash",
+      "duration_policy",
+      "r15_running_clock",
+      "interrupts",
+      "defeat",
+      "disable",
+      "revive",
+      "summon",
+      "terminal_provider_id",
+      "max_zero_time_transitions",
+      "max_insert_depth",
+      "availability_provider_id"
+    ],
+    "type": "object"
+  },
+  "product_version": "4.4.54",
+  "r22_scope_boundary": "Implement ordinary global clock/decisions/boundary integration now under opt-in reference policies; default interrupts typed gap. Optional arithmetic advance/delay and queued post-action insertions can follow without new archaeology.",
+  "research_version": "4.6.51",
+  "runtime_apis": {
+    "adjust_readiness(actor_id, kind, fraction, source_ref)": "Execute only under declared basis policy and exact owner/version/authority, append replay command.",
+    "clone/snapshot/stable_hash/replay": "Reuse BehaviorRuntime methods; replay new commands through same public APIs and verify each pre/post hash with full policy/catalog/registry identity.",
+    "current_turn_owner() -> actor_id | null": "Read owner of top ActiveTurn; normal parent owner stays separately available on interrupt stack. Returns null at idle/terminal, typed gap for unresolved ownership.",
+    "initialize_turns(participant_bindings, policy, provider_contracts)": "Validate complete inputs on existing runtime clone; commit mechanics extension only on success.",
+    "is_terminal() -> bool": "True only stage-declared VICTORY/DEFEAT/ABORTED; unresolved termination emits gap in drive, not false inferred victory.",
+    "legal_action_candidates(decision_id) -> ActionPermission[] | TypedFailure": "Intersect local R15 actions with explicit actor mapping, source cost/resource sufficiency, target and category availability provider. Reference candidates only, no native legal_actions claim.",
+    "next_actor_preview(limit) -> TurnQueueEntry[]": "Pure eligible queue preview plus labeled insertion precedence; no RNG, callbacks, AI, mutations, or extrapolated completion beyond current state.",
+    "notify_speed_change(actor_id, provider_revision)": "Atomic rebase from prior cached speed, validate R19 authoritative effective value, invalidate candidate permissions.",
+    "request_insertion(ActionInsertion)": "Explicit category policy/owner/generation/parent validation. Unsupported interrupt remains typed gap; no R15 child TriggerAbility inferred as a global insertion.",
+    "run_until_decision(budget) -> DecisionBoundary": "Global API added as explicit opt-in path or facade over same BehaviorRuntime. Drives boundaries/R15/stage requests, pauses before player/enemy/out-of-turn/forced selection or input; emits terminal/gap/yield distinctly.",
+    "run_until_next_turn(budget) -> DecisionBoundary": "Drive current admitted action and all boundaries until the next newly selected normal turn, or earlier unresolved input/AI/gap/terminal/yield. Never auto-select external actor actions.",
+    "submit_action(permission, targets, expected_revision) -> ExecutionResult | DecisionBoundary": "Revalidate permission; commit selection/context and before-action work; transact existing source cost; start exactly one R15 root after BEFORE_ACTION drains. Root commit may later gap without undoing prior successful tasks."
+  },
+  "schema": "generic_runtime_turn_contract/1",
+  "scope": "Implementation-ready extension contract; no production global engine in R21",
+  "semantic_authority": "REFERENCE_MODEL",
+  "serialization": {
+    "canonical": "Reuse canonical_json/stable_hash. Extension requires JSON model, reduced rationals, no floats, finite strings, stable unique ids; reject malformed/missing/extra schema fields.",
+    "clone": "Existing state/runtime deep copy. Pending roots/interrupt stack/modifiers/resource checkpoints remain isolated.",
+    "equality": "Canonical full snapshot equality; equivalent unreduced rationals are rejected rather than producing alternate hashes.",
+    "hash": "Full BehaviorRuntime snapshot includes extension, policies, IR catalog/actions/aliases/events and registry identity. Include policy hashes and provider bindings; do not exclude journals or pending ownership.",
+    "replay": "Initial full runtime snapshot + ordered command records with prehash/revision/policy + per-command posthash. Restore providers by registered identity/hash; in-memory callable identity is not authority.",
+    "resume": "Validate cross-field references, policy hash match, generation/revision, active root ownership and listener cursors before drive. The state command journal stores prehash and arguments only. Per-command posthash lives in an external replay receipt computed after the journal append; it is not stored in the snapshot being hashed."
+  },
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "state_json_schema": {
+    "$defs": {
+      "ActionInsertion": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_permission_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cancellation": {
+            "enum": [
+              "PENDING",
+              "ADMITTED",
+              "CANCELLED",
+              "COMPLETED"
+            ]
+          },
+          "cancellation_reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "enum": [
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "consumes_normal_av": {
+            "type": "boolean"
+          },
+          "counts_normal_turn": {
+            "type": "boolean"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "emits_turn_end": {
+            "type": "boolean"
+          },
+          "emits_turn_start": {
+            "type": "boolean"
+          },
+          "enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "insertion_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "parent_action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parent_turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "placement": {
+            "enum": [
+              "AFTER_ACTIVE_SETTLES",
+              "NEXT_SAFE_POINT",
+              "AT_EXPLICIT_TIME"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "policy_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "requested_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "safe_point_token": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "insertion_id",
+          "category",
+          "owner_actor_id",
+          "action_actor_id",
+          "generation",
+          "requested_at",
+          "enqueue_ordinal",
+          "priority",
+          "placement",
+          "due_at",
+          "parent_turn_id",
+          "parent_action_root_id",
+          "action_permission_id",
+          "policy_id",
+          "policy_hash",
+          "cancellation",
+          "cancellation_reason",
+          "consumes_normal_av",
+          "counts_normal_turn",
+          "emits_turn_start",
+          "emits_turn_end",
+          "safe_point_token"
+        ],
+        "type": "object"
+      },
+      "ActionPermission": {
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_ir_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL",
+              "EXPLICIT_SCENARIO_INPUT"
+            ]
+          },
+          "availability_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "cost_policy_hash": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "permission_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "state_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "target_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "permission_id",
+          "decision_id",
+          "turn_id",
+          "actor_id",
+          "category",
+          "action_id",
+          "action_ir_hash",
+          "target_ids",
+          "state_revision",
+          "policy_hash",
+          "availability_provider_id",
+          "cost_policy_hash",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "ActiveTurn": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "action_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "completion_consumed": {
+            "type": "boolean"
+          },
+          "insertion_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "normal_turn_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "parent_action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "parent_turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permission_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "phase": {
+            "enum": [
+              "START_BOUNDARY",
+              "DECISION",
+              "BEFORE_ACTION",
+              "ACTION_RUNNING",
+              "ACTION_SUSPENDED",
+              "AFTER_ACTION",
+              "END_BOUNDARY",
+              "DURATION_EXPIRY",
+              "SETTLED"
+            ]
+          },
+          "queue_entry_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "saved_r15_current_root": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "saved_target_context": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "selected_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "turn_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "turn_owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "turn_id",
+          "queue_entry_id",
+          "turn_owner_actor_id",
+          "action_actor_id",
+          "category",
+          "phase",
+          "selected_at",
+          "normal_turn_index",
+          "action_index",
+          "parent_turn_id",
+          "parent_action_root_id",
+          "action_root_id",
+          "saved_r15_current_root",
+          "saved_target_context",
+          "permission_id",
+          "insertion_id",
+          "completion_consumed"
+        ],
+        "type": "object"
+      },
+      "ActorInitiativeState": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL"
+            ]
+          },
+          "cycle_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "disabled_remaining": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "disabled_since": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NonnegativeRational"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effective_speed_sample": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SpeedSample"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "normal_entry_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revision": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "actor_id",
+          "generation",
+          "due_at",
+          "effective_speed_sample",
+          "cycle_index",
+          "normal_entry_id",
+          "disabled_remaining",
+          "disabled_since",
+          "revision",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "Authority": {
+        "additionalProperties": false,
+        "properties": {
+          "artifact": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "REAL_CONTENT_STATIC",
+              "REAL_CONTENT_RECONSTRUCTED",
+              "REFERENCE_MODEL",
+              "EXPLICIT_SCENARIO_INPUT",
+              "EFFECTIVE_RUNTIME_UNKNOWN"
+            ]
+          },
+          "pointer": {
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source_version": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "source_version",
+          "artifact",
+          "sha256",
+          "pointer"
+        ],
+        "type": "object"
+      },
+      "BattleClock": {
+        "additionalProperties": false,
+        "properties": {
+          "advance_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "now": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "transition_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "unit": {
+            "enum": [
+              "REFERENCE_AV"
+            ]
+          }
+        },
+        "required": [
+          "now",
+          "unit",
+          "advance_count",
+          "transition_count"
+        ],
+        "type": "object"
+      },
+      "BattleTurnState": {
+        "additionalProperties": false,
+        "properties": {
+          "action_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "active_stack": {
+            "items": {
+              "$ref": "#/$defs/ActiveTurn"
+            },
+            "type": "array"
+          },
+          "boundary_work": {
+            "items": {
+              "$ref": "#/$defs/TurnBoundaryEvent"
+            },
+            "type": "array"
+          },
+          "clock": {
+            "$ref": "#/$defs/BattleClock"
+          },
+          "command_journal": {
+            "items": {
+              "$ref": "#/$defs/ReplayCommand"
+            },
+            "type": "array"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/DecisionBoundary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TypedFailure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "initiative": {
+            "additionalProperties": {
+              "$ref": "#/$defs/ActorInitiativeState"
+            },
+            "type": "object"
+          },
+          "next_command_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_decision_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_entry_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_event_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_insertion_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_permission_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "next_turn_id": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "normal_queue": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/TurnQueueEntry"
+                },
+                {
+                  "properties": {
+                    "category": {
+                      "enum": [
+                        "NORMAL_TURN"
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "normal_turn_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "participants": {
+            "items": {
+              "$ref": "#/$defs/Participant"
+            },
+            "type": "array"
+          },
+          "pending_insertions": {
+            "items": {
+              "$ref": "#/$defs/ActionInsertion"
+            },
+            "type": "array"
+          },
+          "pending_interrupts": {
+            "items": {
+              "$ref": "#/$defs/ActionInsertion"
+            },
+            "type": "array"
+          },
+          "permissions": {
+            "items": {
+              "$ref": "#/$defs/ActionPermission"
+            },
+            "type": "array"
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "policy_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "schema": {
+            "enum": [
+              "generic_battle_turn_state/1"
+            ]
+          },
+          "stage": {
+            "$ref": "#/$defs/StageBoundary"
+          },
+          "terminal": {
+            "$ref": "#/$defs/Terminal"
+          }
+        },
+        "required": [
+          "schema",
+          "policy_id",
+          "policy_hash",
+          "clock",
+          "participants",
+          "initiative",
+          "normal_queue",
+          "active_stack",
+          "pending_insertions",
+          "pending_interrupts",
+          "permissions",
+          "boundary_work",
+          "decision",
+          "terminal",
+          "stage",
+          "revision",
+          "next_turn_id",
+          "next_entry_id",
+          "next_insertion_id",
+          "next_decision_id",
+          "next_permission_id",
+          "next_event_id",
+          "next_command_id",
+          "next_enqueue_ordinal",
+          "next_registration_ordinal",
+          "normal_turn_count",
+          "action_count",
+          "command_journal",
+          "failure"
+        ],
+        "type": "object"
+      },
+      "DecisionBoundary": {
+        "additionalProperties": false,
+        "properties": {
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidate_permission_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "decision_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TypedFailure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "input_request": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kind": {
+            "enum": [
+              "PLAYER_NORMAL_TURN",
+              "ENEMY_AI_DECISION",
+              "OUT_OF_TURN_WINDOW",
+              "PENDING_FORCED_ACTION",
+              "SUSPENDED_ACTION_INPUT",
+              "BATTLE_TERMINAL",
+              "SEMANTIC_GAP",
+              "BUDGET_YIELD"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "state_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "terminal_reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "decision_id",
+          "kind",
+          "actor_id",
+          "turn_id",
+          "action_root_id",
+          "state_revision",
+          "policy_hash",
+          "candidate_permission_ids",
+          "input_request",
+          "failure",
+          "terminal_reason"
+        ],
+        "type": "object"
+      },
+      "NonnegativeRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "Participant": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "$ref": "#/$defs/Authority"
+          },
+          "availability_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "controller": {
+            "enum": [
+              "PLAYER",
+              "MONSTER_AI",
+              "FORCED",
+              "STAGE"
+            ]
+          },
+          "entity_ref": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "entity_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "participation": {
+            "enum": [
+              "ENABLED",
+              "DISABLED",
+              "REMOVED"
+            ]
+          },
+          "registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "speed_ref": {
+            "$ref": "#/$defs/SpeedProviderRef"
+          },
+          "summon_parent_actor": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "actor_id",
+          "entity_ref",
+          "generation",
+          "registration_ordinal",
+          "controller",
+          "speed_ref",
+          "participation",
+          "entity_revision",
+          "summon_parent_actor",
+          "availability_provider_id",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "PositiveRational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "Rational": {
+        "additionalProperties": false,
+        "properties": {
+          "d": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "n": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "n",
+          "d"
+        ],
+        "type": "object"
+      },
+      "ReplayCommand": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "type": "object"
+          },
+          "command_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "expected_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "expected_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "SUBMIT_ACTION",
+              "SPEED_CHANGED",
+              "ADJUST_READINESS",
+              "INSERT_ACTION",
+              "SAFE_POINT",
+              "RELEASE_BARRIER",
+              "DEFEAT",
+              "DISABLE",
+              "REVIVE",
+              "REGISTER_ENTITY",
+              "REMOVE_ENTITY",
+              "STAGE_TRANSITION"
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "command_id",
+          "expected_revision",
+          "expected_hash",
+          "policy_hash",
+          "kind",
+          "arguments"
+        ],
+        "type": "object"
+      },
+      "SpeedProviderRef": {
+        "additionalProperties": false,
+        "properties": {
+          "authority": {
+            "$ref": "#/$defs/Authority"
+          },
+          "base_property_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "effective_provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "provider_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "base_property_key",
+          "effective_provider_id",
+          "provider_policy_hash",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "SpeedSample": {
+        "additionalProperties": false,
+        "properties": {
+          "input_state_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "observed_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "provider_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "value": {
+            "$ref": "#/$defs/PositiveRational"
+          }
+        },
+        "required": [
+          "value",
+          "provider_revision",
+          "observed_at",
+          "input_state_hash"
+        ],
+        "type": "object"
+      },
+      "StageBoundary": {
+        "additionalProperties": false,
+        "properties": {
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "pending_request_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "provider_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "stage_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "wave_index": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "stage_id",
+          "wave_index",
+          "provider_id",
+          "pending_request_id",
+          "generation",
+          "policy_hash"
+        ],
+        "type": "object"
+      },
+      "Terminal": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "stage_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "RUNNING",
+              "WAVE_PENDING",
+              "VICTORY",
+              "DEFEAT",
+              "ABORTED"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "reason",
+          "stage_policy_hash"
+        ],
+        "type": "object"
+      },
+      "TurnBoundaryEvent": {
+        "additionalProperties": false,
+        "properties": {
+          "action_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "authority": {
+            "enum": [
+              "REFERENCE_MODEL"
+            ]
+          },
+          "boundary_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "duration_instance_cursor": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "emitted_listener_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "event_kind": {
+            "enum": [
+              "TURN_START",
+              "BEFORE_ACTION",
+              "AFTER_ACTION",
+              "TURN_END",
+              "DURATION_PROGRESS",
+              "EXPIRY_CHECK"
+            ]
+          },
+          "event_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "listener_policy_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "normal_turn_index": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "owner_actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "r15_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reference_event_key": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PENDING",
+              "DISPATCHED",
+              "DRAINING",
+              "COMMITTED"
+            ]
+          },
+          "turn_id": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "boundary_id",
+          "turn_id",
+          "event_kind",
+          "reference_event_key",
+          "owner_actor_id",
+          "action_actor_id",
+          "normal_turn_index",
+          "event_ordinal",
+          "status",
+          "r15_root_id",
+          "listener_policy_hash",
+          "emitted_listener_ids",
+          "duration_instance_cursor",
+          "authority"
+        ],
+        "type": "object"
+      },
+      "TurnQueueEntry": {
+        "additionalProperties": false,
+        "properties": {
+          "actor_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "NORMAL_TURN",
+              "EXTRA_TURN",
+              "INSERTED_ACTION",
+              "FOLLOW_UP_ACTION",
+              "ULTIMATE_INTERRUPT",
+              "FORCED_ACTION"
+            ]
+          },
+          "due_at": {
+            "$ref": "#/$defs/NonnegativeRational"
+          },
+          "enqueue_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "entry_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "generation": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "initiative_revision": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "insertion_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "priority": {
+            "type": "integer"
+          },
+          "registration_ordinal": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "entry_id",
+          "actor_id",
+          "generation",
+          "category",
+          "due_at",
+          "priority",
+          "registration_ordinal",
+          "enqueue_ordinal",
+          "initiative_revision",
+          "insertion_id"
+        ],
+        "type": "object"
+      },
+      "TypedFailure": {
+        "additionalProperties": false,
+        "properties": {
+          "action_root_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "code": {
+            "enum": [
+              "INITIATIVE_INPUT_MISSING",
+              "SPEED_PROVIDER_MISSING",
+              "TURN_OWNER_UNKNOWN",
+              "AV_REFERENCE_POLICY_MISSING",
+              "NATIVE_ORDER_UNKNOWN",
+              "INTERRUPT_POLICY_MISSING",
+              "TURN_BOUNDARY_EVENT_UNKNOWN",
+              "ENTITY_STATE_UNRESOLVED",
+              "ACTION_NOT_COMPLETE",
+              "SEMANTIC_GAP"
+            ]
+          },
+          "evidence_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "input_state_hash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "operation": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "required_policy_or_input": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "resume_token": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "turn_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "evidence_ids",
+          "operation",
+          "actor_id",
+          "turn_id",
+          "action_root_id",
+          "resume_token",
+          "input_state_hash",
+          "required_policy_or_input"
+        ],
+        "type": "object"
+      }
+    },
+    "$id": "urn:hsr:r21:turn-state:1",
+    "$ref": "#/$defs/BattleTurnState",
+    "$schema": "https://json-schema.org/draft/2020-12/schema"
+  },
+  "state_storage": "BehaviorBattleState.mechanics[\"battle_turn_v1\"] contains BattleTurnState; absent key preserves existing callers",
+  "verdict": "TRUE_TURN_AV_CONTRACT_READY"
+}

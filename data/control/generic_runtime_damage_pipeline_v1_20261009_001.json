@@ -1,0 +1,2043 @@
+{
+  "amount_modification": "exact callback hash + explicit event payload/request ID + serialized R17 listener aggregation",
+  "branch": "terra/implementation",
+  "budget_suspension": "pending transaction and callbacks serialize/clone/restore for resumption",
+  "change_request": "CR-R18-DAMAGE-HP-SETTLEMENT-20261009-001",
+  "event_checkpoint": {
+    "callback_authority": "EXPLICIT_SYNTHETIC_SANDBOX_REFERENCE",
+    "category": "EXPLICIT_DAMAGE_EVENT_REFERENCE_CHECKPOINT",
+    "clone_restore": "PASS",
+    "damage_node_replaced": false,
+    "listener_authority": "EXPLICIT_SYNTHETIC_SANDBOX_REFERENCE",
+    "metrics": {
+      "abilities_invoked": 0,
+      "barriers_encountered": 0,
+      "callbacks_completed": 1,
+      "child_abilities_completed": 0,
+      "damage_operations_attempted": 1,
+      "damage_operations_committed": 1,
+      "events_dispatched": 1,
+      "hp_mutations": 1,
+      "logical_time_advances": 0,
+      "modifier_callbacks_completed": 1,
+      "modifier_callbacks_invoked": 1,
+      "tasks_completed": 14,
+      "tasks_reached": 14
+    },
+    "native_correctness": false,
+    "real_source_root": "Avatar_AventurineW_00_Skill01_Phase02",
+    "replay": "PASS",
+    "settlements": [
+      {
+        "amount_changes": [
+          {
+            "after": 214748364800,
+            "before": 171798691840,
+            "callback": {
+              "authority": {
+                "evidence_level": "SANDBOX_EXTENSION",
+                "ledger_refs": [],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "REFERENCE_MODEL",
+                "source_artifact": "R18_EXPLICIT_AMOUNT_CALLBACK",
+                "source_pointer": "",
+                "source_sha256": "",
+                "source_version": "r18-reference"
+              },
+              "kind": "TaskIR",
+              "node_id": "explicit_amount_callback",
+              "op": "reference_damage_amount_modify",
+              "payload": {
+                "value": {
+                  "authority": {
+                    "evidence_level": "SANDBOX_EXTENSION",
+                    "ledger_refs": [],
+                    "native_method_refs": [],
+                    "oracle_status": "RUNTIME_ORACLE_PENDING",
+                    "semantic_status": "REFERENCE_MODEL",
+                    "source_artifact": "R18_EXPLICIT_AMOUNT_CALLBACK",
+                    "source_pointer": "",
+                    "source_sha256": "",
+                    "source_version": "r18-reference"
+                  },
+                  "kind": "ExpressionIR",
+                  "node_id": "explicit_callback_operand",
+                  "op": "literal",
+                  "payload": {
+                    "raw": 42949672960
+                  }
+                }
+              }
+            },
+            "event_payload": {
+              "amount_raw": 171798691840,
+              "attacker": "a",
+              "damage_request_id": "damage:1",
+              "damage_stage": "DAMAGE_AMOUNT_MODIFICATION",
+              "reference_policy_id": "r18_damage_hp_reference_v1",
+              "target": "b"
+            },
+            "policy": {
+              "aggregation": "SERIALIZED_R17_LISTENER_ORDER_REFERENCE",
+              "authority": "REFERENCE_MODEL",
+              "operation": "add"
+            }
+          }
+        ],
+        "amount_raw": 214748364800,
+        "applied_hp_delta_raw": -214748364800,
+        "attacker": "a",
+        "boundary": "REFERENCE_DAMAGE_HP_SETTLED",
+        "callbacks_processed": [
+          "callback:14"
+        ],
+        "effective_amount_raw": 214748364800,
+        "evaluated_amount_raw": 171798691840,
+        "evaluated_operands": [
+          {
+            "expression": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "dynamic_float"
+                ],
+                "native_method_refs": [
+                  "0x1E196300",
+                  "0xF0EA100"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+              "op": "identity",
+              "payload": {
+                "arg": {
+                  "authority": {
+                    "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                    "ledger_refs": [
+                      "dynamic_float"
+                    ],
+                    "native_method_refs": [
+                      "0x1E196300",
+                      "0xF0EA100"
+                    ],
+                    "oracle_status": "RUNTIME_ORACLE_PENDING",
+                    "semantic_status": "STRUCTURE_ONLY",
+                    "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                    "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                    "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                    "source_version": "4.6.51"
+                  },
+                  "kind": "ExpressionIR",
+                  "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0/token/0",
+                  "op": "lookup",
+                  "payload": {
+                    "key": "-1126825319",
+                    "scope": "supplied"
+                  }
+                },
+                "serialized_program": {
+                  "end": 9995865,
+                  "int32_operands": [
+                    -1126825319
+                  ],
+                  "int64_operands": [],
+                  "reader": "0x1e58a230",
+                  "start": 9995853,
+                  "tag": 1,
+                  "token_ids": [
+                    1,
+                    0,
+                    17
+                  ],
+                  "type": "RPG.GameCore.DynamicFloat"
+                },
+                "serialized_type": "RPG.GameCore.DynamicFloat"
+              }
+            },
+            "mask": 4,
+            "raw": 17179869184
+          }
+        ],
+        "events_processed": [
+          {
+            "event_frame_id": "event:13",
+            "payload": {
+              "amount_raw": 171798691840,
+              "attacker": "a",
+              "damage_request_id": "damage:1",
+              "damage_stage": "DAMAGE_AMOUNT_MODIFICATION",
+              "reference_policy_id": "r18_damage_hp_reference_v1",
+              "target": "b"
+            },
+            "status": "COMPLETE"
+          }
+        ],
+        "evidence_level": "REFERENCE_MODEL",
+        "hp_after_raw": 644245094400,
+        "hp_before_raw": 858993459200,
+        "overkill_raw": 0,
+        "pending_callbacks": [],
+        "property_inputs": [
+          {
+            "entity": "a",
+            "key": "reference_atk",
+            "raw": 85899345920
+          }
+        ],
+        "reference_policy_id": "r18_damage_hp_reference_v1",
+        "request": {
+          "authority": {
+            "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+            "ledger_refs": [],
+            "native_method_refs": [
+              "0x1E525850"
+            ],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "CONDITIONAL_REFERENCE",
+            "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+            "source_pointer": "/record/task_list/1",
+            "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+            "source_version": "4.6.51"
+          },
+          "kind": "DamageRequestIR",
+          "node_id": "damage:1",
+          "op": "damage_request",
+          "payload": {
+            "amount_expression": {
+              "args": [
+                {
+                  "entity": "ATTACKER_REFERENCE",
+                  "key": "reference_atk",
+                  "op": "property"
+                },
+                {
+                  "mask": 4,
+                  "op": "source_expression"
+                }
+              ],
+              "op": "mul"
+            },
+            "attack_data": {
+              "child": {
+                "bitmap": 5515006480581,
+                "end": 9995906,
+                "fields": [
+                  {
+                    "end": 9995853,
+                    "mask": 1,
+                    "start": 9995851,
+                    "values": [
+                      {
+                        "bitmap": 2,
+                        "end": 9995853,
+                        "fields": [
+                          {
+                            "end": 9995853,
+                            "mask": 2,
+                            "start": 9995852,
+                            "values": [
+                              32
+                            ]
+                          }
+                        ],
+                        "reader": "0x1E346A80",
+                        "start": 9995851,
+                        "type": "RPG.GameCore.AttackDamageTypeConfig"
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995865,
+                    "mask": 4,
+                    "start": 9995853,
+                    "values": [
+                      {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                        "op": "identity",
+                        "payload": {
+                          "arg": {
+                            "authority": {
+                              "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                              "ledger_refs": [
+                                "dynamic_float"
+                              ],
+                              "native_method_refs": [
+                                "0x1E196300",
+                                "0xF0EA100"
+                              ],
+                              "oracle_status": "RUNTIME_ORACLE_PENDING",
+                              "semantic_status": "STRUCTURE_ONLY",
+                              "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                              "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                              "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                              "source_version": "4.6.51"
+                            },
+                            "kind": "ExpressionIR",
+                            "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0/token/0",
+                            "op": "lookup",
+                            "payload": {
+                              "key": "-1126825319",
+                              "scope": "supplied"
+                            }
+                          },
+                          "serialized_program": {
+                            "end": 9995865,
+                            "int32_operands": [
+                              -1126825319
+                            ],
+                            "int64_operands": [],
+                            "reader": "0x1e58a230",
+                            "start": 9995853,
+                            "tag": 1,
+                            "token_ids": [
+                              1,
+                              0,
+                              17
+                            ],
+                            "type": "RPG.GameCore.DynamicFloat"
+                          },
+                          "serialized_type": "RPG.GameCore.DynamicFloat"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995877,
+                    "mask": 64,
+                    "start": 9995865,
+                    "values": [
+                      {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                        "op": "identity",
+                        "payload": {
+                          "arg": {
+                            "authority": {
+                              "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                              "ledger_refs": [
+                                "dynamic_float"
+                              ],
+                              "native_method_refs": [
+                                "0x1E196300",
+                                "0xF0EA100"
+                              ],
+                              "oracle_status": "RUNTIME_ORACLE_PENDING",
+                              "semantic_status": "STRUCTURE_ONLY",
+                              "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                              "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                              "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                              "source_version": "4.6.51"
+                            },
+                            "kind": "ExpressionIR",
+                            "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0/token/0",
+                            "op": "lookup",
+                            "payload": {
+                              "key": "1659254037",
+                              "scope": "supplied"
+                            }
+                          },
+                          "serialized_program": {
+                            "end": 9995877,
+                            "int32_operands": [
+                              1659254037
+                            ],
+                            "int64_operands": [],
+                            "reader": "0x1e58a230",
+                            "start": 9995865,
+                            "tag": 1,
+                            "token_ids": [
+                              1,
+                              0,
+                              17
+                            ],
+                            "type": "RPG.GameCore.DynamicFloat"
+                          },
+                          "serialized_type": "RPG.GameCore.DynamicFloat"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995883,
+                    "mask": 128,
+                    "start": 9995877,
+                    "values": [
+                      {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                        "op": "literal",
+                        "payload": {
+                          "numeric_policy": "FIXED_MODE0_REFERENCE",
+                          "raw": 2147483650,
+                          "serialized_type": "RPG.GameCore.DynamicFloat"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995889,
+                    "mask": 4096,
+                    "start": 9995883,
+                    "values": [
+                      {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                        "op": "literal",
+                        "payload": {
+                          "numeric_policy": "FIXED_MODE0_REFERENCE",
+                          "raw": 8589934592,
+                          "serialized_type": "RPG.GameCore.DynamicFloat"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995890,
+                    "mask": 32768,
+                    "start": 9995889,
+                    "values": [
+                      1
+                    ]
+                  },
+                  {
+                    "end": 9995894,
+                    "mask": 268435456,
+                    "start": 9995890,
+                    "values": [
+                      "Hit"
+                    ]
+                  },
+                  {
+                    "end": 9995898,
+                    "mask": 17179869184,
+                    "start": 9995894,
+                    "values": [
+                      {
+                        "bits": 1065353216,
+                        "end": 9995898,
+                        "kind": "float32_storage",
+                        "raw_hex": "0000803f",
+                        "reader": "0x1e151ae0",
+                        "start": 9995894
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995902,
+                    "mask": 1099511627776,
+                    "start": 9995898,
+                    "values": [
+                      {
+                        "bits": 1045220557,
+                        "end": 9995902,
+                        "kind": "float32_storage",
+                        "raw_hex": "cdcc4c3e",
+                        "reader": "0x1e151ae0",
+                        "start": 9995898
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995906,
+                    "mask": 4398046511104,
+                    "start": 9995902,
+                    "values": [
+                      {
+                        "bits": 1109393408,
+                        "end": 9995906,
+                        "kind": "float32_storage",
+                        "raw_hex": "00002042",
+                        "reader": "0x1e151ae0",
+                        "start": 9995902
+                      }
+                    ]
+                  }
+                ],
+                "reader": "0x1E347B80",
+                "start": 9995844,
+                "type": "RPG.GameCore.AttackData"
+              },
+              "discriminator": 0,
+              "end": 9995906,
+              "fields": [],
+              "reader": "0x1E3476A0",
+              "start": 9995843,
+              "type": "RPG.GameCore.AttackData"
+            },
+            "attacker": "a",
+            "compiled_attack_fields": [
+              {
+                "end": 9995853,
+                "mask": 1,
+                "start": 9995851,
+                "values": [
+                  {
+                    "bitmap": 2,
+                    "end": 9995853,
+                    "fields": [
+                      {
+                        "end": 9995853,
+                        "mask": 2,
+                        "start": 9995852,
+                        "values": [
+                          32
+                        ]
+                      }
+                    ],
+                    "reader": "0x1E346A80",
+                    "start": 9995851,
+                    "type": "RPG.GameCore.AttackDamageTypeConfig"
+                  }
+                ]
+              },
+              {
+                "end": 9995865,
+                "mask": 4,
+                "start": 9995853,
+                "values": [
+                  {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "dynamic_float"
+                      ],
+                      "native_method_refs": [
+                        "0x1E196300",
+                        "0xF0EA100"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "STRUCTURE_ONLY",
+                      "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                      "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                      "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "ExpressionIR",
+                    "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                    "op": "identity",
+                    "payload": {
+                      "arg": {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0/token/0",
+                        "op": "lookup",
+                        "payload": {
+                          "key": "-1126825319",
+                          "scope": "supplied"
+                        }
+                      },
+                      "serialized_program": {
+                        "end": 9995865,
+                        "int32_operands": [
+                          -1126825319
+                        ],
+                        "int64_operands": [],
+                        "reader": "0x1e58a230",
+                        "start": 9995853,
+                        "tag": 1,
+                        "token_ids": [
+                          1,
+                          0,
+                          17
+                        ],
+                        "type": "RPG.GameCore.DynamicFloat"
+                      },
+                      "serialized_type": "RPG.GameCore.DynamicFloat"
+                    }
+                  }
+                ]
+              },
+              {
+                "end": 9995877,
+                "mask": 64,
+                "start": 9995865,
+                "values": [
+                  {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "dynamic_float"
+                      ],
+                      "native_method_refs": [
+                        "0x1E196300",
+                        "0xF0EA100"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "STRUCTURE_ONLY",
+                      "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                      "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                      "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "ExpressionIR",
+                    "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                    "op": "identity",
+                    "payload": {
+                      "arg": {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                          "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0/token/0",
+                        "op": "lookup",
+                        "payload": {
+                          "key": "1659254037",
+                          "scope": "supplied"
+                        }
+                      },
+                      "serialized_program": {
+                        "end": 9995877,
+                        "int32_operands": [
+                          1659254037
+                        ],
+                        "int64_operands": [],
+                        "reader": "0x1e58a230",
+                        "start": 9995865,
+                        "tag": 1,
+                        "token_ids": [
+                          1,
+                          0,
+                          17
+                        ],
+                        "type": "RPG.GameCore.DynamicFloat"
+                      },
+                      "serialized_type": "RPG.GameCore.DynamicFloat"
+                    }
+                  }
+                ]
+              },
+              {
+                "end": 9995883,
+                "mask": 128,
+                "start": 9995877,
+                "values": [
+                  {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "dynamic_float"
+                      ],
+                      "native_method_refs": [
+                        "0x1E196300",
+                        "0xF0EA100"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "STRUCTURE_ONLY",
+                      "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                      "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                      "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "ExpressionIR",
+                    "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                    "op": "literal",
+                    "payload": {
+                      "numeric_policy": "FIXED_MODE0_REFERENCE",
+                      "raw": 2147483650,
+                      "serialized_type": "RPG.GameCore.DynamicFloat"
+                    }
+                  }
+                ]
+              },
+              {
+                "end": 9995889,
+                "mask": 4096,
+                "start": 9995883,
+                "values": [
+                  {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "dynamic_float"
+                      ],
+                      "native_method_refs": [
+                        "0x1E196300",
+                        "0xF0EA100"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "STRUCTURE_ONLY",
+                      "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                      "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                      "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "ExpressionIR",
+                    "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                    "op": "literal",
+                    "payload": {
+                      "numeric_policy": "FIXED_MODE0_REFERENCE",
+                      "raw": 8589934592,
+                      "serialized_type": "RPG.GameCore.DynamicFloat"
+                    }
+                  }
+                ]
+              },
+              {
+                "end": 9995890,
+                "mask": 32768,
+                "start": 9995889,
+                "values": [
+                  1
+                ]
+              },
+              {
+                "end": 9995894,
+                "mask": 268435456,
+                "start": 9995890,
+                "values": [
+                  "Hit"
+                ]
+              },
+              {
+                "end": 9995898,
+                "mask": 17179869184,
+                "start": 9995894,
+                "values": [
+                  {
+                    "bits": 1065353216,
+                    "end": 9995898,
+                    "kind": "float32_storage",
+                    "raw_hex": "0000803f",
+                    "reader": "0x1e151ae0",
+                    "start": 9995894
+                  }
+                ]
+              },
+              {
+                "end": 9995902,
+                "mask": 1099511627776,
+                "start": 9995898,
+                "values": [
+                  {
+                    "bits": 1045220557,
+                    "end": 9995902,
+                    "kind": "float32_storage",
+                    "raw_hex": "cdcc4c3e",
+                    "reader": "0x1e151ae0",
+                    "start": 9995898
+                  }
+                ]
+              },
+              {
+                "end": 9995906,
+                "mask": 4398046511104,
+                "start": 9995902,
+                "values": [
+                  {
+                    "bits": 1109393408,
+                    "end": 9995906,
+                    "kind": "float32_storage",
+                    "raw_hex": "00002042",
+                    "reader": "0x1e151ae0",
+                    "start": 9995902
+                  }
+                ]
+              }
+            ],
+            "damage_kind": null,
+            "ordered_targets": [
+              "b"
+            ],
+            "original_caster": "a",
+            "ownership": {
+              "ability_instance_id": "ability:2",
+              "action_root_id": "action:1",
+              "callback_owner": null,
+              "task_frame_id": "task:6"
+            },
+            "per_hit": null,
+            "raw_operands": {
+              "concrete_type": "RPG.GameCore.DamageByAttackProperty",
+              "discriminator": null,
+              "end": 9995908,
+              "kind": "TaskConfig",
+              "reader_method": {
+                "rva": "0x1E525850"
+              },
+              "start": 9995820,
+              "structure": {
+                "bitmap": 46,
+                "end": 9995908,
+                "fields": [
+                  {
+                    "end": 9995843,
+                    "mask": 2,
+                    "start": 9995821,
+                    "values": [
+                      {
+                        "child": {
+                          "child": {
+                            "bitmap": 1,
+                            "end": 9995843,
+                            "reader": "0x1eb28590",
+                            "start": 9995822,
+                            "type": "RPG.GameCore.TargetAlias",
+                            "value": "AbilityTargetEntity"
+                          },
+                          "end": 9995843,
+                          "fields": [],
+                          "reader": "0x1E7006A0",
+                          "start": 9995822,
+                          "type": ".BKLODCFCAED"
+                        },
+                        "discriminator": 12,
+                        "end": 9995843,
+                        "fields": [],
+                        "reader": "0x1E703000",
+                        "start": 9995821,
+                        "type": ".BKLODCFCAED"
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995906,
+                    "mask": 4,
+                    "start": 9995843,
+                    "values": [
+                      {
+                        "child": {
+                          "bitmap": 5515006480581,
+                          "end": 9995906,
+                          "fields": [
+                            {
+                              "end": 9995853,
+                              "mask": 1,
+                              "start": 9995851,
+                              "values": [
+                                {
+                                  "bitmap": 2,
+                                  "end": 9995853,
+                                  "fields": [
+                                    {
+                                      "end": 9995853,
+                                      "mask": 2,
+                                      "start": 9995852,
+                                      "values": [
+                                        {
+                                          "kind": "enum",
+                                          "raw": 64,
+                                          "type": {
+                                            "file_offset": 27331618,
+                                            "index": 10421,
+                                            "method_count": 0,
+                                            "method_start": 4294967295,
+                                            "name": "AttackDamageType",
+                                            "namespace": "RPG.GameCore",
+                                            "vtable_start": 78
+                                          },
+                                          "value": 32
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "reader": "0x1E346A80",
+                                  "start": 9995851,
+                                  "type": "RPG.GameCore.AttackDamageTypeConfig"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995865,
+                              "mask": 4,
+                              "start": 9995853,
+                              "values": [
+                                {
+                                  "end": 9995865,
+                                  "int32_operands": [
+                                    -1126825319
+                                  ],
+                                  "int64_operands": [],
+                                  "reader": "0x1e58a230",
+                                  "start": 9995853,
+                                  "tag": 1,
+                                  "token_ids": [
+                                    1,
+                                    0,
+                                    17
+                                  ],
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995877,
+                              "mask": 64,
+                              "start": 9995865,
+                              "values": [
+                                {
+                                  "end": 9995877,
+                                  "int32_operands": [
+                                    1659254037
+                                  ],
+                                  "int64_operands": [],
+                                  "reader": "0x1e58a230",
+                                  "start": 9995865,
+                                  "tag": 1,
+                                  "token_ids": [
+                                    1,
+                                    0,
+                                    17
+                                  ],
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995883,
+                              "mask": 128,
+                              "start": 9995877,
+                              "values": [
+                                {
+                                  "end": 9995883,
+                                  "reader": "0x1e58a230",
+                                  "signed_payload": {
+                                    "decoded_signed": "2147483650",
+                                    "raw": "4294967300"
+                                  },
+                                  "start": 9995877,
+                                  "tag": 0,
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995889,
+                              "mask": 4096,
+                              "start": 9995883,
+                              "values": [
+                                {
+                                  "end": 9995889,
+                                  "reader": "0x1e58a230",
+                                  "signed_payload": {
+                                    "decoded_signed": "8589934592",
+                                    "raw": "17179869184"
+                                  },
+                                  "start": 9995883,
+                                  "tag": 0,
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995890,
+                              "mask": 32768,
+                              "start": 9995889,
+                              "values": [
+                                {
+                                  "kind": "enum",
+                                  "raw": 2,
+                                  "type": {
+                                    "file_offset": 27331688,
+                                    "index": 10422,
+                                    "method_count": 0,
+                                    "method_start": 4294967295,
+                                    "name": "AttackType",
+                                    "namespace": "RPG.GameCore",
+                                    "vtable_start": 78
+                                  },
+                                  "value": 1
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995894,
+                              "mask": 268435456,
+                              "start": 9995890,
+                              "values": [
+                                {
+                                  "end": 9995894,
+                                  "kind": "string",
+                                  "start": 9995890,
+                                  "value": "Hit"
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995898,
+                              "mask": 17179869184,
+                              "start": 9995894,
+                              "values": [
+                                {
+                                  "bits": 1065353216,
+                                  "end": 9995898,
+                                  "kind": "float32_storage",
+                                  "raw_hex": "0000803f",
+                                  "reader": "0x1e151ae0",
+                                  "start": 9995894
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995902,
+                              "mask": 1099511627776,
+                              "start": 9995898,
+                              "values": [
+                                {
+                                  "bits": 1045220557,
+                                  "end": 9995902,
+                                  "kind": "float32_storage",
+                                  "raw_hex": "cdcc4c3e",
+                                  "reader": "0x1e151ae0",
+                                  "start": 9995898
+                                }
+                              ]
+                            },
+                            {
+                              "end": 9995906,
+                              "mask": 4398046511104,
+                              "start": 9995902,
+                              "values": [
+                                {
+                                  "bits": 1109393408,
+                                  "end": 9995906,
+                                  "kind": "float32_storage",
+                                  "raw_hex": "00002042",
+                                  "reader": "0x1e151ae0",
+                                  "start": 9995902
+                                }
+                              ]
+                            }
+                          ],
+                          "reader": "0x1E347B80",
+                          "start": 9995844,
+                          "type": "RPG.GameCore.AttackData"
+                        },
+                        "discriminator": 0,
+                        "end": 9995906,
+                        "fields": [],
+                        "reader": "0x1E3476A0",
+                        "start": 9995843,
+                        "type": "RPG.GameCore.AttackData"
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995907,
+                    "mask": 8,
+                    "start": 9995906,
+                    "values": [
+                      {
+                        "kind": "bool",
+                        "value": 1
+                      }
+                    ]
+                  },
+                  {
+                    "end": 9995908,
+                    "mask": 32,
+                    "start": 9995907,
+                    "values": [
+                      {
+                        "kind": "bool",
+                        "value": 1
+                      }
+                    ]
+                  }
+                ],
+                "reader": "0x1E525850",
+                "start": 9995820,
+                "type": "RPG.GameCore.DamageByAttackProperty"
+              }
+            },
+            "reference_policy_hash": "6c72c885fb1ff2ef0c463b3c983fdc7cb34adb40f10818090adfb8e5df0d767b",
+            "reference_policy_id": "r18_damage_hp_reference_v1",
+            "source_ability": "ability:isolated_real_damage",
+            "source_task": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [],
+                "native_method_refs": [
+                  "0x1E525850"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                "source_pointer": "/record/task_list/1",
+                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                "source_version": "4.6.51"
+              },
+              "kind": "UnsupportedSemanticIR",
+              "node_id": "/record/task_list/1",
+              "op": "RPG.GameCore.DamageByAttackProperty",
+              "payload": {
+                "decoded": {
+                  "concrete_type": "RPG.GameCore.DamageByAttackProperty",
+                  "discriminator": null,
+                  "end": 9995908,
+                  "kind": "TaskConfig",
+                  "reader_method": {
+                    "rva": "0x1E525850"
+                  },
+                  "start": 9995820,
+                  "structure": {
+                    "bitmap": 46,
+                    "end": 9995908,
+                    "fields": [
+                      {
+                        "end": 9995843,
+                        "mask": 2,
+                        "start": 9995821,
+                        "values": [
+                          {
+                            "child": {
+                              "child": {
+                                "bitmap": 1,
+                                "end": 9995843,
+                                "reader": "0x1eb28590",
+                                "start": 9995822,
+                                "type": "RPG.GameCore.TargetAlias",
+                                "value": "AbilityTargetEntity"
+                              },
+                              "end": 9995843,
+                              "fields": [],
+                              "reader": "0x1E7006A0",
+                              "start": 9995822,
+                              "type": ".BKLODCFCAED"
+                            },
+                            "discriminator": 12,
+                            "end": 9995843,
+                            "fields": [],
+                            "reader": "0x1E703000",
+                            "start": 9995821,
+                            "type": ".BKLODCFCAED"
+                          }
+                        ]
+                      },
+                      {
+                        "end": 9995906,
+                        "mask": 4,
+                        "start": 9995843,
+                        "values": [
+                          {
+                            "child": {
+                              "bitmap": 5515006480581,
+                              "end": 9995906,
+                              "fields": [
+                                {
+                                  "end": 9995853,
+                                  "mask": 1,
+                                  "start": 9995851,
+                                  "values": [
+                                    {
+                                      "bitmap": 2,
+                                      "end": 9995853,
+                                      "fields": [
+                                        {
+                                          "end": 9995853,
+                                          "mask": 2,
+                                          "start": 9995852,
+                                          "values": [
+                                            {
+                                              "kind": "enum",
+                                              "raw": 64,
+                                              "type": {
+                                                "file_offset": 27331618,
+                                                "index": 10421,
+                                                "method_count": 0,
+                                                "method_start": 4294967295,
+                                                "name": "AttackDamageType",
+                                                "namespace": "RPG.GameCore",
+                                                "vtable_start": 78
+                                              },
+                                              "value": 32
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "reader": "0x1E346A80",
+                                      "start": 9995851,
+                                      "type": "RPG.GameCore.AttackDamageTypeConfig"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995865,
+                                  "mask": 4,
+                                  "start": 9995853,
+                                  "values": [
+                                    {
+                                      "end": 9995865,
+                                      "int32_operands": [
+                                        -1126825319
+                                      ],
+                                      "int64_operands": [],
+                                      "reader": "0x1e58a230",
+                                      "start": 9995853,
+                                      "tag": 1,
+                                      "token_ids": [
+                                        1,
+                                        0,
+                                        17
+                                      ],
+                                      "type": "RPG.GameCore.DynamicFloat"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995877,
+                                  "mask": 64,
+                                  "start": 9995865,
+                                  "values": [
+                                    {
+                                      "end": 9995877,
+                                      "int32_operands": [
+                                        1659254037
+                                      ],
+                                      "int64_operands": [],
+                                      "reader": "0x1e58a230",
+                                      "start": 9995865,
+                                      "tag": 1,
+                                      "token_ids": [
+                                        1,
+                                        0,
+                                        17
+                                      ],
+                                      "type": "RPG.GameCore.DynamicFloat"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995883,
+                                  "mask": 128,
+                                  "start": 9995877,
+                                  "values": [
+                                    {
+                                      "end": 9995883,
+                                      "reader": "0x1e58a230",
+                                      "signed_payload": {
+                                        "decoded_signed": "2147483650",
+                                        "raw": "4294967300"
+                                      },
+                                      "start": 9995877,
+                                      "tag": 0,
+                                      "type": "RPG.GameCore.DynamicFloat"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995889,
+                                  "mask": 4096,
+                                  "start": 9995883,
+                                  "values": [
+                                    {
+                                      "end": 9995889,
+                                      "reader": "0x1e58a230",
+                                      "signed_payload": {
+                                        "decoded_signed": "8589934592",
+                                        "raw": "17179869184"
+                                      },
+                                      "start": 9995883,
+                                      "tag": 0,
+                                      "type": "RPG.GameCore.DynamicFloat"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995890,
+                                  "mask": 32768,
+                                  "start": 9995889,
+                                  "values": [
+                                    {
+                                      "kind": "enum",
+                                      "raw": 2,
+                                      "type": {
+                                        "file_offset": 27331688,
+                                        "index": 10422,
+                                        "method_count": 0,
+                                        "method_start": 4294967295,
+                                        "name": "AttackType",
+                                        "namespace": "RPG.GameCore",
+                                        "vtable_start": 78
+                                      },
+                                      "value": 1
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995894,
+                                  "mask": 268435456,
+                                  "start": 9995890,
+                                  "values": [
+                                    {
+                                      "end": 9995894,
+                                      "kind": "string",
+                                      "start": 9995890,
+                                      "value": "Hit"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995898,
+                                  "mask": 17179869184,
+                                  "start": 9995894,
+                                  "values": [
+                                    {
+                                      "bits": 1065353216,
+                                      "end": 9995898,
+                                      "kind": "float32_storage",
+                                      "raw_hex": "0000803f",
+                                      "reader": "0x1e151ae0",
+                                      "start": 9995894
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995902,
+                                  "mask": 1099511627776,
+                                  "start": 9995898,
+                                  "values": [
+                                    {
+                                      "bits": 1045220557,
+                                      "end": 9995902,
+                                      "kind": "float32_storage",
+                                      "raw_hex": "cdcc4c3e",
+                                      "reader": "0x1e151ae0",
+                                      "start": 9995898
+                                    }
+                                  ]
+                                },
+                                {
+                                  "end": 9995906,
+                                  "mask": 4398046511104,
+                                  "start": 9995902,
+                                  "values": [
+                                    {
+                                      "bits": 1109393408,
+                                      "end": 9995906,
+                                      "kind": "float32_storage",
+                                      "raw_hex": "00002042",
+                                      "reader": "0x1e151ae0",
+                                      "start": 9995902
+                                    }
+                                  ]
+                                }
+                              ],
+                              "reader": "0x1E347B80",
+                              "start": 9995844,
+                              "type": "RPG.GameCore.AttackData"
+                            },
+                            "discriminator": 0,
+                            "end": 9995906,
+                            "fields": [],
+                            "reader": "0x1E3476A0",
+                            "start": 9995843,
+                            "type": "RPG.GameCore.AttackData"
+                          }
+                        ]
+                      },
+                      {
+                        "end": 9995907,
+                        "mask": 8,
+                        "start": 9995906,
+                        "values": [
+                          {
+                            "kind": "bool",
+                            "value": 1
+                          }
+                        ]
+                      },
+                      {
+                        "end": 9995908,
+                        "mask": 32,
+                        "start": 9995907,
+                        "values": [
+                          {
+                            "kind": "bool",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    ],
+                    "reader": "0x1E525850",
+                    "start": 9995820,
+                    "type": "RPG.GameCore.DamageByAttackProperty"
+                  }
+                },
+                "discriminator": null,
+                "field_bindings_status": "UNRESOLVED",
+                "fields": {
+                  "unbound_bit_0": {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "target_alias"
+                      ],
+                      "native_method_refs": [
+                        "0x1eb28590",
+                        "0xBD01920",
+                        "0xC32D2C0",
+                        "0xC32D420"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "CONDITIONAL_REFERENCE",
+                      "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                      "source_pointer": "/record/task_list/1/structure/fields/0/values/0",
+                      "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "TargetSelectorIR",
+                    "node_id": "/record/task_list/1/structure/fields/0/values/0",
+                    "op": "RPG.GameCore.TargetAlias",
+                    "payload": {
+                      "alias": "AbilityTargetEntity",
+                      "discriminator": 12,
+                      "field_bindings_status": "DECODED_FIELD_NAMES",
+                      "fields": {},
+                      "reference_binding": {
+                        "authority": "CONDITIONAL_REFERENCE",
+                        "native_field_names_recovered": false,
+                        "policy_required": "r13_reference_v1",
+                        "roles": {},
+                        "unknown_slots": []
+                      },
+                      "span": [
+                        9995822,
+                        9995843
+                      ],
+                      "task_type": "RPG.GameCore.TargetAlias"
+                    }
+                  },
+                  "unbound_bit_1": {
+                    "child": {
+                      "bitmap": 5515006480581,
+                      "end": 9995906,
+                      "fields": [
+                        {
+                          "end": 9995853,
+                          "mask": 1,
+                          "start": 9995851,
+                          "values": [
+                            {
+                              "bitmap": 2,
+                              "end": 9995853,
+                              "fields": [
+                                {
+                                  "end": 9995853,
+                                  "mask": 2,
+                                  "start": 9995852,
+                                  "values": [
+                                    32
+                                  ]
+                                }
+                              ],
+                              "reader": "0x1E346A80",
+                              "start": 9995851,
+                              "type": "RPG.GameCore.AttackDamageTypeConfig"
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995865,
+                          "mask": 4,
+                          "start": 9995853,
+                          "values": [
+                            {
+                              "authority": {
+                                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                "ledger_refs": [
+                                  "dynamic_float"
+                                ],
+                                "native_method_refs": [
+                                  "0x1E196300",
+                                  "0xF0EA100"
+                                ],
+                                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                "semantic_status": "STRUCTURE_ONLY",
+                                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                "source_version": "4.6.51"
+                              },
+                              "kind": "ExpressionIR",
+                              "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                              "op": "identity",
+                              "payload": {
+                                "arg": {
+                                  "authority": {
+                                    "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                    "ledger_refs": [
+                                      "dynamic_float"
+                                    ],
+                                    "native_method_refs": [
+                                      "0x1E196300",
+                                      "0xF0EA100"
+                                    ],
+                                    "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                    "semantic_status": "STRUCTURE_ONLY",
+                                    "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                    "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0",
+                                    "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                    "source_version": "4.6.51"
+                                  },
+                                  "kind": "ExpressionIR",
+                                  "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/1/values/0/token/0",
+                                  "op": "lookup",
+                                  "payload": {
+                                    "key": "-1126825319",
+                                    "scope": "supplied"
+                                  }
+                                },
+                                "serialized_program": {
+                                  "end": 9995865,
+                                  "int32_operands": [
+                                    -1126825319
+                                  ],
+                                  "int64_operands": [],
+                                  "reader": "0x1e58a230",
+                                  "start": 9995853,
+                                  "tag": 1,
+                                  "token_ids": [
+                                    1,
+                                    0,
+                                    17
+                                  ],
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                },
+                                "serialized_type": "RPG.GameCore.DynamicFloat"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995877,
+                          "mask": 64,
+                          "start": 9995865,
+                          "values": [
+                            {
+                              "authority": {
+                                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                "ledger_refs": [
+                                  "dynamic_float"
+                                ],
+                                "native_method_refs": [
+                                  "0x1E196300",
+                                  "0xF0EA100"
+                                ],
+                                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                "semantic_status": "STRUCTURE_ONLY",
+                                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                "source_version": "4.6.51"
+                              },
+                              "kind": "ExpressionIR",
+                              "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                              "op": "identity",
+                              "payload": {
+                                "arg": {
+                                  "authority": {
+                                    "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                    "ledger_refs": [
+                                      "dynamic_float"
+                                    ],
+                                    "native_method_refs": [
+                                      "0x1E196300",
+                                      "0xF0EA100"
+                                    ],
+                                    "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                    "semantic_status": "STRUCTURE_ONLY",
+                                    "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                    "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0",
+                                    "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                    "source_version": "4.6.51"
+                                  },
+                                  "kind": "ExpressionIR",
+                                  "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/2/values/0/token/0",
+                                  "op": "lookup",
+                                  "payload": {
+                                    "key": "1659254037",
+                                    "scope": "supplied"
+                                  }
+                                },
+                                "serialized_program": {
+                                  "end": 9995877,
+                                  "int32_operands": [
+                                    1659254037
+                                  ],
+                                  "int64_operands": [],
+                                  "reader": "0x1e58a230",
+                                  "start": 9995865,
+                                  "tag": 1,
+                                  "token_ids": [
+                                    1,
+                                    0,
+                                    17
+                                  ],
+                                  "type": "RPG.GameCore.DynamicFloat"
+                                },
+                                "serialized_type": "RPG.GameCore.DynamicFloat"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995883,
+                          "mask": 128,
+                          "start": 9995877,
+                          "values": [
+                            {
+                              "authority": {
+                                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                "ledger_refs": [
+                                  "dynamic_float"
+                                ],
+                                "native_method_refs": [
+                                  "0x1E196300",
+                                  "0xF0EA100"
+                                ],
+                                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                "semantic_status": "STRUCTURE_ONLY",
+                                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                "source_version": "4.6.51"
+                              },
+                              "kind": "ExpressionIR",
+                              "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/3/values/0",
+                              "op": "literal",
+                              "payload": {
+                                "numeric_policy": "FIXED_MODE0_REFERENCE",
+                                "raw": 2147483650,
+                                "serialized_type": "RPG.GameCore.DynamicFloat"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995889,
+                          "mask": 4096,
+                          "start": 9995883,
+                          "values": [
+                            {
+                              "authority": {
+                                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                                "ledger_refs": [
+                                  "dynamic_float"
+                                ],
+                                "native_method_refs": [
+                                  "0x1E196300",
+                                  "0xF0EA100"
+                                ],
+                                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                                "semantic_status": "STRUCTURE_ONLY",
+                                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+                                "source_pointer": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                                "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+                                "source_version": "4.6.51"
+                              },
+                              "kind": "ExpressionIR",
+                              "node_id": "/record/task_list/1/structure/fields/1/values/0/child/fields/4/values/0",
+                              "op": "literal",
+                              "payload": {
+                                "numeric_policy": "FIXED_MODE0_REFERENCE",
+                                "raw": 8589934592,
+                                "serialized_type": "RPG.GameCore.DynamicFloat"
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995890,
+                          "mask": 32768,
+                          "start": 9995889,
+                          "values": [
+                            1
+                          ]
+                        },
+                        {
+                          "end": 9995894,
+                          "mask": 268435456,
+                          "start": 9995890,
+                          "values": [
+                            "Hit"
+                          ]
+                        },
+                        {
+                          "end": 9995898,
+                          "mask": 17179869184,
+                          "start": 9995894,
+                          "values": [
+                            {
+                              "bits": 1065353216,
+                              "end": 9995898,
+                              "kind": "float32_storage",
+                              "raw_hex": "0000803f",
+                              "reader": "0x1e151ae0",
+                              "start": 9995894
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995902,
+                          "mask": 1099511627776,
+                          "start": 9995898,
+                          "values": [
+                            {
+                              "bits": 1045220557,
+                              "end": 9995902,
+                              "kind": "float32_storage",
+                              "raw_hex": "cdcc4c3e",
+                              "reader": "0x1e151ae0",
+                              "start": 9995898
+                            }
+                          ]
+                        },
+                        {
+                          "end": 9995906,
+                          "mask": 4398046511104,
+                          "start": 9995902,
+                          "values": [
+                            {
+                              "bits": 1109393408,
+                              "end": 9995906,
+                              "kind": "float32_storage",
+                              "raw_hex": "00002042",
+                              "reader": "0x1e151ae0",
+                              "start": 9995902
+                            }
+                          ]
+                        }
+                      ],
+                      "reader": "0x1E347B80",
+                      "start": 9995844,
+                      "type": "RPG.GameCore.AttackData"
+                    },
+                    "discriminator": 0,
+                    "end": 9995906,
+                    "fields": [],
+                    "reader": "0x1E3476A0",
+                    "start": 9995843,
+                    "type": "RPG.GameCore.AttackData"
+                  },
+                  "unbound_bit_2": 1,
+                  "unbound_bit_3": 1
+                },
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": [
+                    {
+                      "field_index": 0,
+                      "mask": 2
+                    },
+                    {
+                      "field_index": 1,
+                      "mask": 4
+                    },
+                    {
+                      "field_index": 2,
+                      "mask": 8
+                    },
+                    {
+                      "field_index": 3,
+                      "mask": 32
+                    }
+                  ]
+                },
+                "required_capability": "task:RPG.GameCore.DamageByAttackProperty",
+                "span": [
+                  9995820,
+                  9995908
+                ],
+                "task_type": "RPG.GameCore.DamageByAttackProperty"
+              }
+            },
+            "source_task_hash": "78d3256b17fe57a47583aa275815fb8ab54389e44ab874a49c0fcd32c217da06",
+            "spec": {
+              "attack_fields": {
+                "1": "OPAQUE_REFERENCE_UNUSED",
+                "1099511627776": "OPAQUE_REFERENCE_UNUSED",
+                "128": "OPAQUE_REFERENCE_UNUSED",
+                "17179869184": "OPAQUE_REFERENCE_UNUSED",
+                "268435456": "OPAQUE_REFERENCE_UNUSED",
+                "32768": "OPAQUE_REFERENCE_UNUSED",
+                "4": "FORMULA_OPERAND_REFERENCE",
+                "4096": "OPAQUE_REFERENCE_UNUSED",
+                "4398046511104": "OPAQUE_REFERENCE_UNUSED",
+                "64": "OPAQUE_REFERENCE_UNUSED"
+              },
+              "attack_mask": 4,
+              "attacker": "a",
+              "authority": "REFERENCE_MODEL",
+              "boundaries": {
+                "break": "NO_PROCESSING_EXPLICIT_SANDBOX",
+                "resources": "NO_PROCESSING_EXPLICIT_SANDBOX",
+                "shield": "BYPASS_EXPLICIT_SANDBOX",
+                "toughness": "NO_MUTATION_EXPLICIT_SANDBOX"
+              },
+              "critical": "NO_CRIT_EXPLICIT_REFERENCE",
+              "damage_kind": null,
+              "duplicates": "PRESERVE_SERIALIZED_REFERENCE",
+              "events": {
+                "AFTER_DAMAGE": [],
+                "AFTER_HP_MUTATION": [],
+                "BEFORE_DAMAGE": [],
+                "BEFORE_HP_MUTATION": [],
+                "DAMAGE_AMOUNT_MODIFICATION": [
+                  "r18_sandbox_amount"
+                ],
+                "HP_MUTATION": []
+              },
+              "formula": {
+                "args": [
+                  {
+                    "entity": "ATTACKER_REFERENCE",
+                    "key": "reference_atk",
+                    "op": "property"
+                  },
+                  {
+                    "mask": 4,
+                    "op": "source_expression"
+                  }
+                ],
+                "op": "mul"
+              },
+              "listener_scope": "EXPLICIT_ACTIVE_REFERENCE_INSTANCES_ONLY",
+              "negative": "REJECT_REFERENCE",
+              "ordered_stages": [
+                "BEFORE_DAMAGE",
+                "DAMAGE_AMOUNT_MODIFICATION",
+                "BEFORE_HP_MUTATION",
+                "HP_MUTATION",
+                "AFTER_HP_MUTATION",
+                "AFTER_DAMAGE"
+              ],
+              "origin": "Caller-authored R18 sandbox formula; anonymous mask role NOT native evidenced",
+              "original_caster": "a",
+              "per_hit": null,
+              "rounding": "RAW_STEP2_REFERENCE",
+              "settlement": {
+                "battle_end": "NO_PROCESSING_EXPLICIT_SANDBOX",
+                "clamp": "ZERO_MAX_HP_REFERENCE",
+                "death_callbacks": "NO_PROCESSING_EXPLICIT_SANDBOX",
+                "hp_property": "hp",
+                "life_state": "PRESERVE_EXPLICIT_REFERENCE",
+                "max_hp_property": "max_hp",
+                "storage": "MODE0_RAW_REFERENCE"
+              },
+              "source_task_hash": "78d3256b17fe57a47583aa275815fb8ab54389e44ab874a49c0fcd32c217da06",
+              "source_version": "4.6.51",
+              "target_mask": 2,
+              "task_fields": {
+                "2": "TARGET_REFERENCE",
+                "32": "OPAQUE_REFERENCE_UNUSED",
+                "4": "ATTACK_DATA_REFERENCE",
+                "8": "OPAQUE_REFERENCE_UNUSED"
+              }
+            },
+            "target": "b",
+            "target_index": 0,
+            "unknown_roles": {
+              "native_crit": "UNKNOWN",
+              "native_formula": "UNKNOWN",
+              "native_hit_split": "UNKNOWN"
+            }
+          }
+        },
+        "request_id": "damage:1",
+        "source_evidence": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [],
+          "native_method_refs": [
+            "0x1E525850"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9995758_9996282.json",
+          "source_pointer": "/record/task_list/1",
+          "source_sha256": "0e0a2c024ba060ef18b66e5958bc32845d84368ed2195dc02ab249c21f206a40",
+          "source_version": "4.6.51"
+        },
+        "source_task_id": "78d3256b17fe57a47583aa275815fb8ab54389e44ab874a49c0fcd32c217da06",
+        "stage": "AFTER_DAMAGE",
+        "status": "COMPLETE",
+        "target": "b"
+      }
+    ],
+    "source_span": [
+      9995820,
+      9995908
+    ],
+    "source_task_id": "78d3256b17fe57a47583aa275815fb8ab54389e44ab874a49c0fcd32c217da06",
+    "state_hash": "6553f2e9b1e686714ca230aecec0a591b22edd8ef0ef8c57d96bce3e6651bf50",
+    "status": "ACTION_REFERENCE_COMPLETE"
+  },
+  "event_order_authority": "EXPLICIT_CALLER_REFERENCE; native event IDs/order unknown",
+  "event_stages": [
+    "BEFORE_DAMAGE",
+    "DAMAGE_AMOUNT_MODIFICATION",
+    "BEFORE_HP_MUTATION",
+    "HP_MUTATION",
+    "AFTER_HP_MUTATION",
+    "AFTER_DAMAGE"
+  ],
+  "frozen_modules_modified": false,
+  "git_writes": "NONE",
+  "listener_set": "explicit active reference instances only; native effective listeners unknown",
+  "native_correctness": false,
+  "numeric_contract": {
+    "arithmetic_order": "explicit binary formula AST, left-to-right operand evaluation",
+    "final_rounding": "raw step2 or whole-HP toward zero, caller selected",
+    "historical_evidence_version": "4.4.54 architectural background only; no damage formula/constants reused",
+    "identity": "R12_MODE0_INT64_STEP2_TOWARD_ZERO_REFERENCE",
+    "intermediate_quantization": "each multiply/divide toward zero at representable raw step 2",
+    "native_4651_rounding_proven": false,
+    "native_formula_operand_roles_proven": false,
+    "negative": "explicit rejection or clamp-zero reference",
+    "operand": "signed int64 mode0 raw, tag bit clear",
+    "origin": "existing R12 behavior_primitives raw_checked/fixed_binary",
+    "overflow": "typed gap; no wrapping/saturation",
+    "python_float_arithmetic": false,
+    "reference_formula_origin": "R18 caller-authored sandbox",
+    "scale": 8589934592,
+    "zero": "zero applied HP delta"
+  },
+  "ordering": "selected target order + explicit duplicate policy + serialized source request order; native hit splitting unknown",
+  "pipeline": [
+    "original decoded damage task",
+    "exact source hash/mask binding",
+    "DamageRequestIR",
+    "explicit reference formula evaluation",
+    "R17 stage dispatch/R15 owned callback drain",
+    "reference HP property mutation",
+    "post-damage callbacks",
+    "atomic damage commit"
+  ],
+  "production_files": [
+    "src/hsr_battle_agent/battle_ir/behavior.py",
+    "src/hsr_battle_agent/battle_runtime/behavior.py",
+    "src/hsr_battle_agent/battle_runtime/behavior_state.py",
+    "src/hsr_battle_agent/battle_runtime/action_scheduler.py",
+    "src/hsr_battle_agent/battle_runtime/damage_pipeline.py"
+  ],
+  "retry": "re-enter original source task; committed earlier tasks remain; no duplicate HP/RNG/callbacks",
+  "schema": "generic_runtime_damage_pipeline/1",
+  "search_state": "clone/snapshot/hash/replay include all requests, ownership, checkpoints and policy identities",
+  "semantic_authority": "REFERENCE_MODEL",
+  "source_version": "4.6.51",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "state": "existing BehaviorBattleState damage_requests/damage_history/damage_transactions/next_damage_id",
+  "tests": {
+    "R12_R18": {
+      "returncode": 0,
+      "tests": 233
+    },
+    "battle_ir_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 427
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "transaction": "checkpoint before source TaskFrame; descendant-only scheduling; semantic gap restores whole damage primitive",
+  "typed_IR": "DamageRequestIR in existing Behavior IR; source task unchanged",
+  "verdict": "GENERIC_DAMAGE_HP_REFERENCE_PIPELINE_ESTABLISHED"
+}

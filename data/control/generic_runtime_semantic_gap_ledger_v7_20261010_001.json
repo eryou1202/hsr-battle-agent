@@ -1,0 +1,2706 @@
+{
+  "R20_ranking": [
+    {
+      "phase": "R20 CORE PROPERTY / RESOURCE ENGINE",
+      "rank": 1,
+      "reason": "R19 expressions now run but actor progression/resource/provider initialization and effective property joins remain fundamental across damage/heal/modifier/AI; frozen property/progression/resource gaps=25/26/4 combat and 4/8/0 joined"
+    },
+    {
+      "phase": "R20 CONTENT CATALOG / READER EXPANSION",
+      "rank": 2,
+      "reason": "largest raw missing catalog family 145 combat/75 joined; explicit prefixes now reach 12 camera catalog gaps plus one template context gap; content remains independent backlog"
+    },
+    {
+      "phase": "R20 TRUE TURN / AV FOUNDATION",
+      "rank": 3,
+      "reason": "battle reconstruction needs actual turn order/action ownership/resource spend opportunities beyond logical callback time"
+    },
+    {
+      "phase": "R20 TOUGHNESS / BREAK / SHIELD",
+      "rank": 4,
+      "reason": "missing core survival and weakness interactions; current damage bypass is explicit sandbox only"
+    },
+    {
+      "phase": "R20 MONSTER BEHAVIOR CORPUS",
+      "rank": 5,
+      "reason": "real battle opponent decisions and content coverage absent"
+    },
+    {
+      "phase": "R20 TARGETED NATIVE ORACLE",
+      "rank": 6,
+      "reason": "effective IFix/Lua, finish task executor/events/death and provider precedence still unproved; target specific joins, never reopen broad damage archaeology"
+    }
+  ],
+  "branch": "terra/implementation",
+  "change_request": "CR-R19-DAMAGE-CONTINUATION-PROPERTY-20261010-001",
+  "explicit_joined_remaining_gaps": [
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9924963_9925317.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "e5e3a6ffe7aabf9680babf1704058b0ab942d447699c7159a794e3f1e072ef1b",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9924963_9925317.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "e5e3a6ffe7aabf9680babf1704058b0ab942d447699c7159a794e3f1e072ef1b",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  9925057,
+                  9925065
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_9924963_9925317.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "e5e3a6ffe7aabf9680babf1704058b0ab942d447699c7159a794e3f1e072ef1b",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 9925099,
+                  "fields": [
+                    {
+                      "end": 9925099,
+                      "mask": 4,
+                      "start": 9925066,
+                      "values": [
+                        {
+                          "end": 9925099,
+                          "kind": "string",
+                          "start": 9925066,
+                          "value": "Avatar_Ashveil_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 9925065,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Ashveil_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            9925055,
+            9925100
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Ashveil_00_Skill01_Camera",
+      "root": "Avatar_Ashveil_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        9924963,
+        9925317
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "serialized_IncludeTaskListTemplate"
+          ],
+          "native_method_refs": [
+            "0x1E6BCBF0"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r16_ability_dependency_closure_20261008_001/graphs/12884d3c8b1907d3_10027703_10029621.json",
+          "source_pointer": "/record/task_list/4",
+          "source_sha256": "6cc3720c0a5c472a1eeff7c907326dd5a6afee09cc2ea091f9a55544fe613db5",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/4",
+        "op": "RPG.GameCore.IncludeTaskListTemplate",
+        "payload": {
+          "decoded": {
+            "concrete_type": "RPG.GameCore.IncludeTaskListTemplate",
+            "discriminator": null,
+            "end": 10028152,
+            "kind": "TaskConfig",
+            "reader_method": {
+              "rva": "0x1E6BCBF0"
+            },
+            "start": 10028125,
+            "structure": {
+              "bitmap": 6,
+              "end": 10028152,
+              "fields": [
+                {
+                  "end": 10028133,
+                  "mask": 2,
+                  "start": 10028126,
+                  "values": [
+                    {
+                      "end": 10028133,
+                      "kind": "string",
+                      "start": 10028126,
+                      "value": "AddDot"
+                    }
+                  ]
+                },
+                {
+                  "end": 10028152,
+                  "mask": 4,
+                  "start": 10028133,
+                  "values": [
+                    {
+                      "children": [
+                        {
+                          "end": 10028140,
+                          "kind": "string",
+                          "start": 10028134,
+                          "value": "Arg01"
+                        },
+                        {
+                          "child": {
+                            "end": 10028152,
+                            "int32_operands": [
+                              -2032577713
+                            ],
+                            "int64_operands": [],
+                            "reader": "0x1e58a230",
+                            "start": 10028140,
+                            "tag": 1,
+                            "token_ids": [
+                              1,
+                              0,
+                              17
+                            ],
+                            "type": "RPG.GameCore.DynamicFloat"
+                          },
+                          "end": 10028152,
+                          "fields": [],
+                          "reader": "0x1E14A9A0",
+                          "start": 10028140,
+                          "type": null
+                        }
+                      ],
+                      "count": 1,
+                      "end": 10028152,
+                      "kind": "dict",
+                      "start": 10028133
+                    }
+                  ]
+                }
+              ],
+              "reader": "0x1E6BCBF0",
+              "start": 10028125,
+              "type": "RPG.GameCore.IncludeTaskListTemplate"
+            }
+          },
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": "AddDot",
+            "unbound_bit_1": {
+              "children": [
+                "Arg01",
+                {
+                  "child": {
+                    "authority": {
+                      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                      "ledger_refs": [
+                        "dynamic_float"
+                      ],
+                      "native_method_refs": [
+                        "0x1E196300",
+                        "0xF0EA100"
+                      ],
+                      "oracle_status": "RUNTIME_ORACLE_PENDING",
+                      "semantic_status": "STRUCTURE_ONLY",
+                      "source_artifact": "tmp/audit/r16_ability_dependency_closure_20261008_001/graphs/12884d3c8b1907d3_10027703_10029621.json",
+                      "source_pointer": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                      "source_sha256": "6cc3720c0a5c472a1eeff7c907326dd5a6afee09cc2ea091f9a55544fe613db5",
+                      "source_version": "4.6.51"
+                    },
+                    "kind": "ExpressionIR",
+                    "node_id": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                    "op": "identity",
+                    "payload": {
+                      "arg": {
+                        "authority": {
+                          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                          "ledger_refs": [
+                            "dynamic_float"
+                          ],
+                          "native_method_refs": [
+                            "0x1E196300",
+                            "0xF0EA100"
+                          ],
+                          "oracle_status": "RUNTIME_ORACLE_PENDING",
+                          "semantic_status": "STRUCTURE_ONLY",
+                          "source_artifact": "tmp/audit/r16_ability_dependency_closure_20261008_001/graphs/12884d3c8b1907d3_10027703_10029621.json",
+                          "source_pointer": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                          "source_sha256": "6cc3720c0a5c472a1eeff7c907326dd5a6afee09cc2ea091f9a55544fe613db5",
+                          "source_version": "4.6.51"
+                        },
+                        "kind": "ExpressionIR",
+                        "node_id": "/record/task_list/4/structure/fields/1/values/0/children/1/child/token/0",
+                        "op": "lookup",
+                        "payload": {
+                          "key": "-2032577713",
+                          "scope": "supplied"
+                        }
+                      },
+                      "serialized_program": {
+                        "end": 10028152,
+                        "int32_operands": [
+                          -2032577713
+                        ],
+                        "int64_operands": [],
+                        "reader": "0x1e58a230",
+                        "start": 10028140,
+                        "tag": 1,
+                        "token_ids": [
+                          1,
+                          0,
+                          17
+                        ],
+                        "type": "RPG.GameCore.DynamicFloat"
+                      },
+                      "serialized_type": "RPG.GameCore.DynamicFloat"
+                    }
+                  },
+                  "end": 10028152,
+                  "fields": [],
+                  "reader": "0x1E14A9A0",
+                  "start": 10028140,
+                  "type": null
+                }
+              ],
+              "count": 1,
+              "end": 10028152,
+              "kind": "dict",
+              "start": 10028133
+            }
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {
+              "parameters": {
+                "children": [
+                  "Arg01",
+                  {
+                    "child": {
+                      "authority": {
+                        "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                        "ledger_refs": [
+                          "dynamic_float"
+                        ],
+                        "native_method_refs": [
+                          "0x1E196300",
+                          "0xF0EA100"
+                        ],
+                        "oracle_status": "RUNTIME_ORACLE_PENDING",
+                        "semantic_status": "STRUCTURE_ONLY",
+                        "source_artifact": "tmp/audit/r16_ability_dependency_closure_20261008_001/graphs/12884d3c8b1907d3_10027703_10029621.json",
+                        "source_pointer": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                        "source_sha256": "6cc3720c0a5c472a1eeff7c907326dd5a6afee09cc2ea091f9a55544fe613db5",
+                        "source_version": "4.6.51"
+                      },
+                      "kind": "ExpressionIR",
+                      "node_id": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                      "op": "identity",
+                      "payload": {
+                        "arg": {
+                          "authority": {
+                            "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                            "ledger_refs": [
+                              "dynamic_float"
+                            ],
+                            "native_method_refs": [
+                              "0x1E196300",
+                              "0xF0EA100"
+                            ],
+                            "oracle_status": "RUNTIME_ORACLE_PENDING",
+                            "semantic_status": "STRUCTURE_ONLY",
+                            "source_artifact": "tmp/audit/r16_ability_dependency_closure_20261008_001/graphs/12884d3c8b1907d3_10027703_10029621.json",
+                            "source_pointer": "/record/task_list/4/structure/fields/1/values/0/children/1/child",
+                            "source_sha256": "6cc3720c0a5c472a1eeff7c907326dd5a6afee09cc2ea091f9a55544fe613db5",
+                            "source_version": "4.6.51"
+                          },
+                          "kind": "ExpressionIR",
+                          "node_id": "/record/task_list/4/structure/fields/1/values/0/children/1/child/token/0",
+                          "op": "lookup",
+                          "payload": {
+                            "key": "-2032577713",
+                            "scope": "supplied"
+                          }
+                        },
+                        "serialized_program": {
+                          "end": 10028152,
+                          "int32_operands": [
+                            -2032577713
+                          ],
+                          "int64_operands": [],
+                          "reader": "0x1e58a230",
+                          "start": 10028140,
+                          "tag": 1,
+                          "token_ids": [
+                            1,
+                            0,
+                            17
+                          ],
+                          "type": "RPG.GameCore.DynamicFloat"
+                        },
+                        "serialized_type": "RPG.GameCore.DynamicFloat"
+                      }
+                    },
+                    "end": 10028152,
+                    "fields": [],
+                    "reader": "0x1E14A9A0",
+                    "start": 10028140,
+                    "type": null
+                  }
+                ],
+                "count": 1,
+                "end": 10028152,
+                "kind": "dict",
+                "start": 10028133
+              },
+              "template": "AddDot"
+            },
+            "unknown_slots": []
+          },
+          "required_capability": "task:RPG.GameCore.IncludeTaskListTemplate",
+          "span": [
+            10028125,
+            10028152
+          ],
+          "task_type": "RPG.GameCore.IncludeTaskListTemplate"
+        }
+      },
+      "primitive": "RPG.GameCore.IncludeTaskListTemplate",
+      "required_capability": "TEMPLATE_PARAMETER_INHERITANCE: explicit template parameter/context mapping required",
+      "root": "Avatar_BlackSwan_00_Skill02_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10027172,
+        10027703
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10175362_10175833.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "3e53f2d30eace3cb02b3f0ed4e27ea0d21548a1fa287f6dfee7875db0fea2e91",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10175362_10175833.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "3e53f2d30eace3cb02b3f0ed4e27ea0d21548a1fa287f6dfee7875db0fea2e91",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10175464,
+                  10175472
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10175362_10175833.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "3e53f2d30eace3cb02b3f0ed4e27ea0d21548a1fa287f6dfee7875db0fea2e91",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10175508,
+                  "fields": [
+                    {
+                      "end": 10175508,
+                      "mask": 4,
+                      "start": 10175473,
+                      "values": [
+                        {
+                          "end": 10175508,
+                          "kind": "string",
+                          "start": 10175473,
+                          "value": "Avatar_Constance_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10175472,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Constance_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10175462,
+            10175509
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Constance_00_Skill01_Camera",
+      "root": "Avatar_Constance_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10175362,
+        10175833
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10474102_10474295.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "45ea9f053960d71646902248ec2d2e97632aa1d975471158ca947dbb4990b065",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10474102_10474295.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "45ea9f053960d71646902248ec2d2e97632aa1d975471158ca947dbb4990b065",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10474196,
+                  10474204
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10474102_10474295.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "45ea9f053960d71646902248ec2d2e97632aa1d975471158ca947dbb4990b065",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10474236,
+                  "fields": [
+                    {
+                      "end": 10474236,
+                      "mask": 4,
+                      "start": 10474205,
+                      "values": [
+                        {
+                          "end": 10474236,
+                          "kind": "string",
+                          "start": 10474205,
+                          "value": "Avatar_Hanya_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10474204,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Hanya_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10474194,
+            10474237
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Hanya_00_Skill01_Camera",
+      "root": "Avatar_Hanya_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10474102,
+        10474295
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10485640_10485881.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "d53eb563aa8be00945fb83ba2a9a8ef4f6d1944d68790844eb2ab7a06e9c3533",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10485640_10485881.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "d53eb563aa8be00945fb83ba2a9a8ef4f6d1944d68790844eb2ab7a06e9c3533",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10485744,
+                  10485752
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10485640_10485881.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "d53eb563aa8be00945fb83ba2a9a8ef4f6d1944d68790844eb2ab7a06e9c3533",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10485789,
+                  "fields": [
+                    {
+                      "end": 10485789,
+                      "mask": 4,
+                      "start": 10485753,
+                      "values": [
+                        {
+                          "end": 10485789,
+                          "kind": "string",
+                          "start": 10485753,
+                          "value": "Avatar_Harscyline_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10485752,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Harscyline_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10485742,
+            10485790
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Harscyline_00_Skill01_Camera",
+      "root": "Avatar_Harscyline_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10485640,
+        10485881
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10619924_10620159.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "0964f7cea9ac2eadfe1fff514fa159e59f63a73353860a0d188aa18c43c9f12c",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10619924_10620159.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "0964f7cea9ac2eadfe1fff514fa159e59f63a73353860a0d188aa18c43c9f12c",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10620016,
+                  10620024
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10619924_10620159.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "0964f7cea9ac2eadfe1fff514fa159e59f63a73353860a0d188aa18c43c9f12c",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10620057,
+                  "fields": [
+                    {
+                      "end": 10620057,
+                      "mask": 4,
+                      "start": 10620025,
+                      "values": [
+                        {
+                          "end": 10620057,
+                          "kind": "string",
+                          "start": 10620025,
+                          "value": "Avatar_Huohuo_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10620024,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Huohuo_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10620014,
+            10620058
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Huohuo_00_Skill01_Camera",
+      "root": "Avatar_Huohuo_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10619924,
+        10620159
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10712967_10713335.json",
+          "source_pointer": "/record/task_list/3",
+          "source_sha256": "c72a8b50b0fa141ba36783176eaea65dc6aa5f0785aab089501dcabf1cf7587f",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/3",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10712967_10713335.json",
+                "source_pointer": "/record/task_list/3/structure/fields/0/values/0",
+                "source_sha256": "c72a8b50b0fa141ba36783176eaea65dc6aa5f0785aab089501dcabf1cf7587f",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/3/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10713145,
+                  10713153
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10712967_10713335.json",
+                "source_pointer": "/record/task_list/3/structure/fields/1/values/0",
+                "source_sha256": "c72a8b50b0fa141ba36783176eaea65dc6aa5f0785aab089501dcabf1cf7587f",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/3/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10713185,
+                  "fields": [
+                    {
+                      "end": 10713185,
+                      "mask": 4,
+                      "start": 10713154,
+                      "values": [
+                        {
+                          "end": 10713185,
+                          "kind": "string",
+                          "start": 10713154,
+                          "value": "Avatar_Kafka_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10713153,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Kafka_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10713143,
+            10713186
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Kafka_00_Skill01_Camera",
+      "root": "Avatar_Kafka_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10712967,
+        10713335
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10771939_10772329.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "7e0c40b213bba8eac87ab72f5cbc76d5ceaca474b7eff76e9cdc3c89a528a045",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10771939_10772329.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "7e0c40b213bba8eac87ab72f5cbc76d5ceaca474b7eff76e9cdc3c89a528a045",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  10772027,
+                  10772035
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_10771939_10772329.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "7e0c40b213bba8eac87ab72f5cbc76d5ceaca474b7eff76e9cdc3c89a528a045",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 10772066,
+                  "fields": [
+                    {
+                      "end": 10772066,
+                      "mask": 4,
+                      "start": 10772036,
+                      "values": [
+                        {
+                          "end": 10772066,
+                          "kind": "string",
+                          "start": 10772036,
+                          "value": "Avatar_Lynx_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 10772035,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Lynx_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            10772025,
+            10772067
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Lynx_00_Skill01_Camera",
+      "root": "Avatar_Lynx_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10771939,
+        10772329
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11037385_11037732.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "3718b943f4576fddbd9bc41d2d1757d5cd59514b9dcf16ec48b602c708896f34",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11037385_11037732.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "3718b943f4576fddbd9bc41d2d1757d5cd59514b9dcf16ec48b602c708896f34",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  11037481,
+                  11037489
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11037385_11037732.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "3718b943f4576fddbd9bc41d2d1757d5cd59514b9dcf16ec48b602c708896f34",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 11037522,
+                  "fields": [
+                    {
+                      "end": 11037522,
+                      "mask": 4,
+                      "start": 11037490,
+                      "values": [
+                        {
+                          "end": 11037522,
+                          "kind": "string",
+                          "start": 11037490,
+                          "value": "Avatar_PlayerBoy_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 11037489,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_PlayerBoy_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            11037479,
+            11037523
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_PlayerBoy_Skill01_Camera",
+      "root": "Avatar_PlayerBoy_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11037385,
+        11037732
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11100545_11100890.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "17f50dab4a9be032cc40e302fe590d227119218c90f2284796d7c4c353a365b4",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11100545_11100890.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "17f50dab4a9be032cc40e302fe590d227119218c90f2284796d7c4c353a365b4",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  11100639,
+                  11100647
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11100545_11100890.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "17f50dab4a9be032cc40e302fe590d227119218c90f2284796d7c4c353a365b4",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 11100681,
+                  "fields": [
+                    {
+                      "end": 11100681,
+                      "mask": 4,
+                      "start": 11100648,
+                      "values": [
+                        {
+                          "end": 11100681,
+                          "kind": "string",
+                          "start": 11100648,
+                          "value": "Avatar_PlayerGirl_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 11100647,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_PlayerGirl_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            11100637,
+            11100682
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_PlayerGirl_Skill01_Camera",
+      "root": "Avatar_PlayerGirl_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11100545,
+        11100890
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11313746_11314085.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "598c92951bb41a7ce7a96eb0236dfec14bab6169e097da0d814af3590045a0e8",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11313746_11314085.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "598c92951bb41a7ce7a96eb0236dfec14bab6169e097da0d814af3590045a0e8",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  11313836,
+                  11313844
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11313746_11314085.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "598c92951bb41a7ce7a96eb0236dfec14bab6169e097da0d814af3590045a0e8",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 11313876,
+                  "fields": [
+                    {
+                      "end": 11313876,
+                      "mask": 4,
+                      "start": 11313845,
+                      "values": [
+                        {
+                          "end": 11313876,
+                          "kind": "string",
+                          "start": 11313845,
+                          "value": "Avatar_Sampo_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 11313844,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Sampo_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            11313834,
+            11313877
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Sampo_00_Skill01_Camera",
+      "root": "Avatar_Sampo_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11313746,
+        11314085
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [],
+          "native_method_refs": [
+            "0x1E468660"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11329607_11330409.json",
+          "source_pointer": "/record/task_list/4/structure/fields/0/values/0",
+          "source_sha256": "b5528190bef5a37c7e7bf869915aa322afd257164340e7a13210c0101dcd3b48",
+          "source_version": "4.6.51"
+        },
+        "kind": "PredicateIR",
+        "node_id": "/record/task_list/4/structure/fields/0/values/0",
+        "op": "RPG.GameCore.ByRankActivated",
+        "payload": {
+          "discriminator": 507,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": 2089636447
+          },
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 8
+              }
+            ]
+          },
+          "span": [
+            11329984,
+            11329990
+          ],
+          "task_type": "RPG.GameCore.ByRankActivated"
+        }
+      },
+      "primitive": "RPG.GameCore.ByRankActivated",
+      "required_capability": "RANK_POLICY_MISSING: exact predicate binding",
+      "root": "Avatar_Serval_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11329303,
+        11329607
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "by_skill_point_activated"
+          ],
+          "native_method_refs": [
+            "0x1E46B6F0",
+            "0xBBBF5F0",
+            "0xEE91AE0"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11330707_11331561.json",
+          "source_pointer": "/record/task_list/7/structure/fields/0/values/0",
+          "source_sha256": "dc93c23a76a9390ddeedbf4d860314e2aa66967cec018757ad209c0b65b8e976",
+          "source_version": "4.6.51"
+        },
+        "kind": "PredicateIR",
+        "node_id": "/record/task_list/7/structure/fields/0/values/0",
+        "op": "RPG.GameCore.BySkillPointActivated",
+        "payload": {
+          "discriminator": 515,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": 6
+          },
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 8
+              }
+            ]
+          },
+          "span": [
+            11331301,
+            11331303
+          ],
+          "task_type": "RPG.GameCore.BySkillPointActivated"
+        }
+      },
+      "primitive": "RPG.GameCore.BySkillPointActivated",
+      "required_capability": "explicit actor progression rows",
+      "root": "Avatar_Serval_Skill02_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11330409,
+        11330707
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11605404_11605813.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "1aee071daa772e8c5cb88d7fc051cbba16a4f9f6460f300b1a65896b89f0ae6f",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11605404_11605813.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "1aee071daa772e8c5cb88d7fc051cbba16a4f9f6460f300b1a65896b89f0ae6f",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  11605498,
+                  11605506
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11605404_11605813.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "1aee071daa772e8c5cb88d7fc051cbba16a4f9f6460f300b1a65896b89f0ae6f",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 11605538,
+                  "fields": [
+                    {
+                      "end": 11605538,
+                      "mask": 4,
+                      "start": 11605507,
+                      "values": [
+                        {
+                          "end": 11605538,
+                          "kind": "string",
+                          "start": 11605507,
+                          "value": "Avatar_Xueyi_00_Skill01_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 11605506,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Xueyi_00_Skill01_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            11605496,
+            11605539
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Xueyi_00_Skill01_Camera",
+      "root": "Avatar_Xueyi_00_Skill01_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11605404,
+        11605813
+      ]
+    },
+    {
+      "node": {
+        "authority": {
+          "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+          "ledger_refs": [
+            "trigger_ability"
+          ],
+          "native_method_refs": [
+            "0x1EB75180",
+            "0xBFAD1E0",
+            "0xBFADB80",
+            "0xEDDC180",
+            "0xF127F40"
+          ],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "CONDITIONAL_REFERENCE",
+          "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11606246_11606950.json",
+          "source_pointer": "/record/task_list/2",
+          "source_sha256": "c9089b0799ffa374959112cc4fbe2889abcc7fa74bf59c78e348b1cbdeffd907",
+          "source_version": "4.6.51"
+        },
+        "kind": "TaskIR",
+        "node_id": "/record/task_list/2",
+        "op": "RPG.GameCore.TriggerAbility",
+        "payload": {
+          "discriminator": null,
+          "field_bindings_status": "UNRESOLVED",
+          "fields": {
+            "unbound_bit_0": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "target_alias"
+                ],
+                "native_method_refs": [
+                  "0x1eb28590",
+                  "0xBD01920",
+                  "0xC32D2C0",
+                  "0xC32D420"
+                ],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "CONDITIONAL_REFERENCE",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11606246_11606950.json",
+                "source_pointer": "/record/task_list/2/structure/fields/0/values/0",
+                "source_sha256": "c9089b0799ffa374959112cc4fbe2889abcc7fa74bf59c78e348b1cbdeffd907",
+                "source_version": "4.6.51"
+              },
+              "kind": "TargetSelectorIR",
+              "node_id": "/record/task_list/2/structure/fields/0/values/0",
+              "op": "RPG.GameCore.TargetAlias",
+              "payload": {
+                "alias": "Caster",
+                "discriminator": 12,
+                "field_bindings_status": "DECODED_FIELD_NAMES",
+                "fields": {},
+                "reference_binding": {
+                  "authority": "CONDITIONAL_REFERENCE",
+                  "native_field_names_recovered": false,
+                  "policy_required": "r13_reference_v1",
+                  "roles": {},
+                  "unknown_slots": []
+                },
+                "span": [
+                  11606340,
+                  11606348
+                ],
+                "task_type": "RPG.GameCore.TargetAlias"
+              }
+            },
+            "unbound_bit_1": {
+              "authority": {
+                "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+                "ledger_refs": [
+                  "serialized_DynamicString"
+                ],
+                "native_method_refs": [],
+                "oracle_status": "RUNTIME_ORACLE_PENDING",
+                "semantic_status": "STRUCTURE_ONLY",
+                "source_artifact": "tmp/audit/r14_real_combat_corpus_20261008_001/graphs/12884d3c8b1907d3_11606246_11606950.json",
+                "source_pointer": "/record/task_list/2/structure/fields/1/values/0",
+                "source_sha256": "c9089b0799ffa374959112cc4fbe2889abcc7fa74bf59c78e348b1cbdeffd907",
+                "source_version": "4.6.51"
+              },
+              "kind": "ExpressionIR",
+              "node_id": "/record/task_list/2/structure/fields/1/values/0",
+              "op": "literal",
+              "payload": {
+                "reference_binding": "explicit serialized string slot",
+                "serialized": {
+                  "bitmap": 4,
+                  "end": 11606380,
+                  "fields": [
+                    {
+                      "end": 11606380,
+                      "mask": 4,
+                      "start": 11606349,
+                      "values": [
+                        {
+                          "end": 11606380,
+                          "kind": "string",
+                          "start": 11606349,
+                          "value": "Avatar_Xueyi_00_Skill02_Camera"
+                        }
+                      ]
+                    }
+                  ],
+                  "reader": "0x1E5897C0",
+                  "start": 11606348,
+                  "type": "RPG.GameCore.DynamicString"
+                },
+                "value": "Avatar_Xueyi_00_Skill02_Camera"
+              }
+            },
+            "unbound_bit_2": 1
+          },
+          "mapping_classification": [
+            "IR_SUPPORTED",
+            "REFERENCE_SEMANTICS_AVAILABLE",
+            "ORACLE_PENDING"
+          ],
+          "presentation_relevance": null,
+          "reference_binding": {
+            "authority": "CONDITIONAL_REFERENCE",
+            "native_field_names_recovered": false,
+            "policy_required": "r13_reference_v1",
+            "roles": {},
+            "unknown_slots": [
+              {
+                "field_index": 0,
+                "mask": 2
+              },
+              {
+                "field_index": 1,
+                "mask": 16
+              },
+              {
+                "field_index": 2,
+                "mask": 32
+              }
+            ]
+          },
+          "span": [
+            11606338,
+            11606381
+          ],
+          "task_type": "RPG.GameCore.TriggerAbility"
+        }
+      },
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Xueyi_00_Skill02_Camera",
+      "root": "Avatar_Xueyi_00_Skill02_Phase01",
+      "source_identity": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        11606246,
+        11606950
+      ]
+    }
+  ],
+  "explicit_rank_remaining_gaps": [
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Ashveil_00_Skill01_Camera",
+      "root": "Avatar_Ashveil_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.IncludeTaskListTemplate",
+      "required_capability": "TEMPLATE_PARAMETER_INHERITANCE: explicit template parameter/context mapping required",
+      "root": "Avatar_BlackSwan_00_Skill02_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Constance_00_Skill01_Camera",
+      "root": "Avatar_Constance_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Hanya_00_Skill01_Camera",
+      "root": "Avatar_Hanya_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Harscyline_00_Skill01_Camera",
+      "root": "Avatar_Harscyline_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Huohuo_00_Skill01_Camera",
+      "root": "Avatar_Huohuo_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Kafka_00_Skill01_Camera",
+      "root": "Avatar_Kafka_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Lynx_00_Skill01_Camera",
+      "root": "Avatar_Lynx_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_PlayerBoy_Skill01_Camera",
+      "root": "Avatar_PlayerBoy_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_PlayerGirl_Skill01_Camera",
+      "root": "Avatar_PlayerGirl_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Sampo_00_Skill01_Camera",
+      "root": "Avatar_Sampo_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Serval_00_Skill01_Camera",
+      "root": "Avatar_Serval_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.BySkillPointActivated",
+      "required_capability": "explicit actor progression rows",
+      "root": "Avatar_Serval_Skill02_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Xueyi_00_Skill01_Camera",
+      "root": "Avatar_Xueyi_00_Skill01_Phase01"
+    },
+    {
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Xueyi_00_Skill02_Camera",
+      "root": "Avatar_Xueyi_00_Skill02_Phase01"
+    }
+  ],
+  "frozen_first_gaps": {
+    "combat": {
+      "DAMAGE_REFERENCE_INPUT_MISSING: explicit damage policy and source task operands": 74,
+      "POSITION: explicit movement position/relevance policy required": 3,
+      "TEMPLATE_PARAMETER_INHERITANCE: exact template entry/context policy required": 5,
+      "TEMPLATE_PARAMETER_INHERITANCE: explicit template parameter/context mapping required": 1,
+      "ability entry/lifecycle slot policy remains unbound": 65,
+      "explicit actor progression rows": 12,
+      "explicit decoded FormulaType2 binding": 4,
+      "explicit reference input:/record/task_list/0": 121,
+      "explicit reference input:/record/task_list/0/structure/fields/2/values/0/children/0": 1,
+      "explicit reference input:/record/task_list/1": 12,
+      "explicit reference input:/record/task_list/2": 1,
+      "explicit reference input:/record/task_list/3": 2,
+      "missing decoded child catalog reference:Avatar_Acheron_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Anaxa_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Argenti_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Argenti_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Arlan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Asta_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Asta_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_AventurineW_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Aventurine_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Aventurine_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Bailu_00_Skill01_Camera": 2,
+      "missing decoded child catalog reference:Avatar_Bronya_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Castorice_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Cerydra_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Cyrene_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHengIL_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHengIL_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHengIL_00_Skill12_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHengPT_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHeng_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHeng_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Dr_Ratio_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Feixiao_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Feixiao_00_Skill03_ComboFinish2_Camera": 1,
+      "missing decoded child catalog reference:Avatar_FuXuan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gallagher_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gallagher_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gepard_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gepard_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Guinaifen_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Guinaifen_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Harscyline_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Herta_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_HimekoNova_00_AssistSkill": 3,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill21_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Hyacine_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jade_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jade_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Jiaoqiu_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jiaoqiu_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_JingYuan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_JingYuan_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jingliu_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Kafka_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Kafka_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Klara_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Klara_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Lingsha_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Lingsha_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Lingsha_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Luka_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Luka_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Luocha_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Lynx_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Mar_7th_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Mar_7th_10_Skill01_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Misha_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Misha_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_MortenaxBlade_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_MortenaxBlade_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Moze_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Mydeimos_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Mydeimos_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Mydeimos_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Nihilux_10_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Pearl_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Pearl_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Pearl_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Pearl_00_Skill12_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Phainon_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_10_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_10_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_10_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_30_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_40_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_10_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_10_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_10_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_30_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_40_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_QingQue_00_Skill01_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_QingQue_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Qingque_00_Rank04_ATK_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Qingque_00_Rank04_ATK_Special_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Qingque_00_Skill011_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Rappa_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Rappa_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Ren_00_Bonus_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Ren_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Ren_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Robin_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Robin_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_RuanMei_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_RuanMei_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sam_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sam_00_Skill03_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Sam_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sampo_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Seele_00_Bonus_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Seele_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Seele_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Serval_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_SilverWolf999_00_Item1_Camera": 1,
+      "missing decoded child catalog reference:Avatar_SilverWolf999_00_Item2_Camera": 1,
+      "missing decoded child catalog reference:Avatar_SilverWolf999_00_Item3_Camera": 1,
+      "missing decoded child catalog reference:Avatar_SilverWolf999_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Silwolf_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Silwolf_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sparkle_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sparkle_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sparxie_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sparxie_00_Skill21_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sunday_10_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sushang_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sushang_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_TheHerta_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_TheHerta_00_Skill02_Camera": 2,
+      "missing decoded child catalog reference:Avatar_Tingyun_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Topaz_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Tribbie_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Welt_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Welt_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yanqing_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_YaoGuang_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_YaoGuang_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yunli_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yunli_00_Skill02_Camera": 1,
+      "predicate:RPG.GameCore.ByCompareDynamicValue": 2,
+      "predicate:RPG.GameCore.ByRankActivated": 10,
+      "required semantic input:TargetType": 2,
+      "scheduler operand policy for anonymous mask:4": 6,
+      "task:RPG.GameCore.AlignTargetToTeamCenter": 57,
+      "task:RPG.GameCore.DispelStatus": 6,
+      "task:RPG.GameCore.FireProjectile": 12,
+      "task:RPG.GameCore.LoseHPByRatio": 2,
+      "task:RPG.GameCore.ModifySPNew": 4,
+      "task:RPG.GameCore.Retarget": 1,
+      "task:RPG.GameCore.SetDynamicValueByProperty": 4,
+      "task:RPG.GameCore.SetEntityVisible": 6,
+      "task:RPG.GameCore.SetSkillTargetFormationByPos": 1,
+      "task:RPG.GameCore.SetTeamFormation": 23
+    },
+    "joined": {
+      "DAMAGE_REFERENCE_INPUT_MISSING: explicit damage policy and source task operands": 15,
+      "ability entry/lifecycle slot policy remains unbound": 1,
+      "explicit actor progression rows": 4,
+      "explicit reference input:/record/task_list/0": 44,
+      "explicit reference input:/record/task_list/1": 1,
+      "missing decoded child catalog reference:Avatar_Anaxa_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Argenti_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Argenti_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Arlan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Aventurine_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Aventurine_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Bailu_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Bronya_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHeng_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_DanHeng_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Dr_Ratio_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_FuXuan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Fugue_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gallagher_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gallagher_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gepard_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Gepard_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Guinaifen_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Guinaifen_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Harscyline_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Herta_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Hook_00_Skill21_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jade_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jade_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Jiaoqiu_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Jiaoqiu_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_JingYuan_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_JingYuan_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Kafka_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Kafka_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Klara_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Klara_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Luka_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Luka_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Luocha_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Lynx_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Mar_7th_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Moze_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_20_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerBoy_30_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_20_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_PlayerGirl_30_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Rappa_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Rappa_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Ren_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Ren_00_Skill11_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Robin_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Robin_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_RuanMei_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_RuanMei_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sampo_00_Skill02_Phase02": 1,
+      "missing decoded child catalog reference:Avatar_Seele_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Seele_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Serval_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Silwolf_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Silwolf_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sunday_10_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sushang_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Sushang_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Tingyun_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Topaz_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Tribbie_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Welt_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Welt_00_Skill02_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yanqing_00_Skill03_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yunli_00_Skill01_Camera": 1,
+      "missing decoded child catalog reference:Avatar_Yunli_00_Skill02_Camera": 1,
+      "predicate:RPG.GameCore.ByRankActivated": 3,
+      "required semantic input:TargetType": 1,
+      "scheduler operand policy for anonymous mask:4": 3,
+      "task:RPG.GameCore.AlignTargetToTeamCenter": 1,
+      "task:RPG.GameCore.DispelStatus": 1,
+      "task:RPG.GameCore.FireProjectile": 3,
+      "task:RPG.GameCore.LoseHPByRatio": 1,
+      "task:RPG.GameCore.SetDynamicValueByProperty": 1,
+      "task:RPG.GameCore.SetTeamFormation": 4
+    }
+  },
+  "frozen_modules_modified": false,
+  "git_writes": "NONE",
+  "historical_R18_ledger_preserved": true,
+  "native_correctness": false,
+  "oracle_tickets": [
+    {
+      "evidence": "damage_finish_native_evidence.json",
+      "identity": "DAMAGE_FINISH_EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "instances": 118,
+      "question": "exact config->runtime task executor/IFix/Lua effective state, request/settlement/death/controller/barrier/bookkeeping/event effects",
+      "reference_policy_is_native_equivalence": false,
+      "status": "ORACLE_BLOCKED"
+    },
+    {
+      "evidence": "dynamic_program_evidence.json and R11C native_semantic_continuation.json",
+      "identity": "PROPERTY_EFFECTIVE_PROVIDER_ORACLE_REQUIRED",
+      "question": "bind automatic scope callback/parent/override/scoped providers and actual state initialization; no silent fallback",
+      "status": "ORACLE_BLOCKED"
+    },
+    {
+      "evidence": "rank_evidence.json",
+      "identity": "RANK_ACTIVATION_NATIVE_COMPARISON_REQUIRED",
+      "question": "TriggerKey StringHash -> actor progression activation rows/threshold and actual comparison predicate",
+      "reference_comparison_only": "KEYED_THRESHOLD_GE_REFERENCE",
+      "status": "ORACLE_BLOCKED"
+    }
+  ],
+  "schema": "generic_runtime_semantic_gap_ledger/7",
+  "semantic_authority": "REFERENCE_MODEL",
+  "source_version": "4.6.51",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "whole_battle_subsystems": {
+    "Monster_AI": "no independent real-content-driven behavior runtime closure; not investigated or implemented in R19",
+    "damage_HP": "generic reference formula/HP settlement/lifecycle and transaction engine established; native formula, events, death and defensive rules unresolved",
+    "heal": "FormulaType2 reference core and explicit R17 staged heal/event integration; native inputs/provider/listener/settlement still partial; frozen HEAL gaps=4",
+    "modifier_event": "R17 generic reference instances/listeners/contributions/owned callbacks available; native effective instance/listener/provider state unknown; frozen gaps=181 combat/43 joined",
+    "resources_energy": "explicit actor/team reference stores exist; actual energy/SP costs, gains, listeners, joins not closed; frozen RESOURCE gaps=4",
+    "shield": "full subsystem absent; explicit sandbox bypass only; missing native shield input remains a gap",
+    "stage_wave_mode": "full stage/wave/mode runtime not implemented; progression/termination remains separate precise blockers",
+    "toughness_break": "full subsystem absent; no toughness mutation/break processing inferred from damage",
+    "true_turn_AV": "not implemented; R15 logical scheduler is not native turn/AV initiative, ownership or speed engine"
+  },
+  "zero_first_gap_frequency_means_implemented": false
+}

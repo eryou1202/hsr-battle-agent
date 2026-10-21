@@ -59,7 +59,10 @@ class BehaviorCompiler:
         while isinstance(concrete.get("child"), dict):
             concrete = concrete["child"]
         identity = concrete.get("type")
-        if not isinstance(identity, str) or not identity.startswith("RPG.GameCore."):
+        # The caller's proven dispatcher role supplies the semantic family.
+        # Concrete metadata names can be obfuscated; retain them as unsupported
+        # nodes rather than returning a raw dictionary into a task sequence.
+        if not isinstance(identity, str) or not identity:
             return None
         kinds = {"task": "TaskConfig", "predicate": "PredicateConfig", "target": "TargetSelector"}
         return {"kind": kinds[family], "concrete_type": identity, "structure": concrete,

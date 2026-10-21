@@ -1,0 +1,500 @@
+{
+  "branch": "terra/implementation",
+  "change_request": "CR-R21-TRUE-TURN-AV-CONTRACT-20261011-001",
+  "effective_oracle_obtained": false,
+  "git_writes": "NONE",
+  "native_equivalent_turn_av": "NOT_CLAIMED",
+  "native_uncertainty_does_not_block_reference_development": true,
+  "product_version": "4.4.54",
+  "research_version": "4.6.51",
+  "schema": "generic_runtime_turn_oracle_gaps/1",
+  "starting_head": "ddd2739ae16daf88b70087b8b82c822036e5461d",
+  "tickets": [
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E05",
+        "E06"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78228286,
+          "flags": "0x86",
+          "index": 516441,
+          "name": "GetTopActionDelayActiveEntity",
+          "parameter_count": 2,
+          "rva": "0xF16E8F0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78228312,
+          "flags": "0x81",
+          "index": 516442,
+          "name": "_PickTurnActiveEntity",
+          "parameter_count": 0,
+          "rva": "0xF165000",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78680920,
+          "flags": "0x86",
+          "index": 533850,
+          "name": "KGAFHLGGNHJ",
+          "parameter_count": 1,
+          "rva": "0xC495400",
+          "slot": 65535,
+          "type": ".NOMOKAFFKFE",
+          "type_index": 57340
+        },
+        {
+          "file_offset": 78229118,
+          "flags": "0x81",
+          "index": 516473,
+          "name": "_AdvanceListEntityDelay",
+          "parameter_count": 1,
+          "rva": "0xF16EAB0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        }
+      ],
+      "minimum_closure_evidence": "Minimum same-build selected method patch guard/patch identity + actual dispatch selection receipt; no global provider/archive rediscovery",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Observe exact source/native base paths independently; reference development proceeds",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-01",
+      "title": "Effective scheduler dispatch"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E03"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78401966,
+          "flags": "0x86",
+          "index": 523121,
+          "name": "SetupActionDelayByUnitDistance",
+          "parameter_count": 1,
+          "rva": "0xF124520",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "file_offset": 78410156,
+          "flags": "0x886",
+          "index": 523436,
+          "name": "get_UnitActionDelay",
+          "parameter_count": 0,
+          "rva": "0xF14CCE0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        }
+      ],
+      "minimum_closure_evidence": "Resolve config field+0x190 and setup argument from pinned initialized actor/controller state, exact source hash and version; trace first due",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Use explicit K/initial placement/provider, label REFERENCE_MODEL; 10000 candidate not native-proven",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-02",
+      "title": "Initial distance/AV/speed inputs"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E05"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78680920,
+          "flags": "0x86",
+          "index": 533850,
+          "name": "KGAFHLGGNHJ",
+          "parameter_count": 1,
+          "rva": "0xC495400",
+          "slot": 65535,
+          "type": ".NOMOKAFFKFE",
+          "type_index": 57340
+        },
+        {
+          "file_offset": 78401966,
+          "flags": "0x86",
+          "index": 523121,
+          "name": "SetupActionDelayByUnitDistance",
+          "parameter_count": 1,
+          "rva": "0xF124520",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "file_offset": 78410156,
+          "flags": "0x886",
+          "index": 523436,
+          "name": "get_UnitActionDelay",
+          "parameter_count": 0,
+          "rva": "0xF14CCE0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "file_offset": 78229118,
+          "flags": "0x81",
+          "index": 516473,
+          "name": "_AdvanceListEntityDelay",
+          "parameter_count": 1,
+          "rva": "0xF16EAB0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        }
+      ],
+      "minimum_closure_evidence": "Exact selected arithmetic mode/tag/overflow and division rounding plus normal initialized AV scale; differential vectors",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Reduced rational arithmetic; explicit ordinary R12 speed decode only",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "REQUIRES_NEW_STRUCTURAL_EVIDENCE",
+      "ticket_id": "OR21-03",
+      "title": "Native AV numeric and rounding"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E04"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78405996,
+          "flags": "0x86",
+          "index": 523276,
+          "name": "RefreshSpeed",
+          "parameter_count": 1,
+          "rva": "0xF13D720",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "identity_authority": "direct call metadata inventory; body not selected",
+          "index": 523195
+        }
+      ],
+      "minimum_closure_evidence": "One exact speed change -> after-property notification -> remaining delay/rebase chain and before/after effective values at same AV",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Preserve remaining distance reference policy; active normal actor samples final speed after boundaries",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "REQUIRES_NEW_STRUCTURAL_EVIDENCE",
+      "ticket_id": "OR21-04",
+      "title": "Mid-cycle speed rescheduling"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E01",
+        "E02"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78228052,
+          "flags": "0x81",
+          "index": 516432,
+          "name": "PackActionDelayCompareData",
+          "parameter_count": 2,
+          "rva": "0xF16DE60",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78680920,
+          "flags": "0x86",
+          "index": 533850,
+          "name": "KGAFHLGGNHJ",
+          "parameter_count": 1,
+          "rva": "0xC495400",
+          "slot": 65535,
+          "type": ".NOMOKAFFKFE",
+          "type_index": 57340
+        },
+        {
+          "file_offset": 78228286,
+          "flags": "0x86",
+          "index": 516441,
+          "name": "GetTopActionDelayActiveEntity",
+          "parameter_count": 2,
+          "rva": "0xF16E8F0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        }
+      ],
+      "minimum_closure_evidence": "Packed key producer identity/value, exact equal-key stability, eligibility/lock/redirect filters under normal/zero/negative delay",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Explicit total-order key using immutable registration/enqueue ordinal + stable id",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-05",
+      "title": "Equal AV and eligibility"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E04",
+        "E05"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78405216,
+          "flags": "0x86",
+          "index": 523246,
+          "name": "ApplyDelayModifyWhenActionPhaseEnd",
+          "parameter_count": 0,
+          "rva": "0xF139E90",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "file_offset": 78229118,
+          "flags": "0x81",
+          "index": 516473,
+          "name": "_AdvanceListEntityDelay",
+          "parameter_count": 1,
+          "rva": "0xF16EAB0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78349446,
+          "flags": "0x96",
+          "index": 521101,
+          "name": "ModifyEntitiesActionDelay",
+          "parameter_count": 9,
+          "rva": "0xEE039C0",
+          "slot": 65535,
+          "type": "RPG.GameCore.AbilityStatic",
+          "type_index": 55471
+        }
+      ],
+      "minimum_closure_evidence": "Exact source executor/operand basis (full interval vs remaining, scalar vs percent), affected actor and captured delegate behavior; lock/redirect rule",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Typed gap for native/unknown source requests; explicit fraction-of-full-interval policy available independently",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "REQUIRES_NEW_STRUCTURAL_EVIDENCE",
+      "ticket_id": "OR21-06",
+      "title": "Advance/delay effect mapping"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E07"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78223840,
+          "flags": "0x86",
+          "index": 516270,
+          "name": "TryInsertAbility",
+          "parameter_count": 2,
+          "rva": "0xF15C120",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78227662,
+          "flags": "0x81",
+          "index": 516417,
+          "name": "_TickInsertAbility",
+          "parameter_count": 0,
+          "rva": "0xF165A90",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78227896,
+          "flags": "0x81",
+          "index": 516426,
+          "name": "_FinishInsertAbility",
+          "parameter_count": 1,
+          "rva": "0xF16C7C0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78679516,
+          "flags": "0x86",
+          "index": 533796,
+          "name": "KGAFHLGGNHJ",
+          "parameter_count": 1,
+          "rva": "0x1625C860",
+          "slot": 65535,
+          "type": ".ENGBNDIPDJL",
+          "type_index": 57333
+        }
+      ],
+      "minimum_closure_evidence": "Exact request priority and category mapping, safe interrupt point, current-turn/action-owner restoration, normal AV/counter/event consumption",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Post-settle category policy only; initial interrupt returns INTERRUPT_POLICY_MISSING; future explicit R15 adapter",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-07",
+      "title": "Insertion/ultimate/FUA accounting"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E08"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78407322,
+          "flags": "0x86",
+          "index": 523327,
+          "name": "ProcessOnLevelTurnEnd",
+          "parameter_count": 1,
+          "rva": "0xF145DF0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedAbilityComponent",
+          "type_index": 55922
+        },
+        {
+          "file_offset": 78395388,
+          "flags": "0x86",
+          "index": 522868,
+          "name": "OnTurnEnd",
+          "parameter_count": 1,
+          "rva": "0xF1823F0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedModifierInstance",
+          "type_index": 55915
+        },
+        {
+          "file_offset": 78221786,
+          "flags": "0x86",
+          "index": 516191,
+          "name": "CheckExecutingFinished",
+          "parameter_count": 1,
+          "rva": "0xF14D2A0",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78226518,
+          "flags": "0x86",
+          "index": 516373,
+          "name": "SelfActionExecuting1Working",
+          "parameter_count": 1,
+          "rva": "0xF166F20",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        }
+      ],
+      "minimum_closure_evidence": "One exact global turn-end/start dispatch -> modifier/resource listener order; literal 0x13 enum identity and config-5 duration behavior; effective callbacks",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Namespaced reference events, complete registration hash and resumable boundary cursors; persistent modifiers survive",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-08",
+      "title": "Turn event/duration order"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [
+        "E09"
+      ],
+      "method_candidates": [
+        {
+          "file_offset": 78229014,
+          "flags": "0x81",
+          "index": 516469,
+          "name": "_OnEntityDied",
+          "parameter_count": 2,
+          "rva": "0xF170870",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        },
+        {
+          "file_offset": 78229040,
+          "flags": "0x81",
+          "index": 516470,
+          "name": "_OnEntityRevive",
+          "parameter_count": 3,
+          "rva": "0xF170D30",
+          "slot": 65535,
+          "type": "RPG.GameCore.TurnBasedGameMode",
+          "type_index": 54668
+        }
+      ],
+      "minimum_closure_evidence": "One exact lifecycle participation mutation and initialized revived/summoned delay; stage wave owner/terminal/carry rules",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Caller lifecycle/stage policy, generation invalidation, explicit full-interval register/revive",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-09",
+      "title": "Death/revive/summon/wave participation"
+    },
+    {
+      "blocks_R22_reference_engine": false,
+      "evidence_ids": [],
+      "method_candidates": [],
+      "minimum_closure_evidence": "Selected controller pause/request path with concrete actor/action/target/cost rights; Monster decision source and stage termination boundary",
+      "native_equivalence_blocked": true,
+      "no_effective_observation_obtained": true,
+      "reference_continuation": "Explicit reference ActionPermission and external provider contracts; native legal_actions not claimed",
+      "requires_live_work_in_R21": false,
+      "source_sha256": "5177de36bc0961beb550aaa514056d00445969d80f660a1d3ad90833196aa40f",
+      "source_version": "4.6.51",
+      "status": "EFFECTIVE_RUNTIME_ORACLE_REQUIRED",
+      "ticket_id": "OR21-10",
+      "title": "Player/Monster decision legality"
+    }
+  ],
+  "verdict": "TRUE_TURN_AV_CONTRACT_READY"
+}
