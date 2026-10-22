@@ -113,9 +113,11 @@ def _begin(engine,node,frame):
     if set(events)!=set(STAGES) or any(not isinstance(v,list) or any(type(e) not in (int,str) for e in v) for v in events.values()):
         fail(node,'DAMAGE_EVENT_ORDER_UNKNOWN','every stage explicitly configured, including empty stages')
     boundaries=need(node,spec,'boundaries')
+    defense = spec.get('defense_reference') == 'R24_EXPLICIT_SCENARIO_HOOK'
     for key,expected in {'shield':'BYPASS_EXPLICIT_SANDBOX','toughness':'NO_MUTATION_EXPLICIT_SANDBOX',
                          'break':'NO_PROCESSING_EXPLICIT_SANDBOX','resources':'NO_PROCESSING_EXPLICIT_SANDBOX'}.items():
-        if boundaries.get(key)!=expected: fail(node,'DAMAGE_'+key.upper()+'_POLICY_UNKNOWN','explicit sandbox boundary')
+        chosen = 'R24_EXPLICIT_REFERENCE' if defense and key in ('shield','toughness','break') else expected
+        if boundaries.get(key)!=chosen: fail(node,'DAMAGE_'+key.upper()+'_POLICY_UNKNOWN','explicit sandbox boundary')
     settlement=need(node,spec,'settlement')
     for key,expected in {'storage':'MODE0_RAW_REFERENCE','clamp':'ZERO_MAX_HP_REFERENCE',
                          'death_callbacks':'NO_PROCESSING_EXPLICIT_SANDBOX','battle_end':'NO_PROCESSING_EXPLICIT_SANDBOX'}.items():
@@ -159,7 +161,11 @@ def _begin(engine,node,frame):
         step('reference_damage_event_stage',stage=STAGES[0])
         step('reference_damage_evaluate')
         for stage in STAGES[1:]:
-            if stage=='HP_MUTATION': step('reference_damage_hp_mutation')
+            if stage=='HP_MUTATION':
+                if defense:
+                    from .defense_break import damage_hook_nodes
+                    nodes.append(damage_hook_nodes(engine,node,rid,spec))
+                step('reference_damage_hp_mutation')
             step('reference_damage_event_stage',stage=stage)
         step('reference_damage_target_complete')
     txn['request_ids']=requests
@@ -247,22 +253,11 @@ def _execute(engine,node):
         record.update(evaluated_amount_raw=amount,amount_raw=amount,status='EVALUATED')
         lifecycle(record,'AMOUNT_EVALUATED');return []
     if node.op=='reference_damage_hp_mutation':
-        eid=request.payload['target'];s=spec['settlement'];props=need(node,engine.state.properties,eid,'DAMAGE_PROPERTY_INPUT_MISSING')
-        hpkey=need(node,s,'hp_property');maxkey=need(node,s,'max_hp_property')
-        before=raw_checked(need(node,props,hpkey,'DAMAGE_PROPERTY_INPUT_MISSING'))
-        maximum=raw_checked(need(node,props,maxkey,'DAMAGE_PROPERTY_INPUT_MISSING'))
-        if maximum<=0 or not 0<=before<=maximum: fail(node,'DAMAGE_HP_STATE_INVALID','bounded initial HP/max HP')
-        amount=raw_checked(need(node,record,'amount_raw'))
-        if amount<0 and spec['negative']=='REJECT_REFERENCE': fail(node,'DAMAGE_NEGATIVE_AMOUNT','explicit rejection')
-        amount=max(0,amount)
-        if spec['rounding']=='WHOLE_HP_TOWARD_ZERO_REFERENCE': amount=amount//SCALE*SCALE
-        applied=min(before,amount);after=fixed_binary('sub',before,applied)
-        props[hpkey]=after
-        if s['life_state']=='SET_ALIVE_FROM_HP_REFERENCE': engine.state.entities[eid]['alive']=after>0
-        record.update(effective_amount_raw=amount,hp_before_raw=before,hp_after_raw=after,
-            applied_hp_delta_raw=-applied,overkill_raw=fixed_binary('sub',amount,applied),status='HP_SETTLED')
+        amount = (record['hp_directed_amount_raw'] if 'hp_directed_amount_raw' in record else
+                  normalize_amount(node, need(node,record,'amount_raw'), spec))
+        settle_hp(engine,node,request.payload['target'],spec['settlement'],amount,record)
         lifecycle(record,'HP_COMMITTED')
-        metric(engine,'hp_mutations');return []
+        return []
     if node.op=='reference_damage_event_stage':
         stage=node.payload['stage'];record['stage']=stage
         if stage=='BEFORE_HP_MUTATION': lifecycle(record,'SETTLEMENT_PENDING')
@@ -289,6 +284,38 @@ def _execute(engine,node):
             'evidence_level':'REFERENCE_MODEL','reference_policy_id':POLICY_ID,'boundary':'REFERENCE_DAMAGE_HP_SETTLED'})
         return []
     fail(node,'DAMAGE_PRIMITIVE_UNKNOWN',node.op)
+
+def normalize_amount(node, amount, spec):
+    amount=raw_checked(amount)
+    if amount<0 and spec['negative']=='REJECT_REFERENCE': fail(node,'DAMAGE_NEGATIVE_AMOUNT','explicit rejection')
+    amount=max(0,amount)
+    if spec['rounding']=='WHOLE_HP_TOWARD_ZERO_REFERENCE': amount=amount//SCALE*SCALE
+    return amount
+
+
+def settle_hp(engine,node,eid,s,amount,record):
+    """The single R18 HP settlement operation, reused by explicit R24 requests."""
+    for key, expected in {'storage':'MODE0_RAW_REFERENCE','clamp':'ZERO_MAX_HP_REFERENCE',
+            'death_callbacks':'NO_PROCESSING_EXPLICIT_SANDBOX','battle_end':'NO_PROCESSING_EXPLICIT_SANDBOX'}.items():
+        if s.get(key)!=expected: fail(node,'DAMAGE_SETTLEMENT_POLICY_UNKNOWN',key)
+    if s.get('life_state') not in ('PRESERVE_EXPLICIT_REFERENCE','SET_ALIVE_FROM_HP_REFERENCE'):
+        fail(node,'DAMAGE_DEATH_POLICY_UNKNOWN','explicit life state')
+    props=need(node,engine.state.properties,eid,'DAMAGE_PROPERTY_INPUT_MISSING')
+    hpkey=need(node,s,'hp_property');maxkey=need(node,s,'max_hp_property')
+    before=raw_checked(need(node,props,hpkey,'DAMAGE_PROPERTY_INPUT_MISSING'))
+    maximum=raw_checked(need(node,props,maxkey,'DAMAGE_PROPERTY_INPUT_MISSING'))
+    amount=raw_checked(amount)
+    if amount<0 or maximum<=0 or not 0<=before<=maximum: fail(node,'DAMAGE_HP_STATE_INVALID','bounded HP and nonnegative amount')
+    applied=min(before,amount);after=fixed_binary('sub',before,applied)
+    props[hpkey]=after
+    if s['life_state']=='SET_ALIVE_FROM_HP_REFERENCE': engine.state.entities[eid]['alive']=after>0
+    record.update(effective_amount_raw=amount,hp_before_raw=before,hp_after_raw=after,
+        applied_hp_delta_raw=-applied,overkill_raw=fixed_binary('sub',amount,applied),status='HP_SETTLED')
+    if 'reference_encounter_v1' in engine.state.mechanics:
+        from .encounter_runtime import observe_hp
+        observe_hp(engine, eid, before, after, node)
+    metric(engine,'hp_mutations')
+
 
 def execute(engine,node,frame=None):
     try:

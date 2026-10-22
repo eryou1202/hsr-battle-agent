@@ -1,0 +1,318 @@
+{
+  "R23_archived_counts": {
+    "combat_roots": 632,
+    "joined_rows": 161,
+    "joined_unique_roots": 160,
+    "original_child_finish_roots": 15,
+    "real_prefix_roots": 73,
+    "reference_hp_roots": 18,
+    "source_closed_transitions": 0
+  },
+  "R23_preexisting_count_discrepancy": {
+    "R24_code_without_opt_in": {
+      "actions_completed": 0,
+      "hp_settlements": 0,
+      "metrics": {
+        "abilities_invoked": 1,
+        "barriers_encountered": 0,
+        "callbacks_completed": 0,
+        "child_abilities_completed": 0,
+        "logical_time_advances": 0,
+        "tasks_completed": 0,
+        "tasks_reached": 1
+      },
+      "normal_turns_completed": 0,
+      "original_finish_completed": 0,
+      "original_finish_reached": false,
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Bailu_00_Skill01_Camera",
+      "source_IR_unchanged": true,
+      "status": "SEMANTIC_GAP"
+    },
+    "archived": {
+      "actions_completed": 0,
+      "hp_settlements": 0,
+      "metrics": {
+        "abilities_invoked": 0,
+        "barriers_encountered": 0,
+        "callbacks_completed": 0,
+        "child_abilities_completed": 0,
+        "events_dispatched": 1,
+        "logical_time_advances": 0,
+        "tasks_completed": 2,
+        "tasks_reached": 2
+      },
+      "normal_turns_completed": 0,
+      "original_finish_completed": 0,
+      "original_finish_reached": false,
+      "primitive": null,
+      "required_capability": "unknown operation provider/version/implementation hash",
+      "source_IR_unchanged": true,
+      "status": "SEMANTIC_GAP"
+    },
+    "conclusion": "Archived row stops at operation implementation-binding guard before admitting a content action; boundary tasks were counted as a real prefix. Exact starting code and R24 both stop at the same original missing child source with zero real tasks completed.",
+    "exact_starting_code": {
+      "actions_completed": 0,
+      "hp_settlements": 0,
+      "metrics": {
+        "abilities_invoked": 1,
+        "barriers_encountered": 0,
+        "callbacks_completed": 0,
+        "child_abilities_completed": 0,
+        "logical_time_advances": 0,
+        "tasks_completed": 0,
+        "tasks_reached": 1
+      },
+      "normal_turns_completed": 0,
+      "original_finish_completed": 0,
+      "original_finish_reached": false,
+      "primitive": "RPG.GameCore.TriggerAbility",
+      "required_capability": "missing decoded child catalog reference:Avatar_Bailu_00_Skill01_Camera",
+      "source_IR_unchanged": true,
+      "status": "SEMANTIC_GAP"
+    },
+    "historical_control_modified": false,
+    "root": "Avatar_Bailu_00_Skill01_Phase01",
+    "source_closed_transitions_added": 0,
+    "source_identity": [
+      "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+      10015665,
+      10015873
+    ]
+  },
+  "R23_source_closed_joined_transitions": 0,
+  "R23_stable_reexecution": {
+    "all_original_IR_hashes_unchanged": true,
+    "blocked_real_skill_entries": 88,
+    "clone_snapshot_replay_roots": 11,
+    "cohort": "R23_EXPLICIT_SYNTHETIC_ACTOR_INPUTS_NOT_FROZEN_CORPUS",
+    "first_gap_classes": {
+      "ACTOR_STATE_INPUT_MISSING": 46,
+      "CONTENT_NOT_FOUND": 83,
+      "CONTENT_READER_GAP": 7,
+      "DYNAMIC_PROVIDER_INPUT_MISSING": 5,
+      "RUNTIME_PRIMITIVE_UNSUPPORTED": 19
+    },
+    "first_gap_primitives": {
+      "NO_R15_PRIMITIVE": 3,
+      "RPG.GameCore.AddModifier": 44,
+      "RPG.GameCore.AlignTargetToTeamCenter": 1,
+      "RPG.GameCore.ByIsTurnActionEntity": 1,
+      "RPG.GameCore.DispelStatus": 1,
+      "RPG.GameCore.FireProjectile": 3,
+      "RPG.GameCore.HealHP": 1,
+      "RPG.GameCore.LoseHPByRatio": 1,
+      "RPG.GameCore.RemoveModifier": 2,
+      "RPG.GameCore.SetDynamicValue": 4,
+      "RPG.GameCore.SetDynamicValueByProperty": 1,
+      "RPG.GameCore.SetTeamFormation": 4,
+      "RPG.GameCore.TriggerAbility": 93,
+      "lookup": 1
+    },
+    "frozen_inputs_modified": false,
+    "hp_settled_roots": 18,
+    "native_validated": 0,
+    "original_finish_completed_roots": 15,
+    "original_finish_reached_roots": 15,
+    "owner_rows": 161,
+    "partial_real_skill_prefix_roots": 72,
+    "policy_abstracted_unique_roots": 0,
+    "r22_actions_completed": 0,
+    "r22_normal_turns_completed": 0,
+    "roots": 160,
+    "source_closed_unique_roots": 0
+  },
+  "R24_cohorts": {
+    "A_PURE_REFERENCE_MECHANIC": 17,
+    "B_REAL_DAMAGE_PLUS_REFERENCE_DEFENSE": 1,
+    "C_SOURCE_BACKED_DEFENSE_CONTENT": 0,
+    "count_basis": "Core functional scenarios only; additional edge tests do not inflate these cohorts",
+    "native_correctness": "NOT_CLAIMED",
+    "original_source_defense_completeness_proven": false,
+    "passed": 18,
+    "required": 18
+  },
+  "R24_verdict": "GENERIC_DEFENSE_BREAK_REFERENCE_ENGINE_ESTABLISHED",
+  "R25_candidates": [
+    {
+      "cost": "Medium-high",
+      "evidence": "Existing R22 stage provider and typed terminal/wave boundaries; source progression still needs binding",
+      "phase": "STAGE / WAVE / TERMINATION",
+      "rank": 1,
+      "value": "Complete encounter boundaries and wave progression"
+    },
+    {
+      "cost": "High",
+      "evidence": "Existing explicit enemy provider; independent content/AI semantics incomplete",
+      "phase": "MONSTER CONTENT / AI",
+      "rank": 2,
+      "value": "Executable opponent actions and decisions"
+    },
+    {
+      "cost": "Medium-high",
+      "phase": "ACTION LEGALITY",
+      "rank": 3,
+      "value": "Better source admission and cost/target constraints"
+    },
+    {
+      "cost": "Medium",
+      "phase": "PLANNER BRIDGE",
+      "rank": 4,
+      "value": "Use clone/snapshot/replay across reference battle decisions"
+    },
+    {
+      "cost": "Evidence-dependent",
+      "phase": "SHIELD / BREAK SOURCE CONTENT FOLLOW-UP",
+      "rank": 5,
+      "value": "Bind only exact defense operands/events found by targeted evidence"
+    },
+    {
+      "cost": "Externally dependent",
+      "phase": "TARGETED NATIVE ORACLE",
+      "rank": 6,
+      "value": "Validate effective order/values after precise gaps are identified"
+    }
+  ],
+  "authority": "REFERENCE_MODEL",
+  "automatic_defense_reverse_engineering": false,
+  "automatic_turn_av_native_research": false,
+  "branch": "terra/implementation",
+  "capabilities": {
+    "Action legality": {
+      "evidence": "R15 local caller-bound actions + explicit source cost transaction; no native legal_actions or M15 admission change",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_PERMISSION_AND_LITERAL_COST_INTEGRATION"
+    },
+    "Actor state initialization": {
+      "evidence": "pinned identity + explicit scenario/provenance; native legality unknown",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Damage/HP": {
+      "evidence": "R18/R19 retained; reference formula/settlement/lifecycle",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Global Turn/AV": {
+      "evidence": "R22 A-L public API loops, R15/R17/R20 integration, full hash replay",
+      "native_equivalence": "NOT_CLAIMED",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Heal": {
+      "evidence": "existing FormulaType2; synthetic heal/resource pair passes; original real heal mapping/context still incomplete",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_PARTIAL"
+    },
+    "Modifier/Event": {
+      "evidence": "R17 instances/listeners with R15 ownership; real resource callback primitives execute in explicit listeners",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Monster AI": {
+      "evidence": "no independently bound real opponent decision engine",
+      "status": "REFERENCE_PROVIDER_BOUNDARY_ONLY"
+    },
+    "Planner integration": {
+      "evidence": "deterministic reset/step/clone/snapshot/hash/replay affordances; full battle policy/search integration not established",
+      "status": "REFERENCE_PARTIAL"
+    },
+    "Progression": {
+      "evidence": "explicit activation booleans + existing R19 keyed rank threshold",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Resources/Energy/SP": {
+      "evidence": "explicit resource domains/settlement; native identity, formula, caps and event semantics unresolved",
+      "oracle": "NATIVE_ORACLE_PENDING",
+      "status": "REFERENCE_EXECUTABLE"
+    },
+    "Shield": {
+      "evidence": "R24 18 asserted functional scenarios and 34 tests; source-backed defense operations=0",
+      "native_correctness": "NOT_CLAIMED",
+      "native_oracle": "PENDING",
+      "status": "REFERENCE_EXECUTABLE_OPT_IN"
+    },
+    "Stage/wave/mode": {
+      "evidence": "no independent full battle stage progression",
+      "status": "EXPLICIT_BOUNDARY_ONLY"
+    },
+    "Toughness/Break": {
+      "evidence": "R24 18 asserted functional scenarios and 34 tests; source-backed defense operations=0",
+      "native_correctness": "NOT_CLAIMED",
+      "native_oracle": "PENDING",
+      "status": "REFERENCE_EXECUTABLE_OPT_IN"
+    }
+  },
+  "change_request": "CR-R24-TOUGHNESS-BREAK-SHIELD-20261021-001",
+  "frozen_M10_M15_modified": false,
+  "git_writes": "NONE",
+  "historical_R23_candidates": [
+    {
+      "cost": "Medium",
+      "frequency_evidence": "R20 priority receipt: 14 R20; 145 combat / 75 joined frozen catalog-related blockers. No new denominator claim.",
+      "generic_reuse": "High",
+      "phase": "CONTENT ROOT / CATALOG COMPLETION",
+      "rank": 1,
+      "source_availability": "Existing exact R14-R20 IR/catalog and typed first-gap receipts.",
+      "value": "High: turn execution is usable, but frozen source graphs still stop at content/provider gaps."
+    },
+    {
+      "cost": "High",
+      "frequency_evidence": "Missing subsystem, not zero first gaps.",
+      "generic_reuse": "High",
+      "phase": "TOUGHNESS / BREAK / SHIELD",
+      "rank": 2,
+      "source_availability": "Partial pinned structural inputs",
+      "value": "Very high whole-combat coverage"
+    },
+    {
+      "cost": "High",
+      "generic_reuse": "High",
+      "phase": "MONSTER CONTENT / AI EXECUTION",
+      "rank": 3,
+      "source_availability": "Structural inventory and explicit provider interface",
+      "value": "High opponent simulation value"
+    },
+    {
+      "cost": "Medium-high",
+      "generic_reuse": "High",
+      "phase": "STAGE / WAVE / TERMINATION",
+      "rank": 4,
+      "source_availability": "Explicit R22 boundary provider only",
+      "value": "High whole-battle horizon value"
+    },
+    {
+      "cost": "Medium-high",
+      "generic_reuse": "High",
+      "phase": "ACTION LEGALITY + COST INTEGRATION",
+      "rank": 5,
+      "source_availability": "R20 source costs and R22 permissions",
+      "value": "High planning admissibility"
+    },
+    {
+      "cost": "Medium",
+      "generic_reuse": "High",
+      "phase": "BATTLE PLANNER ADAPTER INTEGRATION",
+      "rank": 6,
+      "source_availability": "Working decision and snapshot APIs",
+      "value": "Useful after more real graphs complete"
+    },
+    {
+      "cost": "Externally dependent",
+      "generic_reuse": "Targeted",
+      "phase": "TARGETED NATIVE ORACLE",
+      "rank": 7,
+      "source_availability": "Effective native observations still missing",
+      "value": "Accuracy; little new whole-battle structure"
+    }
+  ],
+  "native_correctness": "NOT_CLAIMED",
+  "native_equivalence": "NOT_CLAIMED",
+  "product_baseline": "FROZEN_4.4.54",
+  "real_ability_completion_is_full_skill_completion": false,
+  "recommended_R23": "CONTENT ROOT / CATALOG COMPLETION",
+  "recommended_R25": "STAGE / WAVE / TERMINATION; MONSTER CONTENT / AI next if source cost is lower",
+  "schema": "generic_runtime_whole_battle_capability/2",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0"
+}

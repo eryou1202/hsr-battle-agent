@@ -1,0 +1,112 @@
+{
+  "authority": "REFERENCE_MODEL",
+  "branch": "terra/implementation",
+  "carryover": {
+    "actor_resources": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "energy": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "hp": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "modifiers": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "progression": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "rng": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "shield": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "speed_av": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "team_sp": {
+      "mode": "PRESERVE_REFERENCE"
+    },
+    "toughness_break": {
+      "mode": "PRESERVE_REFERENCE"
+    }
+  },
+  "change_request": "CR-R25-REFERENCE-ENCOUNTER-LIFECYCLE-20261021-001",
+  "commit": "Single R22 atomic candidate; retire previous wave, bind/register spawns, change explicit availability, update stage/wave generation",
+  "event_execution": "Existing R15 reference boundary envelopes and R17 modifier_event_dispatch",
+  "events": {
+    "AFTER_WAVE_TRANSITION": "reference.encounter.after_wave_transition",
+    "BEFORE_WAVE_TRANSITION": "reference.encounter.before_wave_transition",
+    "ENCOUNTER_ABORTED": "reference.encounter.encounter_aborted",
+    "ENCOUNTER_DEFEAT": "reference.encounter.encounter_defeat",
+    "ENCOUNTER_START": "reference.encounter.encounter_start",
+    "ENCOUNTER_VICTORY": "reference.encounter.encounter_victory",
+    "ENTITY_DEFEATED": "reference.encounter.entity_defeated",
+    "WAVE_CLEAR": "reference.encounter.wave_clear",
+    "WAVE_START": "reference.encounter.wave_start"
+  },
+  "git_writes": "NONE",
+  "initiative": {
+    "clock": "PRESERVE_REFERENCE",
+    "new_actor_due_at": "R22_FULL_INTERVAL_AT_NOW_REFERENCE",
+    "pending_insertions": "DRAIN_BEFORE_TRANSITION_REFERENCE",
+    "player_due_at": "PRESERVE_REFERENCE",
+    "queued_actions": "NO_ADMITTED_ACTION_AT_COMMIT_REFERENCE"
+  },
+  "mandatory_insertions": "Invalidate defeated-owner insertions via R22; surviving insertions drain before stage commit",
+  "native_equivalence": "NOT_CLAIMED",
+  "no_second_event_bus_or_scheduler": true,
+  "prepare": "Read-only full R20 construction/R22 registration probe on a clone; immutable prepared input/context receipt",
+  "product_baseline": "FROZEN_4.4.54",
+  "safe_point": "ALL_OWNED_ROOTS_AND_TRANSACTIONS_DRAINED_REFERENCE",
+  "schema": "generic_runtime_wave_lifecycle/1",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "terminal": "Callbacks and final objective revalidation precede R22 BATTLE_TERMINAL; actor lifecycle sealed afterward",
+  "transition_receipts": [
+    "exact prior",
+    "next",
+    "request_id",
+    "sequence",
+    "policy/provider identity",
+    "wave/stage generation",
+    "actor generations",
+    "receipt_hash"
+  ],
+  "transitions": {
+    "ENCOUNTER_ABORTED": [],
+    "ENCOUNTER_DEFEAT": [],
+    "ENCOUNTER_VICTORY": [],
+    "INITIALIZING": [
+      "WAVE_ACTIVE"
+    ],
+    "NOT_INITIALIZED": [
+      "INITIALIZING"
+    ],
+    "OBJECTIVE_PENDING": [
+      "WAVE_ACTIVE",
+      "WAVE_CLEAR_PENDING",
+      "TRANSITION_DRAINING"
+    ],
+    "TRANSITION_DRAINING": [
+      "WAVE_READY",
+      "ENCOUNTER_VICTORY",
+      "ENCOUNTER_DEFEAT",
+      "ENCOUNTER_ABORTED"
+    ],
+    "WAVE_ACTIVE": [
+      "OBJECTIVE_PENDING"
+    ],
+    "WAVE_CLEAR_PENDING": [
+      "TRANSITION_DRAINING"
+    ],
+    "WAVE_INITIALIZING": [
+      "WAVE_ACTIVE"
+    ],
+    "WAVE_READY": [
+      "WAVE_INITIALIZING"
+    ]
+  }
+}

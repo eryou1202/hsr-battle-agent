@@ -1,0 +1,868 @@
+{
+  "aggregate_scope": "One recorded result per P scenario; shared cached searches can recur in scenario observations. Not unique executions.",
+  "authority": "REFERENCE_MODEL",
+  "branch": "terra/implementation",
+  "change_request": "CR-R26-BATTLE-PLANNER-BRIDGE-20261022-001",
+  "cohorts": {
+    "FULL_JOINED_SKILL_REFERENCE_PLANNING": 0,
+    "NATIVE_VALIDATED_PLANNING": 0,
+    "PURE_REFERENCE_PLANNING": "P01-P04/P06-P17/P19-P20",
+    "REAL_PRIMITIVE_REFERENCE_PLANNING": [
+      "P05",
+      "P18"
+    ]
+  },
+  "completed_rollouts": 38,
+  "counts": {
+    "budget_yields": 43,
+    "candidates_enumerated": 87,
+    "clones": 103,
+    "encounter_transitions_reserved": 17888,
+    "nodes_expanded": 85,
+    "opponent_actions": 35,
+    "r15_history_records": 23073,
+    "r25_lifecycle_transitions": 381,
+    "scheduler_work_reserved": 35424,
+    "simulated_actions": 120,
+    "simulator_transitions": 301,
+    "snapshot_restores": 0,
+    "trace_bytes": 589376
+  },
+  "counts_note": "Scenario observations can share cached searches; aggregates are recorded observations, not unique production executions",
+  "git_writes": "NONE",
+  "incomplete_rollouts": 22,
+  "native_correctness": "NOT_CLAIMED",
+  "native_validated_planning": 0,
+  "passed": 20,
+  "product_baseline": "FROZEN_4.4.54",
+  "required": 20,
+  "scenarios": [
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 2,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 512,
+        "nodes_expanded": 2,
+        "opponent_actions": 1,
+        "r15_history_records": 544,
+        "r25_lifecycle_transitions": 9,
+        "scheduler_work_reserved": 1024,
+        "simulated_actions": 3,
+        "simulator_transitions": 7,
+        "snapshot_restores": 0,
+        "trace_bytes": 13673
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P01",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P01_two_actions_victory_vs_defeat",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "e8f6884be61b5f7372b8d6ba6803cd1979aafe0e32e0bd0622d773917d99bff2",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 3,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 4,
+        "clones": 5,
+        "encounter_transitions_reserved": 768,
+        "nodes_expanded": 4,
+        "opponent_actions": 1,
+        "r15_history_records": 923,
+        "r25_lifecycle_transitions": 16,
+        "scheduler_work_reserved": 1536,
+        "simulated_actions": 5,
+        "simulator_transitions": 11,
+        "snapshot_restores": 0,
+        "trace_bytes": 22214
+      },
+      "depth": 2,
+      "failures": [],
+      "id": "P02",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P02_two_winning_policies_fewer_turns",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-save:b",
+        "action_ir_hash": "4723d5da1576b11fd2972d464745e649e0d83e6dcf8c1ab82e459f4164b4a02f",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 4,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 8,
+        "clones": 9,
+        "encounter_transitions_reserved": 1664,
+        "nodes_expanded": 8,
+        "opponent_actions": 4,
+        "r15_history_records": 2354,
+        "r25_lifecycle_transitions": 47,
+        "scheduler_work_reserved": 3328,
+        "simulated_actions": 12,
+        "simulator_transitions": 25,
+        "snapshot_restores": 0,
+        "trace_bytes": 52145
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P03",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P03_two_wave_resource_conservation",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-save:b",
+        "action_ir_hash": "4723d5da1576b11fd2972d464745e649e0d83e6dcf8c1ab82e459f4164b4a02f",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 4,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 8,
+        "clones": 9,
+        "encounter_transitions_reserved": 1664,
+        "nodes_expanded": 8,
+        "opponent_actions": 4,
+        "r15_history_records": 2354,
+        "r25_lifecycle_transitions": 47,
+        "scheduler_work_reserved": 3328,
+        "simulated_actions": 12,
+        "simulator_transitions": 25,
+        "snapshot_restores": 0,
+        "trace_bytes": 52145
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P04",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P04_beam_beats_one_step_greedy",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "strike",
+        "action_ir_hash": "6cd170aaeca5ee1f843327778de749d1586557b9a65619f5609f2a5fe7ab1afb",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b",
+          "c"
+        ]
+      },
+      "completed_rollouts": 6,
+      "counts": {
+        "budget_yields": 3,
+        "candidates_enumerated": 9,
+        "clones": 10,
+        "encounter_transitions_reserved": 2048,
+        "nodes_expanded": 9,
+        "opponent_actions": 3,
+        "r15_history_records": 2801,
+        "r25_lifecycle_transitions": 35,
+        "scheduler_work_reserved": 4096,
+        "simulated_actions": 12,
+        "simulator_transitions": 28,
+        "snapshot_restores": 0,
+        "trace_bytes": 58088
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P05",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P05_distinct_targets_distinct_outcomes",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "failures": [],
+      "id": "P06",
+      "test": "test_P06_stale_permission_clone_parent_isolation"
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 2,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 512,
+        "nodes_expanded": 2,
+        "opponent_actions": 1,
+        "r15_history_records": 544,
+        "r25_lifecycle_transitions": 9,
+        "scheduler_work_reserved": 1024,
+        "simulated_actions": 3,
+        "simulator_transitions": 7,
+        "snapshot_restores": 0,
+        "trace_bytes": 13673
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P07",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P07_external_enemy_provider_deterministic",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 1,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 384,
+        "nodes_expanded": 2,
+        "opponent_actions": 0,
+        "r15_history_records": 367,
+        "r25_lifecycle_transitions": 6,
+        "scheduler_work_reserved": 768,
+        "simulated_actions": 2,
+        "simulator_transitions": 5,
+        "snapshot_restores": 0,
+        "trace_bytes": 9828
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P08",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P08_missing_opponent_typed_incomplete",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 1,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 384,
+        "nodes_expanded": 2,
+        "opponent_actions": 0,
+        "r15_history_records": 216,
+        "r25_lifecycle_transitions": 4,
+        "scheduler_work_reserved": 768,
+        "simulated_actions": 2,
+        "simulator_transitions": 5,
+        "snapshot_restores": 0,
+        "trace_bytes": 9826
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P09",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 1,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P09_semantic_gap_alternative_retained",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 2,
+      "counts": {
+        "budget_yields": 40,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 352,
+        "nodes_expanded": 2,
+        "opponent_actions": 1,
+        "r15_history_records": 544,
+        "r25_lifecycle_transitions": 9,
+        "scheduler_work_reserved": 352,
+        "simulated_actions": 3,
+        "simulator_transitions": 47,
+        "snapshot_restores": 0,
+        "trace_bytes": 65089
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P10",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P10_budget_yield_resumes_without_double_actions",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-save:b",
+        "action_ir_hash": "4723d5da1576b11fd2972d464745e649e0d83e6dcf8c1ab82e459f4164b4a02f",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 1,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 3,
+        "clones": 4,
+        "encounter_transitions_reserved": 768,
+        "nodes_expanded": 3,
+        "opponent_actions": 2,
+        "r15_history_records": 959,
+        "r25_lifecycle_transitions": 17,
+        "scheduler_work_reserved": 1536,
+        "simulated_actions": 5,
+        "simulator_transitions": 11,
+        "snapshot_restores": 0,
+        "trace_bytes": 22135
+      },
+      "depth": 2,
+      "failures": [],
+      "id": "P11",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 0,
+      "status": "SEARCH_BUDGET_TRUNCATED",
+      "test": "test_P11_beam_width_reproducible_pruning",
+      "truncated_rollouts": 1
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "00-slow",
+        "action_ir_hash": "28edd42b93630a6144ad89eb56b2765c62a373b84a91111db3108c29ffd23fe1",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 0,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 640,
+        "nodes_expanded": 2,
+        "opponent_actions": 2,
+        "r15_history_records": 712,
+        "r25_lifecycle_transitions": 8,
+        "scheduler_work_reserved": 1280,
+        "simulated_actions": 4,
+        "simulator_transitions": 9,
+        "snapshot_restores": 0,
+        "trace_bytes": 17568
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P12",
+      "incomplete_rollouts": 2,
+      "semantic_gap_branches": 0,
+      "status": "RUNNING_EVALUABLE",
+      "test": "test_P12_stable_ties_and_input_permutations",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 3,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 12,
+        "clones": 13,
+        "encounter_transitions_reserved": 2304,
+        "nodes_expanded": 12,
+        "opponent_actions": 5,
+        "r15_history_records": 3071,
+        "r25_lifecycle_transitions": 40,
+        "scheduler_work_reserved": 4608,
+        "simulated_actions": 17,
+        "simulator_transitions": 35,
+        "snapshot_restores": 0,
+        "trace_bytes": 71792
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P13",
+      "incomplete_rollouts": 4,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P13_persistent_shield_changes_downstream_value",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "failures": [],
+      "id": "P14",
+      "test": "test_P14_R20_costs_gains_change_permissions"
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-save:b",
+        "action_ir_hash": "4723d5da1576b11fd2972d464745e649e0d83e6dcf8c1ab82e459f4164b4a02f",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 4,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 8,
+        "clones": 9,
+        "encounter_transitions_reserved": 1664,
+        "nodes_expanded": 8,
+        "opponent_actions": 4,
+        "r15_history_records": 2354,
+        "r25_lifecycle_transitions": 47,
+        "scheduler_work_reserved": 3328,
+        "simulated_actions": 12,
+        "simulator_transitions": 25,
+        "snapshot_restores": 0,
+        "trace_bytes": 52145
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P15",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P15_wave_targets_refresh_permissions",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": null,
+      "completed_rollouts": 0,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 0,
+        "clones": 1,
+        "encounter_transitions_reserved": 256,
+        "nodes_expanded": 0,
+        "opponent_actions": 1,
+        "r15_history_records": 178,
+        "r25_lifecycle_transitions": 2,
+        "scheduler_work_reserved": 512,
+        "simulated_actions": 1,
+        "simulator_transitions": 3,
+        "snapshot_restores": 0,
+        "trace_bytes": 5186
+      },
+      "depth": 0,
+      "failures": [],
+      "id": "P16",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 0,
+      "status": "POLICY_MISMATCH",
+      "test": "test_P16_midpoint_snapshot_request_replay",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "10-fast",
+        "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 2,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 2,
+        "clones": 3,
+        "encounter_transitions_reserved": 512,
+        "nodes_expanded": 2,
+        "opponent_actions": 1,
+        "r15_history_records": 544,
+        "r25_lifecycle_transitions": 9,
+        "scheduler_work_reserved": 1024,
+        "simulated_actions": 3,
+        "simulator_transitions": 7,
+        "snapshot_restores": 0,
+        "trace_bytes": 13673
+      },
+      "depth": 1,
+      "failures": [],
+      "id": "P17",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P17_original_complete_snapshot_immutable",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "player:b",
+        "action_ir_hash": "6cd170aaeca5ee1f843327778de749d1586557b9a65619f5609f2a5fe7ab1afb",
+        "actor_id": "a",
+        "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 2,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 4,
+        "clones": 5,
+        "encounter_transitions_reserved": 896,
+        "nodes_expanded": 4,
+        "opponent_actions": 2,
+        "r15_history_records": 1134,
+        "r25_lifecycle_transitions": 16,
+        "scheduler_work_reserved": 1792,
+        "simulated_actions": 6,
+        "simulator_transitions": 13,
+        "snapshot_restores": 0,
+        "trace_bytes": 26082
+      },
+      "depth": 2,
+      "failures": [],
+      "id": "P18",
+      "incomplete_rollouts": 1,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P18_original_real_damage_primitive",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": null,
+      "completed_rollouts": 1,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 0,
+        "clones": 1,
+        "encounter_transitions_reserved": 128,
+        "nodes_expanded": 0,
+        "opponent_actions": 0,
+        "r15_history_records": 0,
+        "r25_lifecycle_transitions": 0,
+        "scheduler_work_reserved": 256,
+        "simulated_actions": 0,
+        "simulator_transitions": 1,
+        "snapshot_restores": 0,
+        "trace_bytes": 1292
+      },
+      "depth": 0,
+      "failures": [],
+      "id": "P19",
+      "incomplete_rollouts": 0,
+      "semantic_gap_branches": 0,
+      "status": "TERMINAL_VICTORY",
+      "test": "test_P19_terminal_no_recommendation",
+      "truncated_rollouts": 0
+    },
+    {
+      "PASS": true,
+      "chosen_action": {
+        "action_id": "00-burst:b",
+        "action_ir_hash": "72a41514e10a180e5776acf5e7298445cf3a77e2ddb8b2ed56990d5df6f8da72",
+        "actor_id": "a",
+        "cost_policy_hash": "9d54528ab34933c7d694d5489259d5fbe87c7d474ce468fae81a6f617e45d4f7",
+        "source_authority": {
+          "evidence_level": "REFERENCE_MODEL",
+          "ledger_refs": [],
+          "native_method_refs": [],
+          "oracle_status": "RUNTIME_ORACLE_PENDING",
+          "semantic_status": "REFERENCE_MODEL",
+          "source_artifact": "SYNTHETIC_R15_REGRESSION",
+          "source_pointer": "",
+          "source_sha256": "",
+          "source_version": "r15"
+        },
+        "targets": [
+          "b"
+        ]
+      },
+      "completed_rollouts": 0,
+      "counts": {
+        "budget_yields": 0,
+        "candidates_enumerated": 17,
+        "clones": 16,
+        "encounter_transitions_reserved": 2432,
+        "nodes_expanded": 15,
+        "opponent_actions": 3,
+        "r15_history_records": 3474,
+        "r25_lifecycle_transitions": 60,
+        "scheduler_work_reserved": 4864,
+        "simulated_actions": 18,
+        "simulator_transitions": 37,
+        "snapshot_restores": 0,
+        "trace_bytes": 82822
+      },
+      "depth": 3,
+      "failures": [],
+      "id": "P20",
+      "incomplete_rollouts": 10,
+      "semantic_gap_branches": 0,
+      "status": "RUNNING_EVALUABLE",
+      "test": "test_P20_multi_actor_three_actions_bounded",
+      "truncated_rollouts": 7
+    }
+  ],
+  "schema": "generic_runtime_planner_search_census/1",
+  "semantic_gap_branches": 1,
+  "source_closed_joined_skills": 0,
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "truncated_rollouts": 8
+}

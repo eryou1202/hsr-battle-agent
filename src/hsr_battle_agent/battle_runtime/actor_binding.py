@@ -20,7 +20,7 @@ AUTHORITIES = ('REAL_CONTENT_STATIC', 'REAL_CONTENT_RECONSTRUCTED', 'REFERENCE_M
 FIELDS = {'level','promotion','rank','skill_levels','activated_skill_tree_rows',
           'rank_requirements','progression_thresholds','available_skills','base_properties',
           'effective_properties','hp','max_hp','actor_resources','team','entity_state',
-          'dynamic_providers','ability_references','active_modifiers','presentation'}
+          'dynamic_providers','ability_references','active_modifiers','presentation','defense'}
 
 def pointer(document, path):
     if path == '': return document
@@ -241,6 +241,9 @@ def _bind(engine,node,state,b):
         for key,value in base.items():
             if read(engine,node,state,source,key)[0]!=value:
                 fail(node,'PROPERTY_INITIALIZATION_GAP','base/effective contribution mismatch '+key)
+    if 'defense' in values:
+        from .defense_break import initialize, POLICY_ID as DEFENSE_POLICY
+        initialize(state, node, eid, values['defense'], engine.policies.get(DEFENSE_POLICY, {}))
     state.mechanics.setdefault(POLICY_ID,{'actors':{}})['actors'][eid]={
         'binding':b,'field_provenance':provenance,'inherited_reference_state':inherited,
         'constructor_status':'ACTOR_STATE_CONSTRUCTED','native_legality':'EFFECTIVE_RUNTIME_UNKNOWN'}

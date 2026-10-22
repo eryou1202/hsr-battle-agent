@@ -436,6 +436,58 @@ def _settle(d, state):
         root['status'] = 'ACTION_REFERENCE_COMPLETE'
 
 
+def _serialized_template_parameters(engine, node, binding):
+    """Evaluate original compiled dictionaries only under a hash-keyed policy."""
+    if (binding.get('caller_context') != 'INHERIT_EXPLICIT' or
+            binding.get('provider_inheritance') != 'INHERIT_EXPLICIT' or
+            binding.get('dictionary_masks') != {'4':'numeric', '8':'string', '32':'sequence'}):
+        raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: explicit serialized dictionary roles required')
+    fields = node.payload.get('decoded', {}).get('structure', {}).get('fields', [])
+    slots = node.payload.get('reference_binding', {}).get('unknown_slots', [])
+    result = copy.deepcopy(binding)
+    result.update(parameters={}, numeric_parameters={}, string_parameters={}, sequence_parameters={})
+    for f in fields:
+        mask = str(f['mask'])
+        if mask in ('1', '2'): continue
+        if mask not in binding['dictionary_masks']:
+            raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: unbound serialized context mask:'+mask)
+        slot = next((s for s in slots if str(s['mask'])==mask), None)
+        # Known parameter roles may omit an unknown-slot row; exact source order
+        # still selects the compiled field, never a default or a name heuristic.
+        index = slot['field_index'] if slot else fields.index(f)
+        value = node.payload.get('fields', {}).get('unbound_bit_'+str(index))
+        if value is None and mask=='4':
+            value = node.payload.get('reference_binding', {}).get('roles', {}).get('parameters')
+        if not isinstance(value, dict) or value.get('kind') != 'dict':
+            raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: exact compiled dictionary required:'+mask)
+        items = value.get('children', [])
+        if len(items)%2 or value.get('count') != len(items)//2:
+            raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: dictionary framing')
+        kind = binding['dictionary_masks'][mask]
+        bucket = result[kind+'_parameters']
+        for key, operand in zip(items[::2], items[1::2]):
+            if not isinstance(key,str) or key in result['parameters']:
+                raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: duplicate/invalid parameter identity')
+            while isinstance(operand,dict) and 'child' in operand:
+                operand = operand['child']
+            if kind in ('numeric', 'string'):
+                if not isinstance(operand,IRNode) or operand.kind != 'ExpressionIR':
+                    raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: compiled expression required')
+                operand = engine.evaluate(operand)
+                if (kind=='numeric' and type(operand) is not int) or (kind=='string' and not isinstance(operand,str)):
+                    raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: parameter value type')
+            else:
+                # Sequence bodies remain original IR data; executing a sequence
+                # parameter needs its own supported source primitive.
+                if not ((isinstance(operand,IRNode) and operand.kind=='TaskSequenceIR') or
+                        (isinstance(operand,dict) and operand.get('type')=='RPG.GameCore.SequenceConfig')):
+                    raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: compiled sequence body required')
+                operand = copy.deepcopy(operand.to_dict() if isinstance(operand,IRNode) else operand)
+            bucket[key] = operand
+            result['parameters'][key] = copy.deepcopy(operand)
+    return result
+
+
 def _invoke(engine, d, task, node, p, template=False):
     a = d['abilities'][task['ability_instance_id']]
     spec = p['invocation']
@@ -455,10 +507,12 @@ def _invoke(engine, d, task, node, p, template=False):
         masks = {str(f.get('mask')) for f in structure.get('fields', []) if f.get('mask') in (4, 8, 16, 32)}
         has_parameters = bool(masks) or node.payload.get('roles', {}).get('parameters') is not None or \
             node.payload.get('reference_binding', {}).get('roles', {}).get('parameters') is not None
-        if has_parameters:
-            template_binding = p.get('template_call_bindings', {}).get(node.stable_hash())
+        template_binding = p.get('template_call_bindings', {}).get(node.stable_hash())
+        if has_parameters or template_binding is not None:
             if not isinstance(template_binding, dict) or template_binding.get('authority') != 'REFERENCE_MODEL':
                 raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: explicit template parameter/context mapping required')
+            if template_binding.get('mode') == 'SERIALIZED_DICTIONARIES_REFERENCE':
+                template_binding = _serialized_template_parameters(engine, node, template_binding)
             if template_binding.get('caller_context') != 'INHERIT_EXPLICIT' or any(
                 not isinstance(template_binding.get(key), dict) for key in
                 ('parameters', 'numeric_parameters', 'string_parameters', 'sequence_parameters')):
@@ -480,6 +534,11 @@ def _invoke(engine, d, task, node, p, template=False):
             context['parameters'] = copy.deepcopy(template_binding['parameters'])
             context['template_call_binding'] = copy.deepcopy(template_binding)
         catalog = engine.templates
+        if template_binding and 'template_catalog_key' in template_binding:
+            if (template_binding.get('caller_root_IR_hash') != IRNode.from_dict(a['node']).stable_hash() or
+                    template_binding.get('source_template_identity') != identity):
+                raise GapError(node, 'TEMPLATE_PARAMETER_INHERITANCE: exact caller/template scope mismatch')
+            identity = template_binding['template_catalog_key']
         token = 'template:' + identity
     else:
         identity = engine.evaluate(_required(node, r, 'AbilityName'))
@@ -523,6 +582,19 @@ def _primitive(engine, d, t, node, p):
     aid = t['ability_instance_id']
     callback = d['callbacks'].get(t['callback_owner'])
     path = callback['callback_path'] if callback else []
+    from .defense_break import POLICY_ID as DEFENSE_POLICY, OPS as DEFENSE_OPS, execute as defense_execute
+    if DEFENSE_POLICY in engine.policies and node.op in DEFENSE_OPS:
+        children = defense_execute(engine, node, t)
+        if children:
+            s = d['sequences'][t['sequence_frame_id']]
+            ancestors = s['ancestor_nodes'] + [node.stable_hash()]
+            if node.stable_hash() in s['ancestor_nodes'] or len(ancestors) > p['max_task_depth']:
+                raise GapError(node, 'SCHEDULER_TASK_CYCLE_OR_DEPTH')
+            sid = _sequence(d, aid, children, tid=t['frame_id'], callback=t['callback_owner'], ancestors=ancestors)
+            t.update(status='WAITING', wait_kind='SEQUENCES', children=[sid])
+        else:
+            _finish_task(d, t)
+        return
     from .resource_engine import POLICY_ID as RESOURCE_POLICY, SOURCE_OPS as RESOURCE_OPS, execute as resource_execute
     if RESOURCE_POLICY in engine.policies and node.op in RESOURCE_OPS:
         children = resource_execute(engine, node, t)
@@ -916,6 +988,7 @@ def drive(engine, budget=10000, *, advance=True, one_time=False):
         # creation, so retry/restore re-enters exactly the original source node.
         from .damage_pipeline import POLICY_ID as DAMAGE_POLICY, SOURCE_OPS
         from .resource_engine import POLICY_ID as RESOURCE_POLICY, SOURCE_OPS as RESOURCE_OPS
+        from .defense_break import POLICY_ID as DEFENSE_POLICY, ENTRY_OPS as DEFENSE_OPS
         if kind == 'TASK_CONTINUATIONS':
             seq = d['sequences'][identity]
             if seq['cursor'] < len(seq['nodes']):
@@ -927,6 +1000,10 @@ def drive(engine, budget=10000, *, advance=True, one_time=False):
                 elif source['op'] in RESOURCE_OPS and RESOURCE_POLICY in engine.policies:
                     candidate.damage_transactions.append({'checkpoint':saved.snapshot(),
                         'trace_length':trace_length,'source_task_id':None,'kind':'RESOURCE',
+                        'source_task':copy.deepcopy(source)})
+                elif source['op'] in DEFENSE_OPS and DEFENSE_POLICY in engine.policies:
+                    candidate.damage_transactions.append({'checkpoint':saved.snapshot(),
+                        'trace_length':trace_length,'source_task_id':None,'kind':'DEFENSE_REFERENCE',
                         'source_task':copy.deepcopy(source)})
         try:
             _transition(engine, kind, identity, p)

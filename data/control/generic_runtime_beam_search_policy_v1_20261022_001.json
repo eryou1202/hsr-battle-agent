@@ -1,0 +1,75 @@
+{
+  "algorithms": [
+    "FIRST_LEGAL_REFERENCE",
+    "ONE_STEP_GREEDY_REFERENCE",
+    "BEAM_SEARCH_REFERENCE"
+  ],
+  "authority": "REFERENCE_MODEL",
+  "branch": "terra/implementation",
+  "branch_status_policy": {
+    "blocked": "RETAIN_REPORT_BELOW_DEFEAT",
+    "budget_yield": "RESUME_BOUNDED",
+    "truncated": "SCORE_PARTIAL_UNCERTAIN",
+    "unsupported": "STOP_TYPED"
+  },
+  "budget_units": "Global hard counters; scheduler work is conservative reserved R22/R15 work slots, encounter transitions are reserved R22 decision transitions (including zero-time lifecycle operations). Actual observed R15 history and R25 lifecycle counts are separate.",
+  "budgets": {
+    "max_branch_actions": 30,
+    "max_candidates": 500,
+    "max_encounter_transitions": 200000,
+    "max_opponent_actions": 200,
+    "max_scheduler_work": 200000,
+    "max_simulated_actions": 400,
+    "max_simulator_transitions": 1200,
+    "max_total_nodes": 200,
+    "max_trace_bytes": 4000000,
+    "max_yields": 30,
+    "scheduler_quantum": 256,
+    "transition_quantum": 128
+  },
+  "change_request": "CR-R26-BATTLE-PLANNER-BRIDGE-20261022-001",
+  "git_writes": "NONE",
+  "native_correctness": "NOT_CLAIMED",
+  "native_tactical_weights": false,
+  "ordering": "Terminal class, exact Fraction weighted sum, UTF-8 action/target path, branch ordinal",
+  "parallel_execution": false,
+  "partial_caveat": "PARTIAL ranks above DEFEAT only by explicit uncertain caller assumption; never counts as terminal victory",
+  "product_baseline": "FROZEN_4.4.54",
+  "schema": "generic_runtime_beam_search_policy/1",
+  "scoring_metrics": [
+    "team_hp",
+    "enemy_hp",
+    "resources",
+    "normal_turns",
+    "av",
+    "enemies_remaining",
+    "waves_completed",
+    "shield"
+  ],
+  "scoring_policy": {
+    "identity": "r26.authored.terminal_hp_turn_wave/1",
+    "partial_assumption": "UNCERTAIN_ABOVE_DEFEAT_REFERENCE",
+    "terminal_order": [
+      "VICTORY",
+      "PARTIAL",
+      "DEFEAT",
+      "BLOCKED"
+    ],
+    "weights": {
+      "av": 0,
+      "enemies_remaining": 0,
+      "enemy_hp": -1,
+      "normal_turns": -8589934592,
+      "resources": 0,
+      "shield": 0,
+      "team_hp": 1,
+      "waves_completed": 858993459200
+    }
+  },
+  "selection": "Best observed descendant per FIRST action; pruned or budget-limited partials can win only under the declared partial assumption",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "tie_breaking": "ACTION_TARGET_UTF8_ASC",
+  "trace_budget": "Counts canonical compact UTF-8 bytes of unique retained command receipts; shared prefix references are not copied between branches. Pretty-printed artifacts and runtime snapshots are separate from this trace budget. An oversized new command is discarded and its branch restored to its pre-command snapshot.",
+  "transpositions": "Not implemented; exact runtime hash used for replay identity only"
+}

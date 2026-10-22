@@ -1,0 +1,168 @@
+{
+  "R22_regression": {
+    "actions_completed": 18,
+    "decisions_produced": 35,
+    "determinism": "PASS",
+    "executable_traces": 14,
+    "full_real_skill_transitions": 0,
+    "native_equivalence": "NOT_CLAIMED",
+    "normal_turns_completed": 16,
+    "real_ability_action_completions": 6,
+    "required_groups": "12/12",
+    "snapshot_replay": "PASS"
+  },
+  "R23_explicit": {
+    "all_original_IR_hashes_unchanged": true,
+    "blocked_real_skill_entries": 87,
+    "clone_snapshot_replay_roots": 11,
+    "cohort": "R23_EXPLICIT_SYNTHETIC_ACTOR_INPUTS_NOT_FROZEN_CORPUS",
+    "first_gap_classes": {
+      "ACTOR_STATE_INPUT_MISSING": 46,
+      "CONTENT_NOT_FOUND": 82,
+      "CONTENT_READER_GAP": 7,
+      "DYNAMIC_PROVIDER_INPUT_MISSING": 5,
+      "RUNTIME_PRIMITIVE_UNSUPPORTED": 20
+    },
+    "first_gap_primitives": {
+      "NO_R15_PRIMITIVE": 4,
+      "RPG.GameCore.AddModifier": 44,
+      "RPG.GameCore.AlignTargetToTeamCenter": 1,
+      "RPG.GameCore.ByIsTurnActionEntity": 1,
+      "RPG.GameCore.DispelStatus": 1,
+      "RPG.GameCore.FireProjectile": 3,
+      "RPG.GameCore.HealHP": 1,
+      "RPG.GameCore.LoseHPByRatio": 1,
+      "RPG.GameCore.RemoveModifier": 2,
+      "RPG.GameCore.SetDynamicValue": 4,
+      "RPG.GameCore.SetDynamicValueByProperty": 1,
+      "RPG.GameCore.SetTeamFormation": 4,
+      "RPG.GameCore.TriggerAbility": 92,
+      "lookup": 1
+    },
+    "frozen_inputs_modified": false,
+    "hp_settled_roots": 18,
+    "native_validated": 0,
+    "original_finish_completed_roots": 15,
+    "original_finish_reached_roots": 15,
+    "owner_rows": 161,
+    "partial_real_skill_prefix_roots": 73,
+    "policy_abstracted_unique_roots": 0,
+    "r22_actions_completed": 0,
+    "r22_normal_turns_completed": 0,
+    "roots": 160,
+    "source_closed_unique_roots": 0
+  },
+  "authority": "REFERENCE_MODEL",
+  "change_request": "CR-R23-REAL-SKILL-ROOT-CLOSURE-20261012-001",
+  "coverage": {
+    "blocked_real_skill_entries": 87,
+    "camera_reference_sites_unresolved": 68,
+    "canonical_owner_rows": 660,
+    "canonical_template_call_views_bound": 25,
+    "decoded_joined_rows": 161,
+    "decoded_joined_unique_roots": 160,
+    "denominator_unique_joined_roots": 160,
+    "exact_inline_template_call_sites_bound": 20,
+    "exact_inline_template_definitions_bound": 6,
+    "exact_owner_config_rows": 309,
+    "exact_root_join_rows": 306,
+    "joined_roots_actor_state_first_blocker": 46,
+    "joined_roots_all_external_content_closed": 2,
+    "joined_roots_camera_first_blocker_frozen": 68,
+    "joined_roots_dynamic_provider_first_blocker": 5,
+    "joined_roots_exact_child_ability_closure": 48,
+    "joined_roots_original_finish_reached": 15,
+    "joined_roots_partial_executable_prefix": 73,
+    "joined_roots_policy_abstracted_complete": 0,
+    "joined_roots_reference_complete": 0,
+    "joined_roots_template_runtime_first_blocker": 0,
+    "joined_roots_unsupported_primitive_first_blocker": 20,
+    "new_exact_external_source_dependencies_recovered": 0,
+    "phase_reference_sites_reader_blocked": 7
+  },
+  "frozen_M10_M15_modified": false,
+  "frozen_corpus_drift": "NONE",
+  "frozen_denominators": [
+    632,
+    160,
+    161
+  ],
+  "git_writes": "NONE",
+  "native_correctness": "NOT_CLAIMED",
+  "schema": "generic_runtime_support_census/11",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "tests": {
+    "R12_R23": {
+      "returncode": 0,
+      "tests": 363
+    },
+    "R21": {
+      "returncode": 0,
+      "tests": 21
+    },
+    "battle_ir_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 557
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "whole_battle_reassessment": [
+    {
+      "catalog_phase_required": false,
+      "cost": "HIGH; bounded independent core subsystem",
+      "rank": 1,
+      "reuse": "R18/R19 damage transactions, R17 callbacks and R22 ownership",
+      "source_evidence": "PARTIAL; keep reference contracts explicit",
+      "subsystem": "TOUGHNESS / BREAK / SHIELD",
+      "whole_battle_value": "HIGH: expands every damage settlement boundary"
+    },
+    {
+      "cost": "MEDIUM_HIGH",
+      "rank": 2,
+      "reuse": "R22 explicit stage and terminal boundaries",
+      "source_evidence": "PARTIAL",
+      "subsystem": "STAGE / WAVE / TERMINATION",
+      "whole_battle_value": "HIGH: finite encounters, wave handoff and victory/defeat"
+    },
+    {
+      "cost": "HIGH",
+      "rank": 3,
+      "reuse": "R22 supplied provider boundary",
+      "source_evidence": "STRUCTURAL INVENTORY; effective AI missing",
+      "subsystem": "MONSTER CONTENT / AI",
+      "whole_battle_value": "HIGH: real opposing actions and decisions"
+    },
+    {
+      "cost": "HIGH",
+      "rank": 4,
+      "reuse": "canonical catalog receipts, R20 resources, R22 permissions",
+      "source_evidence": "NATIVE AVAILABILITY UNKNOWN",
+      "subsystem": "ACTION LEGALITY",
+      "whole_battle_value": "HIGH: planning validity"
+    },
+    {
+      "cost": "MEDIUM",
+      "rank": 5,
+      "reuse": "existing snapshot and decision APIs",
+      "source_evidence": "REFERENCE APIs PRESENT",
+      "subsystem": "PLANNER BRIDGE",
+      "whole_battle_value": "MEDIUM until more complete mechanics/content"
+    },
+    {
+      "cost": "EXTERNALLY_DEPENDENT",
+      "rank": 6,
+      "reuse": "precise Camera/Phase/context tickets",
+      "source_evidence": "EXTERNAL REQUIRED",
+      "subsystem": "TARGETED NATIVE ORACLE",
+      "whole_battle_value": "TARGETED identity/accuracy unblocking"
+    }
+  ]
+}

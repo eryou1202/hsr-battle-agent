@@ -1,0 +1,354 @@
+{
+  "authority": "REFERENCE_MODEL",
+  "branch": "terra/implementation",
+  "bridge": "Record candidate within R18/R24 transaction; no participant removal until R15 action and R22 turn boundaries drain",
+  "callback_revalidation": true,
+  "change_request": "CR-R25-REFERENCE-ENCOUNTER-LIFECYCLE-20261021-001",
+  "conflict": "SEMANTIC_GAP_REFERENCE",
+  "distinctions": [
+    "HP_REACHED_ZERO",
+    "ENTITY_LIFE_STATE_CHANGED",
+    "DEFEAT_CONFIRMED_REFERENCE",
+    "ACTOR_PARTICIPATION_REMOVED",
+    "WAVE_OBJECTIVE_SATISFIED"
+  ],
+  "evaluation": "Pure, no mutation, no RNG; AND/OR evaluate every operand and fail on unknown",
+  "git_writes": "NONE",
+  "life_authority": "Existing R20 provenance and entity.alive; R22 generation/participation",
+  "life_policy": "ZERO_HP_DEFEAT_AFTER_OWNED_DRAIN_REFERENCE",
+  "native_equivalence": "NOT_CLAIMED",
+  "no_native_death_claim": true,
+  "predicates": [
+    "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+    "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+    "SPECIFIC_ACTOR_DEFEATED_REFERENCE",
+    "SURVIVE_N_NORMAL_TURNS_REFERENCE",
+    "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+    "COMPOSITE_AND_REFERENCE",
+    "COMPOSITE_OR_REFERENCE"
+  ],
+  "product_baseline": "FROZEN_4.4.54",
+  "repeated_zero_observations": "One defeat receipt/event per actor generation",
+  "schema": "generic_runtime_stage_objective_policy/1",
+  "scope": "Current-wave target side plus persistent player actors; prior retired waves do not contaminate objectives",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "terminal_receipts": {
+    "E02": {
+      "encounter_id": "r25-authored-reference-encounter",
+      "final_state_hash": "7faebb4888dfe2d32acdbdb0c7d144c47f7f304d6f79fc4bcc6079ea80bcecd5",
+      "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+      "objective_evidence": {
+        "abort": {
+          "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+          "observed": false,
+          "satisfied": false
+        },
+        "authority": "REFERENCE_MODEL",
+        "defeat": {
+          "actors": [
+            {
+              "actor_id": "a",
+              "alive": true,
+              "generation": 0
+            }
+          ],
+          "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+          "satisfied": false
+        },
+        "wave": {
+          "actors": [
+            {
+              "actor_id": "c",
+              "alive": false,
+              "generation": 1
+            }
+          ],
+          "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+          "satisfied": true
+        },
+        "wave_index": 1
+      },
+      "participating_actors": [
+        {
+          "actor_id": "a",
+          "authority": {
+            "artifact": "explicit R22 actor binding",
+            "kind": "EXPLICIT_SCENARIO_INPUT",
+            "pointer": "",
+            "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+            "source_version": "4.6.51"
+          },
+          "availability_provider_id": "explicit-caller-actions-v1",
+          "controller": "PLAYER",
+          "entity_ref": "a",
+          "entity_revision": 0,
+          "generation": 0,
+          "participation": "ENABLED",
+          "registration_ordinal": 0,
+          "speed_ref": {
+            "authority": {
+              "artifact": "R19 effective speed binding",
+              "kind": "EXPLICIT_SCENARIO_INPUT",
+              "pointer": "",
+              "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+              "source_version": "4.6.51"
+            },
+            "base_property_key": "speed",
+            "effective_provider_id": "r22.explicit.speed.a",
+            "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+          },
+          "summon_parent_actor": null
+        },
+        {
+          "actor_id": "b",
+          "authority": {
+            "artifact": "explicit R22 actor binding",
+            "kind": "EXPLICIT_SCENARIO_INPUT",
+            "pointer": "",
+            "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+            "source_version": "4.6.51"
+          },
+          "availability_provider_id": "explicit-caller-actions-v1",
+          "controller": "MONSTER_AI",
+          "entity_ref": "b",
+          "entity_revision": 1,
+          "generation": 1,
+          "participation": "REMOVED",
+          "registration_ordinal": 1,
+          "speed_ref": {
+            "authority": {
+              "artifact": "R19 effective speed binding",
+              "kind": "EXPLICIT_SCENARIO_INPUT",
+              "pointer": "",
+              "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+              "source_version": "4.6.51"
+            },
+            "base_property_key": "speed",
+            "effective_provider_id": "r22.explicit.speed.b",
+            "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+          },
+          "summon_parent_actor": null
+        },
+        {
+          "actor_id": "c",
+          "authority": {
+            "artifact": "explicit R22 actor binding",
+            "kind": "EXPLICIT_SCENARIO_INPUT",
+            "pointer": "",
+            "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+            "source_version": "4.6.51"
+          },
+          "availability_provider_id": "explicit-caller-actions-v1",
+          "controller": "MONSTER_AI",
+          "entity_ref": "c",
+          "entity_revision": 1,
+          "generation": 1,
+          "participation": "REMOVED",
+          "registration_ordinal": 2,
+          "speed_ref": {
+            "authority": {
+              "artifact": "R19 effective speed binding",
+              "kind": "EXPLICIT_SCENARIO_INPUT",
+              "pointer": "",
+              "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+              "source_version": "4.6.51"
+            },
+            "base_property_key": "speed",
+            "effective_provider_id": "r22.explicit.speed.c",
+            "provider_policy_hash": "de5ee08316b8efdacf8b796bb3e124966c13de61c4c38df6243bc028c17a57b8"
+          },
+          "summon_parent_actor": null
+        }
+      ],
+      "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+      "policy_id": "r25_encounter_reference_v1",
+      "policy_version": "1",
+      "receipt_hash": "10e0ed5111864c7e327f488219649d3900d9ff1ea2031aefd0a45a149bfd64df",
+      "result": "VICTORY",
+      "schema": "reference_encounter_terminal_receipt/1",
+      "settled_events": [
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+          "listener_ids": [],
+          "root_id": "action:1"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+          "listener_ids": [],
+          "root_id": "action:10"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+          "listener_ids": [],
+          "root_id": "action:119"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+          "listener_ids": [],
+          "root_id": "action:128"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/BEFORE_WAVE_TRANSITION//",
+          "listener_ids": [],
+          "root_id": "action:137"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/AFTER_WAVE_TRANSITION//",
+          "listener_ids": [],
+          "root_id": "action:146"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_START//",
+          "listener_ids": [],
+          "root_id": "action:155"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENTITY_DEFEATED/c/0",
+          "listener_ids": [],
+          "root_id": "action:264"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_CLEAR//",
+          "listener_ids": [],
+          "root_id": "action:273"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENCOUNTER_VICTORY//",
+          "listener_ids": [],
+          "root_id": "action:282"
+        }
+      ],
+      "terminal_reason": "explicit reference objective VICTORY",
+      "wave_index": 1
+    },
+    "E04": {
+      "encounter_id": "r25-authored-reference-encounter",
+      "final_state_hash": "aae3e5b24284f06314766d0812cda7597ac0329b463737879b30dde2c522253b",
+      "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+      "objective_evidence": {
+        "abort": {
+          "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+          "observed": false,
+          "satisfied": false
+        },
+        "authority": "REFERENCE_MODEL",
+        "defeat": {
+          "actors": [
+            {
+              "actor_id": "a",
+              "alive": false,
+              "generation": 1
+            }
+          ],
+          "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+          "satisfied": true
+        },
+        "wave": {
+          "actors": [
+            {
+              "actor_id": "b",
+              "alive": true,
+              "generation": 0
+            }
+          ],
+          "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+          "satisfied": false
+        },
+        "wave_index": 0
+      },
+      "participating_actors": [
+        {
+          "actor_id": "a",
+          "authority": {
+            "artifact": "explicit R22 actor binding",
+            "kind": "EXPLICIT_SCENARIO_INPUT",
+            "pointer": "",
+            "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+            "source_version": "4.6.51"
+          },
+          "availability_provider_id": "explicit-caller-actions-v1",
+          "controller": "PLAYER",
+          "entity_ref": "a",
+          "entity_revision": 1,
+          "generation": 1,
+          "participation": "REMOVED",
+          "registration_ordinal": 0,
+          "speed_ref": {
+            "authority": {
+              "artifact": "R19 effective speed binding",
+              "kind": "EXPLICIT_SCENARIO_INPUT",
+              "pointer": "",
+              "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+              "source_version": "4.6.51"
+            },
+            "base_property_key": "speed",
+            "effective_provider_id": "r22.explicit.speed.a",
+            "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+          },
+          "summon_parent_actor": null
+        },
+        {
+          "actor_id": "b",
+          "authority": {
+            "artifact": "explicit R22 actor binding",
+            "kind": "EXPLICIT_SCENARIO_INPUT",
+            "pointer": "",
+            "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+            "source_version": "4.6.51"
+          },
+          "availability_provider_id": "explicit-caller-actions-v1",
+          "controller": "MONSTER_AI",
+          "entity_ref": "b",
+          "entity_revision": 0,
+          "generation": 0,
+          "participation": "ENABLED",
+          "registration_ordinal": 1,
+          "speed_ref": {
+            "authority": {
+              "artifact": "R19 effective speed binding",
+              "kind": "EXPLICIT_SCENARIO_INPUT",
+              "pointer": "",
+              "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+              "source_version": "4.6.51"
+            },
+            "base_property_key": "speed",
+            "effective_provider_id": "r22.explicit.speed.b",
+            "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+          },
+          "summon_parent_actor": null
+        }
+      ],
+      "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+      "policy_id": "r25_encounter_reference_v1",
+      "policy_version": "1",
+      "receipt_hash": "463c10e6b3728ee7ccc477e2a28fb5c59b1d36902b013214eddd535af16cb3ee",
+      "result": "DEFEAT",
+      "schema": "reference_encounter_terminal_receipt/1",
+      "settled_events": [
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+          "listener_ids": [],
+          "root_id": "action:1"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+          "listener_ids": [],
+          "root_id": "action:10"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/a/0",
+          "listener_ids": [],
+          "root_id": "action:218"
+        },
+        {
+          "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_DEFEAT//",
+          "listener_ids": [],
+          "root_id": "action:227"
+        }
+      ],
+      "terminal_reason": "explicit reference objective DEFEAT",
+      "wave_index": 0
+    }
+  }
+}

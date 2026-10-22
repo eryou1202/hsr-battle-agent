@@ -419,6 +419,9 @@ class BehaviorRuntime:
         if 'battle_turn_adapter_v1' in result.state.mechanics:
             from .battle_turn import validate_runtime
             validate_runtime(result, strict_queue=True)
+        if 'reference_encounter_v1' in result.state.mechanics:
+            from .encounter_runtime import validate_runtime
+            validate_runtime(result)
         return result
 
     def stable_hash(self) -> str:
@@ -640,4 +643,44 @@ class BehaviorRuntime:
 
     def replay_turn_commands(self, receipts):
         from .battle_turn import replay_commands
+        return replay_commands(self, receipts)
+
+    def initialize_encounter(self, definition, actor_inputs, turn_policy, provider_contracts, policy):
+        from .encounter_runtime import initialize_encounter
+        return initialize_encounter(self, definition, actor_inputs, turn_policy, provider_contracts, policy)
+
+    def current_encounter(self):
+        from .encounter_runtime import current_encounter
+        return current_encounter(self)
+
+    def evaluate_encounter_objectives(self):
+        from .encounter_runtime import evaluate_encounter_objectives
+        return evaluate_encounter_objectives(self)
+
+    def run_until_encounter_boundary(self, budget=10000):
+        from .encounter_runtime import run_until_encounter_boundary
+        return run_until_encounter_boundary(self, budget)
+
+    def current_wave(self):
+        from .encounter_runtime import current_wave
+        return current_wave(self)
+
+    def next_wave_preview(self):
+        from .encounter_runtime import next_wave_preview
+        return next_wave_preview(self)
+
+    def prepare_next_wave(self, actor_inputs=None):
+        from .encounter_runtime import prepare_next_wave
+        return prepare_next_wave(self, actor_inputs)
+
+    def encounter_result(self):
+        from .encounter_runtime import encounter_result
+        return encounter_result(self)
+
+    def record_encounter_command(self, kind, arguments):
+        from .encounter_runtime import record_command
+        return record_command(self, kind, arguments)
+
+    def replay_encounter_commands(self, receipts):
+        from .encounter_runtime import replay_commands
         return replay_commands(self, receipts)

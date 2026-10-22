@@ -605,6 +605,7 @@ def _validate_availability(e, actor, version):
     for spec in availability['actions']:
         if spec.get('action_id') not in e.actions or spec.get('ir_hash') != e.actions[spec['action_id']].stable_hash():
             raise TurnError('INITIATIVE_INPUT_MISSING', 'exact local action/IR mapping required')
+        _validate_skill_binding(e, actor, spec, version)
         if not isinstance(spec.get('target_ids'), list) or len(spec['target_ids']) != len(set(spec['target_ids'])):
             raise TurnError('INITIATIVE_INPUT_MISSING', 'explicit distinct candidate targets required')
         if any(t not in e.state.entities for t in spec['target_ids']):
@@ -618,6 +619,27 @@ def _validate_availability(e, actor, version):
         integer(spec.get('target_max'))
         if not spec['target_min'] <= spec['target_max'] <= len(spec['target_ids']):
             raise TurnError('INITIATIVE_INPUT_MISSING', 'contradictory target cardinality')
+
+
+def _validate_skill_binding(e, actor, spec, version):
+    """Optional exact catalog receipt; availability remains reference authority."""
+    binding = spec.get('canonical_skill_binding')
+    if binding is None:
+        return
+    unsigned = copy.deepcopy(binding)
+    seal = unsigned.pop('binding_hash', None)
+    entity = e.state.entities[actor]
+    ir = e.actions[spec['action_id']]
+    if (seal != stable_hash(unsigned) or binding.get('schema') != 'canonical_skill_binding/1' or
+            binding.get('authority') != 'EXACT_STRUCTURAL_JOIN_REFERENCE_AVAILABILITY_SEPARATE' or
+            binding.get('source_version') != version or
+            binding.get('avatar_id') != entity.get('content_identity') or
+            entity.get('content_version') != version or
+            ir.authority.source_version != version or
+            binding.get('entry_ability') != ir.payload.get('content_name') or
+            binding.get('skill_trigger_key') != binding.get('skill_config_name') or
+            binding.get('canonical_IR_hash') != spec['ir_hash']):
+        raise TurnError('INITIATIVE_INPUT_MISSING', 'canonical skill owner/source/IR binding mismatch')
 
 
 def _cost_nodes(e, spec, actor, *, validate_only=True):
@@ -668,6 +690,7 @@ def _specs(e, top):
             continue
         if spec['action_id'] not in e.legal_actions() or spec['ir_hash'] != e.actions[spec['action_id']].stable_hash():
             continue
+        _validate_skill_binding(e, actor, spec, available['content_version'])
         try:
             _cost_nodes(e, spec, actor)
         except TurnError as exc:
@@ -861,6 +884,9 @@ def _boundary_nodes(e, turn, event):
     p, contracts = _p(e), _providers(e)
     nodes = []
     kind, identity = event['event_kind'], event['boundary_id']
+    from .defense_break import turn_boundary_nodes
+    nodes.extend(turn_boundary_nodes(e, _node(e, identity, 'reference_boundary', event),
+                                     turn['action_actor_id'], kind))
     if kind in ('DURATION_PROGRESS', 'EXPIRY_CHECK'):
         if p['category_rules'][turn['category']]['duration_progress'] == 'OWNER_NORMAL_TURN_END':
             for instance_id in _a(e)['turn_duration_instances'][turn['turn_id']]:
@@ -1005,6 +1031,20 @@ def run_until_decision(e, budget=10000):
             if zero_steps >= _p(e)['max_zero_time_transitions']:
                 return _yield(e, 'zero_time_transitions')
             if turn is None:
+                if 'reference_encounter_v1' in e.state.mechanics:
+                    from .encounter_runtime import idle_step
+                    progressed, work, callbacks, boundary = idle_step(e,
+                        limits['scheduler_work'] - used['scheduler_work'],
+                        limits['boundary_callbacks'] - used['boundary_callbacks'])
+                    used['scheduler_work'] += work
+                    used['boundary_callbacks'] += callbacks
+                    if boundary is not None:
+                        return boundary
+                    if progressed:
+                        used['decision_transitions'] += 1
+                        zero_steps += 1
+                        continue
+                    s, a = _s(e), _a(e)
                 execution = e.state.scheduler.action_execution
                 if execution and execution['roots'][execution['current_root']]['status'] != 'ACTION_REFERENCE_COMPLETE':
                     raise TurnError('TURN_OWNER_UNKNOWN', 'unowned R15 root prevents normal turn selection')
@@ -1012,7 +1052,12 @@ def run_until_decision(e, budget=10000):
                 if status in ('VICTORY', 'DEFEAT', 'ABORTED'):
                     s['terminal'].update(status=status, reason=a['stage_reason'] or status)
                     e.state.terminal = True
-                    return _boundary(e, 'BATTLE_TERMINAL', reason=s['terminal']['reason'])
+                    receipt = _boundary(e, 'BATTLE_TERMINAL', reason=s['terminal']['reason'])
+                    if 'reference_encounter_v1' in e.state.mechanics:
+                        from .encounter_runtime import finalize_terminal
+                        finalize_terminal(e)
+                        return _receipt(e)
+                    return receipt
                 if status == 'WAVE_PENDING':
                     s['terminal'].update(status='WAVE_PENDING', reason=a['stage_reason'])
                     s['stage']['pending_request_id'] = s['stage']['pending_request_id'] or 'wave:' + str(s['stage']['generation'])
@@ -1286,6 +1331,9 @@ def request_insertion(e, insertion):
 
 def lifecycle(e, actor, operation, *, source_ref, binding=None):
     def apply(c):
+        if 'reference_encounter_v1' in c.state.mechanics:
+            from .encounter_runtime import authorize_lifecycle
+            authorize_lifecycle(c)
         if source_ref.get('authority') != 'EXPLICIT_SCENARIO_INPUT' or not source_ref.get('source'):
             raise TurnError('ENTITY_STATE_UNRESOLVED', 'explicit lifecycle source required')
         if operation == 'REGISTER_ENTITY':
@@ -1356,6 +1404,9 @@ def lifecycle(e, actor, operation, *, source_ref, binding=None):
 
 def stage_transition(e, status, *, source_ref, reason=None):
     def apply(c):
+        if 'reference_encounter_v1' in c.state.mechanics:
+            from .encounter_runtime import authorize_stage
+            authorize_stage(c, status, source_ref)
         if (source_ref.get('provider_id') != _p(c)['terminal_provider_id'] or
                 source_ref.get('policy_hash') != stable_hash(_providers(c)['stage']) or
                 status not in ('RUNNING', 'WAVE_PENDING', 'VICTORY', 'DEFEAT', 'ABORTED')):

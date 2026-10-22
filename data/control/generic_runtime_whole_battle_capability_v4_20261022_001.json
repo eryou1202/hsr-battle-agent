@@ -1,0 +1,176 @@
+{
+  "R24_defense_regression": "18/18",
+  "R25_encounter_regression": "18/18",
+  "R27_ranked": [
+    {
+      "rank": 1,
+      "reason": "First-permission reference opponent is the dominant realism limitation; expanding search does not supply missing AI/content",
+      "system": "MONSTER_CONTENT_AI_REFERENCE_EXECUTION"
+    },
+    {
+      "rank": 2,
+      "reason": "After richer opponent actions and behavior are executable",
+      "system": "MCTS_ADVERSARIAL_PLANNING"
+    }
+  ],
+  "architecture_preservation": {
+    "ScenarioCompiler_modified": false,
+    "branch_unchanged": true,
+    "changed_starting_files": [],
+    "frozen_M10_M15_modified": false,
+    "git_writes": "NONE",
+    "head_unchanged": true,
+    "staged_unchanged": true,
+    "strict_admission_weakened": false
+  },
+  "authority": "REFERENCE_MODEL",
+  "baseline_run": {
+    "R12_R25": {
+      "returncode": 0,
+      "tests": 423
+    },
+    "R21": {
+      "returncode": 0,
+      "tests": 21
+    },
+    "battle_ir_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 641
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "beam_over_greedy": "P03/P04 two-wave resource planning",
+  "beam_search": "DETERMINISTIC_BOUNDED",
+  "branch": "terra/implementation",
+  "change_request": "CR-R26-BATTLE-PLANNER-BRIDGE-20261022-001",
+  "clone_JSON_request_restore": "PASS",
+  "frozen_corpus_drift": "NONE",
+  "functional_scenarios": "20/20",
+  "git_writes": "NONE",
+  "meaningful_multi_choice_advantages": 2,
+  "native_correctness": "NOT_CLAIMED",
+  "native_validated_planning": 0,
+  "original_BattleState_unchanged": "PASS",
+  "planner": "EXECUTABLE_SIMULATOR_BACKED_REFERENCE",
+  "principal_variation_replay": "PASS",
+  "product_baseline": "FROZEN_4.4.54",
+  "real_primitive_planning": {
+    "distinct_original_primitives": 1,
+    "scenarios": [
+      "P05",
+      "P18"
+    ],
+    "unchanged_source_hash": "78d3256b17fe57a47583aa275815fb8ab54389e44ab874a49c0fcd32c217da06"
+  },
+  "schema": "generic_runtime_whole_battle_capability/4",
+  "source_closed_joined_skill_planning": 0,
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "tests": {
+    "R12_R25": {
+      "command": [
+        "C:\\Users\\而忧\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "tests.battle_runtime.test_behavior_r12",
+        "tests.battle_runtime.test_behavior_r13",
+        "tests.battle_runtime.test_behavior_r14",
+        "tests.battle_runtime.test_behavior_r15",
+        "tests.battle_runtime.test_behavior_r16",
+        "tests.battle_runtime.test_behavior_r17",
+        "tests.battle_runtime.test_behavior_r18",
+        "tests.battle_runtime.test_behavior_r19",
+        "tests.battle_runtime.test_behavior_r20",
+        "tests.battle_runtime.test_behavior_r22",
+        "tests.battle_runtime.test_behavior_r23",
+        "tests.battle_runtime.test_behavior_r24",
+        "tests.battle_runtime.test_behavior_r25"
+      ],
+      "returncode": 0,
+      "tests": 423
+    },
+    "R21": {
+      "command": [
+        "C:\\Users\\而忧\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/runtime",
+        "-p",
+        "r21_specs.py"
+      ],
+      "returncode": 0,
+      "tests": 21
+    },
+    "R26_P20_AND_CONTRACTS_FINAL": {
+      "command": [
+        "python",
+        "-u",
+        "tools/runtime/r26_scenarios.py",
+        "--only",
+        "P20"
+      ],
+      "receipt": "p20_corrected_run.txt",
+      "returncode": 0,
+      "scope": "Latest corrected P20 plus six contracts; full FAST lane was already launched before this fixture correction",
+      "tests": 7
+    },
+    "battle_ir_FAST_UNIT": {
+      "command": [
+        "C:\\Users\\而忧\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/battle_ir",
+        "-t",
+        ".",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "tests": 586
+    },
+    "battle_runtime_FAST_UNIT": {
+      "command": [
+        "C:\\Users\\而忧\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/battle_runtime",
+        "-t",
+        ".",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "tests": 643
+    },
+    "battle_sandbox_FAST_UNIT": {
+      "command": [
+        "C:\\Users\\而忧\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests/battle_sandbox",
+        "-t",
+        ".",
+        "-p",
+        "test_*.py"
+      ],
+      "returncode": 0,
+      "tests": 918
+    }
+  },
+  "verdict": "EXECUTABLE_BATTLE_PLANNER_REFERENCE_ESTABLISHED"
+}

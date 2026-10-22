@@ -1,0 +1,70 @@
+{
+  "R22": "Existing owner boundary envelopes enqueue opt-in defense work; mandatory same-action work drains before normal turn release",
+  "amount": "Separate typed caller base operand and ordered R12 fixed multipliers; never derived from HP damage",
+  "authority": "REFERENCE_MODEL",
+  "bounds": "Nonnegative R12 raw integers; reject negative/overcap initialization and recovery; reduction clamps to current",
+  "branch": "terra/implementation",
+  "break_vs_death": "Toughness zero does not mutate HP or life state",
+  "change_request": "CR-R24-TOUGHNESS-BREAK-SHIELD-20261021-001",
+  "distinct_domains": [
+    "HP_DAMAGE",
+    "SHIELD_ABSORPTION",
+    "TOUGHNESS_REDUCTION",
+    "WEAKNESS_BREAK_TRIGGER",
+    "BREAK_STATE",
+    "BREAK_EFFECT",
+    "BREAK_RECOVERY"
+  ],
+  "effect": "Caller-supplied identity/tasks envelope executed under owning R15 action/ability; no implicit damage/DoT/delay/element-specific native effects; absent effect records BREAK_EFFECT_NOT_BOUND",
+  "frozen_M10_M15_modified": false,
+  "functional_cases": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "git_writes": "NONE",
+  "interfaces": [
+    "ToughnessRequest",
+    "ToughnessEvaluation",
+    "ToughnessSettlement"
+  ],
+  "native_correctness": "NOT_CLAIMED",
+  "native_recovery": "UNKNOWN",
+  "native_trigger": "UNKNOWN",
+  "product_baseline": "FROZEN_4.4.54",
+  "recovery": "Explicit actor boundary/callback countdown and restore amount; missing policy records BREAK_RECOVERY_POLICY_MISSING; no native timing claim",
+  "schema": "generic_runtime_toughness_break/1",
+  "source_backed_defense_operations": 0,
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0",
+  "state_fields": [
+    "current",
+    "maximum",
+    "weaknesses",
+    "temporary_weaknesses",
+    "eligible",
+    "break_state",
+    "break_state.generation",
+    "break_state.instance_id",
+    "recovery"
+  ],
+  "status": "REFERENCE_EXECUTABLE_OPT_IN",
+  "trigger": "Positive current crosses to zero, eligible true, break inactive; one generation per activation; later zero hits do not retrigger",
+  "typed_statuses": [
+    "MISSING",
+    "KNOWN_ZERO",
+    "KNOWN_NONZERO",
+    "UNKNOWN_NATIVE_VALUE",
+    "EXPLICIT_REFERENCE_VALUE"
+  ],
+  "weakness": "Exact caller strings, explicit temporary add/remove, explicit ignore flag or scenario match override; no native element enum mapping"
+}

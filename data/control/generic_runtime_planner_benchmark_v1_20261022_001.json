@@ -1,0 +1,2280 @@
+{
+  "R25_single_choice_fixtures": "Regression only",
+  "authority": "REFERENCE_MODEL",
+  "beam_advantages_over_first_legal": 2,
+  "beam_advantages_over_greedy": 1,
+  "branch": "terra/implementation",
+  "change_request": "CR-R26-BATTLE-PLANNER-BRIDGE-20261022-001",
+  "comparisons": {
+    "choice": [
+      {
+        "algorithm": "FIRST_LEGAL_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "00-slow",
+          "action_ir_hash": "28edd42b93630a6144ad89eb56b2765c62a373b84a91111db3108c29ffd23fe1",
+          "actor_id": "a",
+          "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 2,
+          "clones": 2,
+          "encounter_transitions_reserved": 384,
+          "nodes_expanded": 1,
+          "opponent_actions": 1,
+          "r15_history_records": 355,
+          "r25_lifecycle_transitions": 5,
+          "scheduler_work_reserved": 768,
+          "simulated_actions": 2,
+          "simulator_transitions": 5,
+          "snapshot_restores": 0,
+          "trace_bytes": 9427
+        },
+        "evaluation": {
+          "classification": "DEFEAT",
+          "components": {
+            "av": {
+              "value": {
+                "d": 3,
+                "n": 200
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 77309411328
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": -77309411328
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 2
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -17179869184
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 34359738368
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 2,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 34359738368
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 3,
+              "n": 200
+            },
+            "encounter_phase": "ENCOUNTER_DEFEAT",
+            "hp": {
+              "a": 0,
+              "b": 77309411328
+            },
+            "metrics": {
+              "av": {
+                "d": 3,
+                "n": 200
+              },
+              "enemies_remaining": 1,
+              "enemy_hp": 77309411328,
+              "normal_turns": 2,
+              "resources": 34359738368,
+              "shield": 0,
+              "team_hp": 0,
+              "waves_completed": 0
+            },
+            "normal_turns": 2,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 0
+          },
+          "score": {
+            "d": 1,
+            "n": -94489280512
+          },
+          "terminal_rank": 2
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 77309411328,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 0,
+        "initial_hash": "ba460f4c015d9d089a075cc59069141593e05256599509ad36a4fd751e47c798",
+        "normal_turns": 2,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 34359738368
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "2955ee8ce3e5bcc1e0f57395fdf5c14c941d516c50f28c4fc8764cabcf7b509c",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "b",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave_index": 0
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "a4b070c3f4ecab1c06a506f09f4d311e90abaad8add6fb69d750d3c0e50c68a7",
+          "result": "DEFEAT",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/a/0",
+              "listener_ids": [],
+              "root_id": "action:217"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_DEFEAT//",
+              "listener_ids": [],
+              "root_id": "action:226"
+            }
+          ],
+          "terminal_reason": "explicit reference objective DEFEAT",
+          "wave_index": 0
+        }
+      },
+      {
+        "algorithm": "ONE_STEP_GREEDY_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "10-fast",
+          "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+          "actor_id": "a",
+          "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 2,
+          "clones": 3,
+          "encounter_transitions_reserved": 512,
+          "nodes_expanded": 2,
+          "opponent_actions": 1,
+          "r15_history_records": 544,
+          "r25_lifecycle_transitions": 9,
+          "scheduler_work_reserved": 1024,
+          "simulated_actions": 3,
+          "simulator_transitions": 7,
+          "snapshot_restores": 0,
+          "trace_bytes": 13673
+        },
+        "evaluation": {
+          "classification": "VICTORY",
+          "components": {
+            "av": {
+              "value": {
+                "d": 1,
+                "n": 50
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -8589934592
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 34359738368
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 858993459200
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 1,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 34359738368
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 1,
+              "n": 50
+            },
+            "encounter_phase": "ENCOUNTER_VICTORY",
+            "hp": {
+              "a": 858993459200,
+              "b": 0
+            },
+            "metrics": {
+              "av": {
+                "d": 1,
+                "n": 50
+              },
+              "enemies_remaining": 0,
+              "enemy_hp": 0,
+              "normal_turns": 1,
+              "resources": 34359738368,
+              "shield": 0,
+              "team_hp": 858993459200,
+              "waves_completed": 1
+            },
+            "normal_turns": 1,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 0
+          },
+          "score": {
+            "d": 1,
+            "n": 1709396983808
+          },
+          "terminal_rank": 4
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 858993459200,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 0,
+        "initial_hash": "ba460f4c015d9d089a075cc59069141593e05256599509ad36a4fd751e47c798",
+        "normal_turns": 1,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 34359738368
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "edaeb123177df4fb67bb502cd64d4c732536bd5aa73ba03a19f7cda248f1e0cd",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "b",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave_index": 0
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "e7bc05eae9dddb92c8a74c22eae9de51f2619ede93b8d9ae841fc0f1df50101c",
+          "result": "VICTORY",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+              "listener_ids": [],
+              "root_id": "action:118"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:127"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_VICTORY//",
+              "listener_ids": [],
+              "root_id": "action:136"
+            }
+          ],
+          "terminal_reason": "explicit reference objective VICTORY",
+          "wave_index": 0
+        }
+      },
+      {
+        "algorithm": "BEAM_SEARCH_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "10-fast",
+          "action_ir_hash": "452ecc1517dd36b0c5e072698058acafc88e484c90bf41a3be0b00ee49a395af",
+          "actor_id": "a",
+          "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 2,
+          "clones": 3,
+          "encounter_transitions_reserved": 512,
+          "nodes_expanded": 2,
+          "opponent_actions": 1,
+          "r15_history_records": 544,
+          "r25_lifecycle_transitions": 9,
+          "scheduler_work_reserved": 1024,
+          "simulated_actions": 3,
+          "simulator_transitions": 7,
+          "snapshot_restores": 0,
+          "trace_bytes": 13673
+        },
+        "evaluation": {
+          "classification": "VICTORY",
+          "components": {
+            "av": {
+              "value": {
+                "d": 1,
+                "n": 50
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -8589934592
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 34359738368
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 858993459200
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 1,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 34359738368
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 1,
+              "n": 50
+            },
+            "encounter_phase": "ENCOUNTER_VICTORY",
+            "hp": {
+              "a": 858993459200,
+              "b": 0
+            },
+            "metrics": {
+              "av": {
+                "d": 1,
+                "n": 50
+              },
+              "enemies_remaining": 0,
+              "enemy_hp": 0,
+              "normal_turns": 1,
+              "resources": 34359738368,
+              "shield": 0,
+              "team_hp": 858993459200,
+              "waves_completed": 1
+            },
+            "normal_turns": 1,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 0
+          },
+          "score": {
+            "d": 1,
+            "n": 1709396983808
+          },
+          "terminal_rank": 4
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 858993459200,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 0,
+        "initial_hash": "ba460f4c015d9d089a075cc59069141593e05256599509ad36a4fd751e47c798",
+        "normal_turns": 1,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 34359738368
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "edaeb123177df4fb67bb502cd64d4c732536bd5aa73ba03a19f7cda248f1e0cd",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "b",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave_index": 0
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "e7bc05eae9dddb92c8a74c22eae9de51f2619ede93b8d9ae841fc0f1df50101c",
+          "result": "VICTORY",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+              "listener_ids": [],
+              "root_id": "action:118"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:127"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_VICTORY//",
+              "listener_ids": [],
+              "root_id": "action:136"
+            }
+          ],
+          "terminal_reason": "explicit reference objective VICTORY",
+          "wave_index": 0
+        }
+      }
+    ],
+    "resource": [
+      {
+        "algorithm": "FIRST_LEGAL_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "00-burst:b",
+          "action_ir_hash": "72a41514e10a180e5776acf5e7298445cf3a77e2ddb8b2ed56990d5df6f8da72",
+          "actor_id": "a",
+          "cost_policy_hash": "9d54528ab34933c7d694d5489259d5fbe87c7d474ce468fae81a6f617e45d4f7",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 3,
+          "clones": 3,
+          "encounter_transitions_reserved": 512,
+          "nodes_expanded": 2,
+          "opponent_actions": 1,
+          "r15_history_records": 603,
+          "r25_lifecycle_transitions": 13,
+          "scheduler_work_reserved": 1024,
+          "simulated_actions": 3,
+          "simulator_transitions": 7,
+          "snapshot_restores": 0,
+          "trace_bytes": 14003
+        },
+        "evaluation": {
+          "classification": "DEFEAT",
+          "components": {
+            "av": {
+              "value": {
+                "d": 3,
+                "n": 350
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 214748364800
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": -214748364800
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 3
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -25769803776
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 3,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 0
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              },
+              "c": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 3,
+              "n": 350
+            },
+            "encounter_phase": "ENCOUNTER_DEFEAT",
+            "hp": {
+              "a": 0,
+              "b": 0,
+              "c": 214748364800
+            },
+            "metrics": {
+              "av": {
+                "d": 3,
+                "n": 350
+              },
+              "enemies_remaining": 1,
+              "enemy_hp": 214748364800,
+              "normal_turns": 3,
+              "resources": 0,
+              "shield": 0,
+              "team_hp": 0,
+              "waves_completed": 1
+            },
+            "normal_turns": 3,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 1
+          },
+          "score": {
+            "d": 1,
+            "n": 618475290624
+          },
+          "terminal_rank": 2
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          },
+          "c": {
+            "hp": 214748364800,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 0,
+        "initial_hash": "0d1b2360e2bd004a8e0e419399abf3ebb08fa6c8039200c732a001e930dd0a28",
+        "normal_turns": 3,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 0
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          },
+          "c": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "6600fa2a5006fdb66f0fdede7935e8379d226ff6594e8ac61a7f3ef27ed17895",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "c",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave_index": 1
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "c",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "c",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 2,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.c",
+                "provider_policy_hash": "de5ee08316b8efdacf8b796bb3e124966c13de61c4c38df6243bc028c17a57b8"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "b32d32e645b1af00fed01cd8789356f81c9dd211e511647fcc219fc713c22ce4",
+          "result": "DEFEAT",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+              "listener_ids": [],
+              "root_id": "action:122"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:131"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/BEFORE_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:140"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/AFTER_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:149"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:158"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENTITY_DEFEATED/a/0",
+              "listener_ids": [],
+              "root_id": "action:365"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENCOUNTER_DEFEAT//",
+              "listener_ids": [],
+              "root_id": "action:374"
+            }
+          ],
+          "terminal_reason": "explicit reference objective DEFEAT",
+          "wave_index": 1
+        }
+      },
+      {
+        "algorithm": "ONE_STEP_GREEDY_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "00-burst:b",
+          "action_ir_hash": "72a41514e10a180e5776acf5e7298445cf3a77e2ddb8b2ed56990d5df6f8da72",
+          "actor_id": "a",
+          "cost_policy_hash": "9d54528ab34933c7d694d5489259d5fbe87c7d474ce468fae81a6f617e45d4f7",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 3,
+          "clones": 5,
+          "encounter_transitions_reserved": 896,
+          "nodes_expanded": 3,
+          "opponent_actions": 2,
+          "r15_history_records": 959,
+          "r25_lifecycle_transitions": 17,
+          "scheduler_work_reserved": 1792,
+          "simulated_actions": 5,
+          "simulator_transitions": 12,
+          "snapshot_restores": 0,
+          "trace_bytes": 23523
+        },
+        "evaluation": {
+          "classification": "DEFEAT",
+          "components": {
+            "av": {
+              "value": {
+                "d": 3,
+                "n": 350
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 214748364800
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": -214748364800
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 3
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -25769803776
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 1
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 3,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 0
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              },
+              "c": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 3,
+              "n": 350
+            },
+            "encounter_phase": "ENCOUNTER_DEFEAT",
+            "hp": {
+              "a": 0,
+              "b": 0,
+              "c": 214748364800
+            },
+            "metrics": {
+              "av": {
+                "d": 3,
+                "n": 350
+              },
+              "enemies_remaining": 1,
+              "enemy_hp": 214748364800,
+              "normal_turns": 3,
+              "resources": 0,
+              "shield": 0,
+              "team_hp": 0,
+              "waves_completed": 1
+            },
+            "normal_turns": 3,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 1
+          },
+          "score": {
+            "d": 1,
+            "n": 618475290624
+          },
+          "terminal_rank": 2
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          },
+          "c": {
+            "hp": 214748364800,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 2,
+        "initial_hash": "0d1b2360e2bd004a8e0e419399abf3ebb08fa6c8039200c732a001e930dd0a28",
+        "normal_turns": 3,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 0
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          },
+          "c": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "6600fa2a5006fdb66f0fdede7935e8379d226ff6594e8ac61a7f3ef27ed17895",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "c",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave_index": 1
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "c",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "c",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 2,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.c",
+                "provider_policy_hash": "de5ee08316b8efdacf8b796bb3e124966c13de61c4c38df6243bc028c17a57b8"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "b32d32e645b1af00fed01cd8789356f81c9dd211e511647fcc219fc713c22ce4",
+          "result": "DEFEAT",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+              "listener_ids": [],
+              "root_id": "action:122"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:131"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/BEFORE_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:140"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/AFTER_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:149"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:158"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENTITY_DEFEATED/a/0",
+              "listener_ids": [],
+              "root_id": "action:365"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENCOUNTER_DEFEAT//",
+              "listener_ids": [],
+              "root_id": "action:374"
+            }
+          ],
+          "terminal_reason": "explicit reference objective DEFEAT",
+          "wave_index": 1
+        }
+      },
+      {
+        "algorithm": "BEAM_SEARCH_REFERENCE",
+        "chosen_first_action": {
+          "action_id": "10-save:b",
+          "action_ir_hash": "4723d5da1576b11fd2972d464745e649e0d83e6dcf8c1ab82e459f4164b4a02f",
+          "actor_id": "a",
+          "cost_policy_hash": "da0efc99423d0d47bc5b1fb19fc0687afbd2380d36c5e16cebee4f0a0c8bc3ef",
+          "source_authority": {
+            "evidence_level": "REFERENCE_MODEL",
+            "ledger_refs": [],
+            "native_method_refs": [],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "REFERENCE_MODEL",
+            "source_artifact": "SYNTHETIC_R15_REGRESSION",
+            "source_pointer": "",
+            "source_sha256": "",
+            "source_version": "r15"
+          },
+          "targets": [
+            "b"
+          ]
+        },
+        "counts": {
+          "budget_yields": 0,
+          "candidates_enumerated": 8,
+          "clones": 9,
+          "encounter_transitions_reserved": 1664,
+          "nodes_expanded": 8,
+          "opponent_actions": 4,
+          "r15_history_records": 2354,
+          "r25_lifecycle_transitions": 47,
+          "scheduler_work_reserved": 3328,
+          "simulated_actions": 12,
+          "simulator_transitions": 25,
+          "snapshot_restores": 0,
+          "trace_bytes": 52145
+        },
+        "evaluation": {
+          "classification": "VICTORY",
+          "components": {
+            "av": {
+              "value": {
+                "d": 1,
+                "n": 150
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemies_remaining": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "enemy_hp": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": -1,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "normal_turns": {
+              "value": {
+                "d": 1,
+                "n": 4
+              },
+              "weight": -8589934592,
+              "weighted": {
+                "d": 1,
+                "n": -34359738368
+              }
+            },
+            "resources": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "shield": {
+              "value": {
+                "d": 1,
+                "n": 0
+              },
+              "weight": 0,
+              "weighted": {
+                "d": 1,
+                "n": 0
+              }
+            },
+            "team_hp": {
+              "value": {
+                "d": 1,
+                "n": 858993459200
+              },
+              "weight": 1,
+              "weighted": {
+                "d": 1,
+                "n": 858993459200
+              }
+            },
+            "waves_completed": {
+              "value": {
+                "d": 1,
+                "n": 2
+              },
+              "weight": 858993459200,
+              "weighted": {
+                "d": 1,
+                "n": 1717986918400
+              }
+            }
+          },
+          "native_correctness": "NOT_CLAIMED",
+          "partial_uncertain": false,
+          "predicted": {
+            "actions": 4,
+            "actor_resources": {
+              "a": {
+                "reference_actor_counter": 0
+              },
+              "b": {
+                "reference_actor_counter": 34359738368
+              },
+              "c": {
+                "reference_actor_counter": 34359738368
+              }
+            },
+            "clock": {
+              "d": 1,
+              "n": 150
+            },
+            "encounter_phase": "ENCOUNTER_VICTORY",
+            "hp": {
+              "a": 858993459200,
+              "b": 0,
+              "c": 0
+            },
+            "metrics": {
+              "av": {
+                "d": 1,
+                "n": 150
+              },
+              "enemies_remaining": 0,
+              "enemy_hp": 0,
+              "normal_turns": 4,
+              "resources": 0,
+              "shield": 0,
+              "team_hp": 858993459200,
+              "waves_completed": 2
+            },
+            "normal_turns": 4,
+            "rng_draws": 0,
+            "team_resources": {},
+            "wave_index": 1
+          },
+          "score": {
+            "d": 1,
+            "n": 2542620639232
+          },
+          "terminal_rank": 4
+        },
+        "hp": {
+          "a": {
+            "character_id": 8589934592,
+            "grid_property": 8589934592,
+            "hp": 858993459200,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1717986918400,
+            "stance_count": 17179869184,
+            "x": 0
+          },
+          "b": {
+            "character_id": 17179869184,
+            "grid_property": 17179869184,
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "stance_count": 8589934592,
+            "x": 0
+          },
+          "c": {
+            "hp": 0,
+            "max_hp": 858993459200,
+            "reference_atk": 85899345920,
+            "speed": 1288490188800,
+            "x": 0
+          }
+        },
+        "incomplete_branches": 0,
+        "initial_hash": "0d1b2360e2bd004a8e0e419399abf3ebb08fa6c8039200c732a001e930dd0a28",
+        "normal_turns": 4,
+        "opponent_hash": "0a4bc6fb8fb0ed9a785a5e2d182c4c418912f21695cffd5533432cd1b2be4b5a",
+        "resources": {
+          "a": {
+            "reference_actor_counter": 0
+          },
+          "b": {
+            "reference_actor_counter": 34359738368
+          },
+          "c": {
+            "reference_actor_counter": 34359738368
+          }
+        },
+        "scoring_hash": "83aa7fcc9ee9cfe335fedd254c331facf3e4318695ed46f70f52b04d6e867c97",
+        "terminal": {
+          "encounter_id": "r25-authored-reference-encounter",
+          "final_state_hash": "ab1640f7df9653867db52b002c5a34a07b4ba25609b446bf9a87bd97743b1844",
+          "hash_scope": "BehaviorBattleState before attaching this immutable receipt (terminal boundary already stored)",
+          "objective_evidence": {
+            "abort": {
+              "kind": "EXPLICIT_OBJECTIVE_FLAG_REFERENCE",
+              "observed": false,
+              "satisfied": false
+            },
+            "authority": "REFERENCE_MODEL",
+            "defeat": {
+              "actors": [
+                {
+                  "actor_id": "a",
+                  "alive": true,
+                  "generation": 0
+                }
+              ],
+              "kind": "ALL_PLAYER_SIDE_DEFEATED_REFERENCE",
+              "satisfied": false
+            },
+            "wave": {
+              "actors": [
+                {
+                  "actor_id": "c",
+                  "alive": false,
+                  "generation": 1
+                }
+              ],
+              "kind": "ALL_TARGET_SIDE_DEFEATED_REFERENCE",
+              "satisfied": true
+            },
+            "wave_index": 1
+          },
+          "participating_actors": [
+            {
+              "actor_id": "a",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "PLAYER",
+              "entity_ref": "a",
+              "entity_revision": 0,
+              "generation": 0,
+              "participation": "ENABLED",
+              "registration_ordinal": 0,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.a",
+                "provider_policy_hash": "dde3a06f33c29e7acb338fea2d6da764f365ba93627d76dd584cafa570936984"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "b",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "b",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 1,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.b",
+                "provider_policy_hash": "c8baf97ccbc2fb74ee587f496ada9bfa9582dc3773395750a1df523d1a1da642"
+              },
+              "summon_parent_actor": null
+            },
+            {
+              "actor_id": "c",
+              "authority": {
+                "artifact": "explicit R22 actor binding",
+                "kind": "EXPLICIT_SCENARIO_INPUT",
+                "pointer": "",
+                "sha256": "95024660613409a9be52463fff2283f422df0a6470b1be5b4050c5ac0f20dfd7",
+                "source_version": "4.6.51"
+              },
+              "availability_provider_id": "explicit-caller-actions-v1",
+              "controller": "MONSTER_AI",
+              "entity_ref": "c",
+              "entity_revision": 1,
+              "generation": 1,
+              "participation": "REMOVED",
+              "registration_ordinal": 2,
+              "speed_ref": {
+                "authority": {
+                  "artifact": "R19 effective speed binding",
+                  "kind": "EXPLICIT_SCENARIO_INPUT",
+                  "pointer": "",
+                  "sha256": "70b5dd8ffcb1b4f444837a74d5ca892ebcd11c63bc0dc9a2ea90aa8cd556931c",
+                  "source_version": "4.6.51"
+                },
+                "base_property_key": "speed",
+                "effective_provider_id": "r22.explicit.speed.c",
+                "provider_policy_hash": "de5ee08316b8efdacf8b796bb3e124966c13de61c4c38df6243bc028c17a57b8"
+              },
+              "summon_parent_actor": null
+            }
+          ],
+          "policy_hash": "1ad3d39e6f511de553afeb1425c5d9ebdf4a82bdfb835c8f5dad9e728128c4b9",
+          "policy_id": "r25_encounter_reference_v1",
+          "policy_version": "1",
+          "receipt_hash": "34d59b822b4bd0315032f288cb7e0d29335f138637b278f1bae087bebcf2dd70",
+          "result": "VICTORY",
+          "schema": "reference_encounter_terminal_receipt/1",
+          "settled_events": [
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENCOUNTER_START//",
+              "listener_ids": [],
+              "root_id": "action:1"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:10"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/ENTITY_DEFEATED/b/0",
+              "listener_ids": [],
+              "root_id": "action:316"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:325"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/0/BEFORE_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:334"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/AFTER_WAVE_TRANSITION//",
+              "listener_ids": [],
+              "root_id": "action:343"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_START//",
+              "listener_ids": [],
+              "root_id": "action:352"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENTITY_DEFEATED/c/0",
+              "listener_ids": [],
+              "root_id": "action:464"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/WAVE_CLEAR//",
+              "listener_ids": [],
+              "root_id": "action:473"
+            },
+            {
+              "event_id": "reference_encounter_v1/r25-authored-reference-encounter/1/ENCOUNTER_VICTORY//",
+              "listener_ids": [],
+              "root_id": "action:482"
+            }
+          ],
+          "terminal_reason": "explicit reference objective VICTORY",
+          "wave_index": 1
+        }
+      }
+    ]
+  },
+  "evaluation_player_decision_cap": 4,
+  "git_writes": "NONE",
+  "measurement": "Actual simulated states, not predicted narrative; greedy repeats one-action searches to the same cap",
+  "native_correctness": "NOT_CLAIMED",
+  "primary_planning_evidence": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05"
+  ],
+  "product_baseline": "FROZEN_4.4.54",
+  "same_input_per_comparison": true,
+  "schema": "generic_runtime_planner_benchmark/1",
+  "source_version": "4.6.51",
+  "starting_head": "1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0"
+}

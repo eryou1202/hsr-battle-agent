@@ -1,0 +1,53 @@
+# R25 Reference Encounter Lifecycle
+
+CR: CR-R25-REFERENCE-ENCOUNTER-LIFECYCLE-20261021-001. Starting HEAD: `1ab66b4d907bd97116d6cd0a8cea19d6a1212ca0`. Branch: `terra/implementation`. Git writes: **NONE**.
+
+Verdict: **REFERENCE_ENCOUNTER_LIFECYCLE_ESTABLISHED** within the explicitly implemented authored reference profile. Native stage/encounter equivalence: **NOT CLAIMED**.
+
+The public BehaviorRuntime API initializes pinned R20 actors, runs the existing rational R22 Turn/AV engine, admits fresh player/enemy permissions, executes R15 actions, settles R18/R24 HP, confirms reference defeat after owned work drains, evaluates explicit objectives, registers a second wave atomically, resumes normal decisions and produces immutable BATTLE_TERMINAL receipts. E02 reaches VICTORY automatically after two waves. E04 reaches DEFEAT from a deterministic enemy action. Neither trace manually declares a terminal outcome. E01/E02/E04/E15/E16 retain executable initial snapshots, full command receipts and final snapshots under the R25 audit. Enemy-side fixtures are authored actor surrogates using existing pinned R20 Avatar inputs and the MONSTER_AI reference controller; no native Monster spawn/content binding is claimed.
+
+## Contract and authority
+
+EncounterDefinition is versioned, rejects missing identities/content and requires evidence, source version and explicit scenario authority for every leaf. All actor/wave identities, sides, availability, objective rules, limits, policy hashes and R20 bindings are caller inputs. No character or enemy identity occurs in the controller. R22 stage, terminal and adapter fields remain the stage authority; the encounter state contains only lifecycle cursors, candidates, objective history, event envelopes and immutable receipts. Legacy callers without R25 take their existing paths.
+
+The bounded 4.6.51 pass read 1817 trusted catalog records (854 decoded), retained 184 structural candidates and 4 direct metadata anchors, and selected zero new native method bodies. Names, spans and metadata do not establish an effective stage rule. Native stage bindings remain zero. Four exact source tickets are retained. The frozen 4.4.54 product evidence is background only. No broad IFix/Lua work, live attach, memory patch or game launch occurred.
+
+## Objectives, life state and safe points
+
+All seven predicates execute: current target side defeated, player side defeated, specific actor defeated, surviving N normal turns, explicit boolean flag, AND and OR. Evaluation is pure and reads the existing entity life state with R20 provenance. Unknown operands fail closed, including within composite expressions. Conflicting outcomes are semantic gaps. Objectives are revalidated after stage callbacks before wave or terminal commit.
+
+The R18 settle_hp hook records a zero-HP candidate inside the existing damage transaction, so R18/R24 rollback also restores the candidate. HP_REACHED_ZERO is distinct from life-state change, reference defeat, participation removal and objective satisfaction. The versioned reference life policy authorizes zero HP to become reference defeat only after the action, children, R15/R17 callbacks and R22 turn boundaries drain. R22 DEFEAT increments the existing actor generation, removes initiative and cancels defeated-owner insertions. Surviving mandatory insertions drain before stage commit. Required callbacks survive zero HP; action gaps preserve ownership and block transitions. Repeated observations do not repeat defeat events. Explicit REVIVE uses R22 fresh-generation and HP contracts.
+
+## Waves, events and persistence
+
+Wave preparation runs full R20 construction and R22 participant validation on a throwaway clone. Failed preparation exposes no actors or queue entries. Commit checks the prepared receipt and battle input fingerprint, retires prior-wave actors, constructs/registers new entities, replaces explicit per-wave availability, advances R22 wave/stage generation and resumes normal scheduling in one atomic candidate. A completed previous turn is never rolled back because a next wave fails. E12 rejects bad explicit preparation input and accepts the corrected input. Additional checks invalidate prepared input after AV changes.
+
+The implemented profile explicitly PRESERVES HP, actor resources, team SP, energy, persistent modifiers, shields, toughness/break, player speed/AV, progression and RNG. No full heal, SP reset or modifier wipe occurs. R22 rational clock and survivor due_at persist; new actors receive its full interval at current time. This profile requires unique spawn identities. Alternate RESET_EXPLICIT_REFERENCE/TRANSFORM_EXPLICIT_REFERENCE carryover, identity reuse and alternate AV/insertion policies require another implemented policy and currently reject with typed gaps; no native policy is inferred.
+
+ENCOUNTER_START, WAVE_START, ENTITY_DEFEATED, WAVE_CLEAR, BEFORE/AFTER_WAVE_TRANSITION and terminal events use namespaced reference keys in the existing R15 boundary envelope and R17 dispatcher. Persistent event IDs/cursors enforce at most one dispatch per wave/actor generation. Every owned child, callback, transaction and boundary must drain before the next normal actor. WAVE_PENDING is nonterminal.
+
+Terminal receipt includes R22 result, encounter/wave identity, objective evidence, participants/generations, policy version/hash, reason, settled events/listeners and final BattleState hash. The hash is taken after storing the terminal boundary and before attaching the receipt itself, preventing self-reference; removing only terminal_receipt reproduces it. Repeated reads/advances preserve the receipt, state hash and event count. Old permissions, direct action admission and postterminal actor lifecycle reject.
+
+## Executable validation
+
+E01-E18: **18/18 PASS**. Census: **24 completed actions**, **20 cleared waves**, terminal outcomes **{'ABORTED': 0, 'DEFEAT': 1, 'VICTORY': 12}**. Counts cover the required scenario cohort only; intentional gap/checkpoint scenarios need not terminate. Pure authored scenarios: 17; real-primitive scenarios: 1.
+
+E15 executes an unchanged decoded real damage primitive through R18/R19 and explicit R24 defense inputs, inside an authored wrapper/encounter. Source task hash remains unchanged. This is not a complete canonical SkillList transition. Native defensive source bindings remain zero.
+
+Clone/JSON restore and exact suffix comparisons cover active action, pending zero-HP candidate, pending stage callback, WAVE_CLEAR_PENDING, TRANSITION_DRAINING, WAVE_READY, prepared input, newly registered second wave, active second wave and terminal victory/defeat. Full external command replay preserves complete snapshots/hashes. Three independent budget-suspended branches reach the same terminal hash while the parent remains unchanged. An additional R17 listener owned by an already defeated actor drains its stage callback exactly once and preserves snapshot suffix equality. Boundary budgets suspend and resume without repeated stage events. Registration/transition/objective/callback/normal-turn/scheduler/zero-time limits are explicit; hitting a declared total cap yields without inventing a terminal result. Call budgets may be increased on resumption; a declared total cap remains a cap.
+
+Baseline: `{"R12_R23": {"returncode": 0, "tests": 363}, "R21": {"returncode": 0, "tests": 21}, "battle_ir_FAST_UNIT": {"returncode": 0, "tests": 586}, "battle_runtime_FAST_UNIT": {"returncode": 0, "tests": 591}, "battle_sandbox_FAST_UNIT": {"returncode": 0, "tests": 918}}`.
+
+Final: `{"R12_R25": {"returncode": 0, "tests": 423}, "R21": {"returncode": 0, "tests": 21}, "battle_ir_FAST_UNIT": {"returncode": 0, "tests": 586}, "battle_runtime_FAST_UNIT": {"returncode": 0, "tests": 617}, "battle_sandbox_FAST_UNIT": {"returncode": 0, "tests": 918}}`.
+
+The unchanged 632 combat / 160 joined / 161 joined-row corpus has no frozen hash or source-IR drift. R22 A-L observables remain exact; full hashes across implementations differ as expected because the R22 policy hashes battle_turn.py bytes. Same-version replay remains exact. All 160 R23 probes match the stable R24 results: 72 nonempty prefixes, 18 HP roots, 15 original child finishes, zero full source-closed joined transitions. The historical archived 73 is retained unchanged. All 18 R24 defense scenarios pass. Preservation checks cover 1575 starting files; only the three authorized R25 production adapters changed. Historical M10-M15, ScenarioCompiler, strict admission, tests, unrelated dirty files and R24 archived audit members remain unchanged. The legacy baseline helper summary-path mistake was repaired from exact archived R24 bytes; baseline_summary_recovery.json records the recovery.
+
+## R26 and reproduction
+
+Recommended R26: **BATTLE PLANNER BRIDGE**, because complete deterministic encounters now permit terminal scoring over cloned branches. Second: **MONSTER CONTENT / AI REFERENCE EXECUTION**; current deterministic first-permission reference AI is executable, while real Monster content and AI remain unbound. Remaining major systems: canonical joined-skill source closure, native legality, native ultimate interruption, stage source binding, real shield/break binding and planner/search integration. No broad reverse campaign is automatically reopened.
+
+Use scripts/python/resolve_python.ps1 with the verified interpreter path; this session resolved Python 3.14.3 explicitly because the documented local 3.11 fallback was absent. Commands: r25_checks.py baseline/final; r25_evidence.py; r25_scenarios.py; r25_regressions.py frozen/turns/skills/defense; r25_finalize.py --package. Run r25_run.py --outcome VICTORY or DEFEAT, or --replay E02 / E04 / E15 / E16. Never regenerate the retained start gate.
+
+Production: src/hsr_battle_agent/battle_runtime/behavior.py, src/hsr_battle_agent/battle_runtime/battle_turn.py, src/hsr_battle_agent/battle_runtime/damage_pipeline.py, src/hsr_battle_agent/battle_runtime/encounter_runtime.py. Tests: tests/battle_runtime/test_behavior_r25.py. Controls: six generic_runtime R25 records dated 20261021_001. Audit: tmp/audit/r25_reference_encounter_20261021_001/.
+
+Handoff: D:/HSR_Battle_Agent/agent_handoffs/CR-R25-REFERENCE-ENCOUNTER-LIFECYCLE-20261021-001_changed_files.zip. The ZIP contains R25 additions, patches against exact starting bytes, derived controls, audit traces and a member manifest. It excludes inherited full source files, source snapshots, native payloads, game binaries, dumps, starting backups, old reverse trees and unrelated changes. CRC, exact member set, sizes, per-member SHA-256 and complete ZIP SHA-256 are recorded externally in handoff_verification.json.

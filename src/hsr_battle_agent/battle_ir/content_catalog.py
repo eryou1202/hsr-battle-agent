@@ -220,6 +220,113 @@ class ContentCatalog:
                 result[name] = IRNode.from_dict(self.records[tuple(resolved['target_source_identity'])]['ir'])
         return result
 
+    def canonical_skill(self, avatar, skill, character, *, source_version):
+        """Join trusted decoded owner records to this catalog, without admission.
+
+        Inputs come from the exact-build reader boundary, like directory records.
+        Skill level rows retain their original table span. No display-name or
+        caller-supplied owner override can replace the serialized ownership edge.
+        The returned receipt belongs in the caller's explicit availability input.
+        """
+        def scalar(graph, mask):
+            values = (field(graph, mask) or {}).get('values', [])
+            return values[0].get('value') if len(values) == 1 else None
+
+        def identity(record):
+            graph = record.get('graph', record)
+            start, end = graph.get('start'), graph.get('end')
+            shard = record.get('source_shard_sha256')
+            if (not isinstance(shard, str) or len(shard) != 64 or
+                type(start) is not int or type(end) is not int or start >= end):
+                raise ValueError('exact decoded owner source identity required')
+            return [shard, start, end]
+
+        if not isinstance(source_version, str) or not source_version:
+            raise ValueError('explicit source version required')
+        owner_graph = avatar['graph']
+        owner = scalar(owner_graph, 1)
+        skill_id, level, trigger = skill.get('skill_id'), skill.get('level'), skill.get('trigger_key')
+        if type(owner) is not int or type(skill_id) is not int or type(level) is not int or level < 1:
+            raise ValueError('exact owner and skill level required')
+        skill_graph = skill.get('graph')
+        if (not isinstance(skill_graph, dict) or scalar(skill_graph, 1) != skill_id or
+                scalar(skill_graph, 16) != level or scalar(skill_graph, 64) != trigger):
+            raise ValueError('exact decoded SkillID/level/SkillTriggerKey evidence required')
+        owned = [v.get('value') for f in [field(owner_graph, 65536)] if f
+                 for value in f.get('values', []) for v in value.get('children', [])]
+        if owned.count(skill_id) != 1:
+            raise ValueError('canonical Avatar.SkillList ownership missing or ambiguous')
+        owner_path = scalar(owner_graph, 256)
+        expected_path = 'BakedConfig/' + str(owner_path).removesuffix('.json') + '.bytes'
+        if character.get('status') != 'ACCEPTED' or character.get('path') != expected_path:
+            raise ValueError('exact Avatar.JsonPath to CharacterConfig required')
+        configs = [n for f in [field(character['graph'], 1 << 25)] if f
+                   for value in f.get('values', []) for n in value.get('children', [])
+                   if n.get('type') == 'RPG.GameCore.SkillConfig' and scalar(n, 1) == trigger]
+        if not isinstance(trigger, str) or not trigger or len(configs) != 1:
+            raise ValueError('SkillTriggerKey to SkillConfig.Name missing or ambiguous')
+        config = configs[0]
+        entry = scalar(config, 1 << 38)
+        resolved = self.resolve({'reference_type': 'ABILITY_REFERENCE', 'identity': entry})
+        if resolved['status'] != 'EXACT_RESOLVED_COMPILED':
+            raise ValueError('exact compiled EntryAbility required: ' + resolved['status'])
+        compiled = IRNode.from_dict(self.records[tuple(resolved['target_source_identity'])]['ir'])
+        if compiled.authority.source_version != source_version:
+            raise ValueError('canonical skill source version boundary mismatch')
+        owner_source, skill_source, character_source = identity(avatar), identity(skill), identity(character)
+        if owner_source[0] != skill_source[0]:
+            raise ValueError('owner and skill source version boundary mismatch')
+        receipt = {'schema': 'canonical_skill_binding/1', 'source_version': source_version,
+            'avatar_id': owner, 'skill_id': skill_id, 'skill_level': level,
+            'skill_trigger_key': trigger, 'skill_config_name': scalar(config, 1),
+            'entry_ability': entry, 'avatar_source_identity': owner_source,
+            'skill_source_identity': skill_source, 'character_source_identity': character_source,
+            'skill_config_span': [config['start'], config['end']],
+            'source_identity': resolved['target_source_identity'],
+            'canonical_IR_hash': resolved['canonical_IR_hash'],
+            'directory_evidence': resolved['resolution_evidence'],
+            'ownership_evidence': copy.deepcopy(field(owner_graph, 65536)),
+            'entry_evidence': copy.deepcopy(field(config, 1 << 38)),
+            'skill_trigger_evidence': copy.deepcopy(field(skill_graph, 64)),
+            'authority': 'EXACT_STRUCTURAL_JOIN_REFERENCE_AVAILABILITY_SEPARATE',
+            'native_legality': 'UNKNOWN'}
+        receipt['binding_hash'] = stable_hash(receipt)
+        return receipt
+
+    def scoped_template(self, identity, parent_source_identity, policy):
+        """Expose an unchanged compiled inline body under explicit parent scope.
+
+        This is an entry adapter over the parent's canonical compiled subtree;
+        it adds no tasks and does not claim native scope/inheritance semantics.
+        """
+        from .behavior import AbilityIR
+        parent_key = tuple(parent_source_identity)
+        if (policy.get('authority') != 'REFERENCE_MODEL' or
+                policy.get('scope') != 'EXACT_PARENT_ONLY_REFERENCE' or
+                policy.get('parent_source_identity') != list(parent_key)):
+            raise ValueError('explicit exact parent template scope required')
+        definitions = [d for d in self.definitions.get((identity, 2), {}).values()
+                       if tuple(d['parent_source_identity']) == parent_key]
+        if len(definitions) != 1:
+            raise ValueError('inline template parent identity missing or ambiguous')
+        definition = definitions[0]
+        record = self.records[parent_key]
+        parent = IRNode.from_dict(record['ir'])
+        body = parent.payload['decoded']
+        for token in definition['source_pointer'].strip('/').split('/'):
+            token = token.replace('~1', '/').replace('~0', '~')
+            body = body[int(token)] if isinstance(body, list) else body[token]
+        if body.get('type') != 'RPG.GameCore.TaskListTemplate':
+            raise ValueError('exact compiled inline template body required')
+        key = 'inline_template:' + stable_hash(definition['inline_source_identity'])
+        ir = AbilityIR(parent.node_id+definition['source_pointer'], 'structure_record', parent.authority,
+            {'root_type':'RPG.GameCore.TaskListTemplate','decoded':copy.deepcopy(body)})
+        receipt = {'identity':identity,'catalog_key':key,'source':copy.deepcopy(definition),
+            'scope_policy':copy.deepcopy(policy),'entry_adapter_IR_hash':ir.stable_hash(),
+            'parent_IR_hash':parent.stable_hash(),'source_tasks_added':False,
+            'native_scope_and_inheritance':'UNKNOWN'}
+        return key, ir, receipt
+
     def compiled_templates(self):
         """Content presence only. Entry/parameter mapping still needs caller policy."""
         result = {}
