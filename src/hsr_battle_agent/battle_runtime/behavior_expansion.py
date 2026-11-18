@@ -201,8 +201,12 @@ def predicate(engine, node, state):
     contract = policy(engine, node, "predicates")
     if contract != "ALL_TARGETS_REFERENCE_V1":
         gap(node, "predicate quantification reference contract")
-    r = roles(node)
     operation = PREDICATE_OPERATIONS[node.op.rsplit(".", 1)[-1]]
+    bound_fields = None
+    if operation == 'entity_compare':
+        from .original_bindings import original_compare_fields
+        bound_fields = original_compare_fields(engine, node)
+    r = {} if bound_fields is not None else roles(node)
     if operation == "all":
         return all(engine.predicate(child, state) for child in items(required(node, r, "args")))
     if operation == "not":
@@ -214,6 +218,17 @@ def predicate(engine, node, state):
             gap(node, "serialized target intersection flags")
         return any(e in engine.select(r["right"], state) for e in engine.select(r["left"], state))
     if operation == "entity_compare":
+        if bound_fields is not None:
+            left = engine.select(bound_fields['TargetType'], state)
+            # Native GetPredicateTarget returns null for an empty collection;
+            # Evaluate returns false without evaluating the right selector.
+            right = engine.select(bound_fields['CompareType'], state) if left else []
+            result = bool(left) and bool(right) and left[0] == right[0]
+            engine.trace.append(dict(node=node.node_id, op=node.op,
+                predicate_result=result, left_first=left[0] if left else None,
+                right_first=right[0] if right else None,
+                semantic_authority='SOURCE_OPERATION_WITH_REFERENCE_CONTEXT_AND_STATUS'))
+            return result
         f = node.payload["fields"]
         # Unknown base bool flags must remain explicit; named targets alone do not bind them.
         options = policy(engine, node, "entity_comparison")

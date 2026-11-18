@@ -1,0 +1,336 @@
+{
+  "change_request": "CR-R33-MODIFIER-INSTANCE-AUTHORITY-20261109-001",
+  "executable_contract": false,
+  "native_edges": [
+    {
+      "artifact": "native/method_160a9440.txt",
+      "edge": "original Task config -> executor",
+      "method": "0x160A9440",
+      "method_sha256": "6ade434c985bf50067e170643b64feca416c9b470015107e28e84b5427b44169",
+      "operand_identity": "allocator result -> task ctor; config operand",
+      "semantic_role": "factory known; native task context contents not supplied",
+      "site": "0x160A945D;0x160A94A5",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b7585a0.txt",
+      "edge": "target evaluation",
+      "method": "0xB7585A0",
+      "method_sha256": "9b8c360c7cdaf52cea5e62bbbb841ce2a8d650ba2611792a803eda838b5244aa",
+      "operand_identity": "config+0x18 selector; r8 output list; r9d mask",
+      "semantic_role": "serialized aliases known; mask/provider semantics unresolved",
+      "site": "0xB758715",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b7585a0.txt",
+      "edge": "definition identity",
+      "method": "0xB7585A0",
+      "method_sha256": "9b8c360c7cdaf52cea5e62bbbb841ce2a8d650ba2611792a803eda838b5244aa",
+      "operand_identity": "config+0x28 DynamicString",
+      "semantic_role": "exact task name joins inline Phase02 dictionary",
+      "site": "0xB7587F7",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b7585a0.txt",
+      "edge": "effective source instance",
+      "method": "0xB7585A0",
+      "method_sha256": "9b8c360c7cdaf52cea5e62bbbb841ce2a8d650ba2611792a803eda838b5244aa",
+      "operand_identity": "helper 0xB75A130 return -> +0x60/+0x10",
+      "semantic_role": "native source selection requires config+0x80 and task+0x20 object",
+      "site": "0xB758B14",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b75a130.txt",
+      "edge": "source selection branch",
+      "method": "0xB75A130",
+      "method_sha256": "a6c6e36d978ed4cb3fffec9316d31d673aa79fa54b2b92bd96639f00542ac63e",
+      "operand_identity": "[this+0x18]+0x80 compares 0,1,2",
+      "semantic_role": "enum meanings/default absent from reached serialized fields; not inferred",
+      "site": "0xB75A14A..0xB75A165",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b75a130.txt",
+      "edge": "source provider",
+      "method": "0xB75A130",
+      "method_sha256": "a6c6e36d978ed4cb3fffec9316d31d673aa79fa54b2b92bd96639f00542ac63e",
+      "operand_identity": "this+0x20 virtual +0x120 or +0x110; argument rdx for branch 2; cast 0xB66F210 -> 0x16949180",
+      "semantic_role": "R15 ability:26 is not authority for these native object values",
+      "site": "0xB75A16F..0xB75A26B",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b7585a0.txt",
+      "edge": "TryAddModifierInstance operands",
+      "method": "0xB7585A0",
+      "method_sha256": "9b8c360c7cdaf52cea5e62bbbb841ce2a8d650ba2611792a803eda838b5244aa",
+      "operand_identity": "rdx=[rbp+0x1c0];r8=[rbp+0x1e0];r9=[rbp+0x1a8];stack r12,false",
+      "semantic_role": "native temporary semantic mapping not closed",
+      "site": "0xB7594CB..0xB7594ED",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "operand conservation",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "rcx->r12;rdx->rsi;r8->r15;r9->r14;stack5->rbx",
+      "semantic_role": "register/stack identities proven, exact original values not proven",
+      "site": "0xF1290B5..0xF1290C1",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "context creation",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "if stack5 null allocate context; context+0x18 allocation; +0x64=-1.0",
+      "semantic_role": "native conditional default observed; not a general license to supply null",
+      "site": "0xF1290FA..0xF129129",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "duplicate path",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "global/local instance lookup; r15+0x18 branch; rbx+0x58 filter",
+      "semantic_role": "find/reuse/delete policy and definition enum mapping unresolved",
+      "site": "0xF129256;0xF129370",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "actual creation call site",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "allocate at 0xF129430; ctor(this=new,rdx=rsi,r8=r15,r9=r12,stack5=r14,stack6=rbx)",
+      "semantic_role": "creation provider located statically; executable input authority absent",
+      "site": "0xF129429..0xF12944E",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f17a830.txt",
+      "edge": "constructor entry",
+      "method": "0xF17A830",
+      "method_sha256": "6821401d7dcb850eda063ab1c3bdaa6fbbad691444b5bad688d88beab2da54e2",
+      "operand_identity": "arg2->r14;arg3->r12;arg4->r13;arg5->rbx;arg6->r15",
+      "semantic_role": "register preservation proves call wiring",
+      "site": "0xF17A83F..0xF17A853",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f17a830.txt",
+      "edge": "Base initialization",
+      "method": "0xF17A830",
+      "method_sha256": "6821401d7dcb850eda063ab1c3bdaa6fbbad691444b5bad688d88beab2da54e2",
+      "operand_identity": "Base(this, r14,r12,[r13+0x10],rbx,[r15+0x18])",
+      "semantic_role": "config/context/source operands required; source values not established",
+      "site": "0xF17A8DA..0xF17A8F5",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_eea2780.txt",
+      "edge": "Base stores",
+      "method": "0xEEA2780",
+      "method_sha256": "f802860270f6273b506b9a401b8c1cc466ffad6cc0e5945503314fe5d48a09bc",
+      "operand_identity": "arg2 -> instance+0x40;arg3 -> +0x70",
+      "semantic_role": "stores proven; do not derive all field meanings from metadata declaration order",
+      "site": "0xEEA27E9..0xEEA27ED",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_eea2780.txt",
+      "edge": "TaskContext initialization",
+      "method": "0xEEA2780",
+      "method_sha256": "f802860270f6273b506b9a401b8c1cc466ffad6cc0e5945503314fe5d48a09bc",
+      "operand_identity": "new TaskContext at instance+0x38; virtual +0x118(arg4), +0x128(arg5); context+0x28=this",
+      "semantic_role": "independent native context allocation and setters; not inherited R15 dictionary equality",
+      "site": "0xEEA288B..0xEEA28F2",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f17a830.txt",
+      "edge": "derived instance/context state",
+      "method": "0xF17A830",
+      "method_sha256": "6821401d7dcb850eda063ab1c3bdaa6fbbad691444b5bad688d88beab2da54e2",
+      "operand_identity": "instance+0x148=arg4; +0x190=arg3; +0x1b8=arg6+0x38; TaskContext+0x20=arg6+0x28",
+      "semantic_role": "nonserialized pointers require source provider",
+      "site": "0xF17A8FA..0xF17A9D1",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f17a830.txt",
+      "edge": "computed initialization",
+      "method": "0xF17A830",
+      "method_sha256": "6821401d7dcb850eda063ab1c3bdaa6fbbad691444b5bad688d88beab2da54e2",
+      "operand_identity": "0x16948200 -> +0x294;0xF13ABD0 -> +0x288;0x169484B0 -> +0x28c; arg6+0x74 -> +0x278;0x16947FA0 -> +0x274",
+      "semantic_role": "not constants; lifetime/stack semantic mapping unknown",
+      "site": "0xF17AD93..0xF17ADF6",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "instance identity/initial state",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "context+0x58 -> instance+0x78; +0x30 -> +0x58; +0x54 -> +0x80; +0x6c controls ID path",
+      "semantic_role": "identity counter at component+0x2c8 used conditionally; not unconditional new-ID policy",
+      "site": "0xF129503..0xF129558",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f1290a0.txt",
+      "edge": "registration",
+      "method": "0xF1290A0",
+      "method_sha256": "d5e5ec892e002b3f5b56ad0de4296b6a47d587775b518248aec76d4c6573b203",
+      "operand_identity": "call 0xEDDA2A0 with existing new instance",
+      "semantic_role": "does not allocate instance",
+      "site": "0xF1297D5",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_edda2a0.txt",
+      "edge": "registration/activation dispatch",
+      "method": "0xEDDA2A0",
+      "method_sha256": "afdfac75ee75857b48789af2ba9f1749c663a61b5e4d402fe08c81853d9604fa",
+      "operand_identity": "component+0x38 collection append supplied rdx; interface slot 13 then conditional slot 14",
+      "semantic_role": "conditional flag controls second call; full interface semantics unclosed",
+      "site": "0xEDDA2BD..0xEDDA317;0xEDDA3A5;0xEDDA435",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_f17f4d0.txt",
+      "edge": "activation/listener setup",
+      "method": "0xF17F4D0",
+      "method_sha256": "fb09a06f9805e3bc93cfb2342d8d290a23adff997a9ca57430a6739777193afe",
+      "operand_identity": "+0x94/+0x7c writes; range callbacks and ExecuteEvent calls",
+      "semantic_role": "serialized event IDs known; Jade timing/order/trigger/cleanup unproven",
+      "site": "0xF17F534..0xF17F53B;0xF17F690;0xF180030;0xF1804DD;0xF1805B2",
+      "source_version": "4.6.51"
+    },
+    {
+      "artifact": "native/method_b7585a0.txt",
+      "edge": "completion/continuation",
+      "method": "0xB7585A0",
+      "method_sha256": "9b8c360c7cdaf52cea5e62bbbb841ce2a8d650ba2611792a803eda838b5244aa",
+      "operand_identity": "returned pointer null test; status literal 0x9999 after cleanup",
+      "semantic_role": "not mapped to native success or R22 release",
+      "site": "0xB7594F2;0xB759FAE",
+      "source_version": "4.6.51"
+    }
+  ],
+  "operands": [
+    {
+      "default_supplied": false,
+      "operand": "definition identity",
+      "provenance": "serialized mask 8 DynamicString -> inline exact dictionary",
+      "provider_ticket": "",
+      "status": "BOUND"
+    },
+    {
+      "default_supplied": false,
+      "operand": "instance identity",
+      "provenance": "native allocation 0xF129430 and conditional component+0x2c8 counter",
+      "provider_ticket": "R33-CONTEXT",
+      "status": "STATIC_PROVIDER_IDENTIFIED_VALUES_UNBOUND"
+    },
+    {
+      "default_supplied": false,
+      "operand": "caster/source",
+      "provenance": "source helper config+0x80, task+0x20 virtual paths",
+      "provider_ticket": "R33-SOURCE",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "target",
+      "provenance": "mask 2 aliases AbilityTargetEntity / Caster; reference context a in both saved runs",
+      "provider_ticket": "R33-SOURCE",
+      "status": "REFERENCE_CONTEXT_ONLY"
+    },
+    {
+      "default_supplied": false,
+      "operand": "source Ability instance",
+      "provenance": "R15 ability:26 -> parent ability:20; native ctor arg4 points to component",
+      "provider_ticket": "R33-SOURCE",
+      "status": "OWNERSHIP_PROVEN_NATIVE_MAPPING_UNBOUND"
+    },
+    {
+      "default_supplied": false,
+      "operand": "TaskContext / ModifierContext",
+      "provenance": "native Base creates context+0x38; constructor arg6 consumed at +0x18/+0x28/+0x38/+0x74",
+      "provider_ticket": "R33-CONTEXT",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "stack initialization",
+      "provenance": "computed native helper outputs +0x288/+0x28c; definition enum bytes recovered",
+      "provider_ticket": "R33-LIFETIME",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "duration/lifetime",
+      "provenance": "constructor context +0x74 and computed +0x274; semantic role unproven",
+      "provider_ticket": "R33-LIFETIME",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "dynamic initialization",
+      "provenance": "original mask 512 DynamicFloat key -1022829777",
+      "provider_ticket": "R33-DYNAMIC",
+      "status": "ROLE_AND_VALUE_UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "initial properties",
+      "provenance": "arg3+0xb8 loop; property helpers 0xF17B210/0xF17B0E0",
+      "provider_ticket": "R33-CONTEXT",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "listener bindings",
+      "provenance": "two original callback graphs per definition; event IDs structurally decoded",
+      "provider_ticket": "R33-LISTENERS",
+      "status": "TIMING_TRIGGER_ORDER_OWNER_UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "activation flags",
+      "provenance": "native writes and conditional interface call; Self mask 131072 retained",
+      "provider_ticket": "R33-LISTENERS",
+      "status": "ROLE_AND_VALUES_UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "duplicate/refresh policy",
+      "provenance": "native enum dispatch/find/delete branches; no witnessed original instance",
+      "provider_ticket": "R33-TRANSACTION",
+      "status": "UNKNOWN"
+    },
+    {
+      "default_supplied": false,
+      "operand": "transaction/continuation",
+      "provenance": "pointer test and status 0x9999; R15 refusal rollback observed",
+      "provider_ticket": "R33-TRANSACTION",
+      "status": "NATIVE_COMMIT_BARRIER_UNKNOWN"
+    }
+  ],
+  "original_dynamic_operand": {
+    "key": -1022829777,
+    "mask": 512,
+    "role": "UNKNOWN",
+    "value": "UNKNOWN"
+  },
+  "self_additional_definition_mask": {
+    "mask": 131072,
+    "role": "UNKNOWN"
+  }
+}

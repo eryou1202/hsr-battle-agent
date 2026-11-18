@@ -1,0 +1,66 @@
+{
+  "authority": "SAME_BUILD_UNPATCHED_OBSERVATIONS_ONLY",
+  "callback_receipt": "Static call site only: 0x1DCA134D after setter 0x1DCA1279. No native invocation; exactly-once under reentrancy/exceptions NOT established.",
+  "change_request": "CR-R30-DYNAMIC-CONTEXT-CLOSURE-20261108-001",
+  "contract": {
+    "id": "DYNAMIC_ENTRY_SETTER_AUTHORITY_MISSING",
+    "object": "FFKBNBIMMHE concrete entry stored at entry-array + 0x30 + 24*index",
+    "required": [
+      "Exact instantiated implementation and construction caller for Lynx/Klara keys",
+      "Concrete vtable map for slots 3/4/5/7",
+      "Setter provider coupling, nested listeners, reentrancy, exceptions and continuation"
+    ],
+    "sites": [
+      "0x1DCA1020",
+      "0x1DCA1279",
+      "0x1DCA134D"
+    ],
+    "stop": "Interface metadata recovered; concrete runtime entry identity is not supplied by selected source roots. No dictionary fallback."
+  },
+  "entry_identity": "Exact lookup result object; concrete implementing type/instance unresolved",
+  "entry_interface": "FFKBNBIMMHE type 10867 via global 0x9804FA0",
+  "lookup": {
+    "entry": "dictionary+0x18 array; result object at array+0x30+24*index",
+    "helper": "0x1BC90A50",
+    "missing": "negative index returns at 0x1DCA134F, no insertion or callback",
+    "null": "null storage/array/entry and bounds use exception paths",
+    "store": "receiver+0x20"
+  },
+  "native_effective_validated": false,
+  "ordered_operations": [
+    {
+      "name": "get_Val",
+      "role": "capture old raw value",
+      "slot": 3
+    },
+    {
+      "name": "get_MinValue",
+      "slot": 5
+    },
+    {
+      "name": "get_MaxValue",
+      "slot": 7
+    },
+    {
+      "call": "0x1EC22590",
+      "inputs": [
+        "incoming raw",
+        "min raw",
+        "max raw"
+      ],
+      "name": "FixPoint.Clamp"
+    },
+    {
+      "name": "set_Val",
+      "role": "mutate same keyed entry",
+      "slot": 4
+    },
+    {
+      "owner": "store receiver+0x10 delegate",
+      "role": "if non-null: read new Val and invoke once on straight-line normal path, passing key, old-present payload, new value"
+    }
+  ],
+  "r19_compatibility": "Existing dynamic state can retain bounded raw values but lacks this entry/provider identity. R17 can represent explicit events only after listener order is evidenced.",
+  "rollback": "R15 leaf atomicity exists; native setter/callback rollback and continuation unknown",
+  "status": "DYNAMIC_ENTRY_SETTER_AUTHORITY_MISSING"
+}

@@ -1,0 +1,2 @@
+const e=require('../../tmp/audit/r102_4651_structural_path_closure_20261004_001/exact.cjs'),u=require('../../tmp/audit/r102_4651_structural_path_closure_20261004_001/usage_map.cjs'),fs=require('fs');
+let p=u.globalInfo(0x9bf82b0);let literal=p.tag===5?u.literal(p.index):null;let out={manifest_sha256:e.pin,global:p,literal};fs.writeFileSync('tmp/audit/r28_original_combat_semantics_20261022_001/JsonEnum_provider_identity.json',JSON.stringify(out,null,2));console.log(out);

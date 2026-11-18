@@ -1,0 +1,1 @@
+const u=require('../../tmp/audit/r102_4651_structural_path_closure_20261004_001/usage_map.cjs');for(let r of [0x98eb6b8,0x98ed4d8,0x98ef790]){let g=u.globalInfo(r);console.log(JSON.stringify({...g,generic:g?.tag===6?u.generic(g.index):null}));}

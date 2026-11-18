@@ -1,0 +1,201 @@
+{
+  "TaskContext_identity": null,
+  "adapter_installed": false,
+  "after": 1,
+  "before": 1,
+  "callbacks": "Store delegate call site observed; registration, reentrancy, rollback and continuation unknown",
+  "change_request": "CR-R31-REAL-TASK-EXECUTION-BREAKTHROUGH-20261108-001",
+  "concrete_entry": null,
+  "construction_registration": null,
+  "frozen_product_authority": "4.4.54 separate",
+  "gap": "DYNAMIC_CONCRETE_ENTRY_PROVIDER_MISSING",
+  "getter_setter": "Interface operation order only; no concrete implementation",
+  "original_task": {
+    "authority": {
+      "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+      "ledger_refs": [],
+      "native_method_refs": [
+        "0x1E9DD550"
+      ],
+      "oracle_status": "RUNTIME_ORACLE_PENDING",
+      "semantic_status": "CONDITIONAL_REFERENCE",
+      "source_artifact": "tmp/audit/r27_real_character_monster_20261022_001/decoded/Avatar_Lynx_00_Skill02_Phase02.json",
+      "source_pointer": "/record/task_list/0",
+      "source_sha256": "78a298c8880428fc04e96f37204338199d0106facd6985e25460559aa1979a70",
+      "source_version": "4.6.51"
+    },
+    "kind": "UnsupportedSemanticIR",
+    "node_id": "/record/task_list/0",
+    "op": "RPG.GameCore.SetDynamicValueByProperty",
+    "payload": {
+      "decoded": {
+        "concrete_type": "RPG.GameCore.SetDynamicValueByProperty",
+        "discriminator": null,
+        "end": 10772809,
+        "kind": "TaskConfig",
+        "reader_method": {
+          "rva": "0x1E9DD550"
+        },
+        "start": 10772778,
+        "structure": {
+          "bitmap": 26,
+          "end": 10772809,
+          "fields": [
+            {
+              "end": 10772799,
+              "mask": 2,
+              "start": 10772779,
+              "values": [
+                {
+                  "end": 10772799,
+                  "kind": "string",
+                  "start": 10772779,
+                  "value": "MDF_Lynx_MaxHpValue"
+                }
+              ]
+            },
+            {
+              "end": 10772808,
+              "mask": 8,
+              "start": 10772799,
+              "values": [
+                {
+                  "child": {
+                    "child": {
+                      "bitmap": 1,
+                      "end": 10772808,
+                      "reader": "0x1eb28590",
+                      "start": 10772800,
+                      "type": "RPG.GameCore.TargetAlias",
+                      "value": "Caster"
+                    },
+                    "end": 10772808,
+                    "fields": [],
+                    "reader": "0x1E7006A0",
+                    "start": 10772800,
+                    "type": ".BKLODCFCAED"
+                  },
+                  "discriminator": 12,
+                  "end": 10772808,
+                  "fields": [],
+                  "reader": "0x1E703000",
+                  "start": 10772799,
+                  "type": ".BKLODCFCAED"
+                }
+              ]
+            },
+            {
+              "end": 10772809,
+              "mask": 16,
+              "start": 10772808,
+              "values": [
+                {
+                  "kind": "enum",
+                  "raw": 2,
+                  "type": {
+                    "file_offset": 27336448,
+                    "index": 10490,
+                    "method_count": 0,
+                    "method_start": 4294967295,
+                    "name": "AbilityProperty",
+                    "namespace": "RPG.GameCore",
+                    "vtable_start": 78
+                  },
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "reader": "0x1E9DD550",
+          "start": 10772778,
+          "type": "RPG.GameCore.SetDynamicValueByProperty"
+        }
+      },
+      "discriminator": null,
+      "field_bindings_status": "UNRESOLVED",
+      "fields": {
+        "unbound_bit_0": "MDF_Lynx_MaxHpValue",
+        "unbound_bit_1": {
+          "authority": {
+            "evidence_level": "REAL_CONTENT_RECONSTRUCTED",
+            "ledger_refs": [
+              "target_alias"
+            ],
+            "native_method_refs": [
+              "0x1eb28590",
+              "0xBD01920",
+              "0xC32D2C0",
+              "0xC32D420"
+            ],
+            "oracle_status": "RUNTIME_ORACLE_PENDING",
+            "semantic_status": "CONDITIONAL_REFERENCE",
+            "source_artifact": "tmp/audit/r27_real_character_monster_20261022_001/decoded/Avatar_Lynx_00_Skill02_Phase02.json",
+            "source_pointer": "/record/task_list/0/structure/fields/1/values/0",
+            "source_sha256": "78a298c8880428fc04e96f37204338199d0106facd6985e25460559aa1979a70",
+            "source_version": "4.6.51"
+          },
+          "kind": "TargetSelectorIR",
+          "node_id": "/record/task_list/0/structure/fields/1/values/0",
+          "op": "RPG.GameCore.TargetAlias",
+          "payload": {
+            "alias": "Caster",
+            "discriminator": 12,
+            "field_bindings_status": "DECODED_FIELD_NAMES",
+            "fields": {},
+            "reference_binding": {
+              "authority": "CONDITIONAL_REFERENCE",
+              "native_field_names_recovered": false,
+              "policy_required": "r13_reference_v1",
+              "roles": {},
+              "unknown_slots": []
+            },
+            "span": [
+              10772800,
+              10772808
+            ],
+            "task_type": "RPG.GameCore.TargetAlias"
+          }
+        },
+        "unbound_bit_2": 1
+      },
+      "reference_binding": {
+        "authority": "CONDITIONAL_REFERENCE",
+        "native_field_names_recovered": false,
+        "policy_required": "r13_reference_v1",
+        "roles": {},
+        "unknown_slots": [
+          {
+            "field_index": 0,
+            "mask": 2
+          },
+          {
+            "field_index": 1,
+            "mask": 8
+          },
+          {
+            "field_index": 2,
+            "mask": 16
+          }
+        ]
+      },
+      "required_capability": "task:RPG.GameCore.SetDynamicValueByProperty",
+      "span": [
+        10772778,
+        10772809
+      ],
+      "task_type": "RPG.GameCore.SetDynamicValueByProperty"
+    }
+  },
+  "property": {
+    "AbilityProperty": 1,
+    "empty_selection": "SOURCE_OUT_OF_RANGE_EXCEPTION_NOT_ZERO",
+    "native_mask": 63,
+    "selector": "Caster",
+    "value_provider": null
+  },
+  "root": "Avatar_Lynx_00_Skill02_Phase01",
+  "source_contract": "data/control/generic_runtime_r30_keyed_setter_v1_20261108_001.json",
+  "source_version": "4.6.51",
+  "task_hash": "c7afedc9ade53ac7c532d429eb525b012f86030f6b6e5518ec5139601fcbbe07",
+  "verdict": "NO_GO"
+}

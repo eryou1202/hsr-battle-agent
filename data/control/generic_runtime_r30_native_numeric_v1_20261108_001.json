@@ -1,0 +1,35 @@
+{
+  "authority": "SAME_BUILD_UNPATCHED_OBSERVATIONS_ONLY",
+  "change_request": "CR-R30-DYNAMIC-CONTEXT-CLOSURE-20261108-001",
+  "clamp": "Selected native Clamp compares bit-0 mode tags; mixed paths use arithmetic shift by 7 and low-seven-bit checks. Full numeric oracle NOT established.",
+  "count_packing": {
+    "branch": "abs(count) < 0x40000000",
+    "input": "sign-extended wrapping int32 accumulator r12d",
+    "large": "signed64((count << 26) | 1)",
+    "overflow": "inc r12d wraps 32 bits; accepted encoder input restricted to signed int32; representable list loop cannot authorize arbitrary overflow policy",
+    "rounding": "integer shifts only in count packing; no fractional rounding",
+    "sites": [
+      "0x163ECE6E",
+      "0x163ECE90"
+    ],
+    "small": "signed64(count << 33)"
+  },
+  "native_conversion_installed": false,
+  "native_effective_validated": false,
+  "offline_transliteration": "tools/runtime/r30_numeric.py",
+  "r12_r19": {
+    "compatibility_is_not_execution_authority": true,
+    "scale": 8589934592,
+    "small_count_raw_compatible": true,
+    "tagged_mode_supported": false
+  },
+  "raw_examples": {
+    "-1": -8589934592,
+    "-2147483648": -144115188075855871,
+    "0": 0,
+    "1": 8589934592,
+    "1073741823": 9223372028264841216,
+    "1073741824": 72057594037927937
+  },
+  "storage": "64-bit raw RPG.GameCore.FixPoint; property provider returns raw +0x48 without integer conversion at property task call site"
+}

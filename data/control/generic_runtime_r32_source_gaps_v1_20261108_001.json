@@ -1,0 +1,165 @@
+{
+  "acceptance_matrix": [
+    {
+      "case": "ambiguous definition reference",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "unknown caster/owner",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "missing target",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "unknown duration/stack",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "missing listener authority",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "Jade callback ordering",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "Jade duplicate/refresh behavior",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "Jade rollback after successful construction",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "Jade suspended callback resumption",
+      "execution_test_pass": false,
+      "status": "BLOCKED_BY_MISSING_INSTANCE_AUTHORITY"
+    },
+    {
+      "case": "true AddModifier remains blocked",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    },
+    {
+      "case": "false AddModifier remains blocked",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    },
+    {
+      "case": "unknown definition atomic refusal",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    },
+    {
+      "case": "original TaskIR hash preservation",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    },
+    {
+      "case": "original Jade parent command replay",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    },
+    {
+      "case": "clone/snapshot/hash equality",
+      "execution_test_pass": false,
+      "status": "REFUSAL_OR_REPLAY_TEST_PASS"
+    }
+  ],
+  "additional_native_bodies": 0,
+  "change_request": "CR-R32-JADE-ORIGINAL-MODIFIER-CLOSURE-20261108-001",
+  "definition_families": 2,
+  "native_observations": [
+    {
+      "method": "0xB7585A0",
+      "observed": "At 0xB758715 calls EvaluateTarget with selector at config +0x18, output list r8 and computed mask r9d. Empty list branches away. At 0xB7587F7 evaluates dynamic string config +0x28. At 0xB758B14 calls helper 0xB75A130 then accesses returned +0x60/+0x10; exact provider mapping remains unclosed."
+    },
+    {
+      "method": "0xB7585A0",
+      "observed": "At 0xB7594CB..0xB7594ED passes r12 on stack, literal false byte, rdx=[rbp+0x1c0], r8=[rbp+0x1e0], r9=[rbp+0x1a8] to TryAddModifierInstance. At +0xB7594F2 tests returned pointer and branches on null; semantic ownership of all temporaries not proven."
+    },
+    {
+      "method": "0xF1290A0",
+      "observed": "At 0xF129256/0xF129370 calls separate global/local instance find paths. At 0xF1297D5 calls AddModifierInstance. At 0xF1298D4 conditionally calls postprocess; return pointer at 0xF1298D9. Existing-instance path branches via +0x7c into separate processing/delay methods. Method names do not establish duplicate/refresh policy."
+    },
+    {
+      "method": "0xB7585A0",
+      "observed": "At 0xB759FAE writes status literal 0x9999 after cleanup. No native-effective continuation oracle or generic success mapping claimed."
+    }
+  ],
+  "new_dependency_hops": 0,
+  "reference_prefix_gain": 0,
+  "remaining_native_questions": [
+    "Instance allocation and ownership operands",
+    "Source ability mapping and target native mask/status",
+    "Duration/stack/parameter interpretation",
+    "Listener activation, callback order and native duplicate/failure policy",
+    "Task completion/continuation status mapping; 0x9999 not assumed semantic success"
+  ],
+  "source_evidenced_coverage_gain": 0,
+  "stop_rule_observed": true,
+  "tickets": [
+    {
+      "closure_test": "Prove sufficient constructor/context semantics or obtain explicit caller reference values for every missing operand before original R15/R17 application",
+      "definition_graph_hash": "df0f4c0e547bb259fb88f120ae9b9a838c26155c35f4eb1f97b736dda68331db",
+      "definition_id": "9510863be77d8976ad6c934e64daab7c3f2ab431473b43572a7dcda17a436f82",
+      "definition_source": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10646629,
+        10647060
+      ],
+      "exact_reference": "MAvatar_Jade_00_BPSkillSelf",
+      "gap_type": "MODIFIER_INSTANCE_CONSTRUCTION_AUTHORITY_MISSING",
+      "original_task_hash": "157ea0f090503992511e039fdaa65d96c179fa64ecd2427e47623695c8d752a9",
+      "required_acquisition": [
+        "Exact source/native instance factory operand mapping and owner/caster/source-ability context",
+        "Mask 512 constructor role and dynamic provider value",
+        "Duration/stack initialization policy and instance identity/lifetime",
+        "Listener activation/event dispatch and duplicate/failure completion policy"
+      ],
+      "resolved_edges": [
+        "Original TaskIR serialized DynamicString -> exact inline named dictionary key",
+        "Named dictionary value -> fully decoded TurnBasedModifierConfig and compiled original callback bodies"
+      ],
+      "status": "OPEN",
+      "stop": "Definitions recovered; instance authority missing. No caller values invented to manufacture a reference prefix",
+      "ticket_id": "R32-INSTANCE-AUTHORITY-MAvatar_Jade_00_BPSkillSelf"
+    },
+    {
+      "closure_test": "Prove sufficient constructor/context semantics or obtain explicit caller reference values for every missing operand before original R15/R17 application",
+      "definition_graph_hash": "e26b16ce06a4d39d225c39ecfcfa75d2fbea9d23ebd5b80ed531e987eb2e74d5",
+      "definition_id": "faf71b3ced9b7fd9672ce6ae3a77e9a029b13ab1388cd5839b4a24090ceb46bf",
+      "definition_source": [
+        "12884d3c8b1907d3a68c922d75655981d0348cd449381c1ba286f6f06e7287be",
+        10645392,
+        10645683
+      ],
+      "exact_reference": "MAvatar_Jade_00_BPSkillBuffListen",
+      "gap_type": "MODIFIER_INSTANCE_CONSTRUCTION_AUTHORITY_MISSING",
+      "original_task_hash": "694ef474300567b06006dc83b2c1cfd46cf13cca14d275b3b4955f776d7909d2",
+      "required_acquisition": [
+        "Exact source/native instance factory operand mapping and owner/caster/source-ability context",
+        "Mask 512 constructor role and dynamic provider value",
+        "Duration/stack initialization policy and instance identity/lifetime",
+        "Listener activation/event dispatch and duplicate/failure completion policy"
+      ],
+      "resolved_edges": [
+        "Original TaskIR serialized DynamicString -> exact inline named dictionary key",
+        "Named dictionary value -> fully decoded TurnBasedModifierConfig and compiled original callback bodies"
+      ],
+      "status": "OPEN",
+      "stop": "Definitions recovered; instance authority missing. No caller values invented to manufacture a reference prefix",
+      "ticket_id": "R32-INSTANCE-AUTHORITY-MAvatar_Jade_00_BPSkillBuffListen"
+    }
+  ]
+}
